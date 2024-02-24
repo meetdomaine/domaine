@@ -1,0 +1,19 @@
+---
+import Hero from './Hero.astro';
+import Clients from './Clients.astro';
+import About from './About.astro';
+import Services from './Services.astro';
+import Agencies from './Agencies.astro';
+import Partners from './Partners.astro';
+import Contact from './Contact.astro';
+import Work from './Work.astro';
+const { block } = Astro.props;
+---
+{block._type == 'sectionHero' ? <Hero content={block} /> : null}
+{block._type == 'sectionClients' ? <Clients content={block} /> : null}
+{block._type == 'sectionAbout' ? <About content={block} /> : null}
+{block._type == 'sectionServices' ? <Services content={block} /> : null}
+{block._type == 'sectionContact' ? <Contact content={block} /> : null}
+{block._type == 'sectionWork' ? <Work content={block} /> : null}
+{block._type == 'sectionPartners' ? <Partners content={block} /> : null}
+{block._type == 'sectionAgencies' ? <Agencies content={block} /> : null}

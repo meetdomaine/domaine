@@ -1,0 +1,106 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/global/Header.astro';
+import Icon from '../components/atoms/Icon.astro';
+---
+<Layout title="Home">
+	<Header />
+	<main>
+
+    <section class="section-typography">
+      <h1>Heading 1</h1>
+      <h2>Heading 2</h2>
+      <h3>Heading 3</h3>
+      <h4>Heading 4</h4>
+      <h5>Heading 5</h5>
+      <h6>Heading 6</h6>
+      <p>Lorem ipsum dolor sit amet.</p>
+      <p class="caption">Caption</p>
+    </section>
+
+    <section class="section-spacers">
+      <span class="spacer spacer-4xl"></span>
+      <span class="spacer spacer-3xl"></span>
+      <span class="spacer spacer-2xl"></span>
+      <span class="spacer spacer-xl"></span>
+      <span class="spacer spacer-lg"></span>
+      <span class="spacer spacer-md"></span>
+      <span class="spacer spacer-sm"></span>
+      <span class="spacer spacer-xs"></span>
+      <span class="spacer spacer-2xs"></span>
+    </section>
+
+    <section class="section-buttons">
+      <a class="button">Button Primary<Icon glyph="arrow"/></a>
+      <a class="button button-secondary">Button Secondary<Icon glyph="arrow"/></a>
+      <a class="button button-tertiary">Button Tertiary<Icon glyph="arrow"/></a>
+    </section>
+
+  </main>
+</Layout>
+
+<style>
+
+  section {
+    padding: 0 var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-spacers {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-xs);
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .spacer {
+    aspect-ratio: 1 / 1;
+    background-color: var(--color-foreground);
+  }
+
+  .spacer-2xs {
+    width: var(--space-2xs);
+  }
+
+  .spacer-xs {
+    width: var(--space-xs);
+  }
+
+  .spacer-sm {
+    width: var(--space-sm);
+  }
+
+  .spacer-md {
+    width: var(--space-md);
+  }
+
+  .spacer-lg {
+    width: var(--space-lg);
+  }
+
+  .spacer-xl {
+    width: var(--space-xl);
+  }
+  
+  .spacer-2xl {
+    width: var(--space-2xl);
+  }
+
+  .spacer-3xl {
+    width: var(--space-3xl);
+  }
+
+  .spacer-4xl {
+    width: var(--space-4xl);
+  }
+
+  .section-buttons {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+</style>

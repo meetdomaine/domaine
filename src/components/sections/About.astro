@@ -1,0 +1,139 @@
+---
+import { urlFor } from "../../utils/sanityClient";
+const { content } = Astro.props;
+---
+<section class="about">
+  <div class="text">
+    <div class="section-title">
+      {content.heading && <h2 class="h2">{content.heading}</h2> }
+      {content.subheading && <h3 class="h6">{content.subheading}</h3> }
+    </div>
+    <ul class="callouts">
+      {content.stats && content.stats.map((stat) => {
+        return (
+          <li class="callout">
+            {stat.content[0].children.map((node) => {
+                if (node.marks.includes("em")) return <em class="h5">{node.text.trim()}</em>
+                return <p class="h5">{node.text.trim()}</p>
+              })
+            }
+          </li>
+        )
+      })}
+    </ul>
+  </div>
+  <div class="media">
+
+    {content.videoURL ? (
+      <video 
+        class="video" 
+        width="50vw" 
+        height="100vh"
+        autoplay
+        loop
+        muted
+      >
+        <source src={content.videoURL} type="video/mp4" />
+      </video>
+      
+    ) : (
+
+      <img
+        width="50vw"
+        height="100vh"
+        sizes="
+          (max-width: 960px) 100%,
+          50%
+        "
+        srcset={`
+          ${urlFor(content.image).width(800).height(1600).auto('format').url()} 800w,
+          ${urlFor(content.image).width(1290).height(2580).auto('format').url()} 1290w,
+          ${urlFor(content.image).width(1536).height(3072).auto('format').url()} 1536w,
+          ${urlFor(content.image).width(2700).height(5400).auto('format').url()} 2700w,
+        `}
+        src={urlFor(content.image).width(800).height(1600).auto('format').url()}
+        class="image"
+      />
+    )}
+
+  </div>
+</section>
+
+<style>
+
+  .about {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: flex-start;
+    padding: var(--space-2xl) var(--page-margin);
+    gap: var(--space-xl);
+  }
+
+  .text,
+  .media {
+    flex: 0 1 50%;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .callouts {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+  }
+
+  .callout {
+    border: 1px var(--color-border) solid;
+    border-radius: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    flex-direction: row;
+    gap: 1ch;
+    color: var(--color-foreground-secondary);
+  }
+
+  .callout em {
+    font-style: normal;
+    color: var(--color-foreground);
+  }
+
+  .media {
+    /* background-color: red; */
+    align-self: stretch;
+    min-height: calc(100svh - var(--space-2xl) * 2);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .video,
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 960px) {
+    .about {
+      flex-direction: column;
+    }
+
+    .media {
+      min-height: unset;
+    }
+  }
+
+</style>

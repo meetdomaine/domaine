@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/global/Header.astro';
+import { getHomePageContent } from '../utils/sanityClient';
+import SectionBlock from '../components/sections/SectionBlock.astro';
+const data = await getHomePageContent();
+---
+<Layout title="Home">
+	<main>
+		{data[0].content.map((contentBlock) => (
+			<SectionBlock block={contentBlock} />
+		))}
+	</main>
+</Layout>
+
+<style>
+</style>

@@ -1,0 +1,122 @@
+---
+import { urlFor } from "../../utils/sanityClient";
+import Icon from "../atoms/Icon.astro";
+
+const { content } = Astro.props;
+// console.log(content)
+---
+<section class="hero">
+
+  <div class="hero-content">
+    <div class="hero-text">
+      {content.eyebrow && <h2 class="h5">{content.eyebrow}</h2>}
+      <h1 class="heading">
+        {content.heading.map((block) => {
+          if (block.children[0].marks.includes("em")) return <em>{block.children[0].text.trim()}</em>
+          return <p>{block.children[0].text.trim()}</p>
+        })}
+        {content.badgeText && <span class="badge caption"><Icon glyph="star" size="medium" /><p>{content.badgeText}</p></span>}
+      </h1>
+      {content.subheading && <h3 class="h6">{content.subheading}</h3>}
+    </div>
+    {content.buttonText && content.buttonURL && <a class="button" href={content.buttonURL}>{content.buttonText}</a> }
+  </div>
+
+  <!-- Optimized for viewports of: 430px, 1024px, 1800px - @3x -->
+  {content.image && (
+    <img
+      class="image"
+      srcset={`
+        ${urlFor(content.image).width(1290).height(1290).auto('format').url()} 1290w,
+        ${urlFor(content.image).width(3072).height(1536).auto('format').url()} 3072w,
+        ${urlFor(content.image).width(5400).height(2700).auto('format').url()} 5400w,
+      `}
+      src={urlFor(content.image).width(1290).height(1290).auto('format').url()}
+      width="1440"
+      height="720"
+      alt={content.imageAlt}
+      decoding="async"
+      loading="eager"
+    />
+  )}
+  
+
+</section>
+
+<style>
+
+  .hero {
+    /* margin: 0 var(--page-margin); */
+    min-height: 90lvh;
+    max-height: 95lvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    margin: var(--space-xl) var(--page-margin);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .heading {
+    color: var(--color-foreground-secondary);
+    white-space-collapse: collapse;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 0;
+  }
+
+  .heading > p {
+    font: inherit;
+    letter-spacing: inherit;
+    width: 100%;
+    /* display: block; */
+  }
+
+  .heading > em {
+    font-style: normal;
+    color: var(--color-foreground);
+    margin-right: 0.25ch;
+  }
+
+  .badge {
+    color: var(--color-foreground);
+    border: 1px solid var(--color-foreground);
+    border-radius: var(--radius-rounded);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-2xs) var(--space-xs);
+    gap: var(--space-2xs);
+    margin-top: 0.8em;
+  }
+
+  .image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+
+</style>

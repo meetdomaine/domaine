@@ -1,0 +1,162 @@
+---
+import { urlFor } from "../../utils/sanityClient";
+import ViewportObserver from "../../animation/ViewportObserver";
+
+const { content } = Astro.props;
+---
+<section class="services">
+  <div class="section-main">
+    <div class="section-title">
+      {content.heading && <h2 class="h2">{content.heading}</h2> }
+      {content.subheading && <h3 class="h5">{content.subheading}</h3> }
+    </div>
+    <div class="media">
+      {content.services.map((service, i) => {
+        return (
+          <img
+            class="service-image"
+            src={urlFor(service.image).url()}
+            data-index={i}
+          />
+        )
+      })}
+    </div>
+  </div>
+  <div class="section-details">
+    {content.services.map((service, i) => {
+      return (
+        <ViewportObserver client:only="solid-js">
+          <div class="detail-block" data-index={i}>
+            {service.title && <h4>{service.title}</h4> }
+            {service.description && <h5 class="h6">{service.description}</h5> }
+            <ul class="deliverables">
+              {service.deliverables && service.deliverables.map((deliverable) => {
+                return (
+                  <li class="deliverable h6">{deliverable}</li>
+                )
+              })}
+            </ul>
+          </div>
+        </ViewportObserver>
+      )
+    })}
+  </div>
+</section>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log('dom ready')
+  })
+
+  document.addEventListener('astro:page-load', () => {
+    console.log('load')
+    const detailBlocks = document.querySelectorAll('.detail-block');
+    const serviceImages = document.querySelectorAll('.service-image');
+
+    const toggleActiveImage = (index) => {
+      serviceImages.forEach((image, i) => {
+        if (i == index) {
+          return image.dataset.active = true;
+        }
+        return image.dataset.active = false;
+      })
+    }
+
+    detailBlocks.forEach((block) => {
+      block.addEventListener('inView', () => {
+        toggleActiveImage(block.dataset.index);
+      })
+    })
+  })
+</script>
+
+<style>
+  .services {
+    padding: var(--space-xl) var(--page-margin);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--space-3xl);
+    min-height: 100svh;
+    /* width: 100%; */
+  }
+
+  .section-main,
+  .section-details {
+    flex: 0 1 50%;
+  }
+
+  .section-main {
+    /* flex: 0 0 60%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    max-height: 100svh;
+    gap: var(--space-md);
+    /* padding-bottom: var(--space-md); */
+    /* padding: var(--header-height) 0 var(--space-md); */
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    padding: var(--header-height) 0 0;
+  }
+
+  .media {
+    flex: 1 1 100%;
+    background-color: red;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-md);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .service-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+
+  .service-image[data-active="true"] {
+    opacity: 1;
+  }
+
+  .section-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20lvh;
+    padding: var(--header-height) 0;
+  }
+
+  .detail-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: opacity 1s ease;
+  }
+
+  .detail-block[data-animate="true"] {
+    opacity: 0;
+  }
+
+  .deliverables {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    color: var(--color-foreground-secondary);
+  }
+
+  .deliverable {
+  }
+</style>

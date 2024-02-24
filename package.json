@@ -1,0 +1,21 @@
+{
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/solid-js": "^4.0.1",
+    "@sanity/client": "^6.12.4",
+    "@sanity/image-url": "^1.0.2",
+    "@studio-freight/lenis": "^1.0.37",
+    "astro": "^4.3.6",
+    "astro-portabletext": "^0.9.6",
+    "solid-js": "^1.8.15"
+  }
+}

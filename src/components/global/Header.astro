@@ -1,0 +1,71 @@
+---
+import { getHeaderContent } from "../../utils/sanityClient";
+import Icon from '../atoms/Icon.astro';
+
+const data = await getHeaderContent();
+// console.log(data)
+---
+<header>
+  <!-- {Logo()} -->
+  <span class="navigation">
+    <a class="logo" href="/">
+      <Icon glyph="logo" />
+    </a>
+    <nav class="navigation-links">
+      <a class="navigation-link" href="/insights">Insights</a>
+      <a class="navigation-link" href="/styleguide">Styleguide</a>
+      <a class="navigation-link" href="/events/shoptalk-2024">Shoptalk</a>
+    </nav>
+  </span>
+  <!-- <a href="/">Home</a> -->
+  <!-- <a href="/about">About</a> -->
+  <!-- <a href="/contact">Contact</a> -->
+  <a class="button button-icon">
+    Get in Touch
+    <Icon glyph="arrow" size="large" />
+  </a>
+</header>
+
+<style>
+
+  header {
+    padding: var(--space-md) var(--page-margin);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    /* height: var(--header-height); */
+  }
+
+  .navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .logo {
+    width: clamp(100px, 8vw, 220px);
+  }
+
+  .logo svg {
+    width: 100%;
+  }
+
+  .navigation-links {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-rounded);
+    display: flex;
+    flex-direction: row;
+  }
+
+  .navigation-link {
+		padding: var(--space-xs) var(--space-md);
+  }
+
+</style>

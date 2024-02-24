@@ -1,0 +1,311 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro'
+// import LenisScroll from '../components/global/LenisScroll.astro'
+
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<ViewTransitions />
+	</head>
+	<body>
+		<!-- <LenisScroll client:only="solid-js" /> -->
+		<Header />
+		<slot />
+		<Footer />
+	</body>
+</html>
+
+<script>
+	import Lenis from '@studio-freight/lenis'
+	
+	const lenis = new Lenis()
+
+	function raf(time) {
+		lenis.raf(time)
+		requestAnimationFrame(raf)
+	}
+
+	requestAnimationFrame(raf)
+</script>
+
+<style is:global>
+	@font-face {
+		font-display: fallback;
+		font-family: 'SuisseIntl';
+		src: url('/SuisseIntl-Regular.otf') format('otf');
+		font-weight: 400;
+	}
+	* {
+		  /* Browser Resets */
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	:root {
+
+		--viewport-desktop: 1440;
+
+		/* Colors */
+		--color-ink: #1C1C1C;
+		--color-subdued: #3A3A3A;
+		--color-neutral: #B8B8B8;
+		--color-light: #9d9d9d;
+		--color-reverse: #ffffff;
+		--color-brand: #0070FF;
+		--color-brand-contrast: var(--color-reverse);
+		--color-brand-secondary: #b6510e;
+		--color-brand-secondary-contrast: var(--color-ink);
+
+		--color-success: rgb(0, 255, 123);
+		--color-error: red;
+		--color-focus: rgb(60, 0, 255);
+
+		--gradient-ink: linear-gradient(135deg, #2D2D2D 0%, #3A3A3A 100%);
+		--gradient-reverse: linear-gradient(135deg, #eaeaea 0%, #bfbfbf 100%);
+
+		--color-border-ink: rgba(0, 0, 0, 0.2);
+		--color-border-reverse: rgba(255, 255, 255, 0.2);
+
+		/* --color-foreground: var(--color-ink);
+		--color-foreground-secondary: var(--color-subdued);
+		--color-background: var(--color-reverse);
+		--color-background-secondary: var(--color-light);
+		--color-border: var(--color-border-ink);
+		--gradient-primary: var(--gradient-reverse); */
+
+		--color-foreground: var(--color-reverse);
+		--color-foreground-secondary: var(--color-light);
+		--color-background: var(--color-ink);
+		--color-background-secondary: var(--color-subdued);
+		--color-border: var(--color-border-reverse);
+		--gradient-primary: var(--gradient-ink);
+		--color-link: var(--color-reverse);
+		--color-link-secondary: var(--color-light);
+
+		/* Spacing */
+		--space-2xs: max(5px, calc((5 / var(--viewport-desktop)) * 100vw));
+		--space-xs: max(10px, calc((10 / var(--viewport-desktop)) * 100vw));
+		--space-sm: max(15px, calc((15 / var(--viewport-desktop)) * 100vw));
+		--space-md: max(20px, calc((20 / var(--viewport-desktop)) * 100vw));
+		--space-lg: max(25px, calc((30 / var(--viewport-desktop)) * 100vw));
+		--space-xl: max(30px, calc((40 / var(--viewport-desktop)) * 100vw));
+		--space-2xl: max(40px, calc((60 / var(--viewport-desktop)) * 100vw));
+		--space-3xl: max(60px, calc((80 / var(--viewport-desktop)) * 100vw));
+		--space-4xl: max(80px, calc((120 / var(--viewport-desktop)) * 100vw));
+
+		--radius-sm: 6px;
+		--radius-lg: 14px;
+		--radius-rounded: 100vw;
+
+		--page-margin: clamp(20px, 2vw, 150px);
+		--content-margin: 1440px;
+		--header-height: min(var(--space-4xl), 15lvh);
+		--button-height: 40px;
+
+		/* Icons */
+		--icon-sm: 10px;
+		--icon-md: 16px;
+		--icon-lg: 20px;
+
+		/* Forms */
+		--form-field-background: transparent;
+		--form-field-radius: 4px;
+		--form-field-gap-inline: var(--space-xs);
+		--form-field-gap-block: var(--space-sm);
+		--form-toggle-size: 16px;
+
+		/* Fonts */
+		--font-family: 'SuisseIntl', Helvetica, Arial, sans-serif;
+
+		/* Animation */
+		--anim-easing: cubic-bezier(0.22, 1, 0.36, 1);
+		--anim-sm: 0.3s var(--anim-easing);
+		--anim-md: 0.8s var(--anim-easing);
+		--anim-lg: 1.2s var(--anim-easing);
+
+		/* Fonts */
+		--font-family: 'SuisseIntl', Helvetica, Arial, system-ui, sans-serif;
+	}
+
+	html {
+		font-family: var(--font-family);
+		background: var(--color-background);
+		color: var(--color-foreground);
+		font-size: 16px;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	code {
+		font-family:
+			Menlo,
+			Monaco,
+			Lucida Console,
+			Liberation Mono,
+			DejaVu Sans Mono,
+			Bitstream Vera Sans Mono,
+			Courier New,
+			monospace;
+	}
+
+	a {
+		color: var(--color-link);
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: var(--color-link-secondary);
+	}
+
+	button,
+	.button {
+		background: var(--color-foreground);
+		color: var(--color-background);
+		display: flex;
+		flex-direction: row;
+		gap: var(--space-xs);
+		border-radius: var(--radius-rounded);
+		padding: var(--space-xs) var(--space-md);
+		cursor: pointer;
+		transition: background var(--anim-sm), color var(--anim-sm);
+	}
+
+	button svg,
+	.button svg {
+		width: var(--icon-md);
+		translate: 0px;
+		transition: translate var(--anim-sm);
+	}
+
+	button:hover,
+	.button:hover {
+		background: var(--color-brand);
+		color: var(--color-brand-contrast);
+	}
+
+	button:hover svg,
+	.button:hover svg {
+		translate: var(--space-2xs);
+	}
+
+	button.button-secondary,
+	.button.button-secondary {
+		background: transparent;
+		border: 1px solid var(--color-foreground);
+		color: var(--color-foreground);
+	}
+
+	button.button-secondary:hover,
+	.button.button-secondary:hover {
+		background: var(--color-foreground);
+		color: var(--color-background);
+	}
+
+	button.button-tertiary,
+	.button.button-tertiary {
+		padding: 0;
+		background: transparent;
+		border: none;
+		color: var(--color-foreground);
+	}
+
+	h1, .h1,
+	h2, .h2,
+	h3, .h3,
+	h4, .h4,
+	h5, .h5,
+	h6, .h6,
+	p,
+	.caption {
+		--base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
+		font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
+	}
+
+	h1, .h1,
+	h2, .h2,
+	h3, .h3,
+	h4, .h4,
+	h5, .h5,
+	h6, .h6 {
+		margin: 0 0 0.2em;
+		font-weight: 400;
+	}
+
+	h1, .h1 {
+		--min-size: 42;
+		--base-size: 72;
+		letter-spacing: -0.05em;
+		line-height: .95;
+	}
+
+	h2, .h2 {
+		--min-size: 36;
+		--base-size: 60;
+		letter-spacing: -0.05em;
+		line-height: .90;
+	}
+
+	h3, .h3 {
+		--min-size: 30;
+		--base-size: 44;
+		letter-spacing: -0.05em;
+		line-height: .90;
+	}
+
+	h4, .h4 {
+		--min-size: 26;
+		--base-size: 34;
+		letter-spacing: -0.05em;
+		line-height: .90;
+	}
+	h5, .h5 {
+		--min-size: 22;
+		--base-size: 26;
+		letter-spacing: -0.05em;
+		line-height: .90;
+	}
+	h6, .h6 {
+		--min-size: 18;
+		--base-size: 18;
+		letter-spacing: -0.05em;
+		line-height: 1.2;
+	}
+
+	p,
+	.p {
+		--min-size: 16;
+		--base-size: 16;
+		/* margin: 0 0 1em; */
+		letter-spacing: 0;
+		margin: 0;
+	}
+
+	.caption {
+		--min-size: 10;
+		--base-size: 12;
+		letter-spacing: 0;
+		margin: 0;
+	}
+	
+
+</style>

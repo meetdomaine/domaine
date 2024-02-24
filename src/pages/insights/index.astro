@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/global/Header.astro';
+import { getBlogPageContent } from '../../utils/sanityClient';
+
+const data = await getBlogPageContent();
+console.log(data.content)
+---
+
+<Layout title="Insights">
+	<Header />
+	<main>
+    <p>{data.content.heading}</p>
+    <p>{data.content.subheading}</p>
+    <p>{data.content.featuredPost.title}</p>
+    <p>{data.content.featuredPost.slug.current}</p>
+    <p>{data.content.featuredPost.excerpt}</p>
+    <p>{data.content.featuredPost.category.name}</p>
+	</main>
+</Layout>
+
+<style>
+</style>
