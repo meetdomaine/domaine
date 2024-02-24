@@ -7,7 +7,7 @@ export default function ViewportObserver(props) {
 
   const defaultSettings = {
     bidirectional: true,
-    rootMargin: "50% 0% 10% 0%",
+    rootMargin: "20% 0% 20% 0%",
     threshold: 0.7,
     delay: 0
   } 

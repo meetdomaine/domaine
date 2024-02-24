@@ -1,5 +1,15 @@
 ---
+const { content } = Astro.props;
 ---
-<section>
-  Contact
+<section class="contact">
+  <div class="section-title">
+    <h2 class="h3">{content.heading}</h2>
+    <h3 class="h6">{content.subheading}</h3>
+  </div>
 </section>
+
+<style>
+  .contact {
+    margin: var(--space-xl) var(--page-margin);
+  }
+</style>
