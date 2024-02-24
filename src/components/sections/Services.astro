@@ -45,21 +45,17 @@ const { content } = Astro.props;
 
 <script>
 
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log('dom ready')
-  })
-
   document.addEventListener('astro:page-load', () => {
     console.log('load')
     const detailBlocks = document.querySelectorAll('.detail-block');
     const serviceImages = document.querySelectorAll('.service-image');
 
     const toggleActiveImage = (index) => {
-      serviceImages.forEach((image, i) => {
+      serviceImages.forEach((element, i) => {
         if (i == index) {
-          return image.dataset.active = true;
+          return element.dataset.active = true;
         }
-        return image.dataset.active = false;
+        return element.dataset.active = false;
       })
     }
 
@@ -111,7 +107,6 @@ const { content } = Astro.props;
 
   .media {
     flex: 1 1 100%;
-    background-color: red;
     border-radius: var(--radius-sm);
     margin-bottom: var(--space-md);
     overflow: hidden;
@@ -124,10 +119,13 @@ const { content } = Astro.props;
     height: 100%;
     object-fit: cover;
     opacity: 0;
+    scale: 1.1;
+    transition: opacity var(--anim-lg), scale var(--anim-lg);
   }
 
   .service-image[data-active="true"] {
     opacity: 1;
+    scale: 1;
   }
 
   .section-details {
