@@ -1,27 +1,19 @@
-import { createEffect, createSignal, onMount } from 'solid-js'
+import { Suspense, Switch, createEffect, createSignal, onMount } from 'solid-js'
 import './Work.css'
+import { urlFor } from '../../../utils/sanityClient'
 
 export default function Work(props) {
 
-  console.log(props.content)
+  // console.log(props.content)
 
   const [ activeFilter, setActiveFilter ] = createSignal(null)
-  const [ filteredProjects, setFilteredProjects ] = createSignal(null)
 
   onMount(() => {
     if (props.content.categories) {
-      setActiveFilter(props.content.categories[0].slug)
+      setActiveFilter(props.content.categories[0].slug.current)
     }
   })
-
-  createEffect(() => {
-    if (props.content.projects) {
-      const projects = props.content.projects.reduce((project) => project.categories.includes(activeFilter()))
-      console.log(projects)
-    }
-    console.log(activeFilter())
-  })
-
+  
   return (
     <section class="work">
 
@@ -32,16 +24,59 @@ export default function Work(props) {
 
       <div class="filter-tags">
         <For each={props.content.categories}>{(category, i) =>
-          <button class="button-secondary" onClick={() => setActiveFilter(category.slug)}>{category.name}</button>
+          <button 
+            class={`button-secondary filter-tag ${category.slug.current == activeFilter() ? 'active' : 'inactive'}`}
+            onClick={() => setActiveFilter(category.slug.current)}
+          >
+            {category.name}
+          </button>
         }</For>
       </div>
 
       <div class="project-grid">
-        {/* <For each={props.content.projects}>{(project, i) => 
-          <Show when={project.categories.includes(activeFilter())}>
-            <p>{project.title}</p>
-          </Show>
-        }</For> */}
+        <Suspense>
+          <For each={props.content.projects}>{(project, i) => 
+            <Show when={project.categories.includes(activeFilter())}>
+              <div class="project-card">
+                <div class="card-media">
+                  <Switch>
+                    <Match when={project.showThumbnailVideo && project.videoURL}>
+                      <video 
+                        src={project.videoURL}
+                        class="card-video"
+                        oncanplaythrough={(e) => e.target.dataset.canPlay = true}
+                        poster={project.image ? urlFor(project.image).format("webp").width(600).height(360).auto('format').url() : ''}
+                        autoplay
+                        loop
+                        muted
+                        playsinline
+                        preload="none"
+                        onloadedmetadata="this.muted = true"
+                      />
+                    </Match>
+                    <Match when={(!project.videoURL || !project.showThumbnailVideo) && project.thumbnailImage}>
+                      <img
+                        srcset={`
+                          ${urlFor(project.thumbnailImage).format("webp").width(600).height(360).auto('format').url()} 600w, 
+                          ${urlFor(project.thumbnailImage).format("webp").width(1080).height(648).auto('format').url()} 1080w, 
+                          ${urlFor(project.thumbnailImage).format("webp").width(2160).height(1296).auto('format').url()} 2160w
+                        `}
+                        sizes="(max-width: 960px) 50vw, 25vw"
+                        src={urlFor(project.thumbnailImage).format("webp").width(600).height(360).auto('format').url()}
+                        class="card-image"
+                        width="30vw"
+                        height="20vh"
+                        loading="lazy"
+                        alt={`Case study image for our work with ${project.title}`}
+                      />
+                    </Match>
+                  </Switch>
+                </div>
+                <p>{project.title}</p>
+              </div>
+            </Show>
+          }</For>
+        </Suspense>
       </div>
     </section>
   )
