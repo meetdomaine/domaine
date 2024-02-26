@@ -22,7 +22,9 @@ export default function Forms(props) {
   onMount(() => {
     if (props.forms[0]) {
       setActiveForm(props.forms[0]);
+      createForm(activeForm().formId);
     }
+    console.log(activeForm())
   })
 
   createEffect(() => {
@@ -34,29 +36,29 @@ export default function Forms(props) {
   return (
     // <p>Forms</p>
     <>
-    <div class="section-title">
-      <Show when={props.forms && activeForm()}>
-        <div class="radio-button-group">
-          <For each={props.forms}>{(form, i) =>
-            <label 
-              class={`button button-radio ${activeForm().formId == form.formId ? 'active' : 'inactive'}`}
-              for={form.formId}
-            >
-              <input 
-                type="radio" 
-                name="form-toggle" 
-                value={form.title} 
-                id={form.formId}
-                checked={activeForm().formId == form.formId}
-                onClick={() => setActiveForm(form)}
-              />
-              {form.title}
-            </label>
-            // <button class={`button-radio ${activeForm().formId == form.formId ? 'active': 'inactive'} `}>{form.title}</button>
-          }</For>
-        </div>
-      </Show>
-    </div>
+      <div class="section-title">
+        <Show when={props.forms && props.forms.length > 1 && activeForm()}>
+          <div class="radio-button-group">
+            <For each={props.forms}>{(form, i) =>
+              <label 
+                class={`button button-radio ${activeForm().formId == form.formId ? 'active' : 'inactive'}`}
+                for={form.formId}
+              >
+                <input 
+                  type="radio" 
+                  name="form-toggle" 
+                  value={form.title} 
+                  id={form.formId}
+                  checked={activeForm().formId == form.formId}
+                  onClick={() => setActiveForm(form)}
+                />
+                {form.title}
+              </label>
+              // <button class={`button-radio ${activeForm().formId == form.formId ? 'active': 'inactive'} `}>{form.title}</button>
+            }</For>
+          </div>
+        </Show>
+      </div>
       
       <div id="form"></div>
     </>

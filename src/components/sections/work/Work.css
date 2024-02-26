@@ -1,0 +1,32 @@
+.work {
+  padding: var(--space-xl) var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.work .section-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.work .section-title .heading {
+  flex: 1 0 auto;
+}
+
+.work .section-title .subheading {
+  flex: 1 0 auto;
+  max-width: 40ch;
+}
+
+.work .filter-tags {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-xs);
+}
+
+.work .filter-tag {
+
+}

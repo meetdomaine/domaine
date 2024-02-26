@@ -7,6 +7,8 @@ interface Props {
 	data: any;
 }
 
+export const prerender = true;
+
 export async function getStaticPaths() {
 
   const events = await getEvents();
@@ -21,10 +23,10 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { data } = Astro.props;
+// console.log(data)
+
 ---
-<Layout title={data.title}>
-  <!-- <h1>{data.title}</h1>
-  <p>{data.location}</p> -->
+<Layout title={data.metaTitle}>
   {data.content.map((block) => {
     return <SectionBlock block={block} />
   })}
