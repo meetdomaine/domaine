@@ -1,15 +1,42 @@
 ---
 const { content } = Astro.props;
+import Forms from '../atoms/Forms'
+const formId = content;
 ---
 <section class="contact">
-  <div class="section-title">
-    <h2 class="h3">{content.heading}</h2>
-    <h3 class="h6">{content.subheading}</h3>
+  <div class="contact-form">
+    <div class="section-title">
+      <h2 class="h2">{content.heading}</h2>
+      <h3 class="h5">{content.subheading}</h3>
+    </div>
+
+    <Forms client:only="solid-js" forms={content.forms} />
   </div>
 </section>
+
+<script is:inline charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
 
 <style>
   .contact {
     margin: var(--space-xl) var(--page-margin);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* gap: var(--space-2xs); */
+    text-align: center;
+  }
+
+  .contact-form {
+    width: min(100%, 540px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
   }
 </style>

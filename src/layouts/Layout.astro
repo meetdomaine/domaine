@@ -57,6 +57,7 @@ const { title } = Astro.props;
 		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		box-sizing: border-box;
 	}
 	:root {
 
@@ -142,6 +143,14 @@ const { title } = Astro.props;
 
 		/* Fonts */
 		--font-family: 'SuisseIntl', Helvetica, Arial, system-ui, sans-serif;
+
+		/* Forms */
+		--form-field-background: transparent;
+		--form-field-border: var(--color-border);
+		--form-field-radius: 4px;
+		--form-field-gap-inline: var(--space-xs);
+		--form-field-gap-block: var(--space-sm);
+		--form-toggle-size: 1em;
 	}
 
 	html {
@@ -178,7 +187,8 @@ const { title } = Astro.props;
 	}
 
 	button,
-	.button {
+	.button,
+	.hs-button {
 		background: var(--color-foreground);
 		color: var(--color-background);
 		display: flex;
@@ -198,7 +208,8 @@ const { title } = Astro.props;
 	}
 
 	button:hover,
-	.button:hover {
+	.button:hover 
+	.hs-button {
 		background: var(--color-brand);
 		color: var(--color-brand-contrast);
 	}
@@ -228,6 +239,42 @@ const { title } = Astro.props;
 		border: none;
 		color: var(--color-foreground);
 	}
+
+	button.button-radio,
+	.button.button-radio {
+		background: transparent;
+		border: 1px solid var(--color-border);
+		color: var(--color-foreground);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	button.button-radio.active,
+	.button.button-radio.active {
+		background: var(--color-foreground);
+		color: var(--color-background);
+	}
+
+	.radio-button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+		margin-bottom: var(--space-sm);
+  }
+
+	.radio-button-group .button-radio {
+		border-radius: 0;
+	}
+
+	.radio-button-group .button-radio:first-child {
+    border-radius: var(--radius-rounded) 0 0 var(--radius-rounded);
+  }
+
+	.radio-button-group .button-radio:last-child {
+    border-radius: 0 var(--radius-rounded) var(--radius-rounded) 0;
+  }
 
 	h1, .h1,
 	h2, .h2,
@@ -306,6 +353,198 @@ const { title } = Astro.props;
 		letter-spacing: 0;
 		margin: 0;
 	}
+
+
+	/* Forms */
+	form {
+		display: flex;
+		flex-direction: column;
+		/* gap: var(--form-field-gap-block); */
+	}
+
+	.input {
+		margin-right: 0 !important;
+	}
+
+	input,
+	textarea {
+		border: 1px solid var(--color-border);
+		background-color: var(--form-field-background);
+		border-radius: var(--form-field-radius);
+		padding: var(--space-xs);
+		color: var(--color-foreground);
+		transition: border var(--anim-sm);
+		width: 100%;
+		max-width: 100%;
+	}
+
+	input:hover,
+	textarea:hover {
+		border-color: var(--color-foreground);
+	}
+
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--color-foreground-secondary);
+	}
+
+	input[type="radio"] {
+		-webkit-appearance: none;
+		appearance: none;
+		background-color: transparent;
+		margin: 0;
+		padding: 0;
+		font: inherit;
+		color: currentColor;
+		width: var(--form-toggle-size);
+		height: var(--form-toggle-size);
+		border: 1px solid currentColor;
+		border-radius: var(--radius-rounded);
+		position: relative;
+	}
+
+	input[type="radio"]::before {
+		--fill-size: 60%;
+		content: "";
+		width: var(--fill-size);
+		height: var(--fill-size);
+		position: absolute;
+		background-color: currentColor;
+		border-radius: var(--radius-rounded);
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
+		opacity: 0;
+		transition: opacity var(--anim-sm);
+	}
+
+	input[type="radio"]:checked::before {
+		opacity: 1;
+	}
+
+	textarea {
+		/* font-family: var(--font-family); */
+		font-family: inherit;
+	}
+
+	/* Hubspot Styling */
+
+
+
+	.form-columns-1,
+	.form-columns-2 {
+		width: 100%;
+		max-width: 100% !important;
+		/* margin-bottom: var(--form-field-gap-block); */
+	}
+
+	.form-columns-2 {
+		display: flex;
+		flex-direction: row;
+		gap: var(--form-field-gap-inline);
+	}
+
+	.form-columns-2 .field {
+		flex: 1 1 50%;
+	}
+
+	.hs-form-field {
+		margin-bottom: var(--form-field-gap-block);
+	}
+
+	.hs-input {
+		width: 100% !important;
+	}
+
+	.hs-button {
+		width: 100%;
+		text-align: center;
+		margin-top: var(--space-md);
+		justify-content: center;
+	}
+
+	.hs-error-msgs {
+		margin: var(--space-2xs) 0 0;
+		padding: 0;
+	}
+
+	.hs-error-msgs li {
+		list-style: none;
+	}
+
+	.hs-error-msg,
+	.hs-richtext p,
+	.hs-richtext a {
+		font-weight: normal;
+		font-size: 12px;
+		color: var(--color-foreground-secondary);
+	}
+
+	.hs-richtext a {
+		text-decoration: underline;
+	}
+
+	.hs-error-msg {
+		width: 100%;
+		display: block;
+		letter-spacing: -0.02em;
+		background-color: var(--color-error);
+		color: var(--color-reverse);
+		border-radius: var(--form-field-radius);
+		padding: var(--space-2xs) var(--space-xs);
+	}
+
+	/* Hubspot - Radio Input */
+	.hs-form-booleancheckbox {
+		list-style: none;
+	}
+
+	.legal-consent-container .hs-form-booleancheckbox-display input[type="checkbox"] {
+		flex: 0 0 var(--form-toggle-size);
+	}
+
+	.inputs-list {
+		padding: 0;
+		list-style: none;
+	}
+
+	.hs-form-booleancheckbox-display {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: stretch;
+		gap: var(--space-xs);
+		cursor: pointer;
+	}
+
+	.legal-consent-container .hs-form-booleancheckbox-display>span {  
+		margin-left: 0 !important;
+		flex: 1 1 100%;
+		/* line-height: 1; */
+		font-weight: normal;
+		font-size: 12px;
+	}
+
+	.legal-consent-container .hs-form-booleancheckbox-display > span > p,
+	.legal-consent-container .hs-form-booleancheckbox-display > span > p > a,
+	.legal-consent-container .hs-form-booleancheckbox-display > span span {
+		margin-block: 0 !important;
+		padding-block: 0 !important;
+		display: inline;
+		letter-spacing: 0.01em;
+		line-height: 1;
+		font-weight: normal;
+		font-size: 12px;
+	}
+
+	.legal-consent-container .hs-error-msgs label {
+		color: var(--color-foreground) !important;
+	}
+
+	.hs-form-booleancheckbox::marker {
+		content: none;
+	}
+
 	
 
 </style>
