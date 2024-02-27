@@ -1,5 +1,85 @@
 ---
+import { urlFor } from "../../../utils/sanityClient";
+const { content } = Astro.props;
+console.log(content)
 ---
-<section>
-  Agencies
+<section class="agencies">
+  <div class="section-title">
+    <h2 class="heading">{content.heading}</h2>
+  </div>
+  <div class="text-blocks">
+    {content.agencies.map((agency, i) => {
+      return (
+        <div class="text-block">
+
+          <a href={agency.linkURL} target="_blank">
+            <img 
+              class="block-image"
+              width="400" 
+              height="80" 
+              src={urlFor(agency.logo).auto('format').width(600).url()} 
+              alt={`Agency logo for ${agency.name}`} 
+            />
+          </a>
+          <p>{agency.description}</p>
+          <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a>
+        </div>
+      )
+    })}
+  </div>
 </section>
+
+<style>
+  .agencies {
+    padding: var(--space-xl) var(--page-margin);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-2xl);
+  }
+
+  .section-title {
+    flex: 1 0 auto;
+  }
+
+  .text-blocks {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-md);
+  }
+
+  .text-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .block-image {
+    width: 50%;
+    height: auto;
+  }
+
+  @media screen and (max-width: 960px) {
+    
+    .agencies {
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .text-blocks {
+      flex-wrap: wrap;
+      gap: var(--space-2xl);
+    }
+
+    .text-block {
+      flex: 1 0 25%;
+      margin: 0;
+      min-width: 300px;
+    }
+
+    .block-image {
+      max-width: 140px;
+    }
+  }
+
+</style>

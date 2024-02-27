@@ -2,8 +2,6 @@
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 
-console.log(content.logos)
-
 let inlineLogoURL;
 if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format').width(800).url();
 ---
