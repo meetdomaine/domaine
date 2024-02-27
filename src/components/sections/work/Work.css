@@ -1,6 +1,5 @@
 .work {
-  padding: var(--space-xl) 0;
-  /* margin: 0 var(--page-margin); */
+  padding: var(--space-2xl) 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;

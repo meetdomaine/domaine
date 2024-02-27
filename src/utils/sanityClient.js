@@ -8,25 +8,6 @@ export const client = createClient({
   apiVersion: '2023-12-12', // use current date (YYYY-MM-DD) to target the latest API version
 })
 
-// export const blocksToText = (blocks, el) => {
-
-//   blocks.map(block => {
-//       block.children.map(child => {
-//           if (child.marks.length <= 0) {
-//               const textNode = document.createTextNode(child.text)
-//               el.appendChild(textNode)
-//           }
-//           if (child.marks[0] == "em") {
-//               const emphasisElement = document.createElement("em")
-//               const textNode = document.createTextNode(child.text)
-//               emphasisElement.appendChild(textNode)
-//               el.appendChild(emphasisElement)
-//           }
-//       })
-//   })
-// }
-
-
 const builder = imageUrlBuilder(client)
 
 export function urlFor(source) {

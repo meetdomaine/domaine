@@ -72,7 +72,7 @@ export default function Work(props) {
                     </Match>
                   </Switch>
                 </div>
-                <p>{project.title}</p>
+                <h4 class="h6">{project.title}</h4>
               </div>
             </Show>
           }</For>

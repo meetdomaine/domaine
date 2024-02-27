@@ -1,0 +1,22 @@
+.contact {
+  margin: var(--space-2xl) var(--page-margin);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact .section-title {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* gap: var(--space-2xs); */
+  text-align: center;
+}
+
+.contact .contact-form {
+  width: min(100%, 540px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-sm);
+}

@@ -1,0 +1,141 @@
+---
+import { urlFor } from "../../../utils/sanityClient";
+const { content } = Astro.props;
+
+console.log(content.logos)
+
+let inlineLogoURL;
+if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format').width(800).url();
+---
+<section class="partners">
+  <div class="section-header">
+    <div class="section-title">
+      <h2 class="h2 heading" id="heading" data-inline-logo={inlineLogoURL}>{content.heading}</h2>
+      <h3 class="h5 subheading">{content.subheading}</h3>
+    </div>
+    <div class="featured-logos">
+      {content.logos.map((logo, i) => {
+        if (logo.featured) {
+          return (
+            <img
+              class="featured-logo"
+              src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
+              alt={`Partner logo for ${logo.name}`} 
+              loading='lazy'
+            />
+          )
+        }
+      })}
+    </div>
+  </div>
+
+  <div class="logo-grid">
+    {content.logos.map((logo, i) => {
+      if (!logo.featured) {
+        return (
+          <img
+            class="logo"
+            src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
+            alt={`Partner logo for ${logo.name}`} 
+            loading='lazy'
+          />
+        )
+      }
+    })}
+  </div>
+</section>
+
+<script>
+  const heading = document.querySelector("#heading");
+  if (heading instanceof HTMLElement && heading.dataset.inlineLogo) {
+
+    const splitString = heading.innerText.split('$');
+    if (splitString.length > 1) {
+
+      heading.innerText = ""
+      splitString.forEach((string, i) => {
+        const node = document.createElement('span')
+        node.textContent = string
+        heading.appendChild(node)
+
+        if (i == 0) {
+          const image = document.createElement('img')
+          image.classList.add("inline-logo")
+          image.src = heading.dataset.inlineLogo
+          image.alt = "Inline partner logo"
+          image.loading = "lazy" 
+          image.style.height = "1em"
+          image.style.verticalAlign = "middle"
+          heading.appendChild(image)
+        }
+      })
+    }
+  }
+</script>
+
+<style>
+  .partners {
+    padding: var(--space-2xl) var(--page-margin);
+  }
+
+  .subheading {
+    color: var(--color-foreground-secondary);
+  }
+
+  .section-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-xl);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 100%;
+    max-width: 120ch;
+    /* flex: 0 1 min(100%, 120ch); */
+  }
+
+  .featured-logos {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    gap: var(--space-md);
+  }
+
+  .featured-logo {
+    flex-shrink: 1;
+    min-width: 0;
+    width: 100%;
+    /* flex:  */
+  }
+
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+  }
+
+  .logo {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 960px) {
+    .section-header {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xl);
+      padding-bottom: var(--space-xl);
+    }
+
+    .logo-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+
+
+</style>

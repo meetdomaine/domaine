@@ -1,11 +1,11 @@
 ---
-import Hero from './Hero.astro';
-import Clients from './Clients.astro';
-import About from './About.astro';
-import Services from './Services.astro';
-import Agencies from './Agencies.astro';
-import Partners from './Partners.astro';
-import Contact from './Contact.astro';
+import Hero from './hero/Hero.astro';
+import Clients from './clients/Clients.astro';
+import About from './about/About.astro';
+import Services from './services/Services.astro';
+import Agencies from './agencies/Agencies.astro';
+import Partners from './partners/Partners.astro';
+import Contact from './contact/Contact';
 import Work from './work/Work';
 
 
@@ -16,11 +16,11 @@ const { block } = Astro.props;
 
 ---
 
-{block._type == 'sectionHero' ? <Hero content={block} /> : null}
+<!-- {block._type == 'sectionHero' ? <Hero content={block} /> : null}
 {block._type == 'sectionClients' ? <Clients content={block} /> : null}
 {block._type == 'sectionAbout' ? <About content={block} /> : null}
 {block._type == 'sectionServices' ? <Services content={block} /> : null}
-{block._type == 'sectionContact' ? <Contact content={block} /> : null}
-{block._type == 'sectionWork' ? <Work client:idle content={block} /> : null}
+{block._type == 'sectionContact' ? <Contact client:only="solid-js" content={block} /> : null}
+{block._type == 'sectionWork' ? <Work client:idle content={block} /> : null} -->
 {block._type == 'sectionPartners' ? <Partners content={block} /> : null}
 {block._type == 'sectionAgencies' ? <Agencies content={block} /> : null}
