@@ -2,8 +2,8 @@
 import { ViewTransitions } from 'astro:transitions';
 import Header from '../components/global/Header.astro';
 import Footer from '../components/sections/footer/Footer.astro'
+import { getSEOSettings, urlFor } from '../utils/sanityClient';
 // import LenisScroll from '../components/global/LenisScroll.astro'
-
 
 interface Props {
 	title: string;
@@ -11,10 +11,7 @@ interface Props {
 	image?: string;
 }
 
-const defaultMetaTitle = "E-Commerce Design & Development Partner";
-const defaultMetaDescription = "Meet Domaine, the world's largest independent Shopify design & development partner, formed by the union of Half Helix and Tomorrow.";
-const defaultMetaImage = "/OG_Image.png";
-
+const data = await getSEOSettings();
 const { title, description, image } = Astro.props;
 ---
 
@@ -29,24 +26,24 @@ const { title, description, image } = Astro.props;
 
 		<!-- HTML Meta Tags -->
 		<!-- <title>Domaine</title> -->
-		<meta name="description" content={ description ? description : defaultMetaDescription }>
+		<meta name="description" content={ description ? description : data[0].siteDescription }>
 
 		<!-- Facebook Meta Tags -->
 		<meta property="og:url" content="https://meetdomaine.com/">
 		<meta property="og:type" content="website">
-		<meta property="og:title" content={`${title ? title : defaultMetaTitle} | Domaine`}>
-		<meta property="og:description" content={ description ? description : defaultMetaDescription }>
-		<meta property="og:image" content={ image ? image : defaultMetaImage }>
+		<meta property="og:title" content={`${title} | ${data[0].siteTitle}`}>
+		<meta property="og:description" content={ description ? description : data[0].siteDescription }>
+		<meta property="og:image" content={ image ? image : urlFor(data[0].siteImage).url() }>
 
 		<!-- Twitter Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image">
 		<meta property="twitter:domain" content="meetdomaine.com">
 		<meta property="twitter:url" content="https://meetdomaine.com/">
-		<meta name="twitter:title" content={`${title ? title : defaultMetaTitle} | Domaine`}>
-		<meta name="twitter:description" content={description ? description : defaultMetaDescription}>
-		<meta name="twitter:image" content={image ? image : defaultMetaImage}>
+		<meta name="twitter:title" content={`${title} | ${data[0].siteTitle}`}>
+		<meta name="twitter:description" content={description ? description : data[0].siteDescription}>
+		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
-		<title>{title} | Domaine</title>
+		<title>{title} | {data[0].siteTitle}</title>
 		<ViewTransitions />
 	</head>
 	<body>

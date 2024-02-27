@@ -14,6 +14,11 @@ export function urlFor(source) {
   return builder.image(source)
 }
 
+export async function getSEOSettings() {
+  const content = await client.fetch(`*[_type == "seoSettings"]`)
+  return content
+}
+
 const sectionBlocks = (`
   _type == "sectionHero" => {
     _type, eyebrow, heading, subheading, textAlignment, image, imageAlt, "videoURL": video.asset -> url, "imageURL": image.asset -> url, badgeText, buttonText, buttonURL, jumplink

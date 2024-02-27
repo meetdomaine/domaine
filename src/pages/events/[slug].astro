@@ -23,11 +23,11 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { data } = Astro.props;
-console.log(data)
+// console.log(data)
 
 ---
 <Layout 
-  title={data.metaTitle} 
+  title={data.metaTitle ? data.metaTitle : data.title} 
   description={data.metaDescription}
   image={urlFor(data.metaImage).url()}
 >
