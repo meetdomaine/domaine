@@ -26,7 +26,7 @@ const { data } = Astro.props;
 // console.log(data)
 
 ---
-<Layout title={data.metaTitle}>
+<Layout title={data.metaTitle} description={data.metaDescription}>
   {data.content.map((block) => {
     return <SectionBlock block={block} />
   })}

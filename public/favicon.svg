@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
   <g clip-path="url(#a)">
-    <path fill="color(display-p3 .1098 .1098 .1098)" d="M32 0h32v32H32V0ZM0 32h32v32H0V32Z"/>
+    <path fill="#000" d="M0 0h42.667v21.333H0V0Zm0 42.667h42.667V64H0V42.667Zm42.667-21.334H64v21.334H42.667V21.333Z"/>
   </g>
   <defs>
     <clipPath id="a">
@@ -12,5 +12,5 @@
     @media (prefers-color-scheme: dark) {
         path { fill: #FFF; }
     }
-    </style>
+  </style>
 </svg>
