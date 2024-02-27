@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getEvents } from '../../utils/sanityClient';
+import { getEvents, urlFor } from '../../utils/sanityClient';
 import SectionBlock from '../../components/sections/SectionBlock.astro';
 
 interface Props {
@@ -23,10 +23,14 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { data } = Astro.props;
-// console.log(data)
+console.log(data)
 
 ---
-<Layout title={data.metaTitle} description={data.metaDescription}>
+<Layout 
+  title={data.metaTitle} 
+  description={data.metaDescription}
+  image={urlFor(data.metaImage).url()}
+>
   {data.content.map((block) => {
     return <SectionBlock block={block} />
   })}
