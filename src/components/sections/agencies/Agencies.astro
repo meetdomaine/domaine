@@ -1,7 +1,6 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
-console.log(content)
 ---
 <section class="agencies">
   <div class="section-title">
@@ -31,7 +30,7 @@ console.log(content)
 
 <style>
   .agencies {
-    padding: var(--space-xl) var(--page-margin);
+    padding: var(--space-3xl) var(--page-margin);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -46,16 +45,20 @@ console.log(content)
     display: flex;
     flex-direction: row;
     gap: var(--space-md);
+    justify-content: flex-end;
+    flex: 0 1 50%;
   }
 
   .text-block {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-md);
+    max-width: 80ch;
   }
 
   .block-image {
-    width: 50%;
+    width: 80%;
     height: auto;
   }
 
@@ -69,6 +72,7 @@ console.log(content)
     .text-blocks {
       flex-wrap: wrap;
       gap: var(--space-2xl);
+      justify-content: flex-start;
     }
 
     .text-block {
@@ -78,7 +82,7 @@ console.log(content)
     }
 
     .block-image {
-      max-width: 140px;
+      /* max-height: 80px; */
     }
   }
 

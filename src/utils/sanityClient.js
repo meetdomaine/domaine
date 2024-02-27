@@ -46,10 +46,10 @@ export async function getHeaderContent() {
   return content
 }
 
-// export async function getFooterContent() {
-//   const content = await client.fetch(`*[_type == "sectionFooter"]`)
-//   return content
-// }
+export async function getFooterContent() {
+  const content = await client.fetch(`*[_type == "sectionFooter"]`)
+  return content
+}
 
 export async function getHomePageContent() {
   const content = await client.fetch(`*[_type == "pageHome"]{ 

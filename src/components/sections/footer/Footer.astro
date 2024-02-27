@@ -1,5 +1,43 @@
 ---
+import { getFooterContent } from "../../../utils/sanityClient"
+const data = await getFooterContent();
+console.log(data)
 ---
-<footer>
-  Footer
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="copyright caption">{data[0].copyright}</p>
+    <div class="footer-links">
+      {data[0].links.map((link, i) => {
+        return (
+          <a class="footer-link caption" href={link.linkURL} target="_blank">{link.linkText}</a>
+        )
+      })}
+    </div>
+  </div>
 </footer>
+
+<style>
+  .footer {
+    padding: 0 var(--page-margin);
+  }
+
+  .footer-inner {
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-md) 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .copyright {
+    color: var(--color-foreground-secondary);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+</style>

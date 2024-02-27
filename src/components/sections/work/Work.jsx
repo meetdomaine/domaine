@@ -34,7 +34,7 @@ export default function Work(props) {
       </div>
 
       <div class="project-grid">
-        <Suspense>
+        {/* <Suspense> */}
           <For each={props.content.projects}>{(project, i) => 
             <Show when={project.categories.includes(activeFilter())}>
               <div class="project-card">
@@ -76,7 +76,7 @@ export default function Work(props) {
               </div>
             </Show>
           }</For>
-        </Suspense>
+        {/* </Suspense> */}
       </div>
     </section>
   )
