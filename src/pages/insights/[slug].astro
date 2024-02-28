@@ -1,17 +1,48 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import BlogIndexHero from '../../components/sections/blog/blogIndexHero/BlogIndexHero.astro'
-import { getBlogPageContent } from '../../utils/sanityClient';
+import BlogPostHero from '../../components/sections/blog/blogPost/BlogPostHero.astro';
+import BlogPostSidebar from '../../components/sections/blog/blogPost/BlogPostSidebar.astro';
+import BlogPostBody from '../../components/sections/blog/blogPost/BlogPostBody.astro';
+import { getBlogPosts, urlFor } from '../../utils/sanityClient';
 
-const data = await getBlogPageContent();
-console.log(data.content)
+
+interface Props {
+	data: any;
+}
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+
+  const posts = await getBlogPosts();
+
+  return posts.map((post) => {
+    return {
+      params: { slug: post.slug.current },
+      props: { data: post }
+    }
+  })
+}
+
+const { slug } = Astro.params;
+const { data } = Astro.props;
+console.log(data)
 ---
 
 <Layout 
     title="Insights"
     theme="light"
 >
-    BLOG
+    <BlogPostHero
+      title={data.title}
+      excerpt={data.excerpt}
+      image={data.mainImage}
+      category={data.category}
+      authors={data.authors}
+      date={data.publishedAt}
+    />
+    <BlogPostBody />
+    <BlogPostSidebar />
 
 </Layout>
 

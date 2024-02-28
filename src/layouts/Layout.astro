@@ -107,13 +107,6 @@ const { title, description, image, theme } = Astro.props;
 		--color-border-ink: rgba(0, 0, 0, 0.2);
 		--color-border-reverse: rgba(255, 255, 255, 0.2);
 
-		/* --color-foreground: var(--color-ink);
-		--color-foreground-secondary: var(--color-subdued);
-		--color-background: var(--color-reverse);
-		--color-background-secondary: var(--color-light);
-		--color-border: var(--color-border-ink);
-		--gradient-primary: var(--gradient-reverse); */
-
 		--color-foreground: var(--color-reverse);
 		--color-foreground-secondary: var(--color-light);
 		--color-background: var(--color-ink);
@@ -290,6 +283,29 @@ const { title, description, image, theme } = Astro.props;
 	.button.button-radio.active {
 		background: var(--color-foreground);
 		color: var(--color-background);
+	}
+
+	.text-link {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--space-2xs);
+		transition: color var(--anim-sm);
+		color: var(--color-foreground);
+		padding-block: var(--space-xs);
+	}
+
+	.text-link:hover {
+		color: var(--color-foreground-secondary);
+	}
+
+	.text-link svg {
+		translate: 0 0;
+		transition: translate var(--anim-sm);
+	}
+
+	.text-link:hover svg {
+		translate: -5px 0;
 	}
 
 	.radio-button-group {

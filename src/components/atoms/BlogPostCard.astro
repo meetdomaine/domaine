@@ -6,10 +6,16 @@ const { content } = Astro.props;
 console.log(content)
 ---
 <article class="blog-post-card">
-  <a class="media" href={`/insights/${content.slug.current}`}>
+  <a class="media" href={`/insights/${content.slug.current}`} >
     <img
       class="image"
-      src={urlFor(content.mainImage).url()}
+      sizes="(max-width: 768px) 50vw, (max-width: 960px) 35vw, 25vw"
+      srcset={`
+        ${urlFor(content.mainImage).width(600).height(600).auto('format').url()} 600w,
+        ${urlFor(content.mainImage).width(1150).height(1150).auto('format').url()} 1150w,
+        ${urlFor(content.mainImage).width(1440).height(1440).auto('format').url()} 1440w,
+      `}
+      src={urlFor(content.mainImage).width(600).height(600).auto('format').url()}
     />
   </a>
   <div class="content">

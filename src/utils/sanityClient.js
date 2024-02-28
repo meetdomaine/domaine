@@ -96,7 +96,7 @@ export async function getBlogPageContent() {
 export async function getBlogPosts() {
   const postContent = await client.fetch(`
     *[_type == 'contentBlog']{
-      title, slug, excerpt, mainImage, "authors": authors[]->{ name, title, image }, "categories": categories[]->{ name, slug }, publishedAt, content[]
+      title, slug, excerpt, mainImage, "authors": authors[]->{ name, title, image }, "category": category->{ name, slug }, "categories": categories[]->{ name, slug }, publishedAt, content[]
     }
   `)
   return postContent

@@ -13,6 +13,12 @@ const { glyph, size = "auto" } = Astro.props;
   </svg>
 ): null}
 
+{ glyph === "arrow-back" ? (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 16" class={`icon-${size}`}>
+    <path stroke="currentColor" d="m6.556 3.111-4.889 4.89m0 0 4.889 4.888M1.667 8h14.667"/>
+  </svg>
+): null}
+
 { glyph === "star" ? (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" class={`icon-${size}`}>
       <path stroke="currentColor" stroke-width="2" d="M12.24.233v24m12-12h-24m20.485-8.485L3.754 20.718m16.97 0L3.755 3.749"/>

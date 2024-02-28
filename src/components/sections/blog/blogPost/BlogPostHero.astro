@@ -1,0 +1,155 @@
+---
+import { urlFor } from "../../../../utils/sanityClient";
+import { formatDate } from "../../../../utils/formatDate";
+import CategoryTag from "../../../atoms/CategoryTag.astro";
+import Icon from "../../../atoms/Icon.astro";
+
+const { title, excerpt, image, category, authors, date } = Astro.props;
+// console.log(category)
+---
+<section class="blog-post-hero">
+  <div class="text">
+    <div class="section-title">
+      <a class="text-link" href="/insights/">
+        <Icon glyph="arrow-back" size="large" />All Posts
+      </a>
+      <h1 class="title">{title}</h1>
+      {category && <CategoryTag category={category} />}
+    </div>
+    <div class="excerpt">
+      <p class="date">{formatDate(date)}</p>
+      <h2 class="h5">{excerpt}</h2>
+      <div class="authors">
+        {authors.map((author, i) => {
+          return (
+            <div class="author-card">
+              <img
+                class="author-image"
+                src={urlFor(author.image).url()}
+              />
+              <div class="author-text">
+                <h3 class="h6 author-name">{author.name}</h3>
+                <p class="author-name">{author.title}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+    
+  </div>
+  <div class="media">
+    {image && 
+      <img 
+        class="image"
+        sizes="(max-width: 768px) 100vw, 50vw"
+        srcset={`
+          ${urlFor(image).width(800).height(800).url()} 800w,
+          ${urlFor(image).width(1200).height(1200).url()} 1200w,
+          ${urlFor(image).width(2304).height(2304).url()} 2304w,
+        `}
+        src={urlFor(image).url()}
+        // transition:name="blog-image"
+      />
+    }
+  </div>
+
+</section>
+
+<style>
+  .blog-post-hero {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    padding: var(--header-height) 0 var(--space-lg);
+    margin: 0 var(--page-margin);
+    gap: var(--space-xl);
+  }
+
+  .text,
+  .media {
+    flex: 1 1 50%;
+  }
+
+  .media {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .excerpt {
+    padding-left: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .date {
+    color: var(--color-foreground-secondary);
+  }
+
+  .authors {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--space-lg);
+  }
+
+  .author-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .author-image {
+    max-width: max(60px, 5vw);
+    border-radius: var(--radius-rounded);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+
+  .author-name,
+  .author-title {
+    margin: 0;
+  }
+
+  .author-title {
+    color: var(--color-foreground-secondary);
+  }
+
+  @media screen and (max-width: 960px) {
+    .blog-post-hero {
+      flex-direction: column;
+    }
+
+    .excerpt {
+      padding: 0;
+    }
+
+    .text,
+    .media {
+      flex: 0 0 auto;
+    }
+  }
+</style>
