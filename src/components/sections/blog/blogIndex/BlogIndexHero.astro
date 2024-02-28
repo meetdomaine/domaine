@@ -1,0 +1,121 @@
+---
+import { urlFor } from "../../../../utils/sanityClient";
+import CategoryTag from '../../../atoms/CategoryTag.astro';
+
+const content = Astro.props;
+// console.log(content)
+
+---
+<section class="blog-index-hero">
+  <div class="media">
+    <img
+      class="post-image"
+      sizes="(max-width: 768px) 100vw, 50vw"
+      srcset={`
+        ${urlFor(content.post.mainImage).width(1200).height(1200).url()} 1200w,
+        ${urlFor(content.post.mainImage).width(2304).height(2304).url()} 2304w,
+        ${urlFor(content.post.mainImage).width(4320).height(4320).url()} 4320w,
+      `}
+      src={urlFor(content.post.mainImage).url()}
+    />
+  </div>
+
+  <div class="text">
+    <div class="section-title">
+      <h1 class="h5 heading">{content.heading}</h1>
+      <h2 class="caption subheading">{content.subheading}</h2>
+    </div>
+    <div class="post-content">
+      <div class="post-title">
+        <h3 class="h1">{content.post.title}</h3>
+        <CategoryTag category={content.post.category} />
+      </div>
+      <div class="post-details">
+        <h4 class="h6">{content.post.excerpt}</h4>
+        <a class="button" href={`/insights/${content.post.slug.current}`}>Read More</a>
+      </div>
+    </div>
+  </div>
+  
+  
+</section>
+
+<style>
+  .blog-index-hero {
+    padding: var(--header-height) var(--page-margin) var(--space-xl);
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: var(--space-xl);
+  }
+
+  .media,
+  .text {
+    flex: 1 1 50%;
+  }
+
+  .media {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: var(--space-sm);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0  0 var(--space-xs);
+    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .post-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .post-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+
+  .post-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  @media screen and (max-width:768px) {
+    .blog-index-hero {
+      flex-direction: column-reverse;
+    }
+
+    .media,
+    .text {
+      flex: 0 0 auto;
+    }
+  }
+
+</style>

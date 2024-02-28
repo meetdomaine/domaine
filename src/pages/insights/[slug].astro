@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogIndexHero from '../../components/sections/blog/blogIndexHero/BlogIndexHero.astro'
+import { getBlogPageContent } from '../../utils/sanityClient';
+
+const data = await getBlogPageContent();
+console.log(data.content)
+---
+
+<Layout 
+    title="Insights"
+    theme="light"
+>
+    BLOG
+
+</Layout>
+
+<style>
+</style>

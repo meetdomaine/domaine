@@ -1,0 +1,23 @@
+---
+const { content } = Astro.props;
+// console.log(content)
+---
+<aside class="blog-index-sidebar">
+  {content.map((category, i) => {
+    return (
+      <a href={`${category.slug.current}`}>{category.name}</a>
+    )
+  })}
+</aside>
+
+<style>
+  .blog-index-sidebar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    position: sticky;
+    top: var(--header-height);
+  }
+</style>

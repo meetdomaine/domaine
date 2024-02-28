@@ -1,0 +1,31 @@
+---
+import BlogPostCard from '../../../atoms/BlogPostCard.astro';
+const { content } = Astro.props;
+console.log(content)
+---
+<section class="blog-index-feed">
+  {content.map((post, i) => {
+    return (
+      <BlogPostCard
+        content={post} 
+      />    
+    )
+  })}
+</section>
+
+<style>
+  .blog-index-feed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    padding-bottom: var(--space-2xl);
+  }
+
+  @media screen and (max-width: 960px) {
+
+    .blog-index-feed {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+  }
+</style>

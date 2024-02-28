@@ -1,0 +1,56 @@
+---
+import { urlFor } from "../../utils/sanityClient";
+import CategoryTag from "./CategoryTag.astro";
+
+const { content } = Astro.props;
+console.log(content)
+---
+<article class="blog-post-card">
+  <a class="media" href={`/insights/${content.slug.current}`}>
+    <img
+      class="image"
+      src={urlFor(content.mainImage).url()}
+    />
+  </a>
+  <div class="content">
+    <a href={`/insights/${content.slug.current}`}>
+      <h5 class="h6">{content.title}</h5>
+    </a>
+    <CategoryTag category={content.category} />
+  </div>
+
+</article>
+
+<style>
+  .blog-post-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+  }
+
+  .media {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    scale: 1;
+    transition: scale var(--anim-sm);
+  }
+
+  .media:hover .image {
+    scale: 1.1;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+</style>

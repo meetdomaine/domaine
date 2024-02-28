@@ -9,14 +9,15 @@ interface Props {
 	title: string;
 	description?: string;
 	image?: string;
+	theme?: string;
 }
 
 const data = await getSEOSettings();
-const { title, description, image } = Astro.props;
+const { title, description, image, theme } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={theme}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -180,6 +181,17 @@ const { title, description, image } = Astro.props;
 		background: var(--color-background);
 		color: var(--color-foreground);
 		font-size: 16px;
+	}
+
+	html[data-theme="light"] {
+		--color-foreground: var(--color-ink);
+		--color-foreground-secondary: var(--color-subdued);
+		--color-background: var(--color-reverse);
+		--color-background-secondary: var(--color-light);
+		--color-border: var(--color-border-ink);
+		--gradient-primary: var(--gradient-reverse);
+		--color-link: var(--color-ink);
+		--color-link-secondary: var(--color-subdued);
 	}
 
 	body {

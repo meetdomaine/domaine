@@ -1,0 +1,20 @@
+---
+const { category } = Astro.props;
+---
+<a class="category-tag button caption" href={`insights/${category.slug.current}`}>{category.name}</a>
+
+<style>
+  .category-tag {
+    background: transparent;
+    color: var(--color-foreground);
+    border: 1px solid var(--color-border);
+    /* padding: var(--space-3xs) var(--space-xl); */
+    padding-inline: var(--space-xs);
+    padding-block: var(--space-2xs);
+  }
+
+  .category-tag:hover {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+</style>
