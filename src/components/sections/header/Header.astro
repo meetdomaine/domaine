@@ -11,13 +11,15 @@ const data = await getHeaderContent();
       <Icon glyph="logo" />
     </a>
     <nav class="navigation-links">
-      <a class="navigation-link" href="/insights">Insights</a>
-      <a class="navigation-link" href="/styleguide">Styleguide</a>
-      <a class="navigation-link" href="/events/shoptalk-2024">Shoptalk</a>
+      {data[0].links.map((link, i) => {
+        return (
+          <a class="navigation-link" href={link.linkURL}>{link.linkText}</a>
+        )
+      })}
     </nav>
   </span>
-  <a class="button contact-button">
-    Get in Touch
+  <a class="button contact-button" href={data[0].buttonURL}>
+    {data[0].buttonText}
     <Icon glyph="arrow" size="large" />
   </a>
 </header>
@@ -80,7 +82,15 @@ const data = await getHeaderContent();
   }
 
   .navigation-link {
-		padding: var(--space-xs) var(--space-md);
+		padding: var(--space-xs) var(--space-sm);
+  }
+
+  .navigation-link:first-child {
+    padding-left: var(--space-lg);
+  }
+
+  .navigation-link:last-child {
+    padding-right: var(--space-lg);
   }
 
   @media screen and (max-width:678px) {

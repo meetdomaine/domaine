@@ -19,6 +19,11 @@ export async function getSEOSettings() {
   return content
 }
 
+export async function getHeaderContent() {
+  const content = await client.fetch(`*[_type == "sectionHeader"]`)
+  return content
+}
+
 const sectionBlocks = (`
   _type == "sectionHero" => {
     _type, eyebrow, heading, subheading, textAlignment, image, imageAlt, "videoURL": video.asset -> url, "imageURL": image.asset -> url, badgeText, buttonText, buttonURL, jumplink
@@ -45,11 +50,6 @@ const sectionBlocks = (`
     _type, heading, agencies[]
   }
 `)
-
-export async function getHeaderContent() {
-  const content = await client.fetch(`*[_type == "sectionHeader"]`)
-  return content
-}
 
 export async function getFooterContent() {
   const content = await client.fetch(`*[_type == "sectionFooter"]`)
