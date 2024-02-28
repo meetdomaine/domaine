@@ -475,6 +475,14 @@ const { title, description, image } = Astro.props;
 		margin-bottom: var(--form-field-gap-block);
 	}
 
+	.hs-fieldtype-text,
+	.hs-fieldtype-date {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--space-2xs);
+	}
+
 	.hs-input {
 		width: 100% !important;
 	}
@@ -518,8 +526,39 @@ const { title, description, image } = Astro.props;
 	}
 
 	/* Hubspot - Radio Input */
+	.inputs-list {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-xs);
+	}
+
 	.hs-form-booleancheckbox {
 		list-style: none;
+	}
+
+	.hs-form-radio {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+	}
+
+	.hs-fieldtype-radio {
+		padding-top: var(--space-sm);
+	}
+
+	.hs-form-radio-display {
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		gap: var(--space-2xs);
+	}
+
+	.hs-input[type="radio"] {
+		width: var(--form-toggle-size) !important;
+		height: var(--form-toggle-size) !important;
 	}
 
 	.legal-consent-container .hs-form-booleancheckbox-display input[type="checkbox"] {
