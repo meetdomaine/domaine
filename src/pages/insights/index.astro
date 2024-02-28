@@ -33,13 +33,26 @@ const data = await getBlogPageContent();
 
 </Layout>
 
+<script>
+    
+    document.addEventListener("astro:page-load", () => {
+        const searchParams = new URLSearchParams(window.location.search);
+
+        if (searchParams.has('category')) {
+            console.log(searchParams.get('category'))
+        }
+    })
+    
+    
+</script>
+
 <style>
     .blog-index-main {
         display: flex;
         flex-direction: row;
         justify-content: stretch;
         align-items: flex-start;
-        padding: 0 var(--page-margin);
+        padding: var(--space-2xl) 0;
         gap: var(--space-xl);
     }
 
@@ -48,6 +61,5 @@ const data = await getBlogPageContent();
         .blog-index-main {
             flex-direction: column;
         }
-
     }
 </style>

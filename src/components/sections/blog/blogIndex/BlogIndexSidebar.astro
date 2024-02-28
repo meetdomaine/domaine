@@ -5,7 +5,7 @@ const { content } = Astro.props;
 <aside class="blog-index-sidebar">
   {content.map((category, i) => {
     return (
-      <a href={`${category.slug.current}`}>{category.name}</a>
+      <a class="sidebar-link" href={`/insights?category=${category.slug.current}`}>{category.name}</a>
     )
   })}
 </aside>
@@ -19,5 +19,18 @@ const { content } = Astro.props;
     gap: var(--space-sm);
     position: sticky;
     top: var(--header-height);
+    padding: 0 var(--page-margin) var(--space-md);
+  }
+
+  .sidebar-link {
+    flex: 0 0 auto;
+  }
+
+  @media screen and (max-width: 768px) {
+    .blog-index-sidebar {
+      position: static;
+      flex-direction: row;
+      overflow-x: auto;
+    }
   }
 </style>
