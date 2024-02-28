@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/global/Header.astro';
 import { getBlogPageContent } from '../../utils/sanityClient';
 
 const data = await getBlogPageContent();
@@ -8,7 +7,6 @@ console.log(data.content)
 ---
 
 <Layout title="Insights">
-	<Header />
 	<main>
     <p>{data.content.heading}</p>
     <p>{data.content.subheading}</p>
