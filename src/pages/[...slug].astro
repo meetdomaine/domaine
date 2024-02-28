@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SectionBlock from '../components/sections/SectionBlock.astro';
 
-import { getPages } from '../utils/sanityClient';
+import { getPages, urlFor } from '../utils/sanityClient';
 
 
 interface Props {
@@ -29,7 +29,11 @@ const { data } = Astro.props;
 console.log(data)
 
 ---
-<Layout title={data.metaTitle ? data.metaTitle : data.title}>
+<Layout 
+  title={data.metaTitle ? data.metaTitle : data.title}
+  description={data.metaDescription ? data.metaDescription : null}
+  image={data.metaImage ? urlFor(data.metaImage).url() : undefined}
+>
 	<main>
 		{data.content.map((contentBlock) => (
 			<SectionBlock block={contentBlock} />
