@@ -5,8 +5,7 @@ import Icon from '../../atoms/Icon.astro';
 const data = await getHeaderContent();
 // console.log(data)
 ---
-<header>
-  <!-- {Logo()} -->
+<header class="header" data-animate="true">
   <span class="navigation">
     <a class="logo" href="/">
       <Icon glyph="logo" />
@@ -26,9 +25,18 @@ const data = await getHeaderContent();
   </a>
 </header>
 
+<script>
+  const header = document.querySelector('.header')
+  document.addEventListener("DOMContentLoaded", () => {
+    if (header instanceof HTMLElement ) {
+      header.dataset.animate = "false";
+    }
+  })
+</script>
+
 <style>
 
-  header {
+  .header {
     padding: var(--space-md) var(--page-margin);
     display: flex;
     flex-direction: row;
@@ -39,7 +47,13 @@ const data = await getHeaderContent();
     left: 0;
     right: 0;
     z-index: 999;
+    translate: 0 0;
+    transition: translate var(--anim-md);
     /* height: var(--header-height); */
+  }
+
+  .header[data-animate="true"] {
+    translate: 0 -100%;
   }
 
   .navigation {
