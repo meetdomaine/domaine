@@ -15,7 +15,7 @@ for (let j = 0; j < 2; j++) {
 ---
 <section>
 
-  <div class="clients">
+  <div class="clients" data-animate="true">
 
     {clientRows.map((row) => {
       return (
@@ -68,6 +68,15 @@ for (let j = 0; j < 2; j++) {
   </div>
 </section>
 
+<script>
+  const clientsSection = document.querySelector('.clients')
+  document.addEventListener("DOMContentLoaded", () => {
+    if (clientsSection instanceof HTMLElement ) {
+      clientsSection.dataset.animate = "false";
+    }
+  })
+</script>
+
 <style>
 
   .clients {
@@ -76,6 +85,14 @@ for (let j = 0; j < 2; j++) {
     flex-direction: column;
     gap: var(--space-sm);
     padding: 0 var(--page-margin);
+    opacity: 1;
+    translate: 0 0;
+    transition: opacity var(--anim-lg), translate var(--anim-lg);
+  }
+
+  .clients[data-animate="true"] {
+    opacity: 0;
+    translate: 0 60px;
   }
 
   .client-row {

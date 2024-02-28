@@ -1,12 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/global/Header.astro';
-import { getHomePageContent } from '../utils/sanityClient';
 import SectionBlock from '../components/sections/SectionBlock.astro';
+import PageLoadAnimation from '../animation/PageLoadAnimation'
+
+import { getHomePageContent } from '../utils/sanityClient';
 const data = await getHomePageContent();
 ---
-<Layout title="Home">
+<Layout title="E-commerce Design & Development Partner">
 	<main>
+		<!-- <PageLoadAnimation client:load>
+			<p>Test</p>
+		</PageLoadAnimation> -->
 		{data[0].content.map((contentBlock) => (
 			<SectionBlock block={contentBlock} />
 		))}

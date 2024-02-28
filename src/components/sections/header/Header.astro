@@ -1,6 +1,6 @@
 ---
-import { getHeaderContent } from "../../utils/sanityClient";
-import Icon from '../atoms/Icon.astro';
+import { getHeaderContent } from "../../../utils/sanityClient";
+import Icon from '../../atoms/Icon.astro';
 
 const data = await getHeaderContent();
 // console.log(data)
@@ -20,7 +20,7 @@ const data = await getHeaderContent();
   <!-- <a href="/">Home</a> -->
   <!-- <a href="/about">About</a> -->
   <!-- <a href="/contact">Contact</a> -->
-  <a class="button button-icon">
+  <a class="button contact-button">
     Get in Touch
     <Icon glyph="arrow" size="large" />
   </a>
@@ -66,6 +66,12 @@ const data = await getHeaderContent();
 
   .navigation-link {
 		padding: var(--space-xs) var(--space-md);
+  }
+
+  @media screen and (max-width:678px) {
+    .contact-button {
+      display: none;
+    }
   }
 
 </style>

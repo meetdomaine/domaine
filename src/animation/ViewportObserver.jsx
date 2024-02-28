@@ -1,4 +1,3 @@
-
 import { children, mergeProps } from "solid-js";
 
 export default function ViewportObserver(props) {
