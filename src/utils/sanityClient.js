@@ -65,6 +65,20 @@ export async function getHomePageContent() {
   return content
 }
 
+export async function getPages() {
+  const content = await client.fetch(`*[_type == "pageGeneral"]{
+    title,
+    slug,
+    content[]{
+      ${sectionBlocks}
+    },
+    metaTitle,
+    metaDescription,
+    metaImage, 
+  }`)
+  return content
+}
+
 export async function getBlogPageContent() {
   const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage, "category": category->{name, slug}} }`)
   const posts = await client.fetch(`*[_type == "contentBlog"]{

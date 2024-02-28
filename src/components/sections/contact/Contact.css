@@ -1,5 +1,5 @@
 .contact {
-  margin: var(--space-2xl) var(--page-margin);
+  margin: var(--header-height) var(--page-margin) var(--space-2xl);
   display: flex;
   justify-content: center;
   align-items: center;

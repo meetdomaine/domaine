@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionBlock from '../components/sections/SectionBlock.astro';
+
+import { getPages } from '../utils/sanityClient';
+
+
+interface Props {
+	data: any;
+}
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+
+  const pages = await getPages();
+
+  return pages.map((page) => {
+    return {
+      params: { slug: page.slug.current },
+      props: { data: page }
+    }
+  })
+}
+
+const { slug } = Astro.params;
+const { data } = Astro.props;
+
+console.log(data.content)
+
+---
+<Layout title="E-commerce Design & Development Partner">
+	<main>
+		{data.content.map((contentBlock) => (
+			<SectionBlock block={contentBlock} />
+		))}
+	</main>
+</Layout>
+
+<style>
+</style>
