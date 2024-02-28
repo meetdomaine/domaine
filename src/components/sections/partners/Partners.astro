@@ -1,4 +1,5 @@
 ---
+import ViewportObserver from "../../../animation/ViewportObserver";
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 
@@ -31,12 +32,14 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
     {content.logos.map((logo, i) => {
       if (!logo.featured) {
         return (
-          <img
-            class="logo"
-            src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
-            alt={`Partner logo for ${logo.name}`} 
-            loading='lazy'
-          />
+          <ViewportObserver client:only="solid-js">
+            <img
+              class="logo"
+              src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
+              alt={`Partner logo for ${logo.name}`} 
+              loading='lazy'
+            />
+          </ViewportObserver>
         )
       }
     })}
@@ -119,6 +122,12 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
 
   .logo {
     width: 100%;
+    opacity: 1;
+    transition: opacity var(--anim-lg);
+  }
+
+  .logo[data-animate="true"] {
+    opacity: 0;
   }
 
   @media screen and (max-width: 960px) {

@@ -20,7 +20,7 @@ const { block } = Astro.props;
 {block._type == 'sectionClients' ? <Clients content={block} /> : null}
 {block._type == 'sectionAbout' ? <About content={block} /> : null}
 {block._type == 'sectionServices' ? <Services content={block} /> : null}
-<!-- {block._type == 'sectionContact' ? <Contact client:only="solid-js" content={block} /> : null}
+{block._type == 'sectionContact' ? <Contact client:only="solid-js" content={block} /> : null}
 {block._type == 'sectionWork' ? <Work client:idle content={block} /> : null}
 {block._type == 'sectionPartners' ? <Partners content={block} /> : null}
-{block._type == 'sectionAgencies' ? <Agencies content={block} /> : null} -->
+{block._type == 'sectionAgencies' ? <Agencies content={block} /> : null}

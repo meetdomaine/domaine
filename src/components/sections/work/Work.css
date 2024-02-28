@@ -37,6 +37,7 @@
 
 .work .filter-tag {
   flex: 0 0 auto;
+  border: 1px solid var(--color-border);
 }
 
 .work .filter-tag.active {

@@ -3,6 +3,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 1;
+  transition: opacity var(--anim-lg);
+}
+
+.contact[data-animate="true"] {
+  opacity: 0;
 }
 
 .contact .section-title {
