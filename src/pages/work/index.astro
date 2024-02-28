@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/global/Header.astro';
 import { getBlogPosts } from '../../utils/sanityClient';
 
 const data = await getBlogPosts();
@@ -8,7 +7,6 @@ console.log(data[0])
 ---
 
 <Layout title="Welcome to Astro.">
-	<Header />
 	<main>
 		<h1>Work</h1>
 	</main>
