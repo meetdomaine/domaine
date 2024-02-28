@@ -5,7 +5,7 @@ import Icon from "../../atoms/Icon.astro";
 const { content } = Astro.props;
 // console.log(content)
 ---
-<section class="hero" data-animate="true">
+<section class="hero">
 
   <div class="hero-content">
     <div class="hero-text">
@@ -44,7 +44,11 @@ const { content } = Astro.props;
 
 <script>
   const heroSection = document.querySelector('.hero')
-  document.addEventListener("DOMContentLoaded", () => {
+  if (heroSection instanceof HTMLElement ) {
+    heroSection.dataset.animate = "true";
+  }
+
+  document.addEventListener("astro:page-load", () => {
     if (heroSection instanceof HTMLElement ) {
       heroSection.dataset.animate = "false";
     }

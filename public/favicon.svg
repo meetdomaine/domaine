@@ -1,12 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
-  <g clip-path="url(#a)">
-    <path fill="#000" d="M0 0h42.667v21.333H0V0Zm0 42.667h42.667V64H0V42.667Zm42.667-21.334H64v21.334H42.667V21.333Z"/>
-  </g>
-  <defs>
-    <clipPath id="a">
-      <path fill="#fff" d="M0 0h64v64H0z"/>
-    </clipPath>
-  </defs>
+  <path fill="#000" d="M8.914 8.914H39.58v15.333H8.915V8.914Zm0 30.666H39.58v15.334H8.915V39.58ZM39.58 24.247h15.334v15.334H39.58V24.247Z"/>
   <style>
     path { fill: #000; }
     @media (prefers-color-scheme: dark) {
