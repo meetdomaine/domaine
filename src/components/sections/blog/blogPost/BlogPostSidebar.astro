@@ -1,0 +1,66 @@
+---
+import { formatDate } from "../../../../utils/formatDate";
+
+const { posts } = Astro.props;
+// console.log(posts)
+const postCount = 3;
+---
+<aside class="blog-post-sidebar">
+  <div class="call-to-action">
+    <h5 class="h4">Want to learn more about XYZ?</h5>
+    <a class="button button-secondary" href="#">Contact Us</a>
+  </div>
+  <div class="articles">
+    <p class="caption">Latest Articles</p>
+    {posts.map((post, i) => {
+      if (i < postCount) {
+        return (
+          <a class="article-card" href={`/insights/${post.slug.current}`}>
+            <p class="h6">{post.title}</p>
+            <p class="caption">{formatDate(post.publishedAt)}</p>
+          </a>
+        )
+      }
+    })}
+  </div>
+</aside>
+
+<style>
+  .blog-post-sidebar {
+    flex: 0 0 min(100%, 30vw);
+    max-width: 50ch;
+    position: sticky;
+    top: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .call-to-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .articles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+
+  @media screen and (max-width:768px) {
+    .blog-post-sidebar {
+      position: static;
+    }
+  }
+</style>

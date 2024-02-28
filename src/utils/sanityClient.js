@@ -83,7 +83,7 @@ export async function getBlogPageContent() {
   const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage, "category": category->{name, slug}} }`)
   const posts = await client.fetch(`*[_type == "contentBlog"]{
     title, slug, excerpt, mainImage, "category": category->{ name, slug }, publishedAt
-  } | order(publishedAt, desc)`)
+  }|order(publishedAt desc)`)
   const categories = await client.fetch(`*[_type == "categoryBlog"]`)
   return { 
     content: pageContent[0],
@@ -92,24 +92,15 @@ export async function getBlogPageContent() {
   }
 }
 
-
 export async function getBlogPosts() {
   const postContent = await client.fetch(`
     *[_type == 'contentBlog']{
       title, slug, excerpt, mainImage, "authors": authors[]->{ name, title, image }, "category": category->{ name, slug }, "categories": categories[]->{ name, slug }, publishedAt, content[]
-    }
+    } | order(publishedAt desc)
   `)
   return postContent
 }
 
-// export async function getBlogPostContent(slug) {
-//   const postContent = await client.fetch(`
-//     *[_type == 'contentBlog' && slug.current == '${slug}']{
-//       title, slug, excerpt, mainImage, "authors": authors[]->{ name, title, image }, "category": category->{ name, slug }, publishedAt, content[]
-//     }
-//   `)
-//   return postContent
-// }
 
 // export async function getEvents() {
 //   const events = await client.fetch('*[_type == "contentEvent"]');

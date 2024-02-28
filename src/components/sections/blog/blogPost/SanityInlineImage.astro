@@ -1,0 +1,18 @@
+---
+import { urlFor } from "../../../../utils/sanityClient";
+const props = Astro.props;
+---
+<img
+  class="inline-image"
+  width="100vw"
+  height="50vw"
+  sizes="100vw"
+  srcset={`
+    ${urlFor(props.node.image).width(1200).url()} 1200w,
+    ${urlFor(props.node.image).width(1800).url()} 1800w,
+    ${urlFor(props.node.image).width(2200).url()} 2200w,
+    ${urlFor(props.node.image).width(2800).url()} 2800w,
+  `}
+  src={urlFor(props.node.image).url()}
+  alt={props.node.altText} 
+/>

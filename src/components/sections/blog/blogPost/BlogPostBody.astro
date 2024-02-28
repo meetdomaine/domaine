@@ -1,0 +1,101 @@
+---
+const { content } = Astro.props;
+import { PortableText } from "astro-portabletext";
+import SanityInlineImage from './SanityInlineImage.astro'
+---
+<section class="blog-post-body">
+  <PortableText
+    value={content}
+    components={{
+      type: {
+        inlineImage: SanityInlineImage
+      }
+    }}
+  />
+</section>
+
+<style is:global>
+  .blog-post-body {
+    flex: 0 1 100%;
+  }
+
+  .blog-post-body > *:first-child {
+    margin-top: 0;
+  }
+
+  .blog-post-body h1,
+  .blog-post-body h2,
+  .blog-post-body h3,
+  .blog-post-body h4,
+  .blog-post-body h5,
+  .blog-post-body h6,
+  .blog-post-body p,
+  .blog-post-body ol,
+  .blog-post-body ul,
+  .blog-post-body li {
+    margin: 0;
+    font-family: inherit;
+    padding-inline: var(--space-xl);
+    width: 100%;
+    max-width: 55rem;
+  }
+
+  .blog-post-body h1,
+  .blog-post-body h2,
+  .blog-post-body h3,
+  .blog-post-body h4,
+  .blog-post-body h5,
+  .blog-post-body h6 {
+    margin-block: 0.8em 0.2em;
+  }
+
+.blog-post-body p {
+  margin-block: 0 1em;
+  line-height: 1.4;
+}
+
+.blog-post-body img {
+  width: 100%;
+  height: auto;
+  margin-block: 0.5em 2em;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.blog-post-body ol,
+.blog-post-body ul {
+  margin-block: 1.5em 2em;
+  padding-inline: var(--space-3xl) 0;
+
+}
+
+.blog-post-body li {
+  margin-block: 0 0.8em;
+  margin-inline: 0 0;
+  padding-inline: var(--space-xs) 0;
+  /* width: calc(100% - 0.8em); */
+}
+
+/* .blog-post-body ::marker {
+  /* left: 0; */
+  opacity: 0.2;
+} */
+
+.blog-post-body blockquote {
+  padding-inline: 0;
+  color: var(--color-foreground-secondary);
+}
+
+.blog-post-body blockquote::before {
+  content: '"';
+}
+@media screen and (max-width: 960px) {
+  .postContent {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: var(--space-2xl) var(--page-margin);
+    gap: var(--space-2xl);
+  }
+}
+</style>

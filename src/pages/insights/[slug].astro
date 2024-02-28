@@ -3,11 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 import BlogPostHero from '../../components/sections/blog/blogPost/BlogPostHero.astro';
 import BlogPostSidebar from '../../components/sections/blog/blogPost/BlogPostSidebar.astro';
 import BlogPostBody from '../../components/sections/blog/blogPost/BlogPostBody.astro';
-import { getBlogPosts, urlFor } from '../../utils/sanityClient';
-
+import { getBlogPosts } from '../../utils/sanityClient';
 
 interface Props {
 	data: any;
+  allPosts: any;
 }
 
 export const prerender = true;
@@ -19,14 +19,14 @@ export async function getStaticPaths() {
   return posts.map((post) => {
     return {
       params: { slug: post.slug.current },
-      props: { data: post }
+      props: { data: post, allPosts: posts.filter(otherPost => otherPost.slug.current != post.slug.current ) }
     }
   })
 }
 
 const { slug } = Astro.params;
-const { data } = Astro.props;
-console.log(data)
+const { data, allPosts } = Astro.props;
+// console.log(data)
 ---
 
 <Layout 
@@ -41,10 +41,40 @@ console.log(data)
       authors={data.authors}
       date={data.publishedAt}
     />
-    <BlogPostBody />
-    <BlogPostSidebar />
+
+    <div class="blog-post-content">
+      <BlogPostBody
+        content={data.content}
+      />
+      <BlogPostSidebar
+        posts={allPosts}
+        category={data.category}
+      />
+    </div>
 
 </Layout>
 
+<!-- <style>
+  document.addEventListener("astro:page-load", () => {
+    window.scrollTo(0, 0);
+  })
+</style> -->
+
 <style>
+
+  .blog-post-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: flex-start;
+    gap: var(--space-3xl);
+    padding: var(--space-3xl) var(--page-margin);
+  }
+
+  @media screen and (max-width:768px) {
+    .blog-post-content {
+      flex-direction: column;
+    }
+  }
+
 </style>
