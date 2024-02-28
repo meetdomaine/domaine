@@ -26,10 +26,10 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { data } = Astro.props;
 
-console.log(data.content)
+console.log(data)
 
 ---
-<Layout title="E-commerce Design & Development Partner">
+<Layout title={data.metaTitle ? data.metaTitle : data.title}>
 	<main>
 		{data.content.map((contentBlock) => (
 			<SectionBlock block={contentBlock} />
