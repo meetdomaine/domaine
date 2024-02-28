@@ -1,4 +1,5 @@
 ---
+import ViewportObserver from "../../../animation/ViewportObserver";
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 ---
@@ -9,20 +10,22 @@ const { content } = Astro.props;
   <div class="text-blocks">
     {content.agencies.map((agency, i) => {
       return (
-        <div class="text-block">
+        <ViewportObserver client:only="solid-js" delay={i * 200}>
+          <div class="text-block">
 
-          <a href={agency.linkURL} target="_blank">
-            <img 
-              class="block-image"
-              width="400" 
-              height="80" 
-              src={urlFor(agency.logo).auto('format').width(600).url()} 
-              alt={`Agency logo for ${agency.name}`} 
-            />
-          </a>
-          <p>{agency.description}</p>
-          <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a>
-        </div>
+            <a href={agency.linkURL} target="_blank">
+              <img 
+                class="block-image"
+                width="400" 
+                height="80" 
+                src={urlFor(agency.logo).auto('format').width(600).url()} 
+                alt={`Agency logo for ${agency.name}`} 
+              />
+            </a>
+            <p>{agency.description}</p>
+            <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a>
+          </div>
+        </ViewportObserver>
       )
     })}
   </div>
@@ -55,6 +58,14 @@ const { content } = Astro.props;
     align-items: flex-start;
     gap: var(--space-md);
     max-width: 80ch;
+    opacity: 1;
+    translate: 0 0;
+    transition: opacity var(--anim-lg), translate var(--anim-lg);
+  }
+
+  .text-block[data-animate="true"] {
+    opacity: 0;
+    translate: 0 60px;
   }
 
   .block-image {

@@ -32,7 +32,7 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
     {content.logos.map((logo, i) => {
       if (!logo.featured) {
         return (
-          <ViewportObserver client:only="solid-js">
+          <ViewportObserver client:only="solid-js" delay={i * 10}>
             <img
               class="logo"
               src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
