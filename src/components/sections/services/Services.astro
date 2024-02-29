@@ -42,11 +42,11 @@ const { content } = Astro.props;
               class="service-image-mobile"
               sizes="100vw"
               srcset={`
-                ${urlFor(service.image).width(800).auto('format').url()} 800w,
-                ${urlFor(service.image).width(1290).auto('format').url()} 1290w,
-                ${urlFor(service.image).width(1536).auto('format').url()} 1536w,
+                ${urlFor(service.image).width(800).height(800).auto('format').url()} 800w,
+                ${urlFor(service.image).width(1290).height(800).auto('format').url()} 1290w,
+                ${urlFor(service.image).width(1536).height(800).auto('format').url()} 1536w,
               `}
-              src={urlFor(service.image).width(800).height(1600).auto('format').url()}
+              src={urlFor(service.image).width(800).height(800).auto('format').url()}
               width="100vw"
               height="100vw"
             />
@@ -218,6 +218,8 @@ const { content } = Astro.props;
     .service-image-mobile {
       display: block;
       width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
       height: auto;
     }
   }

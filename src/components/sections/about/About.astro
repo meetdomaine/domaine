@@ -37,6 +37,7 @@ const { content } = Astro.props;
           autoplay
           loop
           muted
+          onloadedmetadata="this.muted = true"
         >
           <source src={content.videoURL} type="video/mp4" />
         </video>
