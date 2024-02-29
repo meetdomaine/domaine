@@ -58,6 +58,18 @@ const { data, posts } = Astro.props;
 
 </Layout>
 
+<script>
+  // document.addEventListener("astro:after-swap", (e) => { 
+  //     console.log(e)
+  //     const scrollPosition = Number(localStorage.getItem('scrollPosition'));
+  //     if (scrollPosition) window.scrollTo(0, scrollPosition);
+  // });
+
+  // document.addEventListener("astro:before-preparation", () => {
+  //     localStorage.setItem('scrollPosition', window.scrollY.toString());
+  // });
+</script>
+
 <style>
     .blog-index-main {
         display: flex;

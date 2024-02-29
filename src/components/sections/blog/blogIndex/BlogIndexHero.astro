@@ -17,6 +17,7 @@ const content = Astro.props;
         ${urlFor(content.post.mainImage).width(4320).height(4320).url()} 4320w,
       `}
       src={urlFor(content.post.mainImage).url()}
+      transition:persist
     />
   </div>
 

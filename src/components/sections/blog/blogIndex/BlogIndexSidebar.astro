@@ -1,14 +1,35 @@
 ---
 const { content, activeCategory } = Astro.props;
-console.log(activeCategory)
+// console.log(activeCategory)
 ---
 <aside class="blog-index-sidebar">
+  <a class="sidebar-link" data-active={activeCategory ? 'false' : 'true'} href={`/insights`}>All Insights</a>
   {content.map((category, i) => {
     return (
       <a class="sidebar-link" data-active={category.slug.current == activeCategory ? "true" : "false"} href={`/insights/${category.slug.current}`}>{category.name}</a>
     )
   })}
 </aside>
+
+<script>
+
+  document.addEventListener("astro:after-swap", (e) => { 
+      const scrollPosition = Number(localStorage.getItem('scrollPosition'));
+      if (scrollPosition) window.scrollTo(0, scrollPosition);
+  });
+
+  document.addEventListener("astro:page-load", (e) => { 
+    localStorage.setItem('scrollPosition', null);
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        localStorage.setItem('scrollPosition', window.scrollY.toString());
+      })
+    })
+  });
+
+</script>
 
 <style>
   .blog-index-sidebar {

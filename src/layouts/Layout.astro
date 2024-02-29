@@ -242,6 +242,26 @@ const { title, description, image, theme } = Astro.props;
 		--form-toggle-size: 1em;
 	}
 
+	html.lenis {
+  height: auto;
+}
+
+	.lenis.lenis-smooth {
+		scroll-behavior: auto !important;
+	}
+
+	.lenis.lenis-smooth [data-lenis-prevent] {
+		overscroll-behavior: contain;
+	}
+
+	.lenis.lenis-stopped {
+		overflow: hidden;
+	}
+
+	.lenis.lenis-scrolling iframe {
+		pointer-events: none;
+	}
+
 	html {
 		font-family: var(--font-family);
 		background: var(--color-background);
