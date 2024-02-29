@@ -17,8 +17,8 @@ const { content } = Astro.props;
           return (
             <li class="callout">
               {stat.content[0].children.map((node) => {
-                  if (node.marks.includes("em")) return <em class="h5">{node.text.trim()}</em>
-                  return <p class="h5">{node.text.trim()}</p>
+                  if (node.marks.includes("em")) return <em class="h6">{node.text.trim()}</em>
+                  return <p class="h6">{node.text.trim()}</p>
                 })
               }
             </li>

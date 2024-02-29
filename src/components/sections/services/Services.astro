@@ -55,7 +55,7 @@ const { content } = Astro.props;
             <ul class="deliverables">
               {service.deliverables && service.deliverables.map((deliverable) => {
                 return (
-                  <li class="deliverable h6">{deliverable}</li>
+                  <li class="deliverable">{deliverable}</li>
                 )
               })}
             </ul>
@@ -191,7 +191,7 @@ const { content } = Astro.props;
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-md);
     color: var(--color-foreground-secondary);
   }
 

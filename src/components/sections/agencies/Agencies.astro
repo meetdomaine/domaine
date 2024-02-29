@@ -22,8 +22,8 @@ const { content } = Astro.props;
                 alt={`Agency logo for ${agency.name}`} 
               />
             </a>
-            <p>{agency.description}</p>
-            <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a>
+            <p class="description">{agency.description}</p>
+            <!-- <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a> -->
           </div>
         </ViewportObserver>
       )
@@ -71,6 +71,10 @@ const { content } = Astro.props;
   .block-image {
     width: 80%;
     height: auto;
+  }
+
+  .description {
+    color: var(--color-foreground-secondary);
   }
 
   @media screen and (max-width: 960px) {

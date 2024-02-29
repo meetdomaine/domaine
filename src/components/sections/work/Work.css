@@ -23,6 +23,7 @@
 .work .section-title .subheading {
   flex: 1 1 auto;
   max-width: 40ch;
+  color: var(--color-foreground-secondary);
 }
 
 .work .filter-tags {
