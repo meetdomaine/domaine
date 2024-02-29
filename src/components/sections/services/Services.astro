@@ -77,6 +77,7 @@ const { content } = Astro.props;
     }
     
     const toggleActiveImage = (index) => {
+      // const activeImage = document.querySelector("")
       serviceImages.forEach((element: HTMLElement, i) => {
         if (i == index) {
           return element.dataset.active = "false";
