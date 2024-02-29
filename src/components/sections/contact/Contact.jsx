@@ -39,7 +39,7 @@ export default function Forms(props) {
   })
 
   return (
-    <section class="contact">
+    <section class="contact" id="contact">
       <div class="contact-form">
         <div class="section-title">
           <h2 class="h2">{props.content.heading}</h2>

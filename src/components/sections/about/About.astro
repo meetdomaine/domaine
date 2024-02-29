@@ -4,7 +4,7 @@ import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 ---
 
-<ViewportObserver client:only="solid-js">
+<ViewportObserver client:only="solid-js" bidirectional={false}>
   <section class="about">
 
     <div class="text">
@@ -132,6 +132,7 @@ const { content } = Astro.props;
     /* background-color: red; */
     align-self: stretch;
     min-height: calc(100svh - var(--space-2xl) * 2);
+    max-height: 100svh;
     border-radius: var(--radius-lg);
     overflow: hidden;
     opacity: 1;
