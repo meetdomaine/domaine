@@ -11,18 +11,19 @@ const data = await getHeaderContent();
     <Icon glyph="logo" />
   </a>
   <a class="button contact-button" href={data[0].buttonURL}>
-    {data[0].buttonText}
-    <Icon glyph="arrow" size="large" />
+    <Icon glyph="email" size="large" />
   </a>
 </header>
 
-<nav class="navigation-links">
-  {data[0].links.map((link, i) => {
-    return (
-      <a class="navigation-link" href={link.linkURL}>{link.linkText}</a>
-    )
-  })}
-</nav>
+<div class="navigation">
+  <nav class="navigation-links">
+    {data[0].links.map((link, i) => {
+      return (
+        <a class="navigation-link" href={link.linkURL}>{link.linkText}</a>
+      )
+    })}
+  </nav>
+</div>
 
 
 <script>
@@ -81,18 +82,26 @@ const data = await getHeaderContent();
       width: 100%;
     }
 
+    .navigation {
+      width: 100%;
+      padding: 0 var(--page-margin) var(--space-lg);
+      position: fixed;
+      bottom: 0;
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
     .navigation-links {
-      margin: 0 var(--page-margin);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-rounded);
       display: flex;
       flex-direction: row;
       justify-content: stretch;
-      width: calc(100% - var(--page-margin) * 2);
-      z-index: 99;
+
       overflow: hidden;
-      position: fixed;
-      bottom: var(--space-md);
     }
 
     .navigation-link {
@@ -100,9 +109,10 @@ const data = await getHeaderContent();
       display: flex;
       justify-content: center;
       align-items: center;
-      background: var(--color-foreground);
-      color: var(--color-background);
-      padding: var(--space-sm) var(--space-sm);
+      background: var(--color-background);
+      border-left: 1px solid var(--color-border);
+      color: var(--color-foreground);
+      padding: var(--space-xs) var(--space-sm);
       transition: background var(--anim-sm), color var(--anim-sm);
     }
 
@@ -112,11 +122,16 @@ const data = await getHeaderContent();
     }
 
     .navigation-link:first-child {
-      padding-left: var(--space-sm);
+      padding-left: var(--space-lg);
+      border-left: none;
     }
 
     .navigation-link:last-child {
-      padding-right: var(--space-sm);
+      padding-right: var(--space-lg);
+    }
+
+    .contact-button {
+      padding: var(--space-xs);
     }
 
   }
