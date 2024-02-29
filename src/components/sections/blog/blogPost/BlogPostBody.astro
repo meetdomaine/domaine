@@ -68,7 +68,6 @@ import SanitySchema from './SanitySchema.astro';
 .blog-post-body ul {
   margin-block: 1.5em 2em;
   padding-inline: var(--space-3xl) 0;
-
 }
 
 .blog-post-body li {
@@ -77,11 +76,6 @@ import SanitySchema from './SanitySchema.astro';
   padding-inline: var(--space-xs) 0;
   /* width: calc(100% - 0.8em); */
 }
-
-/* .blog-post-body ::marker {
-  /* left: 0; */
-  opacity: 0.2;
-} */
 
 .blog-post-body blockquote {
   padding-inline: 0;
@@ -92,6 +86,7 @@ import SanitySchema from './SanitySchema.astro';
   content: '"';
 }
 @media screen and (max-width: 960px) {
+
   .postContent {
     flex-direction: column;
     justify-content: flex-start;
@@ -99,5 +94,25 @@ import SanitySchema from './SanitySchema.astro';
     padding: var(--space-2xl) var(--page-margin);
     gap: var(--space-2xl);
   }
+
+  .blog-post-body h1,
+  .blog-post-body h2,
+  .blog-post-body h3,
+  .blog-post-body h4,
+  .blog-post-body h5,
+  .blog-post-body h6,
+  .blog-post-body p,
+  .blog-post-body ol,
+  .blog-post-body ul,
+  .blog-post-body li {
+    padding-inline: 0;
+  }
+
+
+  .blog-post-body ol,
+  .blog-post-body ul {
+    padding-inline: var(--space-lg) 0;
+  }
+
 }
 </style>

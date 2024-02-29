@@ -17,8 +17,8 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
       {category && <CategoryTag category={category} />}
     </div>
     <div class="excerpt">
+      <h2 class="h6">{excerpt}</h2>
       <p class="date">{formatDate(date)}</p>
-      <h2 class="h5">{excerpt}</h2>
       <div class="authors">
         {authors.map((author, i) => {
           return (
@@ -28,8 +28,8 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
                 src={urlFor(author.image).url()}
               />
               <div class="author-text">
-                <h3 class="h6 author-name">{author.name}</h3>
-                <p class="author-name">{author.title}</p>
+                <p class="author-name">{author.name}</p>
+                <p class="author-title caption">{author.title}</p>
               </div>
             </div>
           )
@@ -101,7 +101,7 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
     padding-left: var(--space-xl);
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-2xs);
   }
 
   .date {
@@ -114,6 +114,7 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
     align-items: flex-start;
     justify-content: flex-start;
     gap: var(--space-lg);
+    margin-top: var(--space-md);
   }
 
   .author-card {
@@ -128,6 +129,12 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
     border-radius: var(--radius-rounded);
     overflow: hidden;
     border: 1px solid var(--color-border);
+  }
+
+  .author-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
   }
 
   .author-name,
@@ -146,6 +153,10 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
 
     .excerpt {
       padding: 0;
+    }
+
+    .authors {
+      flex-direction: column;
     }
 
     .text,
