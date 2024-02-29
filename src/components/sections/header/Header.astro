@@ -5,7 +5,7 @@ import Icon from '../../atoms/Icon.astro';
 const data = await getHeaderContent();
 // console.log(data)
 ---
-<header class="header">
+<header class="header" data-animate="true">
   <span class="navigation">
     <a class="logo" href="/" aria-label="Domaine homepage">
       <Icon glyph="logo" />
@@ -25,15 +25,20 @@ const data = await getHeaderContent();
 </header>
 
 <script>
-  const header = document.querySelector('.header')
-  if (header instanceof HTMLElement) {
-      header.dataset.animate = "true";
+
+  const animateLoad = () => {
+    const heroSection = document.querySelector('.header')
+    if (heroSection instanceof HTMLElement ) {
+      heroSection.dataset.animate = "false";
     }
+  }
+
+  document.addEventListener("astro:after-swap", () => {
+    animateLoad()
+  })
 
   document.addEventListener("astro:page-load", () => {
-    if (header instanceof HTMLElement) {
-      header.dataset.animate = "false";
-    }
+    animateLoad()
   })
 </script>
 
@@ -66,6 +71,8 @@ const data = await getHeaderContent();
     gap: var(--space-md);
   }
 
+  
+
   .logo {
     width: clamp(100px, 8vw, 220px);
   }
@@ -79,18 +86,25 @@ const data = await getHeaderContent();
     border-radius: var(--radius-rounded);
     display: flex;
     flex-direction: row;
+    overflow: hidden;
   }
 
   .navigation-link {
 		padding: var(--space-xs) var(--space-sm);
+    transition: background var(--anim-sm), color var(--anim-sm);
+  }
+
+  .navigation-link:hover {
+    background: var(--color-foreground);
+    color: var(--color-background);
   }
 
   .navigation-link:first-child {
-    padding-left: var(--space-lg);
+    padding-left: var(--space-sm);
   }
 
   .navigation-link:last-child {
-    padding-right: var(--space-lg);
+    padding-right: var(--space-sm);
   }
 
   @media screen and (max-width:678px) {

@@ -15,7 +15,7 @@ for (let j = 0; j < 2; j++) {
 ---
 <section>
 
-  <div class="clients">
+  <div class="clients" data-animate="true">
 
     {clientRows.map((row) => {
       return (
@@ -69,15 +69,20 @@ for (let j = 0; j < 2; j++) {
 </section>
 
 <script>
-  const clientsSection = document.querySelector('.clients');
-  if (clientsSection instanceof HTMLElement ) {
-    clientsSection.dataset.animate = "true";
+
+  const animateLoad = () => {
+    const heroSection = document.querySelector('.clients')
+    if (heroSection instanceof HTMLElement ) {
+      heroSection.dataset.animate = "false";
+    }
   }
 
+  document.addEventListener("astro:after-swap", () => {
+    animateLoad()
+  })
+
   document.addEventListener("astro:page-load", () => {
-    if (clientsSection instanceof HTMLElement ) {
-      clientsSection.dataset.animate = "false";
-    }
+    animateLoad()
   })
 </script>
 

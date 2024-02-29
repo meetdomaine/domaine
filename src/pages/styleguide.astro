@@ -5,7 +5,6 @@ import Icon from '../components/atoms/Icon.astro';
 ---
 <Layout title="Styleguide">
 	<Header />
-	<main>
 
     <section class="section-typography">
       <h1>Heading 1</h1>
@@ -31,21 +30,26 @@ import Icon from '../components/atoms/Icon.astro';
     </section>
 
     <section class="section-buttons">
-      <a class="button">Button Primary<Icon glyph="arrow"/></a>
-      <a class="button button-secondary">Button Secondary<Icon glyph="arrow"/></a>
-      <a class="button button-tertiary">Button Tertiary<Icon glyph="arrow"/></a>
+      <a class="button">Button Primary<Icon glyph="arrow" size="medium" /></a>
+      <a class="button button-secondary">Button Secondary<Icon glyph="arrow" size="medium" /></a>
+      <a class="button button-tertiary">Button Tertiary<Icon glyph="arrow" size="medium" /></a>
     </section>
 
-  </main>
 </Layout>
 
 <style>
 
   section {
-    padding: 0 var(--page-margin);
+    padding: var(--header-height) var(--page-margin) var(--space-xl);
     display: flex;
     flex-direction: column;
     margin-bottom: var(--space-xl);
+  }
+
+  .section-typography {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 
   .section-spacers {

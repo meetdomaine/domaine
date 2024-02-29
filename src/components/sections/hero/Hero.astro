@@ -5,9 +5,9 @@ import Icon from "../../atoms/Icon.astro";
 const { content } = Astro.props;
 // console.log(content)
 ---
-<section class="hero">
+<section class="hero" data-animate="true">
 
-  <div class="hero-content">
+  <div class="hero-content" >
     <div class="hero-text">
       {content.eyebrow && <h2 class="h5">{content.eyebrow}</h2>}
       <h1 class="heading">
@@ -43,16 +43,22 @@ const { content } = Astro.props;
 </section>
 
 <script>
-  const heroSection = document.querySelector('.hero')
-  if (heroSection instanceof HTMLElement ) {
-    heroSection.dataset.animate = "true";
-  }
 
-  document.addEventListener("astro:page-load", () => {
+  const animateLoad = () => {
+    const heroSection = document.querySelector('.hero')
     if (heroSection instanceof HTMLElement ) {
       heroSection.dataset.animate = "false";
     }
+  }
+
+  document.addEventListener("astro:after-swap", () => {
+    animateLoad()
   })
+
+  document.addEventListener("astro:page-load", () => {
+    animateLoad()
+  })
+
 </script>
 
 <style>
