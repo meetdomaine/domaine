@@ -17,11 +17,11 @@
 }
 
 .work .section-title .heading {
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 }
 
 .work .section-title .subheading {
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   max-width: 40ch;
 }
 
@@ -77,4 +77,18 @@
   .work .project-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .work .section-title {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+  
+  /* .work .section-title .heading {
+    flex: 0 0 auto;
+  }
+  
+  .work .section-title .subheading {
+    flex: 0 0 auto;
+  } */
 }
