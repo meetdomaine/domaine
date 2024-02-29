@@ -25,6 +25,27 @@ const { title, description, image, theme } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 
+		<!-- Google tag (gtag.js) -->
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-8YW8NFYNGR"></script>
+
+		<!-- Google Analytics -->
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+		
+			gtag('config', 'G-8YW8NFYNGR');
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script is:inline>
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-T5Q9G6VH');
+		</script>
+
 		<!-- HTML Meta Tags -->
 		<!-- <title>Domaine</title> -->
 		<meta name="description" content={ description ? description : data[0].siteDescription }>
@@ -44,17 +65,21 @@ const { title, description, image, theme } = Astro.props;
 		<meta name="twitter:description" content={description ? description : data[0].siteDescription}>
 		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-8YW8NFYNGR"></script>
 		<title>{title} | {data[0].siteTitle}</title>
 		<ViewTransitions />
 	</head>
 	<body>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5Q9G6VH"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
 		<Header />
 		<slot />
 		<Footer />
 	</body>
 </html>
+
+
 
 <script>
 	import Lenis from '@studio-freight/lenis'
@@ -69,13 +94,7 @@ const { title, description, image, theme } = Astro.props;
 	requestAnimationFrame(raf)
 </script>
 
-<script is:inline>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
 
-	gtag('config', 'G-8YW8NFYNGR');
-</script>
 
 <style is:global>
 	@font-face {
