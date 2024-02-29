@@ -22,7 +22,7 @@ export async function getStaticPaths() {
   return data.categories.map((category) => {
     return {
       params: { category: category.slug.current },
-      props: { data: data, posts: data.posts.filter(post => post.category.slug.current == category) }
+      props: { data: data, posts: data.posts.filter(post => post.category.slug.current == category.slug.current) }
     }
   })
 }

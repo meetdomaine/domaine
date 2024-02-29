@@ -93,23 +93,18 @@ const { title, description, image, theme } = Astro.props;
 	}
 
 	requestAnimationFrame(raf)
-</script>
 
-<script>
 
 	const htmlElement = document.querySelector("html");
 
 	document.addEventListener("astro:before-preparation", () => {
-		console.log("BEFORE PREP")
+		lenis.stop();
 		htmlElement.dataset.loading = "true";
 	})
 
-	document.addEventListener("astro:after-swap", () => {
-		console.log("AFTER SWAP")
-	})
-
 	document.addEventListener("astro:page-load", () => {
-		console.log("Load")
+		// console.log("Load")
+		lenis.start();
 		htmlElement.dataset.loading = "false";
 	})
 </script>
