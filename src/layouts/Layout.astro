@@ -94,6 +94,25 @@ const { title, description, image, theme } = Astro.props;
 	requestAnimationFrame(raf)
 </script>
 
+<script>
+
+	const htmlElement = document.querySelector("html");
+
+	document.addEventListener("astro:before-preparation", () => {
+		console.log("BEFORE PREP")
+		htmlElement.dataset.loading = "true";
+	})
+
+	document.addEventListener("astro:after-swap", () => {
+		console.log("AFTER SWAP")
+	})
+
+	document.addEventListener("astro:page-load", () => {
+		console.log("Load")
+		htmlElement.dataset.loading = "false";
+	})
+</script>
+
 
 
 <style is:global>
@@ -244,6 +263,10 @@ const { title, description, image, theme } = Astro.props;
 		--gradient-primary: var(--gradient-reverse);
 		--color-link: var(--color-ink);
 		--color-link-secondary: var(--color-subdued);
+	}
+
+	html[data-loading="true"] {
+		cursor: wait;
 	}
 
 	body {

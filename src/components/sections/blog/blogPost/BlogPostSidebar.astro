@@ -15,7 +15,7 @@ const postCount = 3;
     {posts.map((post, i) => {
       if (i < postCount) {
         return (
-          <a class="article-card" href={`/insights/${post.slug.current}`}>
+          <a class="article-card" href={`/insights/${post.category.slug.current}/${post.slug.current}`}>
             <p class="h6">{post.title}</p>
             <p class="caption">{formatDate(post.publishedAt)}</p>
           </a>

@@ -27,12 +27,14 @@ const content = Astro.props;
     </div>
     <div class="post-content">
       <div class="post-title">
-        <h3 class="h1">{content.post.title}</h3>
+        <a href={`/insights/${content.post.category.slug.current}/${content.post.slug.current}`}>
+          <h3 class="h1">{content.post.title}</h3>
+        </a>
         <CategoryTag category={content.post.category} />
       </div>
       <div class="post-details">
         <h4 class="h6">{content.post.excerpt}</h4>
-        <a class="button" href={`/insights/${content.post.slug.current}`}>Read More</a>
+        <a class="button" href={`/insights/${content.post.category.slug.current}/${content.post.slug.current}`}>Read More</a>
       </div>
     </div>
   </div>

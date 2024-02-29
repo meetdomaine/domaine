@@ -1,11 +1,11 @@
 ---
-const { content } = Astro.props;
-// console.log(content)
+const { content, activeCategory } = Astro.props;
+console.log(activeCategory)
 ---
 <aside class="blog-index-sidebar">
   {content.map((category, i) => {
     return (
-      <a class="sidebar-link" href={`/insights?category=${category.slug.current}`}>{category.name}</a>
+      <a class="sidebar-link" data-active={category.slug.current == activeCategory ? "true" : "false"} href={`/insights/${category.slug.current}`}>{category.name}</a>
     )
   })}
 </aside>
@@ -20,10 +20,36 @@ const { content } = Astro.props;
     position: sticky;
     top: var(--header-height);
     padding: 0 var(--page-margin) var(--space-md);
+    max-width: 100%;
   }
 
   .sidebar-link {
     flex: 0 0 auto;
+    position: relative;
+    color: var(--color-foreground-secondary);
+  }
+
+  .sidebar-link::before {
+    --dot-size: 4px;
+    content: "";
+    width: var(--dot-size);
+    height: var(--dot-size);
+    border-radius: var(--radius-rounded);
+    background: var(--color-foreground);
+    position: absolute;
+    left: calc(var(--space-xs) * -1);
+    top: 50%;
+    translate: 0 -50%;
+    opacity: 0;
+  }
+
+  .sidebar-link[data-active="true"] {
+    /* color: red; */
+    color: var(--color-foreground);
+  }
+
+  .sidebar-link[data-active="true"]::before {
+    opacity: 1;
   }
 
   @media screen and (max-width: 768px) {
@@ -31,6 +57,20 @@ const { content } = Astro.props;
       position: static;
       flex-direction: row;
       overflow-x: auto;
+    }
+
+    .sidebar-link::before {
+      width: 100%;
+      height: 1px;
+      border-radius: var(--radius-rounded);
+      background: var(--color-foreground);
+      left: 0;
+      right: 0;
+      top: unset;
+      bottom: -0.5em;
+      translate: 0 0;
+      opacity: 0;
+      border-radius: 0;
     }
   }
 </style>

@@ -1,9 +1,9 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import BlogPostHero from '../../components/sections/blog/blogPost/BlogPostHero.astro';
-import BlogPostSidebar from '../../components/sections/blog/blogPost/BlogPostSidebar.astro';
-import BlogPostBody from '../../components/sections/blog/blogPost/BlogPostBody.astro';
-import { getBlogPosts } from '../../utils/sanityClient';
+import Layout from '../../../layouts/Layout.astro';
+import BlogPostHero from '../../../components/sections/blog/blogPost/BlogPostHero.astro';
+import BlogPostSidebar from '../../../components/sections/blog/blogPost/BlogPostSidebar.astro';
+import BlogPostBody from '../../../components/sections/blog/blogPost/BlogPostBody.astro';
+import { getBlogPosts } from '../../../utils/sanityClient';
 
 interface Props {
 	data: any;
@@ -18,13 +18,13 @@ export async function getStaticPaths() {
 
   return posts.map((post) => {
     return {
-      params: { slug: post.slug.current },
+      params: { slug: post.slug.current, category: post.category.slug.current },
       props: { data: post, allPosts: posts.filter(otherPost => otherPost.slug.current != post.slug.current ) }
     }
   })
 }
 
-const { slug } = Astro.params;
+const { slug, category } = Astro.params;
 const { data, allPosts } = Astro.props;
 // console.log(data)
 ---
