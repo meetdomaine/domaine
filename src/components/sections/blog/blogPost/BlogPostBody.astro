@@ -1,14 +1,16 @@
 ---
 const { content } = Astro.props;
 import { PortableText } from "astro-portabletext";
-import SanityInlineImage from './SanityInlineImage.astro'
+import SanityInlineImage from './SanityInlineImage.astro';
+import SanitySchema from './SanitySchema.astro';
 ---
 <section class="blog-post-body">
   <PortableText
     value={content}
     components={{
       type: {
-        inlineImage: SanityInlineImage
+        inlineImage: SanityInlineImage,
+        schema: SanitySchema,
       }
     }}
   />

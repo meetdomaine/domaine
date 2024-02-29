@@ -1,7 +1,7 @@
 ---
 const { category } = Astro.props;
 ---
-<a class="category-tag button caption" href={`insights/${category.slug.current}`}>{category.name}</a>
+<a class="category-tag button caption" href={`${category.slug.current}`}>{category.name}</a>
 
 <style>
   .category-tag {
