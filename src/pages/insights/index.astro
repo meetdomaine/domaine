@@ -26,7 +26,7 @@ const data = await getBlogPageContent();
         />
 
         <BlogIndexFeed
-            content={data.posts}
+            content={data.posts.filter(post => data.content.featuredPost.slug.current != post.slug.current)}
         />
 
     </div>
