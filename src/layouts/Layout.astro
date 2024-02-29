@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import Header from '../components/sections/header/Header.astro';
+import HeaderMobile from '../components/sections/header/HeaderMobile.astro';
 import Footer from '../components/sections/footer/Footer.astro'
 import { getSEOSettings, urlFor } from '../utils/sanityClient';
 // import LenisScroll from '../components/global/LenisScroll.astro'
@@ -75,6 +76,7 @@ const { title, description, image, theme } = Astro.props;
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 		<Header />
+		<HeaderMobile />
 		<slot />
 		<Footer />
 	</body>

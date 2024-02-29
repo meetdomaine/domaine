@@ -1,0 +1,124 @@
+---
+import { getHeaderContent } from "../../../utils/sanityClient";
+import Icon from '../../atoms/Icon.astro';
+
+const data = await getHeaderContent();
+// console.log(data)
+---
+
+<header class="header" data-animate="true">
+  <a class="logo" href="/" aria-label="Domaine homepage">
+    <Icon glyph="logo" />
+  </a>
+  <a class="button contact-button" href={data[0].buttonURL}>
+    {data[0].buttonText}
+    <Icon glyph="arrow" size="large" />
+  </a>
+</header>
+
+<nav class="navigation-links">
+  {data[0].links.map((link, i) => {
+    return (
+      <a class="navigation-link" href={link.linkURL}>{link.linkText}</a>
+    )
+  })}
+</nav>
+
+
+<script>
+
+  const animateLoad = () => {
+    const heroSection = document.querySelector('.header')
+    if (heroSection instanceof HTMLElement ) {
+      heroSection.dataset.animate = "false";
+    }
+  }
+
+  document.addEventListener("astro:after-swap", () => {
+    animateLoad()
+  })
+
+  document.addEventListener("astro:page-load", () => {
+    animateLoad()
+  })
+</script>
+
+<style>
+
+  .header {
+    display: none;
+  }
+
+  .navigation-links {
+    display: none;
+  }
+
+  @media screen and (max-width:678px) {
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) var(--page-margin);
+      position: fixed;
+      top: 0;
+      z-index: 99;
+      width: 100%;
+      translate: 0 0;
+      transition: top var(--anim-md);
+    }
+
+    /* .header[data-animate="true"] {
+      top: -100%;
+    } */
+
+    .logo {
+      width: clamp(100px, 8vw, 220px);
+    }
+
+    .logo svg {
+      width: 100%;
+    }
+
+    .navigation-links {
+      margin: 0 var(--page-margin);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-rounded);
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      width: calc(100% - var(--page-margin) * 2);
+      z-index: 99;
+      overflow: hidden;
+      position: fixed;
+      bottom: var(--space-md);
+    }
+
+    .navigation-link {
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--color-foreground);
+      color: var(--color-background);
+      padding: var(--space-sm) var(--space-sm);
+      transition: background var(--anim-sm), color var(--anim-sm);
+    }
+
+    .navigation-link:hover {
+      background: var(--color-foreground);
+      color: var(--color-background);
+    }
+
+    .navigation-link:first-child {
+      padding-left: var(--space-sm);
+    }
+
+    .navigation-link:last-child {
+      padding-right: var(--space-sm);
+    }
+
+  }
+
+</style>
