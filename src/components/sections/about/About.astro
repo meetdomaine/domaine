@@ -37,6 +37,7 @@ const { content } = Astro.props;
           autoplay
           loop
           muted
+          playsinline
           onloadedmetadata="this.muted = true"
         >
           <source src={content.videoURL} type="video/mp4" />
@@ -151,10 +152,16 @@ const { content } = Astro.props;
   @media screen and (max-width: 960px) {
     .about {
       flex-direction: column;
+      justify-content: flex-start;
     }
 
     .media {
       min-height: unset;
+    }
+
+    .text,
+    .media {
+      flex: 0 0 auto;
     }
   }
 
