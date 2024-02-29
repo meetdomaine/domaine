@@ -44,6 +44,8 @@ const { title, description, image, theme } = Astro.props;
 		<meta name="twitter:description" content={description ? description : data[0].siteDescription}>
 		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-8YW8NFYNGR"></script>
 		<title>{title} | {data[0].siteTitle}</title>
 		<ViewTransitions />
 	</head>
@@ -65,6 +67,14 @@ const { title, description, image, theme } = Astro.props;
 	}
 
 	requestAnimationFrame(raf)
+</script>
+
+<script is:inline>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'G-8YW8NFYNGR');
 </script>
 
 <style is:global>
