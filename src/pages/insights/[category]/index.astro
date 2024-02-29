@@ -5,10 +5,32 @@ import BlogIndexFeed from '../../../components/sections/blog/blogIndex/BlogIndex
 import BlogIndexSidebar from '../../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
 import { getBlogPageContent } from '../../../utils/sanityClient';
 
-const data = await getBlogPageContent();
+// const data = await getBlogPageContent();
+
+interface Props {
+	data: any;
+  posts: any;
+}
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+
+  // const pages = await getPages();
+  const data = await getBlogPageContent();
+
+  return data.categories.map((category) => {
+    return {
+      params: { category: category.slug.current },
+      props: { data: data, posts: data.posts.filter(post => post.category.slug.current == category) }
+    }
+  })
+}
+
+// const { slug } = Astro.params;
 
 const { category } = Astro.params;
-const filteredPosts = data.posts.filter(post => post.category.slug.current == category)
+const { data, posts } = Astro.props;
 ---
 
 <Layout 
@@ -29,7 +51,7 @@ const filteredPosts = data.posts.filter(post => post.category.slug.current == ca
         />
 
         <BlogIndexFeed
-            content={filteredPosts}
+            content={posts}
         />
 
     </div>
