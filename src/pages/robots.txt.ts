@@ -4,7 +4,7 @@ const robotsTxt = `
 User-agent: *
 Allow: /
 
-Sitemap: ${new URL('sitemap-index.xml', 'https://domaine-2-0.vercel.app/').href}
+Sitemap: ${new URL('sitemap-index.xml', 'https://meetdomaine.com/').href}
 `.trim();
 
 export const GET: APIRoute = () => {

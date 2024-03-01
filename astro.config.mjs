@@ -8,5 +8,5 @@ export default defineConfig({
   integrations: [solidJs(), sitemap()],
   output: 'hybrid',
   adapter: vercel(),
-  site: 'https://domaine-2-0.vercel.app/',
+  site: 'https://meetdomaine.com/',
 });
