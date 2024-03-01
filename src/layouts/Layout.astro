@@ -605,6 +605,7 @@ const { title, description, image, theme } = Astro.props;
 	.form-columns-2 {
 		display: flex;
 		flex-direction: row;
+		align-items: flex-start;
 		gap: var(--form-field-gap-inline);
 	}
 
@@ -624,9 +625,12 @@ const { title, description, image, theme } = Astro.props;
 		gap: var(--space-2xs);
 	}
 
-	.hs-input {
+	.hs-input[type="text"],
+	.hs-input[type="email"],
+	textarea {
 		width: 100% !important;
 	}
+
 
 	.hs-button {
 		width: 100%;
@@ -701,7 +705,8 @@ const { title, description, image, theme } = Astro.props;
 		gap: var(--space-2xs);
 	}
 
-	.hs-input[type="radio"] {
+	.hs-input[type="radio"],
+	.hs-input[type="checkbox"] {
 		width: var(--form-toggle-size) !important;
 		height: var(--form-toggle-size) !important;
 	}
