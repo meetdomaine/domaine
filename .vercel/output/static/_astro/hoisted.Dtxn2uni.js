@@ -1,1 +1,0 @@
-import"./hoisted.CZAUsFIC.js";import"./hoisted.bbUc81n7.js";document.addEventListener("astro:page-load",()=>{const a=new URLSearchParams(window.location.search);a.has("category")&&console.log(a.get("category"))});
