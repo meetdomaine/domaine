@@ -49,8 +49,8 @@ const { content } = Astro.props;
           width="50vw"
           height="100vh"
           sizes="
-            (max-width: 960px) 100%,
-            50%
+            (max-width: 960px) 100vw,
+            50vw
           "
           srcset={`
             ${urlFor(content.image).width(800).height(1600).auto('format').url()} 800w,
