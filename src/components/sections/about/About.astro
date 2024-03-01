@@ -39,6 +39,7 @@ const { content } = Astro.props;
           muted
           playsinline
           onloadedmetadata="this.muted = true"
+          poster={urlFor(content.image).width(1290).height(1935).auto('format').url()}
         >
           <source src={content.videoURL} type="video/mp4" />
         </video>
