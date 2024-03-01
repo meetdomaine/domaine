@@ -29,7 +29,7 @@ const { data } = Astro.props;
 <Layout 
   title={data.metaTitle ? data.metaTitle : data.title} 
   description={data.metaDescription}
-  image={urlFor(data.metaImage).url()}
+  image={data.metaImage && urlFor(data.metaImage).url()}
 >
   {data.content.map((block) => {
     return <SectionBlock block={block} />

@@ -5,7 +5,7 @@ export default function ViewportObserver(props) {
   const childElements = children(() => props.children.children[0])
 
   const defaultSettings = {
-    bidirectional: true,
+    bidirectional: false,
     rootMargin: "10% 0% 40% 0%",
     threshold: 0.7,
     delay: 0
