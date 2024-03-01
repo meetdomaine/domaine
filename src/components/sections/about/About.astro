@@ -53,12 +53,12 @@ const { content } = Astro.props;
             50vw
           "
           srcset={`
-            ${urlFor(content.image).width(800).height(1600).auto('format').url()} 800w,
-            ${urlFor(content.image).width(1290).height(2580).auto('format').url()} 1290w,
-            ${urlFor(content.image).width(1536).height(3072).auto('format').url()} 1536w,
-            ${urlFor(content.image).width(2700).height(5400).auto('format').url()} 2700w,
+            ${urlFor(content.image).width(800).height(1200).auto('format').url()} 800w,
+            ${urlFor(content.image).width(1290).height(1935).auto('format').url()} 1290w,
+            ${urlFor(content.image).width(1536).height(2304).auto('format').url()} 1536w,
+            ${urlFor(content.image).width(2700).height(4050).auto('format').url()} 2700w,
           `}
-          src={urlFor(content.image).width(800).height(1600).auto('format').url()}
+          src={urlFor(content.image).width(800).height(1200).auto('format').url()}
           class="image"
         />
       )}
