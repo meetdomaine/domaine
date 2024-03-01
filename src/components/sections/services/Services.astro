@@ -68,24 +68,28 @@ const { content } = Astro.props;
 
 <script>
 
-  const detailBlocks = document.querySelectorAll('.detail-block');
-  const serviceImages = document.querySelectorAll('.service-image');
-  
-  const toggleActiveImage = (index) => {
-    // const activeImage = document.querySelector("")
-    serviceImages.forEach((element: HTMLElement, i) => {
-      if (i == index) {
-        return element.dataset.active = "false";
-      }
-      return element.dataset.active = "true";
-    })
-  }
+  document.addEventListener("astro:page-load", () => {
+    const detailBlocks = document.querySelectorAll('.detail-block');
+    const serviceImages = document.querySelectorAll('.service-image');
+    
+    const toggleActiveImage = (index) => {
+      // const activeImage = document.querySelector("")
+      serviceImages.forEach((element: HTMLElement, i) => {
+        if (i == index) {
+          return element.dataset.active = "false";
+        }
+        return element.dataset.active = "true";
+      })
+    }
 
-  detailBlocks.forEach((block: HTMLElement) => {
-    block.addEventListener('inView', () => {
-      toggleActiveImage(block.dataset.index);
+    detailBlocks.forEach((block: HTMLElement) => {
+      block.addEventListener('inView', () => {
+        toggleActiveImage(block.dataset.index);
+      })
     })
   })
+
+  
 </script>
 
 <style>
