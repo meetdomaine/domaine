@@ -73,9 +73,10 @@ const { content } = Astro.props;
   //   createViewportObserver(section, {bidirectional: false});
   // })
 
-  // document.addEventListener("astro:after-swap", () => {
-  //   createViewportObserver(section, {bidirectional: false});
-  // })
+  document.addEventListener("astro:after-swap", () => {
+    const video = document.querySelector('.video');
+    if (video && video instanceof HTMLVideoElement) video.muted = true;
+  })
 </script>
 
 
