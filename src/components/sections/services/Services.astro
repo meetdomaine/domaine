@@ -82,7 +82,8 @@ const { content } = Astro.props;
     }
 
     detailBlocks.forEach((block: HTMLElement) => {
-      block.addEventListener('inView', () => {
+      block.addEventListener('inView', (e) => {
+        console.log(e)
         toggleActiveImage(block.dataset.index);
       })
     })
