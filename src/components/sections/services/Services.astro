@@ -1,6 +1,5 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
-import ViewportObserver from "../../../animation/ViewportObserver";
 
 const { content } = Astro.props;
 ---
@@ -27,7 +26,7 @@ const { content } = Astro.props;
             width="50vw"
             height="50vh"
             data-index={i}
-            data-active="false"
+            data-active={i < 1 ? "true" : "false"}
           />
         )
       })}
@@ -36,43 +35,50 @@ const { content } = Astro.props;
   <div class="section-details">
     {content.services.map((service, i) => {
       return (
-        <ViewportObserver client:only="solid-js">
-          <div class="detail-block" data-index={i}>
-            <img
-              class="service-image-mobile"
-              sizes="100vw"
-              srcset={`
-                ${urlFor(service.image).width(800).height(800).auto('format').url()} 800w,
-                ${urlFor(service.image).width(1290).height(800).auto('format').url()} 1290w,
-                ${urlFor(service.image).width(1536).height(800).auto('format').url()} 1536w,
-              `}
-              src={urlFor(service.image).width(800).height(800).auto('format').url()}
-              width="100vw"
-              height="100vw"
-            />
-            {service.title && <h4>{service.title}</h4> }
-            {service.description && <h5 class="h6">{service.description}</h5> }
-            <ul class="deliverables">
-              {service.deliverables && service.deliverables.map((deliverable) => {
-                return (
-                  <li class="deliverable">{deliverable}</li>
-                )
-              })}
-            </ul>
-          </div>
-        </ViewportObserver>
+        <div class="detail-block" data-index={i} >
+          <img
+            class="service-image-mobile"
+            sizes="100vw"
+            srcset={`
+              ${urlFor(service.image).width(800).height(800).auto('format').url()} 800w,
+              ${urlFor(service.image).width(1290).height(800).auto('format').url()} 1290w,
+              ${urlFor(service.image).width(1536).height(800).auto('format').url()} 1536w,
+            `}
+            src={urlFor(service.image).width(800).height(800).auto('format').url()}
+            width="100vw"
+            height="100vw"
+          />
+          {service.title && <h4>{service.title}</h4> }
+          {service.description && <h5 class="h6">{service.description}</h5> }
+          <ul class="deliverables">
+            {service.deliverables && service.deliverables.map((deliverable) => {
+              return (
+                <li class="deliverable">{deliverable}</li>
+              )
+            })}
+          </ul>
+        </div>
       )
     })}
   </div>
 </section>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  import { createViewportObserver } from  '../../../utils/viewportObserver.js';
+
+  const initImageAnimation = () => {
+    console.log('init')
     const detailBlocks = document.querySelectorAll('.detail-block');
     const serviceImages = document.querySelectorAll('.service-image');
+
+    detailBlocks.forEach((block: HTMLElement) => {
+      createViewportObserver(block, {bidirectional: false});
+      block.addEventListener('inView', (e) => {
+        toggleActiveImage(block.dataset.index);
+      })
+    })
     
     const toggleActiveImage = (index) => {
-      // const activeImage = document.querySelector("")
       serviceImages.forEach((element: HTMLElement, i) => {
         if (i == index) {
           return element.dataset.active = "false";
@@ -80,15 +86,13 @@ const { content } = Astro.props;
         return element.dataset.active = "true";
       })
     }
+  }
 
-    detailBlocks.forEach((block: HTMLElement) => {
-      block.addEventListener('inView', (e) => {
-        console.log(e)
-        toggleActiveImage(block.dataset.index);
-      })
-    })
+  initImageAnimation()
+
+  document.addEventListener("astro:after-swap", () => {
+    initImageAnimation()
   })
-
   
 </script>
 

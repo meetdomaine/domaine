@@ -1,9 +1,12 @@
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import './Contact.css';
+import { createViewportObserver } from "../../../utils/viewportObserver";
 
 export default function Forms(props) {
 
   const [ activeForm, setActiveForm ] = createSignal(null)
+
+  let section;
 
   const createHubspotScript = () => {
 
@@ -30,6 +33,7 @@ export default function Forms(props) {
 
   onMount(() => {
     createHubspotScript();
+    if (section) createViewportObserver(section)
   })
 
   createEffect(() => {
@@ -39,7 +43,7 @@ export default function Forms(props) {
   })
 
   return (
-    <section class="contact" id="contact">
+    <section class="contact" id="contact" ref={section}>
       <div class="contact-form">
         <div class="section-title">
           <h2 class="h2">{props.content.heading}</h2>

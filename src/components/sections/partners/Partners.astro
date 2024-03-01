@@ -1,5 +1,4 @@
 ---
-import ViewportObserver from "../../../animation/ViewportObserver";
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 
@@ -32,19 +31,42 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
     {content.logos.map((logo, i) => {
       if (!logo.featured) {
         return (
-          <ViewportObserver client:only="solid-js" delay={i * 10}>
+          // <ViewportObserver client:only="solid-js" delay={i * 10}>
             <img
               class="logo"
               src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
               alt={`Partner logo for ${logo.name}`} 
               loading='lazy'
+              data-delay={i * 100}
             />
-          </ViewportObserver>
+          // </ViewportObserver>
         )
       }
     })}
   </div>
 </section>
+
+<script>
+  import { createViewportObserver } from  '../../../utils/viewportObserver.js';
+
+  const initAnimation = () => {
+    console.log('init')
+    const logos = document.querySelectorAll('.logo');
+
+    logos.forEach((logo: HTMLElement) => {
+      const delay = logo && logo.dataset && logo.dataset.delay ? logo.dataset.delay : 0;
+      createViewportObserver(logo, {bidirectional: false, delay: delay});
+    })
+  }
+
+  initAnimation()
+
+  document.addEventListener("astro:after-swap", () => {
+    initAnimation()
+  })
+  
+</script>
+
 
 <script>
   const heading = document.querySelector("#heading");

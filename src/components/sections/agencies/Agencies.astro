@@ -1,5 +1,4 @@
 ---
-import ViewportObserver from "../../../animation/ViewportObserver";
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 ---
@@ -10,7 +9,7 @@ const { content } = Astro.props;
   <div class="text-blocks">
     {content.agencies.map((agency, i) => {
       return (
-        <ViewportObserver client:only="solid-js" delay={i * 200}>
+        // <ViewportObserver client:only="solid-js" delay={i * 200}>
           <div class="text-block">
 
             <a href={agency.linkURL} target="_blank">
@@ -25,11 +24,31 @@ const { content } = Astro.props;
             <p class="description">{agency.description}</p>
             <!-- <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a> -->
           </div>
-        </ViewportObserver>
+        // </ViewportObserver>
       )
     })}
   </div>
 </section>
+
+<script>
+  import { createViewportObserver } from  '../../../utils/viewportObserver.js';
+
+  const initImageAnimation = () => {
+    console.log('init')
+    const textBlocks = document.querySelectorAll('.text-block');
+
+    textBlocks.forEach((block: HTMLElement) => {
+      createViewportObserver(block, {bidirectional: false});
+    })
+  }
+
+  initImageAnimation()
+
+  document.addEventListener("astro:after-swap", () => {
+    initImageAnimation()
+  })
+  
+</script>
 
 <style>
   .agencies {
