@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   integrations: [solidJs(), sitemap()],
-  output: 'hybrid',
+  output: 'server',
   adapter: vercel(),
   site: 'https://domaine-2-0.vercel.app/',
 });

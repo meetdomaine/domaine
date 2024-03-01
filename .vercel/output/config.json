@@ -14,6 +14,26 @@
 		{
 			"src": "^\\/_image$",
 			"dest": "_render"
+		},
+		{
+			"src": "^\\/insights\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/events\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/robots\\.txt\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/styleguide\\/?$",
+			"dest": "_render"
 		}
 	]
 }
