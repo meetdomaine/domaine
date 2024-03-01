@@ -2,6 +2,8 @@
 import ViewportObserver from "../../../animation/ViewportObserver";
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
+
+export const prerender = false;
 ---
 
 <ViewportObserver client:only="solid-js" bidirectional={false}>
