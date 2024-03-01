@@ -68,28 +68,26 @@ const { content } = Astro.props;
 
 <script>
 
-  document.addEventListener('astro:page-load', () => {
-    const detailBlocks = document.querySelectorAll('.detail-block');
-    const serviceImages = document.querySelectorAll('.service-image');
+  const detailBlocks = document.querySelectorAll('.detail-block');
+  const serviceImages = document.querySelectorAll('.service-image');
 
-    if (serviceImages[0] instanceof HTMLElement) {
-      serviceImages[0].dataset.active = "false";
-    }
-    
-    const toggleActiveImage = (index) => {
-      // const activeImage = document.querySelector("")
-      serviceImages.forEach((element: HTMLElement, i) => {
-        if (i == index) {
-          return element.dataset.active = "false";
-        }
-        return element.dataset.active = "true";
-      })
-    }
+  // if (serviceImages[0] instanceof HTMLElement) {
+  //   serviceImages[0].dataset.active = "false";
+  // }
+  
+  const toggleActiveImage = (index) => {
+    // const activeImage = document.querySelector("")
+    serviceImages.forEach((element: HTMLElement, i) => {
+      if (i == index) {
+        return element.dataset.active = "false";
+      }
+      return element.dataset.active = "true";
+    })
+  }
 
-    detailBlocks.forEach((block: HTMLElement) => {
-      block.addEventListener('inView', () => {
-        toggleActiveImage(block.dataset.index);
-      })
+  detailBlocks.forEach((block: HTMLElement) => {
+    block.addEventListener('inView', () => {
+      toggleActiveImage(block.dataset.index);
     })
   })
 </script>
@@ -149,7 +147,7 @@ const { content } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* opacity: 0; */
+    opacity: 1;
     scale: 1.1;
     transition: opacity var(--anim-lg), scale var(--anim-lg);
   }
@@ -161,11 +159,6 @@ const { content } = Astro.props;
   .service-image[data-active="true"] {
     opacity: 0;
     scale: 1.1;
-  }
-
-  .service-image[data-active="false"] {
-    opacity: 1;
-    scale: 1;
   }
 
   .section-details {
