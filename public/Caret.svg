@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <path stroke="inherit" d="m23 7-11 9.625L1 7"/>
+  <style>
+    svg {
+      color: white;
+    }
+    <!-- path {
+      stroke: currentColor;
+    } -->
+  </style>
+</svg>

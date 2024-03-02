@@ -4,7 +4,7 @@ export function createViewportObserver(element, options) {
 
   const defaultSettings = {
     bidirectional: false,
-    rootMargin: "0% 0% 10% 0%",
+    rootMargin: "0% 0% 20% 0%",
     threshold: 0.5,
     delay: 0
   } 

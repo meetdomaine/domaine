@@ -195,6 +195,7 @@ const { title, description, image, theme } = Astro.props;
 		--color-link-secondary: var(--color-light);
 
 		/* Spacing */
+		--space-3xs: max(2px, calc((2 / var(--viewport-desktop)) * 100vw));
 		--space-2xs: max(5px, calc((5 / var(--viewport-desktop)) * 100vw));
 		--space-xs: max(10px, calc((10 / var(--viewport-desktop)) * 100vw));
 		--space-sm: max(15px, calc((15 / var(--viewport-desktop)) * 100vw));
@@ -224,7 +225,8 @@ const { title, description, image, theme } = Astro.props;
 		--form-field-radius: 4px;
 		--form-field-gap-inline: var(--space-xs);
 		--form-field-gap-block: var(--space-sm);
-		--form-toggle-size: 16px;
+		--form-toggle-size: 1em;
+		--form-field-border: var(--color-border);
 
 		/* Animation */
 		--anim-easing: cubic-bezier(0.22, 1, 0.36, 1);
@@ -235,13 +237,6 @@ const { title, description, image, theme } = Astro.props;
 		/* Fonts */
 		--font-family: 'Suisse Intl', Helvetica, Arial, system-ui, sans-serif;
 
-		/* Forms */
-		--form-field-background: transparent;
-		--form-field-border: var(--color-border);
-		--form-field-radius: 4px;
-		--form-field-gap-inline: var(--space-xs);
-		--form-field-gap-block: var(--space-sm);
-		--form-toggle-size: 1em;
 	}
 
 	html.lenis {
@@ -417,29 +412,6 @@ const { title, description, image, theme } = Astro.props;
 		translate: -5px 0;
 	}
 
-	.radio-button-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-		margin-bottom: var(--space-sm);
-  }
-
-	.button-radio {
-		padding-inline: var(--space-sm);
-	}
-
-	.radio-button-group .button-radio {
-		border-radius: 0;
-	}
-
-	.radio-button-group .button-radio:first-child {
-    border-radius: var(--radius-rounded) 0 0 var(--radius-rounded);
-  }
-
-	.radio-button-group .button-radio:last-child {
-    border-radius: 0 var(--radius-rounded) var(--radius-rounded) 0;
-  }
-
 	h1, .h1,
 	h2, .h2,
 	h3, .h3,
@@ -447,6 +419,9 @@ const { title, description, image, theme } = Astro.props;
 	h5, .h5,
 	h6, .h6,
 	p,
+	legend,
+	input,
+	label,
 	.caption {
 		--base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
 		font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
@@ -519,18 +494,64 @@ const { title, description, image, theme } = Astro.props;
 	}
 
 
-	/* Forms */
-	form {
+	
+
+	/* Hubspot Styling -- Global */
+
+	form,
+	.hs-form {
 		display: flex;
 		flex-direction: column;
-		/* gap: var(--form-field-gap-block); */
+		align-items: stretch;
+		gap: var(--form-field-gap-block);
+	}
+
+	.hs-form-field {
+	}
+
+	.hs-form-field label,
+	.hs-input[type="file"] {
+		--min-size: 14;
+		--base-size: 16;
+		letter-spacing: 0;
+		margin: 0;
+		color: var(--color-foreground) !important;
+	}
+
+	.hs-field-desc {
+		--min-size: 12;
+		--base-size: 12;
+		letter-spacing: 0;
+		margin: 0;
+		padding: 0;
+		color: var(--color-foreground-secondary);
+		margin-top: var(--space-2xs);
+	}
+
+	.hs-form-booleancheckbox-display a,
+	.hs-form-checkbox-display a,
+	.hs-form-radio-display a,
+	.hs-field-desc a {
+		text-decoration: underline;
+		color: inherit;
 	}
 
 	.input {
+		margin-top: var(--space-xs);
 		margin-right: 0 !important;
 	}
 
+	.hs-input[type="text"],
+	.hs-input[type="email"],
+	.hs-input[type="number"],
+	.hs-input[type="file"],
+	select,
+	textarea {
+		width: 100% !important;
+	}
+
 	input,
+	select,
 	textarea {
 		border: 1px solid var(--color-border);
 		background-color: var(--form-field-background);
@@ -543,38 +564,115 @@ const { title, description, image, theme } = Astro.props;
 	}
 
 	input:hover,
+	select,:hover,
 	textarea:hover {
 		border-color: var(--color-foreground);
 	}
 
 	input::placeholder,
+	select::placeholder,
 	textarea::placeholder {
 		color: var(--color-foreground-secondary);
 	}
 
-	input[type="radio"] {
-		-webkit-appearance: none;
-		appearance: none;
-		background-color: transparent;
-		margin: 0;
-		padding: 0;
-		font: inherit;
-		color: currentColor;
-		width: var(--form-toggle-size);
-		height: var(--form-toggle-size);
-		border: 1px solid currentColor;
-		border-radius: var(--radius-rounded);
-		position: relative;
+	select {
+		color: var(--color-foreground);
+    /* appearance: none; */
+    /* background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); */
+    /* background-image: url(/Caret.svg);
+    background-repeat: no-repeat;
+    background-position: right var(--space-xs) center;
+    background-size: var(--icon-md); */
 	}
 
-	input[type="radio"]::before {
+	/* Hubspot Styling -- Layout */
+
+	.form-columns-1,
+	.form-columns-2 {
+		width: 100%;
+		max-width: 100% !important;
+	}
+
+	.form-columns-2 {
+		display: flex;
+		flex-direction: row;
+		justify-content: stretch;
+		align-items: flex-start;
+		gap: var(--form-field-gap-inline);
+	}
+
+
+	/* Hubspot Styling -- Text Area */
+	
+	textarea,
+	.hs-fieldtype-textarea {
+		font-family: inherit;
+	}
+
+	/* Hubspot - Radio Input */
+
+	.inputs-list {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		/* margin-top: var(--space-sm); */
+	}
+
+	.hs-form-booleancheckbox-display,
+	.hs-form-checkbox-display,
+	.hs-form-radio-display {
+		--min-size: 12 !important;
+		--base-size: 12 !important;
+		letter-spacing: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: flex-start;
+		gap: var(--space-xs);
+		cursor: pointer;
+	}
+
+	.hs-form-booleancheckbox-display span {
+		margin: 0 !important;
+	}
+
+	.hs-input[type="radio"],
+	.hs-input[type="checkbox"] {
+		flex: 0 0 auto;
+		width: var(--form-toggle-size) !important;
+		height: var(--form-toggle-size) !important;
+		margin: 0;
+		padding: 0;
+		appearance: none;
+		background-color: transparent;
+		font: inherit;
+		border: 1px solid currentColor;
+		position: relative;
+		-webkit-appearance: none;
+	}
+
+	.hs-input[type="radio"],
+	.hs-input[type="radio"]::before {
+		border-radius: var(--radius-rounded);
+	}
+
+	.hs-input[type="checkbox"],
+	.hs-input[type="checkbox"]::before {
+		border-radius: 0;
+	}
+
+	input[type="radio"]::before,
+	input[type="checkbox"]::before {
 		--fill-size: 60%;
 		content: "";
 		width: var(--fill-size);
 		height: var(--fill-size);
 		position: absolute;
 		background-color: currentColor;
-		border-radius: var(--radius-rounded);
 		top: 50%;
 		left: 50%;
 		translate: -50% -50%;
@@ -582,55 +680,12 @@ const { title, description, image, theme } = Astro.props;
 		transition: opacity var(--anim-sm);
 	}
 
-	input[type="radio"]:checked::before {
+	input[type="radio"]:checked::before,
+	input[type="checkbox"]:checked::before {
 		opacity: 1;
 	}
 
-	textarea {
-		/* font-family: var(--font-family); */
-		font-family: inherit;
-	}
-
-	/* Hubspot Styling */
-
-
-
-	.form-columns-1,
-	.form-columns-2 {
-		width: 100%;
-		max-width: 100% !important;
-		/* margin-bottom: var(--form-field-gap-block); */
-	}
-
-	.form-columns-2 {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		gap: var(--form-field-gap-inline);
-	}
-
-	.form-columns-2 .field {
-		flex: 1 1 50%;
-	}
-
-	.hs-form-field {
-		margin-bottom: var(--form-field-gap-block);
-	}
-
-	.hs-fieldtype-text,
-	.hs-fieldtype-date {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		gap: var(--space-2xs);
-	}
-
-	.hs-input[type="text"],
-	.hs-input[type="email"],
-	textarea {
-		width: 100% !important;
-	}
-
+	/* Hubspot Styling -- Button */
 
 	.hs-button {
 		width: 100%;
@@ -639,6 +694,8 @@ const { title, description, image, theme } = Astro.props;
 		justify-content: center;
 	}
 
+	/* Hubspot Styling -- Error */
+
 	.hs-error-msgs {
 		margin: var(--space-2xs) 0 0;
 		padding: 0;
@@ -646,7 +703,12 @@ const { title, description, image, theme } = Astro.props;
 
 	.hs-error-msgs li {
 		list-style: none;
+		width: 100%;
+		text-align: center;
 	}
+
+
+	/* Hubspot Styling -- Rich Text */
 
 	.hs-error-msg,
 	.hs-richtext p,
@@ -670,93 +732,29 @@ const { title, description, image, theme } = Astro.props;
 		padding: var(--space-2xs) var(--space-xs);
 	}
 
-	/* Hubspot - Radio Input */
-	.inputs-list {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: var(--space-xs);
+	/* Radio Button Group */
+
+	.radio-button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+		margin-bottom: var(--space-sm);
+  }
+
+	.button-radio {
+		padding-inline: var(--space-sm);
 	}
 
-	.hs-form-booleancheckbox {
-		list-style: none;
+	.radio-button-group .button-radio {
+		border-radius: 0;
 	}
 
-	.hs-form-booleancheckbox a {
-		text-decoration: underline;
-	}
+	.radio-button-group .button-radio:first-child {
+    border-radius: var(--radius-rounded) 0 0 var(--radius-rounded);
+  }
 
-	.hs-form-radio {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-	}
-
-	.hs-fieldtype-radio {
-		padding-top: var(--space-sm);
-	}
-
-	.hs-form-radio-display {
-		cursor: pointer;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		gap: var(--space-2xs);
-	}
-
-	.hs-input[type="radio"],
-	.hs-input[type="checkbox"] {
-		width: var(--form-toggle-size) !important;
-		height: var(--form-toggle-size) !important;
-	}
-
-	.legal-consent-container .hs-form-booleancheckbox-display input[type="checkbox"] {
-		flex: 0 0 var(--form-toggle-size);
-	}
-
-	.inputs-list {
-		padding: 0;
-		list-style: none;
-	}
-
-	.hs-form-booleancheckbox-display {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		justify-content: flex-start;
-		gap: var(--space-xs);
-		cursor: pointer;
-	}
-
-	.legal-consent-container .hs-form-booleancheckbox-display>span {  
-		margin-left: 0 !important;
-		flex: 1 1 100%;
-		/* line-height: 1; */
-		font-weight: normal;
-		font-size: 12px;
-	}
-
-	.legal-consent-container .hs-form-booleancheckbox-display > span > p,
-	.legal-consent-container .hs-form-booleancheckbox-display > span > p > a,
-	.legal-consent-container .hs-form-booleancheckbox-display > span span {
-		margin-block: 0 !important;
-		padding-block: 0 !important;
-		display: inline;
-		letter-spacing: 0.01em;
-		line-height: 1;
-		font-weight: normal;
-		font-size: 12px;
-	}
-
-	.legal-consent-container .hs-error-msgs label {
-		color: var(--color-foreground) !important;
-	}
-
-	.hs-form-booleancheckbox::marker {
-		content: none;
-	}
-
-	
+	.radio-button-group .button-radio:last-child {
+    border-radius: 0 var(--radius-rounded) var(--radius-rounded) 0;
+  }
 
 </style>
