@@ -561,6 +561,7 @@ const { title, description, image, theme } = Astro.props;
 		transition: border var(--anim-sm);
 		width: 100%;
 		max-width: 100%;
+		position: relative;
 	}
 
 	input:hover,
@@ -641,7 +642,9 @@ const { title, description, image, theme } = Astro.props;
 	}
 
 	.hs-input[type="radio"],
-	.hs-input[type="checkbox"] {
+	.hs-input[type="checkbox"],
+	input[type="radio"],
+	input[type="checkbox"] {
 		flex: 0 0 auto;
 		width: var(--form-toggle-size) !important;
 		height: var(--form-toggle-size) !important;
@@ -650,18 +653,23 @@ const { title, description, image, theme } = Astro.props;
 		appearance: none;
 		background-color: transparent;
 		font: inherit;
+		color: inherit;
 		border: 1px solid currentColor;
 		position: relative;
 		-webkit-appearance: none;
 	}
 
 	.hs-input[type="radio"],
-	.hs-input[type="radio"]::before {
+	.hs-input[type="radio"]::before,
+	input[type="radio"],
+	input[type="radio"]::before {
 		border-radius: var(--radius-rounded);
 	}
 
 	.hs-input[type="checkbox"],
-	.hs-input[type="checkbox"]::before {
+	.hs-input[type="checkbox"]::before,
+	input[type="checkbox"],
+	input[type="checkbox"]::before {
 		border-radius: 0;
 	}
 
