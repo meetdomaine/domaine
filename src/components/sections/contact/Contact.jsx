@@ -47,7 +47,7 @@ export default function Forms(props) {
       <div class="contact-form">
         <div class="section-title">
           <h2 class="h2">{props.content.heading}</h2>
-          <h3 class="h5">{props.content.subheading}</h3>
+          <h3 class="h6">{props.content.subheading}</h3>
         </div>
 
         <Show when={props.content.forms && props.content.forms.length > 1 && activeForm()}>
