@@ -15,6 +15,7 @@ interface Props {
 
 const data = await getSEOSettings();
 const { title, description, image, theme } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -25,6 +26,7 @@ const { title, description, image, theme } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="canonical" href={`https://www.meetdomaine.com${currentPath}`} />
 		<meta name="generator" content={Astro.generator} />
 
 		<!-- Google tag (gtag.js) -->
