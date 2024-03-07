@@ -80,9 +80,9 @@ export async function getPages() {
 }
 
 export async function getBlogPageContent() {
-  const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage, "category": category->{name, slug}} }`)
+  const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage, imageAlt, "category": category->{name, slug}} }`)
   const posts = await client.fetch(`*[_type == "contentBlog"]{
-    title, slug, excerpt, mainImage, "category": category->{ name, slug }, publishedAt
+    title, slug, excerpt, mainImage, imageAlt, "category": category->{ name, slug }, publishedAt
   }|order(publishedAt desc)`)
   const categories = await client.fetch(`*[_type == "categoryBlog"]`)
   return { 

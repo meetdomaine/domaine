@@ -18,6 +18,7 @@ const content = Astro.props;
       `}
       src={urlFor(content.post.mainImage).url()}
       transition:persist
+      alt={content.post.imageAlt}
     />
   </div>
 

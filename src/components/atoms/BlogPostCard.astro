@@ -16,6 +16,7 @@ const { content } = Astro.props;
         ${urlFor(content.mainImage).width(1440).height(1440).auto('format').url()} 1440w,
       `}
       src={urlFor(content.mainImage).width(600).height(600).auto('format').url()}
+      alt={content.imageAlt}
     />
   </a>
   <div class="content">
