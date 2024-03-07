@@ -4,7 +4,7 @@ import { formatDate } from "../../../../utils/formatDate";
 import CategoryTag from "../../../atoms/CategoryTag.astro";
 import Icon from "../../../atoms/Icon.astro";
 
-const { title, excerpt, image, category, authors, date } = Astro.props;
+const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props;
 // console.log(category)
 ---
 <section class="blog-post-hero">
@@ -26,6 +26,7 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
               <img
                 class="author-image"
                 src={urlFor(author.image).url()}
+                alt={`Headshot of ${author.name}, ${author.title} at Domaine.`}
               />
               <div class="author-text">
                 <p class="author-name">{author.name}</p>
@@ -43,6 +44,7 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
       <img 
         class="image"
         sizes="(max-width: 768px) 100vw, 50vw"
+        alt={imageAlt}
         srcset={`
           ${urlFor(image).width(800).height(800).url()} 800w,
           ${urlFor(image).width(1200).height(1200).url()} 1200w,
