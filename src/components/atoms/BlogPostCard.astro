@@ -6,7 +6,11 @@ const { content } = Astro.props;
 // console.log(content)
 ---
 <article class="blog-post-card">
-  <a class="media" href={`/insights/${content.category.slug.current}/${content.slug.current}`} >
+  <a 
+    class="media" 
+    href={`/insights/${content.category.slug.current}/${content.slug.current}`} 
+    aria-label={`Read article entitled ${content.title}`}
+  >
     <img
       class="image"
       sizes="(max-width: 768px) 50vw, (max-width: 960px) 35vw, 25vw"
@@ -20,7 +24,10 @@ const { content } = Astro.props;
     />
   </a>
   <div class="content">
-    <a href={`/insights/${content.category.slug.current}/${content.slug.current}`}>
+    <a 
+      href={`/insights/${content.category.slug.current}/${content.slug.current}`}
+      aria-label={`Read article entitled ${content.title}`}
+    >
       <h5 class="h6">{content.title}</h5>
     </a>
     <CategoryTag category={content.category} />
