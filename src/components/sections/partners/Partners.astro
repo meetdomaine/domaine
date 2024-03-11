@@ -69,31 +69,39 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
 
 
 <script>
-  const heading = document.querySelector("#heading");
-  if (heading instanceof HTMLElement && heading.dataset.inlineLogo) {
+  const initInlineLogo = () => {
+    const heading = document.querySelector("#heading");
+    if (heading instanceof HTMLElement && heading.dataset.inlineLogo) {
 
-    const splitString = heading.innerText.split('$');
-    if (splitString.length > 1) {
+      const splitString = heading.innerText.split('$');
+      if (splitString.length > 1) {
 
-      heading.innerText = ""
-      splitString.forEach((string, i) => {
-        const node = document.createElement('span')
-        node.textContent = string
-        heading.appendChild(node)
+        heading.innerText = ""
+        splitString.forEach((string, i) => {
+          const node = document.createElement('span')
+          node.textContent = string
+          heading.appendChild(node)
 
-        if (i == 0) {
-          const image = document.createElement('img')
-          image.classList.add("inline-logo")
-          image.src = heading.dataset.inlineLogo
-          image.alt = "Inline partner logo"
-          image.loading = "lazy" 
-          image.style.height = "1em"
-          image.style.verticalAlign = "middle"
-          heading.appendChild(image)
-        }
-      })
+          if (i == 0) {
+            const image = document.createElement('img')
+            image.classList.add("inline-logo")
+            image.src = heading.dataset.inlineLogo
+            image.alt = "Inline partner logo"
+            image.loading = "lazy" 
+            image.style.height = "1em"
+            image.style.verticalAlign = "middle"
+            heading.appendChild(image)
+          }
+        })
+      }
     }
   }
+
+  initInlineLogo()
+
+  document.addEventListener("astro:after-swap", () => {
+    initInlineLogo()
+  })
 </script>
 
 <style>
