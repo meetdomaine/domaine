@@ -53,6 +53,7 @@ const sectionBlocks = (`
   _type == "sectionMediaFullbleed" => {...},
   _type == "sectionMediaGrid" => {...},
   _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
+  _type == "sectionTextColumns" => {...},
 `)
 
 export async function getFooterContent() {

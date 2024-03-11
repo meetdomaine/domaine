@@ -1,0 +1,25 @@
+---
+const { content } = Astro.props;
+---
+<section class="text-columns">
+  <h2 class="h3 heading">{content.heading}</h2>
+  {content.subheading && <h3 class="h5 subheading">{content.subheading}</h3> }
+</section>
+
+<style>
+  .text-columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: var(--space-2xl) var(--page-margin-narrow);
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .heading {
+    max-width: 20ch;
+  }
+  .subheading {
+    max-width: 30ch;
+  }
+</style>

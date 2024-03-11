@@ -11,6 +11,7 @@ import TextHero from './hero/TextHero.astro'
 import MediaFullbleed from './media/MediaFullbleed.astro'
 import MediaGrid from './media/MediaGrid.astro'
 import ServiceDetail from './services/ServiceDetail.astro'
+import TextColumns from './text/TextColumns.astro'
 
 interface Props {
 	block: any;
@@ -31,3 +32,4 @@ const { block } = Astro.props;
 {block._type == 'sectionServiceDetail' && <ServiceDetail content={block} />}
 {block._type == 'sectionMediaFullbleed' && <MediaFullbleed content={block} />}
 {block._type == 'sectionMediaGrid' && <MediaGrid content={block} />}
+{block._type == 'sectionTextColumns' && <TextColumns content={block} />}
