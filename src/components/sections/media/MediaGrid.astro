@@ -6,12 +6,28 @@ console.log(content.media)
 const media = [...content.media, ...content.media]
 ---
 <section class="media-grid">
+  {content.heading &&
+    <div class="section-title">
+      <h2 class="heading">{content.heading}</h2>
+    </div>
+  }
   <div class="media-row">
     {media.map((asset) => {
       return (
         <img 
           class="image-media"
           src={urlFor(asset.image).url()}
+          sizes="25vw"
+          srcset={`
+            ${urlFor(asset.image).width(150).height(150).auto('format').url()} 150w,
+            ${urlFor(asset.image).width(320).height(320).auto('format').url()} 320w,
+            ${urlFor(asset.image).width(470).height(470).auto('format').url()} 470w,
+            ${urlFor(asset.image).width(720).height(720).auto('format').url()} 720w,
+            ${urlFor(asset.image).auto('format').url()},
+          `}
+          width="25vw"
+          height="25vw"
+          alt={asset.imageAlt}
         />
       )
     })}
@@ -24,6 +40,12 @@ const media = [...content.media, ...content.media]
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-xl) 0;
+  }
+
+  .section-title {
+    padding: 0 var(--page-margin);
   }
 
   .media-row {
@@ -32,25 +54,26 @@ const media = [...content.media, ...content.media]
     justify-content: stretch;
     gap: var(--space-md);
     padding: 0 var(--space-md);
-    width: fit-content;
+    width: max-content;
     /* translate: 0 0; */
-    /* animation: scroll 10s linear 0s infinite; */
+    animation: scroll 20s linear infinite;
     /* translate: -50% 0; */
-    translate: -10% 0;
+    /* translate: -10% 0; */
+    will-change: translate;
   }
 
   @keyframes scroll {
-    from: {
-      translate: 0% 0;
-    }
-    to: {
-      translate: calc(100% - 100vw ) 0;
+    to {
+      translate: calc( -50% + var(--space-md) / 2 ) 0;
     }
   }
 
   .image-media {
     /* width: 20%; */
-    flex: 0 0 30vw;
+    width: max(120px, 25vw);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    /* flex: 0 0 30vw; */
     min-width: 0;
     border-radius: var(--radius-sm);
   }
