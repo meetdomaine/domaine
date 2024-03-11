@@ -242,9 +242,15 @@ const currentPath = Astro.url.pathname;
 
 	}
 
+	@media screen and (max-width:768px) {
+		:root {
+			--page-margin-narrow: var(--page-margin);
+		}
+	}
+
 	html.lenis {
-  height: auto;
-}
+		height: auto;
+	}
 
 	.lenis.lenis-smooth {
 		scroll-behavior: auto !important;

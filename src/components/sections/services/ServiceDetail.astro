@@ -20,7 +20,7 @@ data.forEach((deliverable) => {
 // console.log(deliverables)
 
 ---
-<section class="service-detail">
+<section class="service-detail" id={content.id}>
   <div class="section-intro">
     <img 
       class="image"
@@ -67,7 +67,7 @@ data.forEach((deliverable) => {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-2xl);
-    padding: var(--space-2xl) var(--page-margin-narrow);
+    padding: var(--header-height) var(--page-margin-narrow) var(--space-2xl);
   }
 
   .section-intro {
