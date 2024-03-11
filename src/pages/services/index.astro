@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { urlFor } from '../../utils/sanityClient';
+import SectionBlock from '../../components/sections/SectionBlock.astro';
+// import TextHero from '../../components/sections/hero/TextHero.astro';
+// import ServicesDetail from '../../components/sections/services/ServicesDetail.astro';
+// import MediaFullbleed from '../../components/sections/media/MediaFullbleed.astro';
+// import MediaRow from '../../components/sections/media/MediaGrid.astro';
+import { getServicesPageContent } from '../../utils/sanityClient';
+
+const data = await getServicesPageContent();
+// console.log(data)
+---
+
+<Layout 
+    title="Insights"
+    theme="light"
+    title={data.metaTitle ? data.metaTitle : data.title} 
+    description={data.metaDescription}
+    image={data.metaImage && urlFor(data.metaImage).url()}
+>
+
+  {data.content.map((contentBlock) => (
+    <SectionBlock block={contentBlock} />
+  ))}
+
+</Layout>
+
+<script>
+    
+</script>
+
+<style>
+</style>

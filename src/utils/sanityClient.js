@@ -48,7 +48,11 @@ const sectionBlocks = (`
   },
   _type == "sectionAgencies" => {
     _type, heading, agencies[]
-  }
+  },
+  _type == "sectionTextHero" => {...},
+  _type == "sectionMediaFullbleed" => {...},
+  _type == "sectionMediaGrid" => {...},
+  _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
 `)
 
 export async function getFooterContent() {
@@ -101,11 +105,17 @@ export async function getBlogPosts() {
   return postContent
 }
 
+export async function getServicesPageContent() {
+  const pageContent = await client.fetch(`*[_type == "pageServices"]{ ..., content[]{${sectionBlocks}}}`);
+  return pageContent[0];
+}
 
-// export async function getEvents() {
-//   const events = await client.fetch('*[_type == "contentEvent"]');
-//   return events
-// }
+export async function getServiceDeliverables(service) {
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}}`);
+  return deliverables;
+}
+
+
 
 export async function getEvents() {
   const content = await client.fetch(`*[_type == "contentEvent"]{

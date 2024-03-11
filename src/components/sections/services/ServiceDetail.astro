@@ -1,0 +1,162 @@
+---
+import { urlFor, getServiceDeliverables } from "../../../utils/sanityClient"
+
+const { content } = Astro.props;
+const data = await getServiceDeliverables(content.service._id)
+
+
+// console.log(data)
+
+let deliverables = {}
+
+data.forEach((deliverable) => {
+  if (deliverables[deliverable.category]) {
+    return deliverables[deliverable.category].push(deliverable)
+  }
+  return deliverables[deliverable.category] = [ deliverable ];
+
+})
+
+// console.log(deliverables)
+
+---
+<section class="service-detail">
+  <div class="section-intro">
+    <img 
+      class="image"
+      sizes="50vw, (max-width: 768px) 100vw"
+      srcset={`
+        ${urlFor(content.image).url()} 500w,
+      `}
+      src={urlFor(content.image).url()}
+      width="100vw"
+      height="50vw"
+      alt={content.imageAlt}
+    />
+
+    <div class="section-title">
+      <h2 class="h5">{content.service.name}</h2>
+      <p class="h3">{content.heading}</p>
+    </div>
+  </div>
+
+  <div class="section-details">
+    <p class="category-description h5">{content.description}</p>
+    <div class="deliverable-categories">
+      {Object.keys(deliverables).map((category) => {
+        return (
+          <div class="deliverable-category">
+            <p class="category-name caption">{category}</p>
+            <ul class="deliverables">
+              {deliverables[category].map((deliverable) => {
+                return (
+                  <li class="deliverable h6">{deliverable.name}</li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2xl);
+    padding: var(--space-2xl) var(--page-margin-narrow);
+  }
+
+  .section-intro {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .image {
+    flex: 0 0 50%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .section-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    /* justify-content: space-between; */
+    gap: var(--space-3xl);
+  }
+  
+  .category-description {
+    /* flex: 0 1 50%; */
+    max-width: 20ch;
+  }
+
+  .deliverable-categories {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--space-xl);
+    flex: 1 0 50%;
+  }
+
+  .category-name {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-xs);
+  }
+
+  .deliverable-category {
+    display: flex;
+    flex-direction: column;
+    /* flex-grow: 1; */
+    flex: 0 1 50%;
+    gap: var(--space-sm);
+  }
+
+  .deliverables {
+    padding: 0 var(--space-md) 0 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .deliverable {
+    list-style: none;
+  }
+
+  @media screen and (max-width:768px) {
+
+    .section-intro {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .image {
+      flex: 0 0 auto;
+      width: auto;
+    }
+
+    .section-details {
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    /* .deliverable-categories {
+      flex-direction: column;
+    } */
+  }
+
+</style>

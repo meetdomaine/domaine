@@ -1,0 +1,70 @@
+---
+const { content } = Astro.props;
+---
+<section class="text-hero">
+  <div class="section-title">
+    <h1 class="h5">{content.title}</h1>
+    <ul class="jumplinks">
+    {content.jumplinks.map((jumplink) => {
+      return (
+        <li class="jumplink-item"><a class="jumplink" href={jumplink.id}>{jumplink.title}</a></li>
+      )
+    })}
+    </ul>
+  </div>
+  <h2 class="heading">{content.heading}</h2>
+</section>
+
+<style>
+  .text-hero {
+    padding: var(--header-height) var(--page-margin) var(--space-xl);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-xl);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+  }
+
+  .jumplinks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0.5em 0 0;
+  }
+
+  .jumplink-item {
+    list-style: none;
+    padding: 0;
+  }
+
+  .jumplink {
+    color: var(--color-foreground-secondary);
+  }
+
+  .heading {
+    flex: 0 1 100%;
+    max-width: 25ch;
+  }
+
+  @media screen and (max-width:768px) {
+    .text-hero {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2xl);
+    }
+
+    .section-title {
+      justify-content: space-between;
+    }
+  }
+</style>
