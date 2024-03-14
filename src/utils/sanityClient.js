@@ -150,3 +150,8 @@ export async function getEventContent(slug) {
   return content
 }
 
+export async function getServices() {
+  const services = await client.fetch(`*[_type == "categoryService"]{...}`)
+  return services
+}
+

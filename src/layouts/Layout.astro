@@ -545,8 +545,12 @@ const currentPath = Astro.url.pathname;
 		color: inherit;
 	}
 
-	.input {
+	.hs-field-desc + .input,
+	label + .input {
 		margin-top: var(--space-xs);
+	}
+
+	.input {
 		margin-right: 0 !important;
 	}
 
