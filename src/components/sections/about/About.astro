@@ -27,7 +27,7 @@ const { content } = Astro.props;
   <div class="media" data-embed={content.youtubeVideoID ? "true" : "false"}>
 
     {content.youtubeVideoID &&
-      <iframe class="video video-embed" src={`https://www.youtube.com/embed/${content.youtubeVideoID}?autoplay=1&loop=1&modestbranding=1&fs=0&controls=0&disablekb=1&mute=1&playlist=6M5p5TmyHP8`} width="1080" height="1920" title="Domaine Reel 2024: Vertical" frameborder="0"></iframe>
+      <iframe class="video video-embed" src={`https://www.youtube.com/embed/${content.youtubeVideoID}?autoplay=1&loop=1&modestbranding=1&fs=0&controls=0&disablekb=1&mute=1&allow=autoplay&playlist=6M5p5TmyHP8`} width="1080" height="1920" title="Domaine Reel 2024: Vertical" frameborder="0"></iframe>
     }
 
     {content.videoURL && !content.youtubeVideoID && (
@@ -110,6 +110,8 @@ const { content } = Astro.props;
     opacity: 1;
     translate: 0 0;
     transition: opacity var(--anim-lg), translate var(--anim-lg);
+    position: sticky;
+    top: var(--header-height);
   }
 
   .about[data-animate="true"] .text{
@@ -185,6 +187,11 @@ const { content } = Astro.props;
     .about {
       flex-direction: column;
       justify-content: flex-start;
+    }
+
+    .text {
+      position: relative;
+      top: unset;
     }
 
     .media {
