@@ -31,9 +31,7 @@ const sectionBlocks = (`
   _type == "sectionClients" => {
     _type, clients[]->{name, slug, image, logo, url}
   },
-  _type == "sectionAbout" => {
-    _type, heading, subheading, stats, "videoURL": video.asset -> url, image
-  },
+  _type == "sectionAbout" => {..., "videoURL": video.asset -> url, image},
   _type == "sectionServices" => {
     _type, heading, subheading, services[]
   },
