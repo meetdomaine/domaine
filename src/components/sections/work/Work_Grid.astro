@@ -3,7 +3,6 @@ import { getProjects } from "../../../utils/sanityClient"
 import WorkProjectCard from "./Work_ProjectCard.astro";
 
 const projects = await getProjects();
-console.log(projects)
 ---
 <section class="work_grid">
   {projects.map((project, i) => (
