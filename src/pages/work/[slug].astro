@@ -1,4 +1,5 @@
 ---
+import Layout from '../../layouts/Layout.astro';
 import { getProjects } from '../../utils/sanityClient';
 
 
@@ -16,4 +17,11 @@ return projects.map((project) => {
 
 const { slug } = Astro.params;
 ---
-<h1>{slug}</h1>
+
+<Layout
+  title="Project"
+  theme="Light"
+>
+
+  <h1>{slug}</h1>
+</Layout>
