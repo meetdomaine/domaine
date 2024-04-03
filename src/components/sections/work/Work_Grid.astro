@@ -1,0 +1,34 @@
+---
+import { getProjects } from "../../../utils/sanityClient"
+import WorkProjectCard from "./Work_ProjectCard.astro";
+
+const projects = await getProjects();
+console.log(projects)
+---
+<section class="work_grid">
+  {projects.map((project, i) => (
+    <WorkProjectCard
+      title={project.title}
+      subtitle={project.subtitle}
+      slug={project.slug.current}
+      image={project.thumbnail}
+      style={i == 0 ? "large" : "default"}
+    />
+  ))}
+</section>
+
+<style>
+  .work_grid {
+    padding: 0 var(--page-margin);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--page-margin);
+  }
+
+  @media screen and (max-width: 768px) {
+    .work_grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+</style>

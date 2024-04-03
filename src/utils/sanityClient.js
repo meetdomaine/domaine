@@ -153,3 +153,20 @@ export async function getServices() {
   return services
 }
 
+export async function getWorkPageContent() {
+  const content = await client.fetch(`*[_type == "pageWork"]{...}`)
+  return content[0]
+}
+
+export async function getProjectCategories() {
+  const categories = await client.fetch(`*[_type == "categoryProject"]{...}`)
+  return categories
+}
+
+
+
+export async function getProjects() {
+  const projects = await client.fetch(`*[_type == "contentProject"]{...}`)
+  return projects
+}
+

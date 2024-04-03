@@ -1,0 +1,184 @@
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url('/SuisseIntl-Regular.otf') format('otf'),
+       url('/SuisseIntl-Regular.woff2') format('woff2'),
+       url('/SuisseIntl-Regular.woff') format('woff');
+  ;
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-display: fallback;
+  font-family: 'Suisse Intl';
+  src: url('/SuisseIntl-Italic.otf') format('otf'),
+       url('/SuisseIntl-Italic.woff2') format('woff2'),
+       url('/SuisseIntl-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-display: fallback;
+  font-family: 'Suisse Intl';
+  src: url('/SuisseIntl-SemiBold.otf') format('otf'),
+       url('/SuisseIntl-SemiBold.woff2') format('woff2'),
+       url('/SuisseIntl-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-display: fallback;
+  font-family: 'Suisse Intl';
+  src: url('/SuisseIntl-SemiBoldItalic.otf') format('otf'),
+       url('/SuisseIntl-SemiBoldItalic.woff2') format('woff2'),
+       url('/SuisseIntl-SemiBoldItalic.woff') format('woff');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-display: fallback;
+  font-family: 'Suisse Intl Mono';
+  src: url('/SuisseIntlMono.otf') format('otf'),
+       url('/SuisseIntlMono.woff2') format('woff2'),
+       url('/SuisseIntlMono.woff') format('woff');
+  font-weight: 600;
+  font-style: italic;
+}
+
+:root {
+  --viewport-desktop: 1440;
+  --font-family-primary: 'Suisse Intl', Helvetica, Arial, system-ui, sans-serif;
+  --font-family-secondary: 
+    'Suisse Intl Mono',
+    Menlo,
+    Monaco,
+    Lucida Console,
+    Liberation Mono,
+    DejaVu Sans Mono,
+    Bitstream Vera Sans Mono,
+    Courier New,
+    monospace;
+}
+
+html {
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+strong {
+  font-weight: 600;
+}
+
+em {
+  font-style: italic;
+}
+
+code {
+  font-family: var(--font-family-secondary);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-link-secondary);
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6,
+p,
+legend,
+input,
+label,
+.caption,
+.utility {
+  --base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
+  font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin: 0 0 0.2em;
+  font-weight: 600;
+}
+
+h1, .h1 {
+  --min-size: 42;
+  --base-size: 68;
+  letter-spacing: -0.05em;
+  line-height: 0.99;
+}
+
+h2, .h2 {
+  --min-size: 38;
+  --base-size: 54;
+  letter-spacing: -0.05em;
+  line-height: .95;
+}
+
+h3, .h3 {
+  --min-size: 32;
+  --base-size: 44;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+}
+
+h4, .h4 {
+  --min-size: 28;
+  --base-size: 34;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+}
+h5, .h5 {
+  --min-size: 22;
+  --base-size: 26;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+h6, .h6 {
+  --min-size: 18;
+  --base-size: 20;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+p,
+.p {
+  --min-size: 14;
+  --base-size: 16;
+  /* margin: 0 0 1em; */
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.caption {
+  --min-size: 12;
+  --base-size: 12;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.utility {
+  font-family: var(--font-family-secondary);
+  --min-size: 12;
+  --base-size: 12;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  margin: 0;
+}

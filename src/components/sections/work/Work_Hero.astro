@@ -1,0 +1,24 @@
+---
+import WorkFilter from "./Work_Filter.astro";
+import { getWorkPageContent } from "../../../utils/sanityClient";
+const content = await getWorkPageContent();
+---
+<section class="work_hero">
+  <WorkFilter />
+  <h1 class="section-title">{content.heading}</h1>
+</section>
+
+<style>
+  .work_hero {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--space-3xl);
+    padding: var(--header-height) var(--page-margin) var(--space-xl);
+  }
+
+  .section-title {
+    max-width: 20ch;
+  }
+</style>

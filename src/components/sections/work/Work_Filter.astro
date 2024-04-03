@@ -1,0 +1,25 @@
+---
+import { getProjectCategories } from "../../../utils/sanityClient"
+
+const categories = await getProjectCategories();
+---
+
+<ul class="work_filter">
+  {categories.map((category) => (
+    <li class="filter-item"><a class="utility" href={`/work/${category.slug.current}`}>{category.name}</a></li>
+  ))}
+</ul>
+
+<style>
+  .work_filter {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .filter-item {
+
+  }
+</style>
