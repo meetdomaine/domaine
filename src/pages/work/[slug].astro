@@ -5,6 +5,10 @@ import ProjectHero from '../../components/sections/project/Project_Hero.astro'
 import ProjectInfo from '../../components/sections/project/Project_Info.astro';
 import SectionBlock from '../../components/sections/SectionBlock.astro'
 
+interface Props {
+	data: any
+}
+
 export async function getStaticPaths() {
 
   const projects = await getProjects();

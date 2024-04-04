@@ -20,11 +20,13 @@ const { excerpt, description, tags } = Astro.props;
 
     <span class="details">
       <p class="utility">Disciplines</p>
-      <ul class="tags">
-        {tags.map((tag, i) => (
-          <li class="tag">{tag.name}</li>
-        ))}
-      </ul>
+      {tags &&
+        <ul class="tags">
+          {tags.map((tag, i) => (
+            <li class="tag">{tag.name}</li>
+          ))}
+        </ul>
+      }
       <ArrowLink text="View Site" url="www.google.com"/>
     </span>
   </div>
