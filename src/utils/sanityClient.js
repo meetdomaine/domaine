@@ -52,7 +52,7 @@ const sectionBlocks = (`
   _type == "sectionMediaGrid" => {...},
   _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
   _type == "sectionTextColumns" => {...},
-  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url} },
+  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions} } },
 `)
 
 export async function getFooterContent() {

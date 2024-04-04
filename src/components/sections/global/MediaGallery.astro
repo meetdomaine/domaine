@@ -2,7 +2,7 @@
 import { urlFor } from "../../../utils/sanityClient";
 
 const { content } = Astro.props;
-console.log(content)
+console.log(content.media[0])
 ---
 <section data-inverted={content.invertTextColor ? "true" : "false"} class="media-gallery" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
   <div class="media">
@@ -18,12 +18,15 @@ console.log(content)
               muted
               autoplay
               playsinline
+              onloadedmetadata="this.muted = true"
             />
           )
         } else {
           return (
             <img
               class="asset"
+              width={media.imageMetadata.dimensions.width}
+              height={media.imageMetadata.dimensions.height}
               src={urlFor(media.image).auto('format').url()}
             />
           )
@@ -32,10 +35,12 @@ console.log(content)
       })}
     <!-- </div> -->
   </div>
-  <div class="section-title">
-    <h2 class="heading h3">{content.heading}</h2>
-    <p class="description">{content.description}</p>
-  </div>
+  {content.heading &&
+    <div class="section-title">
+      <h2 class="heading h3">{content.heading}</h2>
+      <p class="description">{content.description}</p>
+    </div>
+  }
 </section>
 
 <script>
@@ -147,7 +152,7 @@ console.log(content)
     gap: 5vw;
     flex: 0 0 auto;
     overflow-x: auto;
-    padding: 0 var(--page-margin) var(--space-md);
+    padding: 0 var(--page-margin);
     /* scroll-behavior: smooth;
     scroll-snap-type: x proximity; */
   }
@@ -170,6 +175,7 @@ console.log(content)
     scroll-snap-align: center;
     max-width: 80vw;
     max-height: 60svh;
+    width: auto;
   }
 
   @media screen and (max-width: 768px) {
