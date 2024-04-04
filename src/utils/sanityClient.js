@@ -52,6 +52,7 @@ const sectionBlocks = (`
   _type == "sectionMediaGrid" => {...},
   _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
   _type == "sectionTextColumns" => {...},
+  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url} },
 `)
 
 export async function getFooterContent() {
@@ -166,7 +167,7 @@ export async function getProjectCategories() {
 
 
 export async function getProjects() {
-  const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug} }`)
+  const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, content[]{${sectionBlocks}} }`)
   return projects
 }
 

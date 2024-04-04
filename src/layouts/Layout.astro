@@ -4,6 +4,7 @@ import Header from '../components/sections/header/Header.astro';
 import HeaderMobile from '../components/sections/header/HeaderMobile.astro';
 import Footer from '../components/sections/footer/Footer.astro'
 import { getSEOSettings, urlFor } from '../utils/sanityClient';
+import CustomCursor from '../components/atoms/CustomCursor.astro'
 // import LenisScroll from '../components/global/LenisScroll.astro'
 
 interface Props {
@@ -35,6 +36,7 @@ import '../variables/color.css';
 
 		<!-- Google tag (gtag.js) -->
 		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-8YW8NFYNGR"></script>
+		<script src="../utils/lenis.js"></script>
 
 		<!-- Google Analytics -->
 		<script is:inline>
@@ -81,43 +83,13 @@ import '../variables/color.css';
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5Q9G6VH"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
+		<CustomCursor />
 		<Header />
 		<HeaderMobile />
 		<slot />
 		<Footer />
 	</body>
 </html>
-
-
-
-<script>
-	import Lenis from '@studio-freight/lenis'
-	
-	const lenis = new Lenis()
-
-	function raf(time) {
-		lenis.raf(time)
-		requestAnimationFrame(raf)
-	}
-
-	requestAnimationFrame(raf)
-
-
-	const htmlElement = document.querySelector("html");
-
-	document.addEventListener("astro:before-preparation", () => {
-		lenis.stop();
-		htmlElement.dataset.loading = "true";
-	})
-
-	document.addEventListener("astro:page-load", () => {
-		// console.log("Load")
-		lenis.start();
-		htmlElement.dataset.loading = "false";
-	})
-</script>
-
-
 
 <style is:global>
 	* {
