@@ -35,7 +35,7 @@ const { data } = Astro.props;
     description={data.description}
     tags={data.tags}
   />
-    {data.content.map((block) => (
+    {data.content ? data.content.map((block) => (
       <SectionBlock block={block} />
-    ))}
+    )) : ''}
 </Layout>
