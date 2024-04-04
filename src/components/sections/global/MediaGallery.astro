@@ -1,0 +1,164 @@
+---
+import { urlFor } from "../../../utils/sanityClient";
+
+const { content } = Astro.props;
+// console.log(content)
+---
+<section class="media-gallery" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
+  <div class="media">
+    <div class="assets-scroller">
+      {content.media.map((media, i) => (
+        <img
+          class="asset"
+          src={urlFor(media.image).url()}
+        />
+      ))}
+    </div>
+  </div>
+  <div class="section-title">
+    <h2 class="heading h3">{content.heading}</h2>
+    <p class="description">{content.description}</p>
+  </div>
+</section>
+
+<script>
+  import { throttle } from '../../../utils/functions'
+  const container = document.querySelector(".media-gallery");
+
+  const throttleDelayMs = 15
+  const dragSensitivity = 2
+
+  let startX;
+  let isDown;
+  let scrollerWidth
+  let viewportWidth
+  let scrollDistance
+  let moveDistance;
+
+  const measureElements = () => {
+    viewportWidth = window.innerWidth
+    scrollDistance = scrollerWidth - viewportWidth
+  }
+  measureElements()
+
+  const throttleUpdateScroll = throttle(() => {
+      container.scrollLeft += moveDistance
+  }, throttleDelayMs)
+
+  const handleMouseDown = (e) => {
+    isDown = true;
+    container.classList.add("active")
+    startX = e.clientX
+  }
+
+  const handleMouseUp = (e) => {
+    isDown = false;
+    container.classList.remove("active")
+  }
+
+  const handleMouseLeave = (e) => {
+    isDown = false;
+    container.classList.remove("active")
+  }
+
+  const handleMouseMove = (e) => {
+    if (isDown) {
+      e.preventDefault();
+      moveDistance = (startX - e.clientX) * dragSensitivity
+      throttleUpdateScroll()
+      startX = e.clientX
+    }
+  }
+
+  container.addEventListener("mousedown", (e) => handleMouseDown(e));
+  container.addEventListener("mouseup", (e) => handleMouseUp(e));
+  container.addEventListener("mouseleave", (e) => handleMouseLeave(e));
+  container.addEventListener("mousemove", (e) => handleMouseMove(e));
+  window.addEventListener("resize", measureElements)
+
+</script>
+
+<style>
+  .media-gallery {
+    padding: var(--space-2xl) var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: stretch;
+    gap: var(--space-lg);
+    overflow-x: auto;
+    cursor: grab;
+    /* scroll-behavior: smooth; */
+    scroll-snap-type: proximity;
+  }
+
+  .media-gallery.active {
+    cursor: grabbing;
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    align-self: stretch;
+    position: sticky;
+    left: 0;
+  }
+
+  .heading {
+    max-width: 20ch;
+  }
+
+  .description {
+    max-width: 50ch;
+  }
+
+  .media {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    /* align-items: stretch; */
+    /* overflow-x: visible; */
+    flex: 0 0 auto;
+    min-width: fit-content;
+    /* overflow: hidden; */
+    /* overflow: auto; */
+    /* margin: 0 var(--page-margin); */
+  }
+
+  .assets-scroller {
+    /* --scroll-amount: 0; */
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    flex: 0 0 max-content;
+    height: 70svh;
+    /* translate: calc( var(--scroll-amount) * (-100% + 100vw - var(--page-margin) * 2)) 0;
+    will-change: translate;
+    transition: translate 0.3s var(--anim-easing); */
+  }
+
+  .asset {
+    flex: 0 0 auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-width: 0px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* .image,
+  .video {
+    height: 100%;
+    width: auto;
+  } */
+
+  .image {
+
+  }
+
+  .video {
+
+  }
+</style>

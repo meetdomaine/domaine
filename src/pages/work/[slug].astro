@@ -1,27 +1,41 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getProjects } from '../../utils/sanityClient';
-
+import ProjectHero from '../../components/sections/project/Project_Hero.astro'
+import ProjectInfo from '../../components/sections/project/Project_Info.astro';
+import SectionBlock from '../../components/sections/SectionBlock.astro'
 
 export async function getStaticPaths() {
 
-const projects = await getProjects();
+  const projects = await getProjects();
 
-return projects.map((project) => {
-  return {
-    params: { slug: project.slug.current },
-    props: { data: project }
-  }
-})
+  return projects.map((project) => {
+    return {
+      params: { slug: project.slug.current },
+      props: { data: project }
+    }
+  })
 }
 
 const { slug } = Astro.params;
+const { data } = Astro.props;
+// console.log(data)
 ---
 
 <Layout
   title="Project"
-  theme="Light"
+  theme="light"
 >
-
-  <h1>{slug}</h1>
+  <ProjectHero
+    title={data.title}
+    image={data.mainImage}
+  />
+  <ProjectInfo 
+    excerpt={data.excerpt}
+    description={data.description}
+    tags={data.tags}
+  />
+    {data.content.map((block) => (
+      <SectionBlock block={block} />
+    ))}
 </Layout>

@@ -1,0 +1,57 @@
+---
+import { urlFor } from "../../../utils/sanityClient";
+
+const { title, image } = Astro.props;
+---
+<section class="project_hero">
+    <div class="content">
+      <img 
+        class="image"
+        sizes="100vw"
+        width="100vw"
+        height="50vw"
+        srcset={`
+          ${urlFor(image).width(400).height(200).auto('format').url()} 400w,
+          ${urlFor(image).width(768).height(384).auto('format').url()} 768w,
+          ${urlFor(image).width(1024).height(512).auto('format').url()} 1024w,
+          ${urlFor(image).width(1440).height(720).auto('format').url()} 1440w,
+          ${urlFor(image).width(1800).height(900).auto('format').url()} 1800w,
+          ${urlFor(image).width(2048).height(1024).auto('format').url()} 2048w,
+          ${urlFor(image).width(2400).height(1200).auto('format').url()} 2400w,
+          ${urlFor(image).width(2880).height(1440).auto('format').url()} 2880w,
+        `}
+        src={urlFor(image).url()}
+        loading="eager"
+        alt="Alt"
+      />
+      <h1 class="project-title">{title}</h1>
+  </div>
+</section>
+
+<style>
+  .project_hero {
+    padding: var(--header-height) var(--page-margin) var(--space-md);
+  }
+
+  .content {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 2 / 1;
+    position: relative;
+    color: var(--color-background);
+    padding: var(--space-md);
+  }
+
+  .project-title {
+    position: relative;
+    z-index: 1;
+  }
+
+  .image {
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+  }
+</style>

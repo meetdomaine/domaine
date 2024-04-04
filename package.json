@@ -17,6 +17,7 @@
     "@sanity/image-url": "^1.0.2",
     "@studio-freight/lenis": "^1.0.37",
     "astro": "^4.3.6",
+    "astro-icon": "^1.1.0",
     "astro-portabletext": "^0.9.6",
     "solid-js": "^1.8.15"
   }

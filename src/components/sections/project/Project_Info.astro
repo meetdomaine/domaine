@@ -1,0 +1,119 @@
+---
+import { Icon } from 'astro-icon/components'
+import ArrowLink from '../../atoms/ArrowLink.astro';
+
+
+const { excerpt, description, tags } = Astro.props;
+
+---
+<section class="project_info">
+  <div class="section-intro">
+    <h2 class="section-title h3">{excerpt}</h2>
+    <Icon name="domaine-icon" class="logo" />
+  </div>
+  <div class="section-info">
+
+    <span class="description">
+      <p class="utility">Opportunity</p>
+      <p class="h6">{description}</p>
+    </span>
+
+    <span class="details">
+      <p class="utility">Disciplines</p>
+      <ul class="tags">
+        {tags.map((tag, i) => (
+          <li class="tag">{tag.name}</li>
+        ))}
+      </ul>
+      <ArrowLink text="View Site" url="www.google.com"/>
+    </span>
+  </div>
+</section>
+
+<style>
+  .project_info {
+    padding: 0 var(--page-margin) var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .section-intro {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .logo {
+    flex: 0 1 min(120px, 15%);
+    height: auto;
+  }
+
+  .section-title {
+    max-width: 25ch;
+  }
+
+  .section-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-left: var(--space-3xl);
+    gap: var(--space-2xl);
+  }
+
+  .description,
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .description {
+    max-width: 70ch;
+  }
+
+  .details {
+    min-width: 25vw;
+  }
+
+  .tags {
+    border-top: 1px solid var(--color-border);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-2xs);
+  }
+
+  .tag {
+    border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-xs);
+    color: var(--color-foreground-secondary);
+  }
+
+  @media screen and (max-width: 768px) {
+    .section-intro {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .section-title {
+      max-width: unset;
+    }
+
+    .logo {
+      flex: 0 0 5vw;
+      width: auto;
+    }
+
+    .section-info {
+      flex-direction: column;
+      padding: 0;
+      align-items: stretch;
+    }
+
+    .details {
+      min-width: unset;
+    }
+  }
+</style>

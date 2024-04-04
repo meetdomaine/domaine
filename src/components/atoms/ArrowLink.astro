@@ -1,0 +1,23 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const { text, url } = Astro.props;
+---
+<a class="arrow-link h6" href={url}>
+  <p class="">{text}</p>
+  <Icon name="arrow-diagonal" class="icon" />
+</a>
+
+<style>
+  .arrow-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .icon {
+    width: 0.7em;
+    height: auto;
+  }
+</style>

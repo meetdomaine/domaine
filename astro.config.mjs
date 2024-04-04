@@ -4,13 +4,15 @@ import vercel from "@astrojs/vercel/serverless";
 // import vercelStatic from '@astrojs/vercel/static';
 import sitemap from '@astrojs/sitemap';
 
+import icon from "astro-icon";
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [solidJs(), sitemap()],
+  integrations: [solidJs(), sitemap(), icon()],
   output: 'hybrid',
   adapter: vercel({
-    edgeMiddleware: true,
+    edgeMiddleware: true
   }),
   // adapter: vercel(),
-  site: 'https://meetdomaine.com/',
+  site: 'https://meetdomaine.com/'
 });
