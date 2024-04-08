@@ -56,7 +56,6 @@ const { content } = Astro.props;
 
 <script>
 
-
   // import Swiper JS
   import Swiper from 'swiper';
   import { FreeMode, Mousewheel } from 'swiper/modules';
@@ -67,7 +66,9 @@ const { content } = Astro.props;
   import 'swiper/css/mousewheel';
   import 'swiper/css/a11y';
 
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
+
+    console.log('init sliders')
 
     const swiperElements = document.querySelectorAll('.media-gallery-swiper');
 
