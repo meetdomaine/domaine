@@ -50,7 +50,7 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
   import { createViewportObserver } from  '../../../utils/viewportObserver.js';
 
   const initAnimation = () => {
-    console.log('init')
+    // console.log('init')
     const logos = document.querySelectorAll('.logo');
 
     logos.forEach((logo: HTMLElement) => {
@@ -61,7 +61,7 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
 
   initAnimation()
 
-  document.addEventListener("astro:after-swap", () => {
+  document.addEventListener("astro:page-load", () => {
     initAnimation()
   })
   

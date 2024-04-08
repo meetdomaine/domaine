@@ -72,14 +72,18 @@ const { content } = Astro.props;
 
 <script>
   import { createViewportObserver } from  '../../../utils/viewportObserver.js';
-  const section = document.querySelector('.about');
-  createViewportObserver(section, {bidirectional: false});
+  
 
   // document.addEventListener("astro:page-load", () => {
   //   createViewportObserver(section, {bidirectional: false});
   // })
 
-  document.addEventListener("astro:after-swap", () => {
+  document.addEventListener("astro:page-load", () => {
+    const section = document.querySelector('.about');
+    if (section) {
+      createViewportObserver(section, {bidirectional: false});
+    }
+
     const video = document.querySelector('.video');
     if (video && video instanceof HTMLVideoElement) video.muted = true;
   })

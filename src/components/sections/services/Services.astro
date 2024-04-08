@@ -67,7 +67,7 @@ const { content } = Astro.props;
   import { createViewportObserver } from  '../../../utils/viewportObserver.js';
 
   const initImageAnimation = () => {
-    console.log('init')
+    // console.log('init')
     const detailBlocks = document.querySelectorAll('.detail-block');
     const serviceImages = document.querySelectorAll('.service-image');
 
@@ -90,7 +90,7 @@ const { content } = Astro.props;
 
   initImageAnimation()
 
-  document.addEventListener("astro:after-swap", () => {
+  document.addEventListener("astro:page-load", () => {
     initImageAnimation()
   })
   

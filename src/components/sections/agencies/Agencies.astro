@@ -34,7 +34,7 @@ const { content } = Astro.props;
   import { createViewportObserver } from  '../../../utils/viewportObserver.js';
 
   const initImageAnimation = () => {
-    console.log('init')
+    // console.log('init')
     const textBlocks = document.querySelectorAll('.text-block');
 
     textBlocks.forEach((block: HTMLElement) => {
@@ -44,7 +44,7 @@ const { content } = Astro.props;
 
   initImageAnimation()
 
-  document.addEventListener("astro:after-swap", () => {
+  document.addEventListener("astro:page-load", () => {
     initImageAnimation()
   })
   

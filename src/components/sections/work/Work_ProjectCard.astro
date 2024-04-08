@@ -10,10 +10,10 @@ const { title, subtitle, image, slug, style } = Astro.props;
     width="33vw"
     height="44vw"
     srcset={`
-      ${urlFor(image).width(200).height(266).auto('format').url} 200w,
-      ${urlFor(image).width(400).height(533).auto('format').url} 400w,
-      ${urlFor(image).width(768).height(1024).auto('format').url} 768w,
-      ${urlFor(image).width(960).height(1280).auto('format').url} 960w,
+      ${urlFor(image).width(200).height(266).auto('format').url()} 200w,
+      ${urlFor(image).width(400).height(533).auto('format').url()} 400w,
+      ${urlFor(image).width(768).height(1024).auto('format').url()} 768w,
+      ${urlFor(image).width(960).height(1280).auto('format').url()} 960w,
     `}
     loading="lazy"
     src={urlFor(image).url()} 
