@@ -1,0 +1,85 @@
+---
+import { getRelatedProjects } from "../../../utils/sanityClient";
+import ArrowLink from "../../atoms/ArrowLink.astro";
+import ProjectCard from "../work/Work_ProjectCard.astro";
+const { project } = Astro.props;
+
+const data = await getRelatedProjects(project);
+const relatedProjectCount = 2;
+console.log(data.relatedProjects)
+// console.log(data.allOtherProjects.length)
+---
+
+<section class='related-projects'>
+  <div class="section-title">
+    <h2 class="heading">Related Projects</h2>
+    <ArrowLink text="View All" url="/work" style="large" />
+  </div>
+  <div class="projects-wrapper"> 
+    {data.relatedProjects.length > 0 ? (
+      data.relatedProjects.map((project, i) => {
+        if (i < relatedProjectCount) return (
+          <ProjectCard 
+            title={project.title} 
+            subtitle={project.subtitle}
+            image={project.thumbnail}
+            slug={project.slug.current}
+            style="default"
+          />
+        )
+      })
+    ) : (
+      data.allOtherProjects.map((project, i) => {
+        if (i < relatedProjectCount) return (
+          <ProjectCard 
+            title={project.title} 
+            subtitle={project.subtitle}
+            image={project.thumbnail} 
+            slug={project.slug.current}
+            style="default"
+          />
+        )
+      })
+    )
+    }
+  </div>
+</section>
+
+
+<style>
+
+  .related-projects {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-xl) var(--page-margin);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .projects-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--page-margin);
+  }
+
+  @media screen and (max-width: 768px) {
+    .related-projects {
+
+      /* overflow-x: auto; */
+    }
+    .projects-wrapper {
+      /* width: 200vw; */
+      /* overflow-x: auto; */
+      /* grid-template-columns: 1fr; */
+      /* display: flex;
+      flex-direction: row; */
+      /* justify-content: flex-start; */
+    }
+  }
+</style>

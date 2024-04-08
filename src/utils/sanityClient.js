@@ -53,6 +53,7 @@ const sectionBlocks = (`
   _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
   _type == "sectionTextColumns" => {...},
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions} } },
+  _type == "sectionContentBlocks" => {...,  blocks[]{..., media{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions}} }  },
 `)
 
 export async function getFooterContent() {
@@ -169,5 +170,12 @@ export async function getProjectCategories() {
 export async function getProjects() {
   const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, content[]{${sectionBlocks}} }`)
   return projects
+}
+
+export async function getRelatedProjects(project) {
+  // console.log(project)
+  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' ]{...}`)
+  const allOtherProjects = await client.fetch(`*[_type == "contentProject" && slug.current != '${project.slug.current}' ]{...}`)
+  return { relatedProjects, allOtherProjects}
 }
 

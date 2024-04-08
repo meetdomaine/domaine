@@ -4,6 +4,7 @@ import { getProjects } from '../../utils/sanityClient';
 import ProjectHero from '../../components/sections/project/Project_Hero.astro'
 import ProjectInfo from '../../components/sections/project/Project_Info.astro';
 import SectionBlock from '../../components/sections/SectionBlock.astro'
+import RelatedProjects from '../../components/sections/project/Project_RelatedProjects.astro';
 
 interface Props {
 	data: any
@@ -29,6 +30,7 @@ const { data } = Astro.props;
 <Layout
   title="Project"
   theme="light"
+  title={data.title}
 >
   <ProjectHero
     title={data.title}
@@ -42,4 +44,8 @@ const { data } = Astro.props;
     {data.content ? data.content.map((block) => (
       <SectionBlock block={block} />
     )) : ''}
+
+    <RelatedProjects 
+      project={data}
+    />
 </Layout>
