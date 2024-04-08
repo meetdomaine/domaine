@@ -21,6 +21,7 @@ const currentPath = Astro.url.pathname;
 import '../variables/typography.css';
 import '../variables/spacing.css';
 import '../variables/color.css';
+import '../variables/buttons.css';
 ---
 
 <!doctype html>
@@ -147,105 +148,7 @@ import '../variables/color.css';
 		padding: 0;
 	}
 
-	button,
-	.button,
-	.hs-button {
-		background: var(--color-foreground);
-		color: var(--color-background);
-		display: flex;
-		flex-direction: row;
-		gap: var(--space-xs);
-		border-radius: var(--radius-rounded);
-		padding: var(--space-xs) var(--space-md);
-		border: none;
-		cursor: pointer;
-		transition: background var(--anim-sm), color var(--anim-sm);
-	}
-
-	button svg,
-	.button svg {
-		width: var(--icon-md);
-		translate: 0px;
-		transition: translate var(--anim-sm);
-	}
-
-	button:hover,
-	.button:hover 
-	.hs-button {
-		background: var(--color-brand);
-		color: var(--color-brand-contrast);
-	}
-
-	button:hover svg,
-	.button:hover svg {
-		translate: var(--space-2xs);
-	}
-
-	button.button-secondary,
-	.button.button-secondary {
-		background: transparent;
-		border: 1px solid var(--color-foreground);
-		color: var(--color-foreground);
-	}
-
-	button.button-secondary:hover,
-	.button.button-secondary:hover {
-		background: var(--color-foreground);
-		color: var(--color-background);
-	}
-
-	button.button-tertiary,
-	.button.button-tertiary {
-		padding: 0;
-		background: transparent;
-		border: none;
-		color: var(--color-foreground);
-	}
-
-	button.button-radio,
-	.button.button-radio {
-		background: transparent;
-		border: 1px solid var(--color-border);
-		color: var(--color-foreground);
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: var(--space-xs);
-	}
-
-	button.button-radio.active,
-	.button.button-radio.active {
-		background: var(--color-foreground);
-		color: var(--color-background);
-	}
-
-	.text-link {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: var(--space-2xs);
-		transition: color var(--anim-sm);
-		color: var(--color-foreground);
-		padding-block: var(--space-xs);
-	}
-
-	.text-link:hover {
-		color: var(--color-foreground-secondary);
-	}
-
-	.text-link svg {
-		translate: 0 0;
-		transition: translate var(--anim-sm);
-	}
-
-	.text-link:hover svg {
-		translate: -5px 0;
-	}
-
-
-	
-
-	/* Hubspot Styling -- Global */
+		/* Hubspot Styling -- Global */
 
 	form,
 	.hs-form {

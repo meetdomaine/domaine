@@ -1,6 +1,7 @@
 ---
 import { getHeaderContent } from "../../../utils/sanityClient";
-import Icon from '../../atoms/Icon.astro';
+// import Icon from '../../atoms/Icon.astro';
+import { Icon } from 'astro-icon/components';
 
 const data = await getHeaderContent();
 // console.log(data)
@@ -8,7 +9,7 @@ const data = await getHeaderContent();
 <header class="header" data-animate="true">
   <span class="navigation">
     <a class="logo" href="/" aria-label="Domaine homepage">
-      <Icon glyph="logo" />
+      <Icon name="domaine-wordmark" />
     </a>
     <nav class="navigation-links">
       {data[0].links.map((link, i) => {
@@ -20,7 +21,7 @@ const data = await getHeaderContent();
   </span>
   <a class="button contact-button" href={data[0].buttonURL}>
     {data[0].buttonText}
-    <Icon glyph="email" size="large" />
+    <Icon name="email" />
   </a>
 </header>
 
@@ -77,8 +78,9 @@ const data = await getHeaderContent();
     width: clamp(100px, 8vw, 220px);
   }
 
-  .logo svg {
+  .logo [data-icon] {
     width: 100%;
+    height: auto;
   }
 
   .navigation-links {
