@@ -1,7 +1,7 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
 
-const { title, image } = Astro.props;
+const { title, image, imageAlt } = Astro.props;
 ---
 <section class="project_hero">
     <div class="content">
@@ -21,9 +21,9 @@ const { title, image } = Astro.props;
             ${urlFor(image).width(2400).height(1200).auto('format').url()} 2400w,
             ${urlFor(image).width(2880).height(1440).auto('format').url()} 2880w,
           `}
-          src={urlFor(image).url()}
+          src={urlFor(image).width(1024).height(512).auto('format').url()}
           loading="eager"
-          alt="Alt"
+          alt={imageAlt}
         />
       }
       <h1 class="project-title">{title}</h1>
