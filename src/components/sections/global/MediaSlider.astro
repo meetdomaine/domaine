@@ -67,52 +67,53 @@ const { content } = Astro.props;
   import 'swiper/css/mousewheel';
   import 'swiper/css/a11y';
 
-  
-  const swiperElements = document.querySelectorAll('.media-gallery-swiper');
+  document.addEventListener("astro:page-load", () => {
 
-  // Handle clicks on each button.
-  swiperElements.forEach((element) => {
+    const swiperElements = document.querySelectorAll('.media-gallery-swiper');
 
-    const orientation = element.dataset.orientation
+    // Handle clicks on each button.
+    swiperElements.forEach((element) => {
 
-    const swiper = new Swiper(element, {
-      spaceBetween: 100,
-      // centeredSlides: true,
-      slidesPerView: orientation == 'landscape' ? 1.5 : 3.5,
-      // loop: true,
-      grabCursor: true,
-      freeMode: {
-        enabled: true,
-        sticky: true,
-        momentumBounceRatio: 0.3,
-        momentumRatio: 0.5,
-        // momentumVelocityRatio: 1
-      },
-      mousewheel: {
-        enabled: true,
-        forceToAxis: true,
-      },
-      a11y: {
-        enabled: true,
-      },
-      breakpoints: {
-      // when window width is >= 320px
-        320: {
-          slidesPerView: 1.5,
-          spaceBetween: 20
+      const orientation = element.dataset.orientation
+
+      const swiper = new Swiper(element, {
+        spaceBetween: 100,
+        // centeredSlides: true,
+        slidesPerView: orientation == 'landscape' ? 1.5 : 3.5,
+        // loop: true,
+        grabCursor: true,
+        freeMode: {
+          enabled: true,
+          sticky: true,
+          momentumBounceRatio: 0.3,
+          momentumRatio: 0.5,
+          // momentumVelocityRatio: 1
         },
-        // when window width is >= 768px
-        768: {
-          slidesPerView: orientation == 'landscape' ? 1.5 : 3.5,
-          spaceBetween: 100
-        }
-      },
-      modules: [FreeMode, Mousewheel],
+        mousewheel: {
+          enabled: true,
+          forceToAxis: true,
+        },
+        a11y: {
+          enabled: true,
+        },
+        breakpoints: {
+        // when window width is >= 320px
+          320: {
+            slidesPerView: 1.5,
+            spaceBetween: 20
+          },
+          // when window width is >= 768px
+          768: {
+            slidesPerView: orientation == 'landscape' ? 1.5 : 3.5,
+            spaceBetween: 100
+          }
+        },
+        modules: [FreeMode, Mousewheel],
 
+      });
     });
-  });
 
-  
+})
 
 </script>
 
