@@ -1,0 +1,63 @@
+---
+import { urlFor } from "../../../utils/sanityClient";
+
+const { content } = Astro.props;
+console.log(content)
+---
+<section class="text-image" data-layout={content.layout} data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`} >
+  <span class="text">
+    {content.heading && <h2 class="h4">{content.heading}</h2>}
+    {content.description && <p class="">{content.description}</p>}
+  </span>
+  <span class="media">
+    <img 
+      class="image"
+      src={urlFor(content.image).url()}
+    />
+  </span>
+</section>
+
+<style>
+  .text-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    padding: var(--space-2xl) var(--page-margin);
+    gap: var(--space-xl);
+  }
+
+  .text-image[data-inverted="true"] {
+    color: var(--color-reverse);
+  }
+
+  .text-image[data-layout="imageLeft"] {
+    flex-direction: row-reverse;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    flex: 0 0 50%;
+    max-width: 60ch;
+  }
+
+  .media {
+    flex: 1 1 50%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+  }
+
+  @media screen and (max-width: 960px) {
+    .text-image,
+    .text-image[data-layout="imageLeft"] {
+      flex-direction: column-reverse;
+    }
+  }
+</style>

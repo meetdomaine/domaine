@@ -12,10 +12,9 @@ import MediaFullbleed from './media/MediaFullbleed.astro'
 import MediaGrid from './media/MediaGrid.astro'
 import ServiceDetail from './services/ServiceDetail.astro'
 import TextColumns from './text/TextColumns.astro'
-import MediaGallery from './global/MediaGallery.astro';
 import ContentBlocks from './global/ContentBlocks.astro'
-
-import MediaSlider from './global/MediaSlider.astro'
+import MediaGallery from './global/MediaGallery.astro'
+import TextImage from './global/TextImage.astro'
 
 interface Props {
 	block: any;
@@ -39,5 +38,8 @@ const { block } = Astro.props;
 {block._type == 'sectionMediaFullbleed' && <MediaFullbleed content={block} />}
 {block._type == 'sectionMediaGrid' && <MediaGrid content={block} />}
 {block._type == 'sectionTextColumns' && <TextColumns content={block} />}
-{block._type == 'sectionMediaGallery' && <MediaSlider content={block} />}
+
+<!-- Global Blocks -->
+{block._type == 'sectionMediaGallery' && <MediaGallery content={block} />}
 {block._type == 'sectionContentBlocks' && <ContentBlocks content={block} />}
+{block._type == 'sectionTextImage' && <TextImage content={block} />}

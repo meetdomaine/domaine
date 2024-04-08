@@ -54,6 +54,7 @@ const sectionBlocks = (`
   _type == "sectionTextColumns" => {...},
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions} } },
   _type == "sectionContentBlocks" => {...,  blocks[]{..., media{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions}} }  },
+  _type == "sectionTextImage" => {...},
 `)
 
 export async function getFooterContent() {

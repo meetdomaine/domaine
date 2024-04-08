@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon/components'
 import ArrowLink from '../../atoms/ArrowLink.astro';
 
 
-const { excerpt, description, tags } = Astro.props;
+const { excerpt, description, tags, link } = Astro.props;
 
 ---
 <section class="project_info">
@@ -27,7 +27,8 @@ const { excerpt, description, tags } = Astro.props;
           ))}
         </ul>
       }
-      <ArrowLink text="View Site" url="www.google.com"/>
+
+      { link && <ArrowLink text="View Site" url={link} /> }
     </span>
   </div>
 </section>

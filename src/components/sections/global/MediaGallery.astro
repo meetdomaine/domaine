@@ -1,139 +1,168 @@
 ---
+
 import { urlFor } from "../../../utils/sanityClient";
 
 const { content } = Astro.props;
-console.log(content.media[0])
+
 ---
-<section data-inverted={content.invertTextColor ? "true" : "false"} class="media-gallery" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
+<section data-inverted={content.invertTextColor ? "true" : "false"} class="media-slider" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
   <div class="media">
-    <!-- <div class="assets-scroller"> -->
+
+    <div class="media-gallery-swiper" data-orientation={content.orientation == 'landscape' ? 'landscape' : 'portrait'}>
+      <div class="swiper-wrapper">
+        
       {content.media.map((media, i) => {
+        
         if (media.videoURL) {
           return (
-            <video 
-              class="asset"
-              src={media.videoURL}
-              poster={urlFor(media.image).width(400).auto('format').url()}
-              loop
-              muted
-              autoplay
-              playsinline
-              onloadedmetadata="this.muted = true"
-            />
+
+            <div class="swiper-slide">
+              <video 
+                class="asset"
+                src={media.videoURL}
+                poster={urlFor(media.image).width(400).auto('format').url()}
+                loop
+                muted
+                autoplay
+                playsinline
+                onloadedmetadata="this.muted = true"
+              />
+            </div>
           )
         } else {
           return (
-            <img
-              class="asset"
-              width={media.imageMetadata.dimensions.width}
-              height={media.imageMetadata.dimensions.height}
-              src={urlFor(media.image).auto('format').url()}
-            />
+            <div class="swiper-slide">
+              <img
+                class="asset"
+                width={media.imageMetadata.dimensions.width}
+                height={media.imageMetadata.dimensions.height}
+                src={urlFor(media.image).url()}
+              />
+            </div>
           )
         }
         
       })}
-    <!-- </div> -->
+      </div>
   </div>
-  {content.heading &&
-    <div class="section-title">
-      <h2 class="heading h3">{content.heading}</h2>
-      <p class="description">{content.description}</p>
+  </div>
+  { content.heading || content.description ? (
+    <div class="content">
+      {content.heading && <h2 class="heading">{content.heading}</h2>}
+      {content.description && <p class="description">{content.description}</p>}
     </div>
-  }
+  ): null }
 </section>
 
 <script>
-  import { throttle } from '../../../utils/functions'
-  const container = document.querySelector(".media");
 
-  const throttleDelayMs = 15
-  const dragSensitivity = 2
+  // import Swiper JS
+  import Swiper from 'swiper';
+  import { FreeMode, Mousewheel } from 'swiper/modules';
 
-  let startX;
-  let isDown;
-  let scrollerWidth
-  let viewportWidth
-  let scrollDistance
-  let moveDistance;
+  // import Swiper styles
+  import 'swiper/css';
+  import 'swiper/css/free-mode';
+  import 'swiper/css/mousewheel';
+  import 'swiper/css/a11y';
 
-  const measureElements = () => {
-    viewportWidth = window.innerWidth
-    scrollDistance = scrollerWidth - viewportWidth
-  }
-  measureElements()
+  // document.addEventListener("DOMContentLoaded", () => {
 
-  const throttleUpdateScroll = throttle(() => {
-      container.scrollLeft += moveDistance
-  }, throttleDelayMs)
+    console.log('init sliders')
 
-  const handleMouseDown = (e) => {
-    isDown = true;
-    container.classList.add("active")
-    startX = e.clientX
-  }
+    const swiperElements = document.querySelectorAll('.media-gallery-swiper');
 
-  const handleMouseUp = (e) => {
-    isDown = false;
-    container.classList.remove("active")
-  }
+    // Handle clicks on each button.
+    swiperElements.forEach((element: HTMLElement) => {
 
-  const handleMouseEnter = (e) => {
-    window.dispatchEvent(
-      new CustomEvent("activateCursor", {
-        detail: { text: "Drag"}
-      })
-    )
-  }
+      const orientation = element.dataset.orientation
 
-  const handleMouseLeave = (e) => {
-    isDown = false;
-    container.classList.remove("active")
-    window.dispatchEvent(
-      new CustomEvent("deactivateCursor")
-    )
-  }
+      const swiper = new Swiper(element, {
+        spaceBetween: 100,
+        // centeredSlides: true,
+        slidesPerView: orientation == 'landscape' ? 1.5 : 3.5,
+        // loop: true,
+        grabCursor: true,
+        freeMode: {
+          enabled: true,
+          sticky: true,
+          momentumBounceRatio: 0.3,
+          momentumRatio: 0.5,
+          // momentumVelocityRatio: 1
+        },
+        mousewheel: {
+          enabled: true,
+          forceToAxis: true,
+        },
+        a11y: {
+          enabled: true,
+        },
+        breakpoints: {
+        // when window width is >= 320px
+          320: {
+            slidesPerView: 1.5,
+            spaceBetween: 20
+          },
+          // when window width is >= 768px
+          768: {
+            slidesPerView: orientation == 'landscape' ? 1.5 : 3.5,
+            spaceBetween: 100
+          }
+        },
+        modules: [FreeMode, Mousewheel],
 
-  const handleMouseMove = (e) => {
-    if (isDown) {
-      e.preventDefault();
-      moveDistance = (startX - e.clientX) * dragSensitivity
-      throttleUpdateScroll()
-      startX = e.clientX
-    }
-  }
+      });
+    });
 
-  container.addEventListener("mousedown", (e) => handleMouseDown(e));
-  container.addEventListener("mouseup", (e) => handleMouseUp(e));
-  container.addEventListener("mouseenter", (e) => handleMouseEnter(e));
-  container.addEventListener("mouseleave", (e) => handleMouseLeave(e));
-  container.addEventListener("mousemove", (e) => handleMouseMove(e));
-  window.addEventListener("resize", measureElements)
+// })
 
 </script>
 
 <style>
-  .media-gallery {
-    padding: var(--space-2xl) 0;
+
+  .media-slider {
+    padding: var(--space-2xl) var(--page-margin);
     display: flex;
     flex-direction: column;
-    justify-content: stretch;
-    gap: var(--space-lg);
+    gap: var(--space-xl);
+    overflow: hidden;
   }
 
-  .media-gallery[data-inverted="true"] {
-    color: var(--color-background);
+  .media-gallery-swiper {
+    /* max-height: 80svh; */
   }
 
-  .section-title {
+  .swiper-slide {
+    /* max-width: 80vw; */
+    /* max-height: 60vh; */
+    /* width: 30vw; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .asset {
+    /* height: 50svh;
+    width: auto; */
+    width: 100%;
+    /* max-width: 90%; */
+    height: auto;
+    /* max-height: 60svh; */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  /* .image,
+  .video {
+    width: 100%;
+  } */
+
+  .content {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     justify-content: space-between;
-    flex: 0 0 auto;
-    align-self: stretch;
-    position: sticky;
-    left: 0;
-    padding: 0 var(--page-margin);
   }
 
   .heading {
@@ -144,49 +173,17 @@ console.log(content.media[0])
     max-width: 50ch;
   }
 
-  .media {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: var(--space-2xl);
-    gap: 5vw;
-    flex: 0 0 auto;
-    overflow-x: auto;
-    padding: 0 var(--page-margin);
-    /* scroll-behavior: smooth;
-    scroll-snap-type: x proximity; */
-  }
-
-  .media:hover {
-    cursor: grab;
-  }
-
-  .media.active {
-    cursor: grabbing;
-  }
-
-  .asset {
-    flex: 0 0 auto;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    min-width: 0px;
-    pointer-events: none;
-    user-select: none;
-    scroll-snap-align: center;
-    max-width: 80vw;
-    max-height: 60svh;
-    width: auto;
-  }
-
   @media screen and (max-width: 768px) {
-    .section-title {
+    .content {
       flex-direction: column;
     }
-
-    .heading,
-    .description {
-      max-width: unset;
-    }
-
   }
+
+  /* .image {
+    width: 100%;
+  }
+
+  .video {
+    width: 100%;
+  } */
 </style>

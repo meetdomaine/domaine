@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getProjects } from '../../utils/sanityClient';
+import { getProjects, urlFor } from '../../utils/sanityClient';
 import ProjectHero from '../../components/sections/project/Project_Hero.astro'
 import ProjectInfo from '../../components/sections/project/Project_Info.astro';
 import SectionBlock from '../../components/sections/SectionBlock.astro'
@@ -28,9 +28,10 @@ const { data } = Astro.props;
 ---
 
 <Layout
-  title="Project"
   theme="light"
   title={data.title}
+  description={data.metaDescription ? data.metaDescription : data.description}
+  image={data.metaImage && urlFor(data.metaImage).url()}
 >
   <ProjectHero
     title={data.title}
@@ -39,6 +40,7 @@ const { data } = Astro.props;
   <ProjectInfo 
     excerpt={data.excerpt}
     description={data.description}
+    link={data.url}
     tags={data.tags}
   />
     {data.content ? data.content.map((block) => (
