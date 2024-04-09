@@ -1,9 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-const { text, url } = Astro.props;
+const { text, url, newTab } = Astro.props;
 ---
-<a class="arrow-link h6" href={url}>
+<a class="arrow-link h6" href={url} target={newTab ? "_blank" : ""}>
   <p class="">{text}</p>
   <Icon name="arrow-diagonal" class="icon" />
 </a>

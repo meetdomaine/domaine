@@ -16,7 +16,7 @@ const { content } = Astro.props;
           <video
             class="video"
             src={block.media.videoURL}
-            poster={urlFor(block.media.image).url()}
+            poster={urlFor(block.media.image).auto('format').url()}
             autoplay
             loop
             muted
@@ -27,14 +27,37 @@ const { content } = Astro.props;
             class="image half-width"
             width={block.media.imageMetadata.width}
             height={block.media.imageMetadata.height}
-            src={urlFor(block.media.image).url()}
+            sizes="50vw"
+            srcset={`
+              ${urlFor(block.media.image).width(400).height(534).auto('format').url()} 400w,
+              ${urlFor(block.media.image).width(600).height(800).auto('format').url()} 600w,
+              ${urlFor(block.media.image).width(960).height(1280).auto('format').url()} 960w,
+              ${urlFor(block.media.image).width(1024).height(1364).auto('format').url()} 1024w,
+              ${urlFor(block.media.image).width(1440).height(1920).auto('format').url()} 1440w,
+            `}
+            src={urlFor(block.media.image).auto('format').url()}
+            alt={block.media.imageAlt}
+            loading="lazy"
           />
         ) : 
           <img
             class="image full-width"
             width={block.media.imageMetadata.width}
             height={block.media.imageMetadata.height}
+            sizes="100vw"
+            srcset={`
+              ${urlFor(block.media.image).width(400).height(200).auto('format').url()} 400w,
+              ${urlFor(block.media.image).width(600).height(300).auto('format').url()} 600w,
+              ${urlFor(block.media.image).width(960).height(480).auto('format').url()} 960w,
+              ${urlFor(block.media.image).width(1024).height(512).auto('format').url()} 1024w,
+              ${urlFor(block.media.image).width(1440).height(720).auto('format').url()} 1440w,
+              ${urlFor(block.media.image).width(1800).height(900).auto('format').url()} 1800w,
+              ${urlFor(block.media.image).width(2048).height(1024).auto('format').url()} 2048w,
+              ${urlFor(block.media.image).width(2880).height(1440).auto('format').url()} 2880w,
+            `}
             src={urlFor(block.media.image).url()}
+            alt={block.media.imageAlt}
+            loading="lazy"
           />
         }
       </div>
@@ -47,7 +70,7 @@ const { content } = Astro.props;
     </span>
     
    )
-  : <h1>"No Blocks"</h1>}
+  : null}
 </section>
 
 <style>
@@ -75,7 +98,7 @@ const { content } = Astro.props;
   .media[data-layout="full-width"] {
     /* aspect-ratio: 2 / 1; */
     /* flex: 0 1 50%; */
-    max-height: 80svh;
+    /* max-height: 80svh; */
   }
 
   .media[data-layout="half-width"] {

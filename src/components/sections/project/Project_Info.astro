@@ -28,7 +28,7 @@ const { excerpt, description, tags, link } = Astro.props;
         </ul>
       }
 
-      { link && <ArrowLink text="View Site" url={link} /> }
+      { link && <ArrowLink text="View Site" url={link} newTab={true} /> }
     </span>
   </div>
 </section>

@@ -3,6 +3,7 @@
 import { urlFor } from "../../../utils/sanityClient";
 
 const { content } = Astro.props;
+console.log(content.media[0].imageMetadata.dimensions.aspectRatio)
 
 ---
 <section data-inverted={content.invertTextColor ? "true" : "false"} class="media-slider" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
@@ -12,8 +13,14 @@ const { content } = Astro.props;
       <div class="swiper-wrapper">
         
       {content.media.map((media, i) => {
+
+        const getAssetHeight = (width) => {
+          const height = Math.round(width / parseFloat(media.imageMetadata.dimensions.aspectRatio));
+          return height
+        }
         
         if (media.videoURL) {
+
           return (
 
             <div class="swiper-slide">
@@ -30,16 +37,52 @@ const { content } = Astro.props;
             </div>
           )
         } else {
-          return (
-            <div class="swiper-slide">
-              <img
-                class="asset"
-                width={media.imageMetadata.dimensions.width}
-                height={media.imageMetadata.dimensions.height}
-                src={urlFor(media.image).url()}
-              />
-            </div>
-          )
+          if (content.orientation == 'landscape') {
+            return (
+              <div class="swiper-slide">
+                <img
+                  class="asset"
+                  width={media.imageMetadata.dimensions.width}
+                  height={media.imageMetadata.dimensions.height}
+                  sizes="75vw"
+                  srcset={`
+                    ${urlFor(media.image).width(300).height(150).auto('format').url()} 300w,
+                    ${urlFor(media.image).width(600).height(300).auto('format').url()} 600w,
+                    ${urlFor(media.image).width(800).height(400).auto('format').url()} 800w,
+                    ${urlFor(media.image).width(1024).height(512).auto('format').url()} 1024w,
+                    ${urlFor(media.image).width(1440).height(720).auto('format').url()} 1440w,
+                    ${urlFor(media.image).width(1800).height(900).auto('format').url()} 1800w,
+                    ${urlFor(media.image).width(2048).height(1024).auto('format').url()} 2048w,
+                    ${urlFor(media.image).width(2160).height(1080).auto('format').url()} 2160w,
+                  `}
+                  src={urlFor(media.image).auto('format').url()}
+                  alt={media.imageAlt}
+                  loading="lazy"
+                />
+              </div>
+            )
+          } else {
+            
+            return (
+              <div class="swiper-slide">
+                <img
+                  class="asset"
+                  width={media.imageMetadata.dimensions.width}
+                  height={media.imageMetadata.dimensions.height}
+                  sizes="(max-width: 768px) 75vw, 28.5vw"
+                  srcset={`
+                    ${urlFor(media.image).width(290).height( getAssetHeight(290) ).auto('format').url()} 290w,
+                    ${urlFor(media.image).width(400).height( getAssetHeight(400) ).auto('format').url()} 400w,
+                    ${urlFor(media.image).width(600).height( getAssetHeight(600) ).auto('format').url()} 600w,
+                    ${urlFor(media.image).width(820).height( getAssetHeight(820) ).auto('format').url()} 820w,
+                  `}
+                  src={urlFor(media.image).auto('format').url()}
+                  alt={media.imageAlt}
+                  loading="lazy"
+                />
+              </div>
+            )
+          }
         }
         
       })}
