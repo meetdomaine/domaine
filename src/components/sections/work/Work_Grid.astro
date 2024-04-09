@@ -1,17 +1,18 @@
 ---
 import { getProjects } from "../../../utils/sanityClient"
-import WorkProjectCard from "./Work_ProjectCard.astro";
+import ProjectCard from "../../atoms/ProjectCard.astro";
 
 const projects = await getProjects();
 ---
 <section class="work_grid">
   {projects.map((project, i) => (
-    <WorkProjectCard
+    <ProjectCard
       title={project.title}
       subtitle={project.subtitle}
       slug={project.slug.current}
       image={project.thumbnail}
       style={i == 0 ? "large" : "default"}
+      alt={project.thumbnailAlt}
     />
   ))}
 </section>

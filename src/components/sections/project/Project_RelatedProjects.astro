@@ -1,12 +1,12 @@
 ---
 import { getRelatedProjects } from "../../../utils/sanityClient";
 import ArrowLink from "../../atoms/ArrowLink.astro";
-import ProjectCard from "../work/Work_ProjectCard.astro";
+import ProjectCard from "../../atoms/ProjectCard.astro";
 const { project } = Astro.props;
 
 const data = await getRelatedProjects(project);
 const relatedProjectCount = 2;
-// console.log(data.relatedProjects)
+// console.log(data.relatedProjects[0])
 // console.log(data.allOtherProjects.length)
 ---
 
@@ -23,6 +23,7 @@ const relatedProjectCount = 2;
             title={project.title} 
             subtitle={project.subtitle}
             image={project.thumbnail}
+            alt={project.thumbnailAlt}
             slug={project.slug.current}
             style="default"
           />
@@ -35,6 +36,7 @@ const relatedProjectCount = 2;
             title={project.title} 
             subtitle={project.subtitle}
             image={project.thumbnail} 
+            alt={project.imageAlt}
             slug={project.slug.current}
             style="default"
           />

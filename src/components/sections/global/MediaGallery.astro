@@ -3,7 +3,7 @@
 import { urlFor } from "../../../utils/sanityClient";
 
 const { content } = Astro.props;
-console.log(content.media[0].imageMetadata.dimensions.aspectRatio)
+// console.log(content.media[0].imageMetadata.dimensions.aspectRatio)
 
 ---
 <section data-inverted={content.invertTextColor ? "true" : "false"} class="media-slider" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
