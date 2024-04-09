@@ -1,6 +1,13 @@
 // Sets data-animate to 'false' when element is in view to all for CSS transitions
 
-export function createViewportObserver(element, options) {
+interface Options {
+  bidirectional?: boolean,
+  rootMargin?: string,
+  threshold?: number,
+  delay?: number
+}
+
+export function createViewportObserver(element: HTMLElement, options: Options) {
 
   const defaultSettings = {
     bidirectional: false,
@@ -27,7 +34,7 @@ export function createViewportObserver(element, options) {
 
   
   let viewportAnimationObserver = new IntersectionObserver(callback, mergedSettings);
-  element.dataset.animate = true;
+  element.dataset.animate = "true";
   viewportAnimationObserver.observe(element);
 
 }

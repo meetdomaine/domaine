@@ -54,7 +54,7 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
     const logos = document.querySelectorAll('.logo');
 
     logos.forEach((logo: HTMLElement) => {
-      const delay = logo && logo.dataset && logo.dataset.delay ? logo.dataset.delay : 0;
+      const delay = logo && logo.dataset && logo.dataset.delay ? parseFloat(logo.dataset.delay) : 0;
       createViewportObserver(logo, {bidirectional: false, delay: delay});
     })
   }

@@ -80,7 +80,7 @@ const { content } = Astro.props;
 
   document.addEventListener("astro:page-load", () => {
     const section = document.querySelector('.about');
-    if (section) {
+    if (section instanceof HTMLElement) {
       createViewportObserver(section, {bidirectional: false});
     }
 
