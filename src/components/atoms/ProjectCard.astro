@@ -3,7 +3,7 @@ import { urlFor } from "../../utils/sanityClient";
 
 const { title, subtitle, image, slug, style, alt } = Astro.props;
 ---
-<article class="work_project-card" data-style={style}>
+<article class="project-card" data-style={style}>
   <img
     class="image"
     sizes="33vw, (max-width: 768px) 50vw"
@@ -26,7 +26,7 @@ const { title, subtitle, image, slug, style, alt } = Astro.props;
 </article>
 
 <style>
-  .work_project-card {
+  .project-card {
     aspect-ratio: 3 / 4;
     position: relative;
     border-radius: var(--radius-sm);
@@ -40,7 +40,7 @@ const { title, subtitle, image, slug, style, alt } = Astro.props;
     flex-basis: auto; */
   }
 
-  .work_project-card[data-style="large"] {
+  .project-card[data-style="large"] {
     grid-column: auto / span 2;
     grid-row: auto / span 2;
   }
@@ -52,6 +52,12 @@ const { title, subtitle, image, slug, style, alt } = Astro.props;
     object-fit: cover;
     position: absolute;
     z-index: 0;
+    scale: 1.05;
+    transition: scale var(--anim-md);
+  }
+
+  .project-card:hover .image {
+    scale: 1;
   }
 
   .project-info {
