@@ -11,7 +11,7 @@ const projects = await getProjects();
       subtitle={project.subtitle}
       slug={project.slug.current}
       image={project.thumbnail}
-      style={i == 0 ? "large" : "default"}
+      style={i % 12 == 0 ? "large" : "default"}
       alt={project.thumbnailAlt}
     />
   ))}
