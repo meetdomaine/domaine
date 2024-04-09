@@ -109,7 +109,7 @@ const { content } = Astro.props;
   import 'swiper/css/mousewheel';
   import 'swiper/css/a11y';
 
-  // document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
 
     console.log('init sliders')
 
@@ -157,7 +157,7 @@ const { content } = Astro.props;
       });
     });
 
-// })
+})
 
 </script>
 
