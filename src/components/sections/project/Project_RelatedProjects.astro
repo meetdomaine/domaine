@@ -62,6 +62,8 @@ const relatedProjectCount = 2;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
   }
 
   .projects-wrapper {
@@ -71,6 +73,11 @@ const relatedProjectCount = 2;
   }
 
   @media screen and (max-width: 768px) {
+
+    /* .section-title {
+      flex-direction: column;
+    } */
+
     .related-projects {
 
       /* overflow-x: auto; */

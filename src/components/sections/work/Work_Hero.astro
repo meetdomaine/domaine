@@ -2,10 +2,13 @@
 import WorkFilter from "./Work_Filter.astro";
 import { getWorkPageContent } from "../../../utils/sanityClient";
 const content = await getWorkPageContent();
+
+const { category } = Astro.props;
+console.log(category)
 ---
 <section class="work_hero">
-  <WorkFilter />
-  <h1 class="section-title">{content.heading}</h1>
+  <WorkFilter activeCategory={category} />
+  <h1 class="section-title">{category && category.workPageHeading ? category.workPageHeading : content.heading}</h1>
 </section>
 
 <style>
@@ -20,5 +23,12 @@ const content = await getWorkPageContent();
 
   .section-title {
     max-width: 20ch;
+  }
+
+  @media screen and (max-width: 960px) {
+    .work_hero {
+      flex-direction: column-reverse;
+      gap: var(--space-md);
+    }
   }
 </style>

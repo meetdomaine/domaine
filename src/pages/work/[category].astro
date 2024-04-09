@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { urlFor, getProjectCategories } from '../../utils/sanityClient'
+import WorkHero from '../../components/sections/work/Work_Hero.astro'
+import WorkGrid from '../../components/sections/work/Work_Grid.astro'
+
+interface Props {
+	data: any
+}
+
+export async function getStaticPaths() {
+
+  const categories = await getProjectCategories();
+
+  return categories.map((category) => {
+    return {
+      params: { category: category.slug.current },
+      props: { data: category }
+    }
+  })
+}
+
+const { category } = Astro.params;
+const { data } = Astro.props;
+// console.log(data)
+---
+
+<Layout
+  title={data.name}
+  theme='light'
+  description={data.metaDescription ? data.metaDescription : data.description}
+  image={data.metaImage && urlFor(data.metaImage).url()}
+>
+  <main>
+    <WorkHero category={data} />
+    <WorkGrid category={data} />
+  </main>
+
+</Layout>
