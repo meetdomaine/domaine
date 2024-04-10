@@ -5,10 +5,11 @@ import ProjectCard from "../../atoms/ProjectCard.astro";
 const projects = await getProjects();
 const { category } = Astro.props;
 let actualIndex = 0;
+// console.log(projects[0])
 ---
 <section class="work_grid">
   {projects.map((project, i) => {
-    if (category && category._id == project.category._ref || !category) {
+    if (!project.hideProject && category && category._id == project.category._ref || !project.hideProject && !category ) {
       actualIndex++;
       return (
         <ProjectCard

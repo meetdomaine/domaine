@@ -4,7 +4,7 @@ import { getWorkPageContent } from "../../../utils/sanityClient";
 const content = await getWorkPageContent();
 
 const { category } = Astro.props;
-console.log(category)
+// console.log(category)
 ---
 <section class="work_hero">
   <WorkFilter activeCategory={category} />

@@ -6,17 +6,18 @@ const { project } = Astro.props;
 
 const data = await getRelatedProjects(project);
 const relatedProjectCount = 2;
+const minRelatedProjectCount = 2
 // console.log(data.relatedProjects[0])
 // console.log(data.allOtherProjects.length)
 ---
 
 <section class='related-projects'>
   <div class="section-title">
-    <h2 class="heading">Related Projects</h2>
+    <h2 class="heading">{data.relatedProjects.length > 1 ? "Related Projects" : "Other Projects"}</h2>
     <ArrowLink text="View All" url="/work" style="large" />
   </div>
   <div class="projects-wrapper"> 
-    {data.relatedProjects.length > 0 ? (
+    {data.relatedProjects.length > 1 ? (
       data.relatedProjects.map((project, i) => {
         if (i < relatedProjectCount) return (
           <ProjectCard 
@@ -25,7 +26,7 @@ const relatedProjectCount = 2;
             image={project.thumbnail}
             alt={project.thumbnailAlt}
             slug={project.slug.current}
-            style="default"
+            style={data.relatedProjects.length < 2 ? "wide" : "default"}
           />
         )
       })

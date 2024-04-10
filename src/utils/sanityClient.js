@@ -169,7 +169,7 @@ export async function getProjectCategories() {
 
 
 export async function getProjects() {
-  const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, content[]{${sectionBlocks}} }`)
+  const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, content[]{${sectionBlocks}} } | order(launchDate desc)`)
   return projects
 }
 

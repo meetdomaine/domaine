@@ -1,11 +1,9 @@
 ---
 import { urlFor, getServiceDeliverables } from "../../../utils/sanityClient"
+import ArrowLink from "../../atoms/ArrowLink.astro";
 
 const { content } = Astro.props;
 const data = await getServiceDeliverables(content.service._id)
-
-
-// console.log(data)
 
 let deliverables = {}
 
@@ -41,6 +39,7 @@ data.forEach((deliverable) => {
     <div class="section-title">
       <h2 class="h5">{content.service.name}</h2>
       <p class="h3">{content.heading}</p>
+      <ArrowLink text="Learn More" url={`/services/${content.service.slug.current}`} />
     </div>
   </div>
 
