@@ -9,6 +9,7 @@ const relatedProjectCount = 2;
 const minRelatedProjectCount = 2
 // console.log(data.relatedProjects[0])
 // console.log(data.allOtherProjects.length)
+let actualIndex = 0
 ---
 
 <section class='related-projects'>
@@ -19,29 +20,36 @@ const minRelatedProjectCount = 2
   <div class="projects-wrapper"> 
     {data.relatedProjects.length > 1 ? (
       data.relatedProjects.map((project, i) => {
-        if (i < relatedProjectCount) return (
-          <ProjectCard 
-            title={project.title} 
-            subtitle={project.subtitle}
-            image={project.thumbnail}
-            alt={project.thumbnailAlt}
-            slug={project.slug.current}
-            style={data.relatedProjects.length < 2 ? "wide" : "default"}
-          />
-        )
+
+        if (actualIndex < relatedProjectCount && !project.hideProject) {
+          actualIndex++
+          return (
+            <ProjectCard 
+              title={project.title} 
+              subtitle={project.subtitle}
+              image={project.thumbnail}
+              alt={project.thumbnailAlt}
+              slug={project.slug.current}
+              style={data.relatedProjects.length < 2 ? "wide" : "default"}
+            />
+          )
+        }
       })
     ) : (
       data.allOtherProjects.map((project, i) => {
-        if (i < relatedProjectCount) return (
-          <ProjectCard 
-            title={project.title} 
-            subtitle={project.subtitle}
-            image={project.thumbnail} 
-            alt={project.imageAlt}
-            slug={project.slug.current}
-            style="default"
-          />
-        )
+        if (actualIndex < relatedProjectCount && !project.hideProject) {
+          actualIndex++
+          return (
+            <ProjectCard 
+              title={project.title} 
+              subtitle={project.subtitle}
+              image={project.thumbnail} 
+              alt={project.imageAlt}
+              slug={project.slug.current}
+              style="default"
+            />
+          )
+        }
       })
     )
     }
