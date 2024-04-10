@@ -81,6 +81,10 @@ const { content } = Astro.props;
     gap: var(--space-md);
   }
 
+  .content-blocks[data-inverted="true"] {
+    color: var(--color-reverse);
+  }
+
   .content-block {
     display: flex;
     flex-direction: column;
