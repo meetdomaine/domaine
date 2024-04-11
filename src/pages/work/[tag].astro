@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getProjectTags, urlFor } from '../../utils/sanityClient';
+import WorkGrid from '../../components/sections/work/Work_Grid.astro';
+import BackLink from '../../components/atoms/BackLink.astro';
+import ArrowLink from '../../components/atoms/ArrowLink.astro';
+
+interface Props {
+	data: any
+}
+
+export async function getStaticPaths() {
+
+  const tags = await getProjectTags();
+
+  return tags.map((tag) => {
+    return {
+      params: { tag: tag.slug.current },
+      props: { data: tag }
+    }
+  })
+}
+
+const { tag } = Astro.params;
+const { data } = Astro.props;
+---
+<Layout
+  title={data.name}
+  theme='light'
+  description={data.metaDescription ? data.metaDescription : data.description}
+  image={data.metaImage && urlFor(data.metaImage).url()}
+>
+  <section class="work_tag-hero">
+    <h1 class="heading">{data.name}</h1>
+    <ArrowLink text="All Work" url="/work" />
+  </section>
+  <WorkGrid tag={data} />
+</Layout>
+
+<style>
+  .work_tag-hero {
+    padding: var(--header-height) var(--page-margin) var(--space-sm);
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-xs);
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .heading {
+    flex-shrink: 0;
+  }
+</style>

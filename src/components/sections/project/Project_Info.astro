@@ -23,11 +23,10 @@ const { excerpt, description, tags, link } = Astro.props;
       {tags &&
         <ul class="tags">
           {tags.map((tag, i) => (
-            <li class="tag">{tag.name}</li>
+            <li class="tag"><a href={`/work/${tag.slug.current}`}>{tag.name}</a></li>
           ))}
         </ul>
       }
-
       { link && <ArrowLink text="View Site" url={link} newTab={true} /> }
     </span>
   </div>

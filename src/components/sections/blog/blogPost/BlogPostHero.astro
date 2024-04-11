@@ -3,6 +3,7 @@ import { urlFor } from "../../../../utils/sanityClient";
 import { formatDate } from "../../../../utils/formatDate";
 import CategoryTag from "../../../atoms/CategoryTag.astro";
 import Icon from "../../../atoms/Icon.astro";
+import BackLink from "../../../atoms/BackLink.astro";
 
 const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props;
 // console.log(category)
@@ -10,9 +11,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
 <section class="blog-post-hero">
   <div class="text">
     <div class="section-title">
-      <a class="text-link" href="/insights/">
-        <Icon glyph="arrow-back" size="large" />All Posts
-      </a>
+      <BackLink text="All Posts" url="/insights" />
       <h1 class="title">{title}</h1>
       {category && <CategoryTag category={category} />}
     </div>
@@ -97,6 +96,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-xs);
   }
 
   .excerpt {

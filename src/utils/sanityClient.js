@@ -166,6 +166,11 @@ export async function getProjectCategories() {
   return categories
 }
 
+export async function getProjectTags() {
+  const tags = await client.fetch(`*[_type == "tagProject"]{...}`)
+  return tags
+}
+
 
 
 export async function getProjects() {

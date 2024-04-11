@@ -3,13 +3,18 @@ import { getProjects } from "../../../utils/sanityClient"
 import ProjectCard from "../../atoms/ProjectCard.astro";
 
 const projects = await getProjects();
-const { category } = Astro.props;
+const { category, tag } = Astro.props;
 let actualIndex = 0;
-// console.log(projects[0])
+// console.log(projects[24].tags)
+// console.log(tag)
 ---
 <section class="work_grid">
   {projects.map((project, i) => {
-    if (!project.hideProject && category && category._id == project.category._ref || !project.hideProject && !category ) {
+    if (
+      !project.hideProject && category && category._id == project.category._ref || 
+      !project.hideProject && tag && project.tags.some(currentTag => currentTag.slug.current == tag.slug.current) || 
+      !project.hideProject && !category && !tag
+    ) {
       actualIndex++;
       return (
         <ProjectCard
