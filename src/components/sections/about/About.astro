@@ -2,7 +2,7 @@
 import { urlFor } from "../../../utils/sanityClient";
 const { content } = Astro.props;
 ---
-<section class="about">
+<section class="section_about">
 
   <div class="text">
     <div class="section-title">
@@ -72,27 +72,23 @@ const { content } = Astro.props;
 
 <script>
   import { createViewportObserver } from  '../../../utils/viewportObserver.js';
-  
 
-  // document.addEventListener("astro:page-load", () => {
-  //   createViewportObserver(section, {bidirectional: false});
-  // })
-
-  document.addEventListener("astro:page-load", () => {
-    const section = document.querySelector('.about');
+  const addOvserver = () => {
+    const section = document.querySelector('.section_about');
     if (section instanceof HTMLElement) {
       createViewportObserver(section, {bidirectional: false});
     }
+  }
 
-    const video = document.querySelector('.video');
-    if (video && video instanceof HTMLVideoElement) video.muted = true;
+  document.addEventListener("astro:page-load", () => {
+    addOvserver()
   })
 </script>
 
 
 <style>
 
-  .about {
+  .section_about {
     display: flex;
     flex-direction: row;
     /* justify-content: space-between; */

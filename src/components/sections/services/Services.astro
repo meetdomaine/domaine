@@ -74,11 +74,11 @@ const { content } = Astro.props;
     detailBlocks.forEach((block: HTMLElement) => {
       createViewportObserver(block, {bidirectional: false});
       block.addEventListener('inView', (e) => {
-        toggleActiveImage(block.dataset.index);
+        toggleActiveImage(parseFloat(block.dataset.index));
       })
     })
     
-    const toggleActiveImage = (index) => {
+    const toggleActiveImage = (index: number) => {
       serviceImages.forEach((element: HTMLElement, i) => {
         if (i == index) {
           return element.dataset.active = "false";
@@ -87,8 +87,6 @@ const { content } = Astro.props;
       })
     }
   }
-
-  initImageAnimation()
 
   document.addEventListener("astro:page-load", () => {
     initImageAnimation()
