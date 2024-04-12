@@ -31,7 +31,10 @@ const { data } = Astro.props;
   image={data.metaImage && urlFor(data.metaImage).url()}
 >
   <section class="work_tag-hero">
-    <h1 class="heading">{data.name}</h1>
+    <div class="section-title">
+      <h1 class="heading">{data.name}</h1>
+      {data.description && <p>{data.description}</p>}
+    </div>
     <ArrowLink text="All Work" url="/work" />
   </section>
   <WorkGrid tag={data} />
@@ -44,8 +47,15 @@ const { data } = Astro.props;
     flex-direction: row;
     gap: var(--space-xs);
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap;
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    max-width: 80ch;
   }
 
   .heading {
