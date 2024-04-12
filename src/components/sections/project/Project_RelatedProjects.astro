@@ -28,7 +28,6 @@ let actualIndex = 0
               title={project.title} 
               subtitle={project.subtitle}
               image={project.thumbnail}
-              alt={project.thumbnailAlt}
               slug={project.slug.current}
               style={data.relatedProjects.length < 2 ? "wide" : "default"}
             />
@@ -43,8 +42,7 @@ let actualIndex = 0
             <ProjectCard 
               title={project.title} 
               subtitle={project.subtitle}
-              image={project.thumbnail} 
-              alt={project.imageAlt}
+              image={project.thumbnail}
               slug={project.slug.current}
               style="default"
             />

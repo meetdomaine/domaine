@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../../../utils/sanityClient'
 const { content } = Astro.props;
-// console.log(content)
+console.log(content)
 
 ---
 <section class="content-blocks" data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
@@ -36,7 +36,7 @@ const { content } = Astro.props;
               ${urlFor(block.media.image).width(1440).height(1920).auto('format').url()} 1440w,
             `}
             src={urlFor(block.media.image).auto('format').url()}
-            alt={block.media.imageAlt}
+            alt={block.media.image.alt}
             loading="lazy"
           />
         ) : 
@@ -56,7 +56,7 @@ const { content } = Astro.props;
               ${urlFor(block.media.image).width(2880).height(1440).auto('format').url()} 2880w,
             `}
             src={urlFor(block.media.image).url()}
-            alt={block.media.imageAlt}
+            alt={block.media.image.alt}
             loading="lazy"
           />
         }

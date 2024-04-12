@@ -23,7 +23,7 @@ const { title, image, imageAlt } = Astro.props;
           `}
           src={urlFor(image).width(1024).height(512).auto('format').url()}
           loading="eager"
-          alt={imageAlt}
+          alt={image.alt}
         />
       }
       <h1 class="project-title">{title}</h1>

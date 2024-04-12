@@ -1,7 +1,7 @@
 ---
 import { urlFor } from "../../utils/sanityClient";
 
-const { title, subtitle, image, slug, style, alt } = Astro.props;
+const { title, subtitle, image, slug, style } = Astro.props;
 ---
 <a class="project-card" data-style={style} href={`/work/${slug}`}>
   <img
@@ -16,10 +16,11 @@ const { title, subtitle, image, slug, style, alt } = Astro.props;
       ${urlFor(image).width(960).height(1280).auto('format').url()} 960w,
       ${urlFor(image).width(1280).height(1706).auto('format').url()} 1280w,
       ${urlFor(image).width(1440).height(1920).auto('format').url()} 1440w,
+      ${urlFor(image).width(1800).height(2400).auto('format').url()} 1800w,
     `}
     loading="lazy"
     src={urlFor(image).url()} 
-    alt={alt}
+    alt={image.alt}
   />
   <div class="project-info">
     <h2 class="project-title h4">{title}</h2>
