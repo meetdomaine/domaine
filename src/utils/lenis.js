@@ -1,22 +1,6 @@
 import Lenis from '@studio-freight/lenis'
-
 export let lenis;
-
 const htmlElement = document.querySelector("html");
-
-
-	
-
-
-console.log('lenis setup')
-
-
-document.addEventListener("astro:before-preparation", () => {
-
-  // lenis.stop();
-  lenis.destroy();
-  htmlElement.dataset.loading = "true";
-})
 
 document.addEventListener("astro:page-load", () => {
 
@@ -28,9 +12,14 @@ document.addEventListener("astro:page-load", () => {
   }
     
   requestAnimationFrame(raf)
-
-  // console.log("Load")
-  // lenis.start();
   htmlElement.dataset.loading = "false";
 })
 
+document.addEventListener("astro:before-preparation", () => {
+  lenis.stop();
+  htmlElement.dataset.loading = "true";
+})
+
+document.addEventListener("astro:after-swap", () => {
+  lenis.start();
+})
