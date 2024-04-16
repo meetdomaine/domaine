@@ -21,6 +21,8 @@ const { activeCategory } = Astro.props;
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-xs);
+    overflow-x: auto;
+    max-width: 100%;
   }
 
   .filter-item {
@@ -48,7 +50,6 @@ const { activeCategory } = Astro.props;
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: center;
-      overflow-x: auto;
       gap: var(--space-lg);
       padding: var(--space-sm) var(--page-margin);
       margin: 0 calc(var(--page-margin) * -1)

@@ -71,12 +71,27 @@ const { title, subtitle, image, slug, style } = Astro.props;
     justify-content: space-between;
     padding: var(--space-sm);
     color: var(--color-reverse);
+    word-break: break-word;
   }
 
   @media screen and (max-width: 768px) {
+
+    .project-card {
+      grid-column: auto / span 2;
+      grid-row: auto / span 2;
+    }
+
     .work_project-card[data-style="large"] {
-      grid-column: auto;
-      grid-row: auto;
+      /* grid-column: auto;
+      grid-row: auto; */
+    }
+
+    .project-info {
+      padding: var(--space-xs);
+    }
+
+    .project-subtitle {
+      /* display: none; */
     }
   }
 </style>
