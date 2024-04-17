@@ -1,0 +1,94 @@
+---
+const { heading, text, hubspotFormId } = Astro.props;
+---
+<section class="section_form">
+  <div class="section_form-inner">
+    <div class="section-title">
+      <h2 class="h3">{heading}</h2>
+      <p class="h6">{text}</p>
+    </div>
+    <div id="form" data-hubspot-form-id={hubspotFormId}></div>
+  </div>
+</section>
+
+<script>
+
+
+  const createHubspotScript = () => {
+    const hubspotScript = document.createElement("script");
+    hubspotScript.src = "https://js.hsforms.net/forms/embed/v2.js";
+    hubspotScript.setAttribute("type", "text/javascript");
+    document.body.appendChild(hubspotScript);    
+  }
+
+  createHubspotScript()
+
+  document.addEventListener("astro:page-load", () => {
+
+    const form: HTMLElement = document.querySelector("#form")
+    // console.log(form)
+
+    window.hbspt.forms.create({
+        region: "na1",
+        target: "#form",
+        portalId: "41750854",
+        formId: form.dataset.hubspotFormId,
+    });
+  })
+
+
+</script>
+
+<style>
+  .section_form {
+    /* display: flex;
+    flex-direction: column;
+    /* justify-content: stretch; */
+    padding: var(--space-2xl) var(--page-margin);
+  }
+
+  .section_form-inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* justify-self: center; */
+    align-items: flex-start;
+    align-self: stretch;
+    width: 100%;
+    max-width: 120ch;
+    margin: 0 auto;
+    gap: var(--space-xl);
+  }
+
+  .section-title {
+    /* max-width: 60ch;
+    flex-shrink: 0; */
+    /* flex: 1 0 60ch; */
+    max-width: 60ch;
+    flex: 1 1 auto;
+  }
+
+  #form {
+    /* flex-grow: 1; */
+    min-width: 40ch;
+    flex: 1 1 50ch;
+    /* max-width: 50ch; */
+  }
+
+  @media screen and (max-width: 768px) {
+
+    .section_form-inner {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .section-title {
+      max-width: unset;
+    }
+
+    #form {
+      max-width: unset;
+    }
+
+  }
+</style>
