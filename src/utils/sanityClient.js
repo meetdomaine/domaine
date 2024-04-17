@@ -24,6 +24,8 @@ export async function getHeaderContent() {
   return content
 }
 
+const image = 'image{ crop, asset->{_id, metadata}, alt}'
+
 const sectionBlocks = (`
   _type == "sectionHero" => {
     _type, eyebrow, heading, subheading, textAlignment, image, imageAlt, "videoURL": video.asset -> url, "imageURL": image.asset -> url, badgeText, buttonText, buttonURL, jumplink
@@ -52,9 +54,9 @@ const sectionBlocks = (`
   _type == "sectionMediaGrid" => {...},
   _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
   _type == "sectionTextColumns" => {...},
-  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions} } },
+  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, ${image} } },
   _type == "sectionContentBlocks" => {...,  blocks[]{..., media{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions}} }  },
-  _type == "sectionTextImage" => {..., image{crop, asset->{_id, metadata}, alt} },
+  _type == "sectionTextImage" => {..., ${image} },
 `)
 
 export async function getFooterContent() {
