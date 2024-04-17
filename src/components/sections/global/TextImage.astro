@@ -1,8 +1,9 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
+import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
-// console.log(content)
+// console.log(content.image.asset.metadata)
 ---
 <section class="text-image" data-layout={content.layout} data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`} >
   <span class="text">
@@ -10,9 +11,9 @@ const { content } = Astro.props;
     {content.description && <p class="">{content.description}</p>}
   </span>
   <span class="media">
-    <img 
-      class="image"
-      src={urlFor(content.image).url()}
+    <SanityImage
+      image={content.image}
+      sizes="(min-width: 960px) 60vw, 100vw"
     />
   </span>
 </section>
@@ -51,6 +52,7 @@ const { content } = Astro.props;
 
   .image {
     width: 100%;
+    max-width: 100%;
     height: auto;
   }
 

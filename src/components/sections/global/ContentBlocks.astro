@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../../../utils/sanityClient'
 const { content } = Astro.props;
-console.log(content)
+// console.log(content)
 
 ---
 <section class="content-blocks" data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
