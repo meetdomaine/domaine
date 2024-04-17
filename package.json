@@ -19,6 +19,7 @@
     "astro": "^4.3.6",
     "astro-icon": "^1.1.0",
     "astro-portabletext": "^0.9.6",
+    "blurhash": "^2.0.5",
     "solid-js": "^1.8.15",
     "swiper": "^11.1.0"
   }

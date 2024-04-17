@@ -4,14 +4,16 @@ import SanityImage from '../../atoms/SanityImage.astro';
 const { content } = Astro.props;
 console.log(content)
 
+const aspectRatio = 3 / 4
+
 ---
 <section class="content-blocks" data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
   {content.blocks.length > 0 ?
    content.blocks.map((block) => 
 
 
-    <span class="content-block">
-      <div class="media" data-layout={content.blocks.length > 1 ? "half-width" : "full-width"}>
+    <span class="content-block" data-layout={content.blocks.length > 1 ? "half-width" : "full-width"}>
+      <div class="media">
 
         {block.videoURL ?
           <video
@@ -45,10 +47,11 @@ console.log(content)
 
 <style>
   .content-blocks {
+    --gap: var(--space-md);
     display: flex;
     flex-direction: row;
     padding: var(--page-margin);
-    gap: var(--space-md);
+    gap: var(--gap);
   }
 
   .content-blocks[data-inverted="true"] {
@@ -59,29 +62,32 @@ console.log(content)
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-    flex: 1 1 50%;
+    flex: 0 0 100%;
+  }
+
+  .content-block[data-layout="half-width"] {
+    flex: 0 0 calc(50% - var(--gap) / 2);
   }
 
   .media {
     border-radius: var(--radius-lg);
     overflow: hidden;
     height: auto;
+    width: 100%;
     /* flex: 1 1 50%; */
   }
-
-  /* .media[data-layout="full-width"] {
-  }
-
-  .media[data-layout="half-width"] {
+  
+  .content-block[data-layout="half-width"] .video {
+    object-fit: cover;
     aspect-ratio: 3 / 4;
   }
-
-  .image,
+  
   .video {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-  } */
+    height: auto;
+    display: block;
+    /* height: 100%; */
+  } 
 
   .content {
     max-width: 60ch;

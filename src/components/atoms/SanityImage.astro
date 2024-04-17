@@ -12,6 +12,7 @@ interface Props {
           height: number,
           aspectRatio: number,
         },
+        blurHash: string
       }
     },
     crop: {
@@ -50,10 +51,16 @@ const generateSrcSets = () => {
   return sources.toString()
 }
 
+const blurHash = image.asset.metadata.blurHash
+// console.log(image.asset.metadata)
+// console.log(blurHash)
+
+
 // console.log(image)
 // console.log(generateSrcSets())
 ---
 <img
+  id={image.asset._id}
   class="sanity-image"
   width={width}
   height={height}
@@ -63,7 +70,39 @@ const generateSrcSets = () => {
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
   alt={image.alt}
+  data-width={width}
+  data-height={height}
+  data-blur-hash = {blurHash}
 />
+
+<!-- <script >
+  import { decode } from "blurhash";
+
+  const resolution = 32
+
+  const images = document.querySelectorAll('.sanity-image')
+
+  images.forEach((image: HTMLElement) => {
+
+    const boundingBox = image.getBoundingClientRect()
+    // console.log(boundingBox)
+
+    const blurHash = image.dataset.blurHash
+
+    const pixels = decode(blurHash, resolution, resolution);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.createImageData(image.dataset.width, image.dataset.height);
+    imageData.data.set(pixels);
+    ctx.putImageData(imageData, 0, 0);
+    const blurredImageUrl = canvas.toDataURL();
+    console.log(blurredImageUrl)
+    document.body.append(canvas);
+  })
+
+
+
+</script> -->
 
 <style>
   .sanity-image {
