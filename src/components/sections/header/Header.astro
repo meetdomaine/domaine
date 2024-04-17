@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components';
 const data = await getHeaderContent();
 // console.log(data)
 ---
-<header class="header" data-animate="true">
+<header class="header" data-animate="true" transition:persist>
   <span class="navigation">
     <a class="logo" href="/" aria-label="Domaine homepage">
       <Icon name="domaine-wordmark" />

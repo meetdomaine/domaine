@@ -17,7 +17,7 @@ document.addEventListener("astro:page-load", () => {
 
 document.addEventListener("astro:before-preparation", () => {
   lenis.stop();
-  htmlElement.dataset.loading = "true";
+  // htmlElement.dataset.loading = "true";
 })
 
 document.addEventListener("astro:after-swap", () => {
