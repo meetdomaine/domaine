@@ -66,36 +66,25 @@ export async function getFooterContent() {
 }
 
 export async function getHomePageContent() {
-  const content = await client.fetch(`*[_type == "pageHome"]{ 
-    content[]{
-      ${sectionBlocks}
-    } 
-  }`)
+  const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)
   return content
 }
 
 export async function getPages() {
-  const content = await client.fetch(`*[_type == "pageGeneral"]{
-    title,
-    slug,
-    content[]{
-      ${sectionBlocks}
-    },
-    metaTitle,
-    metaDescription,
-    metaImage, 
-  }`)
+  const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)
   return content
 }
 
 export async function getBlogPageContent() {
-  const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage{${imageFields}}, imageAlt, "category": category->{name, slug}} }`)
+  const pageContent = await client.fetch(`
+    *[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage{${imageFields}}, imageAlt, "category": category->{name, slug}} }
+  `)
+  return pageContent[0]
+}
+
+export async function getBlogCategories() {
   const categories = await client.fetch(`*[_type == "categoryBlog"]`)
-  return { 
-    content: pageContent[0],
-    // posts,
-    categories
-  }
+  return categories
 }
 
 const blogPostQuery = '..., category->{...}'

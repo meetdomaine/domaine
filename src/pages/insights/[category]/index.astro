@@ -3,26 +3,30 @@ import Layout from '../../../layouts/Layout.astro';
 import BlogIndexHero from '../../../components/sections/blog/blogIndex/BlogIndexHero.astro';
 import BlogIndexFeed from '../../../components/sections/blog/blogIndex/BlogIndexFeed.astro';
 import BlogIndexSidebar from '../../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
-import { getBlogPageContent, getBlogPosts } from '../../../utils/sanityClient';
+import { getBlogCategories, getBlogPageContent, getBlogPosts } from '../../../utils/sanityClient';
+import { any } from 'astro/zod';
 
 // const data = await getBlogPageContent();
 
 interface Props {
 	data: any;
   posts: any;
+  categories: any,
 }
 
-export const prerender = true;
+// export const prerender = true;
+
 
 export async function getStaticPaths() {
 
   // const pages = await getPages();
   const data = await getBlogPageContent();
+  const categories = await getBlogCategories();
 
-  return data.categories.map((category) => {
+  return categories.map((category) => {
     return {
       params: { category: category.slug.current },
-      props: { data: data }
+      props: { data: data, categories: categories }
     }
   })
 }
@@ -30,7 +34,7 @@ export async function getStaticPaths() {
 // const { slug } = Astro.params;
 
 const { category } = Astro.params;
-const { data } = Astro.props;
+const { data, categories } = Astro.props;
 
 const posts = await getBlogPosts();
 
@@ -41,20 +45,20 @@ const posts = await getBlogPosts();
     theme="light"
 >
     <BlogIndexHero
-        heading={data.content.heading}
-        subheading={data.content.subheading}
-        post={data.content.featuredPost}
+        heading={data.heading}
+        subheading={data.subheading}
+        post={data.featuredPost}
     />
 
     <div class="blog-index-main">
         
         <BlogIndexSidebar
-            content={data.categories}
+            content={categories}
             activeCategory={category}
         />
 
         <BlogIndexFeed
-            content={posts.filter(post => post.category.slug.current == category && data.content.featuredPost.slug.current != post.slug.current)}
+            content={posts.filter(post => post.category.slug.current == category && data.featuredPost.slug.current != post.slug.current)}
         />
 
     </div>

@@ -3,10 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 import BlogIndexHero from '../../components/sections/blog/blogIndex/BlogIndexHero.astro';
 import BlogIndexFeed from '../../components/sections/blog/blogIndex/BlogIndexFeed.astro';
 import BlogIndexSidebar from '../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
-import { getBlogPageContent, getBlogPosts } from '../../utils/sanityClient';
+import { getBlogCategories, getBlogPageContent, getBlogPosts } from '../../utils/sanityClient';
 
 const data = await getBlogPageContent();
 const posts = await getBlogPosts();
+const categories = await getBlogCategories();
 // console.log(data)
 ---
 
@@ -15,19 +16,19 @@ const posts = await getBlogPosts();
     theme="light"
 >
     <BlogIndexHero
-        heading={data.content.heading}
-        subheading={data.content.subheading}
-        post={data.content.featuredPost}
+        heading={data.heading}
+        subheading={data.subheading}
+        post={data.featuredPost}
     />
 
     <div class="blog-index-main">
         
         <BlogIndexSidebar
-            content={data.categories}
+            content={categories}
         />
 
         <BlogIndexFeed
-            content={posts.filter(post => data.content.featuredPost.slug.current != post.slug.current)}
+            content={posts.filter(post => data.featuredPost.slug.current != post.slug.current)}
         />
 
     </div>
