@@ -3,7 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import BlogIndexHero from '../../../components/sections/blog/blogIndex/BlogIndexHero.astro';
 import BlogIndexFeed from '../../../components/sections/blog/blogIndex/BlogIndexFeed.astro';
 import BlogIndexSidebar from '../../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
-import { getBlogPageContent } from '../../../utils/sanityClient';
+import { getBlogPageContent, getBlogPosts } from '../../../utils/sanityClient';
 
 // const data = await getBlogPageContent();
 
@@ -22,7 +22,7 @@ export async function getStaticPaths() {
   return data.categories.map((category) => {
     return {
       params: { category: category.slug.current },
-      props: { data: data, posts: data.posts.filter(post => post.category.slug.current == category.slug.current && data.content.featuredPost.slug.current != post.slug.current) }
+      props: { data: data }
     }
   })
 }
@@ -30,7 +30,10 @@ export async function getStaticPaths() {
 // const { slug } = Astro.params;
 
 const { category } = Astro.params;
-const { data, posts } = Astro.props;
+const { data } = Astro.props;
+
+const posts = await getBlogPosts();
+
 ---
 
 <Layout 
@@ -51,7 +54,7 @@ const { data, posts } = Astro.props;
         />
 
         <BlogIndexFeed
-            content={posts}
+            content={posts.filter(post => post.category.slug.current == category && data.content.featuredPost.slug.current != post.slug.current)}
         />
 
     </div>

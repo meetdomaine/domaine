@@ -4,6 +4,7 @@ import { formatDate } from "../../../../utils/formatDate";
 import CategoryTag from "../../../atoms/CategoryTag.astro";
 import Icon from "../../../atoms/Icon.astro";
 import BackLink from "../../../atoms/BackLink.astro";
+import SanityImage from "../../../atoms/SanityImage.astro";
 
 const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props;
 // console.log(category)
@@ -40,17 +41,10 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
   </div>
   <div class="media">
     {image && 
-      <img 
-        class="image"
+      <SanityImage 
+        image={image}
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt={imageAlt}
-        srcset={`
-          ${urlFor(image).width(800).height(800).url()} 800w,
-          ${urlFor(image).width(1200).height(1200).url()} 1200w,
-          ${urlFor(image).width(2304).height(2304).url()} 2304w,
-        `}
-        src={urlFor(image).url()}
-        // transition:name="blog-image"
+        eager
       />
     }
   </div>

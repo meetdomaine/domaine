@@ -1,0 +1,55 @@
+---
+import ArrowLink from "../../../atoms/ArrowLink.astro";
+import BlogPostCard from "../../../atoms/BlogPostCard.astro";
+
+// interface Props {
+//   posts: 
+// }
+
+const { posts } = Astro.props;
+---
+<section class="related-posts">
+  <div class="section-title">
+    <h2>Related Posts</h2>
+    <ArrowLink text="View All" url="/insights" />
+  </div>
+  <div class="posts">
+  { posts.slice(0, 3).map((post) => (
+    <BlogPostCard
+      content={post}
+    />
+  ))}
+  </div>
+</section>
+
+<style>
+
+  .related-posts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-lg) var(--page-margin);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2xs);
+    flex-wrap: wrap;
+  }
+
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  @media screen and (max-width: 768px) {
+    .posts {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+  }
+</style>

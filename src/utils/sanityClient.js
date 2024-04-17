@@ -89,25 +89,29 @@ export async function getPages() {
 }
 
 export async function getBlogPageContent() {
-  const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage, imageAlt, "category": category->{name, slug}} }`)
-  const posts = await client.fetch(`*[_type == "contentBlog"]{
-    title, slug, excerpt, mainImage, imageAlt, "category": category->{ name, slug }, publishedAt
-  }|order(publishedAt desc)`)
+  const pageContent = await client.fetch(`*[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage{${imageFields}}, imageAlt, "category": category->{name, slug}} }`)
   const categories = await client.fetch(`*[_type == "categoryBlog"]`)
   return { 
     content: pageContent[0],
-    posts,
+    // posts,
     categories
   }
 }
 
+const blogPostQuery = '..., category->{...}'
+
 export async function getBlogPosts() {
   const postContent = await client.fetch(`
-    *[_type == 'contentBlog']{
-      title, slug, excerpt, mainImage, imageAlt, "authors": authors[]->{ name, title, image }, "category": category->{ name, slug }, "categories": categories[]->{ name, slug }, publishedAt, content[]
-    } | order(publishedAt desc)
+    *[_type == 'contentBlog']{..., mainImage{${imageFields}}, authors[]->{...}, category->{...}, categories[]->{...} } | order(publishedAt desc)
   `)
   return postContent
+}
+
+export async function getRelatedBlogPosts(project) {
+  const relatedPosts = await client.fetch(`
+    *[_type == 'contentBlog' && _id != '${project._id}' && category._ref == '${project.category._id}' ]{${blogPostQuery}}
+  `)
+  return relatedPosts
 }
 
 export async function getServicesPageContent() {

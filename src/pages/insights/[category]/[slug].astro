@@ -3,7 +3,8 @@ import Layout from '../../../layouts/Layout.astro';
 import BlogPostHero from '../../../components/sections/blog/blogPost/BlogPostHero.astro';
 import BlogPostSidebar from '../../../components/sections/blog/blogPost/BlogPostSidebar.astro';
 import BlogPostBody from '../../../components/sections/blog/blogPost/BlogPostBody.astro';
-import { getBlogPosts } from '../../../utils/sanityClient';
+import { getBlogPosts, getRelatedBlogPosts } from '../../../utils/sanityClient';
+import RelatedPosts from '../../../components/sections/blog/blogPost/RelatedPosts.astro';
 
 interface Props {
 	data: any;
@@ -26,7 +27,9 @@ export async function getStaticPaths() {
 
 const { slug, category } = Astro.params;
 const { data, allPosts } = Astro.props;
-// console.log(data)
+
+const relatedPosts = await getRelatedBlogPosts(data)
+console.log(data)
 ---
 
 <Layout 
@@ -52,6 +55,10 @@ const { data, allPosts } = Astro.props;
         category={data.category}
       />
     </div>
+
+    <RelatedPosts
+      posts={relatedPosts}
+    />
 
 </Layout>
 

@@ -2,9 +2,7 @@
 import { urlFor } from '../../../utils/sanityClient'
 import SanityImage from '../../atoms/SanityImage.astro';
 const { content } = Astro.props;
-console.log(content)
-
-const aspectRatio = 3 / 4
+// console.log(content)
 
 ---
 <section class="content-blocks" data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
