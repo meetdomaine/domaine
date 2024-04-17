@@ -1,0 +1,57 @@
+---
+import type { SanityAsset } from "@sanity/image-url/lib/types/types";
+import Layout from "../../../layouts/Layout.astro";
+import { getBlogCategories, urlFor } from "../../../utils/sanityClient";
+import Form from "../../../components/sections/global/Form.astro";
+
+interface Props {
+  data: {
+    name: string,
+    contactFormHeading: string,
+    contactFormText: string,
+    hubspotFormId: string,
+    metaDescription: string,
+    metaImage: {
+      asset: SanityAsset
+    }
+  }
+}
+
+export async function getStaticPaths() {
+
+  const categories = await getBlogCategories();
+
+  return categories.map((category) => {
+    return {
+      params: { category: category.slug.current },
+      props: { data: category }
+    }
+  })
+}
+
+const { category } = Astro.params;
+const { data } = Astro.props;
+---
+<Layout
+  title={`${data.name} Inquiry`}
+  description={data.metaDescription ? data.metaDescription : null}
+  image={data.metaImage ? urlFor(data.metaImage).url() : null}
+  theme="light"
+>
+  <main class="blog_category-contact">
+    <Form
+      heading={data.contactFormHeading}
+      text={data.contactFormText}
+      hubspotFormId={data.hubspotFormId}
+    />
+  </main>
+  <!-- <p>Category contact</p> -->
+</Layout>
+
+<style>
+  .blog_category-contact {
+    padding: var(--header-height) 0 0;
+    /* min-height: 100vh; */
+    min-height: 90svh;
+  }
+</style>
