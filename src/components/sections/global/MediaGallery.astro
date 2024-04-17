@@ -4,7 +4,7 @@ import { urlFor } from "../../../utils/sanityClient";
 import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
-console.log(content.media[0].image)
+// console.log(content.media)
 
 ---
 <section data-inverted={content.invertTextColor ? "true" : "false"} class="media-slider" style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`}>
@@ -13,11 +13,6 @@ console.log(content.media[0].image)
     <div class="media-gallery-swiper" data-orientation={content.orientation == 'landscape' ? 'landscape' : 'portrait'}>
       <div class="swiper-wrapper">
         {content.media.map((media, i) => {
-
-          const getAssetHeight = (width) => {
-            const height = Math.round(width / parseFloat(media.imageMetadata.dimensions.aspectRatio));
-            return height
-          }
           
           if (media.videoURL) {
 

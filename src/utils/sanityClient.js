@@ -55,7 +55,7 @@ const sectionBlocks = (`
   _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
   _type == "sectionTextColumns" => {...},
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, ${image} } },
-  _type == "sectionContentBlocks" => {...,  blocks[]{..., media{..., "videoURL": video.asset->url, "imageMetadata": image.asset->{"dimensions": metadata.dimensions}} }  },
+  _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, ${image} }  },
   _type == "sectionTextImage" => {..., ${image} },
 `)
 
