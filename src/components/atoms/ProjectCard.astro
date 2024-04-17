@@ -1,27 +1,18 @@
 ---
 import { urlFor } from "../../utils/sanityClient";
+import SanityImage from "./SanityImage.astro";
 
 const { title, subtitle, image, slug, style } = Astro.props;
+console.log(image)
 ---
 <a class="project-card" data-style={style} href={`/work/${slug}`}>
-  <img
-    class="image"
-    sizes={style == 'large' ? "60vw, (max-width: 768px) 100vw" : "33vw, (max-width: 768px) 50vw"}
-    width="33vw"
-    height="44vw"
-    srcset={`
-      ${urlFor(image).width(200).height(266).auto('format').url()} 200w,
-      ${urlFor(image).width(400).height(533).auto('format').url()} 400w,
-      ${urlFor(image).width(768).height(1024).auto('format').url()} 768w,
-      ${urlFor(image).width(960).height(1280).auto('format').url()} 960w,
-      ${urlFor(image).width(1280).height(1706).auto('format').url()} 1280w,
-      ${urlFor(image).width(1440).height(1920).auto('format').url()} 1440w,
-      ${urlFor(image).width(1800).height(2400).auto('format').url()} 1800w,
-    `}
-    loading="lazy"
-    src={urlFor(image).url()} 
-    alt={image.alt}
-  />
+  <div class="media">
+    <SanityImage
+      image={image}
+      sizes={style == 'large' ? "60vw, (max-width: 768px) 100vw" : "33vw, (max-width: 768px) 50vw"}
+      aspectRatio={3 / 4}
+    />
+  </div>
   <div class="project-info">
     <h2 class="project-title h4">{title}</h2>
     <p class="project-subtitle">{subtitle}</p>
@@ -30,7 +21,7 @@ const { title, subtitle, image, slug, style } = Astro.props;
 
 <style>
   .project-card {
-    aspect-ratio: 3 / 4;
+    /* aspect-ratio: 3 / 4; */
     position: relative;
     border-radius: var(--radius-sm);
     overflow: hidden;
@@ -48,23 +39,19 @@ const { title, subtitle, image, slug, style } = Astro.props;
     grid-row: auto / span 2;
   }
 
-  .image {
+  .media {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     /* inset: 0; */
-    object-fit: cover;
-    position: absolute;
+    /* object-fit: cover; */
     z-index: 0;
-    scale: 1.05;
+    /* scale: 1.05; */
     transition: scale var(--anim-md);
   }
 
-  .project-card:hover .image {
-    scale: 1;
-  }
-
   .project-info {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 1;
     display: flex;
     flex-direction: column;

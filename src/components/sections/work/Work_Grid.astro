@@ -5,8 +5,6 @@ import ProjectCard from "../../atoms/ProjectCard.astro";
 const projects = await getProjects();
 const { category, tag } = Astro.props;
 let actualIndex = 0;
-// console.log(projects[24].tags)
-// console.log(tag)
 ---
 <section class="work_grid">
   {projects.map((project, i) => {

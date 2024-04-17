@@ -25,6 +25,7 @@ export async function getHeaderContent() {
 }
 
 const image = 'image{ crop, asset->{_id, metadata}, alt}'
+const imageFields = 'crop, asset->{_id, metadata}, alt'
 
 const sectionBlocks = (`
   _type == "sectionHero" => {
@@ -176,14 +177,14 @@ export async function getProjectTags() {
 
 
 export async function getProjects() {
-  const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, content[]{${sectionBlocks}} } | order(launchDate desc)`)
+  const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}} } | order(launchDate desc)`)
   return projects
 }
 
 export async function getRelatedProjects(project) {
   // console.log(project)
-  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' ]{...}`)
-  const allOtherProjects = await client.fetch(`*[_type == "contentProject" && slug.current != '${project.slug.current}' ]{...}`)
+  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' ]{..., thumbnail{${imageFields}} }`)
+  const allOtherProjects = await client.fetch(`*[_type == "contentProject" && slug.current != '${project.slug.current}' ]{..., thumbnail{${imageFields}} }`)
   return { relatedProjects, allOtherProjects}
 }
 
