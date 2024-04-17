@@ -91,7 +91,7 @@ const blogPostQuery = '..., category->{...}'
 
 export async function getBlogPosts() {
   const postContent = await client.fetch(`
-    *[_type == 'contentBlog']{..., mainImage{${imageFields}}, authors[]->{...}, category->{...}, categories[]->{...} } | order(publishedAt desc)
+    *[_type == 'contentBlog']{..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...} } | order(publishedAt desc)
   `)
   return postContent
 }

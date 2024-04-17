@@ -1,8 +1,11 @@
 ---
-const { content } = Astro.props;
+const { content, authors } = Astro.props;
 import { PortableText } from "astro-portabletext";
 import SanityInlineImage from './SanityInlineImage.astro';
 import SanitySchema from './SanitySchema.astro';
+import SanityImage from "../../../atoms/SanityImage.astro";
+
+console.log(authors)
 ---
 <section class="blog-post-body">
   <PortableText
@@ -14,6 +17,25 @@ import SanitySchema from './SanitySchema.astro';
       }
     }}
   />
+  <div class="authors">
+    {authors.map((author) => (
+      <span class="author-card">
+        <div class="author-media">
+          <SanityImage
+            sizes="10vw"
+            image={author.image}
+          />
+        </div>
+        <span class="author-text">
+          <div class="author-info">
+            <p class="author-name h5">{author.name}</p>
+            <p class="author-title h6">{author.title}</p>
+          </div>
+          <p>{author.bio}</p>
+        </span>
+      </span>
+    ))}
+  </div>
 </section>
 
 <style is:global>
@@ -90,6 +112,46 @@ import SanitySchema from './SanitySchema.astro';
 .blog-post-body blockquote::before {
   content: '"';
 }
+
+.blog-post-body .authors {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  margin-top: var(--space-3xl);
+}
+
+.blog-post-body .author-card {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-md);
+  align-items: flex-start;
+  padding: var(--space-lg) var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.blog-post-body .author-card p {
+  margin: 0;
+  padding: 0;
+}
+
+.blog-post-body .author-media {
+  /* width: clamp(80px, 2vw, 100px); */
+  flex: 0 0 max(80px, 10vw);
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-rounded);
+  overflow: hidden;
+}
+
+.blog-post-body .author-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  max-width: 45ch;
+}
+
+.blog-post-body .author-info {
+}
+
 @media screen and (max-width: 960px) {
 
   .postContent {
@@ -117,6 +179,10 @@ import SanitySchema from './SanitySchema.astro';
   .blog-post-body ol,
   .blog-post-body ul {
     padding-inline: var(--space-lg) 0;
+  }
+
+  .blog-post-body .author-card {
+    padding-inline: 0;
   }
 
 }

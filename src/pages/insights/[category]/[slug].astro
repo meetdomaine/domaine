@@ -29,7 +29,7 @@ const { slug, category } = Astro.params;
 const { data, allPosts } = Astro.props;
 
 const relatedPosts = await getRelatedBlogPosts(data)
-console.log(data)
+// console.log(data)
 ---
 
 <Layout 
@@ -49,6 +49,7 @@ console.log(data)
     <div class="blog-post-content">
       <BlogPostBody
         content={data.content}
+        authors={data.authors}
       />
       <BlogPostSidebar
         posts={allPosts}

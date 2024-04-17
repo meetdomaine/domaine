@@ -183,9 +183,9 @@ p,
 
 .utility {
   font-family: var(--font-family-secondary);
-  --min-size: 12;
+  --min-size: 10;
   --base-size: 12;
   text-transform: uppercase;
-  letter-spacing: 0;
+  letter-spacing: 0.05em;
   margin: 0;
 }
