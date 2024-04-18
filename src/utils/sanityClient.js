@@ -117,15 +117,10 @@ export async function getServiceDeliverables(service) {
 
 export async function getEvents() {
   const content = await client.fetch(`*[_type == "contentEvent"]{
-    title,
-    slug,
-    location,
+    ...,
     content[]{
       ${sectionBlocks}
     },
-    metaTitle,
-    metaDescription,
-    metaImage, 
   }`)
   return content
 }

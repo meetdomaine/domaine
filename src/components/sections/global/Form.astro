@@ -28,12 +28,14 @@ const { heading, text, hubspotFormId } = Astro.props;
     const form: HTMLElement = document.querySelector("#form")
     // console.log(form)
 
-    window.hbspt.forms.create({
-        region: "na1",
-        target: "#form",
-        portalId: "41750854",
-        formId: form.dataset.hubspotFormId,
-    });
+    if (form && window.hbspt) {
+      window.hbspt.forms.create({
+          region: "na1",
+          target: "#form",
+          portalId: "41750854",
+          formId: form.dataset.hubspotFormId,
+      });
+    }
   })
 
 

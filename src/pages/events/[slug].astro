@@ -30,6 +30,7 @@ const { data } = Astro.props;
   title={data.metaTitle ? data.metaTitle : data.title} 
   description={data.metaDescription}
   image={data.metaImage && urlFor(data.metaImage).url()}
+  theme={data.colorTheme}
 >
   {data.content.map((block) => {
     return <SectionBlock block={block} />

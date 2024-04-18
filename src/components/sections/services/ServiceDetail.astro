@@ -44,7 +44,7 @@ data.forEach((deliverable) => {
   </div>
 
   <div class="section-details">
-    <p class="category-description h5">{content.description}</p>
+    <p class="category-description h6">{content.description}</p>
     <div class="deliverable-categories">
       {Object.keys(deliverables).map((category) => {
         return (
@@ -53,7 +53,7 @@ data.forEach((deliverable) => {
             <ul class="deliverables">
               {deliverables[category].map((deliverable) => {
                 return (
-                  <li class="deliverable h6">{deliverable.name}</li>
+                  <li class="deliverable">{deliverable.name}</li>
                 )
               })}
             </ul>
@@ -97,14 +97,16 @@ data.forEach((deliverable) => {
   .section-details {
     display: flex;
     flex-direction: row;
-    justify-content: stretch;
+    justify-content: center;
+    align-self: center;
     /* justify-content: space-between; */
     gap: var(--space-3xl);
   }
   
   .category-description {
     /* flex: 0 1 50%; */
-    max-width: 20ch;
+    max-width: 50ch;
+    flex: 1 1 50%;
   }
 
   .deliverable-categories {
@@ -112,7 +114,7 @@ data.forEach((deliverable) => {
     flex-direction: row;
     justify-content: flex-start;
     gap: var(--space-xl);
-    flex: 1 0 50%;
+    flex: 1 1 50%;
   }
 
   .category-name {
@@ -126,6 +128,7 @@ data.forEach((deliverable) => {
     /* flex-grow: 1; */
     flex: 0 1 50%;
     gap: var(--space-sm);
+    max-width: 30ch;
   }
 
   .deliverables {
@@ -140,7 +143,7 @@ data.forEach((deliverable) => {
     list-style: none;
   }
 
-  @media screen and (max-width:768px) {
+  @media screen and (max-width:960px) {
 
     .section-intro {
       flex-direction: column-reverse;
@@ -155,6 +158,11 @@ data.forEach((deliverable) => {
     .section-details {
       flex-direction: column;
       gap: var(--space-lg);
+    }
+
+    .category-description {
+      /* flex: 0 1 50%; */
+      max-width: unset;
     }
 
     /* .deliverable-categories {

@@ -31,7 +31,7 @@ import SanityImage from "../../../atoms/SanityImage.astro";
             <p class="author-name h6">{author.name}</p>
             <p class="author-title utility">{author.title}</p>
           </div>
-          <p class="caption">{author.bio}</p>
+          { author.bio && <p class="caption">{author.bio}</p>}
         </span>
       </span>
     ))}
