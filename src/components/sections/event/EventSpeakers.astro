@@ -30,7 +30,6 @@ console.log(content.speakers)
               <SanityImage
                 image={speaker.companyLogo}
                 sizes="50vw"
-                // aspectRatio={5 / 1}
                 alt={`${speaker.companyName} brand logo`}
               />
             </div>
@@ -89,8 +88,14 @@ console.log(content.speakers)
 
   .section_event-speakers .company-logo {
     max-width: 40%;
-    /* width: max-content; */
-    /* display: flex; */
+    max-height: 20%;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    object-fit: contain;
+    margin-block: var(--space-2xs);
     /* max-height: 20px; */
   }
 
