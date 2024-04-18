@@ -47,6 +47,7 @@ const { content, heading, text, hubspotFormId } = Astro.props;
     flex-direction: column;
     /* justify-content: stretch; */
     padding: var(--space-2xl) var(--page-margin);
+    overflow: hidden;
   }
 
   .section_form-inner {
@@ -72,7 +73,7 @@ const { content, heading, text, hubspotFormId } = Astro.props;
 
   #form {
     /* flex-grow: 1; */
-    min-width: 40ch;
+    min-width: min(40ch, 100%);
     flex: 1 1 50ch;
     /* max-width: 50ch; */
   }
