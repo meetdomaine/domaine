@@ -1,13 +1,13 @@
 ---
-const { heading, text, hubspotFormId } = Astro.props;
+const { content, heading, text, hubspotFormId } = Astro.props;
 ---
 <section class="section_form">
   <div class="section_form-inner">
     <div class="section-title">
-      <h2 class="h3">{heading}</h2>
-      <p class="h6">{text}</p>
+      <h2 class="h2">{heading ? heading : content.heading}</h2>
+      <p class="h6">{text ? text : content.subheading ? content.subheading : null}</p>
     </div>
-    <div id="form" data-hubspot-form-id={hubspotFormId}></div>
+    <div id="form" data-hubspot-form-id={hubspotFormId ? hubspotFormId : content.hubspotFormId}></div>
   </div>
 </section>
 
@@ -15,6 +15,7 @@ const { heading, text, hubspotFormId } = Astro.props;
 
 
   const createHubspotScript = () => {
+    console.log('script')
     const hubspotScript = document.createElement("script");
     hubspotScript.src = "https://js.hsforms.net/forms/embed/v2.js";
     hubspotScript.setAttribute("type", "text/javascript");
@@ -26,7 +27,6 @@ const { heading, text, hubspotFormId } = Astro.props;
   document.addEventListener("astro:page-load", () => {
 
     const form: HTMLElement = document.querySelector("#form")
-    // console.log(form)
 
     if (form && window.hbspt) {
       window.hbspt.forms.create({
