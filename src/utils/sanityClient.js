@@ -28,6 +28,7 @@ const image = 'image{ crop, asset->{_id, metadata}, alt}'
 const imageFields = 'crop, asset->{_id, metadata}, alt'
 
 const sectionBlocks = (`
+  ...,
   _type == "sectionHero" => {
     _type, eyebrow, heading, subheading, textAlignment, image, imageAlt, "videoURL": video.asset -> url, "imageURL": image.asset -> url, badgeText, buttonText, buttonURL, jumplink
   },
@@ -47,9 +48,7 @@ const sectionBlocks = (`
   _type == "sectionPartners" => {
     _type, heading, subheading, inlineLogo, logos[]
   },
-  _type == "sectionAgencies" => {
-    _type, heading, agencies[]
-  },
+  _type == "sectionAgencies" => { _type, heading, agencies[]},
   _type == "sectionTextHero" => {...},
   _type == "sectionMediaFullbleed" => {...},
   _type == "sectionMediaGrid" => {...},
@@ -58,6 +57,7 @@ const sectionBlocks = (`
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, ${image} } },
   _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, ${image} }  },
   _type == "sectionTextImage" => {..., ${image} },
+  _type == "sectionSpeakers" => {..., speakers[]{..., image{${imageFields}}, companyLogo{${imageFields}} } },
 `)
 
 export async function getFooterContent() {

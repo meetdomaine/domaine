@@ -15,6 +15,7 @@ import TextColumns from './text/TextColumns.astro'
 import ContentBlocks from './global/ContentBlocks.astro'
 import MediaGallery from './global/MediaGallery.astro'
 import TextImage from './global/TextImage.astro'
+import EventSpeakers from './event/EventSpeakers.astro';
 
 interface Props {
 	block: any;
@@ -38,6 +39,9 @@ const { block } = Astro.props;
 {block._type == 'sectionMediaFullbleed' && <MediaFullbleed content={block} />}
 {block._type == 'sectionMediaGrid' && <MediaGrid content={block} />}
 {block._type == 'sectionTextColumns' && <TextColumns content={block} />}
+
+<!-- Event Sections -->
+{block._type == 'sectionSpeakers' && <EventSpeakers content={block} />}
 
 <!-- Global Blocks -->
 {block._type == 'sectionMediaGallery' && <MediaGallery content={block} />}

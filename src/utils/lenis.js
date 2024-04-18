@@ -12,7 +12,8 @@ document.addEventListener("astro:page-load", () => {
   }
     
   requestAnimationFrame(raf)
-  htmlElement.dataset.loading = "false";
+
+  // htmlElement.dataset.loading = "false";
 })
 
 document.addEventListener("astro:before-preparation", () => {
@@ -22,4 +23,5 @@ document.addEventListener("astro:before-preparation", () => {
 
 document.addEventListener("astro:after-swap", () => {
   lenis.start();
+  // htmlElement.dataset.loading = "false";
 })

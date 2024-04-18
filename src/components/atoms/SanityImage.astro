@@ -25,10 +25,11 @@ interface Props {
   },
   sizes: string,
   eager?: boolean,
-  aspectRatio?: number
+  aspectRatio?: number,
+  alt?: string,
 }
 
-const { image, sizes, eager, aspectRatio } = Astro.props;
+const { image, sizes, eager, aspectRatio, alt } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -69,7 +70,7 @@ const blurHash = image.asset.metadata.blurHash
   src={urlFor(image).width(width).height(height).auto('format').url()}
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
-  alt={image.alt}
+  alt={alt ? alt : image.alt}
   data-width={width}
   data-height={height}
   data-blur-hash = {blurHash}
@@ -109,6 +110,7 @@ const blurHash = image.asset.metadata.blurHash
     display: block;
     width: 100%;
     height: auto;
+    max-height: 100%;
     margin: 0;
   }
 </style>
