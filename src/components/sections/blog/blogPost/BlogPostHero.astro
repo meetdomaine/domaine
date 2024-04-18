@@ -30,7 +30,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
               />
               <div class="author-text">
                 <p class="author-name">{author.name}</p>
-                <p class="author-title caption">{author.title}</p>
+                <p class="author-title utility">{author.title}</p>
               </div>
             </div>
           )
@@ -44,6 +44,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
       <SanityImage 
         image={image}
         sizes="(max-width: 768px) 100vw, 50vw"
+        aspectRatio={1 / 1}
         eager
       />
     }
@@ -55,7 +56,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
   .blog-post-hero {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: flex-start;
     justify-content: stretch;
     padding: var(--header-height) 0 var(--space-2xl);
     margin: 0 var(--page-margin);
@@ -145,6 +146,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
   @media screen and (max-width: 960px) {
     .blog-post-hero {
       flex-direction: column;
+      align-items: stretch;
     }
 
     .excerpt {
@@ -152,7 +154,7 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
     }
 
     .authors {
-      flex-direction: column;
+      /* flex-direction: column; */
     }
 
     .text,

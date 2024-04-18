@@ -28,10 +28,10 @@ import SanityImage from "../../../atoms/SanityImage.astro";
         </div>
         <span class="author-text">
           <div class="author-info">
-            <p class="author-name h5">{author.name}</p>
-            <p class="author-title h6">{author.title}</p>
+            <p class="author-name h6">{author.name}</p>
+            <p class="author-title utility">{author.title}</p>
           </div>
-          <p>{author.bio}</p>
+          <p class="caption">{author.bio}</p>
         </span>
       </span>
     ))}
@@ -123,8 +123,9 @@ import SanityImage from "../../../atoms/SanityImage.astro";
 .blog-post-body .author-card {
   display: flex;
   flex-direction: row;
-  gap: var(--space-md);
-  align-items: flex-start;
+  gap: var(--space-lg);
+  /* align-items: flex-start; */
+  align-items: center;
   padding: var(--space-lg) var(--space-md);
   border-top: 1px solid var(--color-border);
 }
