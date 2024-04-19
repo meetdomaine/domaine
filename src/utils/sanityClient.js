@@ -34,25 +34,17 @@ const sectionBlocks = (`
   _type == "sectionHero" => {
     _type, eyebrow, heading, subheading, textAlignment, image, imageAlt, "videoURL": video.asset -> url, "imageURL": image.asset -> url, badgeText, buttonText, buttonURL, jumplink
   },
-  _type == "sectionClients" => {
-    _type, clients[]->{name, slug, image, logo, url}
-  },
+  _type == "sectionClients" => {..., clients[]->{...} },
   _type == "sectionAbout" => {..., "videoURL": video.asset -> url, image},
-  _type == "sectionServices" => {
-    _type, heading, subheading, services[]
-  },
-  _type == "sectionContact" => {
-    _type, heading, subheading, forms[]
-  },
+  _type == "sectionServices" => {...},
+  _type == "sectionContact" => {...},
   _type == "sectionWork" => {..., projects[]->{..., ${projectCardFields} }},
-  _type == "sectionPartners" => {
-    _type, heading, subheading, inlineLogo, logos[]
-  },
-  _type == "sectionAgencies" => { _type, heading, agencies[]},
+  _type == "sectionPartners" => {...},
+  _type == "sectionAgencies" => {...},
   _type == "sectionTextHero" => {...},
   _type == "sectionMediaFullbleed" => {...},
   _type == "sectionMediaGrid" => {...},
-  _type == "sectionServiceDetail" => {..., "service": service->{ ...}},
+  _type == "sectionServiceDetail" => {..., service->{ ...}},
   _type == "sectionTextColumns" => {...},
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, ${image} } },
   _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, ${image} }  },
