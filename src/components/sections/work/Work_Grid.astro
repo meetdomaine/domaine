@@ -1,7 +1,7 @@
 ---
 import ProjectCard from "../../atoms/ProjectCard.astro";
 
-const { projects, showHidden, category, tag } = Astro.props;
+const { projects, category, tag } = Astro.props;
 
 let projectsVisible = projects;
 // if (!showHidden) projectsVisible = projectsVisible.filter(project => !project.hideProject)

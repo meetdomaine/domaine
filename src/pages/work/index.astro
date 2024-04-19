@@ -14,8 +14,6 @@ interface workPageContent {
 
 const content: workPageContent = await getWorkPageContent()
 const projects = await getProjects()
-const visibleProjects = projects.filter(project => !project.hideProject)
-// console.log(content)
 
 ---
 <Layout 
@@ -26,7 +24,7 @@ const visibleProjects = projects.filter(project => !project.hideProject)
 >
 	<main>
     <WorkHero heading={content.heading} />
-    <WorkGrid projects={visibleProjects} />
+    <WorkGrid projects={projects} />
 	</main>
 </Layout>
 

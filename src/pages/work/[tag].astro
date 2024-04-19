@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getProjectTags, urlFor } from '../../utils/sanityClient';
+import { getProjectTags, getProjectsByTag, urlFor } from '../../utils/sanityClient';
 import WorkGrid from '../../components/sections/work/Work_Grid.astro';
 import BackLink from '../../components/atoms/BackLink.astro';
 import ArrowLink from '../../components/atoms/ArrowLink.astro';
@@ -23,6 +23,9 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const { data } = Astro.props;
+
+const projects = await getProjectsByTag(data)
+// console.log(data)
 ---
 <Layout
   title={data.name}
@@ -37,7 +40,7 @@ const { data } = Astro.props;
     </div>
     <ArrowLink text="All Work" url="/work" />
   </section>
-  <WorkGrid tag={data} />
+  <WorkGrid projects={projects} />
 </Layout>
 
 <style>

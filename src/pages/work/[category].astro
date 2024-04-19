@@ -24,7 +24,7 @@ const { category } = Astro.params;
 const { data } = Astro.props;
 // console.log(data)
 const projects = await getProjectsByCategory(data)
-console.log(projects.length)
+// console.log(projects.length)
 ---
 
 <Layout
@@ -35,7 +35,7 @@ console.log(projects.length)
 >
   <main>
     <WorkHero category={data} heading={data.workPageHeading} />
-    <WorkGrid category={data} projects={projects} />
+    <WorkGrid projects={projects} />
   </main>
 
 </Layout>

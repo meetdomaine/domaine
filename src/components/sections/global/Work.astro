@@ -6,13 +6,12 @@ import WorkGrid from "../work/Work_Grid.astro";
 
 const { content } = Astro.props;
 
-let visibleProjects
+let projects
 
 if (content.projects) {
-  visibleProjects = content.projects
+  projects = content.projects
 } else {
   const projects = await getProjects()
-  visibleProjects = projects.filter(project => !project.hideProject)
 }
 
 
@@ -27,7 +26,7 @@ if (content.projects) {
       <ArrowLink text="View All" url="/work" />
     </div>
   }
-  <WorkGrid projects={visibleProjects.slice(0, 3)} />
+  <WorkGrid projects={projects.slice(0, 3)} />
 </section>
 
 <style>
