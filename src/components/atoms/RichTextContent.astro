@@ -1,0 +1,122 @@
+---
+import { PortableText } from "astro-portabletext";
+import SanityInlineImage from "../sections/blog/blogPost/SanityInlineImage.astro";
+import SanitySchema from "../sections/blog/blogPost/SanitySchema.astro";
+
+const { richText } = Astro.props;
+---
+<div class="rich-text">
+    <PortableText 
+      value={richText}
+      components={{
+        type: {
+          inlineImage: SanityInlineImage,
+          schema: SanitySchema,
+        }
+      }}
+    />
+</div>
+
+<style is:global>
+  .rich-text {
+    --content-inset: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 70ch;
+  }
+
+  /* .rich-text > *:first-child {
+    margin-top: 0;
+  } */
+
+  .rich-text h1,
+  .rich-text h2,
+  .rich-text h3,
+  .rich-text h4,
+  .rich-text h5,
+  .rich-text h6,
+  .rich-text p,
+  .rich-text ol,
+  .rich-text ul,
+  .rich-text li {
+    margin: 0;
+    font-family: inherit;
+    padding-inline: var(--content-inset);
+    width: 100%;
+  }
+
+  .rich-text h1,
+  .rich-text h2,
+  .rich-text h3,
+  .rich-text h4,
+  .rich-text h5,
+  .rich-text h6 {
+    margin-block: 0.8em 0.2em;
+  }
+
+.rich-text p {
+  margin-block: 0 1em;
+  line-height: 1.4;
+}
+
+.rich-text img {
+  width: 100%;
+  height: auto;
+  margin-block: 0.5em 2em;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.rich-text ol,
+.rich-text ul {
+  margin-block: 1.5em 2em;
+  padding-inline: var(--space-3xl) 0;
+}
+
+.rich-text li {
+  margin-block: 0 0.8em;
+  margin-inline: 0 0;
+  padding-inline: var(--space-xs) 0;
+  /* width: calc(100% - 0.8em); */
+}
+
+.rich-text a {
+    text-decoration: underline;
+    text-underline-offset: 0.1em;
+  }
+
+.rich-text blockquote {
+  padding-inline: 0;
+  color: var(--color-foreground-secondary);
+}
+
+.rich-text blockquote::before {
+  content: '"';
+}
+
+@media screen and (max-width: 960px) {
+
+
+  .rich-text h1,
+  .rich-text h2,
+  .rich-text h3,
+  .rich-text h4,
+  .rich-text h5,
+  .rich-text h6,
+  .rich-text p,
+  .rich-text ol,
+  .rich-text ul,
+  .rich-text li {
+    padding-inline: 0;
+  }
+
+
+  .rich-text ol,
+  .rich-text ul {
+    padding-inline: var(--space-lg) 0;
+  }
+
+
+}
+</style>

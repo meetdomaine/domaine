@@ -44,14 +44,16 @@ const { content } = Astro.props;
 
 <script>
 
-  const animateLoad = () => {
-    const heroSection = document.querySelector('.hero')
-    if (heroSection instanceof HTMLElement ) {
-      heroSection.dataset.animate = "false";
-    }
-  }
+  // const animateLoad = () => {
+  //   const heroSection = document.querySelector('.hero')
+  //   if (heroSection instanceof HTMLElement ) {
+  //     heroSection.dataset.animate = "false";
+  //   }
+  // }
 
-// import { animatePageLoad } from "../../../animation/PageLoadAnimation";
+  const heroSection = document.querySelector('.hero')
+  import { animatePageLoad } from "../../../animation/PageLoadAnimation";
+  animatePageLoad(heroSection)
 
 // const heroSection = document.querySelector('.hero');
 
@@ -59,9 +61,9 @@ const { content } = Astro.props;
 //   animatePageLoad(heroSection)
 // }
 
-  document.addEventListener("astro:page-load", () => {
-    animateLoad()
-  })
+  // document.addEventListener("astro:page-load", () => {
+  //   animateLoad()
+  // })
 
 
 </script>

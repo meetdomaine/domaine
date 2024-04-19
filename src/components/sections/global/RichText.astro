@@ -1,0 +1,22 @@
+---
+import { PortableText } from "astro-portabletext";
+import SanityInlineImage from "../blog/blogPost/SanityInlineImage.astro";
+import SanitySchema from "../blog/blogPost/SanitySchema.astro";
+import RichTextContent from "../../atoms/RichTextContent.astro";
+
+const { content } = Astro.props;
+---
+<section class="section_rich-text">
+  <RichTextContent
+    richText={content.content}
+  />
+</section>
+
+<style>
+  .section_rich-text {
+    padding: var(--header-height) var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>

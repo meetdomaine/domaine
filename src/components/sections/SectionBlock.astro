@@ -17,6 +17,7 @@ import MediaGallery from './global/MediaGallery.astro'
 import TextImage from './global/TextImage.astro'
 import EventSpeakers from './event/EventSpeakers.astro';
 import Form from './global/Form.astro';
+import RichText from './global/RichText.astro';
 
 interface Props {
 	block: any;
@@ -49,3 +50,4 @@ const { block } = Astro.props;
 {block._type == 'sectionContentBlocks' && <ContentBlocks content={block} />}
 {block._type == 'sectionTextImage' && <TextImage content={block} />}
 {block._type == 'sectionContactForm' && <Form content={block} />}
+{block._type == 'sectionRichText' && <RichText content={block} />}
