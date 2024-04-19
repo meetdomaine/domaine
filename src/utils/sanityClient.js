@@ -43,7 +43,7 @@ const sectionBlocks = (`
   _type == "sectionTextHero" => {...},
   _type == "sectionMediaFullbleed" => {...},
   _type == "sectionMediaGrid" => {...},
-  _type == "sectionServiceDetail" => {..., service->{ ...}},
+  _type == "sectionServiceDetail" => {..., image{${imageFields}}, service->{ ...}},
   _type == "sectionTextColumns" => {...},
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, ${image} } },
   _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, ${image} }  },

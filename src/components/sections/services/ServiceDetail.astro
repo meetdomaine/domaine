@@ -1,6 +1,7 @@
 ---
 import { urlFor, getServiceDeliverables, getServices, getDeliverables, getServiceCategoryGroup } from "../../../utils/sanityClient"
 import ArrowLink from "../../atoms/ArrowLink.astro";
+import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
 
@@ -33,22 +34,13 @@ if (content.service) {
 ---
 <section class="service-detail" id={content.id}>
   <div class="section-intro">
-    <img 
-      class="image"
-      sizes="50vw, (max-width: 768px) 100vw"
-      srcset={`
-        ${urlFor(content.image).width(600).height(400).auto('format').url()} 600w,
-        ${urlFor(content.image).width(720).height(540).auto('format').url()} 720w,
-        ${urlFor(content.image).width(1024).height(768).auto('format').url()} 1024w,
-        ${urlFor(content.image).width(1440).height(1080).auto('format').url()} 1440w,
-        ${urlFor(content.image).auto('format').url()},
-      `}
-      src={urlFor(content.image).url()}
-      width="100vw"
-      height="75vw"
-      alt={content.imageAlt}
-    />
-
+    <div class="image">
+      <SanityImage 
+        image={content.image}
+        sizes="50vw, (max-width: 768px) 100vw"
+        aspectRatio={3 / 2}
+      />
+    </div>
     <div class="section-title">
       <h2 class="h5">{content.eyebrow ? content.eyebrow : content.service ? content.service.name : "Services"}</h2>
       <p class="h3">{content.heading}</p>
