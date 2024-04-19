@@ -1,14 +1,11 @@
 ---
 import WorkFilter from "./Work_Filter.astro";
-import { getWorkPageContent } from "../../../utils/sanityClient";
-const content = await getWorkPageContent();
 
-const { category } = Astro.props;
-// console.log(category)
+const { category, heading } = Astro.props;
 ---
 <section class="work_hero">
   <WorkFilter activeCategory={category} />
-  <h1 class="section-title">{category && category.workPageHeading ? category.workPageHeading : content.heading}</h1>
+  <h1 class="section-title">{category && category.workPageHeading ? category.workPageHeading : heading}</h1>
 </section>
 
 <style>

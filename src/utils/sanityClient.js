@@ -77,7 +77,7 @@ export async function getPages() {
 
 export async function getBlogPageContent() {
   const pageContent = await client.fetch(`
-    *[_type == "pageBlog"]{ heading, subheading, "featuredPost": featuredPost->{title, slug, excerpt, mainImage{${imageFields}}, imageAlt, "category": category->{name, slug}} }
+    *[_type == "pageBlog"]{ ..., "featuredPost": featuredPost->{title, slug, excerpt, mainImage{${imageFields}}, "category": category->{name, slug}} }
   `)
   return pageContent[0]
 }

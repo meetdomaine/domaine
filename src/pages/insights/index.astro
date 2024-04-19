@@ -3,16 +3,18 @@ import Layout from '../../layouts/Layout.astro';
 import BlogIndexHero from '../../components/sections/blog/blogIndex/BlogIndexHero.astro';
 import BlogIndexFeed from '../../components/sections/blog/blogIndex/BlogIndexFeed.astro';
 import BlogIndexSidebar from '../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
-import { getBlogCategories, getBlogPageContent, getBlogPosts } from '../../utils/sanityClient';
+import { getBlogCategories, getBlogPageContent, getBlogPosts, urlFor } from '../../utils/sanityClient';
 
 const data = await getBlogPageContent();
 const posts = await getBlogPosts();
 const categories = await getBlogCategories();
-// console.log(data)
+// console.log(data.metaDescription)
 ---
 
 <Layout 
-    title="Insights"
+    title={data.metaTitle ? data.metaTitle : "Insights"}
+    description={data.metaDescription && data.metaDescription}
+    image={data.metaImage && urlFor(data.metaImage).url()}
     theme="light"
 >
     <BlogIndexHero

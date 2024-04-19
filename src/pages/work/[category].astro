@@ -32,7 +32,7 @@ const { data } = Astro.props;
   image={data.metaImage && urlFor(data.metaImage).url()}
 >
   <main>
-    <WorkHero category={data} />
+    <WorkHero category={data} heading={data.workPageHeading} />
     <WorkGrid category={data} />
   </main>
 

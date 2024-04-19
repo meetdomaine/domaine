@@ -13,7 +13,7 @@ interface workPageContent {
 }
 
 const content: workPageContent = await getWorkPageContent()
-console.log(content)
+// console.log(content)
 
 ---
 <Layout 
@@ -23,7 +23,7 @@ console.log(content)
   theme="light"
 >
 	<main>
-    <WorkHero />
+    <WorkHero heading={content.heading} />
     <WorkGrid />
 	</main>
 </Layout>
