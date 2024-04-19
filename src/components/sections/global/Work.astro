@@ -1,6 +1,7 @@
 ---
 import { getProjects } from "../../../utils/sanityClient";
 import ArrowLink from "../../atoms/ArrowLink.astro";
+import ProjectCard from "../../atoms/ProjectCard.astro";
 import WorkGrid from "../work/Work_Grid.astro";
 
 
@@ -16,7 +17,7 @@ if (content.projects) {
 
 
 ---
-<section class="section_work">
+<section class="section_work" data-project-count={projects.length}>
   { content.heading && 
     <div class="section-title">
       <div class="section-intro">
@@ -26,7 +27,19 @@ if (content.projects) {
       <ArrowLink text="View All" url="/work" />
     </div>
   }
-  <WorkGrid projects={projects.slice(0, 3)} />
+  <div class="projects" >
+    {projects.map((project) => (
+      <div class="project-card-wrapper">
+        <ProjectCard
+          title={project.title}
+          subtitle={project.subtitle}
+          slug={project.slug.current}
+          image={project.thumbnail}
+        />
+      </div>
+    ))}
+  </div>
+  <!-- <WorkGrid projects={projects.slice(0, 3)} /> -->
 </section>
 
 <style>
@@ -37,13 +50,80 @@ if (content.projects) {
     padding: var(--space-lg) 0;
   }
 
+  .section_work[data-project-count="1"] {
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    gap: var(--space-xl);
+    padding-inline: var(--page-margin);
+  }
+
   .section-title {
-    padding: 0 var(--page-margin);
+    /* padding: 0 var(--page-margin); */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: var(--space-lg);
     flex-wrap: wrap;
     align-items: flex-end;
+    padding-inline: var(--page-margin);
+  }
+
+  .section_work[data-project-count="1"] .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 1 50%;
+    padding-inline: 0;
+  }
+
+  .section_work[data-project-count="1"] .projects {
+    padding-inline: 0;
+  }
+
+  .projects {
+    /* padding: 0 var(--page-margin); */
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 50%;
+    gap: var(--space-md);
+    padding-inline: var(--page-margin);
+  }
+
+  .project-card-wrapper {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+
+    .section_work[data-project-count="1"] {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    /* .section_work .projects {
+      flex-direction: column;
+    } */
+
+    .projects {
+      padding-bottom: var(--space-md);
+    }
+
+    .section_work[data-project-count="1"] .projects,
+    .section_work[data-project-count="2"] .projects {
+      flex-direction: column;
+    }
+    
+    .section_work[data-project-count="3"] .projects,
+    .section_work[data-project-count="4"] .projects,
+    .section_work[data-project-count="5"] .projects {
+      overflow-x: auto;
+    }
+
+    .section_work[data-project-count="3"] .projects .project-card-wrapper,
+    .section_work[data-project-count="4"] .projects .project-card-wrapper,
+    .section_work[data-project-count="5"] .projects .project-card-wrapper {
+      flex: 0 0 80%;
+    }
   }
 </style>
