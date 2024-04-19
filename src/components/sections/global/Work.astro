@@ -1,0 +1,50 @@
+---
+import { getProjects } from "../../../utils/sanityClient";
+import ArrowLink from "../../atoms/ArrowLink.astro";
+import WorkGrid from "../work/Work_Grid.astro";
+
+
+const { content } = Astro.props;
+
+let visibleProjects
+
+if (content.projects) {
+  visibleProjects = content.projects
+} else {
+  const projects = await getProjects()
+  visibleProjects = projects.filter(project => !project.hideProject)
+}
+
+
+---
+<section class="section_work">
+  { content.heading && 
+    <div class="section-title">
+      <div class="section-intro">
+        <h2 class="h2">{content.heading}</h2>
+        {content.subheading && <p>{content.subheading}</p>}
+      </div>
+      <ArrowLink text="View All" url="/work" />
+    </div>
+  }
+  <WorkGrid projects={visibleProjects.slice(0, 3)} />
+</section>
+
+<style>
+  .section_work {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+  }
+
+  .section-title {
+    padding: 0 var(--page-margin);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+</style>

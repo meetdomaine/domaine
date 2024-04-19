@@ -1,30 +1,25 @@
 ---
-import { getProjects } from "../../../utils/sanityClient"
 import ProjectCard from "../../atoms/ProjectCard.astro";
 
-const projects = await getProjects();
-const { category, tag } = Astro.props;
-let actualIndex = 0;
+const { projects, showHidden, category, tag } = Astro.props;
+
+let projectsVisible = projects;
+if (!showHidden) projectsVisible = projectsVisible.filter(project => !project.hideProject)
+
 ---
 <section class="work_grid">
-  {projects.map((project, i) => {
-    if (
-      !project.hideProject && category && category._id == project.category._ref || 
-      tag && project.tags && project.tags.some(currentTag => currentTag.slug.current == tag.slug.current) || // Tag pages show hidden posts
-      !project.hideProject && !category && !tag
-    ) {
-      actualIndex++;
+  {projectsVisible.map((project, i) => {
       return (
         <ProjectCard
           title={project.title}
           subtitle={project.subtitle}
           slug={project.slug.current}
           image={project.thumbnail}
-          style={(actualIndex - 1) % 12 == 0 ? "large" : "default"}
+          style={i % 12 == 0 ? "large" : "default"}
         />
       )
     }
-  })}
+  )}
 </section>
 
 <style>

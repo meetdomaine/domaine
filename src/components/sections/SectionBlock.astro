@@ -6,7 +6,6 @@ import Services from './services/Services.astro';
 import Agencies from './agencies/Agencies.astro';
 import Partners from './partners/Partners.astro';
 import Contact from './contact/Contact';
-import Work from './work/Work';
 import TextHero from './hero/TextHero.astro'
 import MediaFullbleed from './media/MediaFullbleed.astro'
 import MediaGrid from './media/MediaGrid.astro'
@@ -18,6 +17,7 @@ import TextImage from './global/TextImage.astro'
 import EventSpeakers from './event/EventSpeakers.astro';
 import Form from './global/Form.astro';
 import RichText from './global/RichText.astro';
+import Work from './global/Work.astro';
 
 interface Props {
 	block: any;
@@ -33,7 +33,7 @@ const { block } = Astro.props;
 {block._type == 'sectionAbout' && <About content={block} />}
 {block._type == 'sectionServices' && <Services content={block} />}
 {block._type == 'sectionContact' && <Contact client:only="solid-js" content={block} />}
-{block._type == 'sectionWork' && <Work client:idle content={block} />}
+{block._type == 'sectionWork' && <Work content={block} />}
 {block._type == 'sectionPartners' && <Partners content={block} />}
 {block._type == 'sectionAgencies' && <Agencies content={block} />}
 {block._type == 'sectionTextHero' && <TextHero content={block} />}

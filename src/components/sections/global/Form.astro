@@ -13,6 +13,11 @@ const { content, heading, text, hubspotFormId } = Astro.props;
 
 <script>
 
+declare global {
+    interface Window {
+        hbspt:any;
+    }
+}
 
   const createHubspotScript = () => {
     // console.log('script')

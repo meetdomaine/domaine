@@ -26,6 +26,8 @@ export async function getHeaderContent() {
 
 const image = 'image{ crop, asset->{_id, metadata}, alt}'
 const imageFields = 'crop, asset->{_id, metadata}, alt'
+const projectCardFields = `"tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}`
+
 
 const sectionBlocks = (`
   ...,
@@ -42,9 +44,7 @@ const sectionBlocks = (`
   _type == "sectionContact" => {
     _type, heading, subheading, forms[]
   },
-  _type == "sectionWork" => {
-    _type, heading, subheading, categories[]->{name, slug}, projects[]->{title, slug, "clientName": client->name, "categories": categories[]->slug.current, thumbnailImage, showThumbnailVideo, "videoURL": thumbnailVideo.asset->url }
-  },
+  _type == "sectionWork" => {..., projects[]->{..., ${projectCardFields} }},
   _type == "sectionPartners" => {
     _type, heading, subheading, inlineLogo, logos[]
   },
@@ -75,6 +75,9 @@ export async function getPages() {
   return content
 }
 
+
+// Blog
+
 export async function getBlogPageContent() {
   const pageContent = await client.fetch(`
     *[_type == "pageBlog"]{ ..., "featuredPost": featuredPost->{title, slug, excerpt, mainImage{${imageFields}}, "category": category->{name, slug}} }
@@ -103,17 +106,7 @@ export async function getRelatedBlogPosts(project) {
   return relatedPosts
 }
 
-export async function getServicesPageContent() {
-  const pageContent = await client.fetch(`*[_type == "pageServices"]{ ..., content[]{${sectionBlocks}}}`);
-  return pageContent[0];
-}
-
-export async function getServiceDeliverables(service) {
-  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}}`);
-  return deliverables;
-}
-
-
+// Events
 
 export async function getEvents() {
   const content = await client.fetch(`*[_type == "contentEvent"]{
@@ -124,8 +117,6 @@ export async function getEvents() {
   }`)
   return content
 }
-
-
 
 export async function getEventContent(slug) {
   const content = await client.fetch(`*[_type == "contentEvent" && slug.current == '${slug}']{
@@ -142,10 +133,26 @@ export async function getEventContent(slug) {
   return content
 }
 
+
+// Services
+
+export async function getServicesPageContent() {
+  const pageContent = await client.fetch(`*[_type == "pageServices"]{ ..., content[]{${sectionBlocks}}}`);
+  return pageContent[0];
+}
+
 export async function getServices() {
   const services = await client.fetch(`*[_type == "categoryService"]{...}`)
   return services
 }
+
+export async function getServiceDeliverables(service) {
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}}`);
+  return deliverables;
+}
+
+
+// Projects
 
 export async function getWorkPageContent() {
   const content = await client.fetch(`*[_type == "pageWork"]{...}`)
@@ -162,10 +169,13 @@ export async function getProjectTags() {
   return tags
 }
 
-
-
 export async function getProjects() {
   const projects = await client.fetch(`*[_type == "contentProject"]{..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}} } | order(launchDate desc)`)
+  return projects
+}
+
+export async function getProjectsByCategory(category) {
+  const projects = await client.fetch(`*[_type == "contentProject" && category._ref == '${category._id}' ]{..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}} } | order(launchDate desc)`)
   return projects
 }
 
