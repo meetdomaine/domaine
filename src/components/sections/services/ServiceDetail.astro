@@ -1,21 +1,34 @@
 ---
-import { urlFor, getServiceDeliverables } from "../../../utils/sanityClient"
+import { urlFor, getServiceDeliverables, getServices, getDeliverables, getServiceCategoryGroup } from "../../../utils/sanityClient"
 import ArrowLink from "../../atoms/ArrowLink.astro";
 
 const { content } = Astro.props;
-const data = await getServiceDeliverables(content.service._id)
 
-let deliverables = {}
+// console.log(content.service)
 
-data.forEach((deliverable) => {
-  if (deliverables[deliverable.category]) {
-    return deliverables[deliverable.category].push(deliverable)
-  }
-  return deliverables[deliverable.category] = [ deliverable ];
+let columns = {}
 
-})
+if (content.service) {
+  const data = await getServiceDeliverables(content.service._id)
 
-// console.log(deliverables)
+  data.forEach((deliverable) => {
+    if (columns[deliverable.category]) {
+      return columns[deliverable.category].push(deliverable)
+    }
+    return columns[deliverable.category] = [ deliverable ];
+  })
+} else {
+
+  const deliverables = await getDeliverables()
+  // console.log(deliverables[0].name)
+
+  deliverables.forEach((deliverable) => {
+    if (columns[deliverable.category.service.name]) {
+      return columns[deliverable.category.service.name].push(deliverable)
+    }
+    return columns[deliverable.category.service.name] = [ deliverable ];
+  })
+}
 
 ---
 <section class="service-detail" id={content.id}>
@@ -37,23 +50,23 @@ data.forEach((deliverable) => {
     />
 
     <div class="section-title">
-      <h2 class="h5">{content.service.name}</h2>
+      <h2 class="h5">{content.eyebrow ? content.eyebrow : content.service ? content.service.name : "Services"}</h2>
       <p class="h3">{content.heading}</p>
-      <ArrowLink text="Learn More" url={`/services/${content.service.slug.current}`} />
+      { content.button && content.button.text && content.button.url && <ArrowLink text={content.button.text} url={content.button.url} />}
     </div>
   </div>
 
   <div class="section-details">
     <p class="category-description h6">{content.description}</p>
     <div class="deliverable-categories">
-      {Object.keys(deliverables).map((category) => {
+      {Object.keys(columns).map((category) => {
         return (
           <div class="deliverable-category">
-            <p class="category-name caption">{category}</p>
+            <p class="category-name utility">{category}</p>
             <ul class="deliverables">
-              {deliverables[category].map((deliverable) => {
+              {columns[category].map((deliverable) => {
                 return (
-                  <li class="deliverable">{deliverable.name}</li>
+                  <li class="deliverable caption">{deliverable.name}</li>
                 )
               })}
             </ul>
@@ -105,7 +118,7 @@ data.forEach((deliverable) => {
   
   .category-description {
     /* flex: 0 1 50%; */
-    max-width: 50ch;
+    max-width: 40ch;
     flex: 1 1 50%;
   }
 
@@ -128,7 +141,8 @@ data.forEach((deliverable) => {
     /* flex-grow: 1; */
     flex: 0 1 50%;
     gap: var(--space-sm);
-    max-width: 30ch;
+    min-width: 15ch;
+    /* max-width: 40ch; */
   }
 
   .deliverables {
@@ -165,9 +179,17 @@ data.forEach((deliverable) => {
       max-width: unset;
     }
 
-    /* .deliverable-categories {
-      flex-direction: column;
-    } */
+    .deliverable-categories {
+      /* flex-direction: column; */
+      flex-wrap: wrap;
+    }
+
+    .deliverable-category {
+      flex: 1 0 auto;
+      gap: var(--space-sm);
+      min-width: unset;
+      /* max-width: 40ch; */
+    }
   }
 
 </style>

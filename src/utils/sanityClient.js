@@ -139,9 +139,19 @@ export async function getServices() {
   return services
 }
 
+export async function getDeliverables() {
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" ]{ ..., category->{..., service->{...}} }`);
+  return deliverables;
+}
+
 export async function getServiceDeliverables(service) {
   const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}}`);
   return deliverables;
+}
+
+export async function getServiceCategoryGroup() {
+  const serviceGroup = await client.fetch(`*[_type == "categoryServiceGroup" ]{ ..., service->{...}}`);
+  return serviceGroup;
 }
 
 
