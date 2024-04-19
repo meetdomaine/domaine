@@ -19,7 +19,7 @@ const data = await getHeaderContent();
   <nav class="navigation-links">
     {data[0].links.map((link, i) => {
       return (
-        <a class="navigation-link" href={link.linkURL}>{link.linkText}</a>
+        <a class="navigation-link caption" href={link.linkURL}>{link.linkText}</a>
       )
     })}
   </nav>
