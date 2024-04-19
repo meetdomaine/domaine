@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro'
 import WorkHero from '../../components/sections/work/Work_Hero.astro'
 import WorkGrid from '../../components/sections/work/Work_Grid.astro'
+import { getWorkPageContent, urlFor } from '../../utils/sanityClient'
+import type { SanityAsset } from '@sanity/image-url/lib/types/types'
+
+interface workPageContent {
+  heading: string,
+  metaTitle?: string,
+  metaDescription?: string,
+  metaImage?: SanityAsset
+}
+
+const content: workPageContent = await getWorkPageContent()
+console.log(content)
 
 ---
 <Layout 
-  title="E-commerce Design & Development Partner"
+  title={content.metaTitle ? content.metaTitle : "Work"}
+  description={content.metaDescription && content.metaDescription}
+  image={content.metaImage && urlFor(content.metaImage).url()}
   theme="light"
 >
 	<main>
