@@ -4,6 +4,7 @@ import BlogIndexHero from '../../components/sections/blog/blogIndex/BlogIndexHer
 import BlogIndexFeed from '../../components/sections/blog/blogIndex/BlogIndexFeed.astro';
 import BlogIndexSidebar from '../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
 import { getBlogCategories, getBlogPageContent, getBlogPosts, urlFor } from '../../utils/sanityClient';
+import Work from '../../components/sections/global/Work.astro';
 
 const data = await getBlogPageContent();
 const posts = await getBlogPosts();
@@ -34,6 +35,8 @@ const categories = await getBlogCategories();
         />
 
     </div>
+
+    <Work />
 
 </Layout>
 

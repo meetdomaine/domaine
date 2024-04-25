@@ -9,24 +9,29 @@ const { content } = Astro.props;
 
 let projects
 
-if (content.projects) {
+if (content && content.projects) {
   projects = content.projects
 } else {
-  const projects = await getProjects()
+  const allProjects = await getProjects()
+  projects = allProjects.slice(0, 3)
 }
 
 
 ---
 <section class="section_work" data-project-count={projects.length}>
-  { content.heading && 
-    <div class="section-title">
-      <div class="section-intro">
-        <h2 class="h2">{content.heading}</h2>
-        {content.subheading && <p>{content.subheading}</p>}
-      </div>
-      {content.button && content.button.text && content.button.url && <ArrowLink text={content.button.text} url={content.button.url} />}
+
+  <div class="section-title">
+    <div class="section-intro">
+      <h2 class="h2">{content && content.heading ? content.heading : "Select Work"}</h2>
+      {content && content.subheading && <p>{content.subheading}</p>}
     </div>
-  }
+    {content && content.button && content.button.text && content.button.url ? 
+      <ArrowLink text={content.button.text} url={content.button.url} />
+      :
+      <ArrowLink text="View All" url="/work" />
+    }
+  </div>
+
   <div class="projects" >
     {projects.map((project) => (
       <div class="project-card-wrapper">
