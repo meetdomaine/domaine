@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
-  <path fill="#000" d="M8.914 8.914H39.58v15.333H8.915V8.914Zm0 30.666H39.58v15.334H8.915V39.58ZM39.58 24.247h15.334v15.334H39.58V24.247Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32">
+  <path fill="#000" d="M21.303 12.667h.03V6H8v6.667h13.303ZM8 19.333V26h13.333v-6.667H8Z"/>
+  <path fill="#000" d="M28 12.667h-6.667v6.666H28v-6.666Z"/>
   <style>
     path { fill: #000; }
     @media (prefers-color-scheme: dark) {
