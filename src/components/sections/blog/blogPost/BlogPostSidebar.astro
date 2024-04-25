@@ -12,7 +12,7 @@ console.log(buttonUrl)
       <h5 class="h4">{heading}</h5>
       <p class="">{subheading}</p>
     </div>
-    <a class="button button-secondary caption" href={buttonUrl ? buttonUrl : `/insights/${category.slug.current}/contact`}>{buttonText ? buttonText : "Let's Chat"}</a>
+    <a class="button button-secondary caption" target="_blank" href={buttonUrl ? buttonUrl : `/insights/${category.slug.current}/contact`}>{buttonText ? buttonText : "Let's Chat"}</a>
   </div>
   <div class="articles">
     <p class="caption">Latest Articles</p>
