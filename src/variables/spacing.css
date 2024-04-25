@@ -20,6 +20,7 @@
   --content-margin: 1440px;
   --header-height: min(var(--space-4xl), 15lvh);
   --button-height: 40px;
+  --grid-gap: var(--space-md);
 
   /* Icons */
   --icon-sm: 10px;

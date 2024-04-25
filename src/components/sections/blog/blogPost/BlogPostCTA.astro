@@ -1,0 +1,40 @@
+---
+const { heading, subheading, buttonText, buttonUrl } = Astro.props
+---
+<section class="blog-post-cta">
+  <div class="call-to-action">
+    <div class="section-title">
+      <h2 class="heading h2">{heading}</h2>
+      <p class="heading h6">{subheading}</p>
+    </div>
+    <a class="button" href={buttonUrl}>{buttonText}</a>
+  </div>
+</section>
+
+<style>
+  .blog-post-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-lg) var(--page-margin);
+  }
+
+  .call-to-action {
+    background: var(--color-background-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-3xl) var(--space-lg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    gap: var(--space-lg);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 60ch;
+    text-align: center;
+  }
+</style>

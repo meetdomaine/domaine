@@ -188,8 +188,8 @@ export async function getProjectsByTag(tag) {
 }
 
 export async function getRelatedProjects(project) {
-  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' ]{..., thumbnail{${imageFields}} }`)
-  const allOtherProjects = await client.fetch(`*[_type == "contentProject" && slug.current != '${project.slug.current}' ]{..., thumbnail{${imageFields}} }`)
+  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
+  const allOtherProjects = await client.fetch(`*[_type == "contentProject" && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
   return { relatedProjects, allOtherProjects}
 }
 

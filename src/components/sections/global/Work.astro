@@ -77,12 +77,10 @@ if (content.projects) {
   }
 
   .projects {
-    /* padding: 0 var(--page-margin); */
-    --gap: var(--space-md);
     display: flex;
     flex-direction: row;
     flex: 0 0 50%;
-    gap: var(--gap);
+    gap: var(--grid-gap);
     padding-inline: var(--page-margin);
   }
 
@@ -91,8 +89,6 @@ if (content.projects) {
   }
 
   .section_work[data-project-count="5"] .projects {
-    /* padding-inline: 0; */
-    /* flex-wrap: wrap; */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
   }

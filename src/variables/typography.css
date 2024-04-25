@@ -88,7 +88,7 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+a:not(.button):hover {
   color: var(--color-link-secondary);
 }
 

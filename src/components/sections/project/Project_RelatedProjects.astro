@@ -5,50 +5,40 @@ import ProjectCard from "../../atoms/ProjectCard.astro";
 const { project } = Astro.props;
 
 const data = await getRelatedProjects(project);
-const relatedProjectCount = 2;
-const minRelatedProjectCount = 2
-// console.log(data.relatedProjects[0])
-// console.log(data.allOtherProjects.length)
+const relatedProjectCount = 3;
 let actualIndex = 0
 ---
 
 <section class='related-projects'>
   <div class="section-title">
-    <h2 class="heading">{data.relatedProjects.length > 1 ? "Related Projects" : "Other Projects"}</h2>
+    <h2 class="heading">{data.relatedProjects.length > relatedProjectCount ? "Related Projects" : "Other Projects"}</h2>
     <ArrowLink text="View All" url="/work" style="large" />
   </div>
   <div class="projects-wrapper"> 
-    {data.relatedProjects.length > 1 ? (
-      data.relatedProjects.map((project, i) => {
-
-        if (actualIndex < relatedProjectCount && !project.hideProject) {
-          actualIndex++
-          return (
-            <ProjectCard 
-              title={project.title} 
-              subtitle={project.subtitle}
-              image={project.thumbnail}
-              slug={project.slug.current}
-              style={data.relatedProjects.length < 2 ? "wide" : "default"}
-            />
-          )
-        }
-      })
+    {data.relatedProjects.length >= relatedProjectCount ? (
+      
+      data.relatedProjects.slice(0, relatedProjectCount).map((project, i) => (
+        <div class="project-card-wrapper">
+          <ProjectCard 
+            title={project.title} 
+            subtitle={project.subtitle}
+            image={project.thumbnail}
+            slug={project.slug.current}
+            style={data.relatedProjects.length < 2 ? "wide" : "default"}
+          />
+        </div>
+      ))
     ) : (
-      data.allOtherProjects.map((project, i) => {
-        if (actualIndex < relatedProjectCount && !project.hideProject) {
-          actualIndex++
-          return (
-            <ProjectCard 
-              title={project.title} 
-              subtitle={project.subtitle}
-              image={project.thumbnail}
-              slug={project.slug.current}
-              style="default"
-            />
-          )
-        }
-      })
+      data.allOtherProjects.slice(0, relatedProjectCount).map((project) => (
+          <ProjectCard 
+            title={project.title} 
+            subtitle={project.subtitle}
+            image={project.thumbnail}
+            slug={project.slug.current}
+            style="default"
+          />
+        )
+      )
     )
     }
   </div>
@@ -75,27 +65,19 @@ let actualIndex = 0
 
   .projects-wrapper {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--page-margin);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--grid-gap);
   }
 
   @media screen and (max-width: 768px) {
-
-    /* .section-title {
-      flex-direction: column;
-    } */
 
     .related-projects {
 
       /* overflow-x: auto; */
     }
     .projects-wrapper {
-      /* width: 200vw; */
-      /* overflow-x: auto; */
-      /* grid-template-columns: 1fr; */
-      /* display: flex;
-      flex-direction: row; */
-      /* justify-content: flex-start; */
+      display: flex;
+      flex-direction: column;
     }
   }
 </style>
