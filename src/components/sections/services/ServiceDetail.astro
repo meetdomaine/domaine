@@ -5,9 +5,8 @@ import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
 
-// console.log(content.service)
-
 let columns = {}
+let services
 
 if (content.service) {
   const data = await getServiceDeliverables(content.service._id)
@@ -19,107 +18,111 @@ if (content.service) {
     return columns[deliverable.category] = [ deliverable ];
   })
 } else {
-
-  const deliverables = await getDeliverables()
-  // console.log(deliverables[0].name)
-
-  deliverables.forEach((deliverable) => {
-    if (columns[deliverable.category.service.name]) {
-      return columns[deliverable.category.service.name].push(deliverable)
-    }
-    return columns[deliverable.category.service.name] = [ deliverable ];
-  })
+  services = await getServices()
 }
 
+// console.log(services)
+
 ---
-<section class="service-detail" id={content.id}>
-  <div class="section-intro">
-    <div class="image">
-      <SanityImage 
-        image={content.image}
-        sizes="50vw, (max-width: 768px) 100vw"
-        aspectRatio={3 / 2}
-      />
-    </div>
-    <div class="section-title">
-      <h2 class="h5">{content.eyebrow ? content.eyebrow : content.service ? content.service.name : "Services"}</h2>
-      <p class="h3">{content.heading}</p>
-      { content.button && content.button.text && content.button.url && <ArrowLink text={content.button.text} url={content.button.url} />}
-    </div>
+<section class="section_service-detail" id={content.id}>
+
+  <div class="media">
+    <SanityImage 
+      image={content.image}
+      sizes="50vw, (max-width: 768px) 100vw"
+      aspectRatio={3 / 4}
+    />
   </div>
 
-  <div class="section-details">
-    <p class="category-description h6">{content.description}</p>
-    <div class="deliverable-categories">
-      {Object.keys(columns).map((category) => {
-        return (
-          <div class="deliverable-category">
-            <p class="category-name utility">{category}</p>
-            <ul class="deliverables">
-              {columns[category].map((deliverable) => {
-                return (
-                  <li class="deliverable caption">{deliverable.name}</li>
-                )
-              })}
-            </ul>
-          </div>
-        )
-      })}
+  <div class="content">
+    
+    <div class="section-intro">
+      <div class="section-title">
+        <p class="caption">{content.eyebrow ? content.eyebrow : content.service ? content.service.name : "Services"}</p>
+        <h2 class="h2">{content.heading}</h2>
+        <p class="category-description h6">{content.description}</p>
+      </div>
+      { content && content.service ? 
+        null
+        // <ArrowLink text="Learn More" url={`/services/${content.service.slug.current}`} />
+      : 
+        <ArrowLink text="View All" url={`/services`} />
+      }
     </div>
+
+    { content && content.service &&
+      <div class="deliverable-categories">
+        {Object.keys(columns).map((category) => {
+          return (
+            <div class="deliverable-category">
+              <p class="category-name">{category}</p>
+              <ul class="deliverables">
+                {columns[category].map((deliverable) => {
+                  return (
+                    <li class="deliverable caption">{deliverable.name}</li>
+                  )
+                })}
+              </ul>
+            </div>
+          )
+        })}
+      </div>
+    }
+
   </div>
+
 </section>
 
 <style>
-  .service-detail {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-2xl);
-    padding: var(--header-height) var(--page-margin-narrow) var(--space-2xl);
-  }
-
-  .section-intro {
+  .section_service-detail {
     display: flex;
     flex-direction: row;
-    justify-content: stretch;
     align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-3xl);
+    padding: var(--header-height) var(--page-margin) var(--space-2xl);
   }
 
-  .section-title {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  .image {
-    flex: 0 0 50%;
+  .media {
+    flex: 1 1 40%;
+    aspect-ratio: 3 / 4;
     height: auto;
     border-radius: var(--radius-lg);
     overflow: hidden;
   }
 
-  .section-details {
+  .content {
+    flex: 0 1 60%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    align-self: center;
-    /* justify-content: space-between; */
-    gap: var(--space-3xl);
+    align-items: stretch;
+    gap: var(--space-2xl);
+  }
+
+  .section-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
   }
   
   .category-description {
-    /* flex: 0 1 50%; */
     max-width: 40ch;
     flex: 1 1 50%;
   }
 
   .deliverable-categories {
+    --gap: var(--space-xl);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    gap: var(--space-xl);
-    flex: 1 1 50%;
+    flex-wrap: wrap;
+    gap: var(--gap);
   }
 
   .category-name {
@@ -131,10 +134,11 @@ if (content.service) {
     display: flex;
     flex-direction: column;
     /* flex-grow: 1; */
-    flex: 0 1 50%;
+    /* flex: 1 1 calc(50% - var(--gap) / 2); */
+    flex: 1 0 auto;
     gap: var(--space-sm);
-    min-width: 15ch;
-    /* max-width: 40ch; */
+    /* min-width: 15ch; */
+    max-width: 30ch;
   }
 
   .deliverables {
@@ -151,7 +155,12 @@ if (content.service) {
 
   @media screen and (max-width:960px) {
 
-    .section-intro {
+    .section_service-detail {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    /* .section-intro {
       flex-direction: column-reverse;
       align-items: stretch;
     }
@@ -181,7 +190,7 @@ if (content.service) {
       gap: var(--space-sm);
       min-width: unset;
       /* max-width: 40ch; */
-    }
+    } */
   }
 
 </style>

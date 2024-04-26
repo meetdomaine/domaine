@@ -6,7 +6,7 @@ import Services from './services/Services.astro';
 import Agencies from './agencies/Agencies.astro';
 import Partners from './partners/Partners.astro';
 import Contact from './contact/Contact';
-import TextHero from './hero/TextHero.astro'
+import TextHero from './services/ServicesHero.astro'
 import MediaFullbleed from './media/MediaFullbleed.astro'
 import MediaGrid from './media/MediaGrid.astro'
 import ServiceDetail from './services/ServiceDetail.astro'
@@ -36,7 +36,7 @@ const { block } = Astro.props;
 {block._type == 'sectionWork' && <Work content={block} />}
 {block._type == 'sectionPartners' && <Partners content={block} />}
 {block._type == 'sectionAgencies' && <Agencies content={block} />}
-{block._type == 'sectionTextHero' && <TextHero content={block} />}
+<!-- {block._type == 'sectionTextHero' && <TextHero content={block} />} -->
 {block._type == 'sectionServiceDetail' && <ServiceDetail content={block} />}
 {block._type == 'sectionMediaFullbleed' && <MediaFullbleed content={block} />}
 {block._type == 'sectionMediaGrid' && <MediaGrid content={block} />}

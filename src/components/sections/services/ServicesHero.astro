@@ -1,0 +1,114 @@
+---
+const { title, heading, subheading, services } = Astro.props;
+
+
+// console.log(services)
+---
+<section class="section_services-hero">
+  <div class="content">
+    <div class="section-intro">
+      <h1 class="utility">{title}</h1>
+      <ul class="service-links">
+        {services.map((service) => {
+          return (
+            <li class="service-item"><a class="service-link h5" href={`#${service.slug.current}`}>{service.name}</a></li>
+          )
+        })}
+      </ul>
+    </div>
+    <div class="section-title">
+      <h1 class="heading h1">{heading}</h1>
+      <h3 class="subheading h5">{subheading}</h3>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section_services-hero {
+    padding: var(--header-height) var(--page-margin) var(--space-xl);
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    min-height: 80svh;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 0 0 100%;
+    gap: var(--space-xl);
+    /* flex-wrap: wrap; */
+  }
+
+  .section-intro {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+    flex: 0 1 auto;
+  }
+
+  .section-title {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* max-width: 60ch; */
+  }
+
+  .heading {
+    max-width: 20ch;
+  }
+
+  .subheading {
+    /* min-width: 0; */
+    max-width: 50ch;
+  }
+
+  .service-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0em 0 0;
+  }
+
+  .service-item {
+    list-style: none;
+    padding: 0;
+  }
+
+  .service-link {
+    color: var(--color-foreground-secondary);
+  }
+
+  @media screen and (max-width:768px) {
+
+    .section_services-hero {
+      align-items: flex-end;
+      min-height: 60svh;
+    }
+
+    .content {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: var(--space-xl);
+    }
+
+    .section-intro {
+      flex-direction: column;
+      gap: var(--space-xs);
+      /* justify-content: space-between; */
+    }
+
+    .service-links {
+      flex-direction: row;
+      gap: var(--space-md);
+    }
+  }
+</style>

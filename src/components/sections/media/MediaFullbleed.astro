@@ -1,9 +1,17 @@
 ---
 import { urlFor } from "../../../utils/sanityClient"
+import SanityImage from "../../atoms/SanityImage.astro";
 const { content } = Astro.props;
 ---
 <section class="media-fullbleed">
-  <img 
+  <div class="media">
+    <SanityImage 
+      sizes="100vw"
+      image={content.image}
+      aspectRatio={16 / 9}
+    />
+  </div>
+  <!-- <img 
     class="image"
     sizes="100vw"
     width="100%"
@@ -17,20 +25,18 @@ const { content } = Astro.props;
       ${urlFor(content.image).width(2880).height(1440).auto('format').url()} 2880w,
     `}
     alt={content.imageAlt}
-  />
+  /> -->
 
 </section>
 
 <style>
   .media-fullbleed {
     padding: var(--page-margin);
-    aspect-ratio: 2 / 1;
   }
 
-  .image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .media {
+    aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);
+    overflow: hidden;
   }
 </style>

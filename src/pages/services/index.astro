@@ -1,14 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { urlFor } from '../../utils/sanityClient';
+import { getServices, urlFor } from '../../utils/sanityClient';
 import SectionBlock from '../../components/sections/SectionBlock.astro';
 // import TextHero from '../../components/sections/hero/TextHero.astro';
 // import ServicesDetail from '../../components/sections/services/ServicesDetail.astro';
 // import MediaFullbleed from '../../components/sections/media/MediaFullbleed.astro';
 // import MediaRow from '../../components/sections/media/MediaGrid.astro';
+import ServicesHero from '../../components/sections/services/ServicesHero.astro';
+
 import { getServicesPageContent } from '../../utils/sanityClient';
 
-const data = await getServicesPageContent();
+const data = await getServicesPageContent()
+const services = await getServices()
 // console.log(data)
 ---
 
@@ -19,6 +22,13 @@ const data = await getServicesPageContent();
     description={data.metaDescription}
     image={data.metaImage && urlFor(data.metaImage).url()}
 >
+
+  <ServicesHero 
+    title={data.title}
+    heading={data.heading}
+    subheading={data.subheading}
+    services={services}
+  />
 
   {data.content.map((contentBlock) => (
     <SectionBlock block={contentBlock} />

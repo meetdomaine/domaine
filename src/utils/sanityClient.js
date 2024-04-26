@@ -41,7 +41,7 @@ const sectionBlocks = (`
   _type == "sectionPartners" => {...},
   _type == "sectionAgencies" => {...},
   _type == "sectionTextHero" => {...},
-  _type == "sectionMediaFullbleed" => {...},
+  _type == "sectionMediaFullbleed" => {..., image{${imageFields}} },
   _type == "sectionMediaGrid" => {...},
   _type == "sectionServiceDetail" => {..., image{${imageFields}}, service->{ ...}},
   _type == "sectionTextColumns" => {...},
@@ -145,7 +145,7 @@ export async function getDeliverables() {
 }
 
 export async function getServiceDeliverables(service) {
-  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}}`);
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}} | order(name, desc)`);
   return deliverables;
 }
 
