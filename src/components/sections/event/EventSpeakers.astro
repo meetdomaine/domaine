@@ -2,7 +2,7 @@
 import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
-console.log(content.speakers)
+// console.log(content.speakers)
 ---
 <section class="section_event-speakers">
   <div class="section-title">
@@ -61,6 +61,7 @@ console.log(content.speakers)
     flex-direction: row;
     gap: var(--gap);
     flex-wrap: wrap;
+    align-items: flex-start;
   }
 
   .section_event-speakers .speaker-card {
