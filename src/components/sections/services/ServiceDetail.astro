@@ -1,27 +1,25 @@
 ---
-import { urlFor, getServiceDeliverables, getServices, getDeliverables, getServiceCategoryGroup } from "../../../utils/sanityClient"
+import { urlFor, getServiceDeliverables, getServiceGroups, getServices, getServiceGroupDeliverables, getDeliverables, getServiceCategoryGroup } from "../../../utils/sanityClient"
 import ArrowLink from "../../atoms/ArrowLink.astro";
 import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
 
-let columns = {}
-let services
+const services = []
 
 if (content.service) {
-  const data = await getServiceDeliverables(content.service._id)
 
-  data.forEach((deliverable) => {
-    if (columns[deliverable.category]) {
-      return columns[deliverable.category].push(deliverable)
-    }
-    return columns[deliverable.category] = [ deliverable ];
-  })
-} else {
-  services = await getServices()
-}
+  const serviceGroups = await getServiceGroups(content.service._id)
 
-// console.log(services)
+  for (let i = 0; i < serviceGroups.length; i++) {
+    const deliverables = await getServiceGroupDeliverables(serviceGroups[i]._id)
+    services.push({
+      group: serviceGroups[i],
+      deliverables
+    })
+  }
+} 
+
 
 ---
 <section class="section_service-detail" id={content.id}>
@@ -50,14 +48,16 @@ if (content.service) {
       }
     </div>
 
+    <!-- {console.log(services)} -->
+
     { content && content.service &&
       <div class="deliverable-categories">
-        {Object.keys(columns).map((category) => {
+        {services.map((service) => {
           return (
             <div class="deliverable-category">
-              <p class="category-name">{category}</p>
+              <p class="category-name">{service.group.name}</p>
               <ul class="deliverables">
-                {columns[category].map((deliverable) => {
+                {service.deliverables.map((deliverable) => {
                   return (
                     <li class="deliverable caption">{deliverable.name}</li>
                   )

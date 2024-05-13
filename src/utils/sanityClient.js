@@ -135,22 +135,33 @@ export async function getServicesPageContent() {
 }
 
 export async function getServices() {
-  const services = await client.fetch(`*[_type == "categoryService"]{...}`)
+  const services = await client.fetch(`*[_type == "categoryService"]{...} | order(orderRank)`)
   return services
 }
 
 export async function getDeliverables() {
-  const deliverables = await client.fetch(`*[_type == "contentDeliverable" ]{ ..., category->{..., service->{...}} }`);
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" ]{ ..., category->{..., service->{...}} } | order(orderRank)`);
   return deliverables;
 }
 
 export async function getServiceDeliverables(service) {
-  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}} | order(name, desc)`);
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category->service._ref == "${service}" ]{ ..., "category": category->name, "service": category->service->{name, slug}} | order(orderRank)`);
+  return deliverables;
+}
+
+export async function getServiceGroups(service) {
+  const serviceGroups = await client.fetch(`*[_type == "categoryServiceGroup" && service._ref == "${service}" ]{ ... } | order(orderRank)`);
+  return serviceGroups;
+}
+
+export async function getServiceGroupDeliverables(group) {
+  // console.log(group)
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category._ref == "${group}"]{...} | order(orderRank)`);
   return deliverables;
 }
 
 export async function getServiceCategoryGroup() {
-  const serviceGroup = await client.fetch(`*[_type == "categoryServiceGroup" ]{ ..., service->{...}}`);
+  const serviceGroup = await client.fetch(`*[_type == "categoryServiceGroup" ]{ ..., service->{...}} | order(orderRank)`);
   return serviceGroup;
 }
 
