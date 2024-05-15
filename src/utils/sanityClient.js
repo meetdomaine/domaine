@@ -14,26 +14,15 @@ export function urlFor(source) {
   return builder.image(source)
 }
 
-export async function getSEOSettings() {
-  const content = await client.fetch(`*[_type == "seoSettings"]`)
-  return content
-}
-
-export async function getHeaderContent() {
-  const content = await client.fetch(`*[_type == "sectionHeader"]`)
-  return content
-}
-
-const image = 'image{ crop, asset->{_id, metadata}, alt}'
+// Reusable Fields
 const imageFields = 'crop, asset->{_id, metadata}, alt'
 const projectCardFields = `"tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}`
 
 const sectionBlocks = (`
   ...,
-  _type == "sectionHero" => {
-    _type, eyebrow, heading, subheading, textAlignment, image, imageAlt, "videoURL": video.asset -> url, "imageURL": image.asset -> url, badgeText, buttonText, buttonURL, jumplink
-  },
+  _type == "sectionHero" => { ..., image{${imageFields}} },
   _type == "sectionClients" => {..., clients[]->{...} },
+  
   _type == "sectionAbout" => {..., "videoURL": video.asset -> url, image},
   _type == "sectionServices" => {...},
   _type == "sectionContact" => {...},
@@ -45,23 +34,46 @@ const sectionBlocks = (`
   _type == "sectionMediaGrid" => {...},
   _type == "sectionServiceDetail" => {..., image{${imageFields}}, service->{ ...}},
   _type == "sectionTextColumns" => {...},
-  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, ${image} } },
-  _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, ${image} }  },
-  _type == "sectionTextImage" => {..., ${image} },
+  _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, image{${imageFields}} } },
+  _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, image{${imageFields}} }  },
+  _type == "sectionTextImage" => {..., image{${imageFields}} },
   _type == "sectionSpeakers" => {..., speakers[]{..., image{${imageFields}}, companyLogo{${imageFields}} } },
 `)
 
 const projectFields = `..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}} } | order(launchDate desc)`
+
+
+// Validated
+
+
+export async function getHomePageContent() {
+  const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)
+  return content
+}
+
+// Unvalidated
+
+export async function getSEOSettings() {
+  const content = await client.fetch(`*[_type == "seoSettings"]`)
+  return content
+}
+
+export async function getHeaderContent() {
+  const content = await client.fetch(`*[_type == "sectionHeader"]`)
+  return content
+}
+
+
+
+
+
 
 export async function getFooterContent() {
   const content = await client.fetch(`*[_type == "sectionFooter"]`)
   return content
 }
 
-export async function getHomePageContent() {
-  const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)
-  return content
-}
+
 
 export async function getPages() {
   const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)

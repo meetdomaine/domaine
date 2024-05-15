@@ -3,7 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import SectionBlock from '../components/sections/SectionBlock.astro';
 
 import { getHomePageContent } from '../utils/sanityClient';
+
 const data = await getHomePageContent();
+
 ---
 <Layout 
 	title="E-commerce Design & Development Partner"

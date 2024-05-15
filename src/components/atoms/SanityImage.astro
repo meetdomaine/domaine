@@ -26,12 +26,13 @@ interface Props {
     alt: string
   },
   sizes: string,
+  cover?: boolean,
   eager?: boolean,
   aspectRatio?: number,
-  alt?: string,
+  alt: string,
 }
 
-const { image, sizes, eager, aspectRatio, alt } = Astro.props;
+const { image, sizes, eager, aspectRatio, alt, cover } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -67,6 +68,7 @@ const blurHash = image.asset.metadata.blurHash
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
   alt={alt ? alt : image.alt}
+  data-cover={cover ? "true" : "false"}
   data-width={width}
   data-height={height}
   data-blur-hash = {blurHash}
@@ -81,6 +83,12 @@ const blurHash = image.asset.metadata.blurHash
     height: auto;
     max-height: 100%;
     margin: 0;
+    /* opacity: 0; */
+  }
+
+  .sanity-image[data-cover="true"] {
+    height: 100%;
+    object-fit: cover;
     /* opacity: 0; */
   }
 
