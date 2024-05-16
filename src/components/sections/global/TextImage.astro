@@ -15,7 +15,7 @@ const { content } = Astro.props;
       </div>
       {content.description && <p class="">{content.description}</p>}
     </div>
-    {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}>}
+    {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}/>}
   </span>
   <span class="media">
     <SanityImage

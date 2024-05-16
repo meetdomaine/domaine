@@ -122,19 +122,29 @@ export async function getProjects() {
   return projects
 }
 
+export async function getRelatedProjects(project) {
+  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
+  return relatedProjects
+}
+
+export async function getProjectCategories() {
+  const categories = await client.fetch(`*[_type == "categoryProject"]{...}`)
+  return categories
+}
+
 export async function getProjectsByCategory(category) {
   const projects = await client.fetch(`*[_type == "contentProject" && category._ref == '${category._id}' && !hideProject ]{${projectFields}} | order(launchDate desc)`)
   return projects
 }
 
+export async function getProjectTags() {
+  const tags = await client.fetch(`*[_type == "tagProject"]{...}`)
+  return tags
+}
+
 export async function getProjectsByTag(tag) {
   const projects = await client.fetch(`*[_type == "contentProject" && '${tag._id}' in tags[]->_id ]{${projectFields}} | order(launchDate desc)`)
   return projects
-}
-
-export async function getRelatedProjects(project) {
-  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
-  return relatedProjects
 }
 
 
@@ -186,9 +196,6 @@ export async function getEventContent(slug) {
   return content
 }
 
-
-
-
 export async function getDeliverables() {
   const deliverables = await client.fetch(`*[_type == "contentDeliverable" ]{ ..., category->{..., service->{...}} } | order(orderRank)`);
   return deliverables;
@@ -199,29 +206,10 @@ export async function getServiceDeliverables(service) {
   return deliverables;
 }
 
-
-
 export async function getServiceCategoryGroup() {
   const serviceGroup = await client.fetch(`*[_type == "categoryServiceGroup" ]{ ..., service->{...}} | order(orderRank)`);
   return serviceGroup;
 }
-
-
-// Projects
-
-
-
-export async function getProjectCategories() {
-  const categories = await client.fetch(`*[_type == "categoryProject"]{...}`)
-  return categories
-}
-
-export async function getProjectTags() {
-  const tags = await client.fetch(`*[_type == "tagProject"]{...}`)
-  return tags
-}
-
-
 
 
 
