@@ -23,12 +23,13 @@ const sectionBlocks = (`
   _type == "sectionHero" => { ..., image{${imageFields}} },
   _type == "sectionClients" => {..., clients[]->{..., logo{${imageFields}}, image{${imageFields}}} },
   _type == "sectionAbout" => {..., image{${imageFields}}, "videoURL": video.asset -> url},
+  _type == "sectionPartners" => {...},
 
 
   _type == "sectionServices" => {...},
   _type == "sectionContact" => {...},
   _type == "sectionWork" => {..., projects[]->{..., ${projectCardFields} }},
-  _type == "sectionPartners" => {...},
+  
   _type == "sectionAgencies" => {...},
   _type == "sectionTextHero" => {...},
   _type == "sectionMediaFullbleed" => {..., image{${imageFields}} },

@@ -1,5 +1,6 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
+import SanityImage from "../../atoms/SanityImage.astro";
 const { content } = Astro.props;
 
 let inlineLogoURL;
@@ -32,13 +33,23 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
       if (!logo.featured) {
         return (
           // <ViewportObserver client:only="solid-js" delay={i * 10}>
-            <img
+            <div 
               class="logo"
-              src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
-              alt={`Partner logo for ${logo.name}`} 
-              loading='lazy'
               data-delay={i * 20}
-            />
+            >
+              <SanityImage 
+                image={logo.partnerLogo}
+                sizes="(max-width: 768px) 33vw, 20vw"
+                alt={`Partner logo for ${logo.name}`} 
+              />
+            </div>
+            // <img
+            //   class="logo"
+            //   src={urlFor(logo.partnerLogo).format("webp").width(600).url()} 
+            //   alt={`Partner logo for ${logo.name}`} 
+            //   loading='lazy'
+            //   data-delay={i * 20}
+            // />
           // </ViewportObserver>
         )
       }

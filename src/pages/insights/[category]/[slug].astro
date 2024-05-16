@@ -6,7 +6,7 @@ import BlogPostBody from '../../../components/sections/blog/blogPost/BlogPostBod
 import TextCTA from '../../../components/sections/global/TextCTA.astro';
 import { getBlogPosts, getRelatedBlogPosts } from '../../../utils/sanityClient';
 import RelatedPosts from '../../../components/sections/blog/blogPost/RelatedPosts.astro';
-import Form from '../../../components/sections/global/Form.astro';
+import ContactForm from '../../../components/sections/global/ContactForm.astro';
 
 interface Props {
 	data: any;
@@ -73,7 +73,7 @@ console.log(data)
     : null }
 
     {!data.formOverride || !data.formOverride.hideForm ? 
-      <Form 
+      <ContactForm 
         heading={data.category.contactFormHeading}
         text={data.category.contactFormText}
         hubspotFormId={data.category.hubspotFormId}
