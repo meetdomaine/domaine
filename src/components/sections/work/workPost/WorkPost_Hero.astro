@@ -1,0 +1,53 @@
+---
+import SanityImage from "../../../atoms/SanityImage.astro";
+
+const { title, image } = Astro.props;
+---
+<section class="project_hero">
+    <div class="content">
+      <div class="media">
+        <SanityImage 
+          image={image}
+          sizes="100vw"
+          cover={true}
+        />
+      </div>
+      <h1 class="project-title">{title}</h1>
+  </div>
+</section>
+
+<style>
+  .project_hero {
+    padding: var(--header-height) var(--page-margin) var(--space-md);
+  }
+
+  .content {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 2 / 1;
+    position: relative;
+    color: var(--color-background);
+    padding: var(--space-md);
+  }
+
+  .project-title {
+    position: relative;
+    z-index: 1;
+  }
+
+  .media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  /* .image {
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+  } */
+</style>

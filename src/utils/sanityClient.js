@@ -41,7 +41,6 @@ const sectionBlocks = (`
   _type == "sectionSpeakers" => {..., speakers[]{..., image{${imageFields}}, companyLogo{${imageFields}} } },
 `)
 
-const projectFields = `..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}} } | order(launchDate desc)`
 
 
 // Validated
@@ -86,23 +85,6 @@ export async function getServiceGroupDeliverables(group) {
   return deliverables;
 }
 
-
-
-
-
-// Unvalidated
-
-export async function getSEOSettings() {
-  const content = await client.fetch(`*[_type == "seoSettings"]`)
-  return content
-}
-
-export async function getPages() {
-  const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)
-  return content
-}
-
-
 // Blog
 
 export async function getBlogPageContent() {
@@ -124,6 +106,50 @@ export async function getBlogPosts() {
     *[_type == 'contentBlog']{..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...} } | order(publishedAt desc)
   `)
   return postContent
+}
+
+// Projects
+
+const projectFields = `..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}}`
+
+export async function getWorkPageContent() {
+  const content = await client.fetch(`*[_type == "pageWork"]{...}`)
+  return content[0]
+}
+
+export async function getProjects() {
+  const projects = await client.fetch(`*[_type == "contentProject" && !hideProject ]{${projectFields}} | order(launchDate desc)`)
+  return projects
+}
+
+export async function getProjectsByCategory(category) {
+  const projects = await client.fetch(`*[_type == "contentProject" && category._ref == '${category._id}' && !hideProject ]{${projectFields}} | order(launchDate desc)`)
+  return projects
+}
+
+export async function getProjectsByTag(tag) {
+  const projects = await client.fetch(`*[_type == "contentProject" && '${tag._id}' in tags[]->_id ]{${projectFields}} | order(launchDate desc)`)
+  return projects
+}
+
+export async function getRelatedProjects(project) {
+  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
+  return relatedProjects
+}
+
+
+
+
+// Unvalidated
+
+export async function getSEOSettings() {
+  const content = await client.fetch(`*[_type == "seoSettings"]`)
+  return content
+}
+
+export async function getPages() {
+  const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)
+  return content
 }
 
 export async function getRelatedBlogPosts(project) {
@@ -183,10 +209,7 @@ export async function getServiceCategoryGroup() {
 
 // Projects
 
-export async function getWorkPageContent() {
-  const content = await client.fetch(`*[_type == "pageWork"]{...}`)
-  return content[0]
-}
+
 
 export async function getProjectCategories() {
   const categories = await client.fetch(`*[_type == "categoryProject"]{...}`)
@@ -198,24 +221,10 @@ export async function getProjectTags() {
   return tags
 }
 
-export async function getProjects() {
-  const projects = await client.fetch(`*[_type == "contentProject" && !hideProject ]{${projectFields}`)
-  return projects
-}
 
-export async function getProjectsByCategory(category) {
-  const projects = await client.fetch(`*[_type == "contentProject" && category._ref == '${category._id}' && !hideProject ]{${projectFields}`)
-  return projects
-}
 
-export async function getProjectsByTag(tag) {
-  const projects = await client.fetch(`*[_type == "contentProject" && '${tag._id}' in tags[]->_id ]{${projectFields}`)
-  return projects
-}
 
-export async function getRelatedProjects(project) {
-  const relatedProjects = await client.fetch(`*[_type == "contentProject" && category._ref == '${project.category._ref}' && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
-  const allOtherProjects = await client.fetch(`*[_type == "contentProject" && slug.current != '${project.slug.current}' && !hideProject ]{..., thumbnail{${imageFields}} } | order(launchDate desc)`)
-  return { relatedProjects, allOtherProjects}
-}
+
+
+
 

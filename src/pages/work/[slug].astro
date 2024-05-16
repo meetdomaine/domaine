@@ -1,10 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getProjects, urlFor } from '../../utils/sanityClient';
-import ProjectHero from '../../components/sections/project/Project_Hero.astro'
-import ProjectInfo from '../../components/sections/project/Project_Info.astro';
+import ProjectInfo from '../../components/sections/work/workPost/WorkPost_Info.astro';
 import SectionBlock from '../../components/sections/SectionBlock.astro'
-import RelatedProjects from '../../components/sections/project/Project_RelatedProjects.astro';
+import ProjectHero from '../../components/sections/work/workPost/WorkPost_Hero.astro';
+import Work from '../../components/sections/global/Work.astro';
+import { getRelatedProjects } from '../../utils/sanityClient';
+
 
 interface Props {
 	data: any
@@ -25,6 +27,10 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { data } = Astro.props;
 // console.log(data)
+
+const relatedProjectsCount = 3
+const allRelatedProjects = await getRelatedProjects(data)
+const relatedProjects = allRelatedProjects.slice(0, relatedProjectsCount)
 ---
 
 <Layout
@@ -47,7 +53,13 @@ const { data } = Astro.props;
       <SectionBlock block={block} />
     )) : ''}
 
-    <RelatedProjects 
+    <!-- <RelatedProjects 
       project={data}
+    /> -->
+
+    <Work
+      heading="Related Work"
+      relatedProjects={relatedProjects}
     />
+
 </Layout>

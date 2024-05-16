@@ -2,18 +2,24 @@
 import { getProjects } from "../../../utils/sanityClient";
 import ArrowLink from "../../atoms/ArrowLink.astro";
 import ProjectCard from "../../atoms/ProjectCard.astro";
-import WorkGrid from "../work/Work_Grid.astro";
 
 
-const { content } = Astro.props;
+const { relatedProjects, content, heading = "Select Work" } = Astro.props;
 
-let projects
+let projects, title
 
-if (content && content.projects) {
+const minProjectCount = 3
+
+if ( relatedProjects && relatedProjects.length >= minProjectCount) {
+  title = heading
+  projects = relatedProjects
+} else if (content && content.projects) {
+  content.heading ? title = content.heading : title = heading
   projects = content.projects
 } else {
+  title = "Select Work"
   const allProjects = await getProjects()
-  projects = allProjects.slice(0, 3)
+  projects = allProjects.slice(0, minProjectCount)
 }
 
 
@@ -22,7 +28,7 @@ if (content && content.projects) {
 
   <div class="section-title">
     <div class="section-intro">
-      <h2 class="h4">{content && content.heading ? content.heading : "Select Work"}</h2>
+      <h2 class="h4">{title}</h2>
       {content && content.subheading && <p>{content.subheading}</p>}
     </div>
     {content && content.button && content.button.text && content.button.url ? 
