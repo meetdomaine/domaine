@@ -1,5 +1,6 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
+import SanityImage from "../../atoms/SanityImage.astro";
 const { content } = Astro.props;
 
 let clientRows = [];
@@ -14,49 +15,33 @@ for (let j = 0; j < 2; j++) {
 }
 ---
 <section>
-
   <div class="clients" data-animate="true">
-
     {clientRows.map((row) => {
       return (
         <div class="client-row">
           {row.map((client) => {
             return (
             <span class="client-card">
-
-              
               {client.logo && (
-                <img
-                  class="logo"
+                <div class="logo">
+                <SanityImage 
                   sizes="10vw"
-                  srcset={`
-                    ${urlFor(client.logo).width(306).height(306).auto('format').url()} 306w,
-                    ${urlFor(client.logo).width(564).height(564).auto('format').url()} 564w,
-                  `}
-                  src={urlFor(client.logo).width(306).height(306).auto('format').url()}
-                  width="564"
-                  height="564"
+                  image={client.logo}
                   alt={`${client.name} brand logo`}
-                  decoding="auto"
-                  loading="eager"
                 />
+                </div>
               )}
 
               {client.image && (
-                <img
-                  class="image"
-                  sizes="20vw"
-                  srcset={`
-                    ${urlFor(client.image).width(612).height(368).auto('format').url()} 612w,
-                    ${urlFor(client.image).width(1128).height(678).auto('format').url()} 1128w,
-                  `}
-                  src={urlFor(client.image).width(612).height(368).auto('format').url()}
-                  width="1080"
-                  height="1080"
-                  alt={`Decorative editorial element for ${client.name}`}
-                  decoding="auto"
-                  loading="eager"
-                />
+                <div class="media">
+                  <SanityImage
+                    sizes="20vw"
+                    image={client.image}
+                    alt={`Decorative editorial element for ${client.name}`}
+                    cover={true}
+                    eager={true}
+                  />
+                </div>
               )}
               </span>
             )
@@ -64,7 +49,6 @@ for (let j = 0; j < 2; j++) {
         </div>
       )
     })}
-
   </div>
 </section>
 
@@ -138,12 +122,12 @@ for (let j = 0; j < 2; j++) {
     min-width: 0;
   }
 
-  .image {
+  .media {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
 </style>

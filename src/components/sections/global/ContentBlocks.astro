@@ -9,7 +9,6 @@ const { content } = Astro.props;
   {content.blocks.length > 0 ?
    content.blocks.map((block) => 
 
-
     <span class="content-block" data-layout={content.blocks.length > 1 ? "half-width" : "full-width"}>
       <div class="media">
 
@@ -26,6 +25,7 @@ const { content } = Astro.props;
         :
         <SanityImage
           image={block.image}
+          alt={block.image.alt}
           sizes={content.blocks.length > 1 ? '(max-width: 768px) 100vw, 50vw' : '100vw'}
           aspectRatio={content.blocks.length > 1 ? 3 / 4 : null }
         />

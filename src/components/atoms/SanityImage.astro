@@ -29,10 +29,10 @@ interface Props {
   cover?: boolean,
   eager?: boolean,
   aspectRatio?: number,
-  alt: string,
+  alt?: string,
 }
 
-const { image, sizes, eager, aspectRatio, alt, cover } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, alt } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;

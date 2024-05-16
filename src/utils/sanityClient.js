@@ -21,8 +21,8 @@ const projectCardFields = `"tags": tags[]->{name, slug}, mainImage{${imageFields
 const sectionBlocks = (`
   ...,
   _type == "sectionHero" => { ..., image{${imageFields}} },
-  _type == "sectionClients" => {..., clients[]->{...} },
-  
+  _type == "sectionClients" => {..., clients[]->{..., logo{${imageFields}}, image{${imageFields}}} },
+
   _type == "sectionAbout" => {..., "videoURL": video.asset -> url, image},
   _type == "sectionServices" => {...},
   _type == "sectionContact" => {...},
@@ -44,7 +44,6 @@ const projectFields = `..., "tags": tags[]->{name, slug}, mainImage{${imageField
 
 
 // Validated
-
 
 export async function getHomePageContent() {
   const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)

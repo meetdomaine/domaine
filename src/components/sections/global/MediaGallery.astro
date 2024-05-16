@@ -36,6 +36,7 @@ const { content } = Astro.props;
               <div class="swiper-slide">
                 <SanityImage
                   image={media.image}
+                  alt={media.image.alt}
                   sizes={content.orientation == 'landscape' ? '75vw' : '(max-width: 768px) 75vw, 28.5vw'}
                 />
               </div>
