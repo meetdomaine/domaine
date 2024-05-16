@@ -10,11 +10,11 @@ const { content } = Astro.props;
     <div class="text">
       <div class="section-title">
         {content.eyebrow && <p class="eyebrow caption">{content.eyebrow}</p>}
-        <!-- {content.heading && <h2 class="h4">{content.heading}</h2>} -->
+        {content.heading && <h2 class="h4">{content.heading}</h2>}
       </div>
-      <!-- {content.description && <p class="description">{content.description}</p>} -->
+      {content.description && <p class="description">{content.description}</p>}
     </div>
-    <!-- {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}/>} -->
+    {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}/>}
   </div>
   <div class="media">
     <SanityImage
