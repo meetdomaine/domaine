@@ -1,5 +1,4 @@
 ---
-import { urlFor } from "../../../utils/sanityClient";
 import ArrowLink from "../../atoms/ArrowLink.astro";
 import SanityImage from "../../atoms/SanityImage.astro";
 
@@ -13,9 +12,9 @@ const { content } = Astro.props;
         {content.eyebrow && <p class="eyebrow caption">{content.eyebrow}</p>}
         {content.heading && <h2 class="h4">{content.heading}</h2>}
       </div>
-      {content.description && <p class="">{content.description}</p>}
+      {content.description && <p class="description">{content.description}</p>}
     </div>
-    <!-- {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}/>} -->
+    {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}/>}
   </span>
   <span class="media">
     <SanityImage
