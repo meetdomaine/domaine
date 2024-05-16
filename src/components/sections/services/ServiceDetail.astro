@@ -1,76 +1,54 @@
 ---
-import { urlFor, getServiceDeliverables, getServiceGroups, getServices, getServiceGroupDeliverables, getDeliverables, getServiceCategoryGroup } from "../../../utils/sanityClient"
-import ArrowLink from "../../atoms/ArrowLink.astro";
+import { getServiceGroups, getServiceGroupDeliverables } from "../../../utils/sanityClient"
 import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
 
 const services = []
+const serviceGroups = await getServiceGroups(content.service._id)
 
-if (content.service) {
-
-  const serviceGroups = await getServiceGroups(content.service._id)
-
-  for (let i = 0; i < serviceGroups.length; i++) {
-    const deliverables = await getServiceGroupDeliverables(serviceGroups[i]._id)
-    services.push({
-      group: serviceGroups[i],
-      deliverables
-    })
-  }
-} 
-
+for (let i = 0; i < serviceGroups.length; i++) {
+  const deliverables = await getServiceGroupDeliverables(serviceGroups[i]._id)
+  services.push({
+    group: serviceGroups[i],
+    deliverables
+  })
+}
 
 ---
 <section class="section_service-detail" id={content.id}>
-
   <div class="media">
     <SanityImage 
       image={content.image}
-      sizes="50vw, (max-width: 768px) 100vw"
+      sizes="(max-width: 768px) 100vw, 50vw"
       aspectRatio={3 / 4}
     />
   </div>
-
   <div class="content">
-    
     <div class="section-intro">
       <div class="section-title">
         <p class="caption">{content.eyebrow ? content.eyebrow : content.service ? content.service.name : "Services"}</p>
         <h2 class="h2">{content.heading}</h2>
         <p class="category-description h6">{content.description}</p>
       </div>
-      { content && content.service ? 
-        null
-        // <ArrowLink text="Learn More" url={`/services/${content.service.slug.current}`} />
-      : 
-        <ArrowLink text="View All" url={`/services`} />
-      }
     </div>
-
-    <!-- {console.log(services)} -->
-
-    { content && content.service &&
-      <div class="deliverable-categories">
-        {services.map((service) => {
-          return (
-            <div class="deliverable-category">
-              <p class="category-name">{service.group.name}</p>
-              <ul class="deliverables">
-                {service.deliverables.map((deliverable) => {
-                  return (
-                    <li class="deliverable caption">{deliverable.name}</li>
-                  )
-                })}
-              </ul>
-            </div>
-          )
-        })}
-      </div>
-    }
-
+    <div class="deliverable-categories">
+      {services.map((service) => {
+        return (
+          <div class="deliverable-category">
+            <p class="category-name">{service.group.name}</p>
+            <ul class="deliverables">
+              {service.deliverables.map((deliverable) => {
+                return (
+                  <li class="deliverable caption">{deliverable.name}</li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      })}
+    </div>
   </div>
-
 </section>
 
 <style>
@@ -158,26 +136,6 @@ if (content.service) {
     .section_service-detail {
       flex-direction: column;
       align-items: stretch;
-    }
-
-    /* .section-intro {
-      flex-direction: column-reverse;
-      align-items: stretch;
-    }
-
-    .image {
-      flex: 0 0 auto;
-      width: auto;
-    }
-
-    .section-details {
-      flex-direction: column;
-      gap: var(--space-lg);
-    }
-
-    .category-description {
-      /* flex: 0 1 50%; */
-      max-width: unset;
     }
 
     .deliverable-categories {

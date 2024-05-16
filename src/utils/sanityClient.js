@@ -75,6 +75,17 @@ export async function getServices() {
   return services
 }
 
+export async function getServiceGroups(service) {
+  const serviceGroups = await client.fetch(`*[_type == "categoryServiceGroup" && service._ref == "${service}" ]{ ... } | order(orderRank)`);
+  return serviceGroups;
+}
+
+export async function getServiceGroupDeliverables(group) {
+  // console.log(group)
+  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category._ref == "${group}"]{...} | order(orderRank)`);
+  return deliverables;
+}
+
 
 
 
@@ -162,16 +173,7 @@ export async function getServiceDeliverables(service) {
   return deliverables;
 }
 
-export async function getServiceGroups(service) {
-  const serviceGroups = await client.fetch(`*[_type == "categoryServiceGroup" && service._ref == "${service}" ]{ ... } | order(orderRank)`);
-  return serviceGroups;
-}
 
-export async function getServiceGroupDeliverables(group) {
-  // console.log(group)
-  const deliverables = await client.fetch(`*[_type == "contentDeliverable" && category._ref == "${group}"]{...} | order(orderRank)`);
-  return deliverables;
-}
 
 export async function getServiceCategoryGroup() {
   const serviceGroup = await client.fetch(`*[_type == "categoryServiceGroup" ]{ ..., service->{...}} | order(orderRank)`);
