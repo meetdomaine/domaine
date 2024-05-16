@@ -4,7 +4,7 @@ import SectionBlock from '../components/sections/SectionBlock.astro';
 
 import { getHomePageContent, urlFor } from '../utils/sanityClient';
 const data = await getHomePageContent();
-console.log(data)
+// console.log(data)
 ---
 <Layout
 	title={data.metaTitle ? data.metaTitle : data.title} 

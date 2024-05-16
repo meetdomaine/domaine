@@ -7,7 +7,7 @@ const { title, heading, subheading, services } = Astro.props;
 <section class="section_services-hero">
   <div class="content">
     <div class="section-intro">
-      <h1 class="utility">{title}</h1>
+      <h1 class="title utility">{title}</h1>
       <ul class="service-links">
         {services.map((service) => {
           return (
@@ -68,6 +68,10 @@ const { title, heading, subheading, services } = Astro.props;
   .subheading {
     /* min-width: 0; */
     max-width: 50ch;
+  }
+
+  .title {
+    margin-top: .5em;
   }
 
   .service-links {

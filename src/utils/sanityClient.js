@@ -30,7 +30,6 @@ const sectionBlocks = (`
   _type == "sectionServices" => {...},
   _type == "sectionContact" => {...},
   _type == "sectionWork" => {..., projects[]->{..., ${projectCardFields} }},
-  
   _type == "sectionTextHero" => {...},
   _type == "sectionMediaFullbleed" => {..., image{${imageFields}} },
   _type == "sectionMediaGrid" => {...},
