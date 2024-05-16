@@ -22,8 +22,9 @@ const sectionBlocks = (`
   ...,
   _type == "sectionHero" => { ..., image{${imageFields}} },
   _type == "sectionClients" => {..., clients[]->{..., logo{${imageFields}}, image{${imageFields}}} },
+  _type == "sectionAbout" => {..., image{${imageFields}}, "videoURL": video.asset -> url},
 
-  _type == "sectionAbout" => {..., "videoURL": video.asset -> url, image},
+
   _type == "sectionServices" => {...},
   _type == "sectionContact" => {...},
   _type == "sectionWork" => {..., projects[]->{..., ${projectCardFields} }},

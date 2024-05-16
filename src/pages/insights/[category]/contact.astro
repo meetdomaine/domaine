@@ -2,7 +2,7 @@
 import type { SanityAsset } from "@sanity/image-url/lib/types/types";
 import Layout from "../../../layouts/Layout.astro";
 import { getBlogCategories, urlFor } from "../../../utils/sanityClient";
-import Form from "../../../components/sections/global/Form.astro";
+import ContactForm from "../../../components/sections/global/ContactForm.astro";
 
 interface Props {
   data: {
@@ -39,7 +39,7 @@ const { data } = Astro.props;
   theme="light"
 >
   <main class="blog_category-contact">
-    <Form
+    <ContactForm
       heading={data.contactFormHeading}
       text={data.contactFormText}
       hubspotFormId={data.hubspotFormId}

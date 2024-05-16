@@ -13,11 +13,11 @@ const { content, heading, text, hubspotFormId } = Astro.props;
 
 <script>
 
-declare global {
-    interface Window {
-        hbspt:any;
-    }
-}
+  declare global {
+      interface Window {
+          hbspt:any;
+      }
+  }
 
   const createHubspotScript = () => {
     // console.log('script')
@@ -48,9 +48,6 @@ declare global {
 
 <style>
   .section_form {
-    /* display: flex;
-    flex-direction: column;
-    /* justify-content: stretch; */
     padding: var(--header-height) var(--page-margin) var(--space-xl);
     overflow: hidden;
   }
@@ -59,7 +56,6 @@ declare global {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* justify-self: center; */
     align-items: flex-start;
     align-self: stretch;
     width: 100%;
@@ -69,18 +65,13 @@ declare global {
   }
 
   .section-title {
-    /* max-width: 60ch;
-    flex-shrink: 0; */
-    /* flex: 1 0 60ch; */
     max-width: 60ch;
     flex: 1 1 auto;
   }
 
   #form {
-    /* flex-grow: 1; */
     min-width: min(40ch, 100%);
     flex: 1 1 50ch;
-    /* max-width: 50ch; */
   }
 
   @media screen and (max-width: 768px) {

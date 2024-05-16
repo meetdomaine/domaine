@@ -1,9 +1,11 @@
 ---
 import Hero from './global/Hero.astro';
 import Clients from './home/Clients.astro';
+import About from './global/About.astro';
+import Work from './global/Work.astro';
+import ContactForm from './global/ContactForm.astro';
 
 import ContentBlocks from './global/ContentBlocks.astro'
-import About from './global/About.astro';
 import Services from './services/Services.astro';
 import Agencies from './global/Agencies.astro';
 import Partners from './global/Partners.astro';
@@ -14,9 +16,7 @@ import TextColumns from './global/TextColumns.astro'
 import MediaGallery from './global/MediaGallery.astro'
 import TextImage from './global/TextImage.astro'
 import EventSpeakers from './event/EventSpeakers.astro';
-import ContactForm from './global/Form.astro';
 import RichText from './global/RichText.astro';
-import Work from './global/Work.astro';
 
 interface Props {
 	block: any;
@@ -30,8 +30,11 @@ const { block } = Astro.props;
 {block._type == 'sectionHero' && <Hero content={block} />}
 {block._type == 'sectionClients' && <Clients content={block} />}
 {block._type == 'sectionAbout' && <About content={block} />}
-{block._type == 'sectionServices' && <Services content={block} />}
 {block._type == 'sectionWork' && <Work content={block} />}
+{block._type == 'sectionContactForm' && <ContactForm content={block} />}
+
+
+{block._type == 'sectionServices' && <Services content={block} />}
 {block._type == 'sectionPartners' && <Partners content={block} />}
 {block._type == 'sectionAgencies' && <Agencies content={block} />}
 <!-- {block._type == 'sectionTextHero' && <TextHero content={block} />} -->
@@ -47,5 +50,4 @@ const { block } = Astro.props;
 {block._type == 'sectionMediaGallery' && <MediaGallery content={block} />}
 {block._type == 'sectionContentBlocks' && <ContentBlocks content={block} />}
 {block._type == 'sectionTextImage' && <TextImage content={block} />}
-{block._type == 'sectionContactForm' && <ContactForm content={block} />}
 {block._type == 'sectionRichText' && <RichText content={block} />}
