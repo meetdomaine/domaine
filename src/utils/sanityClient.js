@@ -24,13 +24,13 @@ const sectionBlocks = (`
   _type == "sectionClients" => {..., clients[]->{..., logo{${imageFields}}, image{${imageFields}}} },
   _type == "sectionAbout" => {..., image{${imageFields}}, "videoURL": video.asset -> url},
   _type == "sectionPartners" => {..., logos[]{..., partnerLogo{${imageFields}} } },
+  _type == "sectionAgencies" => {..., agencies[]{..., logo{${imageFields}}} },
 
 
   _type == "sectionServices" => {...},
   _type == "sectionContact" => {...},
   _type == "sectionWork" => {..., projects[]->{..., ${projectCardFields} }},
   
-  _type == "sectionAgencies" => {...},
   _type == "sectionTextHero" => {...},
   _type == "sectionMediaFullbleed" => {..., image{${imageFields}} },
   _type == "sectionMediaGrid" => {...},
@@ -47,6 +47,16 @@ const projectFields = `..., "tags": tags[]->{name, slug}, mainImage{${imageField
 
 // Validated
 
+export async function getHeaderContent() {
+  const content = await client.fetch(`*[_type == "sectionHeader"]`)
+  return content
+}
+
+export async function getFooterContent() {
+  const content = await client.fetch(`*[_type == "sectionFooter"]`)
+  return content
+}
+
 export async function getHomePageContent() {
   const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)
   return content
@@ -58,23 +68,6 @@ export async function getSEOSettings() {
   const content = await client.fetch(`*[_type == "seoSettings"]`)
   return content
 }
-
-export async function getHeaderContent() {
-  const content = await client.fetch(`*[_type == "sectionHeader"]`)
-  return content
-}
-
-
-
-
-
-
-export async function getFooterContent() {
-  const content = await client.fetch(`*[_type == "sectionFooter"]`)
-  return content
-}
-
-
 
 export async function getPages() {
   const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)

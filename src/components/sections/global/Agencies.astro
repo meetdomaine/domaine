@@ -1,6 +1,7 @@
 ---
-import { urlFor } from "../../../utils/sanityClient";
+import SanityImage from "../../atoms/SanityImage.astro";
 const { content } = Astro.props;
+// console.log(content)
 ---
 <section class="agencies">
   <div class="section-title">
@@ -9,22 +10,18 @@ const { content } = Astro.props;
   <div class="text-blocks">
     {content.agencies.map((agency, i) => {
       return (
-        // <ViewportObserver client:only="solid-js" delay={i * 200}>
           <div class="text-block">
 
-            <a href={agency.linkURL} target="_blank">
-              <img 
-                class="block-image"
-                width="400" 
-                height="80" 
-                src={urlFor(agency.logo).auto('format').width(600).url()} 
+            <a href={agency.linkURL} target="_blank" class="block-image">
+              
+              <SanityImage
+                sizes="(max-width: 768px) 33vw, 25vw"
+                image={agency.logo}
                 alt={`Agency logo for ${agency.name}`} 
               />
             </a>
             <p class="description">{agency.description}</p>
-            <!-- <a class="block-link" href={agency.linkURL} target="_blank">{agency.linkText}</a> -->
           </div>
-        // </ViewportObserver>
       )
     })}
   </div>
