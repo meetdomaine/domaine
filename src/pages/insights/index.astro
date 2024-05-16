@@ -5,6 +5,7 @@ import BlogIndexFeed from '../../components/sections/blog/blogIndex/BlogIndexFee
 import BlogIndexSidebar from '../../components/sections/blog/blogIndex/BlogIndexSidebar.astro';
 import { getBlogCategories, getBlogPageContent, getBlogPosts, urlFor } from '../../utils/sanityClient';
 import Work from '../../components/sections/global/Work.astro';
+import SidebarLinks from '../../components/atoms/SidebarLinks.astro';
 
 const data = await getBlogPageContent();
 const posts = await getBlogPosts();
@@ -25,9 +26,11 @@ const categories = await getBlogCategories();
     />
 
     <div class="blog-index-main">
-        
-        <BlogIndexSidebar
-            content={categories}
+
+        <SidebarLinks
+            links={categories}
+            slugRoot="/insights"
+            rootLabel="All Insights"
         />
 
         <BlogIndexFeed
@@ -59,14 +62,15 @@ const categories = await getBlogCategories();
         flex-direction: row;
         justify-content: stretch;
         align-items: flex-start;
-        padding: var(--space-2xl) 0;
-        gap: var(--space-xl);
+        padding: var(--space-2xl) var(--page-margin);
+        gap: var(--space-3xl);
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 960px) {
 
         .blog-index-main {
             flex-direction: column;
+            gap: var(--space-lg);
         }
     }
 </style>
