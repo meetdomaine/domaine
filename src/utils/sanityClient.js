@@ -59,7 +59,7 @@ export async function getFooterContent() {
 
 export async function getHomePageContent() {
   const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)
-  return content
+  return content[0]
 }
 
 // Unvalidated

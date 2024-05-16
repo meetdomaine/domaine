@@ -4,7 +4,7 @@ import SectionBlock from '../components/sections/SectionBlock.astro';
 
 import { getHomePageContent, urlFor } from '../utils/sanityClient';
 const data = await getHomePageContent();
-
+console.log(data)
 ---
 <Layout
 	title={data.metaTitle ? data.metaTitle : data.title} 
@@ -12,7 +12,7 @@ const data = await getHomePageContent();
 	image={data.metaImage && urlFor(data.metaImage).url()}
 >
 	<main>
-		{data[0].content.map((contentBlock) => (
+		{data.content.map((contentBlock) => (
 			<SectionBlock block={contentBlock} />
 		))}
 	</main>
