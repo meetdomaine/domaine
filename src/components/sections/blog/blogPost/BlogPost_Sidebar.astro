@@ -2,9 +2,8 @@
 import { formatDate } from "../../../../utils/formatDate";
 
 const { posts, category, heading, subheading, buttonText, buttonUrl } = Astro.props;
-const postCount = 3;
 
-console.log(buttonUrl)
+// console.log(buttonUrl)
 ---
 <aside class="blog-post-sidebar">
   <div class="call-to-action">
@@ -16,16 +15,13 @@ console.log(buttonUrl)
   </div>
   <div class="articles">
     <p class="caption">Latest Articles</p>
-    {posts.map((post, i) => {
-      if (i < postCount) {
-        return (
+    {posts.map((post, i) => (
           <a class="article-card" href={`/insights/${post.category.slug.current}/${post.slug.current}`}>
             <p class="h6">{post.title}</p>
             <p class="caption">{formatDate(post.publishedAt)}</p>
           </a>
         )
-      }
-    })}
+    )}
   </div>
 </aside>
 

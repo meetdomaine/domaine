@@ -6,7 +6,7 @@ import Icon from "../../../atoms/Icon.astro";
 import BackLink from "../../../atoms/BackLink.astro";
 import SanityImage from "../../../atoms/SanityImage.astro";
 
-const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props;
+const { title, excerpt, image, category, authors, date } = Astro.props;
 // console.log(category)
 ---
 <section class="blog-post-hero">
@@ -23,11 +23,14 @@ const { title, excerpt, image, imageAlt, category, authors, date } = Astro.props
         {authors.map((author, i) => {
           return (
             <div class="author-card">
-              <img
-                class="author-image"
-                src={urlFor(author.image).url()}
-                alt={`Headshot of ${author.name}, ${author.title} at Domaine.`}
-              />
+              <div class="author-image">
+                <SanityImage 
+                  image={author.image}
+                  sizes="20vw"
+                  alt={`Headshot of ${author.name}, ${author.title} at Domaine.`}
+                  eager
+                />
+              </div>
               <div class="author-text">
                 <p class="author-name">{author.name}</p>
                 <p class="author-title utility">{author.title}</p>

@@ -1,6 +1,6 @@
 ---
-import ArrowLink from "../../../atoms/ArrowLink.astro";
-import BlogPostCard from "../../../atoms/BlogPostCard.astro";
+import ArrowLink from "../../atoms/ArrowLink.astro";
+import BlogPostCard from "../../atoms/BlogPostCard.astro";
 
 // interface Props {
 //   posts: 
@@ -8,7 +8,7 @@ import BlogPostCard from "../../../atoms/BlogPostCard.astro";
 
 const { posts } = Astro.props;
 ---
-<section class="related-posts">
+<section class="blog-posts">
   <div class="section-title">
     <h2>Related Posts</h2>
     <ArrowLink text="View All" url="/insights" />
@@ -24,7 +24,7 @@ const { posts } = Astro.props;
 
 <style>
 
-  .related-posts {
+  .blog-posts {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);

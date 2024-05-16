@@ -1,11 +1,11 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import BlogPostHero from '../../../components/sections/blog/blogPost/BlogPostHero.astro';
-import BlogPostSidebar from '../../../components/sections/blog/blogPost/BlogPostSidebar.astro';
-import BlogPostBody from '../../../components/sections/blog/blogPost/BlogPostBody.astro';
+import BlogPostHero from '../../../components/sections/blog/blogPost/BlogPost_Hero.astro';
+import BlogPostSidebar from '../../../components/sections/blog/blogPost/BlogPost_Sidebar.astro';
+import BlogPostBody from '../../../components/sections/blog/blogPost/BlogPost_Body.astro';
 import TextCTA from '../../../components/sections/global/TextCTA.astro';
 import { getBlogPosts, getRelatedBlogPosts } from '../../../utils/sanityClient';
-import RelatedPosts from '../../../components/sections/blog/blogPost/RelatedPosts.astro';
+import BlogPosts from '../../../components/sections/global/BlogPosts.astro';
 import ContactForm from '../../../components/sections/global/ContactForm.astro';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   allPosts: any;
 }
 
-export const prerender = true;
+// export const prerender = true;
 
 export async function getStaticPaths() {
 
@@ -30,7 +30,12 @@ export async function getStaticPaths() {
 const { slug, category } = Astro.params;
 const { data, allPosts } = Astro.props;
 
-const relatedPosts = await getRelatedBlogPosts(data)
+const sidebarPostCount = 3
+const sidebarPosts = allPosts.slice(0, sidebarPostCount)
+
+const relatedPostsCount = 3
+const allRelatedPosts = await getRelatedBlogPosts(data)
+const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
 // console.log(data)
 ---
 
@@ -58,7 +63,7 @@ const relatedPosts = await getRelatedBlogPosts(data)
         subheading={data.sidebar && data.sidebar.subheading ? data.sidebar.subheading : data.category.callToAction.subheading}
         buttonText={data.sidebar && data.sidebar.buttonText ? data.sidebar.buttonText : data.category.callToAction.buttonText}
         buttonUrl={data.sidebar && data.sidebar.buttonUrl ? data.sidebar.buttonUrl : data.category.callToAction.buttonUrl}
-        posts={allPosts}
+        posts={sidebarPosts}
         category={data.category}
       />
     </div>
@@ -80,17 +85,11 @@ const relatedPosts = await getRelatedBlogPosts(data)
       />
     : null }
 
-    <RelatedPosts
+    <BlogPosts
       posts={relatedPosts}
     />
 
 </Layout>
-
-<!-- <style>
-  document.addEventListener("astro:page-load", () => {
-    window.scrollTo(0, 0);
-  })
-</style> -->
 
 <style>
 
