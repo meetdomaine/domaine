@@ -1,4 +1,5 @@
 ---
+import { getBlogPosts } from "../../../utils/sanityClient";
 import ArrowLink from "../../atoms/ArrowLink.astro";
 import BlogPostCard from "../../atoms/BlogPostCard.astro";
 
@@ -6,15 +7,29 @@ import BlogPostCard from "../../atoms/BlogPostCard.astro";
 //   posts: 
 // }
 
-const { posts } = Astro.props;
+let blogPosts, title
+
+const { posts, content } = Astro.props;
+
+const blogPostCount = 3
+
+if (posts) {
+  title = "Related Posts"
+  blogPosts = posts.slice(0, blogPostCount)
+} else {
+  content && content.heading ? title = content.heading : title = "Latest Posts"
+  const allBlogPosts = await getBlogPosts()
+  blogPosts = allBlogPosts.slice(0, blogPostCount)
+}
+
 ---
 <section class="blog-posts">
   <div class="section-title">
-    <h2>Related Posts</h2>
+    <h2>{title}</h2>
     <ArrowLink text="View All" url="/insights" />
   </div>
   <div class="posts">
-  { posts.slice(0, 3).map((post) => (
+  { blogPosts.map((post) => (
     <BlogPostCard
       content={post}
     />
