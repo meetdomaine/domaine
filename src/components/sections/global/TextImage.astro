@@ -1,14 +1,21 @@
 ---
 import { urlFor } from "../../../utils/sanityClient";
+import ArrowLink from "../../atoms/ArrowLink.astro";
 import SanityImage from "../../atoms/SanityImage.astro";
 
 const { content } = Astro.props;
 // console.log(content.image.asset.metadata)
 ---
 <section class="text-image" data-layout={content.layout} data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : 'transparent'}`} >
-  <span class="text">
-    {content.heading && <h2 class="h4">{content.heading}</h2>}
-    {content.description && <p class="">{content.description}</p>}
+  <span class="content">
+    <div class="text">
+      <div class="section-title">
+        {content.eyebrow && <p class="eyebrow caption">{content.eyebrow}</p>}
+        {content.heading && <h2 class="h4">{content.heading}</h2>}
+      </div>
+      {content.description && <p class="">{content.description}</p>}
+    </div>
+    {content.buttonText && content.buttonURL && <ArrowLink text={content.buttonText} url={content.buttonURL}>}
   </span>
   <span class="media">
     <SanityImage
@@ -36,12 +43,24 @@ const { content } = Astro.props;
     flex-direction: row-reverse;
   }
 
+  .content {
+    flex: 0 0 30%;
+    max-width: 60ch;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
   .text {
     display: flex;
     flex-direction: column;
     gap: var(--space-3xs);
-    flex: 0 0 30%;
-    max-width: 60ch;
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
   }
 
   .media {

@@ -56,10 +56,28 @@ export async function getFooterContent() {
   return content
 }
 
+// Home
+
 export async function getHomePageContent() {
   const content = await client.fetch(`*[_type == "pageHome"]{..., content[]{${sectionBlocks}} }`)
   return content[0]
 }
+
+// Services
+
+export async function getServicesPageContent() {
+  const pageContent = await client.fetch(`*[_type == "pageServices"]{ ..., content[]{${sectionBlocks}}}`);
+  return pageContent[0];
+}
+
+export async function getServices() {
+  const services = await client.fetch(`*[_type == "categoryService"]{...} | order(orderRank)`)
+  return services
+}
+
+
+
+
 
 // Unvalidated
 
@@ -132,17 +150,7 @@ export async function getEventContent(slug) {
 }
 
 
-// Services
 
-export async function getServicesPageContent() {
-  const pageContent = await client.fetch(`*[_type == "pageServices"]{ ..., content[]{${sectionBlocks}}}`);
-  return pageContent[0];
-}
-
-export async function getServices() {
-  const services = await client.fetch(`*[_type == "categoryService"]{...} | order(orderRank)`)
-  return services
-}
 
 export async function getDeliverables() {
   const deliverables = await client.fetch(`*[_type == "contentDeliverable" ]{ ..., category->{..., service->{...}} } | order(orderRank)`);
