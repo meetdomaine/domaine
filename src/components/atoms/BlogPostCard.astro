@@ -4,27 +4,29 @@ import { urlFor } from "../../utils/sanityClient";
 import CategoryTag from "./CategoryTag.astro";
 import SanityImage from "./SanityImage.astro";
 
-interface Props {
-  content: {
-    title: 'string',
-    mainImage: {
-      asset: SanityAsset,
-      alt: 'string',
-    },
-    category: {
-      name: 'string',
-      slug: {
-        current: 'string'
-      },
-    },
-    slug: {
-      current: 'string'
-    },
-  }
-}
+// interface Props {
+//   content: {
+//     title: 'string',
+//     mainImage: {
+//       asset: SanityAsset,
+//       alt: 'string',
+//     },
+//     category: {
+//       name: 'string',
+//       slug: {
+//         current: 'string'
+//       },
+//     },
+//     slug: {
+//       current: 'string'
+//     },
+//   }
+// }
 
-const { content } = Astro.props;
-// console.log(content)
+// interface Props { any }
+
+const { content, viewportTransition } = Astro.props;
+// console.log(content._id)
 ---
 <article class="blog-post-card">
   <a 
@@ -32,20 +34,11 @@ const { content } = Astro.props;
     href={`/insights/${content.category.slug.current}/${content.slug.current}`} 
     aria-label={`Read article entitled ${content.title}`}
   >
-    <!-- <SanityImage 
+    <SanityImage 
       image={content.mainImage}
       sizes="(max-width: 768px) 50vw, (max-width: 960px) 35vw, 25vw"
-    /> -->
-    <img
-      class="image"
-      sizes="(max-width: 768px) 50vw, (max-width: 960px) 35vw, 25vw"
-      srcset={`
-        ${urlFor(content.mainImage).width(600).height(600).auto('format').url()} 600w,
-        ${urlFor(content.mainImage).width(1150).height(1150).auto('format').url()} 1150w,
-        ${urlFor(content.mainImage).width(1440).height(1440).auto('format').url()} 1440w,
-      `}
-      src={urlFor(content.mainImage).width(600).height(600).auto('format').url()}
-      alt={content.mainImage.alt}
+      aspectRatio={1 / 1}
+      transitionName={viewportTransition ? `blog-post-image-${content._id}` : null}
     />
   </a>
   <div class="content">

@@ -1,0 +1,23 @@
+---
+---
+<script>
+  // console.log('true')
+
+  const animateLoad = () => {
+    let animatedElements = document.querySelectorAll('[data-animate-load="true"]')
+    animatedElements.forEach((element) => {
+      if (element instanceof HTMLElement) element.dataset.animateLoad = "false"
+    })
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM Loaded")
+    animateLoad()
+  })
+
+  document.addEventListener('astro:page-load', () => {
+    console.log("Astro: Page Load")
+    animateLoad()
+  });
+  
+</script>

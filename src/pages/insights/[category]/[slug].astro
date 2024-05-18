@@ -36,7 +36,7 @@ const sidebarPosts = allPosts.slice(0, sidebarPostCount)
 const relatedPostsCount = 3
 const allRelatedPosts = await getRelatedBlogPosts(data)
 const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
-// console.log(data)
+// console.log(data._id)
 ---
 
 <Layout 
@@ -51,6 +51,7 @@ const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
       category={data.category}
       authors={data.authors}
       date={data.publishedAt}
+      id={data._id}
     />
 
     <div class="blog-post-content">

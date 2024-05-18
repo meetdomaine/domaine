@@ -28,20 +28,20 @@ const data = await getHeaderContent();
 
 <script>
 
-  const animateLoad = () => {
-    const heroSection = document.querySelector('.header')
-    if (heroSection instanceof HTMLElement ) {
-      heroSection.dataset.animate = "false";
-    }
-  }
+  // const animateLoad = () => {
+  //   const heroSection = document.querySelector('.header')
+  //   if (heroSection instanceof HTMLElement ) {
+  //     heroSection.dataset.animate = "false";
+  //   }
+  // }
 
-  document.addEventListener("astro:after-swap", () => {
-    animateLoad()
-  })
+  // document.addEventListener("astro:after-swap", () => {
+  //   animateLoad()
+  // })
 
-  document.addEventListener("astro:page-load", () => {
-    animateLoad()
-  })
+  // document.addEventListener("astro:page-load", () => {
+  //   animateLoad()
+  // })
 </script>
 
 <style>

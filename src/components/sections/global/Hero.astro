@@ -5,7 +5,7 @@ import SanityImage from "../../atoms/SanityImage.astro";
 const { content } = Astro.props;
 // console.log(content)
 ---
-<section class="hero" data-animate="true">
+<section class="hero" data-animate-load="true">
 
   <div class="hero-content" >
     <div class="hero-text">
@@ -36,16 +36,16 @@ const { content } = Astro.props;
 
 <script>
 
-  const animateLoad = () => {
-    const heroSection = document.querySelector('.hero')
-    if (heroSection instanceof HTMLElement ) {
-      heroSection.dataset.animate = "false";
-    }
-  }
+  // const animateLoad = () => {
+  //   const heroSection = document.querySelector('.hero')
+  //   if (heroSection instanceof HTMLElement ) {
+  //     heroSection.dataset.animate = "false";
+  //   }
+  // }
 
-  document.addEventListener("astro:page-load", () => {
-    animateLoad()
-  })
+  // document.addEventListener("astro:page-load", () => {
+  //   animateLoad()
+  // })
 
 </script>
 
@@ -74,7 +74,7 @@ const { content } = Astro.props;
     transition: opacity var(--anim-lg), translate var(--anim-lg);
   }
 
-  .hero[data-animate="true"] .hero-content {
+  .hero[data-animate-load="true"] .hero-content {
     opacity: 0.01;
     translate: 0 60px;
   }

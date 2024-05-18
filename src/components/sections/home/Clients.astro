@@ -15,7 +15,7 @@ for (let j = 0; j < 2; j++) {
 }
 ---
 <section>
-  <div class="clients" data-animate="true">
+  <div class="clients" data-animate-load="true">
     {clientRows.map((row) => {
       return (
         <div class="client-row">
@@ -51,20 +51,6 @@ for (let j = 0; j < 2; j++) {
   </div>
 </section>
 
-<script>
-
-  const animateLoad = () => {
-    const heroSection = document.querySelector('.clients')
-    if (heroSection instanceof HTMLElement ) {
-      heroSection.dataset.animate = "false";
-    }
-  }
-
-  document.addEventListener("astro:page-load", () => {
-    animateLoad()
-  })
-</script>
-
 <style>
 
   .clients {
@@ -78,7 +64,7 @@ for (let j = 0; j < 2; j++) {
     transition: opacity var(--anim-lg), translate var(--anim-lg);
   }
 
-  .clients[data-animate="true"] {
+  .clients[data-animate-load="true"] {
     opacity: 0.01;
     translate: 0 60px;
   }

@@ -5,7 +5,7 @@ import CategoryTag from "../../../atoms/CategoryTag.astro";
 import BackLink from "../../../atoms/BackLink.astro";
 import SanityImage from "../../../atoms/SanityImage.astro";
 
-const { title, excerpt, image, category, authors, date } = Astro.props;
+const { title, excerpt, image, category, authors, date, id } = Astro.props;
 // console.log(category)
 ---
 <section class="blog-post-hero">
@@ -41,12 +41,13 @@ const { title, excerpt, image, category, authors, date } = Astro.props;
     </div>
     
   </div>
-  <div class="media">
+  <div class="media" transition:name="blog-post-image">
     {image && 
       <SanityImage 
         image={image}
         sizes="(max-width: 768px) 100vw, 50vw"
         aspectRatio={1 / 1}
+        transitionName={`blog-post-image-${id}`}
         eager
       />
     }

@@ -45,6 +45,12 @@ const sectionBlocks = (`
 
 // Validated
 
+
+export async function getSEOSettings() {
+  const content = await client.fetch(`*[_type == "seoSettings"]`)
+  return content
+}
+
 export async function getHeaderContent() {
   const content = await client.fetch(`*[_type == "sectionHeader"]`)
   return content
@@ -99,13 +105,20 @@ export async function getBlogCategories() {
   return categories
 }
 
-const blogPostQuery = '..., category->{...}'
+const blogPostQuery = `..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...}`
 
 export async function getBlogPosts() {
   const postContent = await client.fetch(`
-    *[_type == 'contentBlog']{..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...} } | order(publishedAt desc)
+    *[_type == 'contentBlog']{${blogPostQuery}} | order(publishedAt desc)
   `)
   return postContent
+}
+
+export async function getRelatedBlogPosts(project) {
+  const relatedPosts = await client.fetch(`
+    *[_type == 'contentBlog' && _id != '${project._id}' && category._ref == '${project.category._id}' ]{${blogPostQuery}}
+  `)
+  return relatedPosts
 }
 
 // Projects
@@ -152,21 +165,10 @@ export async function getProjectsByTag(tag) {
 
 // Unvalidated
 
-export async function getSEOSettings() {
-  const content = await client.fetch(`*[_type == "seoSettings"]`)
-  return content
-}
 
 export async function getPages() {
   const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)
   return content
-}
-
-export async function getRelatedBlogPosts(project) {
-  const relatedPosts = await client.fetch(`
-    *[_type == 'contentBlog' && _id != '${project._id}' && category._ref == '${project.category._id}' ]{${blogPostQuery}}
-  `)
-  return relatedPosts
 }
 
 // Events

@@ -5,7 +5,7 @@ import { Icon } from 'astro-icon/components';
 const data = await getHeaderContent();
 // console.log(data)
 ---
-<header class="header" data-animate="true" transition:persist>
+<header class="header" data-animate="true">
   <span class="navigation">
     <a class="logo" href="/" aria-label="Domaine homepage">
       <Icon name="domaine-wordmark" />
@@ -24,24 +24,6 @@ const data = await getHeaderContent();
   </a>
 </header>
 
-<script>
-
-  const animateLoad = () => {
-    const heroSection = document.querySelector('.header')
-    if (heroSection instanceof HTMLElement ) {
-      heroSection.dataset.animate = "false";
-    }
-  }
-
-  document.addEventListener("astro:after-swap", () => {
-    animateLoad()
-  })
-
-  document.addEventListener("astro:page-load", () => {
-    animateLoad()
-  })
-</script>
-
 <style>
 
   .header {
@@ -58,10 +40,6 @@ const data = await getHeaderContent();
     translate: 0 0;
     transition: translate var(--anim-md);
     /* height: var(--header-height); */
-  }
-
-  .header[data-animate="true"] {
-    translate: 0 -100%;
   }
 
   .navigation {

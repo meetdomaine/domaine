@@ -30,9 +30,10 @@ interface Props {
   eager?: boolean,
   aspectRatio?: number,
   alt?: string,
+  transitionName?: string,
 }
 
-const { image, sizes, eager, aspectRatio, cover, alt } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, alt, transitionName } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -69,10 +70,8 @@ const blurHash = image.asset.metadata.blurHash
   loading={eager ? 'eager' : 'lazy'}
   alt={alt ? alt : image.alt}
   data-cover={cover ? "true" : "false"}
-  data-width={width}
-  data-height={height}
-  data-blur-hash = {blurHash}
-  data-lqip={image.asset.metadata.lqip}
+  transition:animate={transitionName ? "fade" : "none"}
+  transition:name={transitionName}
 />
 
 

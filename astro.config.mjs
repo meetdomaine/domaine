@@ -8,7 +8,8 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [solidJs(), sitemap(), icon()],
+  integrations: [ sitemap(), icon()],
+  prefetch: true,
   output: 'hybrid',
   adapter: vercel({
     edgeMiddleware: true
