@@ -5,7 +5,7 @@ import { Icon } from 'astro-icon/components';
 const data = await getHeaderContent();
 // console.log(data)
 ---
-<header class="header" data-animate="true">
+<header class="header">
   <span class="navigation">
     <a class="logo" href="/" aria-label="Domaine homepage">
       <Icon name="domaine-wordmark" />
@@ -41,6 +41,10 @@ const data = await getHeaderContent();
     transition: translate var(--anim-md);
     /* height: var(--header-height); */
   }
+
+  /* .header[data-animate-load="true"] {
+    translate: 0 -100%;
+  } */
 
   .navigation {
     display: flex;

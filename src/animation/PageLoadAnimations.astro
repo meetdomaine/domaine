@@ -1,20 +1,28 @@
 ---
 ---
 <script>
-  // console.log('true')
-
+  
   const animateLoad = () => {
     let animatedElements = document.querySelectorAll('[data-animate-load="true"]')
+
+    // let sessionStarted = sessionStorage.getItem("sessionStarted");
+
     animatedElements.forEach((element) => {
-      if (element instanceof HTMLElement) element.dataset.animateLoad = "false"
+      if (element instanceof HTMLElement) {
+        element.dataset.animateLoad = "false"
+      }
     })
+
+    // sessionStorage.setItem("sessionStarted", "true");
   }
 
+  // Only fires on initial navigation
   document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM Loaded")
-    animateLoad()
+    // animateLoad()
   })
 
+  // Fires on each page change
   document.addEventListener('astro:page-load', () => {
     console.log("Astro: Page Load")
     animateLoad()

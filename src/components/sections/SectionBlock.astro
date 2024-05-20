@@ -27,8 +27,6 @@ const { block } = Astro.props;
 // console.log(block)
 
 ---
-
-<!-- Global Blocks -->
 {block._type == 'sectionHero' && <Hero content={block} />}
 {block._type == 'sectionClients' && <Clients content={block} />}
 {block._type == 'sectionAbout' && <About content={block} />}
@@ -44,10 +42,8 @@ const { block } = Astro.props;
 {block._type == 'sectionRichText' && <RichText content={block} />}
 {block._type == 'sectionBlogPosts' && <BlogPosts content={block} />}
 
-
 {block._type == 'sectionServices' && <Services content={block} />} 
 {block._type == 'sectionMediaGrid' && <MediaGrid content={block} />}
 {block._type == 'sectionTextColumns' && <TextColumns content={block} />}
 
-<!-- Event Sections -->
 {block._type == 'sectionSpeakers' && <EventSpeakers content={block} />}
