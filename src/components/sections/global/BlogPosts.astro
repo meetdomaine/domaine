@@ -24,16 +24,16 @@ if (posts) {
 
 ---
 <section class="blog-posts">
-  <div class="section-title">
+  <div class="section-title" data-animate-viewport="true" data-animate-style="fade">
     <h2>{title}</h2>
     <ArrowLink text="View All" url="/insights" />
   </div>
-  <div class="posts">
-  { blogPosts.map((post) => (
-    <BlogPostCard
-      content={post}
-    />
-  ))}
+  <div class="posts" data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">
+    { blogPosts.map((post) => (
+      <BlogPostCard
+        content={post}
+      />
+    ))}
   </div>
 </section>
 

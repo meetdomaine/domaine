@@ -1,0 +1,39 @@
+<script>
+
+  const settings = {
+    bidirectional: false,
+    rootMargin: "0% 0% 20% 0%",
+    threshold: 0.5,
+    delay: 0
+  }
+
+
+  const callback = (entries, observer) => {
+
+    entries.forEach((entry) => {
+
+      const delay = entry.target.dataset.animateDelay ? entry.target.dataset.animateDelay : 0
+      // const bidirectional = false
+
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          return entry.target.dataset.animateViewport = false
+        }, delay)
+      } 
+      // if (bidirectional) return entry.target.dataset.animate = true;
+    })
+  }
+
+  const initAnimations = () => {
+    const animatedElements = document.querySelectorAll('[data-animate-viewport="true"]')
+    animatedElements.forEach((element) => {
+      viewportAnimationObserver.observe(element);
+    })
+  }
+
+  const viewportAnimationObserver = new IntersectionObserver(callback, settings);
+
+  document.addEventListener('astro:page-load', () => {
+    initAnimations()
+  });
+</script>

@@ -6,7 +6,7 @@ const { content } = Astro.props;
 // console.log(content.image.asset.metadata)
 ---
 <section class="text-image" data-layout={content.layout} data-inverted={content.invertTextColor ? "true" : "false"} style={`background-color:${content.backgroundColor ? content.backgroundColor.hex : "transparent"}`} >
-  <div class="content">
+  <div class="content" data-animate-viewport="true" data-animate-style="fade-up">
     <div class="text">
       <div class="section-title">
         {content.eyebrow && <p class="eyebrow caption">{content.eyebrow}</p>}

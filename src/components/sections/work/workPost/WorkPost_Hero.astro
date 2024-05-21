@@ -5,7 +5,7 @@ const { title, image } = Astro.props;
 ---
 <section class="project_hero">
     <div class="content">
-      <div class="media">
+      <div class="media" data-animate-load="true" data-animate-style="fade">
         <SanityImage 
           image={image}
           sizes="100vw"

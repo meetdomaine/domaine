@@ -7,12 +7,12 @@ let inlineLogoURL;
 if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format').width(800).url();
 ---
 <section class="partners">
-  <div class="section-header">
+  <div class="section-header" data-animate-viewport="true" data-animate-style="fade-up">
     <div class="section-title">
       <h2 class="h2 heading" id="heading" data-inline-logo={inlineLogoURL}>{content.heading}</h2>
       <h3 class="h5 subheading">{content.subheading}</h3>
     </div>
-    <div class="featured-logos">
+    <div class="featured-logos" data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">
       {content.logos.map((logo, i) => {
         if (logo.featured) {
           return (
@@ -35,7 +35,9 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
           // <ViewportObserver client:only="solid-js" delay={i * 10}>
             <div 
               class="logo"
-              data-delay={i * 20}
+              data-animate-viewport="true"
+              data-animate-style="fade"
+              data-animate-delay={i * 50}
             >
               <SanityImage 
                 image={logo.partnerLogo}
@@ -48,28 +50,6 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
     })}
   </div>
 </section>
-
-<script>
-  import { createViewportObserver } from  '../../../utils/viewportObserver.js';
-
-  const initAnimation = () => {
-    // console.log('init')
-    const logos = document.querySelectorAll('.logo');
-
-    logos.forEach((logo: HTMLElement) => {
-      const delay = logo && logo.dataset && logo.dataset.delay ? parseFloat(logo.dataset.delay) : 0;
-      createViewportObserver(logo, {bidirectional: false, delay: delay});
-    })
-  }
-
-  initAnimation()
-
-  document.addEventListener("astro:page-load", () => {
-    initAnimation()
-  })
-  
-</script>
-
 
 <script>
   const initInlineLogo = () => {
@@ -154,13 +134,8 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
 
   .logo {
     width: 100%;
-    opacity: 1;
-    transition: opacity var(--anim-lg);
   }
 
-  .logo[data-animate="true"] {
-    opacity: 0;
-  }
 
   @media screen and (max-width: 960px) {
     .section-header {

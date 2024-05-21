@@ -48,8 +48,8 @@ const { content } = Astro.props;
   </div>
   { content.heading || content.description ? (
     <div class="content">
-      {content.heading && <h2 class="heading">{content.heading}</h2>}
-      {content.description && <p class="description">{content.description}</p>}
+      {content.heading && <h2 class="heading" data-animate-viewport="true" data-animate-style="fade-up">{content.heading}</h2>}
+      {content.description && <p class="description" data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">{content.description}</p>}
     </div>
   ): null }
 </section>

@@ -3,7 +3,7 @@ import SanityImage from "../../atoms/SanityImage.astro";
 const { content } = Astro.props;
 ---
 <section class="media-fullbleed">
-  <div class="media">
+  <div class="media" data-animate-viewport="true" data-animate-style="fade">
     <SanityImage 
       sizes="100vw"
       image={content.image}

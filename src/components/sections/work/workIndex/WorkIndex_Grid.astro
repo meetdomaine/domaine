@@ -4,7 +4,7 @@ import ProjectCard from "../../../atoms/ProjectCard.astro";
 const { projects } = Astro.props;
 
 ---
-<section class="work_grid">
+<section class="work_grid" data-animate-load="true" data-animate-style="fade">
   {projects.map((project, i) => {
       return (
         <ProjectCard

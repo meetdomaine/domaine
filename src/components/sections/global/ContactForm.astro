@@ -3,11 +3,17 @@ const { content, heading, text, hubspotFormId } = Astro.props;
 ---
 <section class="section_form" id="form-section">
   <div class="section_form-inner">
-    <div class="section-title">
+    <div class="section-title" data-animate-viewport="true" data-animate-style="fade-up">
       <h2 class="h2">{heading ? heading : content.heading}</h2>
       <p class="h6">{text ? text : content.subheading ? content.subheading : null}</p>
     </div>
-    <div id="form" data-hubspot-form-id={hubspotFormId ? hubspotFormId : content.hubspotFormId}></div>
+    <div 
+      id="form" 
+      data-hubspot-form-id={hubspotFormId ? hubspotFormId : content.hubspotFormId}
+      data-animate-viewport="true"
+      data-animate-style="fade"
+      data-animate-delay="200"
+    ></div>
   </div>
 </section>
 

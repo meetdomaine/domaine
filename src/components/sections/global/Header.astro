@@ -39,6 +39,8 @@ const data = await getHeaderContent();
     z-index: 999;
     translate: 0 0;
     transition: translate var(--anim-md);
+    /* mix-blend-mode: difference;
+    color: var(--color-reverse); */
     /* height: var(--header-height); */
   }
 
@@ -58,6 +60,7 @@ const data = await getHeaderContent();
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: currentColor;
   }
 
   .logo [data-icon] {
@@ -76,6 +79,7 @@ const data = await getHeaderContent();
   .navigation-link {
 		padding: var(--space-xs) var(--space-sm);
     transition: background var(--anim-sm), color var(--anim-sm);
+    color: inherit;
   }
 
   .navigation-link:hover {

@@ -26,7 +26,7 @@ if ( relatedProjects && relatedProjects.length >= minProjectCount) {
 ---
 <section class="section_work" data-project-count={projects.length}>
 
-  <div class="section-title">
+  <div class="section-title" data-animate-viewport="true" data-animate-style="fade">
     <div class="section-intro">
       <h2 class="h4">{title}</h2>
       {content && content.subheading && <p>{content.subheading}</p>}
@@ -38,7 +38,7 @@ if ( relatedProjects && relatedProjects.length >= minProjectCount) {
     }
   </div>
 
-  <div class="projects" >
+  <div class="projects" data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">
     {projects.map((project) => (
       <div class="project-card-wrapper">
         <ProjectCard

@@ -8,7 +8,13 @@ const { category, heading } = Astro.props;
 ---
 <section class="work_hero">
   <SidebarLinks links={categories} activeLink={category} slugRoot="/work" rootLabel="All Work" />
-  <h1 class="section-title">{category && category.workPageHeading ? category.workPageHeading : heading}</h1>
+  <h1 
+    class="section-title"
+    data-animate-viewport="true"
+    data-animate-style="fade"
+  >
+    {category && category.workPageHeading ? category.workPageHeading : heading}
+  </h1>
 </section>
 
 <style>

@@ -1,5 +1,4 @@
----
----
+
 <script>
   
   const animateLoad = () => {
@@ -9,7 +8,12 @@
 
     animatedElements.forEach((element) => {
       if (element instanceof HTMLElement) {
-        element.dataset.animateLoad = "false"
+
+        const delay = element.dataset.animateDelay ? parseFloat(element.dataset.animateDelay) : 0
+        
+        setTimeout(() => {
+          return element.dataset.animateLoad = "false"
+        }, delay)
       }
     })
 
@@ -18,13 +22,13 @@
 
   // Only fires on initial navigation
   document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM Loaded")
+    // console.log("DOM Loaded")
     // animateLoad()
   })
 
   // Fires on each page change
   document.addEventListener('astro:page-load', () => {
-    console.log("Astro: Page Load")
+    // console.log("Astro: Page Load")
     animateLoad()
   });
   

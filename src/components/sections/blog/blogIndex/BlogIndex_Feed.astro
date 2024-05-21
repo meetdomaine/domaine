@@ -3,7 +3,7 @@ import BlogPostCard from '../../../atoms/BlogPostCard.astro';
 const { content } = Astro.props;
 // console.log(content)
 ---
-<section class="blog-index-feed">
+<section class="blog-index-feed" data-animate-load="true" data-animate-style="fade">
   {content.map((post, i) => {
     return (
       <BlogPostCard

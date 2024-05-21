@@ -4,6 +4,15 @@ import Header from '../components/sections/global/Header.astro';
 import HeaderMobile from '../components/sections/global/HeaderMobile.astro';
 import Footer from '../components/sections/global/Footer.astro'
 import { getSEOSettings, urlFor } from '../utils/sanityClient';
+import PageLoadAnimation from '../animation/PageLoadAnimation.astro';
+import ViewportAnimation from '../animation/ViewportAnimation.astro';
+
+import '../variables/typography.css';
+import '../variables/spacing.css';
+import '../variables/color.css';
+import '../variables/buttons.css';
+import '../variables/forms.css';
+import '../variables/animation.css'
 
 interface Props {
 	title: string;
@@ -16,12 +25,6 @@ const data = await getSEOSettings();
 const { title, description, image, theme } = Astro.props;
 const currentPath = Astro.url.pathname;
 
-import '../variables/typography.css';
-import '../variables/spacing.css';
-import '../variables/color.css';
-import '../variables/buttons.css';
-import '../variables/forms.css';
-import PageLoadAnimations from '../animation/PageLoadAnimations.astro';
 ---
 
 <!doctype html>
@@ -94,7 +97,8 @@ import PageLoadAnimations from '../animation/PageLoadAnimations.astro';
 		<HeaderMobile />
 		<slot />
 		<Footer />
-		<PageLoadAnimations />
+		<PageLoadAnimation />
+		<ViewportAnimation />
 	</body>
 </html>
 

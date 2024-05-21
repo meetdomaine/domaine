@@ -3,11 +3,11 @@ const { heading, subheading, buttonText, buttonUrl } = Astro.props
 ---
 <section class="blog-post-cta">
   <div class="call-to-action">
-    <div class="section-title">
+    <div class="section-title" data-animate-viewport="true" data-animate-style="fade-up">
       <h2 class="heading h2">{heading}</h2>
       <p class="heading h6">{subheading}</p>
     </div>
-    <a class="button" href={buttonUrl}>{buttonText}</a>
+    <a class="button" href={buttonUrl} data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">{buttonText}</a>
   </div>
 </section>
 

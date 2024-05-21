@@ -10,12 +10,12 @@ const { title, excerpt, image, category, authors, date, id } = Astro.props;
 ---
 <section class="blog-post-hero">
   <div class="text">
-    <div class="section-title">
+    <div class="section-title" data-animate-load="true" data-animate-style="fade">
       <BackLink text="All Posts" url="/insights" />
       <h1 class="title">{title}</h1>
       {category && <CategoryTag category={category} />}
     </div>
-    <div class="excerpt">
+    <div class="excerpt" data-animate-load="true" data-animate-style="fade-up" data-animate-delay="400">
       <h2 class="h6">{excerpt}</h2>
       <p class="date">{formatDate(date)}</p>
       <div class="authors">
@@ -41,7 +41,7 @@ const { title, excerpt, image, category, authors, date, id } = Astro.props;
     </div>
     
   </div>
-  <div class="media" transition:name="blog-post-image">
+  <div class="media" transition:name="blog-post-image" data-animate-load="true" data-animate-style="fade">
     {image && 
       <SanityImage 
         image={image}
