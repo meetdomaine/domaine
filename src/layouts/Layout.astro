@@ -39,18 +39,6 @@ const currentPath = Astro.url.pathname;
 		<link rel="canonical" href={`https://www.meetdomaine.com${currentPath}`} />
 		<meta name="generator" content={Astro.generator} />
 
-		<!-- Google tag (gtag.js) -->
-		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-8YW8NFYNGR"></script>
-
-		<!-- Google Analytics -->
-		<script is:inline>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-		
-			gtag('config', 'G-8YW8NFYNGR');
-		</script>
-
 		<!-- Google Tag Manager -->
 		<script is:inline>
 			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
