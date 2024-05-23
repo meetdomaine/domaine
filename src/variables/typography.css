@@ -103,7 +103,8 @@ legend,
 input,
 label,
 .caption,
-.utility {
+.utility,
+div {
   --base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
   font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
 }

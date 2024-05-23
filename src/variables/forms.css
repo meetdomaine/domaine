@@ -277,26 +277,16 @@ label.hs-error-msg {
 }
 
 /* Hubspot Styling -- Single Field Form */
-.singleFieldForm .hs-form {
-  /* rotate: 3deg; */
-  flex-direction: row;
-  align-items: flex-start;
-  gap: var(--space-2xs);
-}
 
-.singleFieldForm .hs-button,
-.singleFieldForm .input {
-  margin: 0;
-}
 
-.singleFieldForm .hs-button {
-  border-radius: var(--form-field-radius);
-}
+/* Hubspot Styling -- Legal Consent*/
 
-.singleFieldForm .hs-form-field {
-  flex-grow: 1;
+.hs-form .legal-consent-container {
+  margin-top: var(--space-xs);
+  color: var(--color-foreground-secondary);
+  --min-size: 12;
+  --base-size: 12;
 }
-
 
 /* Radio Button Group */
 

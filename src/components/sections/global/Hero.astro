@@ -7,7 +7,7 @@ const { content } = Astro.props;
 ---
 <section class="hero">
 
-  <div class="hero-content" >
+  <div class="hero-content" data-animate-load="true" data-animate-style="fade">
     <div class="hero-text">
       {content.eyebrow && <h2 class="h5">{content.eyebrow}</h2>}
       <h1 class="heading">
