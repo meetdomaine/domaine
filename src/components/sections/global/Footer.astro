@@ -63,13 +63,6 @@ const data = await getFooterContent();
       }
   }
 
-  // const createHubspotScript = () => {
-  //   const hubspotScript = document.createElement("script");
-  //   hubspotScript.src = "https://js.hsforms.net/forms/embed/v2.js";
-  //   hubspotScript.setAttribute("type", "text/javascript");
-  //   document.body.appendChild(hubspotScript);    
-  // }
-
   const buildForm = () => {
 
       const form: HTMLElement = document.querySelector("#newsletter-form")
@@ -86,11 +79,9 @@ const data = await getFooterContent();
       }
   }
 
-  // document.addEventListener("astro:page-load", () => {
-  //   buildForm()
-  // })
-
-  buildForm()
+  document.addEventListener("astro:page-load", () => {
+    buildForm()
+  })
 
 </script>
 

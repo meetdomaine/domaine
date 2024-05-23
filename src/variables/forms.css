@@ -19,9 +19,6 @@ form,
   /* gap: var(--form-field-gap-block); */
 }
 
-.hs-form-field {
-}
-
 .hs-form-field label,
 .hs-input[type="file"] {
   --min-size: 14;
