@@ -58,7 +58,7 @@ export async function getHeaderContent() {
 
 export async function getFooterContent() {
   const content = await client.fetch(`*[_type == "sectionFooter"]`)
-  return content
+  return content[0]
 }
 
 // Home
