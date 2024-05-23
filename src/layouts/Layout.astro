@@ -32,6 +32,9 @@ const currentPath = Astro.url.pathname;
 <html lang="en" data-theme={theme}>
 	<head>
 
+		<link rel="preconnect" href="https://www.googletagmanager.com">
+		<link rel="preconnect" href="https://snap.licdn.com">
+		<link rel="preconnect" href="https://www.google-analytics.com">
 
 		<!-- HTML Meta Tags -->
 		<meta charset="UTF-8" />
@@ -69,7 +72,6 @@ const currentPath = Astro.url.pathname;
 			})(window,document,'script','dataLayer','GTM-T5Q9G6VH');
 		</script>
 
-		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
 
 		<ViewTransitions />
 	</head>
@@ -85,6 +87,7 @@ const currentPath = Astro.url.pathname;
 		<PageLoadAnimation />
 		<ViewportAnimation />
 		<Lenis />
+		<script is:inline charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
 	</body>
 </html>
 
