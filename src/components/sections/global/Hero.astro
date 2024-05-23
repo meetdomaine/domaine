@@ -18,10 +18,10 @@ const { content } = Astro.props;
     <div class="hero-text">
       {content.eyebrow && <h2 class="h5">{content.eyebrow}</h2>}
       <h1 class="heading">
-        {content.heading.map((block) => {
+        <!-- {content.heading.map((block) => {
           if (block.children[0].marks.includes("em")) return <em>{block.children[0].text.trim()}</em>
           return <p>{block.children[0].text.trim()}</p>
-        })}
+        })} -->
         {content.badgeText && <span class="badge caption"><Icon name="star" /><p>{content.badgeText}</p></span>}
       </h1>
       {content.subheading && <h3 class="h6">{content.subheading}</h3>}
