@@ -27,16 +27,16 @@ const data = await getFooterContent();
       </div>
 
       <div class="footer-links">
-        <div class="contact-links">
-          {data.email && data.emailLabel && <a href={data.email}>{data.emailLabel}</a>}
-          {data.phone && data.phoneLabel && <a href={data.phone}>{data.phoneLabel}</a>}
-        </div>
         <div class="primary-links">
           {data.links.map((link, i) => {
             return (
               <a class="footer-link" href={link.linkURL} target={link.newTab ? "_blank" : "_self"}>{link.linkText}</a>
             )
           })}
+        </div>
+        <div class="contact-links">
+          {data.email && data.emailLabel && <a href={data.email}>{data.emailLabel}</a>}
+          {data.phone && data.phoneLabel && <a href={data.phone}>{data.phoneLabel}</a>}
         </div>
       </div>
 
@@ -103,7 +103,7 @@ const data = await getFooterContent();
     justify-content: stretch;
     align-items: stretch;
     gap: var(--space-xs);
-    min-height: 50svh;
+    min-height: 40svh;
   }
 
   .footer-content {
@@ -121,7 +121,7 @@ const data = await getFooterContent();
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
-    max-width: 40ch;
+    max-width: 500px;
   }
 
   .newsletter {
