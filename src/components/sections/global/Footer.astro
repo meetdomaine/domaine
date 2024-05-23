@@ -86,6 +86,10 @@ const data = await getFooterContent();
       }
   }
 
+  document.addEventListener("astro:page-load", () => {
+    buildForm()
+  })
+
   // buildForm()
 
 </script>
