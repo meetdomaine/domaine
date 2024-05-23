@@ -70,33 +70,23 @@ const data = await getFooterContent();
     document.body.appendChild(hubspotScript);    
   }
 
-  createHubspotScript()
+  const buildForm = () => {
 
-  // document.addEventListener("astro:page-load", () => {
+      const form: HTMLElement = document.querySelector("#newsletter-form")
 
-  //   const form: HTMLElement = document.querySelector("#newsletter-form")
+      if (form && window.hbspt) {
+        window.hbspt.forms.create({
+            region: "na1",
+            target: "#newsletter-form",
+            portalId: "41750854",
+            formId: form.dataset.hubspotFormId,
+        });
+      } else {
+        console.log(window)
+      }
+  }
 
-  //   if (form && window.hbspt) {
-  //     window.hbspt.forms.create({
-  //         region: "na1",
-  //         target: "#newsletter-form",
-  //         portalId: "41750854",
-  //         formId: form.dataset.hubspotFormId,
-  //     });
-  //   }
-  // })
-
-  const form: HTMLElement = document.querySelector("#newsletter-form")
-
-    if (form && window.hbspt) {
-      window.hbspt.forms.create({
-          region: "na1",
-          target: "#newsletter-form",
-          portalId: "41750854",
-          formId: form.dataset.hubspotFormId,
-      });
-    }
-
+  buildForm()
 
 </script>
 
