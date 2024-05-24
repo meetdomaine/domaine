@@ -66,7 +66,8 @@ const { content } = Astro.props;
   import 'swiper/css/mousewheel';
   import 'swiper/css/a11y';
 
-  document.addEventListener("astro:page-load", () => {
+
+  const initSlider = () => {
 
     const swiperElements = document.querySelectorAll('.media-gallery-swiper');
 
@@ -112,7 +113,15 @@ const { content } = Astro.props;
       });
     });
 
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initSlider()
 })
+
+// document.addEventListener("astro:page-load", () => {
+//   initSlider()
+// })
 
 </script>
 

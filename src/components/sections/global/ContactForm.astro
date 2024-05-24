@@ -25,8 +25,7 @@ const { content, heading, text, hubspotFormId } = Astro.props;
       }
   }
 
-  document.addEventListener("astro:page-load", () => {
-
+  const initForm = () => {
     const form: HTMLElement = document.querySelector("#form")
 
     if (form && window.hbspt) {
@@ -37,7 +36,15 @@ const { content, heading, text, hubspotFormId } = Astro.props;
           formId: form.dataset.hubspotFormId,
       });
     }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initForm()
   })
+
+  // document.addEventListener("astro:page-load", () => {
+  //   initForm()
+  // })
 
 
 </script>

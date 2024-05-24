@@ -2,8 +2,7 @@
   import Lenis from '@studio-freight/lenis'
   export let lenis;
 
-  document.addEventListener("astro:page-load", () => {
-
+  const initLenis = () => {
     lenis = new Lenis()
 
     function raf(time) {
@@ -11,15 +10,22 @@
       requestAnimationFrame(raf)
     } 
     requestAnimationFrame(raf)
+  }
 
+  document.addEventListener("DOMContentLoaded", () => {
+    initLenis()
   })
 
-  document.addEventListener("astro:before-preparation", () => {
-    lenis.stop();
-  })
+  // document.addEventListener("astro:page-load", () => {
+  //   initLenis()
+  // })
 
-  document.addEventListener("astro:after-swap", () => {
-    lenis.start();
-  })
+  // document.addEventListener("astro:before-preparation", () => {
+  //   lenis.stop();
+  // })
+
+  // document.addEventListener("astro:after-swap", () => {
+  //   lenis.start();
+  // })
 
 </script>
