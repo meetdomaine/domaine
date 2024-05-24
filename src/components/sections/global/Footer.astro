@@ -79,13 +79,13 @@ const data = await getFooterContent();
       }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    buildForm()
-  })
-
-  // document.addEventListener("astro:page-load", () => {
+  // document.addEventListener("DOMContentLoaded", () => {
   //   buildForm()
   // })
+
+  document.addEventListener("astro:page-load", () => {
+    buildForm()
+  })
 
 </script>
 

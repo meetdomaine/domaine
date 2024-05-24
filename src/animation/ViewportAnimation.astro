@@ -33,11 +33,11 @@
 
   const viewportAnimationObserver = new IntersectionObserver(callback, settings);
 
-  // document.addEventListener('astro:page-load', () => {
-  //   initAnimations()
-  // });
-
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener('astro:page-load', () => {
     initAnimations()
-  })
+  });
+
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   initAnimations()
+  // })
 </script>
