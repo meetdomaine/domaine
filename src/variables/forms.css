@@ -281,8 +281,7 @@ label.hs-error-msg {
 .hs-form .legal-consent-container {
   margin-top: var(--space-xs);
   color: var(--color-foreground-secondary);
-  --min-size: 12;
-  --base-size: 12;
+  font-size: 10px;
 }
 
 /* Radio Button Group */
