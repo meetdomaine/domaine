@@ -1,13 +1,20 @@
 ---
 import PartnerCard from "../../../atoms/PartnerCard.astro"
+import RichTextContent from "../../../atoms/RichTextContent.astro";
 import SanityImage from "../../../atoms/SanityImage.astro"
 
 const { tier, partners } = Astro.props
+
 ---
 <section class="partners-index-tier">
   <div class="section-title">
-    <h2>{tier.name}</h2>
-    <p>{tier.description}</p>
+    <div class="icon">
+      <Fragment set:html={tier.icon} />
+    </div>
+    <div class="text">
+      <h2>{tier.name}</h2>
+      <p>{tier.description}</p>
+    </div>
   </div>
   <div class="partners-grid">
     { tier.landingPages ? (
@@ -48,6 +55,13 @@ const { tier, partners } = Astro.props
   .section-title {
     flex: 0 1 auto;
     max-width: 30em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .icon {
+    width: clamp(30px, 15%, 60px);
   }
 
   .partners-grid {
@@ -71,9 +85,9 @@ const { tier, partners } = Astro.props
       flex-direction: column;
     }
 
-    /* .partners-grid {
+    .partners-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--space-lg);
-    } */
+    }
   }
 </style>
