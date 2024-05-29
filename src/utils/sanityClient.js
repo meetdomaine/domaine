@@ -38,6 +38,7 @@ const sectionBlocks = (`
   _type == "sectionMediaGallery" => {..., media[]{..., "videoURL": video.asset->url, image{${imageFields}} } },
   _type == "sectionContentBlocks" => {...,  blocks[]{..., "videoURL": video.asset->url, image{${imageFields}} }  },
   _type == "sectionTextImage" => {..., image{${imageFields}} },
+  _type == "sectionTextCTA" => {...},
   _type == "sectionSpeakers" => {..., speakers[]{..., image{${imageFields}}, companyLogo{${imageFields}} } },
 `)
 
@@ -121,6 +122,13 @@ export async function getRelatedBlogPosts(project) {
   return relatedPosts
 }
 
+export async function getBlogPostsByPartner(partner) {
+  const posts = await client.fetch(`
+    *[_type == 'contentBlog' && '${partner._id}' in partners[]->_id ]{${blogPostQuery}}
+  `)
+  return posts
+}
+
 // Projects
 
 const projectFields = `..., "tags": tags[]->{name, slug}, mainImage{${imageFields}}, thumbnail{${imageFields}}, content[]{${sectionBlocks}}`
@@ -160,9 +168,14 @@ export async function getProjectsByTag(tag) {
   return projects
 }
 
+export async function getProjectsByPartner(partner) {
+  const projects = await client.fetch(`*[_type == "contentProject" && '${partner._id}' in partners[]->_id ]{${projectFields}} | order(launchDate desc)`)
+  return projects
+}
+
 // Partners
 
-const partnerFields = `..., tier->{...}, logo{${imageFields}}, content[]{${sectionBlocks}}`
+const partnerFields = `..., tier->{...}, logo{${imageFields}}, contentBlocks[]{${sectionBlocks}}`
 
 export async function getPartnersPageContent() {
   const content = await client.fetch(`*[_type == "pagePartners"]{..., image{${imageFields}}, content[]{${sectionBlocks}},}`)

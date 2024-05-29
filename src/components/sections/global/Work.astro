@@ -8,7 +8,7 @@ const { relatedProjects, content, heading = "Select Work" } = Astro.props;
 
 let projects, title
 
-const minProjectCount = 3
+const minProjectCount = 1
 
 if ( relatedProjects && relatedProjects.length >= minProjectCount) {
   title = heading

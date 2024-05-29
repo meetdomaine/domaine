@@ -1,8 +1,13 @@
 ---
 import RichTextContent from '../../components/atoms/RichTextContent.astro';
+import SectionBlock from '../../components/sections/SectionBlock.astro';
+import BlogPosts from '../../components/sections/global/BlogPosts.astro';
+import ContactForm from '../../components/sections/global/ContactForm.astro';
+import ContentBlocks from '../../components/sections/global/ContentBlocks.astro';
+import Work from '../../components/sections/global/Work.astro';
 import PartnersPostSidebar from '../../components/sections/partners/partnersPost/partnersPost_Sidebar.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getPartners } from '../../utils/sanityClient';
+import { getPartners, getProjectsByPartner, getBlogPostsByPartner } from '../../utils/sanityClient';
 
 export async function getStaticPaths() {
   const partners = await getPartners();
@@ -18,7 +23,12 @@ interface Props {
   data: any
 }
 
+
 const { data } = Astro.props
+const projects = await getProjectsByPartner(data)
+const blogPosts = await getBlogPostsByPartner(data)
+// console.log(blogPosts.length)
+// console.log(data.contentBlocks)
 ---
 
 <Layout 
@@ -43,6 +53,33 @@ const { data } = Astro.props
       </div>
     </div>
   </div>
+
+  {blogPosts && blogPosts.length > 0 &&
+    <BlogPosts
+      heading={`${data.name} Insights`}
+      posts={blogPosts}
+    />
+  }
+
+  
+
+  {data.contentBlocks.map((block) => (
+    <SectionBlock block={block} />
+  ))}
+
+  {projects && projects.length > 0 &&
+    <Work
+      heading={`Our Work With ${data.name}`}
+      relatedProjects={projects}
+    />
+  }
+
+  <!-- <ContactForm 
+    heading, 
+    text={content}
+    hubspotFormId={content.formId}
+  /> -->
+
 </Layout>
 
 <style>

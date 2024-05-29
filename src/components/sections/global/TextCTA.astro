@@ -1,13 +1,13 @@
 ---
-const { heading, subheading, buttonText, buttonUrl } = Astro.props
+const { content, heading, subheading, buttonText, buttonUrl } = Astro.props
 ---
 <section class="blog-post-cta">
   <div class="call-to-action">
     <div class="section-title" data-animate-viewport="true" data-animate-style="fade-up">
-      <h2 class="heading h2">{heading}</h2>
-      <p class="heading h6">{subheading}</p>
+      <h2 class="heading h2">{heading ? heading : content.heading}</h2>
+      <p class="heading h6">{subheading ? subheading : content && content.subheading ? content.subheading : null}</p>
     </div>
-    <a class="button" href={buttonUrl} data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">{buttonText}</a>
+    <a class="button" href={buttonUrl} data-animate-viewport="true" data-animate-style="fade-up" data-animate-delay="200">{buttonText ? buttonText : content && content.buttonText ? content.buttonText : null}</a>
   </div>
 </section>
 

@@ -9,12 +9,12 @@ import BlogPostCard from "../../atoms/BlogPostCard.astro";
 
 let blogPosts, title
 
-const { posts, content } = Astro.props;
+const { posts, content, heading } = Astro.props;
 
 const blogPostCount = 3
 
 if (posts) {
-  title = "Related Posts"
+  title = heading ? heading : "Related Posts"
   blogPosts = posts.slice(0, blogPostCount)
 } else {
   content && content.heading ? title = content.heading : title = "Latest Posts"
