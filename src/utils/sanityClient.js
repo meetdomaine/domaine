@@ -160,16 +160,44 @@ export async function getProjectsByTag(tag) {
   return projects
 }
 
+// Partners
+
+const partnerFields = `..., tier->{...}, logo{${imageFields}}, content[]{${sectionBlocks}}`
+
+export async function getPartnersPageContent() {
+  const content = await client.fetch(`*[_type == "pagePartners"]{..., image{${imageFields}}, content[]{${sectionBlocks}},}`)
+  return content[0]
+}
+
+export async function getPartners() {
+  const content = await client.fetch(`*[_type == "contentPartner"]{${partnerFields}}`)
+  return content
+}
+
+export async function getPartnersByTier() {
+  const tiers = await client.fetch(`*[_type == "categoryPartner"]{...} | order(orderRank)`)
+  const test = await Promise.all(tiers.map( async (tier) => {
+    const partners = await client.fetch(`*[_type == "contentPartner" && active == true && tier._ref == '${tier._id}']{${partnerFields}} | order(orderRank)`)
+    return {
+      tier,
+      partners
+    }
+  }))
+  return test
+}
 
 
 
-// Unvalidated
-
+// Pages
 
 export async function getPages() {
   const content = await client.fetch(`*[_type == "pageGeneral"]{..., content[]{${sectionBlocks}},}`)
   return content
 }
+
+
+
+// Unvalidated
 
 // Events
 

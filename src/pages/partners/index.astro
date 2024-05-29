@@ -1,0 +1,31 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/sections/partners/partnersIndex/PartnersIndex_Hero.astro";
+import Tier from "../../components/sections/partners/partnersIndex/PartnersIndex_Tier.astro";
+
+import { getPartnersPageContent, getPartnersByTier } from "../../utils/sanityClient";
+
+const content = await getPartnersPageContent()
+const partners = await getPartnersByTier()
+// console.log(partners)
+---
+<Layout
+  theme="dark"
+  title="Partners"
+  description="Description"
+>
+  <Hero
+    heading={content.heading}
+    description={content.description}
+    image={content.image}
+    eager={true}
+  />
+
+  {partners.map((tierGroup) => (
+    <Tier
+      tier={tierGroup.tier}
+      partners={tierGroup.partners}
+    />
+  ))}
+  
+</Layout>

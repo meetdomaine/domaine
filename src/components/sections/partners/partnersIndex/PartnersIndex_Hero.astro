@@ -1,0 +1,78 @@
+---
+import SanityImage from "../../../atoms/SanityImage.astro"
+import { Icon } from 'astro-icon/components'
+
+const { heading, description, image } = Astro.props
+---
+<section class="partners-index-hero">
+  
+  <div class="media">
+    <SanityImage 
+      image={image}
+      sizes="50vw"
+      aspectRatio={4 / 3}
+    />
+  </div>
+
+  <div class="content" data-animate-load="true" data-animate-style="fade-up">
+    <Icon name="domaine-icon" class="logo" />
+    <div class="text">
+      <h1>{heading}</h1>
+      <p class="h6">{description}</p>
+    </div>
+  </div>
+  
+</section>
+
+<style>
+  .partners-index-hero {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    padding: var(--header-height) var(--page-margin) var(--page-margin);
+    gap: var(--space-xl);
+  }
+
+  .content {
+    flex: 0 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 40em;
+    /* gap: var(--space-sm); */
+  }
+
+  .logo {
+    height: 30px;
+    width: auto;
+  }
+
+  .media {
+    flex: 0 1 50%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 768px) {
+    .partners-index-hero {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .content {
+      flex: 0 0 auto;
+    }
+
+    .media {
+      flex: 0 0 auto;
+    }
+  }
+</style>

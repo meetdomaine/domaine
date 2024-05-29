@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPartners } from '../../utils/sanityClient';
+
+export async function getStaticPaths() {
+
+  const partners = await getPartners();
+
+  return partners.map((partner) => {
+    return {
+      params: { slug: partner.slug.current },
+      props: { data: partner }
+    }
+  })
+}
+
+interface Props {
+  data: any
+}
+
+const { data } = Astro.props
+---
+
+<Layout 
+  theme="light"
+  title={data.name}
+>
+<h1>{data.name}</h1>
+</Layout>
