@@ -63,7 +63,7 @@ const blogPosts = await getBlogPostsByPartner(data)
 
   
 
-  {data.contentBlocks.map((block) => (
+  {data.contentBlocks && data.contentBlocks.map((block) => (
     <SectionBlock block={block} />
   ))}
 
