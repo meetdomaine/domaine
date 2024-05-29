@@ -4,6 +4,7 @@ import Hero from "../../components/sections/partners/partnersIndex/PartnersIndex
 import Tier from "../../components/sections/partners/partnersIndex/PartnersIndex_Tier.astro";
 
 import { getPartnersPageContent, getPartnersByTier } from "../../utils/sanityClient";
+import SectionBlock from "../../components/sections/SectionBlock.astro";
 
 const content = await getPartnersPageContent()
 const partners = await getPartnersByTier()
@@ -26,6 +27,10 @@ const partners = await getPartnersByTier()
       tier={tierGroup.tier}
       partners={tierGroup.partners}
     />
+  ))}
+
+  {content.content.map((block) => (
+    <SectionBlock block={block} />
   ))}
   
 </Layout>
