@@ -99,6 +99,7 @@ h4, .h4,
 h5, .h5,
 h6, .h6,
 p,
+a,
 legend,
 input,
 label,
@@ -172,7 +173,8 @@ h6, .h6 {
 }
 
 p,
-.p {
+.p,
+a {
   --min-size: 14;
   --base-size: 16;
   /* margin: 0 0 1em; */
