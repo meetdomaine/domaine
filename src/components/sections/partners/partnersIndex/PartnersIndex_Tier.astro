@@ -7,11 +7,12 @@ const { tier, partners } = Astro.props
 
 ---
 <section class="partners-index-tier">
-  <div class="section-title">
+  <div class="section-title" data-animate-viewport="true" data-animate-style="fade-up">
     <div class="icon">
       <Fragment set:html={tier.icon} />
     </div>
     <div class="text">
+      <p class="eyebrow caption">{tier.eyebrow}</p>
       <h2>{tier.name}</h2>
       <p>{tier.description}</p>
     </div>
@@ -29,7 +30,13 @@ const { tier, partners } = Astro.props
       ))
     ) : (
       partners.map((partner) => (
-        <a class="partner-logo" href={partner.websiteUrl} target="_blank">
+        <a 
+          class="partner-logo" 
+          href={partner.websiteUrl} 
+          target="_blank"
+          data-animate-viewport="true" 
+          data-animate-style="fade"
+        >
           <SanityImage
             image={partner.logo}
             sizes="20vw"
@@ -62,6 +69,10 @@ const { tier, partners } = Astro.props
 
   .icon {
     width: clamp(30px, 15%, 60px);
+  }
+
+  .eyebrow {
+    margin-bottom: 1em;
   }
 
   .partners-grid {

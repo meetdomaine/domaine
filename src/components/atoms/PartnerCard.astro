@@ -4,7 +4,7 @@ import SanityImage from "./SanityImage.astro"
 
 const { name, excerpt, logo, slug, style } = Astro.props
 ---
-<div class="partner-card" data-style={style}>
+<div class="partner-card" data-style={style} data-animate-viewport="true" data-animate-style="fade">
   <div class="media">
     <SanityImage 
       image={logo}
@@ -14,7 +14,7 @@ const { name, excerpt, logo, slug, style } = Astro.props
   </div>
   <div class="content">
     <div class="text">
-      <h3 class="h4">{name}</h3>
+      <a href={`/partners/${slug}`}><h3 class="h4">{name}</h3></a>
       <p class="caption">{excerpt}</p>
     </div>
     <ArrowLink
