@@ -1,5 +1,6 @@
 ---
 import RichTextContent from '../../components/atoms/RichTextContent.astro';
+import SanityImage from '../../components/atoms/SanityImage.astro';
 import SectionBlock from '../../components/sections/SectionBlock.astro';
 import BlogPosts from '../../components/sections/global/BlogPosts.astro';
 import ContactForm from '../../components/sections/global/ContactForm.astro';
@@ -29,6 +30,7 @@ const projects = await getProjectsByPartner(data)
 const blogPosts = await getBlogPostsByPartner(data)
 // console.log(blogPosts.length)
 // console.log(data.contentBlocks)
+// console.log(data.clients[0])
 ---
 
 <Layout 
@@ -53,8 +55,30 @@ const blogPosts = await getBlogPostsByPartner(data)
       <div class="rich-text-content">
         <RichTextContent richText={data.content} />
       </div>
+      {data.clients &&
+      <div class="clients-section">
+        <h3 class="h4">Featured Partnerships</h3>
+        <div class="client-cards">
+          {data.clients.map((client) => (
+            <a class="client-card" href={client.caseStudy ? `/work/${client.caseStudy.slug.current}` : null}>
+              <div class="media">
+                <SanityImage 
+                  image={client.logo}
+                  sizes='30vw'
+                  alt={`Brand logo for ${client.name}`}
+                />
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+      }
     </div>
   </div>
+  
+  {data.contentBlocks && data.contentBlocks.map((block) => (
+    <SectionBlock block={block} />
+  ))}
 
   {blogPosts && blogPosts.length > 0 &&
     <BlogPosts
@@ -63,11 +87,13 @@ const blogPosts = await getBlogPostsByPartner(data)
     />
   }
 
-  
-
-  {data.contentBlocks && data.contentBlocks.map((block) => (
-    <SectionBlock block={block} />
-  ))}
+  { data.contactForm && data.contactForm.heading && data.contactForm.hubspotFormId &&
+    <ContactForm 
+      heading={data.contactForm.heading}, 
+      text={data.contactForm.subheading}
+      hubspotFormId={data.contactForm.hubspotFormId}
+    />
+  }
 
   {projects && projects.length > 0 &&
     <Work
@@ -76,11 +102,7 @@ const blogPosts = await getBlogPostsByPartner(data)
     />
   }
 
-  <!-- <ContactForm 
-    heading, 
-    text={content}
-    hubspotFormId={content.formId}
-  /> -->
+
 
 </Layout>
 
@@ -111,6 +133,46 @@ const blogPosts = await getBlogPostsByPartner(data)
 
   .rich-text-content {
     /* width: 100%; */
+  }
+
+  .clients-section {
+    padding-top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-md);
+  }
+
+  .client-cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    align-self: stretch;
+  }
+
+  .client-card {
+    aspect-ratio: 1 / 1;
+    flex: 0 0 16.666%;
+    border: 1px solid var(--color-foreground-secondary);
+    margin: -0.5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-foreground);
+  }
+
+  .client-card .media {
+    flex: 0 0 80%;
+  }
+
+  @media screen and (max-width: 960px) {
+    .client-card {
+      flex: 0 0 33.333%;
+    }
   }
 
   @media screen and (max-width: 768px) {
