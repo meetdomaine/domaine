@@ -7,7 +7,7 @@ import ContentBlocks from '../../components/sections/global/ContentBlocks.astro'
 import Work from '../../components/sections/global/Work.astro';
 import PartnersPostSidebar from '../../components/sections/partners/partnersPost/partnersPost_Sidebar.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getPartners, getProjectsByPartner, getBlogPostsByPartner } from '../../utils/sanityClient';
+import { getPartners, getProjectsByPartner, getBlogPostsByPartner, urlFor } from '../../utils/sanityClient';
 
 export async function getStaticPaths() {
   const partners = await getPartners();
@@ -33,7 +33,9 @@ const blogPosts = await getBlogPostsByPartner(data)
 
 <Layout 
   theme="light"
-  title={data.name}
+  title={data.metaTitle ? data.metaTitle : data.name}
+  description={data.metaDescription && data.metaDescription}
+  image={data.metaImage && urlFor(data.metaImage).url()}
 >
   <div class="content">
     <div class="sidebar">

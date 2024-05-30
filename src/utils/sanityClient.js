@@ -178,7 +178,7 @@ export async function getProjectsByPartner(partner) {
 const partnerFields = `..., tier->{...}, logo{${imageFields}}, contentBlocks[]{${sectionBlocks}}`
 
 export async function getPartnersPageContent() {
-  const content = await client.fetch(`*[_type == "pagePartners"]{..., image{${imageFields}}, content[]{${sectionBlocks}},}`)
+  const content = await client.fetch(`*[_type == "pagePartners"]{..., image{${imageFields}}, contentBlocks[]{${sectionBlocks}},}`)
   return content[0]
 }
 

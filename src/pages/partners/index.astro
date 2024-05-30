@@ -5,15 +5,18 @@ import Tier from "../../components/sections/partners/partnersIndex/PartnersIndex
 
 import { getPartnersPageContent, getPartnersByTier } from "../../utils/sanityClient";
 import SectionBlock from "../../components/sections/SectionBlock.astro";
+import { urlFor } from "../../utils/sanityClient";
 
 const content = await getPartnersPageContent()
 const partners = await getPartnersByTier()
 // console.log(partners)
+// console.log(content.contentBlocks)
 ---
 <Layout
   theme="dark"
-  title="Partners"
-  description="Description"
+  title={content.metaTitle ? content.metaTitle : "Partners"}
+  description={content.metaDescription && content.metaDescription}
+  image={content.metaImage && urlFor(content.metaImage).url()}
 >
   <Hero
     heading={content.heading}
@@ -29,7 +32,7 @@ const partners = await getPartnersByTier()
     />
   ))}
 
-  {content.content.map((block) => (
+  {content.contentBlocks && content.contentBlocks.map((block) => (
     <SectionBlock block={block} />
   ))}
   
