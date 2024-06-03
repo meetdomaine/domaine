@@ -173,14 +173,17 @@ h6, .h6 {
 }
 
 p,
-.p,
-a {
+.p {
   --min-size: 14;
   --base-size: 16;
   /* margin: 0 0 1em; */
   letter-spacing: 0;
   margin: 0;
   font-weight: 400;
+}
+
+p a {
+  text-decoration: underline;
 }
 
 .caption {

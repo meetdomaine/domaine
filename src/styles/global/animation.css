@@ -1,0 +1,39 @@
+:root {
+    
+    --anim-easing: cubic-bezier(0.22, 1, 0.36, 1);
+    --anim-sm: 0.3s var(--anim-easing);
+    --anim-md: 0.8s var(--anim-easing);
+    --anim-lg: 1.2s var(--anim-easing);
+
+}
+
+
+/* Fade */
+
+[data-animate-style="fade"][data-animate-viewport="true"],
+[data-animate-style="fade"][data-animate-load="true"] {
+  opacity: 0;
+  transition: opacity var(--anim-lg);
+}
+
+[data-animate-style="fade"][data-animate-viewport="false"],
+[data-animate-style="fade"][data-animate-load="false"] {
+  opacity: 1;
+  transition: opacity var(--anim-lg);
+}
+
+/* Fade Up */
+
+[data-animate-style="fade-up"][data-animate-viewport="true"],
+[data-animate-style="fade-up"][data-animate-load="true"] {
+  opacity: 0;
+  translate: 0 2em;
+  transition: opacity var(--anim-lg), translate var(--anim-lg);
+}
+
+[data-animate-style="fade-up"][data-animate-viewport="false"],
+[data-animate-style="fade-up"][data-animate-load="false"] {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity var(--anim-lg), translate var(--anim-lg);
+}

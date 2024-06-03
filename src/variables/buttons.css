@@ -1,6 +1,8 @@
 button,
 .button,
 .hs-button {
+  --min-size: 12;
+  --base-size: 12;
   background: var(--color-foreground);
   color: var(--color-background);
   display: flex;
@@ -25,7 +27,7 @@ button [data-icon],
 
 button:hover,
 .button:hover, 
-.hs-button {
+.hs-button:hover {
   background: var(--color-brand);
   color: var(--color-brand-contrast);
 }

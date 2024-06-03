@@ -30,12 +30,14 @@
   --color-link-secondary: var(--color-light);
 }
 
-html {
+html,
+html[data-theme="light"] .color-invert {
   background: var(--color-background);
   color: var(--color-foreground);
 }
 
-html[data-theme="light"] {
+html[data-theme="light"],
+html .color-invert {
   --color-foreground: var(--color-ink);
   --color-foreground-secondary: var(--color-subdued);
   --color-background: var(--color-reverse);

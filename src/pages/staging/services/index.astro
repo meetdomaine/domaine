@@ -1,0 +1,34 @@
+---
+import { sanityClient } from "sanity:client";
+import LayoutDomaine from "../../../layouts/LayoutDomaine.astro";
+
+// const serviceData = []
+
+const serviceTypes = await sanityClient.fetch('*[_type == "type_serviceType" && "Domaine" in agencyBrands[]->name ] | order(orderRank)')
+
+const services = await serviceTypes.map(async serviceType => {
+    const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType->_id == '${serviceType._id}' ] | order(orderRank)`)
+    serviceType.serviceGroups = serviceGroups
+    // console.log(serviceGroups)
+});
+
+// const serviceGroups = await sanityClient.fetch('*[_type == "type_serviceGroup" && "Domaine" in agencyBrands[]->name ] | order(orderRank)')
+// const services = await sanityClient.fetch('*[_type == "type_service" && "Domaine" in agencyBrands[]->name ] | order(orderRank)')
+
+// servicesTypes.forEach(serviceType => {
+//     serviceData.push(serviceType)
+// });
+
+
+// services.forEach(service => {
+//     console.log(service.title)
+// });
+
+// console.log(services)
+console.log(await services)
+---
+<LayoutDomaine
+    title="Services"
+>
+    <h1>Domaine Services Landing</h1>
+</LayoutDomaine>

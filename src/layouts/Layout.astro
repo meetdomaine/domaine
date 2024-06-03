@@ -13,7 +13,9 @@ import '../variables/color.css';
 import '../variables/buttons.css';
 import '../variables/forms.css';
 import '../variables/animation.css'
+import '../styles/global/lenis.css'
 import Lenis from '../animation/Lenis.astro';
+import CookieNotice from '../components/atoms/CookieNotice.astro';
 
 interface Props {
 	title: string;
@@ -76,10 +78,13 @@ const currentPath = Astro.url.pathname;
 		<ViewTransitions />
 	</head>
 	<body>
+
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5Q9G6VH"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
+
+		<!-- <CookieNotice /> -->
 		<Header />
 		<HeaderMobile />
 		<slot />
@@ -111,26 +116,6 @@ const currentPath = Astro.url.pathname;
 		--anim-md: 0.8s var(--anim-easing);
 		--anim-lg: 1.2s var(--anim-easing);
 
-	}
-
-	html.lenis {
-		height: auto;
-	}
-
-	.lenis.lenis-smooth {
-		scroll-behavior: auto !important;
-	}
-
-	.lenis.lenis-smooth [data-lenis-prevent] {
-		overscroll-behavior: contain;
-	}
-
-	.lenis.lenis-stopped {
-		overflow: hidden;
-	}
-
-	.lenis.lenis-scrolling iframe {
-		pointer-events: none;
 	}
 
 	html[data-loading="true"] {

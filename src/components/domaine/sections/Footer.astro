@@ -1,0 +1,9 @@
+---
+const { footerLinks } = Astro.props
+---
+<footer>
+    Domaine Footer
+    {footerLinks.links.map((link) => (
+        <a href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText}</a>
+    ))}
+</footer>

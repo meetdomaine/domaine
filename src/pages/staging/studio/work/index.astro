@@ -1,0 +1,17 @@
+---
+import { sanityClient } from 'sanity:client';
+import LayoutStudio from "../../../../layouts/LayoutStudio.astro";
+
+const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Studio"]`)
+// console.log(projects)
+const currentPath = Astro.url.pathname;
+
+---
+<LayoutStudio
+    title="Work"
+>
+    <h1>Studio Projects</h1>
+    {projects.map((project) => (
+        <a href={`${currentPath}/${project.slug.current}`}>{project.title}</a>
+    ))}
+</LayoutStudio>

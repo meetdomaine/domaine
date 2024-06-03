@@ -1,0 +1,9 @@
+---
+const { navigationLinks } = Astro.props;
+---
+<header>
+    <a href="/staging/studio">Studio</a>
+    {navigationLinks.links.map((link) => (
+        <a href={link.linkUrl}>{link.linkText}</a>
+    ))}
+</header>
