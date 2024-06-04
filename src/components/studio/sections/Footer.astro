@@ -2,8 +2,8 @@
 const { footerLinks } = Astro.props
 ---
 <footer>
-    Studio Footer
+    <h3>Studio Footer</h3>
     {footerLinks.links.map((link) => (
-        <a href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText}</a>
+        <a href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
     ))}
 </footer>

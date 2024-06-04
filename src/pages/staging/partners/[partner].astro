@@ -1,0 +1,28 @@
+---
+import { sanityClient } from 'sanity:client';
+import { paths } from '../../../components/global/utils/paths';
+import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
+
+export async function getStaticPaths() {
+    const partners = await sanityClient.fetch(`*[_type == "type_partner"] { ..., tier->{...} }`)
+    return partners.map((partner) => {
+        return {
+            params: { partner: partner.slug.current },
+            props: { content: partner }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props;
+
+---
+<LayoutDomaine
+    title={content.title}
+>
+    <h4>{content.tier.title}</h4>
+    <h1>{content.title}</h1>
+</LayoutDomaine>

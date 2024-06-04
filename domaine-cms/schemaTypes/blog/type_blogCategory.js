@@ -1,4 +1,6 @@
 import {defineField, defineType} from 'sanity'
+import { iconBlogCategories } from '../variables'
+import { orderRankField } from '@sanity/orderable-document-list'
 
 export default defineType({
   name: 'type_blogCategory',
@@ -19,11 +21,19 @@ export default defineType({
         maxLength: 96,
       },
     }),
+    orderRankField({ type: 'type_blogCategory'}),
   ],
 
   preview: {
     select: {
       title: 'title', 
     },
+    prepare(selection) {
+      return {
+        title: selection.title,
+        subtitle: 'Blog Category',
+        media: iconBlogCategories,
+      }
+    }
   },
 })

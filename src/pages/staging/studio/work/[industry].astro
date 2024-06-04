@@ -1,0 +1,31 @@
+---
+import { sanityClient } from 'sanity:client'
+import { paths } from '../../../../components/global/utils/paths';
+import LayoutStudio from '../../../../layouts/LayoutStudio.astro';
+
+interface Props {
+    content: any
+}
+
+export async function getStaticPaths() {
+    const industries = await sanityClient.fetch(`*[_type == "type_industry"] | order(orderRank)`)
+    return industries.map((industry) => {
+        return {
+            params: { industry: industry.slug.current },
+            props: { content: industry }
+        }
+    })
+}
+
+const { content } = Astro.props
+const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Studio" && industry._ref == '${content._id}' ] | order(orderRank)`)
+
+---
+<LayoutStudio
+    title={content.title}
+>
+    <h1>{content.title}</h1>
+    {projects.map((project) => (
+        <a href={`${paths.root.studio.projects.path}/${project.slug.current}`}><h6>{project.title}</h6></a>
+    ))}
+</LayoutStudio>

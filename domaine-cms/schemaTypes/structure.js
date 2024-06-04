@@ -25,6 +25,7 @@ import {
     iconServices, 
     iconSettings, 
     iconSiteSettings, 
+    iconTeamDepartments, 
     iconTeamMembers, 
     labelAbout, 
     labelAgencyBrand, 
@@ -50,6 +51,7 @@ import {
     labelServices, 
     labelSettings, 
     labelSiteSettings, 
+    labelTeamDepartments, 
     labelTeamMembers, 
     slugBrandPrimary, 
     slugBrandSecondary
@@ -120,12 +122,13 @@ export const structure = (S, context) =>
                                 )
                             ])
                         ),
-                    S.listItem()
-                        .title(labelBlogCategories)
-                        .icon(iconBlogCategories)
-                        .child(
-                            S.documentTypeList('type_blogCategory')
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_blogCategory',
+                        title: labelBlogCategories,
+                        icon: iconBlogCategories,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(labelBlog)
                         .icon(iconBlog)
@@ -393,7 +396,25 @@ export const structure = (S, context) =>
             .title(labelTeamMembers)
             .icon(iconTeamMembers)
             .child(
-                S.documentTypeList('type_teamMember')
+                // S.documentTypeList('type_teamMember')
+                S.list()
+                .title(labelTeamMembers)
+                .items([
+                    orderableDocumentListDeskItem({
+                        type: 'type_teamDepartment',
+                        title: labelTeamDepartments,
+                        icon: iconTeamDepartments,
+                        S, 
+                        context
+                    }),
+                    orderableDocumentListDeskItem({
+                        type: 'type_teamMember',
+                        title: labelTeamMembers,
+                        icon: iconTeamMembers,
+                        S, 
+                        context
+                    })
+                ])
             ),
         S.listItem()
             .title(labelAbout)

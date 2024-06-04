@@ -14,6 +14,7 @@ import {
     BookIcon,
     TagsIcon,
     CalendarIcon,
+    UserIcon,
     UsersIcon,
     DocumentsIcon,
     CommentIcon,
@@ -93,7 +94,11 @@ export const iconEvents = CalendarIcon
 
 // Team Members
 export const labelTeamMembers = "Team Members"
-export const iconTeamMembers = UsersIcon
+export const iconTeamMembers = UserIcon
+
+// Team Departments
+export const labelTeamDepartments = "Departments"
+export const iconTeamDepartments = UsersIcon
 
 // Home
 export const labelHome = "Home"

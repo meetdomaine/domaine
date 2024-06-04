@@ -37,6 +37,18 @@ export default defineType({
       type: 'reference',
       to: [{ type: 'type_industry'}]
     }),
+    defineField({
+      name: 'partners',
+      title: 'Partners',
+      type: 'array',
+      of: [{
+        name: 'partner',
+        title: 'Partner',
+        type: 'reference',
+        to: [{ type: 'type_partner'}],
+      }],
+      validation: Rule => Rule.required(),
+    }),
   ],
 
   preview: {

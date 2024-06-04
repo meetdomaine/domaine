@@ -1,17 +1,22 @@
 ---
 import { sanityClient } from 'sanity:client';
-import LayoutStudio from "../../../../layouts/LayoutStudio.astro";
+import { paths } from '../../../../components/global/utils/paths';
+import LayoutStudio from '../../../../layouts/LayoutStudio.astro';
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Studio"]`)
-// console.log(projects)
-const currentPath = Astro.url.pathname;
+const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Studio"] | order( orderRank )`)
+const industries = await sanityClient.fetch(`*[_type == "type_industry"] | order(orderRank)`)
 
 ---
 <LayoutStudio
     title="Work"
 >
     <h1>Studio Projects</h1>
+    <h4>Projects:</h4>
     {projects.map((project) => (
-        <a href={`${currentPath}/${project.slug.current}`}>{project.title}</a>
+        <a href={`${paths.root.studio.projects.path}/${project.slug.current}`}><h5>{project.title}</h5></a>
+    ))}
+    <h4>Industries:</h4>
+    {industries.map((industry) => (
+        <a href={`${paths.root.studio.projects.path}/${industry.slug.current}`}><h6>{industry.title}</h6></a>
     ))}
 </LayoutStudio>

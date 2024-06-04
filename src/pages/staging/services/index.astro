@@ -1,34 +1,40 @@
 ---
 import { sanityClient } from "sanity:client";
 import LayoutDomaine from "../../../layouts/LayoutDomaine.astro";
-
-// const serviceData = []
+import { paths } from "../../../components/global/utils/paths";
 
 const serviceTypes = await sanityClient.fetch('*[_type == "type_serviceType" && "Domaine" in agencyBrands[]->name ] | order(orderRank)')
-
-const services = await serviceTypes.map(async serviceType => {
-    const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType->_id == '${serviceType._id}' ] | order(orderRank)`)
-    serviceType.serviceGroups = serviceGroups
-    // console.log(serviceGroups)
-});
-
-// const serviceGroups = await sanityClient.fetch('*[_type == "type_serviceGroup" && "Domaine" in agencyBrands[]->name ] | order(orderRank)')
-// const services = await sanityClient.fetch('*[_type == "type_service" && "Domaine" in agencyBrands[]->name ] | order(orderRank)')
-
-// servicesTypes.forEach(serviceType => {
-//     serviceData.push(serviceType)
-// });
-
-
-// services.forEach(service => {
-//     console.log(service.title)
-// });
-
-// console.log(services)
-console.log(await services)
+const servicesObject = await Promise.all(
+    serviceTypes.map(async serviceType => {
+        const groups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType->_id == '${serviceType._id}' && "Domaine" in agencyBrands[]->name ] | order(orderRank)`)
+        const groupedServices = Promise.all(groups.map(async serviceGroup => {
+            const services = await sanityClient.fetch(`*[_type == "type_service" && serviceGroup->_id == '${serviceGroup._id}' && "Domaine" in agencyBrands[]->name] | order(orderRank)`)
+            serviceGroup.services = await services
+            return serviceGroup
+        }))
+        serviceType.serviceGroups = await groupedServices
+        return serviceType
+    })
+);
 ---
 <LayoutDomaine
     title="Services"
->
+>   
     <h1>Domaine Services Landing</h1>
+    {servicesObject.map((serviceType) => (
+        <div>
+            <a href={`${paths.root.services.path}/${serviceType.slug.current}`}><h3>{serviceType.title}</h3></a>
+            {serviceType.serviceGroups.map((serviceGroup) => {
+                return (
+                    <div>
+                        <a href={`${paths.root.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h5>{serviceGroup.title}</h5></a>
+                        {serviceGroup.services.map((service) => (
+                            <a href={`${paths.root.services.path}/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
+                        ))}
+                    </div>
+                )
+            }
+        )}
+        </div>
+    ))}
 </LayoutDomaine>

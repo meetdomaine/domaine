@@ -1,0 +1,36 @@
+---
+import { sanityClient } from 'sanity:client';
+import { paths } from '../../../../../components/global/utils/paths';
+import LayoutStudio from '../../../../../layouts/LayoutStudio.astro';
+
+export async function getStaticPaths() {
+    const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
+    return categories.map((category) => {
+        console.log(category)
+        return {
+            params: { category: category.slug.current },
+            props: { content: category }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props;
+
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" && category->_id == '${content._id}' ] { ..., category->{...}} | order( postDate desc)`)
+// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., category->{...}} | order( postDate desc)`)
+console.log(blogPosts)
+---
+<LayoutStudio
+    title="Work"
+>
+    <h1>{content.title}</h1>
+    <h3>Posts</h3>
+    {blogPosts.map((project) => (
+        <a href={`${paths.root.studio.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>
+    ))}
+
+</LayoutStudio>

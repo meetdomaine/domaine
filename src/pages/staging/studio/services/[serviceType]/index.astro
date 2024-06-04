@@ -1,0 +1,44 @@
+---
+import { sanityClient } from "sanity:client"
+import { paths } from "../../../../../components/global/utils/paths"
+import LayoutStudio from "../../../../../layouts/LayoutStudio.astro"
+
+export async function getStaticPaths() {
+    const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && "Studio" in agencyBrands[]->name ]`)
+    return serviceTypes.map((serviceType) => {
+        return {
+            params: { serviceType: serviceType.slug.current },
+            props: { content: serviceType, serviceType: serviceType }
+        }
+    })
+}
+
+interface Props {
+    content: any,
+    serviceType: any
+}
+
+const { content, serviceType } = Astro.props;
+const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType->_id == '${content._id}' && "Studio" in agencyBrands[]->name ]{..., serviceType->{...}} | order(orderRank)`)
+const servicesObject = await Promise.all(
+    serviceGroups.map(async serviceGroup => {
+        const services = await sanityClient.fetch(`*[_type == "type_service" && serviceGroup->_id == '${serviceGroup._id}' && "Studio" in agencyBrands[]->name] | order(orderRank)`)
+        serviceGroup.services = await services
+        return serviceGroup
+    })
+);
+---
+<LayoutStudio
+    title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
+>
+    <h1>{content.title}</h1>
+    {servicesObject.map((serviceGroup) => (
+        <div>
+            <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3>{serviceGroup.title}</h3></a>
+            {serviceGroup.services.map((service) => (
+                <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
+            ))}
+        </div>
+    ))}
+
+</LayoutStudio>
