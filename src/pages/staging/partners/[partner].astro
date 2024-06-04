@@ -4,8 +4,10 @@ import { paths } from '../../../components/global/utils/paths';
 import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
 
 export async function getStaticPaths() {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner"] { ..., tier->{...} }`)
-    return partners.map((partner) => {
+    const partners = await sanityClient.fetch(`*[_type == "type_partner" ] { ..., tier->{...} }`)
+    const landingPagePartners = await partners.filter((partner) => partner.tier && partner.tier.createLandingPages)
+
+    return landingPagePartners.map((partner) => {
         return {
             params: { partner: partner.slug.current },
             props: { content: partner }
@@ -23,6 +25,7 @@ const { content } = Astro.props;
 <LayoutDomaine
     title={content.title}
 >
+    
     <h4>{content.tier.title}</h4>
     <h1>{content.title}</h1>
 </LayoutDomaine>

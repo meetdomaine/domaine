@@ -24,6 +24,11 @@ export default defineType({
       title: 'Description',
       type: 'text',
     }),
+    defineField({
+      name: 'createLandingPages',
+      title: 'Create Landing Pages',
+      type: 'boolean',
+    }),
   ],
 
   preview: {

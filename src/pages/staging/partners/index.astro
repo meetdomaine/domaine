@@ -17,7 +17,13 @@ const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]`)
                 if (partner.tier && partner.tier.slug.current == tier.slug.current) {
                     return (
                         <div>
-                            <a href={`${paths.root.partners.path}/${partner.slug.current}`}><h6>{partner.title}</h6></a>
+                            {tier.createLandingPages ? 
+                                <a href={`${paths.root.partners.path}/${partner.slug.current}`}>
+                                    <h6>{partner.title}</h6>
+                                </a>
+                            : (
+                                <h6>{partner.title}</h6>
+                            )}
                         </div>
                     )
                 }
