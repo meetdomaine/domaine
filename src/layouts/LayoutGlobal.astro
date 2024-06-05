@@ -33,6 +33,10 @@ const currentPath = Astro.url.pathname;
 <html lang="en" data-theme={theme}>
 	<head>
 
+		<!-- Remove once live -->
+		<meta name="robots" content="noindex">
+
+		<!-- Add back once live -->
 		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
 		<link rel="preconnect" href="https://snap.licdn.com">
 		<link rel="preconnect" href="https://www.google-analytics.com"> -->
@@ -89,3 +93,16 @@ const currentPath = Astro.url.pathname;
 		<!-- <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script> -->
 	</body>
 </html>
+
+<style is:global>
+    body {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+    }
+
+    main {
+        flex-grow: 1;
+    }
+</style>

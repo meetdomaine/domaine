@@ -2,21 +2,26 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
 import { paths } from '../../../components/global/utils/paths';
+import ProjectCard from '../../../components/global/atoms/atom_projectCard.astro';
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Domaine"] | order( orderRank )`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"] | order( orderRank )`)
 const industries = await sanityClient.fetch(`*[_type == "type_industry"] | order(orderRank)`)
 
 ---
 <LayoutDomaine
     title="Work"
 >
-    <h1>Domaine Projects</h1>
-    <h4>Projects:</h4>
-    {projects.map((project) => (
-        <a href={`${paths.root.projects.path}/${project.slug.current}`}><h5>{project.title}</h5></a>
-    ))}
+    <h1>Projects</h1>
     <h4>Industries:</h4>
     {industries.map((industry) => (
         <a href={`${paths.root.projects.path}/${industry.slug.current}`}><h6>{industry.title}</h6></a>
+    ))}
+    <h4>Projects:</h4>
+    {projects.map((project) => (
+        <ProjectCard 
+            title={project.title}
+            excerpt={project.excerpt}
+            slug={project.slug.current}
+        />
     ))}
 </LayoutDomaine>

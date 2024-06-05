@@ -8,7 +8,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Domaine"] { ..., industry->{...} }`)
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"] { ..., industry->{...} }`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },

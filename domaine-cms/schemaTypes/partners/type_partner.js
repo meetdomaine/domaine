@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import { iconPartners } from '../variables'
 
 export default defineType({
   name: 'type_partner',
@@ -32,5 +33,11 @@ export default defineType({
       title: 'title', 
       subtitle: 'tier.title'
     },
+    prepare(selection) {
+      return {
+        ...selection,
+        media: iconPartners
+      }
+    }
   },
 })

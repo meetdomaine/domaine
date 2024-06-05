@@ -16,7 +16,6 @@
     --radius-rounded: 100vw;
   
     --page-margin: clamp(20px, 2vw, 60px);
-    --page-margin-narrow: clamp(35px, 6vw, 150px);
     --content-margin: 1440px;
     --header-height: min(var(--space-4xl), 15lvh);
     --button-height: 40px;
@@ -28,8 +27,3 @@
     --icon-lg: 20px;
   }
   
-  @media screen and (max-width:768px) {
-    :root {
-      --page-margin-narrow: var(--page-margin);
-    }
-  }

@@ -1,0 +1,18 @@
+---
+import { paths } from "../utils/paths"
+
+
+interface Props {
+    title: string,
+    excerpt: string,
+    slug: string,
+    image?: any
+}
+
+const { title, excerpt, slug, image } = Astro.props
+
+---
+<a class="project-card" href={`${paths.root.projects.path}/${slug}`}>
+    <h3>{title}</h3>
+    <p>{excerpt}</p>
+</a>

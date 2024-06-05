@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import { iconIndustries } from '../variables'
 
 export default defineType({
   name: 'type_industry',
@@ -25,5 +26,11 @@ export default defineType({
     select: {
       title: 'title', 
     },
+    prepare(selection) {
+      return {
+        ...selection,
+        media: iconIndustries
+      }
+    }
   },
 })

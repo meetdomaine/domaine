@@ -44,7 +44,9 @@ const brandSettings = brandData[0]
     <Header
         navigationLinks={headerSettings.navigationLinks}
     />
-    <slot />
+    <main>
+        <slot />
+    </main>
     <Footer 
         footerLinks={footerSettings.footerLinks}
     />

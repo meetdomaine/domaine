@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import { iconClients } from '../variables'
 
 export default defineType({
   name: 'type_client',
@@ -19,11 +20,30 @@ export default defineType({
         maxLength: 96,
       },
     }),
+    defineField({
+      name: 'agencyBrands',
+      title: 'Agency Brands',
+      type: 'array',
+      of: [
+        {
+          name: 'agencyBrand',
+          title: 'Agency Brand',
+          type: 'reference',
+          to: [{ type: 'type_agencyBrand'}]
+        }
+      ]
+    }),
   ],
 
   preview: {
     select: {
       title: 'title', 
     },
+    prepare(selection) {
+      return {
+        ...selection,
+        media: iconClients
+      }
+    }
   },
 })

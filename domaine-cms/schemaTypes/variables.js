@@ -132,4 +132,6 @@ export const iconSEO = ChartUpwardIcon
 export const labelAgencyBrand = "Brand"
 export const iconAgencyBrand = RobotIcon
 
+export const iconStat = ChartUpwardIcon
+
 export const iconLink = LinkIcon

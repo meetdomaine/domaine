@@ -2,8 +2,19 @@
 const { footerLinks } = Astro.props
 ---
 <footer>
-    <h3>Studio Footer</h3>
+    <div class="footer-links">
     {footerLinks.links.map((link) => (
         <a href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
     ))}
+    </div>
 </footer>
+
+<style>
+    .footer-links {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-md);
+    }
+</style>
