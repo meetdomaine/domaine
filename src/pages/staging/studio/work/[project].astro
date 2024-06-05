@@ -8,7 +8,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Studio"] { ..., industry->{...} }`)
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio"] { ..., industry->{...} }`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-console.log(content)
+// console.log(content)
 ---
 <LayoutStudio
     title={content.title}

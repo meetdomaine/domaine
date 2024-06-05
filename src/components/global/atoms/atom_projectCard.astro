@@ -1,18 +1,24 @@
 ---
-import { paths } from "../utils/paths"
-
-
 interface Props {
     title: string,
     excerpt: string,
-    slug: string,
+    url: string,
     image?: any
 }
 
-const { title, excerpt, slug, image } = Astro.props
+const { title, excerpt, image, url } = Astro.props
 
 ---
-<a class="project-card" href={`${paths.root.projects.path}/${slug}`}>
+<a class="project-card" href={url}>
     <h3>{title}</h3>
     <p>{excerpt}</p>
 </a>
+
+
+
+<style>
+    .project-card {
+        padding: var(--space-sm);
+        border: 1px solid var(--color-border);
+    }
+</style>

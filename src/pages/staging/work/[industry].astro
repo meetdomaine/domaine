@@ -2,6 +2,9 @@
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
 import { paths } from '../../../components/global/utils/paths';
+import ProjectsGrid from '../../../components/global/atoms/atom_projectsGrid.astro';
+import Hero from '../../../components/domaine/sections/work/workIndex_Hero.astro';
+import TabList from '../../../components/global/atoms/atom_tabList.astro';
 
 interface Props {
     content: any
@@ -19,13 +22,24 @@ export async function getStaticPaths() {
 
 const { content } = Astro.props
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine" && industry._ref == '${content._id}' ] | order(orderRank)`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"]`)
+const industries = await sanityClient.fetch(`*[_type == "type_industry"] | order(orderRank)`)
 
 ---
 <LayoutDomaine
     title={content.title}
 >
-    <h1>{content.title}</h1>
-    {projects.map((project) => (
-        <a href={`${paths.root.projects.path}/${project.slug.current}`}><h6>{project.title}</h6></a>
-    ))}
+    <Hero
+        heading={pageSettings[0].heading}
+        subheading={pageSettings[0].subheading}
+    />
+    <TabList
+        title="Industries:"
+        root={paths.root.projects.path}
+        tabs={industries}
+    />
+    <ProjectsGrid 
+        projects={projects}
+        root={paths.root.projects.path}
+    />
 </LayoutDomaine>

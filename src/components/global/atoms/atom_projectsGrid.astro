@@ -1,0 +1,22 @@
+---
+import ProjectCard from "./atom_projectCard.astro"
+const { projects, root } = Astro.props
+---
+<div class="projects-grid">
+    {projects.map((project) => (
+        <ProjectCard 
+            title={project.title}
+            excerpt={project.excerpt}
+            url={`${root}/${project.slug.current}`}
+        />
+    ))}
+</div>
+
+<style>
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-sm);
+        padding-inline: var(--page-margin);
+    }
+</style>

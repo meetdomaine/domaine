@@ -1,0 +1,38 @@
+---
+import { paths } from "../utils/paths"
+
+interface Tab {
+    title: string,
+    slug: {
+        current: string
+    }
+}
+
+
+interface Props {
+    title?: string,
+    root: string,
+    tabs: Array<Tab>
+}
+
+
+const { title, tabs, root } = Astro.props
+
+---
+<div class="tab-list">
+    {title && <h6>{title}</h6>}
+    {tabs.map((tab) => (
+        <a href={`${root}/${tab.slug.current}`}><p>{tab.title}</p></a>
+    ))}
+</div>
+
+<style>
+    .tab-list {
+        display: flex;
+        flex-direction: row;
+        padding-inline: var(--page-margin);
+        padding-bottom: var(--space-lg);
+        flex-wrap: wrap;
+        gap: var(--space-xs);
+    }
+</style>

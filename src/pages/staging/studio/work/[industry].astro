@@ -2,6 +2,9 @@
 import { sanityClient } from 'sanity:client'
 import { paths } from '../../../../components/global/utils/paths';
 import LayoutStudio from '../../../../layouts/LayoutStudio.astro';
+import ProjectsGrid from '../../../../components/global/atoms/atom_projectsGrid.astro';
+import TabList from '../../../../components/global/atoms/atom_tabList.astro';
+import Hero from '../../../../components/studio/sections/work/workIndex_Hero.astro';
 
 interface Props {
     content: any
@@ -18,14 +21,26 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-const projects = await sanityClient.fetch(`*[_type == "type_project" && brand->name == "Studio" && industry._ref == '${content._id}' ] | order(orderRank)`)
-
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio" && industry._ref == '${content._id}' ] | order(orderRank)`)
+const industries = await sanityClient.fetch(`*[_type == "type_industry"] | order(orderRank)`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"]`)
 ---
 <LayoutStudio
-    title={content.title}
+    title={content.metafields && content.metafields.title ? content.metafields.title : "Work"}
+    description={content.metafields && content.metafields.description ? content.metafields.description : null}
 >
-    <h1>{content.title}</h1>
-    {projects.map((project) => (
-        <a href={`${paths.root.studio.projects.path}/${project.slug.current}`}><h6>{project.title}</h6></a>
-    ))}
-</LayoutStudio>
+
+    <Hero
+        heading={pageSettings[0].heading}
+        subheading={pageSettings[0].subheading}
+    />
+    <TabList
+        title="Industries:"
+        root={paths.root.studio.projects.path}
+        tabs={industries}
+    />
+    <ProjectsGrid 
+        projects={projects}
+        root={paths.root.studio.projects.path}
+    />
+</LayoutDomaine>

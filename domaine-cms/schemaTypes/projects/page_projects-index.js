@@ -6,18 +6,28 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
+      name: 'heading',
+      title: 'Heading',
       type: 'string',
     }),
     defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+    }),
+    // defineField({
+    //   name: 'slug',
+    //   title: 'Slug',
+    //   type: 'slug',
+    //   options: {
+    //     source: 'title',
+    //     maxLength: 96,
+    //   },
+    // }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
     }),
   ],
 

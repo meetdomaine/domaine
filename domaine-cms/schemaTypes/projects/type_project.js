@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import { iconStat } from '../variables'
+import { iconAward, iconStat } from '../variables'
 
 export default defineType({
   name: 'type_project',
@@ -26,16 +26,19 @@ export default defineType({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'string',
+      description: 'Description on project cards.'
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      description: 'Project page heading.'
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
+      description: 'Project page main description.'
     }),
     defineField({
       name: 'url',
@@ -50,6 +53,16 @@ export default defineType({
       title: 'Client',
       type: 'reference',
       to: [{ type: 'type_client'}]
+    }),
+    defineField({
+      name: 'services',
+      title: 'Services',
+      type: 'array',
+      of: [{
+        title: 'Service',
+        type: 'reference',
+        to: [{ type: 'type_service'}],
+      }],
     }),
     defineField({
       name: 'agencyBrand',
@@ -132,13 +145,13 @@ export default defineType({
         ],
         preview: {
           select: {
-            title: 'number',
-            subtitle: 'label',
+            title: 'awardTitle',
+            subtitle: 'publication',
           },
           prepare(selection) {
             return {
               ...selection,
-              media: iconStat,
+              media: iconAward,
             }
           }
         }
