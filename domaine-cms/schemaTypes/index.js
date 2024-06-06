@@ -35,6 +35,8 @@ import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_linkList from "./snippets/snippet_link-list";
 import type_agencyBrand from "./siteSettings/type_agencyBrand";
 import type_teamDepartment from "./team/type_teamDepartment";
+import snippet_image from "./snippets/snippet_image";
+import snippet_video from "./snippets/snippet_video";
 
 
 export const schemaTypes = [
@@ -78,4 +80,6 @@ export const schemaTypes = [
 
     snippet_SEOFields,
     snippet_linkList,
+    snippet_image,
+    snippet_video,
 ]

@@ -2,13 +2,14 @@
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
 import { paths } from '../../../components/global/utils/paths';
+import WorkPostHero from '../../../components/domaine/sections/work/workPost_Hero.astro';
 
 interface Props {
     content: any
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"] { ..., industry->{...} }`)
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"] { ..., industry->{...}, mux{ asset-> playbackId, assetId, filename} }`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -18,11 +19,14 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-// console.log(content)
+console.log(content.mux)
 ---
 <LayoutDomaine
     title={content.title}
 >
-    <a href={`${paths.root.projects.path}/${content.industry.slug.current}`}><h6>{content.industry.title}</h6></a>
-    <h1>{content.title}</h1>
+    <WorkPostHero
+        heading={content.title}
+        category={content.industry}
+        root={paths.root.projects.path}
+    />
 </LayoutDomaine>

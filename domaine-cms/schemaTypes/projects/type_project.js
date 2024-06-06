@@ -5,11 +5,30 @@ export default defineType({
   name: 'type_project',
   title: 'Project',
   type: 'document',
+  groups: [
+    {
+      name: 'info',
+      title: 'Info',
+    },
+    {
+      name: 'media',
+      title: 'Media',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
+      group: 'info',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -20,38 +39,56 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
+      group: 'info',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'string',
+      group: 'info',
       description: 'Description on project cards.'
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      group: 'info',
       description: 'Project page heading.'
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
+      group: 'info',
       description: 'Project page main description.'
     }),
     defineField({
       name: 'url',
       title: 'URL',
       type: 'url',
+      group: 'info',
       validation: (Rule) => Rule.uri({
         scheme: ['http', 'https']
       })
     }),
     defineField({
+      name: 'projectCardMedia',
+      title: 'Project Card',
+      type: 'snippet_video',
+      group: 'media',
+    }),
+    defineField({
+      name: 'mux',
+      title: 'Mux',
+      type: 'mux.video',
+      group: 'media',
+    }),
+    defineField({
       name: 'client',
       title: 'Client',
       type: 'reference',
+      group: 'info',
       to: [{ type: 'type_client'}]
     }),
     defineField({
@@ -63,18 +100,21 @@ export default defineType({
         type: 'reference',
         to: [{ type: 'type_service'}],
       }],
+      group: 'info',
     }),
     defineField({
       name: 'agencyBrand',
       title: 'Agency Brand',
       type: 'reference',
-      to: [{ type: 'type_agencyBrand'}]
+      to: [{ type: 'type_agencyBrand'}],
+      group: 'info',
     }),
     defineField({
       name: 'industry',
       title: 'Industry',
       type: 'reference',
       to: [{ type: 'type_industry'}],
+      group: 'info',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -86,7 +126,8 @@ export default defineType({
         title: 'Partner',
         type: 'reference',
         to: [{ type: 'type_partner'}],
-      }]
+      }],
+      group: 'info',
     }),
     defineField({
       name: 'metrics',
@@ -120,7 +161,8 @@ export default defineType({
             }
           }
         }
-      }]
+      }],
+      group: 'info',
     }),
     
     defineField({
@@ -155,7 +197,8 @@ export default defineType({
             }
           }
         }
-      }]
+      }],
+      group: 'info',
     }),
     // defineField({
     //   name: 'thumbnail',
@@ -170,6 +213,7 @@ export default defineType({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_SEO-fields',
+      group: 'seo',
     }),
   ],
 
