@@ -61,7 +61,7 @@ export default function ProjectsFilter(props) {
                                 handleFilter('industry', industry.slug.current)
                             }
                         }>
-                            {industry.title}
+                            <p>{industry.title}</p>
                         </button>
                     }
                     </For>
