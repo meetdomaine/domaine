@@ -1,10 +1,12 @@
 import {defineField, defineType} from 'sanity'
-import { iconAward, iconStat } from '../variables'
+import { iconAward, iconProjects, iconStat } from '../variables'
+import { orderRankField } from '@sanity/orderable-document-list'
 
 export default defineType({
   name: 'type_project',
   title: 'Project',
   type: 'document',
+  icon: iconProjects,
   groups: [
     {
       name: 'info',
@@ -72,17 +74,67 @@ export default defineType({
         scheme: ['http', 'https']
       })
     }),
+    // defineField({
+    //   name: 'projectCardMedia',
+    //   title: 'Project Card',
+    //   type: 'snippet_video',
+    //   group: 'media',
+    // }),
     defineField({
-      name: 'projectCardMedia',
-      title: 'Project Card',
-      type: 'snippet_video',
+      name: 'thumbnailIsVideo',
+      title: 'Thumbnail Image/Video',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Defines whether project card media is an image or video.',
       group: 'media',
     }),
     defineField({
-      name: 'mux',
-      title: 'Mux',
+      name: 'thumbnailImage',
+      title: 'Thumbnail Image',
+      type: 'snippet_image',
+      group: 'media',
+      hidden: ({document}) => document?.thumbnailIsVideo,
+      validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
+        return !thumbnailIsVideo && !value ? "Field required" : true
+      })
+    }),
+    defineField({
+      name: 'thumbnailVideo',
+      title: 'Thumbnail Video',
       type: 'mux.video',
       group: 'media',
+      hidden: ({document}) => !document?.thumbnailIsVideo,
+      validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
+        return thumbnailIsVideo && !value ? "Field required" : true
+      })
+    }),
+    defineField({
+      name: 'heroIsVideo',
+      title: 'Hero Image/Video',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Defines whether project page hero is an image or video.',
+      group: 'media',
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero Image',
+      type: 'snippet_image',
+      group: 'media',
+      hidden: ({document}) => document?.heroIsVideo,
+      validation: (Rule) => Rule.custom((value, { document: { heroIsVideo } }) => {
+        return !heroIsVideo && !value ? "Field required" : true
+      })
+    }),
+    defineField({
+      name: 'heroVideo',
+      title: 'Hero Video',
+      type: 'mux.video',
+      group: 'media',
+      hidden: ({document}) => !document?.heroIsVideo,
+      validation: (Rule) => Rule.custom((value, { document: { heroIsVideo } }) => {
+        return heroIsVideo && !value ? "Field required" : true
+      })
     }),
     defineField({
       name: 'client',
@@ -215,17 +267,14 @@ export default defineType({
       type: 'snippet_SEO-fields',
       group: 'seo',
     }),
+    orderRankField({ type: 'type_project'}),
   ],
 
   preview: {
     select: {
       title: 'title', 
-      subtitle: 'agencyBrand.name'
+      subtitle: 'agencyBrand.name',
+      media: 'thumbnailImage.image'
     },
   },
-  prepare(selection) {
-    return {
-      ...selection
-    }
-  }
 })

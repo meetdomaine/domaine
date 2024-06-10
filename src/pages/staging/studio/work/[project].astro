@@ -8,7 +8,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio"] { ..., industry->{...}, mux{ asset->{ playbackId, assetId, filename } } }`)
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio"] { ..., industry->{...}, partners[]->{...}, mux{ asset->{ playbackId, assetId, filename } } }`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -27,7 +27,7 @@ console.log(content.mux)
     <a href={`${paths.root.studio.projects.path}/${content.industry.slug.current}`}><h6>{content.industry.title}</h6></a>
     <h1>{content.title}</h1>
 
-    <mux-player
+    <!-- <mux-player
         nohotkeys
         playback-id="zIGHS00Q1hxOJjQs4hSjwZFdiOJggqL9QQbeM3NJwA94"
         metadata-video-title="Test VOD"
@@ -37,12 +37,12 @@ console.log(content.mux)
         autoplay
         style={{ aspectRatio: 16/9}}
         theme="minimal"
-    ></mux-player>
+    ></mux-player> -->
 
 </LayoutStudio>
 
 <style>
     mux-player {
-        /* --controls: none; */
+        --controls: none;
     }
 </style>

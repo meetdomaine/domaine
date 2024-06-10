@@ -198,12 +198,13 @@ export const structure = (S, context) =>
                                 )
                             ])
                         ),
-                    S.listItem()
-                        .title(labelProjects)
-                        .icon(iconProjects)
-                        .child(
-                            S.documentTypeList('type_project')
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_project',
+                        title: labelProjects,
+                        icon: iconProjects,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(labelClients)
                         .icon(iconClients)

@@ -17,7 +17,8 @@ export default defineType({
             type: 'string',
             validation: (Rule) => Rule.required(),
         },
-      ]
+      ],
+      validation: (Rule) => Rule.required(),
     }),
   ],
 

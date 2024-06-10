@@ -1,14 +1,16 @@
 ---
 import { sanityClient } from 'sanity:client';
-import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
-import TabList from '../../../components/global/atoms/atom_tabList.astro';
-import ProjectsGrid from '../../../components/global/atoms/atom_projectsGrid.astro';
-import Hero from '../../../components/domaine/sections/work/workIndex_Hero.astro'
 import { paths } from '../../../components/global/utils/paths';
+import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
+import Hero from '../../../components/domaine/sections/work/workIndex_Hero.astro'
+import { projectsGridQuery } from '../../../components/global/utils/cms-queries';
+import ProjectsFeed from '../../../components/global/projects/projectsFeed/projectsFeed.jsx';
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"] | order( orderRank )`)
-const industries = await sanityClient.fetch(`*[_type == "type_industry"] | order(orderRank)`)
-const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"]`)
+const projects = await sanityClient.fetch(projectsGridQuery("Domaine"))
+const industries = await sanityClient.fetch(`*[_type == "type_industry" && "Domaine" in agencyBrands[]->name] | order(title)`)
+const services = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "Domaine" in agencyBrands[]->name ] | order(title)`)
+const partners = await sanityClient.fetch(`*[_type == "type_partner"] | order(title)`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
 
 ---
 <LayoutDomaine
@@ -16,16 +18,15 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" 
     description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
 >
     <Hero
-        heading={pageSettings[0].heading}
-        subheading={pageSettings[0].subheading}
+        heading={pageSettings.heading}
+        subheading={pageSettings.subheading}
     />
-    <TabList
-        title="Industries:"
-        root={paths.root.projects.path}
-        tabs={industries}
-    />
-    <ProjectsGrid
+    <ProjectsFeed 
         projects={projects}
+        industries={industries}
+        services={services}
+        partners={partners}
         root={paths.root.projects.path}
+        client:load
     />
 </LayoutDomaine>

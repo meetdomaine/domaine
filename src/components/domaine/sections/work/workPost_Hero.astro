@@ -1,9 +1,49 @@
 ---
-const { heading, category, root } = Astro.props
+import AtomSanityImage from "../../../global/atoms/atom_sanityImage.astro"
+import { paths } from "../../../global/utils/paths"
+
+const { heading, description, category, root, url, client, services, heroImage, heroVideo, industry, partners, metrics, awards, metafields } = Astro.props
+
 ---
 <section class="work-post_hero">
+    <a href={`${root}/${category.slug.current}`}>{category.title}</a>
     <h1>{heading}</h1>
+
+    {heroImage && 
+        <AtomSanityImage
+            image={heroImage}
+            sizes="100vw"
+            aspectRatio={2 / 1}
+            eager={true}
+        />
+    }
+
+    <h5>{description}</h5>
+
+    {services && 
+        <div class="services">
+            {services.map((service) => (
+                <a href={`${paths.root.services.path}/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
+            ))}
+        </div>
+    }
+
+    {partners && 
+        <div class="partners">
+            {partners.map((partner) => (
+                <a href={`${paths.root.partners.path}`}>{partner.title}</a>
+            ))}
+        </div>
+    }
+
+
+    {url && <a href={url} target="_blank">View Live Site</a>}
+    {client && client.description && (
+        <h6>About {client.title}</h6>
+        <p>{client.description}</p>
+    )}
 </section>
+
 
 <style>
     .work-post_hero {

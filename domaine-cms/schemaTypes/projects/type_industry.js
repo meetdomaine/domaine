@@ -20,6 +20,18 @@ export default defineType({
         maxLength: 96,
       },
     }),
+    defineField({
+      name: 'agencyBrands',
+      title: 'Agency Brands',
+      type: 'array',
+      of: [{
+        name: 'agencyBrand',
+        title: 'Agency Brand',
+        type: 'reference',
+        to: [{ type: 'type_agencyBrand'}]
+      }],
+      validation: Rule => Rule.required(),
+    }),
   ],
 
   preview: {

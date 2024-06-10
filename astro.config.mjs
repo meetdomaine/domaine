@@ -1,12 +1,12 @@
 import { defineConfig } from 'astro/config';
-import solidJs from "@astrojs/solid-js";
+import solid from "@astrojs/solid-js";
 import vercel from "@astrojs/vercel/serverless";
 // import vercelStatic from '@astrojs/vercel/static';
 import sitemap from '@astrojs/sitemap';
 import icon from "astro-icon";
-
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,12 +19,18 @@ export default defineConfig({
       useCdn: false,
       studioBasePath: '/admin',
     }), 
-    react()
+    solid({ 
+      devtools: true ,
+      include: 'src/**/*'
+    }),
+    react({
+      include: 'domaine-cms/**/*'
+    }), 
   ],
   prefetch: true,
   output: 'hybrid',
   adapter: vercel({
-    edgeMiddleware: true
+    edgeMiddleware: false
   }),
   // adapter: vercel(),
   site: 'https://meetdomaine.com/'

@@ -7,6 +7,8 @@ const { projects, root } = Astro.props
         <ProjectCard 
             title={project.title}
             excerpt={project.excerpt}
+            thumbnailImage={project.thumbnailImage ? project.thumbnailImage.image : null}
+            thumbnailVideo={project.thumbnailVideo}
             url={`${root}/${project.slug.current}`}
         />
     ))}
