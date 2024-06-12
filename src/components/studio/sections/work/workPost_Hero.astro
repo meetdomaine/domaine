@@ -26,7 +26,7 @@ const { heading, description, root, url, client, services, heroImage, heroVideo,
             <h4>Services</h4>
             {services.map((service) => (
                 <div>
-                    <a href={`${paths.root.services.path}/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
+                    <a href={`${paths.root.studio.services.path}/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
                 </div>
             ))}
         </div>

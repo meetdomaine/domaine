@@ -9,6 +9,8 @@ import {muxInput} from 'sanity-plugin-mux-input'
 
 import { structure } from './domaine-cms/schemaTypes/structure'
 import { schemaTypes } from './domaine-cms/schemaTypes'
+import { vercelDeployTool } from 'sanity-plugin-vercel-deploy'
+
 
 export default defineConfig({
   name: 'domaine-cms',
@@ -21,6 +23,7 @@ export default defineConfig({
     }),
     media(),
     muxInput(),
+    vercelDeployTool(),
     // presentationTool({
     //   previewUrl: 'http://localhost:4321/staging/'
     // }),

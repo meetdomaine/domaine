@@ -4,13 +4,14 @@ import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
 import { paths } from '../../../components/global/utils/paths';
 import WorkPostHero from '../../../components/domaine/sections/work/workPost_Hero.astro';
 import { imageFields } from '../../../components/global/utils/cms-queries';
+import { projectPostQuery } from "../../../components/global/utils/cms-queries"
 
 interface Props {
     content: any
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"] { ..., heroImage{${imageFields}}, client->{...}, services[]->{..., serviceGroup->{..., serviceType->{...} } }, industry->{...}, mux{ asset->{playbackId, assetId, filename}} }`)
+    const projects = await sanityClient.fetch(projectPostQuery("Domaine"))
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -20,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-// console.log(content.partners)
+console.log(content)
 ---
 <LayoutDomaine
     title={content.title}
@@ -28,12 +29,12 @@ const { content } = Astro.props
     <WorkPostHero
         heading={content.title}
         description={content.description}
-        category={content.industry}
+        industry={content.industry}
         root={paths.root.projects.path}
         url={content.url}
         client={content.client}
         services={content.services}
-        industry={content.industry}
+        features={content.features}
         partners={content.partners}
         metrics={content.metrics}
         awards={content.awards}

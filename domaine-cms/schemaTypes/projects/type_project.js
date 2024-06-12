@@ -144,13 +144,30 @@ export default defineType({
       to: [{ type: 'type_client'}]
     }),
     defineField({
+      name: 'agencyBrand',
+      title: 'Agency Brand',
+      type: 'reference',
+      to: [{ type: 'type_agencyBrand'}],
+      group: 'info',
+    }),
+    defineField({
       name: 'services',
       title: 'Services',
       type: 'array',
+      description: 'Only allows for selection of services offered by the agency brand(s) selected.',
       of: [{
         title: 'Service',
         type: 'reference',
         to: [{ type: 'type_service'}],
+        options: {
+          filter: ({ document }) => {
+            const agencyId = document?.agencyBrand?._ref;
+            return {
+              filter: '_type == "type_service" && references($agencyId)',
+              params: { agencyId }
+            };
+          }
+        }
       }],
       group: 'info',
     }),
@@ -163,13 +180,6 @@ export default defineType({
         type: 'reference',
         to: [{ type: 'type_projectFeature'}],
       }],
-      group: 'info',
-    }),
-    defineField({
-      name: 'agencyBrand',
-      title: 'Agency Brand',
-      type: 'reference',
-      to: [{ type: 'type_agencyBrand'}],
       group: 'info',
     }),
     defineField({
