@@ -18,6 +18,7 @@ import {
     iconPages, 
     iconPartnerTiers, 
     iconPartners, 
+    iconProjectFeatures, 
     iconProjects, 
     iconSEO, 
     iconServiceGroups, 
@@ -44,6 +45,7 @@ import {
     labelPages, 
     labelPartnerTiers, 
     labelPartners, 
+    labelProjectFeatures, 
     labelProjects, 
     labelSEO, 
     labelServiceGroups, 
@@ -216,6 +218,13 @@ export const structure = (S, context) =>
                         .icon(iconIndustries)
                         .child(
                             S.documentTypeList('type_industry')
+                        ),
+
+                    S.listItem()
+                        .title(labelProjectFeatures)
+                        .icon(iconProjectFeatures)
+                        .child(
+                            S.documentTypeList('type_projectFeature')
                         ),
                     S.listItem()
                         .title(`${labelProjects} ${labelSettings}`)

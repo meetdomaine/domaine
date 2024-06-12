@@ -14,10 +14,27 @@ export function urlFor(source) {
 
 export const imageFields = 'image{ crop, asset->{_id, metadata}, alt }'
 
-export const projectsGridQuery = (brand, industry) => {
-  return `*[_type == "type_project" && agencyBrand->name == "${brand}" ${industry ? `&& industry._ref == '${industry}'` : ''} ] {..., industry->{...}, partners[]->{...}, services[]->{ serviceGroup->{slug} }, thumbnailImage{${imageFields}}} | order( orderRank )`
+export const projectsGridQuery = (brand) => {
+  return `*[_type == "type_project" && agencyBrand->name == "${brand}" ] { 
+    title,
+    excerpt,
+    slug, 
+    industry->{...}, 
+    partners[]->{...}, 
+    features[]->{ title, slug }, 
+    services[]->{ serviceGroup->{title, slug} }, 
+    thumbnailImage{${imageFields}},
+    orderRank,
+  } | order(orderRank)`
 }
 
 export const projectPostQuery = (brand) => {
-  return `*[_type == "type_project" && agencyBrand->name == "${brand}"] { ..., heroImage{${imageFields}}, client->{...}, services[]->{..., serviceGroup->{..., serviceType->{...} } }, industry->{...}, mux{ asset->{playbackId, assetId, filename}} }`
+  return `*[_type == "type_project" && agencyBrand->name == "${brand}"] { 
+    ..., 
+    heroImage{${imageFields}}, 
+    client->{...}, 
+    services[]->{..., serviceGroup->{..., serviceType->{...} } }, 
+    industry->{...}, 
+    mux{ asset->{playbackId, assetId, filename}} 
+  }`
 }

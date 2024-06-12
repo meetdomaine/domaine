@@ -37,11 +37,13 @@ import type_agencyBrand from "./siteSettings/type_agencyBrand";
 import type_teamDepartment from "./team/type_teamDepartment";
 import snippet_image from "./snippets/snippet_image";
 import snippet_video from "./snippets/snippet_video";
+import type_projectFeature from "./projects/type_projectFeature";
 
 
 export const schemaTypes = [
     type_project,
     type_client,
+    type_projectFeature,
     type_industry,
     type_service,
     type_serviceType,

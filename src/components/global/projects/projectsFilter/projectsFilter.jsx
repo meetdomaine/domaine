@@ -86,6 +86,24 @@ export default function ProjectsFilter(props) {
                 </div>
             </Show>
 
+            <Show when={props.features}>
+                <div class={styles.filterColumn}>
+                    <p class="caption">Features</p>
+                    <For each={props.features}>{(feature, i) => 
+                        <button 
+                            class={styles.filterButton}
+                            data-active={currentFilterValue() == feature.slug.current}
+                            onClick={() => {
+                                handleFilter('feature', feature.slug.current)
+                            }
+                        }>
+                            <p>{feature.title}</p>
+                        </button>
+                    }
+                    </For>
+                </div>
+            </Show>
+
             <Show when={props.partners}>
                 <div class={styles.filterColumn}>
                     <p class="caption">Partners</p>
@@ -103,6 +121,7 @@ export default function ProjectsFilter(props) {
                     </For>
                 </div>
             </Show>
+
         </div>
     )
 }

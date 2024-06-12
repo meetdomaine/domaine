@@ -155,6 +155,17 @@ export default defineType({
       group: 'info',
     }),
     defineField({
+      name: 'features',
+      title: 'Features',
+      type: 'array',
+      of: [{
+        title: 'Feature',
+        type: 'reference',
+        to: [{ type: 'type_projectFeature'}],
+      }],
+      group: 'info',
+    }),
+    defineField({
       name: 'agencyBrand',
       title: 'Agency Brand',
       type: 'reference',

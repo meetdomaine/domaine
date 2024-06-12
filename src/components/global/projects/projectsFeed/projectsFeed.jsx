@@ -25,6 +25,12 @@ export default function ProjectsFeed(props) {
                     }
                     return false
                 }
+                if (category == "feature") {
+                    if (project.features) {
+                        return project.features.some((feature) => feature.slug.current == value)
+                    }
+                    return false
+                }
             })
             setFilteredProjects(updatedProjects)
         } else {
@@ -42,6 +48,7 @@ export default function ProjectsFeed(props) {
                 industries={props.industries}
                 services={props.services}
                 partners={props.partners}
+                features={props.features}
             />
             <div class={styles.projectsGrid}>
                 <For each={filteredProjects()}>{(project, i) => 
