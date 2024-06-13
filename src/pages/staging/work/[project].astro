@@ -25,6 +25,8 @@ console.log(content)
 ---
 <LayoutDomaine
     title={content.title}
+    backgroundColor={content.backgroundColor && content.backgroundColor.hex}
+    foregroundColor={content.foregroundColor}
 >
     <WorkPostHero
         heading={content.title}

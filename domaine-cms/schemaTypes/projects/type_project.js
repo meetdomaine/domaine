@@ -66,6 +66,30 @@ export default defineType({
       description: 'Project page main description.'
     }),
     defineField({
+      name: 'backgroundColor',
+      title: 'Background Color',
+      type: 'color',
+      group: 'info',
+      description: 'Project page background color.',
+      options: {
+        disableAlpha: true
+      },
+    }),
+    defineField({
+      name: 'foregroundColor',
+      title: 'Foreground Color',
+      type: 'string',
+      group: 'info',
+      description: 'Project page foreground color.',
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+      },
+      initialValue: "dark",
+    }),
+    defineField({
       name: 'url',
       title: 'URL',
       type: 'url',
@@ -74,12 +98,6 @@ export default defineType({
         scheme: ['http', 'https']
       })
     }),
-    // defineField({
-    //   name: 'projectCardMedia',
-    //   title: 'Project Card',
-    //   type: 'snippet_video',
-    //   group: 'media',
-    // }),
     defineField({
       name: 'thumbnailIsVideo',
       title: 'Thumbnail Image/Video',

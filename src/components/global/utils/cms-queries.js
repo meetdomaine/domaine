@@ -33,6 +33,8 @@ export const projectPostQuery = (brand) => {
     title,
     slug,
     description,
+    backgroundColor,
+    foregroundColor,
     url,
     heroImage{${imageFields}},
     heroVideo,

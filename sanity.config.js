@@ -4,6 +4,8 @@ import {presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
+import {colorInput} from '@sanity/color-input'
+
 // import React from 'react'
 
 
@@ -24,9 +26,10 @@ export default defineConfig({
     media(),
     muxInput(),
     vercelDeployTool(),
-    // presentationTool({
-    //   previewUrl: 'http://localhost:4321/staging/'
-    // }),
+    colorInput(),
+    presentationTool({
+      previewUrl: 'http://localhost:4321/staging/'
+    }),
   ],
   schema: {
     types: schemaTypes,

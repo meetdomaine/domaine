@@ -26,8 +26,6 @@
     --color-background-secondary: var(--color-subdued);
     --color-border: var(--color-border-reverse);
     --gradient-primary: var(--gradient-ink);
-    --color-link: var(--color-reverse);
-    --color-link-secondary: var(--color-light);
 
   }
   
@@ -45,6 +43,4 @@
     --color-background-secondary: var(--color-light);
     --color-border: var(--color-border-ink);
     --gradient-primary: var(--gradient-reverse);
-    --color-link: var(--color-ink);
-    --color-link-secondary: var(--color-subdued);
   }
