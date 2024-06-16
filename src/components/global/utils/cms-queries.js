@@ -24,7 +24,9 @@ export const projectsGridQuery = (brand) => {
     features[]->{ title, slug }, 
     services[]->{ serviceGroup->{title, slug} }, 
     thumbnailImage{${imageFields}},
+    thumbnailVideo{asset-> {playbackId,assetId,filename,}},
     orderRank,
+    thumbnailIsVideo,
   } | order(orderRank)`
 }
 
@@ -37,7 +39,8 @@ export const projectPostQuery = (brand) => {
     foregroundColor,
     url,
     heroImage{${imageFields}},
-    heroVideo,
+    heroVideo{asset-> {playbackId,assetId,filename,}},
+    heroIsVideo,
     client->{...}, 
     services[]->{..., serviceGroup->{..., serviceType->{...} } }, 
     features[]->{...},

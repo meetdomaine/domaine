@@ -9,10 +9,10 @@ export const [ currentFilterValue, setCurrentFilterValue ] = createSignal(null)
 export default function ProjectsFilter(props) {
 
     const handleFilter = (category, value) => {
-        if (!isServer) {
             if (currentFilterType() == category && currentFilterValue() == value) {
                 setCurrentFilterType(null)
                 setCurrentFilterValue(null)
+                window.history.pushState(null, '', window.location.pathname);
             } else {
                 setCurrentFilterType(category)
                 setCurrentFilterValue(value)
@@ -21,8 +21,6 @@ export default function ProjectsFilter(props) {
                 const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
                 window.history.pushState(null, '', newUrl);
             }
-            
-        }
     }
 
     const getInitialFilter = () => {

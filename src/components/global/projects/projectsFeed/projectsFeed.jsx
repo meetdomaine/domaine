@@ -56,6 +56,8 @@ export default function ProjectsFeed(props) {
                         title={project.title}
                         excerpt={project.excerpt}
                         image={project.thumbnailImage.image}
+                        video={project.thumbnailVideo}
+                        thumbnailIsVideo={project.thumbnailIsVideo}
                         url={`${props.root}/${project.slug.current}`}
                     />
                 }</For>

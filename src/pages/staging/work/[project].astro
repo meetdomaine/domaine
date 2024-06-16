@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-console.log(content)
+// console.log(content)
 ---
 <LayoutDomaine
     title={content.title}
@@ -42,6 +42,7 @@ console.log(content)
         awards={content.awards}
         heroImage={content.heroImage.image}
         heroVideo={content.heroVideo}
+        heroIsVideo={content.heroIsVideo}
         metafields={content.metafields}
     />
 </LayoutDomaine>

@@ -2,14 +2,26 @@
 import AtomSanityImage from "../../../global/atoms/atom_sanityImage.astro"
 import { paths } from "../../../global/utils/paths"
 
-const { heading, description, root, url, client, services, heroImage, heroVideo, industry, partners, features, metrics, awards, metafields } = Astro.props
+const { heading, description, root, url, client, services, heroIsVideo, heroImage, heroVideo, industry, partners, features, metrics, awards, metafields } = Astro.props
 // console.log(features)
 ---
 <section class="work-post_hero">
     <a href={`${root}?industry=${industry.slug.current}`}>{industry.title}</a>
     <h1>{heading}</h1>
 
-    {heroImage && 
+    {heroIsVideo ? 
+
+        <mux-player
+            class="video"
+            playback-id={heroVideo.asset.playbackId}
+            metadata-video-title="Test VOD"
+            metadata-viewer-user-id="user-id-007"
+            autoplay
+            loop
+            muted
+            style={{ aspectRatio: 2/1 }}
+        ></mux-player>
+    :
         <AtomSanityImage
             image={heroImage}
             sizes="100vw"
@@ -17,6 +29,7 @@ const { heading, description, root, url, client, services, heroImage, heroVideo,
             eager={true}
         />
     }
+    
 
     <h5>{description}</h5>
     {url && <a href={url} target="_blank">View Live Site</a>}
@@ -86,5 +99,12 @@ const { heading, description, root, url, client, services, heroImage, heroVideo,
 <style>
     .work-post_hero {
         padding-inline: var(--page-margin);
+    }
+
+    .video {
+        --media-object-fit: cover;
+        --media-object-position: center;
+        aspect-ratio: 2 / 1;
+        --controls: none;
     }
 </style>

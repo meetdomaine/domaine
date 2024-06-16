@@ -1,5 +1,4 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
 import { urlFor } from '../components/global/utils/cms-queries';
 import PageLoadAnimation from '../animation/PageLoadAnimation.astro';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
@@ -82,8 +81,6 @@ const currentPath = Astro.url.pathname;
 			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 			})(window,document,'script','dataLayer','GTM-T5Q9G6VH');
 		</script> -->
-
-		<ViewTransitions />
 	</head>
 	<body>
 
@@ -107,6 +104,10 @@ const currentPath = Astro.url.pathname;
 </script>
 
 <style is:global>
+	@view-transition {
+		navigation: auto;
+	}
+
     body {
         min-height: 100dvh;
         display: flex;

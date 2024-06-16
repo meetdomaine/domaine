@@ -2,6 +2,14 @@
     
 }
 
+mux-player {
+    --media-object-fit: cover;
+    --media-object-position: center;
+    aspect-ratio: 3 / 4;
+    --controls: none;
+  }
+
 .image {
     width: 100%;
+    aspect-ratio: 3 / 4;
 }

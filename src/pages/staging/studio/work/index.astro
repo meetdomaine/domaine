@@ -64,8 +64,8 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" 
     />
 </LayoutStudio>
 
-
-
-    
-    
-    
+<script>
+    document.addEventListener("astro:after-swap", () => {
+        console.log('after swap')
+    })
+</script>
