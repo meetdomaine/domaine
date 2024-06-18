@@ -13,6 +13,7 @@ import '../styles/global/typography.css'
 import '../styles/global/color.css'
 import Lenis from '../animation/Lenis.astro';
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
+import PageTransition from '../components/global/global_PageTransition.astro';
 
 interface Props {
 	title: string;
@@ -90,7 +91,8 @@ const currentPath = Astro.url.pathname;
 		<!-- End Google Tag Manager (noscript) -->
 
 		<slot />
-        <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+        <!-- <VisualEditing enabled={visualEditingEnabled} zIndex={1000} /> -->
+		 <PageTransition />
 		<PageLoadAnimation />
 		<ViewportAnimation />
 		<Lenis />
@@ -118,4 +120,8 @@ const currentPath = Astro.url.pathname;
     main {
         flex-grow: 1;
     }
+
+	.hidden {
+		opacity: 0;
+	}
 </style>

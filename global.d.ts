@@ -54,4 +54,5 @@ declare interface Project {
     features?: Array<ProjectFeature>, 
     services?: any, 
     thumbnailImage: SanityImage,
+    thumbnailVideo: any,
 }
