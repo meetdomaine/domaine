@@ -11,28 +11,54 @@
 }
 
 @font-face {
-    font-display: fallback;
     font-family: 'Suisse Intl';
     src: url('/SuisseIntl-Italic.otf') format('otf'),
             url('/SuisseIntl-Italic.woff2') format('woff2'),
             url('/SuisseIntl-Italic.woff') format('woff');
     font-weight: 400;
     font-style: italic;
+    font-display: fallback;
 }
 
 @font-face {
     font-display: fallback;
+    font-family: 'Suisse Intl';
+    src: url('/SuisseIntl-SemiBold.otf') format('otf'),
+            url('/SuisseIntl-SemiBold.woff2') format('woff2'),
+            url('/SuisseIntl-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: fallback;
+    font-family: 'Suisse Intl';
+    src: url('/SuisseIntl-SemiBoldItalic.otf') format('otf'),
+            url('/SuisseIntl-SemiBoldItalic.woff2') format('woff2'),
+            url('/SuisseIntl-SemiBoldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
     font-family: 'Suisse Intl Mono';
     src: url('/SuisseIntlMono.otf') format('otf'),
             url('/SuisseIntlMono.woff2') format('woff2'),
             url('/SuisseIntlMono.woff') format('woff');
-    font-weight: 600;
-    font-style: italic;
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
 }
   
 :root {
     --viewport-desktop: 1440;
     --font-family-code: 'Suisse Intl Mono', monospace;
+
+    --form-label-min-size: 10;
+    --form-label-base-size: 12;
+
+    --form-input-min-size: 14;
+    --form-input-base-size: 16;
 }
   
 html {
@@ -51,6 +77,8 @@ p,
 a,
 legend,
 input,
+select,
+textarea,
 label,
 .caption,
 .utility {
@@ -72,4 +100,8 @@ em {
 
 code {
     font-family: var(--font-family-code);
+}
+
+p {
+    margin-block: 0 0.75em;
 }

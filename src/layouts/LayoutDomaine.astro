@@ -1,7 +1,8 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutGlobal from './LayoutGlobal.astro';
-import Header from '../components/domaine/sections/Header.astro';
+// import Header from '../components/domaine/sections/Header.astro';
+import Header from '../components//global/global_Header.astro';
 import Footer from '../components/domaine/sections/Footer.astro';
 
 interface Props {
@@ -32,20 +33,22 @@ import '../styles/domaine/typography.css'
 import '../styles/domaine/color.css'
 
 // Brand
-const brandData = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Domaine"]`)
-const brandSettings = brandData[0]
+const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
+const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Domaine"][0]`)
 
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${seoSettings.metafields.title}`}
     description={ description ? description : seoSettings.description }
     theme="light"
-    favicon={brandSettings.favicon}
+    favicon={currentBrand.favicon}
     image={image ? image : seoSettings.metafields.image}
     backgroundColor={backgroundColor}
     foregroundColor={foregroundColor}
 >
     <Header
+        brands={brands}
+        currentBrand={currentBrand}
         navigationLinks={headerSettings.navigationLinks}
     />
     <main>

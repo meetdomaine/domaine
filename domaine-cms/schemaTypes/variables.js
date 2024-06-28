@@ -26,6 +26,7 @@ import {
     RobotIcon,
     SparkleIcon,
     StarIcon,
+    EnvelopeIcon,
 } from '@sanity/icons'
 
 // Domaine
@@ -143,3 +144,5 @@ export const iconStat = ChartUpwardIcon
 export const iconLink = LinkIcon
 
 export const iconAward = SparkleIcon
+
+export const iconForm = EnvelopeIcon

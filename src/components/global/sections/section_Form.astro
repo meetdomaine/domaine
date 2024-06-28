@@ -1,17 +1,17 @@
 ---
-const { content, heading, text, hubspotFormId } = Astro.props;
+const { section } = Astro.props;
 ---
-<section class="section_form" id="form-section">
+<section class="section_form">
   <div class="section_form-inner">
-    <div class="section-title" data-animate-viewport="true" data-animate-style="fade-up">
-      <h2 class="h2">{heading ? heading : content.heading}</h2>
-      <p class="h6">{text ? text : content.subheading ? content.subheading : null}</p>
+    <div class="section-title">
+      <h2 class="h2">{section.heading}</h2>
+      <p class="h6">{section.subheading}</p>
     </div>
+    
     <div 
       id="form" 
-      data-hubspot-form-id={hubspotFormId ? hubspotFormId : content.hubspotFormId}
+      data-hubspot-form-id={section.hubspotFormId}
     ></div>
-  </div>
 </section>
 
 <script>
@@ -30,14 +30,17 @@ const { content, heading, text, hubspotFormId } = Astro.props;
           region: "na1",
           target: "#form",
           portalId: "41750854",
-          formId: form.dataset.hubspotFormId,
+          formId: "6bb0a8f8-9497-40be-96c1-c1232f9eecba",
       });
     }
   }
 
-  document.addEventListener("astro:page-load", () => {
-    initForm()
-  })
-
+  initForm()
 
 </script>
+
+<style>
+    .section_form {
+        padding-inline: var(--page-margin);
+    }
+</style>

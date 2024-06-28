@@ -1,25 +1,39 @@
 import {defineField, defineType} from 'sanity'
-import { iconIndustries } from '../variables'
+import { iconForm, iconIndustries } from '../variables'
 
 export default defineType({
   name: 'section_form',
   title: 'Form',
   type: 'document',
+  icon: iconForm,
   fields: [
     defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+        name: 'subheading',
+        title: 'Heading',
+        type: 'string',
+    }),
+    defineField({
+        name: 'hubspotFormId',
+        title: 'Hubspot Form ID',
+        type: 'string',
+        validation: Rule => Rule.required(),
     }),
   ],
   preview: {
     select: {
-      title: 'title', 
+      title: 'heading', 
     },
     prepare(selection) {
       return {
         ...selection,
-        media: iconIndustries
+        subtitle: 'Form',
+        media: iconForm
       }
     }
   },

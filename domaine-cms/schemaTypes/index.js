@@ -33,11 +33,19 @@ import settings_footerStudio from "./siteSettings/settings_footer-studio";
 import settings_SEO from "./siteSettings/settings_SEO";
 import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_linkList from "./snippets/snippet_link-list";
-import type_agencyBrand from "./siteSettings/type_agencyBrand";
+import type_agencyBrand from "./siteSettings/type_agencyBrand.jsx";
 import type_teamDepartment from "./team/type_teamDepartment";
 import snippet_image from "./snippets/snippet_image";
 import snippet_video from "./snippets/snippet_video";
 import type_projectFeature from "./projects/type_projectFeature";
+import section_globalSections from "./sections/section_globalSections";
+import section_form from "./sections/section_form";
+import section_projectsFeed from "./sections/section_projectsFeed";
+import section_blogFeed from "./sections/section_blogFeed";
+import section_textMedia from "./sections/section_textMedia";
+import section_videoPlayer from "./sections/section_videoPlayer";
+import section_servicesFeed from "./sections/section_servicesFeed";
+import section_contentBlocks from "./sections/section_contentBlocks";
 
 
 export const schemaTypes = [
@@ -84,4 +92,13 @@ export const schemaTypes = [
     snippet_linkList,
     snippet_image,
     snippet_video,
+
+    section_globalSections,
+    section_form,
+    section_projectsFeed,
+    section_blogFeed,
+    section_textMedia,
+    section_videoPlayer,
+    section_servicesFeed,
+    section_contentBlocks,
 ]

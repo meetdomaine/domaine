@@ -10,9 +10,11 @@
     --space-2xl: max(40px, calc((60 / var(--viewport-desktop)) * 100vw));
     --space-3xl: max(60px, calc((80 / var(--viewport-desktop)) * 100vw));
     --space-4xl: max(80px, calc((120 / var(--viewport-desktop)) * 100vw));
-  
-    --radius-sm: 6px;
-    --radius-lg: 14px;
+
+    --radius-none: 0px;
+    --radius-sm: 2px;
+    --radius-md: 6px;
+    --radius-lg: 12px;
     --radius-rounded: 100vw;
   
     --page-margin: clamp(20px, 2vw, 60px);

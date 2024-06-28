@@ -1,4 +1,6 @@
 import {defineField, defineType} from 'sanity'
+import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
+
 import { media } from 'sanity-plugin-media'
 
 export default defineType({
@@ -18,12 +20,29 @@ export default defineType({
       description: 'Resolution: 64x64px.',
       validation: Rule => Rule.required(),
     }),
+    defineField({
+      name: 'logo',
+      title: 'Logo',
+      type: 'inlineSvg',
+    }),
+    defineField({
+      name: 'url',
+      title: 'Root URL',
+      type: 'url',
+      validation: Rule => Rule.uri({
+        allowRelative: true
+      })
+    }),
   ],
-
   preview: {
     select: {
       title: 'name',
-      media: 'favicon'
+      icon: 'logo',
+    },
+  },
+  components: {
+    preview: ({ icon, title }) => {
+      return <InlineSvgPreviewItem icon={icon} title={title} subtitle={'test'} />
     },
   },
 })

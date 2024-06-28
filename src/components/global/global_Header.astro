@@ -1,0 +1,102 @@
+---
+import { Icon } from "astro-icon/components";
+
+const { navigationLinks, brands, currentBrand } = Astro.props;
+// console.log(navigationLinks)
+
+// brands.forEach(brand => {
+//     var el = document.createElement( 'html' );
+//     el.innerHTML = brand.logo
+
+//     console.log(el)
+// });
+
+---
+<header>
+    <!-- <h4><a href="/staging">Domaine</a></h4> -->
+    
+
+    <div class="brand-container" style={`--brand-count: ${brands.length}; --current-index: ${2}`}>
+        <div class="brands">
+            {brands.map((brand) => {
+                // console.log(typeof brand.logo)
+                return (
+                    <a href={brand.url} class="brand-link">
+                        <Fragment set:html={brand.logo} />
+                    </a>
+                )
+            })}
+        </div>
+    </div>
+
+    <div class="navigation-links">
+        {navigationLinks.links.map((link) => (
+            <a href={link.linkUrl}>{link.linkText} </a>
+        ))}
+    </div>
+</header>
+
+<style>
+    header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-xs);
+        position: relative;
+        height: var(--header-height);
+    }
+
+    .navigation-links {
+        position: absolute;
+        top: 50%;
+        right: var(--page-margin);
+        translate: 0 -50%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+
+    .brand-container {
+        position: absolute;
+        top: 50%;
+        left: var(--page-margin);
+        translate: 0 -50%;
+        --logo-width: 100px;
+        background-color: var(--color-background-secondary);
+        width: var(--logo-width);
+        transition: width var(--anim-sm);
+        overflow: hidden;
+        border-radius: var(--radius-md);
+    }
+
+    .brand-container:hover {
+        width: calc(var(--logo-width) * var(--brand-count));
+    }
+
+    .brand-container:hover .brands {
+        translate: 0 0;
+    }
+
+    .brands {
+        display: flex;
+        flex-direction: row;
+        translate: calc(-1 * var(--logo-width) * (var(--current-index) - 1) ) 0;
+        transition: translate var(--anim-md);
+    }
+
+    .brand-link {
+        /* width: var(--logo-width); */
+        padding: var(--space-sm);
+        /* display: inline-flex; */
+        /* vertical-align: middle; */
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 var(--logo-width);
+    }
+
+</style>

@@ -11,13 +11,9 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      name: 'globalSections',
+      title: 'Global Sections',
+      type: 'section_globalSections',
     }),
   ],
 

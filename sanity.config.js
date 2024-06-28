@@ -5,6 +5,8 @@ import {structureTool} from 'sanity/structure'
 import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
 import {colorInput} from '@sanity/color-input'
+import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input'
+
 
 // import React from 'react'
 
@@ -27,6 +29,7 @@ export default defineConfig({
     muxInput(),
     vercelDeployTool(),
     colorInput(),
+    inlineSvgInput(),
     presentationTool({
       previewUrl: 'http://localhost:4321/staging/'
     }),

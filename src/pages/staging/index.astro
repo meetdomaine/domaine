@@ -1,13 +1,23 @@
 ---
+import { sanityClient } from "sanity:client";
 import HomeHero from "../../components/domaine/sections/home/home_Hero.astro";
+import GlobalSections from "../../components/global/sections/section_GlobalSections.astro";
 import LayoutDomaine from "../../layouts/LayoutDomaine.astro";
 
+const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]`)
+
+// const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
+console.log(pageSettings)
 ---
 <LayoutDomaine
     theme="dark"
     title="Home"
 >
-    <HomeHero
+    <!-- <HomeHero
         heading="Home"
-    >
+    /> -->
+
+    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
+        <GlobalSections section={section} />
+    ))}
 </LayoutDomaine>
