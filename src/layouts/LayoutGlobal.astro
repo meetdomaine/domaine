@@ -16,6 +16,7 @@ import '../styles/global/forms.css'
 import Lenis from '../animation/Lenis.astro';
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import PageTransition from '../components/global/global_PageTransition.astro';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -49,6 +50,10 @@ const currentPath = Astro.url.pathname;
 		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
 		<link rel="preconnect" href="https://snap.licdn.com">
 		<link rel="preconnect" href="https://www.google-analytics.com"> -->
+
+		<!-- View Transition blocker -->
+		<!-- <link rel="expect" blocking="render" href="#header"> -->
+		 <ViewTransitions />
 
 		<!-- HTML Meta Tags -->
 		<meta charset="UTF-8" />
@@ -105,12 +110,41 @@ const currentPath = Astro.url.pathname;
 <script>
 	import '@mux/mux-player';
 	import "@mux/mux-player/themes/minimal";
+
+	// window.addEventListener("pageswap", async (e) => {
+	// 	if (e.viewTransition) {
+
+	// 		console.log("swap start")
+	// 		await e.viewTransition.ready;
+	// 		console.log("swap ready")
+
+	// 		await e.viewTransition.finished;
+	// 		console.log("swap finished")
+	// 	} else {
+	// 		console.log('no view transition')
+	// 	}
+	// });
+
+	// // After Swap
+	// window.addEventListener("pagereveal", async (e) => {
+
+	// 	if (e.viewTransition) {
+
+	// 		console.log("reveal start")
+	// 		await e.viewTransition.ready;
+	// 		console.log("reveal ready")
+	// 		await e.viewTransition.finished;
+	// 		console.log('reveal finished')
+	// 	} else {
+	// 		console.log('no view transition')
+	// 	}
+	// });
 </script>
 
 <style is:global>
-	@view-transition {
+	/* @view-transition {
 		navigation: auto;
-	}
+	} */
 
     body {
         min-height: 100dvh;

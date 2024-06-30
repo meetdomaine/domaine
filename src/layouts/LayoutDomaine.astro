@@ -51,6 +51,7 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
         currentBrand={currentBrand}
         navigationLinks={headerSettings.navigationLinks}
     />
+    
     <main>
         <slot />
     </main>

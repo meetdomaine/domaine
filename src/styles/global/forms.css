@@ -23,13 +23,7 @@ fieldset {
 
 label,
 .hs-field-desc {
-    --min-size: var(--form-label-min-size);
-    --base-size: var(--form-label-base-size);
-    letter-spacing: -0.01em;
-    line-height: 0.99;
-    font-weight: 400;
     display: block;
-    /* line-height: 0; */
     margin: 0;
     padding: 0;
 }

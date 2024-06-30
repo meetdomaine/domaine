@@ -2,101 +2,311 @@
 import { Icon } from "astro-icon/components";
 
 const { navigationLinks, brands, currentBrand } = Astro.props;
-// console.log(navigationLinks)
+const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
 
-// brands.forEach(brand => {
-//     var el = document.createElement( 'html' );
-//     el.innerHTML = brand.logo
-
-//     console.log(el)
-// });
-
+const BrandLogo = brands[0].logo
 ---
-<header>
-    <!-- <h4><a href="/staging">Domaine</a></h4> -->
-    
+<header id="header">
 
-    <div class="brand-container" style={`--brand-count: ${brands.length}; --current-index: ${2}`}>
-        <div class="brands">
-            {brands.map((brand) => {
-                // console.log(typeof brand.logo)
-                return (
-                    <a href={brand.url} class="brand-link">
+    <div 
+        class="brand-menu" 
+        transition:name="brand-menu"
+        style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}
+    >
+        <div class="brands-wrapper">
+            <div class="brands">
+                {brands.map((brand, i) => (
+                    <a href={brand.url} class="brand-link" data-index={i}>
                         <Fragment set:html={brand.logo} />
                     </a>
-                )
-            })}
+                ))}
+            </div>
+        </div>
+        <span>II</span>
+        <BrandLogo />
+    </div>
+
+    <div class="navigation">
+        <nav class="navigation-links">
+            {navigationLinks.links.map((link, i) => (
+                <a 
+                    href={link.linkUrl} 
+                    class="navigation-link caption"
+                >
+                    {link.linkText} 
+                </a>
+            ))}
+        </nav>
+        <div class="search">
+            <input 
+                type="search" 
+                id="site-search" 
+                name="search"
+                placeholder=""
+                class="search-field caption"
+            />
+            <label for="site-search"><em>Search</em> projects, insights, and more...</label>
+            <span class="icon-wrapper">
+                <Icon class="icon search-icon" name="pixel_search" />
+                <button id="clear-button">
+                    <Icon class="icon x-icon" name="pixel_x" />
+                </button>
+            </span>
         </div>
     </div>
 
-    <div class="navigation-links">
-        {navigationLinks.links.map((link) => (
-            <a href={link.linkUrl}>{link.linkText} </a>
-        ))}
+    <div class="utility-links">
+        <a href="#">Get in Touch</a>
     </div>
 </header>
+
+<script>
+
+    let brandMenu: HTMLElement
+    let brandLinks: NodeListOf<HTMLAnchorElement>
+
+    const searchField: HTMLInputElement = document.querySelector('.search-field');
+    const clearButton = document.querySelector('.x-icon');
+
+    document.addEventListener("astro:page-load", () => {
+
+        brandMenu = document.querySelector('.brand-menu');
+        brandLinks = document.querySelectorAll('.navigation-link')
+
+        if (brandMenu) brandMenu.classList.remove("active")
+
+        // console.log(brandLinks)
+
+        brandLinks.forEach((link) => {
+            // console.log(link)
+            link.addEventListener("click", () => console.log("test"))
+        })
+
+        brandMenu.addEventListener("mouseenter", () => {
+            if (brandMenu) brandMenu.classList.add("active")
+        })
+
+        brandMenu.addEventListener("mouseleave", () => {
+            if (brandMenu) brandMenu.classList.remove("active")
+        })
+    })
+
+    document.addEventListener("astro:before-preparation", (e) => {
+        if (brandMenu) {
+            brandMenu.classList.remove("active")
+            brandMenu.blur()
+            document.activeElement.blur()
+            brandMenu.style.setProperty("--current-index", e.sourceElement.dataset.index)
+        }
+    })
+
+    clearButton.addEventListener("click", () => {
+        if (searchField) searchField.value = ""
+    })
+</script>
 
 <style>
     header {
         display: flex;
         flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        align-items: flex-start;
+        justify-content: center;
         padding-inline: var(--page-margin);
-        padding-block: var(--space-xs);
+        /* padding-block: var(--space-xs); */
         position: relative;
         height: var(--header-height);
+        /* view-transition-name: header; */
     }
 
-    .navigation-links {
-        position: absolute;
-        top: 50%;
-        right: var(--page-margin);
-        translate: 0 -50%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: var(--space-xs);
-    }
-
-    .brand-container {
+    .brand-menu {
+        --icon-width: 80px;
+        --icon-height: 30px;
+        background-color: var(--color-background-secondary);
         position: absolute;
         top: 50%;
         left: var(--page-margin);
         translate: 0 -50%;
-        --logo-width: 100px;
-        background-color: var(--color-background-secondary);
-        width: var(--logo-width);
-        transition: width var(--anim-sm);
-        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: var(--space-2xs);
+        gap: var(--space-2xs);
         border-radius: var(--radius-md);
+        /* overflow: clip; */
     }
 
-    .brand-container:hover {
-        width: calc(var(--logo-width) * var(--brand-count));
+    .brands-wrapper {
+        position: relative;
+        overflow: clip;
+        width: var(--icon-width);
+        transition: width var(--anim-sm);
     }
 
-    .brand-container:hover .brands {
-        translate: 0 0;
+    .brand-menu.active .brands-wrapper,
+    .brands-wrapper:focus-within {
+        width: calc(var(--icon-width) * var(--brand-count));
     }
 
     .brands {
         display: flex;
         flex-direction: row;
-        translate: calc(-1 * var(--logo-width) * (var(--current-index) - 1) ) 0;
-        transition: translate var(--anim-md);
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        width: max-content;
+        translate: calc(-1 * var(--icon-width) * (var(--current-index) ) ) 0;
+        transition: translate var(--anim-sm);
+    }
+
+    .brand-menu.active .brands,
+    .brand-menu:focus-within .brands {
+        translate: 0 0;
+    }
+
+    .brands::before {
+        content: "";
+        background-color: var(--color-background);
+        width: var(--icon-width);
+        height: 100%;
+        position: absolute;
+        left: calc(var(--icon-width) * (var(--current-index)));
+        top: 0;
+        border-radius: var(--radius-md);
     }
 
     .brand-link {
-        /* width: var(--logo-width); */
-        padding: var(--space-sm);
-        /* display: inline-flex; */
-        /* vertical-align: middle; */
+        position: relative;
+        flex: 0 0 auto;
+        width: var(--icon-width);
+        padding: var(--space-xs);
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        flex: 0 0 var(--logo-width);
+        border: 2px solid transparent;
+    }
+
+    .brand-link:focus-visible {
+        outline: none;
+        border-radius: var(--radius-md);
+        border-color: var(--color-focus);
+    }
+
+    .brand-link > * {
+        rotate: 20deg;
+    }
+
+    .navigation {
+        background-color: var(--color-foreground);
+        color: var(--color-background);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navigation-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-xs) var(--space-sm);
+        border: 1px solid var(--color-border-ink);
+        min-width: 300px;
+    }
+
+    .navigation-link {
+        /* padding: var(--space-xs) var(--space-sm); */
+        text-decoration: none;
+    }
+
+    .search {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        align-items: center;
+        padding-inline: var(--space-sm);
+    }
+
+    input[type="search"].search-field {
+        flex: 1 0 auto;
+        border: none;
+        color: var(--color-background);
+    }
+
+    .search label {
+        position: absolute;
+        top: 50%;
+        left: var(--space-sm);
+        translate: 0 -50%;
+        color: var(--color-background);
+        transition: opacity var(--anim-sm), translate var(--anim-sm);
+        opacity: 0;
+    }
+
+    input[type="search"].search-field:placeholder-shown + label {
+        opacity: 1;
+    }
+
+
+    input[type="search"].search-field:focus + label {
+        opacity: 0;
+        translate: 0 -100%;
+    }
+
+
+    input[type="search"].search-field::-webkit-search-cancel-button {
+        appearance: none;
+    }
+
+    .icon-wrapper {
+        width: var(--icon-md);
+        height: var(--icon-md);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    input[type="search"].search-field:placeholder-shown ~ * ~ .icon-wrapper .search-icon,
+    input[type="search"].search-field:placeholder-shown ~ * ~ .icon-wrapper #clear-button {
+        translate: 0 0%;
+    }
+
+    .search-icon {
+        width: 100%;
+        flex: 0 0 auto;
+        translate: 0 -100%;
+    }
+
+
+    #clear-button {
+        margin: 0;
+        padding: 0;
+        min-width: unset;
+        background-color: transparent;
+        color: inherit;
+    }
+
+    .icon {
+        width: 100%;
+    }
+
+
+    .search-icon {
+
+}
+
+    .x-icon {
+
+    }
+
+    .utility-links {
+        position: absolute;
+        top: 50%;
+        right: var(--page-margin);
+        translate: 0 -50%;
     }
 
 </style>

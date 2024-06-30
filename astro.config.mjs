@@ -28,6 +28,9 @@ export default defineConfig({
     }), 
   ],
   prefetch: true,
+  experimental: {
+    clientPrerender: true,
+  },
   output: 'hybrid',
   adapter: vercel({
     edgeMiddleware: false
