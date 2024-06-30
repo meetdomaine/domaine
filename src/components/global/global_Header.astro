@@ -1,8 +1,24 @@
 ---
 import { Icon } from "astro-icon/components";
 
-const { navigationLinks, brands, currentBrand } = Astro.props;
-const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
+const { navigationLinks, currentBrand } = Astro.props;
+
+const brands = [
+    {
+        path: "/",
+        logo: "domaine-icon"
+    },
+    {
+        path: "/accelerate",
+        logo: "domaine-accelerate"
+    },
+    // {
+    //     path: "/accelerate",
+    //     logo: "domaine-accelerate"
+    // }
+]
+
+const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
 
 ---
 <header id="header">
@@ -15,13 +31,16 @@ const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
         <div class="brands-wrapper">
             <div class="brands">
                 {brands.map((brand, i) => (
-                    <a href={brand.url} class="brand-link" data-index={i}>
-                        <Fragment set:html={brand.logo} />
+                    <a href={brand.path} class="brand-link" data-index={i}>
+                        <Icon class="logo" name={brand.logo} />
                     </a>
                 ))}
             </div>
         </div>
-        <span>II</span>
+        <div class="icon-expand">
+            <span class="expand-line"></span>
+            <span class="expand-line"></span>
+        </div>
     </div>
 
     <div class="navigation">
@@ -93,8 +112,8 @@ const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
         if (brandMenu) {
             brandMenu.classList.remove("active")
             brandMenu.blur()
-            document.activeElement.blur()
-            brandMenu.style.setProperty("--current-index", e.sourceElement.dataset.index)
+            if (document.activeElement instanceof HTMLElement && document.activeElement) document.activeElement.blur()
+            if (e.sourceElement instanceof HTMLElement && e.sourceElement.dataset && e.sourceElement.dataset.index) brandMenu.style.setProperty("--current-index", e.sourceElement.dataset.index)
         }
     })
 
@@ -115,6 +134,8 @@ const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
         height: var(--header-height);
         /* view-transition-name: header; */
     }
+
+    /* --- Brand Menu --- */
 
     .brand-menu {
         --icon-width: 80px;
@@ -190,9 +211,27 @@ const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
         border-color: var(--color-focus);
     }
 
-    .brand-link > * {
-        rotate: 20deg;
+    .logo {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
     }
+
+    .icon-expand {
+        display: flex;
+        flex-direction: row;
+        gap: 2px;
+    }
+
+    .expand-line {
+        width: 1px;
+        height: 14px;
+        background-color: var(--color-foreground-secondary);
+        opacity: 0.2;
+    }
+
+
+    /* --- Navigation Menu --- */
 
     .navigation {
         background-color: var(--color-foreground);

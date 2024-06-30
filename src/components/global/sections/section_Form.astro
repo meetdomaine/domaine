@@ -35,7 +35,8 @@ const { section } = Astro.props;
     }
   }
 
-  initForm()
+  document.addEventListener("astro:page-load", () => initForm())
+  // initForm()
 
 </script>
 
