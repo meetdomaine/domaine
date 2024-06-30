@@ -1,10 +1,10 @@
 ---
 import { sanityClient } from 'sanity:client';
-import { paths } from '../../../../components/global/utils/paths';
-import LayoutStudio from '../../../../layouts/LayoutStudio.astro';
-import ProjectsFeed from '../../../../components/global/projects/projectsFeed/projectsFeed.jsx'
-import Hero from '../../../../components/studio/sections/work/workIndex_Hero.astro';
-import { projectsGridQuery } from '../../../../components/global/utils/cms-queries';
+import { paths } from '../../../components/global/utils/paths';
+import LayoutStudio from '../../../layouts/LayoutStudio.astro';
+import ProjectsFeed from '../../../components/global/projects/projectsFeed/projectsFeed.jsx'
+import Hero from '../../../components/studio/sections/work/workIndex_Hero.astro';
+import { projectsGridQuery } from '../../../components/global/utils/cms-queries';
 
 const sortAlphabetically = (array, label) => {
     array.sort((a: any, b: any) => {

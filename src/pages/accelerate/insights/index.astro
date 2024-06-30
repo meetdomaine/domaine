@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
-import { paths } from '../../../../components/global/utils/paths';
-import LayoutStudio from '../../../../layouts/LayoutStudio.astro';
+import { paths } from '../../../components/global/utils/paths';
+import LayoutStudio from '../../../layouts/LayoutStudio.astro';
 
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" ]{..., category->{...}} | order( postDate desc)`)
 const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
