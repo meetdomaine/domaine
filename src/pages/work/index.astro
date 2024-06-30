@@ -1,32 +1,106 @@
 ---
-import Layout from '../../layouts/Layout.astro'
-import WorkHero from '../../components/sections/work/workIndex/WorkIndex_Hero.astro'
-import WorkGrid from '../../components/sections/work/workIndex/WorkIndex_Grid.astro'
-import { getProjects, getWorkPageContent, urlFor } from '../../utils/sanityClient'
-import type { SanityAsset } from '@sanity/image-url/lib/types/types'
+import { sanityClient } from 'sanity:client';
+import { paths } from '../../../components/global/utils/paths';
+import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
+import Hero from '../../../components/domaine/sections/work/workIndex_Hero.astro'
+import { projectsGridQuery } from '../../../components/global/utils/cms-queries';
+import ProjectsFeed from '../../../components/global/projects/projectsFeed/projectsFeed.jsx';
+import { encode } from "blurhash";
+import { urlFor } from '../../../utils/sanityClient';
 
-interface workPageContent {
-  heading: string,
-  metaTitle?: string,
-  metaDescription?: string,
-  metaImage?: SanityAsset
+
+
+const sortAlphabetically = (array, label) => {
+    array.sort((a: any, b: any) => {
+        return a[label].localeCompare(b[label]);
+    });
 }
 
-const content: workPageContent = await getWorkPageContent()
-const projects = await getProjects()
+const getUniqueItems = (array: Array<any>, label: string) => {
+    return Array.from(new Set(array.map(item => item[label])))
+        .map(value => {
+            return array.find(item => item[label] === value);
+        });
+}
+
+const projects: Array<Project> = await sanityClient.fetch(projectsGridQuery("Domaine"))
+const allFeatures: Array<ProjectFeature> = projects.flatMap(project => project.features).filter(feature => feature !== null)
+const allIndustries: Array<Industry> = projects.map(project => project.industry).filter(industry => industry !== null)
+const allPartners: Array<Partner> = projects.flatMap(project => project.partners).filter(partner => partner !== null)
+const allServices: Array<Service> = projects.flatMap(project => {
+    if (project.services) {
+        return project.services.map((service) => {
+            return service.serviceGroup
+        })
+    }
+    return null
+}).filter(service => service !== null)
+
+const features = getUniqueItems(allFeatures, 'title')
+const industries = getUniqueItems(allIndustries, 'title')
+const services = getUniqueItems(allServices, 'title')
+const partners = getUniqueItems(allPartners, 'title')
+
+sortAlphabetically(features, 'title')
+sortAlphabetically(industries, 'title')
+sortAlphabetically(services, 'title')
+sortAlphabetically(partners, 'title')
+
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
+
+
+
+// const loadImage = async src =>
+//   new Promise((resolve, reject) => {
+//     const img = new Image();
+//     img.onload = () => resolve(img);
+//     img.onerror = (...args) => reject(args);
+//     img.src = src;
+//   });
+
+// const getImageData = image => {
+//   const canvas = document.createElement("canvas");
+//   canvas.width = image.width;
+//   canvas.height = image.height;
+//   const context = canvas.getContext("2d");
+//   context.drawImage(image, 0, 0);
+//   return context.getImageData(0, 0, image.width, image.height);
+// };
+
+// const encodeImageToBlurhash = async imageUrl => {
+//   const image = await loadImage(imageUrl);
+//   const imageData = getImageData(image);
+//   return encode(imageData.data, imageData.width, imageData.height, 4, 4);
+// };
+
+// projects.forEach((project) => {
+//     if (project.thumbnailImage && project.thumbnailImage.image) {
+//         const imageUrl = urlFor(project.thumbnailImage.image).url()
+//         console.log(imageUrl)
+//         // const encoded = encodeImageToBlurhash(imageUrl)
+//         // console.log(encoded)
+//     }
+// })
+
+// const blurhash = projects[0].thumbnailImage.image.asset.metadata.blurHash
+// console.log(blurhash)
 
 ---
-<Layout 
-  title={content.metaTitle ? content.metaTitle : "Work"}
-  description={content.metaDescription && content.metaDescription}
-  image={content.metaImage && urlFor(content.metaImage).url()}
-  theme="light"
+<LayoutDomaine
+    title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
+    description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
 >
-	<main>
-    <WorkHero heading={content.heading} />
-    <WorkGrid projects={projects} />
-	</main>
-</Layout>
-
-<style>
-</style>
+    <Hero
+        heading={pageSettings.heading}
+        subheading={pageSettings.subheading}
+    />
+    <ProjectsFeed 
+        projects={projects}
+        industries={industries}
+        services={services}
+        partners={partners}
+        features={features}
+        root={paths.root.projects.path}
+        client:load
+    />
+</LayoutDomaine>

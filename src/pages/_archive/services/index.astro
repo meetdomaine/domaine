@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getServices, urlFor } from '../../utils/sanityClient';
+import SectionBlock from '../../components/sections/SectionBlock.astro';
+import ServicesHero from '../../components/sections/services/ServicesHero.astro';
+
+import { getServicesPageContent } from '../../utils/sanityClient';
+
+const data = await getServicesPageContent()
+const services = await getServices()
+// console.log(data)
+---
+
+<Layout
+    theme="light"
+    title={data.metaTitle ? data.metaTitle : data.title} 
+    description={data.metaDescription}
+    image={data.metaImage && urlFor(data.metaImage).url()}
+>
+
+  <ServicesHero 
+    title={data.title}
+    heading={data.heading}
+    subheading={data.subheading}
+    services={services}
+  />
+
+  {data.content.map((contentBlock) => (
+    <SectionBlock block={contentBlock} />
+  ))}
+
+</Layout>
+
+<script>
+    
+</script>
+
+<style>
+</style>

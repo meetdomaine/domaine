@@ -1,39 +1,34 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Hero from "../../components/sections/partners/partnersIndex/PartnersIndex_Hero.astro";
-import Tier from "../../components/sections/partners/partnersIndex/PartnersIndex_Tier.astro";
+import { sanityClient } from 'sanity:client';
+import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
+import { paths } from '../../../components/global/utils/paths';
 
-import { getPartnersPageContent, getPartnersByTier } from "../../utils/sanityClient";
-import SectionBlock from "../../components/sections/SectionBlock.astro";
-import { urlFor } from "../../utils/sanityClient";
-
-const content = await getPartnersPageContent()
-const partners = await getPartnersByTier()
-// console.log(partners)
-// console.log(content.contentBlocks)
+const partners = await sanityClient.fetch(`*[_type == "type_partner"] { ..., tier->{...} }`)
+const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]`)
 ---
-<Layout
-  theme="dark"
-  title={content.metaTitle ? content.metaTitle : "Partners"}
-  description={content.metaDescription && content.metaDescription}
-  image={content.metaImage && urlFor(content.metaImage).url()}
+<LayoutDomaine
+    title="Partners"
 >
-  <Hero
-    heading={content.heading}
-    description={content.description}
-    image={content.image}
-    eager={true}
-  />
+    <h1>Partners</h1>
+    {partnerTiers.map((tier) => (
+        <div>
+            <h3>{tier.title}</h3>
+            {partners.map((partner) => {
+                if (partner.tier && partner.tier.slug.current == tier.slug.current) {
+                    return (
+                        <div>
+                            {tier.createLandingPages ? 
+                                <a href={`${paths.root.partners.path}/${partner.slug.current}`}>
+                                    <h6>{partner.title}</h6>
+                                </a>
+                            : (
+                                <h6>{partner.title}</h6>
+                            )}
+                        </div>
+                    )
+                }
+            })}
+        </div>
+    ))}
 
-  {partners.map((tierGroup) => (
-    <Tier
-      tier={tierGroup.tier}
-      partners={tierGroup.partners}
-    />
-  ))}
-
-  {content.contentBlocks && content.contentBlocks.map((block) => (
-    <SectionBlock block={block} />
-  ))}
-  
-</Layout>
+</LayoutDomaine>

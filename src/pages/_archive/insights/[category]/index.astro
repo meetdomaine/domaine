@@ -1,0 +1,95 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BlogIndexHero from '../../../components/sections/blog/blogIndex/BlogIndex_Hero.astro';
+import BlogIndexFeed from '../../../components/sections/blog/blogIndex/BlogIndex_Feed.astro';
+import { getBlogCategories, getBlogPageContent, getBlogPosts } from '../../../utils/sanityClient';
+import SidebarLinks from '../../../components/atoms/SidebarLinks.astro';
+
+interface Props {
+	data: any;
+  posts: any;
+  categories: any,
+  category: any
+}
+
+// export const prerender = true;
+
+
+export async function getStaticPaths() {
+
+  const data = await getBlogPageContent();
+  const categories = await getBlogCategories();
+
+  return categories.map((category) => {
+    return {
+      params: { category: category.slug.current },
+      props: { data: data, categories: categories, category }
+    }
+  })
+}
+
+// const { slug } = Astro.params;
+
+// const { category } = Astro.params;
+const { data, categories, category } = Astro.props;
+
+const posts = await getBlogPosts();
+---
+
+<Layout 
+    title="Insights"
+    theme="light"
+>
+    <BlogIndexHero
+        heading={data.heading}
+        subheading={data.subheading}
+        post={data.featuredPost}
+    />
+
+    <div class="blog-index-main">
+
+        <SidebarLinks
+            links={categories}
+            activeLink={category}
+            slugRoot="/insights"
+            rootLabel="All Insights"
+        />
+
+        <BlogIndexFeed
+            content={posts.filter(post => post.category.slug.current == category.slug.current && data.featuredPost.slug.current != post.slug.current)}
+        />
+
+    </div>
+
+</Layout>
+
+<script>
+  // document.addEventListener("astro:after-swap", (e) => { 
+  //     console.log(e)
+  //     const scrollPosition = Number(localStorage.getItem('scrollPosition'));
+  //     if (scrollPosition) window.scrollTo(0, scrollPosition);
+  // });
+
+  // document.addEventListener("astro:before-preparation", () => {
+  //     localStorage.setItem('scrollPosition', window.scrollY.toString());
+  // });
+</script>
+
+<style>
+  .blog-index-main {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      align-items: flex-start;
+      padding: var(--space-2xl) var(--page-margin);
+      gap: var(--space-3xl);
+  }
+
+  @media screen and (max-width: 960px) {
+
+      .blog-index-main {
+          flex-direction: column;
+          gap: var(--space-lg);
+      }
+  }
+</style>

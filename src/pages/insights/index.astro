@@ -1,75 +1,23 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import BlogIndexHero from '../../components/sections/blog/blogIndex/BlogIndex_Hero.astro';
-import BlogIndexFeed from '../../components/sections/blog/blogIndex/BlogIndex_Feed.astro';
-import { getBlogCategories, getBlogPageContent, getBlogPosts, urlFor } from '../../utils/sanityClient';
-import Work from '../../components/sections/global/Work.astro';
-import SidebarLinks from '../../components/atoms/SidebarLinks.astro';
+import { sanityClient } from 'sanity:client';
+import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
+import { paths } from '../../../components/global/utils/paths';
 
-const data = await getBlogPageContent();
-const posts = await getBlogPosts();
-const categories = await getBlogCategories();
-// console.log(data.metaDescription)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., category->{...}} | order( postDate desc)`)
+const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
+// console.log(blogPosts)
 ---
-
-<Layout 
-    title={data.metaTitle ? data.metaTitle : "Insights"}
-    description={data.metaDescription && data.metaDescription}
-    image={data.metaImage && urlFor(data.metaImage).url()}
-    theme="light"
+<LayoutDomaine
+    title="Work"
 >
-    <BlogIndexHero
-        heading={data.heading}
-        subheading={data.subheading}
-        post={data.featuredPost}
-    />
+    <h1>Domaine Blog</h1>
+    <h3>Posts</h3>
+    {blogPosts.map((project) => (
+        <a href={`${paths.root.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>
+    ))}
+    <h3>Categories</h3>
+    {blogCategories.map((category) => (
+        <a href={`${paths.root.blog.path}/${category.slug.current}`}><h5>{category.title}</h5></a>
+    ))}
 
-    <div class="blog-index-main">
-
-        <SidebarLinks
-            links={categories}
-            slugRoot="/insights"
-            rootLabel="All Insights"
-        />
-
-        <BlogIndexFeed
-            content={posts.filter(post => data.featuredPost.slug.current != post.slug.current)}
-        />
-
-    </div>
-
-    <Work />
-
-</Layout>
-
-<!-- <script>
-    
-    document.addEventListener("astro:page-load", () => {
-        const searchParams = new URLSearchParams(window.location.search);
-
-        if (searchParams.has('category')) {
-            console.log(searchParams.get('category'))
-        }
-    })
-    
-    
-</script> -->
-
-<style>
-    .blog-index-main {
-        display: flex;
-        flex-direction: row;
-        justify-content: stretch;
-        align-items: flex-start;
-        padding: var(--space-2xl) var(--page-margin);
-        gap: var(--space-3xl);
-    }
-
-    @media screen and (max-width: 960px) {
-
-        .blog-index-main {
-            flex-direction: column;
-            gap: var(--space-lg);
-        }
-    }
-</style>
+</LayoutDomaine>

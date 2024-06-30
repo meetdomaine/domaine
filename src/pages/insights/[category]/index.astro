@@ -1,95 +1,36 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import BlogIndexHero from '../../../components/sections/blog/blogIndex/BlogIndex_Hero.astro';
-import BlogIndexFeed from '../../../components/sections/blog/blogIndex/BlogIndex_Feed.astro';
-import { getBlogCategories, getBlogPageContent, getBlogPosts } from '../../../utils/sanityClient';
-import SidebarLinks from '../../../components/atoms/SidebarLinks.astro';
-
-interface Props {
-	data: any;
-  posts: any;
-  categories: any,
-  category: any
-}
-
-// export const prerender = true;
-
+import { sanityClient } from 'sanity:client';
+import LayoutDomaine from '../../../../layouts/LayoutDomaine.astro';
+import { paths } from '../../../../components/global/utils/paths';
 
 export async function getStaticPaths() {
-
-  const data = await getBlogPageContent();
-  const categories = await getBlogCategories();
-
-  return categories.map((category) => {
-    return {
-      params: { category: category.slug.current },
-      props: { data: data, categories: categories, category }
-    }
-  })
+    const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
+    return categories.map((category) => {
+        console.log(category)
+        return {
+            params: { category: category.slug.current },
+            props: { content: category }
+        }
+    })
 }
 
-// const { slug } = Astro.params;
+interface Props {
+    content: any
+}
 
-// const { category } = Astro.params;
-const { data, categories, category } = Astro.props;
+const { content } = Astro.props;
 
-const posts = await getBlogPosts();
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] { ..., category->{...}} | order( postDate desc)`)
+// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., category->{...}} | order( postDate desc)`)
+console.log(blogPosts)
 ---
-
-<Layout 
-    title="Insights"
-    theme="light"
+<LayoutDomaine
+    title="Work"
 >
-    <BlogIndexHero
-        heading={data.heading}
-        subheading={data.subheading}
-        post={data.featuredPost}
-    />
+    <h1>{content.title}</h1>
+    <h3>Posts</h3>
+    {blogPosts.map((project) => (
+        <a href={`${paths.root.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>
+    ))}
 
-    <div class="blog-index-main">
-
-        <SidebarLinks
-            links={categories}
-            activeLink={category}
-            slugRoot="/insights"
-            rootLabel="All Insights"
-        />
-
-        <BlogIndexFeed
-            content={posts.filter(post => post.category.slug.current == category.slug.current && data.featuredPost.slug.current != post.slug.current)}
-        />
-
-    </div>
-
-</Layout>
-
-<script>
-  // document.addEventListener("astro:after-swap", (e) => { 
-  //     console.log(e)
-  //     const scrollPosition = Number(localStorage.getItem('scrollPosition'));
-  //     if (scrollPosition) window.scrollTo(0, scrollPosition);
-  // });
-
-  // document.addEventListener("astro:before-preparation", () => {
-  //     localStorage.setItem('scrollPosition', window.scrollY.toString());
-  // });
-</script>
-
-<style>
-  .blog-index-main {
-      display: flex;
-      flex-direction: row;
-      justify-content: stretch;
-      align-items: flex-start;
-      padding: var(--space-2xl) var(--page-margin);
-      gap: var(--space-3xl);
-  }
-
-  @media screen and (max-width: 960px) {
-
-      .blog-index-main {
-          flex-direction: column;
-          gap: var(--space-lg);
-      }
-  }
-</style>
+</LayoutDomaine>

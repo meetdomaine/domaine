@@ -4,7 +4,6 @@ import { Icon } from "astro-icon/components";
 const { navigationLinks, brands, currentBrand } = Astro.props;
 const brandIndex = brands.findIndex(brand => brand.url == currentBrand.url )
 
-const BrandLogo = brands[0].logo
 ---
 <header id="header">
 
@@ -23,7 +22,6 @@ const BrandLogo = brands[0].logo
             </div>
         </div>
         <span>II</span>
-        <BrandLogo />
     </div>
 
     <div class="navigation">
