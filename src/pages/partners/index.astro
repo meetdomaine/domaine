@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
-import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
-import { paths } from '../../../components/global/utils/paths';
+import LayoutDomaine from '../../layouts/LayoutDomaine.astro';
+import { paths } from '../../components/global/utils/paths';
 
 const partners = await sanityClient.fetch(`*[_type == "type_partner"] { ..., tier->{...} }`)
 const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]`)
