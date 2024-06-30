@@ -12,10 +12,6 @@ const brands = [
         path: "/accelerate",
         logo: "domaine-accelerate"
     },
-    // {
-    //     path: "/accelerate",
-    //     logo: "domaine-accelerate"
-    // }
 ]
 
 const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
@@ -23,11 +19,7 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
 ---
 <header id="header">
 
-    <div 
-        class="brand-menu" 
-        transition:name="brand-menu"
-        style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}
-    >
+    <div class="brand-menu" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
         <div class="brands-wrapper">
             <div class="brands">
                 {brands.map((brand, i) => (
@@ -46,13 +38,11 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     <div class="navigation">
         <nav class="navigation-links">
             {navigationLinks.links.map((link, i) => (
-                <a 
-                    href={link.linkUrl} 
-                    class="navigation-link caption"
-                >
-                    {link.linkText} 
-                </a>
+                <a href={link.linkUrl} class="navigation-link caption">{link.linkText}</a>
             ))}
+            <button class="notification-button">
+                <Icon name="pixel_bell" class="notification-icon" />
+            </button>
         </nav>
         <div class="search">
             <input 
@@ -64,9 +54,9 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
             />
             <label for="site-search"><em>Search</em> projects, insights, and more...</label>
             <span class="icon-wrapper">
-                <Icon class="icon search-icon" name="pixel_search" />
-                <button id="clear-button">
-                    <Icon class="icon x-icon" name="pixel_x" />
+                <Icon class="search-icon" name="pixel_search" />
+                <button id="clear-button" class="search-icon">
+                    <Icon class="x-icon" name="pixel_x" />
                 </button>
             </span>
         </div>
@@ -129,8 +119,9 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         align-items: flex-start;
         justify-content: center;
         padding-inline: var(--page-margin);
-        /* padding-block: var(--space-xs); */
-        position: relative;
+        padding-block: var(--page-margin) 0;
+        position: sticky;
+        top: 0;
         height: var(--header-height);
         /* view-transition-name: header; */
     }
@@ -234,11 +225,12 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     /* --- Navigation Menu --- */
 
     .navigation {
-        background-color: var(--color-foreground);
-        color: var(--color-background);
+        background-color: var(--color-light);
+        color: var(--color-ink);
         display: flex;
         flex-direction: column;
         align-items: stretch;
+        border-radius: var(--radius-md);
     }
 
     .navigation-links {
@@ -246,9 +238,9 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: var(--space-sm);
-        padding: var(--space-xs) var(--space-sm);
-        border: 1px solid var(--color-border-ink);
+        gap: var(--space-md);
+        padding: var(--space-xs) var(--space-md);
+        border-bottom: 1px solid var(--color-border-ink);
         min-width: 300px;
     }
 
@@ -257,29 +249,59 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         text-decoration: none;
     }
 
+    .navigation-links .notification-button {
+        position: relative;
+        padding: 0;
+        min-width: unset;
+        background-color: transparent;
+        color: inherit;
+    }
+
+    .navigation-links .notification-button::after {
+        content: "";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 4px;
+        height: 4px;
+        background-color: var(--color-brand);
+        border-radius: var(--radius-rounded);
+    }
+
+    .notification-icon {
+        width: var(--icon-sm);
+        height: var(--icon-sm);
+    }
+
     .search {
         position: relative;
         display: flex;
         flex-direction: row;
         justify-content: stretch;
         align-items: center;
-        padding-inline: var(--space-sm);
+        padding-inline: var(--space-md);
     }
 
     input[type="search"].search-field {
         flex: 1 0 auto;
         border: none;
-        color: var(--color-background);
+        color: var(--color-ink);
+        padding-left: 0;
     }
 
     .search label {
         position: absolute;
         top: 50%;
-        left: var(--space-sm);
+        left: var(--space-md);
         translate: 0 -50%;
-        color: var(--color-background);
+        color: var(--color-subdued);
         transition: opacity var(--anim-sm), translate var(--anim-sm);
         opacity: 0;
+    }
+
+    .search label em {
+        color: var(--color-ink);
+        font-style: normal;
     }
 
     input[type="search"].search-field:placeholder-shown + label {
@@ -298,23 +320,24 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     }
 
     .icon-wrapper {
-        width: var(--icon-md);
-        height: var(--icon-md);
+        width: var(--icon-sm);
+        height: var(--icon-sm);
         overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
     }
 
-    input[type="search"].search-field:placeholder-shown ~ * ~ .icon-wrapper .search-icon,
-    input[type="search"].search-field:placeholder-shown ~ * ~ .icon-wrapper #clear-button {
+    input[type="search"].search-field:placeholder-shown ~ * ~ .icon-wrapper .search-icon {
         translate: 0 0%;
     }
 
     .search-icon {
-        width: 100%;
+        width: var(--icon-sm);
+        height: var(--icon-sm);
         flex: 0 0 auto;
         translate: 0 -100%;
+        background-color: transparent;
     }
 
 
@@ -326,17 +349,11 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         color: inherit;
     }
 
-    .icon {
-        width: 100%;
-    }
-
-
-    .search-icon {
-
-}
-
     .x-icon {
-
+        /* width: 100%; */
+        width: var(--icon-sm);
+        height: var(--icon-sm);
+        max-width: 100%;
     }
 
     .utility-links {
