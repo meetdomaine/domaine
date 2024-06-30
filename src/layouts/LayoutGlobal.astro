@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../components/global/utils/cms-queries';
-import PageLoadAnimation from '../animation/PageLoadAnimation.astro';
-import ViewportAnimation from '../animation/ViewportAnimation.astro';
+import PageLoadAnimation from '../components/global/animation/PageLoadAnimation.astro';
+import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
 import {VisualEditing} from '@sanity/astro/visual-editing'
 
 
@@ -13,7 +13,7 @@ import '../styles/global/typography.css'
 import '../styles/global/color.css'
 import '../styles/global/buttons.css'
 import '../styles/global/forms.css'
-import Lenis from '../animation/Lenis.astro';
+import Lenis from '../components/global/animation/Lenis.astro';
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import PageTransition from '../components/global/global_PageTransition.astro';
 import { ViewTransitions } from 'astro:transitions';
