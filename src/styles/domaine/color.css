@@ -1,23 +1,9 @@
 :root {
     /* Primitives */
-    --color-ink: #1C1C1C;
-    --color-subdued: #3A3A3A;
-    --color-neutral: #B8B8B8;
-    --color-light: #f7f7f7;
-    --color-reverse: #ffffff;
     --color-brand: #0070FF;
     --color-brand-contrast: var(--color-reverse);
     --color-brand-secondary: #b6510e;
     --color-brand-secondary-contrast: var(--color-ink);
-    --color-success: rgb(0, 255, 123);
-    --color-error: red;
-    --color-focus: rgb(60, 0, 255);
-    --color-border-ink: rgba(0, 0, 0, 0.2);
-    --color-border-reverse: rgba(255, 255, 255, 0.2);
-
-    /* Gradients */
-    --gradient-ink: linear-gradient(135deg, #2D2D2D 0%, #3A3A3A 100%);
-    --gradient-reverse: linear-gradient(135deg, #eaeaea 0%, #bfbfbf 100%);
   
     /* Tokens */
     --color-foreground: var(--color-reverse);
