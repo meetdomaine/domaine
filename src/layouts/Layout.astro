@@ -34,6 +34,14 @@ const currentPath = Astro.url.pathname;
 <html lang="en" data-theme={theme}>
 	<head>
 
+		<!-- OneTrust Cookies Consent Notice start for meetdomaine.com -->
+		<script type="text/javascript" src="https://cdn.cookielaw.org/consent/019030f7-3b43-74f3-9b13-715f0763dcb2-test/OtAutoBlock.js" ></script>
+		<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="019030f7-3b43-74f3-9b13-715f0763dcb2-test" ></script>
+		<script type="text/javascript">
+		function OptanonWrapper() { }
+		</script>
+		<!-- OneTrust Cookies Consent Notice end for meetdomaine.com -->
+
 		<link rel="preconnect" href="https://www.googletagmanager.com">
 		<link rel="preconnect" href="https://snap.licdn.com">
 		<link rel="preconnect" href="https://www.google-analytics.com">
@@ -65,6 +73,7 @@ const currentPath = Astro.url.pathname;
 		<meta name="twitter:description" content={description ? description : data[0].siteDescription}>
 		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
+		
 		<!-- Google Tag Manager -->
 		<script is:inline>
 			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
