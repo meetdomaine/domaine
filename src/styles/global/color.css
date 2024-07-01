@@ -1,7 +1,0 @@
-html[data-foreground="light"] {
-    color: var(--color-background);
-}
-
-a {
-    color: inherit;
-}
