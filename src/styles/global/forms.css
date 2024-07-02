@@ -74,17 +74,24 @@ select {
     cursor: pointer;
 }
 
-input:not(input[type="file"]):not(input[type="submit"]),
+input,
 select,
 textarea {
     border: 1px solid var(--form-accent-color);
     padding: var(--form-padding-block) var(--form-padding-inline);
-}
-
-input:not(input[type="file"]):not(input[type="submit"]):not(input[type="radio"]),
-select {
     border-radius: var(--form-border-radius);
 }
+
+input[type="file"],
+input[type="submit"] {
+    border: none;
+    padding: var(--form-padding-block) var(--form-padding-inline);
+}
+
+
+/* input[type="radio"] {
+
+} */
 
 input[type="radio"],
 input[type="checkbox"] {

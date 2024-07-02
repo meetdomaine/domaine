@@ -99,41 +99,33 @@ export default function SearchMenu() {
 
             <div class={styles.results}>
 
-                <Show when={projectResults()}>
-                    <div class={styles.projectResults}>
-                        <h2>Projects</h2>
-                        <For each={projectResults()}>{result => 
-                            <a href={result.url}>{result.meta.title}</a>
-                        }</For>
-                    </div>
-                </Show>
+                <div class={styles.resultsColumn}>
+                    <p>Projects</p>
+                    <For each={projectResults()}>{result => 
+                        <a href={result.url} class="h6">{result.meta.title}</a>
+                    }</For>
+                </div>
 
-                <Show when={blogResults()}>
-                    <div class={styles.blogResults}>
-                        <h2>Insights</h2>
-                        <For each={blogResults()}>{result => 
-                            <a href={result.url}>{result.meta.title}</a>
-                        }</For>
-                    </div>
-                </Show>
+                <div class={styles.resultsColumn}>
+                    <p>Insights</p>
+                    <For each={blogResults()}>{result => 
+                        <a href={result.url} class="h6">{result.meta.title}</a>
+                    }</For>
+                </div>
 
-                <Show when={serviceResults()}>
-                    <div class={styles.serviceResults}>
-                        <h2>Services</h2>
-                        <For each={serviceResults()}>{result => 
-                            <a href={result.url}>{result.meta.title}</a>
-                        }</For>
-                    </div>
-                </Show>
+                <div class={styles.resultsColumn}>
+                    <p>Services</p>
+                    <For each={serviceResults()}>{result => 
+                        <a href={result.url} class="h6">{result.meta.title}</a>
+                    }</For>
+                </div>
 
-                <Show when={partnerResults()}>
-                    <div class={styles.partnerResults}>
-                        <h2>Partners</h2>
-                        <For each={partnerResults()}>{result => 
-                            <a href={result.url}>{result.meta.title}</a>
-                        }</For>
-                    </div>
-                </Show>
+                <div class={styles.resultsColumn}>
+                    <p>Partners</p>
+                    <For each={partnerResults()}>{result => 
+                        <a href={result.url} class="h6">{result.meta.title}</a>
+                    }</For>
+                </div>
 
             </div>
         </div>
