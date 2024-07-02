@@ -1,6 +1,8 @@
-.input {
+input[type="search"].input {
     /* rotate: 3deg; */
     color: var(--color-foreground);
+    padding-inline: 0;
+    border-color: var(--color-foreground);
 }
 
 .results {

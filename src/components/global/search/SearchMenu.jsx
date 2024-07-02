@@ -74,7 +74,9 @@ export default function SearchMenu() {
 
         if (window.pagefind) {
             setPageFind(window.pagefind)
-            pageFind().init()
+            pageFind().init({
+                "baseUrl": "../"
+            })
         }
         if (query()) { 
             handleSearch(query()) 
@@ -110,7 +112,7 @@ export default function SearchMenu() {
                     <div class={styles.blogResults}>
                         <h2>Insights</h2>
                         <For each={blogResults()}>{result => 
-                            <p>{result.meta.title}</p>
+                            <a href={result.url}>{result.meta.title}</a>
                         }</For>
                     </div>
                 </Show>
@@ -119,7 +121,7 @@ export default function SearchMenu() {
                     <div class={styles.serviceResults}>
                         <h2>Services</h2>
                         <For each={serviceResults()}>{result => 
-                            <p>{result.meta.title}</p>
+                            <a href={result.url}>{result.meta.title}</a>
                         }</For>
                     </div>
                 </Show>
@@ -128,7 +130,7 @@ export default function SearchMenu() {
                     <div class={styles.partnerResults}>
                         <h2>Partners</h2>
                         <For each={partnerResults()}>{result => 
-                            <p>{result.meta.title}</p>
+                            <a href={result.url}>{result.meta.title}</a>
                         }</For>
                     </div>
                 </Show>
