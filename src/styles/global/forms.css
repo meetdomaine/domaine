@@ -38,6 +38,11 @@ label,
     gap: var(--space-2xs);
 }
 
+.hs-datepicker button {
+    padding: initial;
+    min-width: initial;
+}
+
 .input {
     margin: 0 !important;
     padding: 0;

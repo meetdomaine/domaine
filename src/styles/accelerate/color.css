@@ -1,35 +1,9 @@
 :root {
-    /* Primitives */
-    --color-brand: #0070FF;
-    --color-brand-contrast: var(--color-reverse);
-    --color-brand-secondary: #b6510e;
-    --color-brand-secondary-contrast: var(--color-ink);
-    
-    /* Tokens */
-    --color-foreground: var(--color-reverse);
-    --color-foreground-secondary: var(--color-light);
-    --color-background: var(--color-ink);
-    --color-background-secondary: var(--color-subdued);
-    --color-border: var(--color-border-reverse);
-    --gradient-primary: var(--gradient-ink);
-    --color-link: var(--color-reverse);
-    --color-link-secondary: var(--color-light);
-  }
-  
-  html,
-  html[data-theme="light"] .color-invert {
-    background: var(--color-background);
-    color: var(--color-foreground);
-  }
-  
-  html[data-theme="light"],
-  html .color-invert {
-    --color-foreground: var(--color-ink);
-    --color-foreground-secondary: var(--color-subdued);
-    --color-background: var(--color-reverse);
-    --color-background-secondary: var(--color-light);
-    --color-border: var(--color-border-ink);
-    --gradient-primary: var(--gradient-reverse);
-    --color-link: var(--color-ink);
-    --color-link-secondary: var(--color-subdued);
-  }
+  /* Primitives */
+  --color-brand: var(--color-blue);
+  --color-brand-contrast: var(--color-reverse);
+  --color-brand-secondary: var(--color-orange);
+  --color-brand-secondary-contrast: var(--color-reverse);
+
+  --gradient-primary: var(--gradient-ink);
+}

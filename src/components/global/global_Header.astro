@@ -40,89 +40,77 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
                 <a href={link.linkUrl} class="navigation-link caption">{link.linkText}</a>
             ))}
             <button class="notification-button">
-                <Icon name="pixel_bell" class="notification-icon" />
+                <Icon name="pixel_bell" class="icon" />
             </button>
         </nav>
-        <div class="search">
-            <input 
-                type="search" 
-                id="site-search" 
-                name="search"
-                placeholder=""
-                class="search-field caption"
-            />
-            <label for="site-search"><em>Search</em> projects, insights, and more...</label>
-            <span class="icon-wrapper">
-                <Icon class="search-icon" name="pixel_search" />
-                <button id="clear-button" class="search-icon">
-                    <Icon class="x-icon" name="pixel_x" />
-                </button>
-            </span>
-        </div>
+
+        <button class="search-button caption" popoverTarget="search-menu">
+            <span>Search <em>projects, insights, and more...</em></span>
+            <Icon class="icon" name="pixel_search" />
+        </button>
+
     </div>
 
     <div class="utility-links">
-        <a href="#" class="caption">Get in Touch</a>
+        <a href="#" class="utility-link utility">
+            <span>Get in Touch</span>
+            <Icon class="icon" name="pixel_email" />
+        </a>
     </div>
+
+    <dialog popover id="search-menu" class="search-menu color-invert">
+        <button class="close-button" popoverTarget="search-menu">
+            <Icon class="icon close-icon" name="pixel_x" />
+        </button>
+        <input type="search" class="search-field h1" />
+    </dialog>
 </header>
 
 <script>
 
-    let brandMenu: HTMLElement
-    let brandLinks: NodeListOf<HTMLAnchorElement>
-
-    const searchField: HTMLInputElement = document.querySelector('.search-field');
-    const clearButton = document.querySelector('.x-icon');
-
     document.addEventListener("astro:page-load", () => {
 
-        brandMenu = document.querySelector('.brand-menu');
-        brandLinks = document.querySelectorAll('.navigation-link')
+        const brandMenu: HTMLElement = document.querySelector('.brand-menu');
 
-        if (brandMenu) brandMenu.classList.remove("active")
-
-        // console.log(brandLinks)
-
-        brandLinks.forEach((link) => {
-            // console.log(link)
-            link.addEventListener("click", () => console.log("test"))
-        })
-
-        brandMenu.addEventListener("mouseenter", () => {
-            if (brandMenu) brandMenu.classList.add("active")
-        })
-
-        brandMenu.addEventListener("mouseleave", () => {
-            if (brandMenu) brandMenu.classList.remove("active")
-        })
-    })
-
-    document.addEventListener("astro:before-preparation", (e) => {
         if (brandMenu) {
             brandMenu.classList.remove("active")
-            brandMenu.blur()
-            if (document.activeElement instanceof HTMLElement && document.activeElement) document.activeElement.blur()
-            if (e.sourceElement instanceof HTMLElement && e.sourceElement.dataset && e.sourceElement.dataset.index) brandMenu.style.setProperty("--current-index", e.sourceElement.dataset.index)
+            brandMenu.addEventListener("mouseenter", () => brandMenu.classList.add("active"))
+            brandMenu.addEventListener("mouseleave", () => brandMenu.classList.remove("active"))
         }
-    })
 
-    clearButton.addEventListener("click", () => {
-        if (searchField) searchField.value = ""
+        const handleBrandNavigate = (element, index) => {
+            brandMenu.style.setProperty("--current-index", index)
+            element.blur()
+        }
+
+        document.addEventListener("astro:before-preparation", (e) => {
+            if (brandMenu) {
+                brandMenu.classList.remove("active")
+                if (e.sourceElement instanceof HTMLElement && e.sourceElement.dataset && e.sourceElement.dataset.index) {
+                    handleBrandNavigate(e.sourceElement, e.sourceElement.dataset.index)
+                }
+            }
+        })
     })
 </script>
 
 <style>
     header {
+        --padding-top: var(--space-sm);
         display: flex;
         flex-direction: row;
         align-items: flex-start;
         justify-content: center;
         padding-inline: var(--page-margin);
-        padding-block: var(--page-margin) 0;
+        padding-block: var(--padding-top) 0;
         position: sticky;
         top: 0;
         height: var(--header-height);
-        /* view-transition-name: header; */
+    }
+
+    .icon {
+        width: var(--icon-sm);
+        height: var(--icon-sm);
     }
 
     /* --- Brand Menu --- */
@@ -132,16 +120,14 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         --icon-height: 30px;
         background-color: var(--color-background-secondary);
         position: absolute;
-        top: 50%;
+        top: var(--padding-top);
         left: var(--page-margin);
-        translate: 0 -50%;
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 2px var(--space-2xs) 2px 2px;
         gap: var(--space-2xs);
         border-radius: var(--radius-md);
-        /* overflow: clip; */
     }
 
     .brands-wrapper {
@@ -216,7 +202,7 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     .expand-line {
         width: 1px;
         height: 14px;
-        background-color: var(--color-foreground-secondary);
+        background-color: var(--color-foreground);
         opacity: 0.2;
     }
 
@@ -224,12 +210,13 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     /* --- Navigation Menu --- */
 
     .navigation {
-        background-color: var(--color-light);
-        color: var(--color-ink);
+        background-color: var(--color-background-secondary);
+        color: var(--color-foreground);
         display: flex;
         flex-direction: column;
         align-items: stretch;
         border-radius: var(--radius-md);
+        /* overflow: clip; */
     }
 
     .navigation-links {
@@ -239,12 +226,12 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         align-items: center;
         gap: var(--space-sm);
         padding: var(--space-xs) var(--space-md);
-        border-bottom: 1px solid var(--color-border-ink);
+        border-bottom: 1px solid var(--color-border);
         min-width: 300px;
     }
 
     .navigation-link {
-        padding: 0 var(--space-2xs);
+        /* padding: 0 var(--space-2xs); */
         text-decoration: none;
     }
 
@@ -254,11 +241,6 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         min-width: unset;
         background-color: transparent;
         color: inherit;
-        padding-inline: var(--space-2xs);
-    }
-
-    .navigation-links .notification-button:focus-visible {
-        outline: 2px solid var(--color-focus);
     }
 
     .navigation-links .notification-button::after {
@@ -272,110 +254,138 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         border-radius: var(--radius-rounded);
     }
 
-    .notification-icon {
-        width: var(--icon-sm);
-        height: var(--icon-sm);
-    }
+    /* --- Search --- */
 
-    .search {
+    .search-button {
+        --hover-delay: .2s;
         position: relative;
         display: flex;
         flex-direction: row;
-        justify-content: stretch;
+        justify-content: space-between;
         align-items: center;
-        /* padding-inline: var(--space-md); */
+        padding-inline: var(--space-md);
+        color: var(--color-foreground);
+        background-color: transparent;
+        overflow: clip;
+        transition: color var(--anim-sm);
+        transition-delay: 0s;
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .search-button * {
+        z-index: 2;
+    }
+
+    .search-button:hover {
+        color: var(--color-brand-contrast);
+        transition-delay: var(--hover-delay);
+    }
+
+    .search-button::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 0%;
+        background-color: var(--color-brand);
+        transition: height var(--anim-sm);
+        transition-delay: 0s;
+        z-index: 1;
+    }
+
+    .search-button:hover::after {
+        height: 100%;
+        transition-delay: var(--hover-delay);
+    }
+
+    .search-button em {
+        color: var(--color-foreground-secondary);
+        translate: 0 0%;
+        opacity: 1;
+        font-style: normal;
+        transition: all var(--anim-sm);
+        transition-delay: 0s;
+        display: inline-block;
+    }
+
+    .search-button:hover em {
+        opacity: 0;
+        transition-delay: var(--hover-delay);
+    }
+
+    /* --- Search Dialog --- */
+
+    .search-menu {
+        margin: var(--space-md);
+        width: calc(100% - var(--space-md) * 2);
+        height: calc(100% - var(--space-md) * 2);
+        background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-lg);
+        padding: var(--space-md);
+        max-height: 0%;
+        opacity: 0;
+        transition: opacity var(--anim-sm), max-height var(--anim-sm), display var(--anim-sm) allow-discrete;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-md);
+    }
+
+    .search-menu:popover-open {
+        opacity: 1;
+        max-height: 100%;
+    }
+
+    .search-menu::backdrop {
+        background-color: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+    }
+
+    @starting-style {
+        .search-menu:popover-open {
+            opacity: 0;
+            max-height: 0%;
+            /* translate: 0 20px; */
+        }
     }
 
     input[type="search"].search-field {
-        flex: 0 0 100%;
         border: none;
-        color: var(--color-ink);
-        padding-inline: var(--space-md);
+        border-bottom: 1px solid var(--color-foreground);
+        padding-inline: 0;
+        color: var(--color-foreground);
     }
 
-    .search label {
-        position: absolute;
-        top: 50%;
-        left: var(--space-md);
-        translate: 0 -50%;
-        color: var(--color-subdued);
-        transition: opacity var(--anim-sm), translate var(--anim-sm);
-        opacity: 0;
-    }
-
-    .search label em {
-        color: var(--color-ink);
-        font-style: normal;
-    }
-
-    input[type="search"].search-field:placeholder-shown + label {
-        opacity: 1;
-    }
-
-
-    input[type="search"].search-field:focus + label {
-        opacity: 0;
-        translate: 0 -100%;
-    }
-
-
-    input[type="search"].search-field::-webkit-search-cancel-button {
-        appearance: none;
-    }
-
-    .icon-wrapper {
-        position: absolute;
-        top: 50%;
-        right: var(--space-md);
-        translate: 0 -50%;
-        width: var(--icon-sm);
-        height: var(--icon-sm);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
-    input[type="search"].search-field:placeholder-shown ~ * ~ .icon-wrapper .search-icon {
-        translate: 0 0%;
-    }
-
-    .search-icon {
-        width: var(--icon-sm);
-        height: var(--icon-sm);
-        flex: 0 0 auto;
-        translate: 0 -100%;
-        background-color: transparent;
-    }
-
-
-    #clear-button {
-        margin: 0;
+    .close-button {
         padding: 0;
         min-width: unset;
         background-color: transparent;
-        color: inherit;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        align-self: flex-end;
     }
 
-    #clear-button:focus-visible {
-        outline: 1px solid var(--color-focus);
+    .close-icon {
+        width: var(--icon-md);
+        height: var(--icon-md);
     }
 
-    .x-icon {
-        /* width: 100%; */
-        width: var(--icon-sm);
-        height: var(--icon-sm);
-        max-width: 100%;
-    }
+
+    /* --- Utility Links --- */
 
     .utility-links {
         position: absolute;
-        top: 50%;
+        top: var(--padding-top);
         right: var(--page-margin);
-        translate: 0 -50%;
     }
+
+    .utility-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1ch;
+        text-decoration: none;
+    }
+
+
 
 </style>

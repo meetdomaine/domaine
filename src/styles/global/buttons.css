@@ -4,7 +4,7 @@
     --button-border-radius: var(--radius-sm);
 }
 
-button:not(.pika-button):not(.pika-prev):not(.pika-next),
+button,
 input[type="submit"],
 .hs-button {
     cursor: pointer;
@@ -15,4 +15,13 @@ input[type="submit"],
     outline: none;
     border-radius: var(--button-border-radius);
     min-width: 120px;
+}
+
+button:focus-visible,
+input[type="submit"]:focus-visible,
+.hs-button:focus-visible,
+a:focus-visible {
+    outline-offset: 2px;
+    outline: 2px solid var(--color-focus);
+    border-radius: var(--radius-sm);
 }

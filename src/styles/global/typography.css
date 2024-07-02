@@ -87,7 +87,8 @@ label,
 }
   
 a {
-    color: var(--color-link);
+    color: inherit;
+    /* color: var(--color-link); */
 }
   
 a:not(.button):hover {
