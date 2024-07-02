@@ -20,7 +20,7 @@ const servicesObject = await Promise.all(
 <LayoutDomaine
     title="Services"
 >   
-    <h1>Domaine Services Landing</h1>
+    <h1 data-pagefind-filter="type:page">Domaine Services Landing</h1>
     {servicesObject.map((serviceType) => (
         <div>
             <a href={`${paths.root.services.path}/${serviceType.slug.current}`}><h3>{serviceType.title}</h3></a>

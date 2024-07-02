@@ -9,7 +9,7 @@ const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]`)
 <LayoutDomaine
     title="Partners"
 >
-    <h1>Partners</h1>
+    <h1 data-pagefind-filter="type:page">Partners</h1>
     {partnerTiers.map((tier) => (
         <div>
             <h3>{tier.title}</h3>

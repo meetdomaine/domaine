@@ -10,7 +10,7 @@ const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory"]
 <LayoutDomaine
     title="Work"
 >
-    <h1>Domaine Blog</h1>
+    <h1 data-pagefind-filter="type:page">Domaine Blog</h1>
     <h3>Posts</h3>
     {blogPosts.map((project) => (
         <a href={`${paths.root.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>

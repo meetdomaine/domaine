@@ -28,7 +28,7 @@ const services = await sanityClient.fetch(`*[_type == "type_service" && serviceG
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
 >
     <a href={`${paths.root.services.path}/${serviceType.slug.current}`}><h3>{serviceType.title}</h3></a>
-    <h1>{content.title}</h1>
+    <h1 data-pagefind-filter="type:service-group">{content.title}</h1>
     {services.map((service) => (
         <div>
             <a href={`${paths.root.services.path}/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>

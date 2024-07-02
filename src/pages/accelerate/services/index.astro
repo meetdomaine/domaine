@@ -20,7 +20,7 @@ const servicesObject = await Promise.all(
 <LayoutStudio
     title="Services"
 >   
-    <h1>Studio Services Landing</h1>
+    <h1 data-pagefind-filter="type:page">Studio Services Landing</h1>
     {servicesObject.map((serviceType) => (
         <div>
             <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}`}><h3>{serviceType.title}</h3></a>

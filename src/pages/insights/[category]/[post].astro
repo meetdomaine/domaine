@@ -28,7 +28,7 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
     title={content.title}
 >
     <a href={`${paths.root.blog.path}/${content.category.slug.current}`}><h6>{content.category.title}</h6></a>
-    <h1>{content.title}</h1>
+    <h1 data-pagefind-filter="type:blog-post">{content.title}</h1>
     <h6>{content.excerpt}</h6>
 
     <h6>Date:</h6>

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site .vercel && cp -r .vercel/pagefind public/",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -40,5 +40,8 @@
     "solid-js": "^1.8.17",
     "swiper": "^11.1.0",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "pagefind": "^1.1.0"
   }
 }

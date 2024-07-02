@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import SearchMenu from "./search/SearchMenu"
 
 const { navigationLinks, currentBrand } = Astro.props;
 
@@ -13,6 +14,8 @@ const brands = [
         logo: "domaine-accelerate"
     },
 ]
+
+// const test = await import("/pagefind/pagefind.js");
 
 const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
 ---
@@ -62,21 +65,49 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         <button class="close-button" popoverTarget="search-menu">
             <Icon class="icon close-icon" name="pixel_x" />
         </button>
-        <input autofocus type="search" placeholder="Search" class="search-field h1" />
+        <!-- <input autofocus type="search" placeholder="Search" class="search-field h1" /> -->
+        <SearchMenu client:only="solid-js" />
     </dialog>
 </header>
 
+<script is:inline>
+    const loadSearch = async () => {
+        window.pagefind = await import("/pagefind/pagefind.js");
+    }
+    
+    loadSearch()
+</script>
+
 <script>
 
-    document.addEventListener("astro:page-load", () => {
+    // let pageFind
+    // let searchResults
 
-        const brandMenu: HTMLElement = document.querySelector('.brand-menu');
+    // const initSearch = async () => {
+    //     if (!pageFind) pageFind = await import("/pagefind/pagefind.js");
+    // }
+
+    // const searchQuery = async (term) => {
+    //     if (!pageFind) pageFind = await import("/pagefind/pagefind.js");
+    //     await pageFind.search(term).then((result) => searchResults = result)
+    //     // console.log(await searchResults)
+    // }
+
+    document.addEventListener("astro:page-load", async () => {
+
+        const brandMenu = document.querySelector('.brand-menu');
+        // const searchField = document.querySelector('.search-field')
 
         if (brandMenu) {
             brandMenu.classList.remove("active")
             brandMenu.addEventListener("mouseenter", () => brandMenu.classList.add("active"))
             brandMenu.addEventListener("mouseleave", () => brandMenu.classList.remove("active"))
         }
+
+        // if (searchField) {
+        //     searchField.addEventListener("input", (e) => searchQuery(e.target.value))
+        //     // searchQuery("test")
+        // }
 
         const handleBrandNavigate = (element, index) => {
             brandMenu.style.setProperty("--current-index", index)
@@ -320,6 +351,7 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         margin: var(--space-md);
         width: calc(100% - var(--space-md) * 2);
         height: calc(100% - var(--space-md) * 2);
+        color: var(--color-foreground);
         background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
         backdrop-filter: blur(10px);
         border-radius: var(--radius-lg);
@@ -351,18 +383,12 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         }
     }
 
-    input[type="search"].search-field {
-        border: none;
-        border-bottom: 1px solid var(--color-foreground);
-        padding-inline: 0;
-        color: var(--color-foreground);
-    }
-
     .close-button {
         padding: 0;
         min-width: unset;
         background-color: transparent;
         align-self: flex-end;
+        color: currentColor;
     }
 
     .close-icon {

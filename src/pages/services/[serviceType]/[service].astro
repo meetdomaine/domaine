@@ -27,5 +27,5 @@ const { content, serviceType, serviceGroup } = Astro.props;
 >
     <a href={`${paths.root.services.path}/${serviceType.slug.current}/`}><h6>{serviceType.title}</h6>
     <a href={`${paths.root.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3>{serviceGroup.title}</h3></a>
-    <h1>{content.title}</h1>
+    <h1 data-pagefind-filter="type:service">{content.title}</h1>
 </LayoutDomaine>

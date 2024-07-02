@@ -27,7 +27,7 @@ console.log(blogPosts)
 <LayoutStudio
     title="Work"
 >
-    <h1>{content.title}</h1>
+    <h1 data-pagefind-filter="type:blog-category">{content.title}</h1>
     <h3>Posts</h3>
     {blogPosts.map((project) => (
         <a href={`${paths.root.studio.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>
