@@ -41,7 +41,7 @@ function PartnerCard(props) {
 
 export default function SearchMenu(props) {
 
-    console.log(props)
+    // console.log(props)
 
     const [ pageFind, setPageFind ] = createSignal(null)
     const [ query, setQuery ] = createSignal(null)

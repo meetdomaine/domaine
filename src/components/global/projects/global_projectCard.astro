@@ -1,7 +1,17 @@
 ---
-const { title, excerpt, slug, thumbnailImage, thumbnailVideo } = Astro.props
+import AtomSanityMedia from "../atoms/atom_sanityMedia.astro"
+
+const { title, excerpt, slug, thumbnailImage, thumbnailVideo, thumbnailIsVideo } = Astro.props
+console.log(thumbnailImage)
 ---
 <a href={`/work/${slug.current}`}>
+
+    <AtomSanityMedia 
+        isVideo={thumbnailIsVideo}
+        video={thumbnailVideo}
+        image={thumbnailImage.image}
+        sizes="30vw"
+    />
     <h3>{title}</h3>
     <p>{excerpt}</p>
 </a>

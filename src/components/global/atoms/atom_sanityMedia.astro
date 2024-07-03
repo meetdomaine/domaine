@@ -1,0 +1,70 @@
+---
+import type { SanityAsset } from '@sanity/image-url/lib/types/types';
+import { urlFor } from '../utils/cms-queries';
+import AtomSanityImage from './atom_sanityImage.astro';
+
+interface Props {
+  isVideo?: boolean,
+  video?: any,
+  image?: { 
+    asset: {
+      _id: 'string',
+      metadata: {
+        dimensions: {
+          width: number,
+          height: number,
+          aspectRatio: number,
+        },
+        blurHash: string,
+        lqip: string,
+      }
+    },
+    crop: {
+      top: number,
+      right: number,
+      bottom: number,
+      left: number
+    },
+    alt: string
+  },
+  sizes: string,
+  cover?: boolean,
+  eager?: boolean,
+  aspectRatio?: number,
+  alt?: string,
+  transitionName?: string,
+}
+
+const { video, image, sizes, eager, aspectRatio, cover, alt, transitionName, isVideo } = Astro.props;
+console.log(video)
+---
+
+
+{video ? 
+    <mux-player
+        playback-id={video.asset.playbackId}
+        metadata-video-title={video.asset.filename}
+        autoplay
+        loop
+        muted
+        style={{ aspectRatio: 3/4 }}
+        width="300"
+        height="400"
+    ></mux-player>
+    :
+    <AtomSanityImage 
+        image={image}
+        sizes={sizes}
+        eager={eager}
+        aspectRatio={aspectRatio}
+        cover={cover}
+        alt={alt}
+    />
+}
+
+<style>
+    mux-player {
+        object-fit: cover;
+    }
+
+</style>

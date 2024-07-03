@@ -31,7 +31,17 @@ const projects = await sanityClient.fetch(getProjectCardsByFeature(content._id))
     <WorkFeatureHero 
         heading={content.title}
     />
-    <GlobalProjectsGrid 
-        projects={projects}
-    />
+    <div class="grid">
+        <GlobalProjectsGrid 
+            projects={projects}
+        />
+    </div>
 </LayoutDomaine>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-inline: var(--page-margin);
+    }
+</style>
