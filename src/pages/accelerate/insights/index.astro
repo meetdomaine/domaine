@@ -3,14 +3,15 @@ import { sanityClient } from 'sanity:client';
 import { paths } from '../../../components/global/utils/paths';
 import LayoutStudio from '../../../layouts/LayoutStudio.astro';
 
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" ]{..., category->{...}} | order( postDate desc)`)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "SMB" ]{..., category->{...}} | order( postDate desc)`)
 const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
 // console.log(blogPosts)
 ---
 <LayoutStudio
     title="Work"
+    searchFilter="type:page"
 >
-    <h1 data-pagefind-filter="type:page">Domaine Accelerate Blog</h1>
+    <h1>Domaine Accelerate Blog</h1>
     <h3>Posts</h3>
     {blogPosts.map((project) => (
         <a href={`${paths.root.studio.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>

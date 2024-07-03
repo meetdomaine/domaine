@@ -1,29 +1,29 @@
 export const paths = {
     root: {
-        path: "/staging",
+        path: "",
         projects: {
-            path: "/staging/work"
+            path: "/work"
         },
         services: {
-            path: "/staging/services"
+            path: "/services"
         },
         studio: {
-            path: "/staging/studio",
+            path: "/studio",
             projects: {
-                path: "/staging/studio/work"
+                path: "/studio/work"
             },
             services: {
-                path: "/staging/studio/services"
+                path: "/studio/services"
             },
             blog: {
-                path: "/staging/studio/insights"
+                path: "/studio/insights"
             }
         },
         blog: {
-            path: "/staging/insights"
+            path: "/insights"
         },
         partners: {
-            path: "/staging/partners"
+            path: "/partners"
         }
     }
 }

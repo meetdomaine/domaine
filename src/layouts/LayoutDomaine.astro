@@ -12,9 +12,10 @@ interface Props {
 	theme?: string;
     backgroundColor?: string;
     foregroundColor?: string;
+    searchFilter?: string;
 }
 
-const { title, description, image, theme, backgroundColor, foregroundColor } = Astro.props;
+const { title, description, image, theme, backgroundColor, foregroundColor, searchFilter } = Astro.props;
 
 // SEO
 const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "settings_SEO-domaine"]`)
@@ -45,6 +46,7 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     image={image ? image : seoSettings.metafields.image}
     backgroundColor={backgroundColor}
     foregroundColor={foregroundColor}
+    searchFilter={searchFilter}
 >
     <Header
         brands={brands}

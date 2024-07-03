@@ -30,8 +30,9 @@ const servicesObject = await Promise.all(
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
+    searchFilter="type:service-type"
 >
-    <h1 data-pagefind-filter="type:service-type">{content.title}</h1>
+    <h1>{content.title}</h1>
     {servicesObject.map((serviceGroup) => (
         <div>
             <a href={`${paths.root.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3>{serviceGroup.title}</h3></a>

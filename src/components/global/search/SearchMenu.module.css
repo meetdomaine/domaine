@@ -33,6 +33,7 @@ input[type="search"].input {
     align-items: center;
     justify-content: space-between;
     text-decoration: none;
+    gap: var(--space-xs);
 }
 
 .resultImage {

@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build && pagefind --site .vercel/output/static  && cp -r .vercel/output/static/pagefind public/",
+    "index": "pagefind --site .vercel/output/static  && cp -r .vercel/output/static/pagefind public/",
     "preview": "astro preview",
     "astro": "astro"
   },

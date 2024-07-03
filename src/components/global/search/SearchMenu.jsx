@@ -31,12 +31,12 @@ function BlogCard(props) {
     )
 }
 
-function ServiceCard(props) {
-    return <a href={props.url} class="h6">{props.title}</a>
+function FeatureCard(props) {
+    return <a href={props.url} class="caption">{props.title}</a>
 }
 
 function PartnerCard(props) {
-    return <a href={props.url} class="h6">{props.title}</a>
+    return <a href={props.url} class="caption">{props.title}</a>
 }
 
 export default function SearchMenu(props) {
@@ -54,6 +54,7 @@ export default function SearchMenu(props) {
     const [ pageResults, setPageResults ] = createSignal(null)
 
     const clearResults = () => {
+        setQuery(null)
         setProjectResults(null)
         setBlogResults(null)
         setPartnerResults(null)
@@ -63,48 +64,43 @@ export default function SearchMenu(props) {
     }
 
     const handleInput = (e) => {
-        if (e.target.value) return setQuery(e.target.value)
-        return setQuery(null)
+        if (e.target.value) {
+            setQuery(e.target.value)
+            handleSearch(e.target.value)
+        } else {
+            clearResults()
+        }
     }
 
     const handleSearch = async (query) => {
         if (pageFind()) {
 
-            const maxResults = 6
 
-            // const pages = await pageFind().search(query, {filters: {type: 'page'}})
-            // const services = await pageFind().search(query, {filters: {type: 'service'}})
-
-            const getFilteredResults = async (queryType, setter) => {
+            const getFilteredResults = async (queryType, setter, maxResults = 6) => {
                 const data = await pageFind().search(query, {filters: {type: queryType}})
                 if (data === null) return
                 const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
-                // console.log(filteredResults)
                 if (filteredResults) return setter(filteredResults)
                 return setter(null)
             }
 
             getFilteredResults('case-study', setProjectResults)
-            getFilteredResults('blog-post', setBlogResults)
+            getFilteredResults('blog-post', setBlogResults, 3)
             getFilteredResults('service', setServiceResults)
             getFilteredResults('partner', setPartnerResults)
+            getFilteredResults('project-feature', setFeatureResults, 10)
+
+            console.log(blogResults())
         }
     }
 
     createEffect(() => {
-
         if (window.pagefind) {
             setPageFind(window.pagefind)
             pageFind().init({
                 "baseUrl": "../"
             })
-        }
-        if (query()) { 
-            handleSearch(query()) 
-        } else {
-            clearResults()
-        }
-            
+        }   
     })
 
     return (
@@ -115,12 +111,16 @@ export default function SearchMenu(props) {
                 class={`${styles.input} h1`} 
                 placeholder="Search"
                 oninput={handleInput}
-                value={query()}
+                // value={query()}
             />
 
             <Show when={!query()}>
                 <h5>Recently Featured</h5>
             </Show>
+{/* 
+            {query() && !projectResults() ? 
+                <h5>No Results</h5> : <p>OK</p>} */}
+                
 
             <div class={styles.results}>
 
@@ -151,6 +151,19 @@ export default function SearchMenu(props) {
                 </div>
 
                 <div class={styles.resultsColumn}>
+                    <p>Features</p>
+                    {featureResults() ? 
+                        <For each={featureResults()}>{result => 
+                            <FeatureCard url={result.url} title={result.meta.title} />
+                        }</For>
+                    :
+                        <For each={props.defaultFeatures}>{feature => 
+                            <FeatureCard url={`/work/${feature.slug.current}`} title={feature.title} />
+                        }</For>
+                    }
+                </div>
+
+                {/* <div class={styles.resultsColumn}>
                     <p>Services</p>
                     {serviceResults() ? 
                         <For each={serviceResults()}>{result => 
@@ -161,16 +174,20 @@ export default function SearchMenu(props) {
                             <BlogCard url={'#'} title={"test"} />
                         }</For>
                     }
-                </div>
+                </div> */}
 
-                <Show when={(query() == null && props.defaultPartners) || partnerResults() }>
-                    <div class={styles.resultsColumn}>
-                        <p>Partners</p>
+                <div class={styles.resultsColumn}>
+                    <p>Partners</p>
+                    {partnerResults() ?
                         <For each={partnerResults()}>{result => 
-                            <a href={result.url} class="h6">{result.meta.title}</a>
+                            <PartnerCard url={result.url} title={result.meta.title} />
                         }</For>
-                    </div>
-                </Show>
+                        :
+                        <For each={props.defaultPartners}>{partner => 
+                            <PartnerCard url={`/partners/${partner.slug.current}`} title={partner.title} />
+                        }</For>
+                    }
+                </div>
 
             </div>
         </div>

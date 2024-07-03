@@ -27,6 +27,7 @@ const { content } = Astro.props
     title={content.title}
     backgroundColor={content.backgroundColor && content.backgroundColor.hex}
     foregroundColor={content.foregroundColor}
+    searchFilter="type:case-study"
 >
     <WorkPostHero
         heading={content.title}

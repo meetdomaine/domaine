@@ -5,7 +5,8 @@ import LayoutDomaine from '../../layouts/LayoutDomaine.astro';
 
 export async function getStaticPaths() {
     const partners = await sanityClient.fetch(`*[_type == "type_partner" ] { ..., tier->{...} }`)
-    const landingPagePartners = await partners.filter((partner) => partner.tier && partner.tier.createLandingPages)
+    // const landingPagePartners = await partners.filter((partner) => partner.tier && partner.tier.createLandingPages)
+    const landingPagePartners = partners // For now, create landing pages for all partners
 
     return landingPagePartners.map((partner) => {
         return {
@@ -24,8 +25,9 @@ const { content } = Astro.props;
 ---
 <LayoutDomaine
     title={content.title}
+    searchFilter="type:partner"
 >
     
-    <h4 data-pagefind-filter="type:partner">{content.tier.title}</h4>
+    {content.tier && <h4>{content.tier.title}</h4>}
     <h1>{content.title}</h1>
 </LayoutDomaine>

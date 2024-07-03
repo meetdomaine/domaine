@@ -5,7 +5,6 @@ import LayoutDomaine from '../../layouts/LayoutDomaine.astro';
 import Hero from '../../components/domaine/sections/work/workIndex_Hero.astro'
 import { projectsGridQuery, urlFor } from '../../components/global/utils/cms-queries';
 import ProjectsFeed from '../../components/global/projects/projectsFeed/projectsFeed.jsx';
-import { encode } from "blurhash";
 
 
 
@@ -88,6 +87,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" 
 <LayoutDomaine
     title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
     description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
+    searchFilter="type:page"
 >
     <Hero
         heading={pageSettings.heading}

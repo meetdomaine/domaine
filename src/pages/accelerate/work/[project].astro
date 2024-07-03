@@ -11,7 +11,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(projectPostQuery("Studio"))
+    const projects = await sanityClient.fetch(projectPostQuery("SMB"))
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -26,6 +26,7 @@ const { content } = Astro.props
 ---
 <LayoutStudio
     title={content.title}
+    searchFilter="type:case-study"
 >
 
     <WorkPostHero

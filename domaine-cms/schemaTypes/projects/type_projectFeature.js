@@ -23,6 +23,11 @@ export default defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
     orderRankField({ type: 'type_projectfeature'})
     // defineField({
     //   name: 'agencyBrands',

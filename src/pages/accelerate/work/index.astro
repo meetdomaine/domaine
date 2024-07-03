@@ -19,7 +19,7 @@ const getUniqueItems = (array: Array<any>, label: string) => {
         });
 }
 
-const projects = await sanityClient.fetch(projectsGridQuery("Studio"))
+const projects = await sanityClient.fetch(projectsGridQuery("SMB"))
 const allFeatures: Array<ProjectFeature> = projects.flatMap(project => project.features).filter(feature => feature !== null)
 const allIndustries: Array<Industry> = projects.map(project => project.industry).filter(industry => industry !== null)
 const allPartners: Array<Partner> = projects.flatMap(project => project.partners).filter(partner => partner !== null)
@@ -48,6 +48,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" 
 <LayoutStudio
     title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
     description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
+    searchFilter="type:page"
 >
     <Hero
         heading={pageSettings.heading}
@@ -66,6 +67,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" 
 
 <script>
     document.addEventListener("astro:after-swap", () => {
-        console.log('after swap')
+        // console.log('after swap')
     })
 </script>

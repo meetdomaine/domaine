@@ -26,11 +26,12 @@ interface Props {
     favicon: SanityAsset;
 	backgroundColor?: string;
 	foregroundColor?: string;
+	searchFilter?: string;
 }
 
 const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
 
-const { title, description, image, theme, favicon, backgroundColor, foregroundColor } = Astro.props;
+const { title, description, image, theme, favicon, backgroundColor, foregroundColor, searchFilter } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 ---
@@ -94,7 +95,7 @@ const currentPath = Astro.url.pathname;
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 
 	</head>
-	<body>
+	<body data-pagefind-filter={searchFilter}>
 
 		<!-- Google Tag Manager (noscript) -->
 		<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5Q9G6VH"

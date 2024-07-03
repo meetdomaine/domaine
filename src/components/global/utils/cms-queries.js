@@ -14,21 +14,42 @@ export function urlFor(source) {
 
 export const imageFields = 'image{ crop, asset->{_id, metadata}, alt }'
 
-export const projectsGridQuery = (brand) => {
-  return `*[_type == "type_project" && agencyBrand->name == "${brand}" ] { 
+const projectGridFields = `
     title,
     excerpt,
     slug, 
     industry->{...}, 
     partners[]->{...}, 
-    features[]->{ title, slug }, 
+    features[]->{ title, slug, _id }, 
     services[]->{ serviceGroup->{title, slug} }, 
     thumbnailImage{${imageFields}},
     thumbnailVideo{asset-> {playbackId,assetId,filename,}},
     orderRank,
-    thumbnailIsVideo,
-  } | order(orderRank)`
+    thumbnailIsVideo`
+
+export const projectsGridQuery = (brand) => {
+  return `*[_type == "type_project" && agencyBrand->name == "${brand}" ] { ${projectGridFields} } | order(orderRank)`
 }
+
+export const getProjectCardsByFeature = (feature) => {
+  return `*[_type == "type_project" && references("${feature}") ] { ${projectGridFields} } | order(orderRank)`
+}
+
+// export const projectsGridQuery = (brand) => {
+//   return `*[_type == "type_project" && agencyBrand->name == "${brand}" ] { 
+//     title,
+//     excerpt,
+//     slug, 
+//     industry->{...}, 
+//     partners[]->{...}, 
+//     features[]->{ title, slug }, 
+//     services[]->{ serviceGroup->{title, slug} }, 
+//     thumbnailImage{${imageFields}},
+//     thumbnailVideo{asset-> {playbackId,assetId,filename,}},
+//     orderRank,
+//     thumbnailIsVideo,
+//   } | order(orderRank)`
+// }
 
 export const projectPostQuery = (brand) => {
   return `*[_type == "type_project" && agencyBrand->name == "${brand}"] { 

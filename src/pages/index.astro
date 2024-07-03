@@ -12,6 +12,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
 <LayoutDomaine
     theme="dark"
     title="Home"
+    searchFilter="type:page"
 >
     <HomeHero
         heading={pageSettings.heading}

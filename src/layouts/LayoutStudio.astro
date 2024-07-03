@@ -10,9 +10,10 @@ interface Props {
 	description?: string;
 	image?: string;
 	theme?: string;
+    searchFilter?: string;
 }
 
-const { title, description, image, theme } = Astro.props;
+const { title, description, image, theme, searchFilter } = Astro.props;
 
 // SEO
 const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "settings_SEO-studio"]`)
@@ -32,7 +33,7 @@ import '../styles/accelerate/color.css'
 
 // Brand
 const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
-const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Accelerate"][0]`)
+const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "SMB"][0]`)
 const brandSettings = currentBrand
 
 ---
@@ -42,6 +43,7 @@ const brandSettings = currentBrand
     theme="dark"
     favicon={brandSettings.favicon}
     image={image ? image : seoSettings.metafields.image}
+    searchFilter={searchFilter}
 >
     <!-- <Header 
         navigationLinks={headerSettings.navigationLinks}

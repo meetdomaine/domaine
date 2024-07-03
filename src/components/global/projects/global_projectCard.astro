@@ -1,0 +1,7 @@
+---
+const { title, excerpt, slug, thumbnailImage, thumbnailVideo } = Astro.props
+---
+<a href={`/work/${slug.current}`}>
+    <h3>{title}</h3>
+    <p>{excerpt}</p>
+</a>

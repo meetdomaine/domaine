@@ -25,8 +25,10 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
 // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
 const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug} } | order( postDate desc)[0...3]`)
 const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{title, slug, thumbnailImage{${imageFields}} } | order( orderRank asc)[0...5]`)
+const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug } | order( orderRank asc)[0...10]`)
+const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug } | order( orderRank asc)[0...10]`)
 
-console.log(defaultBlogPosts)
+// console.log(defaultBlogPosts)
 ---
 <header id="header">
 
@@ -78,6 +80,8 @@ console.log(defaultBlogPosts)
             client:only="solid-js"
             defaultBlogPosts={defaultBlogPosts}
             defaultProjects={defaultProjects}
+            defaultFeatures={defaultFeatures}
+            defaultPartners={defaultPartners}
         />
     </dialog>
 </header>

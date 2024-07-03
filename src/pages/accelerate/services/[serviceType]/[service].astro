@@ -23,8 +23,9 @@ const { content, serviceType, serviceGroup } = Astro.props;
 ---
 <LayoutStudio
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
+    searchFilter="type:service"
 >
     <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}/`}><h6>{serviceType.title}</h6>
     <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3>{serviceGroup.title}</h3></a>
-    <h1 data-pagefind-filter="type:service">{content.title}</h1>
+    <h1>{content.title}</h1>
 </LayoutStudio>
