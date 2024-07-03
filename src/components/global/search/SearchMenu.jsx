@@ -72,13 +72,14 @@ export default function SearchMenu(props) {
 
             const maxResults = 6
 
-            const pages = await pageFind().search(query, {filters: {type: 'page'}})
-            const services = await pageFind().search(query, {filters: {type: 'service'}})
+            // const pages = await pageFind().search(query, {filters: {type: 'page'}})
+            // const services = await pageFind().search(query, {filters: {type: 'service'}})
 
             const getFilteredResults = async (queryType, setter) => {
                 const data = await pageFind().search(query, {filters: {type: queryType}})
+                if (data === null) return
                 const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
-                console.log(filteredResults)
+                // console.log(filteredResults)
                 if (filteredResults) return setter(filteredResults)
                 return setter(null)
             }
@@ -131,7 +132,7 @@ export default function SearchMenu(props) {
                         }</For>
                     :
                         <For each={props.defaultProjects}>{project => 
-                            <ProjectCard url={`/work/${project.slug.current}`} title={project.title} image={urlFor(project.thumbnailImage.image).url()} alt={project.thumbnailImage.image.alt} />
+                            <ProjectCard url={`/work/${project.slug.current}`} title={project.title} image={urlFor(project.thumbnailImage.image).width(300).height(300).auto('format').url()} alt={project.thumbnailImage.image.alt} />
                         }</For>
                     }
                 </div>
@@ -144,7 +145,7 @@ export default function SearchMenu(props) {
                         }</For>
                     :
                         <For each={props.defaultBlogPosts}>{post => 
-                            <BlogCard url={`/insights/${post.category.slug.current}/${post.slug.current}`} title={post.title} image={urlFor(post.thumbnailImage.image).url()} alt={post.thumbnailImage.image.alt} />
+                            <BlogCard url={`/insights/${post.category.slug.current}/${post.slug.current}`} title={post.title} image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} alt={post.thumbnailImage.image.alt} />
                         }</For>
                     }
                 </div>
