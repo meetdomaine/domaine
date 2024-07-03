@@ -34,12 +34,59 @@ const currentPath = Astro.url.pathname;
 <html lang="en" data-theme={theme}>
 	<head>
 
+		<!-- Set Initial Consent -->
+		<script is:inline>
+			if (typeof window !== 'undefined') {
+				window.dataLayer = window.dataLayer || [];
+				function gtag() { dataLayer.push(arguments); }
+
+				if (localStorage.getItem('consentMode') === null) {
+					gtag('consent', 'default', {
+						'ad_user_data': 'denied',
+						'ad_personalization': 'denied',
+						'ad_storage': 'denied',
+						'analytics_storage': 'denied',
+						'wait_for_update': 500,
+					});
+					dataLayer.push({'gtm.start': new Date().getTime(), 'event': 'gtm.js'})
+				} else {
+					gtag('consent', 'default', JSON.parse(localStorage.getItem('consentMode')))
+				}
+				
+			}
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script is:inline>
+			// (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			// new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			// j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			// 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			// })(window,document,'script','dataLayer','GTM-T5Q9G6VH');
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-M36NWV8B');</script>
+		<!-- End Google Tag Manager -->
+
+		<!-- Google Tag Manager -->
+		<!-- <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-5749M9D8');</script> -->
+		<!-- End Google Tag Manager -->
+
 		<!-- OneTrust Cookies Consent Notice start for meetdomaine.com -->
-		<script type="text/javascript" src="https://cdn.cookielaw.org/consent/019030f7-3b43-74f3-9b13-715f0763dcb2/OtAutoBlock.js" ></script>
+		<!-- <script type="text/javascript" src="https://cdn.cookielaw.org/consent/019030f7-3b43-74f3-9b13-715f0763dcb2/OtAutoBlock.js" ></script>
 		<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="019030f7-3b43-74f3-9b13-715f0763dcb2" ></script>
 		<script type="text/javascript">
 		function OptanonWrapper() { }
-		</script>
+		</script> -->
 		<!-- OneTrust Cookies Consent Notice end for meetdomaine.com -->
 
 		<!-- Start of HubSpot Embed Code -->
@@ -78,14 +125,7 @@ const currentPath = Astro.url.pathname;
 		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
 		
-		<!-- Google Tag Manager -->
-		<script is:inline>
-			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-T5Q9G6VH');
-		</script>
+
 
 
 		<ViewTransitions />
@@ -94,11 +134,16 @@ const currentPath = Astro.url.pathname;
 
 
 		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5Q9G6VH"
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<!-- <CookieNotice /> -->
+		<!-- Google Tag Manager (noscript) -->
+		<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5749M9D8"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+		<!-- End Google Tag Manager (noscript) -->
+
+		<CookieNotice />
 		<Header />
 		<HeaderMobile />
 		<slot />
