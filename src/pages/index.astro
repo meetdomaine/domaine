@@ -7,7 +7,7 @@ import LayoutDomaine from "../layouts/LayoutDomaine.astro";
 const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]`)
 
 // const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
-console.log(pageSettings)
+// console.log(pageSettings)
 ---
 <LayoutDomaine
     theme="dark"

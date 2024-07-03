@@ -1,19 +1,50 @@
-import { createEffect, createSignal } from 'solid-js';
+import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
-// import { createScriptLoader } from "@solid-primitives/script-loader";
+import { urlFor } from '../utils/cms-queries';
 
+function ProjectCard(props) {
+    return (
+        <a href={props.url} class={`${styles.resultCard} caption`}>
+            {props.title}
+            <img 
+                src={props.image} 
+                alt={props.alt}
+                class={styles.resultImage}
+                loading='eager'
+            />
+        </a>
 
-// import * as pagefind from "/pagefind/pagefind.js"
+    )
+}
 
+function BlogCard(props) {
+    return (
+        <a href={props.url} class={`${styles.resultCard} caption`}>
+            {props.title}
+            <img 
+                src={props.image} 
+                alt={props.alt}
+                class={styles.resultImage}
+                loading='eager'
+            />
+        </a>
+    )
+}
 
-// import "/pagefind/pagefind.js"
+function ServiceCard(props) {
+    return <a href={props.url} class="h6">{props.title}</a>
+}
 
-export default function SearchMenu() {
+function PartnerCard(props) {
+    return <a href={props.url} class="h6">{props.title}</a>
+}
+
+export default function SearchMenu(props) {
+
+    console.log(props)
 
     const [ pageFind, setPageFind ] = createSignal(null)
     const [ query, setQuery ] = createSignal(null)
-
-    const [ results, setResults ] = createSignal(null)
 
     const [ projectResults, setProjectResults ] = createSignal(null)
     const [ blogResults, setBlogResults ] = createSignal(null)
@@ -21,17 +52,6 @@ export default function SearchMenu() {
     const [ serviceResults, setServiceResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
     const [ pageResults, setPageResults ] = createSignal(null)
-
-    // createScriptLoader({
-    //     src: "/pagefind/pagefind.js",
-    //     async onLoad(e) {
-    //         // console.log(e)
-    //         await pagefind.init()
-    //     //   await grecaptcha.enterprise.ready();
-    //     //   const token = await grecaptcha.enterprise.execute("my_token", { action: "login" });
-    //       // do your stuff...
-    //     },
-    //   });
 
     const clearResults = () => {
         setProjectResults(null)
@@ -97,35 +117,59 @@ export default function SearchMenu() {
                 value={query()}
             />
 
+            <Show when={!query()}>
+                <h5>Recently Featured</h5>
+            </Show>
+
             <div class={styles.results}>
 
                 <div class={styles.resultsColumn}>
                     <p>Projects</p>
-                    <For each={projectResults()}>{result => 
-                        <a href={result.url} class="h6">{result.meta.title}</a>
-                    }</For>
+                    {projectResults() ?
+                        <For each={projectResults()}>{result => 
+                            <ProjectCard url={result.url} title={result.meta.title} image={result.meta.image} alt={result.meta.image_alt} />
+                        }</For>
+                    :
+                        <For each={props.defaultProjects}>{project => 
+                            <ProjectCard url={`/work/${project.slug.current}`} title={project.title} image={urlFor(project.thumbnailImage.image).url()} alt={project.thumbnailImage.image.alt} />
+                        }</For>
+                    }
                 </div>
 
                 <div class={styles.resultsColumn}>
                     <p>Insights</p>
-                    <For each={blogResults()}>{result => 
-                        <a href={result.url} class="h6">{result.meta.title}</a>
-                    }</For>
+                    {blogResults() ? 
+                        <For each={blogResults()}>{result => 
+                            <BlogCard url={result.url} title={result.meta.title} image={result.meta.image} alt={result.meta.image_alt} />
+                        }</For>
+                    :
+                        <For each={props.defaultBlogPosts}>{post => 
+                            <BlogCard url={`/insights/${post.category.slug.current}/${post.slug.current}`} title={post.title} image={urlFor(post.thumbnailImage.image).url()} alt={post.thumbnailImage.image.alt} />
+                        }</For>
+                    }
                 </div>
 
                 <div class={styles.resultsColumn}>
                     <p>Services</p>
-                    <For each={serviceResults()}>{result => 
-                        <a href={result.url} class="h6">{result.meta.title}</a>
-                    }</For>
+                    {serviceResults() ? 
+                        <For each={serviceResults()}>{result => 
+                            <a href={result.url} class="h6">{result.meta.title}</a>
+                        }</For>
+                    :
+                        <For each={props.defaultServices}>{service => 
+                            <BlogCard url={'#'} title={"test"} />
+                        }</For>
+                    }
                 </div>
 
-                <div class={styles.resultsColumn}>
-                    <p>Partners</p>
-                    <For each={partnerResults()}>{result => 
-                        <a href={result.url} class="h6">{result.meta.title}</a>
-                    }</For>
-                </div>
+                <Show when={(query() == null && props.defaultPartners) || partnerResults() }>
+                    <div class={styles.resultsColumn}>
+                        <p>Partners</p>
+                        <For each={partnerResults()}>{result => 
+                            <a href={result.url} class="h6">{result.meta.title}</a>
+                        }</For>
+                    </div>
+                </Show>
 
             </div>
         </div>

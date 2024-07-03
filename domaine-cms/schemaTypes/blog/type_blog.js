@@ -41,14 +41,20 @@ export default defineType({
       to: [{ type: 'type_agencyBrand'}],
       validation: Rule => Rule.required(),
     }),
+    // defineField({
+    //   name: 'thumbnail',
+    //   title: 'Thumbnail',
+    //   type: 'image',
+    //   options: {
+    //     hotspot: true
+    //   },
+    //   validation: Rule => Rule.required(),
+    // }),
     defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
-      // validation: Rule => Rule.required(),
+      name: 'thumbnailImage',
+      title: 'Thumbnail Image',
+      type: 'snippet_image',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'partners',
@@ -89,7 +95,7 @@ export default defineType({
     select: {
       title: 'title', 
       subtitle: 'agencyBrand.name',
-      media: 'thumbnail'
+      media: 'thumbnailImage.image'
     },
   },
 })

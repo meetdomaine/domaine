@@ -1,6 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
 import SearchMenu from "./search/SearchMenu"
+import { sanityClient } from "sanity:client";
+import { imageFields } from "./utils/cms-queries";
 
 const { navigationLinks, currentBrand } = Astro.props;
 
@@ -15,9 +17,16 @@ const brands = [
     },
 ]
 
-// const test = await import("/pagefind/pagefind.js");
+
 
 const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
+
+
+// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
+const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug} } | order( postDate desc)[0...3]`)
+const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{title, slug, thumbnailImage{${imageFields}} } | order( orderRank asc)[0...5]`)
+
+console.log(defaultBlogPosts)
 ---
 <header id="header">
 
@@ -47,7 +56,7 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
             </button>
         </nav>
 
-        <button class="search-button caption" popoverTarget="search-menu">
+        <button class="search-button caption" popovertarget="search-menu">
             <span>Search <em>projects, insights, and more...</em></span>
             <Icon class="icon" name="pixel_search" />
         </button>
@@ -62,11 +71,14 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     </div>
 
     <dialog popover id="search-menu" class="search-menu color-invert">
-        <button class="close-button" popoverTarget="search-menu">
+        <button class="close-button" popovertarget="search-menu">
             <Icon class="icon close-icon" name="pixel_x" />
         </button>
-        <!-- <input autofocus type="search" placeholder="Search" class="search-field h1" /> -->
-        <SearchMenu client:only="solid-js" />
+        <SearchMenu 
+            client:only="solid-js"
+            defaultBlogPosts={defaultBlogPosts}
+            defaultProjects={defaultProjects}
+        />
     </dialog>
 </header>
 
@@ -74,40 +86,20 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
     const loadSearch = async () => {
         window.pagefind = await import("/pagefind/pagefind.js");
     }
-    
     loadSearch()
 </script>
 
 <script>
 
-    // let pageFind
-    // let searchResults
-
-    // const initSearch = async () => {
-    //     if (!pageFind) pageFind = await import("/pagefind/pagefind.js");
-    // }
-
-    // const searchQuery = async (term) => {
-    //     if (!pageFind) pageFind = await import("/pagefind/pagefind.js");
-    //     await pageFind.search(term).then((result) => searchResults = result)
-    //     // console.log(await searchResults)
-    // }
-
     document.addEventListener("astro:page-load", async () => {
 
-        const brandMenu = document.querySelector('.brand-menu');
-        // const searchField = document.querySelector('.search-field')
+        const brandMenu: HTMLElement = document.querySelector('.brand-menu');
 
         if (brandMenu) {
             brandMenu.classList.remove("active")
             brandMenu.addEventListener("mouseenter", () => brandMenu.classList.add("active"))
             brandMenu.addEventListener("mouseleave", () => brandMenu.classList.remove("active"))
         }
-
-        // if (searchField) {
-        //     searchField.addEventListener("input", (e) => searchQuery(e.target.value))
-        //     // searchQuery("test")
-        // }
 
         const handleBrandNavigate = (element, index) => {
             brandMenu.style.setProperty("--current-index", index)
@@ -355,6 +347,7 @@ const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
         background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
         backdrop-filter: blur(10px);
         border-radius: var(--radius-lg);
+        border: none;
         padding: var(--space-md);
         max-height: 0%;
         opacity: 0;
