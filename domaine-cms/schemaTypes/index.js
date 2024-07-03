@@ -46,6 +46,7 @@ import section_textMedia from "./sections/section_textMedia";
 import section_videoPlayer from "./sections/section_videoPlayer";
 import section_servicesFeed from "./sections/section_servicesFeed";
 import section_contentBlocks from "./sections/section_contentBlocks";
+import snippet_button from "./snippets/snippet_button.js";
 
 
 export const schemaTypes = [
@@ -92,6 +93,7 @@ export const schemaTypes = [
     snippet_linkList,
     snippet_image,
     snippet_video,
+    snippet_button,
 
     section_globalSections,
     section_form,

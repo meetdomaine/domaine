@@ -1,8 +1,14 @@
 ---
-const { heading } = Astro.props
+const { heading, subheading, button, media } = Astro.props
 ---
 <section class="home_hero">
-    <h1 data-pagefind-filter="type:page">{heading}</h1>
+    <div class="section-title">
+        <h1 data-pagefind-filter="type:page">{heading}</h1>
+        <h6>{subheading}</h6>
+    </div>
+    {button.text && button.url &&
+        <a class="button" href={button.url}>{button.text}</a>
+    }
 </section>
 
 <style>
@@ -11,7 +17,9 @@ const { heading } = Astro.props
         min-height: 80svh;
         display: flex;
         flex-direction: column;
-        justify-content: center
+        justify-content: center;
+        align-items: flex-start;
+        gap: var(--space-md);
     }
 
     h1 {

@@ -14,7 +14,10 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
     title="Home"
 >
     <HomeHero
-        heading="We are purpose-built for ambitious & beloved brands."
+        heading={pageSettings.heading}
+        subheading={pageSettings.subheading}
+        button={pageSettings.button}
+        media={pageSettings.media}
     />
 
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (

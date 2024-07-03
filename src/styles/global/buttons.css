@@ -5,6 +5,7 @@
 }
 
 button,
+.button,
 input[type="submit"],
 .hs-button {
     cursor: pointer;
@@ -15,9 +16,21 @@ input[type="submit"],
     outline: none;
     border-radius: var(--button-border-radius);
     min-width: 120px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button:hover,
+.button:hover,
+input[type="submit"]:hover,
+.hs-button:hover {
+
 }
 
 button:focus-visible,
+.button:focus-visible,
 input[type="submit"]:focus-visible,
 .hs-button:focus-visible,
 a:focus-visible {
