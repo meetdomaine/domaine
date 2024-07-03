@@ -1,6 +1,7 @@
 ---
+
 ---
-<div id="cookie-notice" class="cookie-notice color-invert">
+<div id="cookie-notice" class="cookie-notice color-invert hidden">
     <p class="caption">This website stores cookies on your computer. These cookies are used to collect information about how you interact with our website and allow us to remember you. We use this information in order to improve and customize your browsing experience and for analytics and metrics about our visitors both on this website and other media. To find out more about the cookies we use, see our <a href="/privacy-policy">Privacy Policy</a></p>
     <div class="buttons">
         <a id="cookie-accept" class="button">Accept</a>
@@ -9,27 +10,72 @@
 </div>
 
 <script>
-    const cookieNotice = document.querySelector("#cookie-notice")
-    const acceptButton = cookieNotice.querySelector("#cookie-accept")
-    const declineButton = cookieNotice.querySelector("#cookie-decline")
 
-    const hideNotice = () => {
-        cookieNotice.classList.add("hidden")
-    }
 
-    const handleAccept = () => {
-        console.log("accept")
-        hideNotice()
-    }
+        const cookieNotice = document.querySelector("#cookie-notice")
+        const acceptButton = cookieNotice.querySelector("#cookie-accept")
+        const declineButton = cookieNotice.querySelector("#cookie-decline")
 
-    const handleDecline = () => {
-        console.log("decline")
-        hideNotice()
-    }
+        declare global {
+            interface Window {
+                gtag: any,
+                dataLayer: any,
+            }
+        }
 
-    acceptButton.addEventListener("click", handleAccept)
+        window.dataLayer = window.dataLayer || [];
 
-    declineButton.addEventListener("click", handleDecline)
+        const setConsent = (consent) => {
+            const consentMode = {
+                'ad_storage': consent.marketing ? 'granted' : 'denied',
+                'ad_user_data': consent.marketing ? 'granted' : 'denied',
+                'ad_personalization': consent.marketing ? 'granted' : 'denied',
+                'analytics_storage': consent.analytics ? 'granted' : 'denied',
+                'functionality_storage': consent.necessary ? 'granted' : 'denied',
+                'personalization_storage': consent.preferences ? 'granted' : 'denied',
+                'security_storage': consent.preferences ? 'granted' : 'denied',
+            }
+            window.gtag('consent', 'update', consentMode)
+            window.dataLayer.push({ event: 'consentGranted' });
+            localStorage.setItem('consentMode', JSON.stringify(consentMode))
+        }
+
+        const hideNotice = () => {
+            cookieNotice.classList.add("hidden")
+        }
+
+        const handleAccept = () => {
+            setConsent({
+                necessary: true,
+                analytics: true,
+                marketing: true,
+                preferences: false,
+            })
+            hideNotice()
+        }
+
+        const handleDecline = () => {
+            setConsent({
+                necessary: false,
+                analytics: false,
+                marketing: false,
+                preferences: false,
+            })
+            hideNotice()
+        }
+
+        if (localStorage.getItem('consentMode') === null) {
+            cookieNotice.classList.remove("hidden")
+        }
+
+        acceptButton.addEventListener("click", handleAccept)
+        declineButton.addEventListener("click", handleDecline)
+
+        // document.addEventListener("astro:page-load", () => {
+        //     window.dataLayer.push({ event: 'astroPageLoad' });
+        // })
+
+
 </script>
 
 <style>
