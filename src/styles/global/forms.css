@@ -14,14 +14,28 @@
 form {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: var(--form-gap-block);
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+    flex-grow: 1;
 }
 
 fieldset {
     max-width: unset !important;
 }
 
-label,
+label span,
+.hs-form-required {
+    display: inline;
+}
+
+/* label, */
 .hs-field-desc {
     display: block;
     margin: 0;
@@ -77,7 +91,9 @@ select {
 input,
 select,
 textarea {
-    border: 1px solid var(--form-accent-color);
+    background-color: transparent;
+    border: 1px solid var(--color-foreground);
+    color: var(--color-foreground);
     padding: var(--form-padding-block) var(--form-padding-inline);
     border-radius: var(--form-border-radius);
 }
@@ -133,7 +149,8 @@ fieldset.form-columns-2 .input textarea.hs-input {
     width: 100%;
 }
 
-.form-columns-2 {
+.form-columns-2,
+.fields-inline {
     display: flex;
     flex-direction: row;
     justify-content: stretch;

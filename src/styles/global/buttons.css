@@ -29,6 +29,14 @@ input[type="submit"]:hover,
 
 }
 
+button.button-reset {
+    color: currentColor;
+    min-width: unset;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+
 button:focus-visible,
 .button:focus-visible,
 input[type="submit"]:focus-visible,

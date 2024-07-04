@@ -153,16 +153,21 @@ const currentPath = Astro.url.pathname;
 
     body {
         min-height: 100dvh;
+		height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: stretch;
     }
 
+	body:has(dialog[open]) {
+		overflow: hidden;
+	}
+
     main {
         flex-grow: 1;
     }
 
-	.hidden {
+	/* .hidden {
 		opacity: 0;
-	}
+	} */
 </style>

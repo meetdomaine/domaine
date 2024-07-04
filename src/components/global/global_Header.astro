@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import SearchMenu from "./search/SearchMenu"
 import { sanityClient } from "sanity:client";
 import { imageFields } from "./utils/cms-queries";
+import ContactMenu from "./global_ContactMenu.astro";
 
 const { navigationLinks, currentBrand } = Astro.props;
 
@@ -66,11 +67,13 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     </div>
 
     <div class="utility-links">
-        <a href="#" class="utility-link utility">
+        <button class="contact-button utility" popovertarget="contact-menu">
             <span>Get in Touch!</span>
             <Icon class="icon" name="pixel_email" />
-        </a>
+        </button>
     </div>
+
+    <ContactMenu />
 
     <dialog popover id="search-menu" class="search-menu color-invert">
         <button class="close-button" popovertarget="search-menu">
@@ -98,6 +101,8 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     document.addEventListener("astro:page-load", async () => {
 
         const brandMenu: HTMLElement = document.querySelector('.brand-menu');
+        const contactButton: HTMLButtonElement = document.querySelector('.contact-button');
+        const contactMenu: HTMLElement = document.querySelector('.contact-menu');
 
         if (brandMenu) {
             brandMenu.classList.remove("active")
@@ -118,6 +123,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
                 }
             }
         })
+
+        // if (contactButton && contactMenu) {
+        //     contactButton.addEventListener("click", () => contactMenu.classList.add("visible"))
+        // }
     })
 </script>
 
@@ -351,12 +360,13 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         color: var(--color-foreground);
         background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
         backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         border-radius: var(--radius-lg);
         border: none;
         padding: var(--space-md);
         max-height: 0%;
         opacity: 0;
-        transition: opacity var(--anim-sm), max-height var(--anim-sm), display var(--anim-sm) allow-discrete;
+        transition: opacity var(--anim-md), max-height var(--anim-md), display var(--anim-md) allow-discrete;
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -403,13 +413,17 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         right: var(--page-margin);
     }
 
-    .utility-link {
+    .contact-button {
+
+    }
+
+    /* .utility-link {
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 1ch;
         text-decoration: none;
-    }
+    } */
 
 
 

@@ -1,9 +1,13 @@
 :root {
+
+    --anim-duration-sm: 0.3s;
+    --anim-duration-md: 0.8s;
+    --anim-duration-lg: 1.2s;
     
     --anim-easing: cubic-bezier(0.22, 1, 0.36, 1);
-    --anim-sm: 0.3s var(--anim-easing);
-    --anim-md: 0.8s var(--anim-easing);
-    --anim-lg: 1.2s var(--anim-easing);
+    --anim-sm: var(--anim-duration-sm) var(--anim-easing);
+    --anim-md: var(--anim-duration-md) var(--anim-easing);
+    --anim-lg: var(--anim-duration-lg) var(--anim-easing);
 
 }
 

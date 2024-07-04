@@ -1,0 +1,143 @@
+---
+import { Icon } from "astro-icon/components"
+
+const { className } = Astro.props
+---
+<dialog popover open id="contact-menu" class="color-invert" data-lenis-prevent>
+    <div class="menu-header">
+        <div>Contact</div>
+        <button popovertarget="contact-menu" class="contact-close-button button-reset">
+            <Icon name="pixel_x" class="close-button" />
+        </button>
+    </div>
+    <form>
+        <div class="fields-inline">
+            <label for="first-name">
+                First Name
+                <input type="text" name="first-name" required autofocus />
+            </label>
+            <label for="last-name">
+                Last Name
+                <input type="text" name="last-name" required />
+            </label>
+        </div>
+        <label for="email">
+            Email
+            <input type="email" name="email" required />
+        </label>
+        <label for="company">
+            Company / Organization
+            <input type="text" name="company" required />
+        </label>
+        <label for="job-title">
+            Job Title
+            <input type="text" name="job-title" required />
+        </label>
+        <label for="country-region">
+            Country/Region
+            <input type="text" name="country-region" required />
+        </label>
+        <label for="phone-number">
+            Phone Number
+            <input type="tel" name="phone-number" required />
+        </label>
+        <label for="ecomm-platform">
+            Current Platform
+            <input type="text" name="ecomm-platform" required />
+        </label>
+        <label for="ecomm-platform">
+            Current Platform
+            <textarea name="ecomm-platform" rows="4" cols="50" />
+        </label>
+        <input type="submit" value="Submit" />
+    </form>
+</aside>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const contactMenu: HTMLDialogElement = document.querySelector('#contact-menu')
+
+        contactMenu.addEventListener("open", () => console.log('open'))
+        contactMenu.addEventListener("close", () => console.log('close'))
+
+        // if (contactMenu && closeButton) {
+        //     closeButton.addEventListener("click", () => contactMenu.classList.remove("visible"))
+        // }
+    })
+</script>
+
+<style>
+    #contact-menu {
+        --inset: var(--space-sm);
+        border: none;
+        margin: auto var(--inset) auto auto;
+        height: calc(100% - var(--inset) * 2);
+        max-width: 400px;
+        background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: var(--radius-md);
+        position: fixed;
+        translate: calc(100% + var(--inset)) 0;
+        color: var(--color-foreground);
+        padding-block: var(--space-md);
+        z-index: 19;
+        flex-direction: column;
+        gap: var(--space-md);
+        float: right;
+        transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
+    }
+
+    #contact-menu:popover-open {
+        translate: 0 0;
+        display: flex;
+    }
+
+    #contact-menu::backdrop {
+        background-color: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+    }
+
+    @starting-style {
+        #contact-menu:popover-open {
+            display: flex;
+            translate: calc(100% + var(--inset)) 0;
+        }
+    }
+
+    .menu-header { 
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: var(--space-md);
+    }
+
+    form {
+        overflow-y: auto;
+        padding-inline: var(--space-md);
+
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"] {
+        border: none;
+        border-bottom: 1px solid var(--color-foreground);
+        padding-inline: 0;
+        padding-block: var(--space-2xs);
+        background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+    }
+
+    textarea {
+        padding-block: var(--space-2xs);
+        background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
+
+
+</style>
