@@ -19,12 +19,19 @@
   // Only fires on initial navigation
 
   // Fires on each page change
-  document.addEventListener('astro:page-load', () => {
+  // document.addEventListener('astro:page-load', () => {
+  //   console.log('astro ready')
+  //   animateLoad()
+  // });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // console.log('DOM')
     animateLoad()
   });
 
-  // document.addEventListener('DOMContentLoaded', () => {
-  //   animateLoad()
-  // });
+  document.addEventListener('astro:after-swap', () => {
+    // console.log('after swap')
+    animateLoad()
+  });
   
 </script>
