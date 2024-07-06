@@ -124,10 +124,8 @@ const currentPath = Astro.url.pathname;
 		<meta name="twitter:description" content={description ? description : data[0].siteDescription}>
 		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
-		
-
-
-
+		<PageLoadAnimation />
+		<ViewportAnimation />
 		<ViewTransitions />
 	</head>
 	<body>
@@ -149,8 +147,6 @@ const currentPath = Astro.url.pathname;
 		<slot />
 		<Footer />
 		<Lenis />
-		<PageLoadAnimation />
-		<ViewportAnimation />
 		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
 	</body>
 </html>
