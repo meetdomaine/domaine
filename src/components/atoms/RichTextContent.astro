@@ -2,6 +2,7 @@
 import { PortableText } from "astro-portabletext";
 import SanityInlineImage from "../sections/blog/blogPost/SanityInlineImage.astro";
 import SanitySchema from "../sections/blog/blogPost/SanitySchema.astro";
+import YouTubeEmbed from "../atoms/YouTubeEmbed.astro"
 
 const { richText } = Astro.props;
 ---
@@ -11,6 +12,7 @@ const { richText } = Astro.props;
       components={{
         type: {
           inlineImage: SanityInlineImage,
+          youTubeEmbed: YouTubeEmbed,
           schema: SanitySchema,
         }
       }}
@@ -19,7 +21,6 @@ const { richText } = Astro.props;
 
 <style is:global>
   .rich-text {
-    --content-inset: var(--space-xl);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,6 +55,7 @@ const { richText } = Astro.props;
   .rich-text h6 {
     margin-block: 0.8em 0.2em;
   }
+
 
 .rich-text p {
   margin-block: 0 1em;
@@ -96,21 +98,6 @@ const { richText } = Astro.props;
 }
 
 @media screen and (max-width: 960px) {
-
-
-  .rich-text h1,
-  .rich-text h2,
-  .rich-text h3,
-  .rich-text h4,
-  .rich-text h5,
-  .rich-text h6,
-  .rich-text p,
-  .rich-text ol,
-  .rich-text ul,
-  .rich-text li {
-    padding-inline: 0;
-  }
-
 
   .rich-text ol,
   .rich-text ul {
