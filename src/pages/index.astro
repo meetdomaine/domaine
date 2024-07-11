@@ -3,11 +3,12 @@ import { sanityClient } from "sanity:client";
 import HomeHero from "../components/domaine/sections/home/home_Hero.astro";
 import GlobalSections from "../components/global/sections/section_GlobalSections.astro";
 import LayoutDomaine from "../layouts/LayoutDomaine.astro";
+import { globalSectionsFields } from "../components/global/utils/cms-queries"
 
-const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ ...,  globalSections{ ${globalSectionsFields} } }`)
 
 // const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
-// console.log(pageSettings)
+// console.log(pageSettings.globalSections)
 ---
 <LayoutDomaine
     theme="dark"
@@ -22,6 +23,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
     />
 
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
-        <GlobalSections section={section} />
+        <GlobalSections brand="Domaine" section={section} />
     ))}
 </LayoutDomaine>

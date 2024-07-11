@@ -1,0 +1,25 @@
+---
+import { globalSectionsFields } from "../../components/global/utils/cms-queries";
+import HomeHero from "../../components/studio/sections/home/home_Hero.astro";
+import LayoutStudio from "../../layouts/LayoutStudio.astro";
+import { sanityClient } from "sanity:client";
+import GlobalSections from "../../components/global/sections/section_ProjectsFeed.astro"
+
+// const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"]`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]{ ...,  globalSections{ ${globalSectionsFields} } }`)
+
+---
+<LayoutStudio
+    theme="dark"
+    title="Home"
+    searchFilter="type:page"
+>
+    <HomeHero 
+        heading="Tailor-made for the needs of small & medium businesses."
+    />
+
+    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
+        <GlobalSections brand="Studio" section={section} />
+    ))}
+
+</LayoutStudio>

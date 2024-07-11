@@ -1,0 +1,50 @@
+---
+import { sanityClient } from "sanity:client";
+import { imageFields } from "../utils/cms-queries";
+import ProjectCard from "../projects/global_projectCard.astro";
+import { projectGridFields } from "../utils/cms-queries";
+
+const { section, brand } = Astro.props
+
+let projects = null
+
+if (section.projects) {
+    projects = section.projects
+} else {
+    projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0...3]`)
+}
+
+---
+<section class="section-projects-feed">
+    <div class="section-title">
+        <h2>{section.heading}</h2>
+        {section.subheading && <p>{section.subheading}</p>}
+    </div>
+    <div class="section-content">
+        {projects.map((project) => (
+            <ProjectCard
+                title={project.title}
+                excerpt={project.excerpt}
+                slug={project.slug}
+                thumbnailImage={project.thumbnailImage}
+                thumbnailVideo={project.thumbnailVideo}
+                thumbnailIsVideo={project.thumbnailIsVideo}
+            />
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-projects-feed {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        gap: var(--space-sm);
+    }
+
+</style>

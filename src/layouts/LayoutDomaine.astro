@@ -22,8 +22,7 @@ const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "s
 const seoSettings = seoData[0]
 
 // Header
-const headerData = await sanityClient.fetch(`*[_type == "settings_header-domaine"]`)
-const headerSettings = headerData[0]
+const headerSettings = await sanityClient.fetch(`*[_type == "settings_header-domaine"][0]`)
 
 // Footer
 const footerData = await sanityClient.fetch(`*[_type == "settings_footer-domaine"]`)
@@ -51,7 +50,7 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     <Header
         brands={brands}
         currentBrand={currentBrand}
-        navigationLinks={headerSettings.navigationLinks}
+        headerSettings={headerSettings}
     />
     
     <main>

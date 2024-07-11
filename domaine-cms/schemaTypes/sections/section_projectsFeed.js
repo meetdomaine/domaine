@@ -11,16 +11,34 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'projects',
+      title: 'Projects',
+      description: 'Optional. If not added, projects will auto-populate.',
+      type: 'array',
+      of: [{
+        name: 'project',
+        title: 'Project',
+        type: 'reference',
+        to: { type: 'type_project'}
+      }]
     }),
   ],
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading',
     },
     prepare(selection) {
       return {
         ...selection,
-        subheading: 'Projects Feed',
+        subtitle: 'Projects Feed',
         media: iconProjects,
       }
     }

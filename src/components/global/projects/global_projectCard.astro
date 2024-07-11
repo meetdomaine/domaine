@@ -1,17 +1,25 @@
 ---
 import AtomSanityMedia from "../atoms/atom_sanityMedia.astro"
 
-const { title, excerpt, slug, thumbnailImage, thumbnailVideo, thumbnailIsVideo } = Astro.props
-console.log(thumbnailImage)
+const { title, excerpt, slug, thumbnailImage, thumbnailVideo, thumbnailIsVideo, className } = Astro.props
+// console.log(thumbnailImage)
 ---
-<a href={`/work/${slug.current}`}>
+<a href={`/work/${slug.current}`} class={`project-card`}>
 
     <AtomSanityMedia 
         isVideo={thumbnailIsVideo}
         video={thumbnailVideo}
         image={thumbnailImage.image}
+        aspectRatio={3 / 4}
         sizes="30vw"
     />
     <h3>{title}</h3>
     <p>{excerpt}</p>
 </a>
+
+<style>
+    .project-card {
+        flex: 0 1 100%;
+        /* flex-shrink: 0; */
+    }
+</style>

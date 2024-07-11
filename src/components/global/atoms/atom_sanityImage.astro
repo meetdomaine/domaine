@@ -69,23 +69,25 @@ const generateSrcSets = () => {
   data-cover={cover ? "true" : "false"}
 />
 
-<img
+<!-- <img
   id={`placeholder-${image.asset._id}`}
   class="placeholder"
   src={image.asset.metadata.lqip}
   alt={alt ? alt : image.alt}
-/>
+/> -->
 
-<script define:vars={{ image }}>
-  const sanityImage = document.getElementById(image.asset._id)
-  const placeholder = document.getElementById(`placeholder-${image.asset._id}`)
+<!-- <script define:vars={{ image }}>
+  const s = document.querySelectorAll(image.asset._id)
+  const placeholders = document.querySelectorAll(`placeholder-${image.asset._id}`)
 
-  if (sanityImage && placeholder) {
-    sanityImage.addEventListener("load", () => {
-      placeholder.classList.add('hidden')
+  if (sanityImages && placeholders) {
+    sanityImagesforEach((image) => {
+      image.addEventListener("load", () => {
+        placeholders.forEach((placeholder) => placeholder.classList.add('hidden'))
+      })
     })
   }
-</script>
+</script> -->
 
 <style>
   .sanity-image {

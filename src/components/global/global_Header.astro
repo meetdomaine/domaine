@@ -5,7 +5,7 @@ import { sanityClient } from "sanity:client";
 import { imageFields } from "./utils/cms-queries";
 import ContactMenu from "./global_ContactMenu.astro";
 
-const { navigationLinks, currentBrand } = Astro.props;
+const { headerSettings, currentBrand } = Astro.props;
 
 const brands = [
     {
@@ -13,7 +13,7 @@ const brands = [
         logo: "domaine-icon"
     },
     {
-        path: "/accelerate",
+        path: "/studio",
         logo: "domaine-accelerate"
     },
 ]
@@ -51,7 +51,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     <div class="navigation">
         <nav class="navigation-links">
-            {navigationLinks.links.map((link, i) => (
+            {headerSettings.navigationLinks.links.map((link, i) => (
                 <a href={link.linkUrl} class="navigation-link caption">{link.linkText}</a>
             ))}
             <button class="notification-button">
@@ -73,7 +73,12 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         </button>
     </div>
 
-    <ContactMenu />
+    <ContactMenu 
+        hubspotFormId={headerSettings.hubspotFormId}
+        processConsentMessage={headerSettings.processConsentMessage}
+        marketingConsentMessage={headerSettings.marketingConsentMessage}
+
+    />
 
     <dialog popover id="search-menu" class="search-menu color-invert">
         <button class="close-button" popovertarget="search-menu">

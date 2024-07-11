@@ -1,10 +1,11 @@
 ---
-import SectionForm from "./section_Form.astro"
+import Form from "./section_Form.astro"
+import ProjectsFeed from "./section_ProjectsFeed.astro"
 
-const { section } = Astro.props
+const { section, brand } = Astro.props
 ---
-{section._type == "section_form" && <SectionForm section={section} />}
-{section._type == "section_projectsFeed" && <p>{section.heading}</p>}
+{section._type == "section_form" && <Form section={section} brand={brand} />}
+{section._type == "section_projectsFeed" && <ProjectsFeed section={section} brand={brand} />}
 {section._type == "section_blogFeed" && <p>{section.heading}</p>}
 {section._type == "section_textMedia" && <p>{section.heading}</p>}
 {section._type == "section_videoPlayer" && <p>{section.heading}</p>}

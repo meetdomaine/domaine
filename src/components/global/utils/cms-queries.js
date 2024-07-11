@@ -14,7 +14,9 @@ export function urlFor(source) {
 
 export const imageFields = 'image{ crop, asset->{_id, metadata}, alt }'
 
-const projectGridFields = `
+
+
+export const projectGridFields = `
     title,
     excerpt,
     slug, 
@@ -26,6 +28,14 @@ const projectGridFields = `
     thumbnailVideo{asset-> {playbackId,assetId,filename,}},
     orderRank,
     thumbnailIsVideo`
+
+
+export const globalSectionsFields = `
+  sections[]{
+    ...,
+    _type == "section_projectsFeed" => { ..., heading, subheading, projects[]->{ ${projectGridFields} } }
+  }
+`
 
 export const projectsGridQuery = (brand) => {
   return `*[_type == "type_project" && agencyBrand->name == "${brand}" ] { ${projectGridFields} } | order(orderRank)`

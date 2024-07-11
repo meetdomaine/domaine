@@ -20,8 +20,7 @@ const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "s
 const seoSettings = seoData[0]
 
 // Header
-const headerData = await sanityClient.fetch(`*[_type == "settings_header-studio"]`)
-const headerSettings = headerData[0]
+const headerSettings = await sanityClient.fetch(`*[_type == "settings_header-studio"][0]`)
 
 // Footer
 const footerData = await sanityClient.fetch(`*[_type == "settings_footer-studio"]`)
@@ -33,7 +32,7 @@ import '../styles/accelerate/color.css'
 
 // Brand
 const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
-const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "SMB"][0]`)
+const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Studio"][0]`)
 const brandSettings = currentBrand
 
 ---
@@ -52,7 +51,7 @@ const brandSettings = currentBrand
     <Header
         brands={brands}
         currentBrand={currentBrand}
-        navigationLinks={headerSettings.navigationLinks}
+        headerSettings={headerSettings}
     />
 
     <main>

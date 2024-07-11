@@ -1,9 +1,9 @@
 ---
 const { section } = Astro.props;
 ---
-<section class="section_form">
-  <div class="section_form-inner">
-    <div class="section-title">
+<section class="section-form">
+  <div class="section-form__inner">
+    <div class="section-form__title">
       <h2 class="h2">{section.heading}</h2>
       <p class="h6">{section.subheading}</p>
     </div>
@@ -41,7 +41,7 @@ const { section } = Astro.props;
 </script>
 
 <style>
-    .section_form {
+    .section-form {
         padding-inline: var(--page-margin);
     }
 </style>

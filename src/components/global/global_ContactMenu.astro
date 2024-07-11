@@ -1,70 +1,111 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const { className } = Astro.props
+const { className, hubspotFormId, processConsentMessage, marketingConsentMessage } = Astro.props
+
+const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 ---
-<dialog popover open id="contact-menu" class="color-invert" data-lenis-prevent>
+<dialog popover  id="contact-menu" class="color-invert" data-lenis-prevent>
     <div class="menu-header">
         <div>Contact</div>
         <button popovertarget="contact-menu" class="contact-close-button button-reset">
             <Icon name="pixel_x" class="close-button" />
         </button>
     </div>
-    <form>
+    <form id="contact-form" class="contact-form">
         <div class="fields-inline">
-            <label for="first-name">
+            <label for="firstname">
                 First Name
-                <input type="text" name="first-name" required autofocus />
+                <input type="text" name="firstname" id="firstname" required autofocus />
             </label>
-            <label for="last-name">
+            <label for="lastname">
                 Last Name
-                <input type="text" name="last-name" required />
+                <input type="text" name="lastname" id="lastname" required />
             </label>
         </div>
         <label for="email">
             Email
-            <input type="email" name="email" required />
+            <input type="email" name="email" id="email" required />
         </label>
         <label for="company">
             Company / Organization
-            <input type="text" name="company" required />
+            <input type="text" name="company" id="company" required />
         </label>
-        <label for="job-title">
-            Job Title
-            <input type="text" name="job-title" required />
+        <label for="message">
+            How Can We Help?
+            <textarea name="message" id="message" rows="4" cols="50" />
         </label>
-        <label for="country-region">
-            Country/Region
-            <input type="text" name="country-region" required />
-        </label>
-        <label for="phone-number">
-            Phone Number
-            <input type="tel" name="phone-number" required />
-        </label>
-        <label for="ecomm-platform">
-            Current Platform
-            <input type="text" name="ecomm-platform" required />
-        </label>
-        <label for="ecomm-platform">
-            Current Platform
-            <textarea name="ecomm-platform" rows="4" cols="50" />
+        <!-- <label for="processConsent" class="toggle">
+            <input name="processConsent" id="processConsent" type="checkbox" required />
+            {processConsentMessage}
+        </label> -->
+        <label for="marketingConsent" class="toggle">
+            <input name="marketingConsent" id="marketingConsent" type="checkbox" />
+            {marketingConsentMessage}
         </label>
         <input type="submit" value="Submit" />
     </form>
 </aside>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        const contactMenu: HTMLDialogElement = document.querySelector('#contact-menu')
+<script define:vars={{ portalId, hubspotFormId, processConsentMessage, marketingConsentMessage }}>
+    const contactForm = document.querySelector("#contact-form")
+    const marketingConsent = contactForm.querySelector("#marketingConsent")
 
-        contactMenu.addEventListener("open", () => console.log('open'))
-        contactMenu.addEventListener("close", () => console.log('close'))
+    const sumbitForm = async () => {
 
-        // if (contactMenu && closeButton) {
-        //     closeButton.addEventListener("click", () => contactMenu.classList.remove("visible"))
-        // }
+        const formData = new FormData(contactForm);
+
+        const formBody = {
+            fields: [],
+            legalConsentOptions: {
+                consent: { // Include this object when GDPR options are enabled
+                    consentToProcess: true,
+                    text: processConsentMessage,
+                    communications: [
+                        {
+                            "value": marketingConsent.value === "on" ? true : false,
+                            "subscriptionTypeId": 999,
+                            "text": marketingConsentMessage
+                        }
+                    ]
+                }
+            }
+        }
+        
+
+        for (const field of formData) {
+            const fieldName = field[0]
+            const fieldValue = field[1]
+            const fieldType = fieldName === "company" ? "0-2" : "0-1"
+            formBody.fields.push({
+                objectTypeId: fieldType,
+                name: fieldName,
+                value: fieldValue
+            })
+        }
+
+        try {
+            const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${hubspotFormId}`, {
+                method: "POST",
+                body: JSON.stringify(formBody),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            console.log(await response.json())
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    contactForm.addEventListener("submit", (e) => {
+        // console.log(e)
+        e.preventDefault();
+        sumbitForm();  
     })
+
 </script>
+
 
 <style>
     #contact-menu {
@@ -72,7 +113,7 @@ const { className } = Astro.props
         border: none;
         margin: auto var(--inset) auto auto;
         height: calc(100% - var(--inset) * 2);
-        max-width: 400px;
+        max-width: 500px;
         background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
@@ -85,6 +126,7 @@ const { className } = Astro.props
         flex-direction: column;
         gap: var(--space-md);
         float: right;
+        display: flex;
         transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
     }
 
@@ -100,7 +142,7 @@ const { className } = Astro.props
     @starting-style {
         #contact-menu:popover-open {
             display: flex;
-            translate: calc(100% + var(--inset)) 0;
+            /* translate: calc(100% + var(--inset)) 0; */
         }
     }
 
@@ -112,10 +154,14 @@ const { className } = Astro.props
         padding-inline: var(--space-md);
     }
 
-    form {
+    .contact-form {
         overflow-y: auto;
         padding-inline: var(--space-md);
-
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
     }
 
     input[type="text"],
@@ -133,10 +179,8 @@ const { className } = Astro.props
         background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
     }
 
-    label {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-2xs);
+    .fields-inline label {
+        flex: 1 0 auto;
     }
 
 
