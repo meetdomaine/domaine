@@ -29,6 +29,12 @@ export const projectGridFields = `
     orderRank,
     thumbnailIsVideo`
 
+export const blogCardFields = `
+    title,
+    excerpt,
+    slug,
+    thumbnailImage{${imageFields}}`
+
 
 export const globalSectionsFields = `
   sections[]{

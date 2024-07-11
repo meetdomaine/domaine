@@ -31,13 +31,13 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
 // console.log(defaultBlogPosts)
 ---
-<header id="header">
+<header id="header" class="color-invert">
 
     <div class="brand-menu" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
         <div class="brands-wrapper">
             <div class="brands">
                 {brands.map((brand, i) => (
-                    <a href={brand.path} class="brand-link" data-index={i}>
+                    <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
                         <Icon class="logo" name={brand.logo} />
                     </a>
                 ))}
@@ -160,7 +160,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     .brand-menu {
         --icon-width: 80px;
         --icon-height: 30px;
-        background-color: var(--color-background-secondary);
+        background-color: var(--color-background-secondary-translucent);
+        backdrop-filter: var(--background-blur);
+        color: var(--color-foreground);
+        -webkit-backdrop-filter: var(--background-blur);
         position: absolute;
         top: var(--padding-top);
         left: var(--page-margin);
@@ -202,7 +205,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     .brands::before {
         content: "";
-        background-color: var(--color-background);
+        background-color: var(--color-foreground);
         width: var(--icon-width);
         height: 100%;
         position: absolute;
@@ -221,6 +224,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         justify-content: center;
         align-items: center;
         border: 2px solid transparent;
+    }
+
+    .brand-link[data-active="true"] {
+        color: var(--color-background);
     }
 
     .brand-link:focus-visible {
@@ -245,14 +252,16 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         width: 1px;
         height: 14px;
         background-color: var(--color-foreground);
-        opacity: 0.2;
+        /* opacity: 0.2; */
     }
 
 
     /* --- Navigation Menu --- */
 
     .navigation {
-        background-color: var(--color-background-secondary);
+        /* background-color: var(--color-background-secondary); */
+        background-color: var(--color-background-secondary-translucent);
+        backdrop-filter: var(--background-blur);
         color: var(--color-foreground);
         display: flex;
         flex-direction: column;

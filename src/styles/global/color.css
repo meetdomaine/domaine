@@ -26,6 +26,8 @@
     /* Gradients */
     --gradient-ink: linear-gradient(135deg, #2D2D2D 0%, #3A3A3A 100%);
     --gradient-reverse: linear-gradient(135deg, #eaeaea 0%, #bfbfbf 100%);
+
+    --background-blur: blur(10px);
 }
 
 /* Default Colors */
@@ -36,6 +38,12 @@ html[data-theme="dark"] .color-invert {
     --color-background: var(--color-lightest);
     --color-background-secondary: var(--color-lighter);
     --color-border: var(--color-light);
+
+    --color-foreground-translucent: color-mix(in srgb, var(--color-foreground) 60%, transparent);
+    --color-background-translucent: color-mix(in srgb, var(--color-background) 60%, transparent);
+
+    --color-foreground-secondary-translucent: color-mix(in srgb, var(--color-foreground-secondary) 60%, transparent);
+    --color-background-secondary-translucent: color-mix(in srgb, var(--color-background-secondary) 60%, transparent);
     /* --gradient-primary: var(--gradient-reverse); */
 }
 
@@ -47,6 +55,13 @@ html[data-theme="dark"] {
     --color-background: var(--color-darkest);
     --color-background-secondary: var(--color-dark);
     --color-border: var(--color-neutral);
+
+    
+    --color-foreground-translucent: color-mix(in srgb, var(--color-foreground) 60%, transparent);
+    --color-background-translucent: color-mix(in srgb, var(--color-background) 60%, transparent);
+
+    --color-foreground-secondary-translucent: color-mix(in srgb, var(--color-foreground-secondary) 60%, transparent);
+    --color-background-secondary-translucent: color-mix(in srgb, var(--color-background-secondary) 60%, transparent);
     /* --gradient-primary: var(--gradient-reverse); */
 }
     

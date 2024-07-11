@@ -11,11 +11,17 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
     }),
   ],
   preview: {
     select: {
-      title: 'title', 
+      title: 'heading', 
     },
     prepare(selection) {
       return {

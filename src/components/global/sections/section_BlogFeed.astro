@@ -1,0 +1,45 @@
+---
+import { sanityClient } from "sanity:client";
+import BlogCard from "../blog/global_BlogCard.astro";
+import { blogCardFields } from "../utils/cms-queries"
+
+
+const { section, brand } = Astro.props
+
+let blogPosts
+
+if (section.blogPosts) {
+    blogPosts = section.blogPosts
+} else {
+    blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "${brand}" ]{ ${blogCardFields} } | order( postDate desc)[0...3]`)
+}
+
+// console.log(blogPosts)
+---
+<section class="section-blog-feed">
+    <div class="section-title">
+        <h2>{section.heading}</h2>
+        {section.subheading && <p>{section.subheading}</p>}
+    </div>
+    <div class="section-content">
+        {blogPosts.map((post) => (
+            <BlogCard 
+                title={post.title}
+                thumbnailImage={post.thumbnailImage}
+            />
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-blog-feed {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-sm);
+    }
+</style>

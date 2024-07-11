@@ -1,11 +1,10 @@
 ---
-import { globalSectionsFields } from "../../components/global/utils/cms-queries";
-import HomeHero from "../../components/studio/sections/home/home_Hero.astro";
-import LayoutStudio from "../../layouts/LayoutStudio.astro";
 import { sanityClient } from "sanity:client";
-import GlobalSections from "../../components/global/sections/section_ProjectsFeed.astro"
+import { globalSectionsFields } from "../../components/global/utils/cms-queries";
+import LayoutStudio from "../../layouts/LayoutStudio.astro";
+import HomeHero from "../../components/studio/sections/home/home_Hero.astro";
+import GlobalSections from "../../components/global/sections/section_GlobalSections.astro";
 
-// const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"]`)
 const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]{ ...,  globalSections{ ${globalSectionsFields} } }`)
 
 ---
