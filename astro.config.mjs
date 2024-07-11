@@ -16,7 +16,7 @@ export default defineConfig({
       include: 'src/**/*'
     }),
   ],
-  prefetch: true,
+  // prefetch: true,
   output: 'hybrid',
   adapter: vercel({
     edgeMiddleware: false

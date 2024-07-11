@@ -57,13 +57,13 @@ const currentPath = Astro.url.pathname;
 		</script>
 
 		<!-- Google Tag Manager -->
-		<script is:inline>
-			// (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			// new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			// j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			// 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			// })(window,document,'script','dataLayer','GTM-T5Q9G6VH');
-		</script>
+		<!-- <script is:inline>
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-T5Q9G6VH');
+		</script> -->
 
 		<!-- Google Tag Manager -->
 		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -124,10 +124,8 @@ const currentPath = Astro.url.pathname;
 		<meta name="twitter:description" content={description ? description : data[0].siteDescription}>
 		<meta name="twitter:image" content={image ? image : urlFor(data[0].siteImage).url()}>
 
-		
-
-
-
+		<PageLoadAnimation />
+		<ViewportAnimation />
 		<ViewTransitions />
 	</head>
 	<body>
@@ -149,8 +147,6 @@ const currentPath = Astro.url.pathname;
 		<slot />
 		<Footer />
 		<Lenis />
-		<PageLoadAnimation />
-		<ViewportAnimation />
 		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
 	</body>
 </html>

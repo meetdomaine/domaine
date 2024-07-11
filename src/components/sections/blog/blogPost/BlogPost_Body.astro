@@ -4,6 +4,7 @@ import { PortableText } from "astro-portabletext";
 import SanityInlineImage from './SanityInlineImage.astro';
 import SanitySchema from './SanitySchema.astro';
 import SanityImage from "../../../atoms/SanityImage.astro";
+import YouTubeEmbed from "../../../atoms/YouTubeEmbed.astro";
 
 // console.log(authors)
 ---
@@ -13,6 +14,7 @@ import SanityImage from "../../../atoms/SanityImage.astro";
     components={{
       type: {
         inlineImage: SanityInlineImage,
+        youTubeEmbed: YouTubeEmbed,
         schema: SanitySchema,
       }
     }}
@@ -41,6 +43,7 @@ import SanityImage from "../../../atoms/SanityImage.astro";
 <style is:global>
   .blog-post-body {
     flex: 0 1 100%;
+    --content-inset: var(--space-xl);
   }
 
   .blog-post-body > *:first-child {
@@ -153,7 +156,13 @@ import SanityImage from "../../../atoms/SanityImage.astro";
 .blog-post-body .author-info {
 }
 
+
+
 @media screen and (max-width: 960px) {
+
+  .blog-post-body {
+    --content-inset: 0;
+  }
 
   .postContent {
     flex-direction: column;
