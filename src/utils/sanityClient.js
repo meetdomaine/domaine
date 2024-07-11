@@ -106,7 +106,7 @@ export async function getBlogCategories() {
   return categories
 }
 
-const blogPostQuery = `..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...}`
+const blogPostQuery = `..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...}, metaImage, metaDescription`
 
 export async function getBlogPosts() {
   const postContent = await client.fetch(`

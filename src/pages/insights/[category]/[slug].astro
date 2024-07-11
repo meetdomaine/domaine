@@ -42,6 +42,7 @@ const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
 <Layout 
     title="Insights"
     theme="light"
+    title={data.title}
     description={data.metaDescription}
     image={data.metaImage && urlFor(data.metaImage).url()}
 >
