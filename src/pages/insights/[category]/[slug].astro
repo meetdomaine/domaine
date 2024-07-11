@@ -4,7 +4,7 @@ import BlogPostHero from '../../../components/sections/blog/blogPost/BlogPost_He
 import BlogPostSidebar from '../../../components/sections/blog/blogPost/BlogPost_Sidebar.astro';
 import BlogPostBody from '../../../components/sections/blog/blogPost/BlogPost_Body.astro';
 import TextCTA from '../../../components/sections/global/TextCTA.astro';
-import { getBlogPosts, getRelatedBlogPosts } from '../../../utils/sanityClient';
+import { getBlogPosts, getRelatedBlogPosts, urlFor } from '../../../utils/sanityClient';
 import BlogPosts from '../../../components/sections/global/BlogPosts.astro';
 import ContactForm from '../../../components/sections/global/ContactForm.astro';
 
@@ -42,6 +42,8 @@ const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
 <Layout 
     title="Insights"
     theme="light"
+    description={data.metaDescription}
+    image={data.metaImage && urlFor(data.metaImage).url()}
 >
     <BlogPostHero
       title={data.title}
