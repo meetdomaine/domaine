@@ -20,6 +20,12 @@ export default defineType({
             scheme: ['http', 'https']
         })
     }),
+    defineField({
+        name: 'newTab',
+        title: 'Open in New Tab',
+        type: 'boolean',
+        initialValue: false,
+    }),
   ],
 
   

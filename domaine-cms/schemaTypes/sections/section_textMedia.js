@@ -11,11 +11,52 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'text',
+      title: 'Text',
+      type: 'text',
+    }),
+    defineField({
+      name: 'layout',
+      title: 'Layout',
+      type: 'string',
+      options: {
+        list: [
+          { 
+            value: 'mediaRight',
+            title: 'Media Right'
+          },
+          { 
+            value: 'mediaLeft',
+            title: 'Media Left'
+          }
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'mediaRight',
+    }),
+    defineField({
+      name: 'media',
+      title: 'Media',
+      type: 'snippet_video',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'button',
+      title: 'Button',
+      type: 'snippet_button',
     }),
   ],
   preview: {
     select: {
-      title: 'title', 
+      title: 'heading', 
     },
     prepare(selection) {
       return {

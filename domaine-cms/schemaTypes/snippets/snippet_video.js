@@ -9,11 +9,7 @@ export default defineType({
     defineField({
         name: 'video',
         title: 'Video',
-        type: 'file',
-        options: {
-            accept: 'video/mp4'
-        },
-        description: 'Optional video. Must be MP4 format. Try to keep it under 2MB.'
+        type: 'mux.video',
     }),
     defineField({
         name: 'image',
@@ -23,14 +19,22 @@ export default defineType({
             hotspot: true
         },
         description: 'If video is added, this is used as the poster image.',
-        validation: (Rule) => Rule.required()
+        validation: (Rule) => Rule.custom((value, { document: { video } }) => {
+            return !video
+        }),
+        fields: [{
+            name: 'alt',
+            title: 'Alt Text',
+            type: 'string',
+            validation: (Rule) => Rule.required()
+        }]
     }),
-    defineField({
-        name: 'alt',
-        title: 'Alt Text',
-        type: 'string',
-        validation: (Rule) => Rule.required()
-    }),
+    // defineField({
+    //     name: 'alt',
+    //     title: 'Alt Text',
+    //     type: 'string',
+    //     validation: (Rule) => Rule.required()
+    // }),
   ],
 
   

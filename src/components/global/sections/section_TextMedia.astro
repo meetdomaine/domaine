@@ -1,0 +1,45 @@
+---
+import SanityMedia from "../atoms/atom_sanityMedia.astro"
+
+const { section, brand } = Astro.props
+
+console.log(section.media.video)
+---
+<section class="section-text-media" data-layout={section.layout}>
+
+    <div class="section-content">
+        <h2>{section.heading}</h2>
+        {section.subheading && <h3>{section.subheading}</h3>}
+        {section.text && <p>{section.text}</p>}
+        {section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a> }
+    </div>
+    <div class="section-media">
+        <SanityMedia 
+            video={section.media.video}
+            aspectRatio={1 / 1}
+            image={section.media.image}
+            sizes="50vw"
+        />
+    </div>
+</section>
+
+<style>
+    .section-text-media {
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        align-items: center;
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+        gap: var(--space-lg);
+    }
+
+    .section-text-media[data-layout="mediaLeft"] {
+        flex-direction: row-reverse;
+    }
+
+    .section-content,
+    .section-media {
+        flex: 0 1 50%;
+    }
+</style>

@@ -4,8 +4,15 @@ import { urlFor } from '../utils/cms-queries';
 import AtomSanityImage from './atom_sanityImage.astro';
 
 interface Props {
-  isVideo?: boolean,
-  video?: any,
+  // isVideo?: boolean,
+  video?: {
+    asset: {
+      playbackId: string,
+      filename: string,
+    }
+  },
+  videoWidth?: string,
+  videoHeight?: string,
   image?: { 
     asset: {
       _id: 'string',
@@ -35,7 +42,7 @@ interface Props {
   transitionName?: string,
 }
 
-const { video, image, sizes, eager, aspectRatio, cover, alt, transitionName, isVideo } = Astro.props;
+const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHeight, transitionName } = Astro.props;
 // console.log(video)
 ---
 
@@ -47,9 +54,9 @@ const { video, image, sizes, eager, aspectRatio, cover, alt, transitionName, isV
         autoplay
         loop
         muted
-        style={{ aspectRatio: 3/4 }}
-        width="300"
-        height="400"
+        style={{ aspectRatio: aspectRatio }}
+        width={videoWidth}
+        height={videoHeight}
     ></mux-player>
     :
     <AtomSanityImage 
