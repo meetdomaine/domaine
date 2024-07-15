@@ -1,0 +1,56 @@
+---
+import AtomSanityMedia from "../atoms/atom_sanityMedia.astro"
+
+const { section, brand } = Astro.props 
+console.log(section)
+---
+<section class="section-content-blocks">
+    <div class="section-title">
+        {section.heading && <h2>{section.heading}</h2>}
+        {section.subheading && <p>{section.subheading}</p>}
+        {section.button && section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a>}
+    </div>
+    <div class="section-content">
+        {section.contentBlocks.map((contentBlock) => (
+            <div class="content-block">
+                <AtomSanityMedia
+                    video={contentBlock.media.video}
+                    image={contentBlock.media.image}
+                    sizes="100vw"
+                />
+                <div class="content-block__text">
+                    {contentBlock.heading && <h3>{contentBlock.heading}</h3>}
+                    {contentBlock.text && <p>{contentBlock.text}</p>}
+                    {contentBlock.button && contentBlock.button.text && contentBlock.button.url && <a href={contentBlock.button.url} target={contentBlock.button.newTab ? "_blank" : ""}>{contentBlock.button.text}</a>}
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-content-blocks {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+
+    .section-title {
+
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        align-items: flex-start;
+        gap: var(--space-md);
+    }
+
+    .content-block {
+        flex: 0 1 100%;
+    }
+
+    .content-block__text {
+        
+    }
+</style>

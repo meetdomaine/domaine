@@ -9,7 +9,6 @@ const servicesArray = await Promise.all(serviceTypes.map(async (serviceType) => 
         type: serviceType,
         groups: await Promise.all(
             serviceGroups.map( async (serviceGroup) => {
-                console.log(serviceGroup)
                 return {
                     group: serviceGroup,
                     services: await sanityClient.fetch(`*[_type == "type_service" && serviceGroup._ref == '${serviceGroup._id}' ] | order( orderRank asc)`)

@@ -43,6 +43,7 @@ export const globalSectionsFields = `
     _type == "section_projectsFeed" => { ..., heading, subheading, projects[]->{ ${projectGridFields} } },
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
+    _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
   }
 `
 

@@ -5,6 +5,7 @@ import BlogFeed from "./section_BlogFeed.astro"
 import TextMedia from "./section_TextMedia.astro"
 import VideoPlayer from "./section_VideoPlayer.astro"
 import ServicesFeed from "./section_ServicesFeed.astro"
+import ContentBlocks from "./section_ContentBlocks.astro"
 
 const { section, brand } = Astro.props
 ---
@@ -14,5 +15,5 @@ const { section, brand } = Astro.props
 {section._type == "section_textMedia" && <TextMedia section={section} brand={brand} />}
 {section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} />}
 {section._type == "section_servicesFeed" && <ServicesFeed section={section} brand={brand} />}
-{section._type == "section_contentBlocks" && <p>{section.heading}</p>}
+{section._type == "section_contentBlocks" && <ContentBlocks section={section} brand={brand} />}
 
