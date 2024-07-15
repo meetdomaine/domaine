@@ -15,24 +15,26 @@ if (section.projects) {
 }
 
 ---
-<section class="section-projects-feed">
-    <div class="section-title">
-        <h2>{section.heading}</h2>
-        {section.subheading && <p>{section.subheading}</p>}
-    </div>
-    <div class="section-content">
-        {projects.map((project) => (
-            <ProjectCard
-                title={project.title}
-                excerpt={project.excerpt}
-                slug={project.slug}
-                thumbnailImage={project.thumbnailImage}
-                thumbnailVideo={project.thumbnailVideo}
-                thumbnailIsVideo={project.thumbnailIsVideo}
-            />
-        ))}
-    </div>
-</section>
+{section.showSection && 
+    <section class="section-projects-feed">
+        <div class="section-title">
+            <h2>{section.heading}</h2>
+            {section.subheading && <p>{section.subheading}</p>}
+        </div>
+        <div class="section-content">
+            {projects.map((project) => (
+                <ProjectCard
+                    title={project.title}
+                    excerpt={project.excerpt}
+                    slug={project.slug}
+                    thumbnailImage={project.thumbnailImage}
+                    thumbnailVideo={project.thumbnailVideo}
+                    thumbnailIsVideo={project.thumbnailIsVideo}
+                />
+            ))}
+        </div>
+    </section>
+}
 
 <style>
     .section-projects-feed {

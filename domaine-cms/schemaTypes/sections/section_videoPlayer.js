@@ -8,14 +8,50 @@ export default defineType({
   icon: ToggleArrowRightIcon,
   fields: [
     defineField({
+      name: 'showSection',
+      title: 'Show Section',
+      type: 'boolean',
+      initialValue: true
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
     }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'video',
+      title: 'Video',
+      type: 'mux.video',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'textColor',
+      title: 'Text Color',
+      type: 'string',
+      options: {
+        list: [
+          { 
+            value: 'dark',
+            title: 'Dark'
+          },
+          { 
+            value: 'light',
+            title: 'Light'
+          }
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'dark'
+    }),
   ],
   preview: {
     select: {
-      title: 'title', 
+      title: 'heading', 
     },
     prepare(selection) {
       return {

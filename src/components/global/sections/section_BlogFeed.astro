@@ -16,20 +16,22 @@ if (section.blogPosts) {
 
 // console.log(blogPosts)
 ---
-<section class="section-blog-feed">
-    <div class="section-title">
-        <h2>{section.heading}</h2>
-        {section.subheading && <p>{section.subheading}</p>}
-    </div>
-    <div class="section-content">
-        {blogPosts.map((post) => (
-            <BlogCard 
-                title={post.title}
-                thumbnailImage={post.thumbnailImage}
-            />
-        ))}
-    </div>
-</section>
+{section.showSection && 
+    <section class="section-blog-feed">
+        <div class="section-title">
+            <h2>{section.heading}</h2>
+            {section.subheading && <p>{section.subheading}</p>}
+        </div>
+        <div class="section-content">
+            {blogPosts.map((post) => (
+                <BlogCard 
+                    title={post.title}
+                    thumbnailImage={post.thumbnailImage}
+                />
+            ))}
+        </div>
+    </section>
+}
 
 <style>
     .section-blog-feed {

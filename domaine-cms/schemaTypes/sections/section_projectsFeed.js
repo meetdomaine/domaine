@@ -8,6 +8,12 @@ export default defineType({
   icon: iconProjects,
   fields: [
     defineField({
+      name: 'showSection',
+      title: 'Show Section',
+      type: 'boolean',
+      initialValue: true
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',

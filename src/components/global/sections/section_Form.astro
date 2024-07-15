@@ -1,18 +1,21 @@
 ---
 const { section } = Astro.props;
 ---
-<section class="section-form">
-  <div class="section-form__inner">
-    <div class="section-form__title">
-      <h2 class="h2">{section.heading}</h2>
-      <p class="h6">{section.subheading}</p>
-    </div>
-    
-    <div 
-      id="form" 
-      data-hubspot-form-id={section.hubspotFormId}
-    ></div>
-</section>
+{section.showSection && 
+  <section class="section-form">
+    <div class="section-form__inner">
+      <div class="section-form__title">
+        <h2 class="h2">{section.heading}</h2>
+        <p class="h6">{section.subheading}</p>
+      </div>
+      
+      <div 
+        id="form" 
+        data-hubspot-form-id={section.hubspotFormId}
+      ></div>
+  </section>
+
+}
 
 <script>
 

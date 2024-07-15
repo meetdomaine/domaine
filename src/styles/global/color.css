@@ -27,6 +27,8 @@
     --gradient-ink: linear-gradient(135deg, #2D2D2D 0%, #3A3A3A 100%);
     --gradient-reverse: linear-gradient(135deg, #eaeaea 0%, #bfbfbf 100%);
 
+    --color-video-player-accent: var(--color-blue);
+
     --background-blur: blur(10px);
 }
 

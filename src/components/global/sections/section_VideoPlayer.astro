@@ -1,0 +1,219 @@
+---
+import { Icon } from "astro-icon/components"
+
+const { section, brand } = Astro.props
+
+const playbackId = section.video.asset.playbackId
+const sectionKey = section._key
+---
+<section 
+    id={`video-player__${sectionKey}`} 
+    class="section-video-player" 
+    data-playing="false"
+    data-muted="false"
+    data-color={section.textColor}
+>
+    <div class="section-content">
+        <div class="section-text">
+            <h2>Heading</h2>
+            <p>Subheading</p>
+        </div>
+        <div class="video-controls">
+            <button class="play-toggle" >
+                <Icon name="pixel_play" class="icon-play" />
+                <Icon name="pixel_pause" class="icon-pause" />
+            </button>
+            <button class="mute-toggle" >
+                <Icon name="pixel_audio" class="icon-audio" />
+                <Icon name="pixel_audio-mute" class="icon-audio--mute" />
+            </button>
+        </div>
+    </div>
+    <mux-player
+        playback-id={playbackId}
+        metadata-video-title={section.video.asset.filename}
+        width="1920"
+        height="1080"
+        style={{ aspectRatio: 16 / 9}}
+        accent-color="var(--color-video-player-accent)"
+        nohotkeys
+    ></mux-player>
+</section>
+
+<script define:vars={{ playbackId, sectionKey }}>
+
+    const section = document.getElementById(`video-player__${sectionKey}`)
+    const video = section.getElementsByTagName('mux-player')[0]
+    const playToggle = section.querySelector('.play-toggle')
+    const muteToggle = section.querySelector('.mute-toggle')
+
+    const pauseVideo = () => {
+        video.pause()
+        section.dataset.playing = "false"
+    }
+
+    const playVideo = () => {
+        video.play()
+        section.dataset.playing = "true"
+    }
+
+    const unmuteVideo = () => {
+        video.muted = false
+        section.dataset.muted = "false"
+    }
+
+    const muteVideo = () => {
+        video.muted = true
+        section.dataset.muted = "true"
+    }
+
+    const resetVideo = () => {
+        video.currentTime = 0
+        section.dataset.playing = "false"
+    }
+
+    const handlePlayState = (e) => {
+        const isPlaying = video.currentTime > 0 && !video.paused && !video.ended
+        isPlaying ? pauseVideo() : playVideo()
+    }
+
+    const handleMuteState = (e) => {
+        const isMuted = video.muted
+        isMuted ? unmuteVideo() : muteVideo()
+    }
+
+    document.addEventListener("astro:page-load", () => {
+        playToggle.addEventListener("click", (e) => {
+            handlePlayState(e)
+        })
+
+        muteToggle.addEventListener("click", (e) => {
+            handleMuteState(e)
+        })
+
+        video.media.nativeEl.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the default click-to-pause behavior
+        });
+
+        video.addEventListener("ended", resetVideo)
+        video.addEventListener("pause", pauseVideo)
+    })
+
+</script>
+
+<style>
+
+    .section-video-player {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .section-video-player[data-color="dark"] {
+        color: var(--color-darkest);
+    }
+
+    .section-video-player[data-color="light"] {
+        color: var(--color-lightest);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .video-controls {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+    }
+
+    .play-toggle,
+    .mute-toggle {
+        color: inherit;
+        min-width: unset;
+        padding: var(--space-xs);
+        background-color: transparent;
+        border: 1px solid currentColor;
+    }
+
+    .section-video-player[data-playing="false"] .mute-toggle {
+        display: none;
+    }
+
+    .section-video-player[data-playing="false"] .play-toggle .icon-pause {
+        display: none;
+    }
+
+    .section-video-player[data-playing="true"] .play-toggle .icon-play {
+        display: none;
+    }
+
+    .section-video-player[data-playing="true"] .section-text {
+        display: none;
+    }
+
+    .section-video-player[data-playing="true"] .video-controls{
+        opacity: 0;
+        transition: opacity var(--anim-md);
+    }
+
+    .section-video-player[data-playing="true"]:hover .video-controls{
+        opacity: 1;
+    }
+
+    .section-video-player[data-muted="true"] .mute-toggle .icon-audio {
+        display: none;
+    }
+
+    .section-video-player[data-muted="false"] .mute-toggle .icon-audio--mute {
+        display: none;
+    }
+
+    .icon-play,
+    .icon-pause,
+    .icon-audio,
+    .icon-audio--mute {
+        width: var(--icon-sm);
+        height: var(--icon-sm);
+    }
+
+    mux-player {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        --media-object-fit: cover;
+        --media-object-position: center;
+        
+        --loading-indicator: none;
+        --play-button: none;
+        --live-button: none;
+        --seek-backward-button: none;
+        --seek-forward-button: none;
+        --mute-button: none;
+        --captions-button: none;
+        --airplay-button: none;
+        --pip-button: none;
+        --fullscreen-button: none;
+        --cast-button: none;
+        --playback-rate-button: none;
+        --volume-range: none;
+        /* --time-range: none; */
+        --time-display: none;
+        --duration-display: none;
+        --rendition-selectmenu: none;
+    }
+
+    mux-player::part(bottom play button) {
+        display: none;
+    }
+</style>
