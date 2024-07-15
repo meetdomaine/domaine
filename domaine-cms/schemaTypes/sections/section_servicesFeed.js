@@ -18,6 +18,16 @@ export default defineType({
       title: 'Heading',
       type: 'string',
     }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'button',
+      title: 'Button',
+      type: 'snippet_button',
+    }),
   ],
   preview: {
     select: {

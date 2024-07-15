@@ -1,0 +1,69 @@
+---
+import { sanityClient } from "sanity:client";
+
+const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" ] | order( orderRank asc)`)
+
+const servicesArray = await Promise.all(serviceTypes.map(async (serviceType) => {
+    const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType._ref == '${serviceType._id}' ] | order( orderRank asc)`)
+    return {
+        type: serviceType,
+        groups: await Promise.all(
+            serviceGroups.map( async (serviceGroup) => {
+                console.log(serviceGroup)
+                return {
+                    group: serviceGroup,
+                    services: await sanityClient.fetch(`*[_type == "type_service" && serviceGroup._ref == '${serviceGroup._id}' ] | order( orderRank asc)`)
+                }
+            })
+        )
+    }
+}))
+
+const { section, brand } = Astro.props
+---
+<section class="section-services-feed">
+    <div class="section-title">
+        <h2>{section.heading}</h2>
+        {section.subheading && <p>{section.subheading}</p>}
+        {section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a>}
+    </div>
+    <div class="section-content">
+        {servicesArray.map((serviceType) => (
+            <div class="service-type">
+                <h3 class="h3">{serviceType.type.title}</h3>
+                <div class="service-type__groups">
+                    {serviceType.groups.map((serviceGroup) => (
+                    <div class="service-type__group">
+                        <h3 class="h6">{serviceGroup.group.title}</h3>
+                        {serviceGroup.services.map((service) => (
+                            <p class="caption">{service.title}</p>
+                        ))}
+                    </div>
+                    ))}
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-services-feed {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+
+    .service-type__groups {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-md);
+    }
+</style>
