@@ -32,6 +32,8 @@ const allFilters = await Promise.all([
     },
 ])
 
+console.log(brand)
+
 ---
 <div class="projects-filter">
     {allFilters.map((filterGroup) => (
@@ -44,7 +46,7 @@ const allFilters = await Promise.all([
                             {filter.title && filter.slug && (
                                 <a 
                                     class="filter-group__title caption" 
-                                    href={`/work/${filterGroup.path}${filter.slug.current}`}
+                                    href={`/${brand === "Studio" ? "studio/" : null}work/${filterGroup.path}${filter.slug.current}`}
                                     data-active={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "true" : "false"}
                                 >{filter.title}</a>
                             )}
@@ -52,7 +54,7 @@ const allFilters = await Promise.all([
                                 {filter.links.map((link) => (
                                     <a 
                                         class="link" 
-                                        href={`/work/${filterGroup.path}${link.slug.current}`}
+                                        href={`/${brand === "Studio" ? "studio/" : null}work/${filterGroup.path}${link.slug.current}`}
                                         data-active={currentPath == `/${filterGroup.path}${link.slug.current}` ? "true" : "false"}
                                     >{link.title}</a>
                                 ))}
