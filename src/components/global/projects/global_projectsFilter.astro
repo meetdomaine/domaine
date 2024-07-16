@@ -28,7 +28,7 @@ const allFilters = await Promise.all([
     {
         title: 'Services',
         path: 'services/',
-        filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(title asc)`)
+        filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
     },
 ])
 
