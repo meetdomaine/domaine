@@ -1,0 +1,110 @@
+---
+import { sanityClient } from 'sanity:client';
+
+const { brand, currentPath } = Astro.props;
+
+const allFilters = await Promise.all([
+    {
+        title: 'Industries',
+        path: 'industries/',
+        filters: [{
+            links: await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
+        }]
+    },
+    {
+        title: 'Features',
+        path: 'features/',
+        filters: [{
+            links: await sanityClient.fetch(`*[_type == "type_projectFeature" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
+        }]
+    },
+    {
+        title: 'Partners',
+        path: 'partners/',
+        filters: [{
+            links: await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0] | order(title asc)`)
+        }]
+    },
+    {
+        title: 'Services',
+        path: 'services/',
+        filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(title asc)`)
+    },
+])
+
+---
+<div class="projects-filter">
+    {allFilters.map((filterGroup) => (
+        <div class="filter-column">
+            <p class="filter-column__title caption">{filterGroup.title}</p>
+            <div class="filters">
+                {filterGroup.filters.map((filter) => {
+                    return (
+                        <div class="filter-group">
+                            {filter.title && filter.slug && (
+                                <a 
+                                    class="filter-group__title caption" 
+                                    href={`/work/${filterGroup.path}${filter.slug.current}`}
+                                    data-active={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "true" : "false"}
+                                >{filter.title}</a>
+                            )}
+                            <div class="links">
+                                {filter.links.map((link) => (
+                                    <a 
+                                        class="link" 
+                                        href={`/work/${filterGroup.path}${link.slug.current}`}
+                                        data-active={currentPath == `/${filterGroup.path}${link.slug.current}` ? "true" : "false"}
+                                    >{link.title}</a>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+    ))}
+</div>
+
+<style>
+    .projects-filter {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xl);
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-md);
+    }
+
+    .filter-column,
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: var(--space-md);
+    }
+
+    .filter-column__title {
+        margin-bottom: var(--space-xs);
+    }
+
+    .filter-group__title {
+        margin-bottom: var(--space-xs);
+        color: var(--color-foreground-secondary);
+        text-decoration: none;
+    }
+
+    .links {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        margin-bottom: var(--space-xs)
+    }
+
+    .link {
+        text-decoration: none;
+    }
+
+    .link[data-active="true"],
+    .filter-group__title[data-active="true"] {
+        text-decoration: underline var(--color-brand) 1px;
+        text-underline-offset: 0.2em;
+    }
+</style>

@@ -24,6 +24,11 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'string',
+    }),
+    defineField({
       name: 'serviceType',
       title: 'Service Type',
       type: 'reference',

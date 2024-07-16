@@ -1,0 +1,33 @@
+---
+import { sanityClient } from 'sanity:client';
+import LayoutDomaineProjects from '../../../layouts/LayoutDomaineProjects.astro';
+import { projectGridFields } from '../../../components/global/utils/cms-queries';
+
+export async function getStaticPaths() {
+    const partners = await sanityClient.fetch(`*[_type == "type_partner" ]`)
+    return partners.map((partner) => {
+        return {
+            params: { partner: partner.slug.current },
+            props: { content: partner }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Domaine' && '${content._id}' in services[]->_id ]{${projectGridFields}} | order(orderRank)`)
+
+---
+<LayoutDomaineProjects 
+    title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}
+    description={content.metafields && content.metafields.description ? content.metafields.description : null}
+    searchFilter="type:project-service"
+    heading={content.title}
+    subheading={content.excerpt}
+    projects={projects}
+    currentPath={`/partners/${content.slug.current}`}
+>
+</LayoutDomaineProjects>

@@ -26,6 +26,18 @@ export default defineType({
       type: 'reference',
       to: [{type: 'type_partnerTier'}]
     }),
+    // defineField({
+    //   name: 'agencyBrands',
+    //   title: 'Agency Brands',
+    //   type: 'array',
+    //   of: [{
+    //     name: 'agencyBrand',
+    //     title: 'Agency Brand',
+    //     type: 'reference',
+    //     to: [{ type: 'type_agencyBrand'}]
+    //   }],
+    //   validation: Rule => Rule.required(),
+    // }),
   ],
 
   preview: {

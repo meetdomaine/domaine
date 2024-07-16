@@ -42,7 +42,7 @@ export default defineType({
   },
   components: {
     preview: ({ icon, title }) => {
-      return <InlineSvgPreviewItem icon={icon} title={title} subtitle={'test'} />
+      return <InlineSvgPreviewItem icon={icon} title={title} subtitle={'Agency Brand'} />
     },
   },
 })

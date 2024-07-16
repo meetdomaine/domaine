@@ -25,14 +25,14 @@ export default defineConfig({
     structureTool({
       structure: structure
     }),
-    media(),
     muxInput(),
-    vercelDeployTool(),
-    colorInput(),
-    inlineSvgInput(),
     presentationTool({
       previewUrl: 'http://localhost:4321/staging/'
     }),
+    vercelDeployTool(),
+    colorInput(),
+    media(),
+    inlineSvgInput(),
   ],
   schema: {
     types: schemaTypes,

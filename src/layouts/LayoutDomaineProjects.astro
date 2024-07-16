@@ -1,0 +1,42 @@
+---
+import { sanityClient } from 'sanity:client';
+import { paths } from '../components/global/utils/paths';
+import LayoutDomaine from '../layouts/LayoutDomaine.astro';
+import Hero from '../components/domaine/sections/work/workIndex_Hero.astro'
+import { projectsGridQuery, urlFor } from '../components/global/utils/cms-queries';
+import GlobalProjectsGrid from '../components/global/projects/global_projectsGrid.astro';
+import ProjectsFilter from '../components/global/projects/projects_Filter.astro';
+
+
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
+const { projects, heading, subheading, title, description, searchFilter, currentPath } = Astro.props;
+---
+<LayoutDomaine
+    title={ title ? title : pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
+    description={description ? description : pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
+    searchFilter={searchFilter}
+>
+    <Hero
+        heading={heading ? heading : pageSettings.heading}
+        subheading={subheading ? subheading : pageSettings.subheading}
+    />
+    <ProjectsFilter 
+        brand="Domaine"
+        currentPath={currentPath}
+    />
+    <slot name="before-grid" /> 
+    <div class="grid">
+        <GlobalProjectsGrid 
+            projects={projects}
+        />
+    </div>
+    <slot name="after-grid" /> 
+</LayoutDomaine>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-inline: var(--page-margin);
+    }
+</style>
