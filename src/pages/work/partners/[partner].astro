@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Domaine' && '${content._id}' in services[]->_id ]{${projectGridFields}} | order(orderRank)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Domaine' && '${content._id}' in partners[]->_id ]{${projectGridFields}} | order(orderRank)`)
 
 ---
 <LayoutDomaineProjects 

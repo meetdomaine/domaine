@@ -46,7 +46,7 @@ console.log(brand)
                             {filter.title && filter.slug && (
                                 <a 
                                     class="filter-group__title caption" 
-                                    href={`/${brand === "Studio" ? "studio/" : null}work/${filterGroup.path}${filter.slug.current}`}
+                                    href={`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${filter.slug.current}`}
                                     data-active={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "true" : "false"}
                                 >{filter.title}</a>
                             )}
@@ -54,7 +54,7 @@ console.log(brand)
                                 {filter.links.map((link) => (
                                     <a 
                                         class="link" 
-                                        href={`/${brand === "Studio" ? "studio/" : null}work/${filterGroup.path}${link.slug.current}`}
+                                        href={`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${link.slug.current}`}
                                         data-active={currentPath == `/${filterGroup.path}${link.slug.current}` ? "true" : "false"}
                                     >{link.title}</a>
                                 ))}
