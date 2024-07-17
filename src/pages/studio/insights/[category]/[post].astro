@@ -1,10 +1,11 @@
 ---
 import { sanityClient } from 'sanity:client';
+import LayoutDomaine from '../../../../layouts/LayoutDomaine.astro';
 import { paths } from '../../../../components/global/utils/paths';
-import LayoutStudio from '../../../../layouts/LayoutStudio.astro';
+import { urlFor } from '../../../../components/global/utils/cms-queries';
 
 export async function getStaticPaths() {
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "SMB"]{ ..., category->{...}, authors[]->{...} }`)
+    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio"]{ ..., category->{..., slug{...} }, authors[]->{...} }`)
     return posts.map((post) => {
         // console.log(post)
         return {
@@ -21,16 +22,16 @@ interface Props {
 const { content } = Astro.props;
 
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" && category->_id == '${content._id}' ] | order( postDate desc)`)
-// // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., category->{...}} | order( postDate desc)`)
-// console.log(blogPosts)
 ---
-<LayoutStudio
+<LayoutDomaine
     title={content.title}
     searchFilter="type:blog-post"
 >
     <a href={`${paths.root.blog.path}/${content.category.slug.current}`}><h6>{content.category.title}</h6></a>
     <h1>{content.title}</h1>
     <h6>{content.excerpt}</h6>
+
+    <img src={urlFor(content.thumbnail).url()}
 
     <h6>Date:</h6>
     <p>{content.postDate}</p>
@@ -43,4 +44,4 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
         <p>{author.name}</p>
         <p>{author.role}</p>
     ))}
-</LayoutStudio>
+</LayoutDomaine>

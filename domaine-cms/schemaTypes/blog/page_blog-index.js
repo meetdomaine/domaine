@@ -19,6 +19,11 @@ export default defineType({
         maxLength: 96,
       },
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
   ],
 
   preview: {

@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
-import LayoutDomaine from '../../../layouts/LayoutDomaine.astro';
-import { paths } from '../../../components/global/utils/paths';
+import { blogCardFields } from '../../../components/global/utils/cms-queries';
+import LayoutDomaineBlogIndex from '../../../layouts/Layout_Domaine-BlogIndex.astro';
 
 export async function getStaticPaths() {
     const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
@@ -20,18 +20,15 @@ interface Props {
 
 const { content } = Astro.props;
 
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] { ..., category->{...}} | order( postDate desc)`)
-// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., category->{...}} | order( postDate desc)`)
-// console.log(blogPosts)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
 ---
-<LayoutDomaine
-    title="Work"
+<LayoutDomaineBlogIndex
+    pageSetting={pageSettings}
+    blogPosts={blogPosts}
+    heading={content.title}
+    subheading="Lorem ipsum dolor sit amet."
     searchFilter="type:blog-category"
 >
-    <h1>{content.title}</h1>
-    <h3>Posts</h3>
-    {blogPosts.map((project) => (
-        <a href={`${paths.root.blog.path}/${project.category.slug.current}/${project.slug.current}`}><h5>{project.title}</h5></a>
-    ))}
 
-</LayoutDomaine>
+</LayoutDomaineBlogIndex>

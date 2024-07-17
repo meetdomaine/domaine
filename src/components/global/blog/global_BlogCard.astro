@@ -1,9 +1,16 @@
 ---
 import AtomSanityMedia from "../atoms/atom_sanityMedia.astro"
 
-const { title, thumbnailImage } = Astro.props
+interface Props {
+    title: string,
+    slug: any,
+    thumbnailImage: any,
+    category: any
+}
+
+const { title, thumbnailImage, slug, category } = Astro.props
 ---
-<a href="#" class="blog-card">
+<a href={`/insights/${slug}`} class="blog-card">
     <AtomSanityMedia
         image={thumbnailImage.image}
         aspectRatio={1 / 1}

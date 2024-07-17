@@ -33,7 +33,8 @@ export const projectGridFields = `
 export const blogCardFields = `
     title,
     excerpt,
-    slug,
+    category->{ title, slug{...} },
+    slug{...},
     thumbnailImage{${imageFields}}`
 
 

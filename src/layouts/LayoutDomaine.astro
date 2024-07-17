@@ -17,10 +17,6 @@ interface Props {
 
 const { title, description, image, theme, backgroundColor, foregroundColor, searchFilter } = Astro.props;
 
-// SEO
-const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "settings_SEO-domaine"]`)
-const seoSettings = seoData[0]
-
 // Header
 const headerSettings = await sanityClient.fetch(`*[_type == "settings_header-domaine"][0]`)
 
@@ -38,11 +34,11 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
 
 ---
 <LayoutGlobal
-    title={`${title ? title : "Home"} | ${seoSettings.metafields.title}`}
-    description={ description ? description : seoSettings.description }
+    title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
+    description={ description ? description : currentBrand.description }
     theme="light"
     favicon={currentBrand.favicon}
-    image={image ? image : seoSettings.metafields.image}
+    image={image ? image : currentBrand.metafields.image}
     backgroundColor={backgroundColor}
     foregroundColor={foregroundColor}
     searchFilter={searchFilter}

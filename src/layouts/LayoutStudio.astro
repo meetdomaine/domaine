@@ -16,8 +16,8 @@ interface Props {
 const { title, description, image, theme, searchFilter } = Astro.props;
 
 // SEO
-const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "settings_SEO-studio"]`)
-const seoSettings = seoData[0]
+// const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "settings_SEO-studio"]`)
+// const seoSettings = seoData[0]
 
 // Header
 const headerSettings = await sanityClient.fetch(`*[_type == "settings_header-studio"][0]`)
@@ -37,11 +37,11 @@ const brandSettings = currentBrand
 
 ---
 <LayoutGlobal
-    title={`${title ? title : "Home"} | ${seoSettings.metafields.title}`}
-    description={ description ? description : seoSettings.description }
+    title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
+    description={ description ? description : currentBrand.description }
     theme="dark"
     favicon={brandSettings.favicon}
-    image={image ? image : seoSettings.metafields.image}
+    image={image ? image : currentBrand.metafields.image}
     searchFilter={searchFilter}
 >
     <Header

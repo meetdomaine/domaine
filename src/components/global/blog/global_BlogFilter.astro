@@ -1,0 +1,25 @@
+---
+import { sanityClient } from 'sanity:client';
+
+const { brand, path } = Astro.props
+
+// const brand = "Domaine"
+const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == '${brand}' && references(^._id)] ) > 0]`)
+console.log(blogCategories)
+---
+<div class="blog-filters">
+    <a href={`${path}/insights/`}>All Insights</a>
+    {blogCategories.map((category) => (
+        <a href={`${path}/insights/${category.slug.current}`}>{category.title}</a>
+    ))}
+</div>
+
+<style>
+    .blog-filters {
+        display: flex;
+        flex-direction: row;
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-md);
+        gap: var(--space-sm);
+    }
+</style>

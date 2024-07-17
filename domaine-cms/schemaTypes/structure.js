@@ -548,33 +548,6 @@ export const structure = (S, context) =>
                             ])
                         ),
                     S.listItem()
-                        .title(labelSEO)
-                        .icon(iconSEO)
-                        .child(
-                            S.list()
-                            .title(labelSEO)
-                            .items([
-                                S.listItem()
-                                .title(labelBrandPrimary)
-                                .icon(iconBrandPrimary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_SEO')
-                                    .documentId(`settings_SEO-${slugBrandPrimary}`)
-                                    .title(labelBrandPrimary)
-                                ),
-                                S.listItem()
-                                .title(labelBrandSecondary)
-                                .icon(iconBrandSecondary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_SEO')
-                                    .documentId(`settings_SEO-${slugBrandSecondary}`)
-                                    .title(labelBrandSecondary)
-                                )
-                            ])
-                        ),
-                    S.listItem()
                         .title(labelAgencyBrand)
                         .icon(iconAgencyBrand)
                         .child(

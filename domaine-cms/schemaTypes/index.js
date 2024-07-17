@@ -30,7 +30,6 @@ import settings_headerDomaine from "./siteSettings/settings_header-domaine";
 import settings_headerStudio from "./siteSettings/settings_header-studio";
 import settings_footerDomaine from "./siteSettings/settings_footer-domaine";
 import settings_footerStudio from "./siteSettings/settings_footer-studio";
-import settings_SEO from "./siteSettings/settings_SEO";
 import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_linkList from "./snippets/snippet_link-list";
 import type_agencyBrand from "./siteSettings/type_agencyBrand.jsx";
@@ -87,7 +86,6 @@ export const schemaTypes = [
     settings_headerStudio,
     settings_footerDomaine,
     settings_footerStudio,
-    settings_SEO,
 
     snippet_SEOFields,
     snippet_linkList,

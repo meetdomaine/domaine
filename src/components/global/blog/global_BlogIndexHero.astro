@@ -1,0 +1,14 @@
+---
+const { heading, subheading } = Astro.props
+---
+<section class="blog-index-hero">
+    <h1>{heading}</h1>
+    {subheading && <p>{subheading}</p>}
+</section>
+
+<style>
+    .blog-index-hero {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+</style>

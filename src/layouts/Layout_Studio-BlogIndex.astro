@@ -1,0 +1,45 @@
+---
+import { sanityClient } from 'sanity:client';
+import LayoutStudio from './LayoutStudio.astro';
+import GlobalBlogCard from '../components/global/blog/global_BlogCard.astro';
+import GlobalBlogIndexHero from '../components/global/blog/global_BlogIndexHero.astro';
+import GlobalBlogFilter from '../components/global/blog/global_BlogFilter.astro';
+
+
+const { title, description, heading, subheading, searchFilter, blogPosts, pageSettings, brand } = Astro.props;
+---
+<LayoutStudio
+    title={ title ? title : pageSettings && pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Insights"}
+    description={description ? description : pageSettings && pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
+    searchFilter={searchFilter}
+>
+    <GlobalBlogIndexHero
+        heading={heading}
+        subheading={subheading}
+    />
+
+    <GlobalBlogFilter 
+        brand="Studio"
+        path="/studio"
+    />
+
+    <div class="blog-grid">
+        {blogPosts.map((project) => (
+            <GlobalBlogCard 
+                title={project.title}
+                category={project.category}
+                slug={`${project.category.slug.current}/${project.slug.current}`}
+                thumbnailImage={project.thumbnailImage}
+            />
+        ))}
+    </div>
+</LayoutStudio>
+
+<style>
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-inline: var(--page-margin);
+        gap: var(--space-sm);
+    }
+</style>

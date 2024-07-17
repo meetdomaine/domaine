@@ -5,7 +5,7 @@ import { paths } from '../../../components/global/utils/paths';
 import { urlFor } from '../../../components/global/utils/cms-queries';
 
 export async function getStaticPaths() {
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine"]{ ..., category->{...}, authors[]->{...} }`)
+    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine"]{ ..., category->{..., slug{...} }, authors[]->{...} }`)
     return posts.map((post) => {
         // console.log(post)
         return {
@@ -22,8 +22,6 @@ interface Props {
 const { content } = Astro.props;
 
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
-// // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., category->{...}} | order( postDate desc)`)
-// console.log(blogPosts)
 ---
 <LayoutDomaine
     title={content.title}

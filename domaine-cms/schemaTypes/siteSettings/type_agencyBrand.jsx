@@ -33,6 +33,12 @@ export default defineType({
         allowRelative: true
       })
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+      description: 'Default brand SEO fields.'
+    }),
   ],
   preview: {
     select: {
