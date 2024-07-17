@@ -5,8 +5,6 @@ import Hero from '../components/domaine/sections/work/workIndex_Hero.astro'
 import ProjectsFilter from '../components/global/projects/global_ProjectsFilter.astro'
 import GlobalProjectsGrid from '../components/global/projects/global_ProjectsGrid.astro'
 
-
-
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
 const { projects, heading, subheading, title, description, searchFilter, currentPath } = Astro.props;
 ---
