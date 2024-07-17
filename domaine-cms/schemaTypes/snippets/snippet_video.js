@@ -18,7 +18,6 @@ export default defineType({
         options: {
             hotspot: true
         },
-        description: 'If video is added, this is used as the poster image.',
         validation: (Rule) => Rule.custom((value, { document: { video } }) => {
             return !video
         }),

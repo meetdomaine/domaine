@@ -18,17 +18,34 @@ export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
 
 
 export const projectGridFields = `
-    title,
-    excerpt,
-    slug, 
-    industry->{...}, 
-    partners[]->{...}, 
-    features[]->{ title, slug, _id }, 
-    services[]->{ serviceGroup->{title, slug} }, 
-    thumbnailImage{${imageFields}},
-    thumbnailVideo{asset-> {playbackId,assetId,filename,}},
-    orderRank,
-    thumbnailIsVideo`
+  title,
+  excerpt,
+  slug, 
+  industry->{...}, 
+  partners[]->{...}, 
+  features[]->{ title, slug, _id }, 
+  services[]->{ serviceGroup->{title, slug} },
+  orderRank,
+  thumbnailMedia{${videoFields}, ${imageFields}},
+  heroMedia{..., ${videoFields}, ${imageFields}},
+  `
+
+export const projectPageFields = `
+  title,
+  description,
+  industry->{...},
+  url,
+  client->{...},
+  services->{...},
+  features->{...},
+  partners->{...},
+  metrics{...},
+  awards{...},
+  slug{...},
+  category->{..., slug{...} }, 
+  authors[]->{...},
+  heroMedia{..., ${videoFields}, ${imageFields}},
+`
 
 export const blogCardFields = `
     title,

@@ -1,13 +1,10 @@
 ---
 import { sanityClient } from 'sanity:client';
-import { paths } from '../../../components/global/utils/paths';
-import LayoutStudioProjects from '../../../layouts/LayoutStudioProjects.astro';
-import ProjectsFeed from '../../../components/global/projects/projectsFeed/projectsFeed.jsx'
-import Hero from '../../../components/studio/sections/work/workIndex_Hero.astro';
+import LayoutStudioProjects from '../../../layouts/Layout_Studio-ProjectsIndex.astro';
 import { projectGridFields } from '../../../components/global/utils/cms-queries';
 
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Studio' ]{${projectGridFields}} | order(orderRank)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == 'studio' ]{${projectGridFields}} | order(orderRank)`)
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
 ---
 <LayoutStudioProjects

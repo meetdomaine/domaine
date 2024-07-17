@@ -1,20 +1,21 @@
 ---
-import GlobalProjectCard from './global_projectCard.astro'
+import GlobalProjectCard from './global_ProjectCard.astro'
 
 interface Props {
-    projects: any
+    projects: any,
+    brand: string
 }
 
-const { projects } = Astro.props
+const { projects, brand } = Astro.props
 // console.log(projects)
 ---
 {projects.map((project) => (
     <GlobalProjectCard
         title={project.title}
         excerpt={project.excerpt}
-        thumbnailIsVideo={project.thumbnailIsVideo}
-        thumbnailImage={project.thumbnailImage}
-        thumbnailVideo={project.thumbnailVideo}
+        heroMedia={project.heroMedia}
+        thumbnailMedia={project.thumbnailMedia}
         slug={project.slug}
+        brand={brand}
     />
 ))}

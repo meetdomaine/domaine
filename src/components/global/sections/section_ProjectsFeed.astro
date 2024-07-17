@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from "sanity:client";
 import { imageFields } from "../utils/cms-queries";
-import ProjectCard from "../projects/global_projectCard.astro";
+import ProjectCard from "../projects/global_ProjectCard.astro";
 import { projectGridFields } from "../utils/cms-queries";
 
 const { section, brand } = Astro.props
@@ -27,9 +27,7 @@ if (section.projects) {
                     title={project.title}
                     excerpt={project.excerpt}
                     slug={project.slug}
-                    thumbnailImage={project.thumbnailImage}
-                    thumbnailVideo={project.thumbnailVideo}
-                    thumbnailIsVideo={project.thumbnailIsVideo}
+                    thumbnailMedia={project.thumbnailMedia}
                 />
             ))}
         </div>

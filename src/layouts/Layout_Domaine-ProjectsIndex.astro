@@ -1,15 +1,15 @@
 ---
 import { sanityClient } from 'sanity:client';
-import LayoutStudio from '../layouts/LayoutStudio.astro';
+import LayoutDomaine from './LayoutDomaine.astro';
 import Hero from '../components/domaine/sections/work/workIndex_Hero.astro'
-import GlobalProjectsGrid from '../components/global/projects/global_projectsGrid.astro';
-import ProjectsFilter from '../components/global/projects/global_projectsFilter.astro';
+import GlobalProjectsGrid from '../components/global/projects/global_ProjectsGrid.astro';
+import ProjectsFilter from '../components/global/projects/global_ProjectsFilter.astro';
 
 
-const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
 const { projects, heading, subheading, title, description, searchFilter, currentPath } = Astro.props;
 ---
-<LayoutStudio
+<LayoutDomaine
     title={ title ? title : pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
     description={description ? description : pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
     searchFilter={searchFilter}
@@ -19,17 +19,18 @@ const { projects, heading, subheading, title, description, searchFilter, current
         subheading={subheading ? subheading : pageSettings.subheading}
     />
     <ProjectsFilter 
-        brand="Studio"
+        brand="Domaine"
         currentPath={currentPath}
     />
     <slot name="before-grid" /> 
     <div class="grid">
         <GlobalProjectsGrid 
             projects={projects}
+            brand="domaine"
         />
     </div>
     <slot name="after-grid" /> 
-</LayoutStudio>
+</LayoutDomaine>
 
 <style>
     .grid {

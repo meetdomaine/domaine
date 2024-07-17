@@ -1,22 +1,21 @@
 ---
 import AtomSanityImage from "../../../global/atoms/atom_sanityImage.astro"
+import AtomSanityMedia from "../../../global/atoms/atom_sanityMedia.astro"
 import { paths } from "../../../global/utils/paths"
 
-const { heading, description, root, url, client, services, heroImage, heroVideo, industry, partners, features, metrics, awards, metafields } = Astro.props
-// console.log(features)
+const { heading, description, root, url, client, services, heroMedia, industry, partners, features, metrics, awards, metafields } = Astro.props
+console.log(heroMedia)
 ---
 <section class="work-post_hero">
-    <a href={`${root}?industry=${industry.slug.current}`}>{industry.title}</a>
+    <a href={`/work/studio/indutries/${industry.slug.current}`}>{industry.title}</a>
     <h1>{heading}</h1>
-
-    {heroImage && 
-        <AtomSanityImage
-            image={heroImage}
-            sizes="100vw"
-            aspectRatio={2 / 1}
-            eager={true}
-        />
-    }
+    
+    <AtomSanityMedia
+        image={heroMedia.image}
+        video={heroMedia.video}
+        aspectRatio={16 / 9}
+        sizes="100vw"
+    />
 
     <h5>{description}</h5>
     {url && <a href={url} target="_blank">View Live Site</a>}

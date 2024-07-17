@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import { projectGridFields } from '../../../components/global/utils/cms-queries';
-import LayoutDomaineProjects from '../../../layouts/LayoutDomaineProjects.astro';
+import LayoutDomaineProjects from '../../../layouts/Layout_Domaine-ProjectsIndex.astro';
 
 export async function getStaticPaths() {
     const features = await sanityClient.fetch(`*[_type == "type_projectFeature" ]`)

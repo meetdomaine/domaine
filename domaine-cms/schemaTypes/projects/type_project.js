@@ -127,32 +127,19 @@ export default defineType({
       })
     }),
     defineField({
-      name: 'heroIsVideo',
-      title: 'Hero Image/Video',
-      type: 'boolean',
-      initialValue: false,
-      description: 'Defines whether project page hero is an image or video.',
+      name: 'heroMedia',
+      title: 'Hero Media',
+      type: 'snippet_video',
       group: 'media',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'heroImage',
-      title: 'Hero Image',
-      type: 'snippet_image',
+      name: 'thumbnailMedia',
+      title: 'Thumbnail Media',
+      type: 'snippet_video',
       group: 'media',
-      hidden: ({document}) => document?.heroIsVideo,
-      validation: (Rule) => Rule.custom((value, { document: { heroIsVideo } }) => {
-        return !heroIsVideo && !value ? "Field required" : true
-      })
-    }),
-    defineField({
-      name: 'heroVideo',
-      title: 'Hero Video',
-      type: 'mux.video',
-      group: 'media',
-      hidden: ({document}) => !document?.heroIsVideo,
-      validation: (Rule) => Rule.custom((value, { document: { heroIsVideo } }) => {
-        return heroIsVideo && !value ? "Field required" : true
-      })
+      description: 'If not added, will default to Hero media.',
+      // validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'client',

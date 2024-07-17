@@ -3,7 +3,7 @@ import { sanityClient } from 'sanity:client'
 import { paths } from '../../../components/global/utils/paths';
 import LayoutStudio from '../../../layouts/LayoutStudio.astro';
 import WorkPostHero from '../../../components/studio/sections/work/workPost_Hero.astro';
-import { projectPostQuery } from "../../../components/global/utils/cms-queries"
+import { projectPageFields, projectPostQuery } from "../../../components/global/utils/cms-queries"
 
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(projectPostQuery("SMB"))
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == 'studio' ]{ ${projectPageFields} }`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -21,8 +21,6 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-// console.log(content.mux)
-// console.log(muxPlayer)
 ---
 <LayoutStudio
     title={content.title}
@@ -41,8 +39,7 @@ const { content } = Astro.props
         partners={content.partners}
         metrics={content.metrics}
         awards={content.awards}
-        heroImage={content.heroImage.image}
-        heroVideo={content.heroVideo}
+        heroMedia={content.heroMedia}
         metafields={content.metafields}
     />
 
