@@ -11,12 +11,6 @@ interface Props {
 }
 
 const { title, excerpt, slug, heroMedia, thumbnailMedia, brand } = Astro.props
-
-// if (heroMedia && thumbnailMedia) {
-//     console.log("BOTH")
-// }
-// if (heroMedia && heroMedia.image && heroMedia.video && thumbnailMedia && thumbnailMedia.image && thumbnailMedia.video)
-// console.log(thumbnailMedia)
 ---
 <a href={`${brand == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
     <AtomSanityMedia 
