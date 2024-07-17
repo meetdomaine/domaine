@@ -1,6 +1,6 @@
 ---
 import { sanityClient } from 'sanity:client';
-import LayoutDomaineProjects from '../../layouts/Layout_Domaine-ProjectsIndex.astro';
+import LayoutDomaineProjects from '../../layouts/Layout-Domaine-ProjectsIndex.astro';
 import { projectGridFields, projectsGridQuery, urlFor } from '../../components/global/utils/cms-queries';
 
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Domaine' ]{${projectGridFields}} | order(orderRank)`)

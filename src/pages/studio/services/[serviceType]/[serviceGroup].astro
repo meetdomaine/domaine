@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from "sanity:client"
 import { paths } from "../../../../components/global/utils/paths"
-import LayoutStudio from "../../../../layouts/Layout_Studio.astro"
+import LayoutStudio from "../../../../layouts/Layout-Studio.astro"
 
 export async function getStaticPaths() {
     const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "Studio" in agencyBrands[]->name ] {..., serviceType->{...} }`)

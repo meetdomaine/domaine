@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import { paths } from '../../components/global/utils/paths';
-import LayoutDomaine from '../../layouts/Layout_Domaine.astro';
+import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 
 export async function getStaticPaths() {
     const partners = await sanityClient.fetch(`*[_type == "type_partner" ] { ..., tier->{...} }`)

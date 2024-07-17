@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import { blogCardFields } from '../../../../components/global/utils/cms-queries';
-import LayoutStudioBlogIndex from '../../../../layouts/Layout_Studio-BlogIndex.astro';
+import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
 
 export async function getStaticPaths() {
     const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)

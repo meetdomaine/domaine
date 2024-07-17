@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import { blogCardFields } from '../../../components/global/utils/cms-queries';
-import LayoutStudioBlogIndex from '../../../layouts/Layout_Studio-BlogIndex.astro';
+import LayoutStudioBlogIndex from '../../../layouts/Layout-Studio-BlogIndex.astro';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "studio" ]{..., ${blogCardFields} } | order( postDate desc)`)

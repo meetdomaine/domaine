@@ -2,7 +2,7 @@
 import { sanityClient } from "sanity:client";
 import HomeHero from "../components/domaine/sections/home/home_Hero.astro";
 import GlobalSections from "../components/global/sections/section_GlobalSections.astro";
-import LayoutDomaine from "../layouts/Layout_Domaine.astro";
+import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 import { globalSectionsFields } from "../components/global/utils/cms-queries"
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ ...,  globalSections{ ${globalSectionsFields} } }`)
