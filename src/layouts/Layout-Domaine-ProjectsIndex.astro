@@ -2,7 +2,7 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from './Layout-Domaine.astro';
 import Hero from '../components/domaine/sections/work/workIndex_Hero.astro'
-import ProjectsFilter from '../components/global/projects/global_ProjectsFilter.astro'
+import ProjectsFilter from '../components/global/projects/global-ProjectsFilter.astro'
 import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGrid.astro'
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
