@@ -21,7 +21,7 @@ interface Props {
 const { content } = Astro.props;
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "studio" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
 ---
 <LayoutStudioBlogIndex
     pageSetting={pageSettings}
@@ -29,6 +29,7 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
     heading={content.title}
     subheading="Lorem ipsum dolor sit amet."
     searchFilter="type:blog-category"
+    slug={content.slug}
 >
 
 </LayoutStudioBlogIndex>

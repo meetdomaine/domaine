@@ -4,7 +4,7 @@ import { blogCardFields } from '../../components/global/utils/cms-queries';
 import LayoutDomaineBlogIndex from '../../layouts/Layout_Domaine-BlogIndex.astro';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{..., ${blogCardFields} } | order( postDate desc)`)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "domaine" ]{..., ${blogCardFields} } | order( postDate desc)`)
 ---
 <LayoutDomaineBlogIndex
     pageSettings={pageSettings}

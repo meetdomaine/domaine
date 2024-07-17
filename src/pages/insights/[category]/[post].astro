@@ -31,7 +31,7 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
     <h1>{content.title}</h1>
     <h6>{content.excerpt}</h6>
 
-    <img src={urlFor(content.thumbnail).url()}
+    <!-- <img src={urlFor(content.thumbnail).url()} -->
 
     <h6>Date:</h6>
     <p>{content.postDate}</p>

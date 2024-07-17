@@ -6,7 +6,7 @@ import GlobalBlogIndexHero from '../components/global/blog/global_BlogIndexHero.
 import GlobalBlogFilter from '../components/global/blog/global_BlogFilter.astro';
 
 
-const { title, description, heading, subheading, searchFilter, blogPosts, pageSettings, brand } = Astro.props;
+const { title, description, heading, subheading, searchFilter, blogPosts, pageSettings, brand, slug } = Astro.props;
 ---
 <LayoutStudio
     title={ title ? title : pageSettings && pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Insights"}
@@ -19,8 +19,8 @@ const { title, description, heading, subheading, searchFilter, blogPosts, pageSe
     />
 
     <GlobalBlogFilter 
-        brand="Studio"
-        path="/studio"
+        brand="studio"
+        slug={slug}
     />
 
     <div class="blog-grid">
@@ -28,8 +28,9 @@ const { title, description, heading, subheading, searchFilter, blogPosts, pageSe
             <GlobalBlogCard 
                 title={project.title}
                 category={project.category}
-                slug={`${project.category.slug.current}/${project.slug.current}`}
+                slug={project.slug}
                 thumbnailImage={project.thumbnailImage}
+                brand="studio"
             />
         ))}
     </div>

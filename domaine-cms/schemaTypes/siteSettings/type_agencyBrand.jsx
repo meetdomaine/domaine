@@ -14,6 +14,16 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      description: 'If you change this, the whole site will break :)',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+    }),
+    defineField({
       name: 'favicon',
       title: 'Favicon',
       type: 'image',

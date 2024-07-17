@@ -5,12 +5,13 @@ interface Props {
     title: string,
     slug: any,
     thumbnailImage: any,
-    category: any
+    category: any,
+    brand?: string
 }
 
-const { title, thumbnailImage, slug, category } = Astro.props
+const { title, thumbnailImage, slug, category, brand } = Astro.props
 ---
-<a href={`/insights/${slug}`} class="blog-card">
+<a href={`${brand == 'studio' ? '/studio' : ''}/insights/${category.slug.current}/${slug.current}`} class="blog-card">
     <AtomSanityMedia
         image={thumbnailImage.image}
         aspectRatio={1 / 1}

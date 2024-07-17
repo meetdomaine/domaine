@@ -1,16 +1,23 @@
 ---
 import { sanityClient } from 'sanity:client';
 
-const { brand, path } = Astro.props
+const { brand, slug } = Astro.props
 
-// const brand = "Domaine"
-const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == '${brand}' && references(^._id)] ) > 0]`)
+const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->slug.current == '${brand}' && references(^._id)] ) > 0]`)
 console.log(blogCategories)
 ---
 <div class="blog-filters">
-    <a href={`${path}/insights/`}>All Insights</a>
+    <a
+        class="filter" 
+        href={`${brand == "studio" ? '/studio' : ''}/insights/`}
+        data-active={!slug ? "true" : "false"}
+    >All Insights</a>
     {blogCategories.map((category) => (
-        <a href={`${path}/insights/${category.slug.current}`}>{category.title}</a>
+        <a 
+            class="filter"
+            href={`${brand == "studio" ? '/studio' : ''}/insights/${category.slug.current}`}
+            data-active={slug && slug.current == category.slug.current ? "true" : "false"}
+        >{category.title}</a>
     ))}
 </div>
 
@@ -21,5 +28,14 @@ console.log(blogCategories)
         padding-inline: var(--page-margin);
         padding-block: var(--space-md);
         gap: var(--space-sm);
+    }
+
+    .filter {
+        text-decoration: none;
+    }
+
+    .filter[data-active="true"] {
+        text-decoration: underline 1px solid;
+        text-underline-offset: .2em;
     }
 </style>
