@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from "sanity:client";
 import { paths } from "../../../components/global/utils/paths";
-import LayoutStudio from "../../../layouts/LayoutStudio.astro";
+import LayoutStudio from "../../../layouts/Layout_Studio.astro";
 
 const serviceTypes = await sanityClient.fetch('*[_type == "type_serviceType" && "Studio" in agencyBrands[]->name ] | order(orderRank)')
 const servicesObject = await Promise.all(
