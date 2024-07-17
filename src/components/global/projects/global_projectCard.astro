@@ -1,14 +1,37 @@
 ---
 import AtomSanityMedia from "../atoms/atom_sanityMedia.astro"
 
+interface Props {
+    title: string,
+    excerpt: string,
+    slug: Slug,
+    heroMedia: Media,
+    thumbnailMedia: Media,
+    brand?: string
+}
+
 const { title, excerpt, slug, heroMedia, thumbnailMedia, brand } = Astro.props
-console.log(thumbnailMedia)
+
+// if (heroMedia && thumbnailMedia) {
+//     console.log("BOTH")
+// }
+// if (heroMedia && heroMedia.image && heroMedia.video && thumbnailMedia && thumbnailMedia.image && thumbnailMedia.video)
+// console.log(thumbnailMedia)
 ---
 <a href={`${brand == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
-
     <AtomSanityMedia 
-        video={thumbnailMedia ? thumbnailMedia.video : null}
-        image={thumbnailMedia ? thumbnailMedia.image : heroMedia.image}
+        video={
+            (thumbnailMedia && thumbnailMedia.video) ? 
+                thumbnailMedia.video :
+                (!thumbnailMedia && heroMedia && heroMedia.video) ? 
+                    heroMedia.video : null 
+            }
+        image={
+            (thumbnailMedia && thumbnailMedia.image && thumbnailMedia.image.asset) ? 
+                thumbnailMedia.image :
+                    (heroMedia && heroMedia.image && heroMedia.image.asset) ? 
+                        heroMedia.image : null
+            }
         aspectRatio={3 / 4}
         sizes="30vw"
     />

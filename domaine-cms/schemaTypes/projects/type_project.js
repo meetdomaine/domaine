@@ -49,7 +49,8 @@ export default defineType({
       title: 'Excerpt',
       type: 'string',
       group: 'info',
-      description: 'Description on project cards.'
+      description: 'Description on project cards.',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heading',
@@ -98,34 +99,34 @@ export default defineType({
         scheme: ['http', 'https']
       })
     }),
-    defineField({
-      name: 'thumbnailIsVideo',
-      title: 'Thumbnail Image/Video',
-      type: 'boolean',
-      initialValue: false,
-      description: 'Defines whether project card media is an image or video.',
-      group: 'media',
-    }),
-    defineField({
-      name: 'thumbnailImage',
-      title: 'Thumbnail Image',
-      type: 'snippet_image',
-      group: 'media',
-      hidden: ({document}) => document?.thumbnailIsVideo,
-      validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
-        return !thumbnailIsVideo && !value ? "Field required" : true
-      })
-    }),
-    defineField({
-      name: 'thumbnailVideo',
-      title: 'Thumbnail Video',
-      type: 'mux.video',
-      group: 'media',
-      hidden: ({document}) => !document?.thumbnailIsVideo,
-      validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
-        return thumbnailIsVideo && !value ? "Field required" : true
-      })
-    }),
+    // defineField({
+    //   name: 'thumbnailIsVideo',
+    //   title: 'Thumbnail Image/Video',
+    //   type: 'boolean',
+    //   initialValue: false,
+    //   description: 'Defines whether project card media is an image or video.',
+    //   group: 'media',
+    // }),
+    // defineField({
+    //   name: 'thumbnailImage',
+    //   title: 'Thumbnail Image',
+    //   type: 'snippet_image',
+    //   group: 'media',
+    //   hidden: ({document}) => document?.thumbnailIsVideo,
+    //   validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
+    //     return !thumbnailIsVideo && !value ? "Field required" : true
+    //   })
+    // }),
+    // defineField({
+    //   name: 'thumbnailVideo',
+    //   title: 'Thumbnail Video',
+    //   type: 'mux.video',
+    //   group: 'media',
+    //   hidden: ({document}) => !document?.thumbnailIsVideo,
+    //   validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
+    //     return thumbnailIsVideo && !value ? "Field required" : true
+    //   })
+    // }),
     defineField({
       name: 'heroMedia',
       title: 'Hero Media',

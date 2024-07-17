@@ -3,27 +3,7 @@ import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import { urlFor } from '../utils/cms-queries';
 
 interface Props {
-  image: { 
-    asset: {
-      _id: 'string',
-      metadata: {
-        dimensions: {
-          width: number,
-          height: number,
-          aspectRatio: number,
-        },
-        blurHash: string,
-        lqip: string,
-      }
-    },
-    crop: {
-      top: number,
-      right: number,
-      bottom: number,
-      left: number
-    },
-    alt: string
-  },
+  image: SanityImage,
   sizes: string,
   cover?: boolean,
   eager?: boolean,
@@ -33,6 +13,8 @@ interface Props {
 }
 
 const { image, sizes, eager, aspectRatio, cover, alt, transitionName } = Astro.props;
+
+// console.log(image)
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;

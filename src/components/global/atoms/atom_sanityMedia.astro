@@ -4,37 +4,11 @@ import { urlFor } from '../utils/cms-queries';
 import AtomSanityImage from './atom_sanityImage.astro';
 
 interface Props {
-  // isVideo?: boolean,
-  video?: {
-    asset: {
-      playbackId: string,
-      filename: string,
-    }
-  },
+  image?: SanityImage,
+  video?: MuxVideo,
+  sizes: string,
   videoWidth?: string,
   videoHeight?: string,
-  image?: { 
-    asset: {
-      _id: 'string',
-      metadata: {
-        dimensions: {
-          width: number,
-          height: number,
-          aspectRatio: number,
-        },
-        blurHash: string,
-        lqip: string,
-      }
-    },
-    crop: {
-      top: number,
-      right: number,
-      bottom: number,
-      left: number
-    },
-    alt: string
-  },
-  sizes: string,
   cover?: boolean,
   eager?: boolean,
   aspectRatio?: number,
@@ -58,7 +32,7 @@ const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHe
         width={videoWidth}
         height={videoHeight}
     ></mux-player>
-    :
+    : image ?
     <AtomSanityImage 
         image={image}
         sizes={sizes}
@@ -67,6 +41,7 @@ const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHe
         cover={cover}
         alt={alt}
     />
+    : <p>NO MEDIA</p>
 }
 
 <style>

@@ -27,7 +27,7 @@ export const projectGridFields = `
   services[]->{ serviceGroup->{title, slug} },
   orderRank,
   thumbnailMedia{${videoFields}, ${imageFields}},
-  heroMedia{..., ${videoFields}, ${imageFields}},
+  heroMedia{${videoFields}, ${imageFields}},
   `
 
 export const projectPageFields = `
