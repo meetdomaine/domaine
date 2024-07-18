@@ -120,7 +120,8 @@ export default defineType({
       title: 'Client',
       type: 'reference',
       group: 'info',
-      to: [{ type: 'type_client'}]
+      to: [{ type: 'type_client'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'logoColor',

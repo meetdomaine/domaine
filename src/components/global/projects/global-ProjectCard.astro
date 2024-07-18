@@ -18,7 +18,7 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, brand, client, logoColo
 console.log(client)
 ---
 <a href={`${brand == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
-    <div class="media">
+    <div class="card-media">
         <AtomSanityMedia 
             video={
                 (thumbnailMedia && thumbnailMedia.video) ? 
@@ -42,8 +42,20 @@ console.log(client)
             />
         }
     </div>
-    <h3>{title}</h3>
-    <p>{excerpt}</p>
+    <div class="card-content">
+        {client && 
+            <div class="project-media">
+                <img 
+                    src={urlFor(client.productImage).auto('format').url() }
+                    class="product-image"
+                />
+            </div>
+        }
+        <div class="card-details">
+            <h3 class="h5">{title}</h3>
+            <p class="caption">{excerpt}</p>
+        </div>
+    </div>
 </a>
 
 <style>
@@ -51,10 +63,14 @@ console.log(client)
 
     .project-card {
         flex: 0 1 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-xs);
         /* flex-shrink: 0; */
     }
 
-    .media {
+    .card-media {
         position: relative;
         width: 100%;
     }
@@ -64,5 +80,29 @@ console.log(client)
         inset: var(--space-sm);
         max-width: 25%;
         max-height: 1.5em;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .project-media {
+        flex: 0 0 20%;
+        background-color: var(--color-background-secondary);
+        aspect-ratio: 1 / 1;
+    }
+
+    .product-image {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .card-details {
+        display: flex;
+        flex-direction: column;
     }
 </style>

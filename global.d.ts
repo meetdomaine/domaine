@@ -110,6 +110,7 @@ declare interface ClientCard {
     title: string,
     logoDark: ImageBase,
     logoLight: ImageBase,
+    productImage: ImageBase,
 }
 
 declare interface ProjectCard {

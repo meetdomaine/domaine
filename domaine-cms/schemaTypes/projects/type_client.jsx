@@ -40,6 +40,12 @@ export default defineType({
       type: 'image',
       validation: Rule => Rule.required(),
     }),
+    defineField({
+      name: 'productImage',
+      title: 'Product Image',
+      type: 'image',
+      validation: Rule => Rule.required(),
+    }),
     // defineField({
     //   name: 'logo',
     //   title: 'Logo',
@@ -67,13 +73,13 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
-      media: 'logoDark',
+      media: 'productImage',
     },
     prepare(selection) {
       const { title, media } = selection
       return {
         title: title,
-        media: iconClients,
+        media: media ? media : iconClients,
       }
     }
   },

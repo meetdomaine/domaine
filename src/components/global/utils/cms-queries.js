@@ -24,7 +24,7 @@ export const projectGridFields = `
   slug, 
   industry->{...}, 
   partners[]->{...}, 
-  client->{title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}} },
+  client->{title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, productImage{${imageBaseFields}} },
   logoColor,
   features[]->{ title, slug, _id }, 
   services[]->{ serviceGroup->{title, slug} },
