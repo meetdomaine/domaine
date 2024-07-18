@@ -44,7 +44,7 @@ console.log(client)
     </div>
     <div class="card-content">
         {client && 
-            <div class="project-media">
+            <div class="product-media">
                 <img 
                     src={urlFor(client.productImage).auto('format').url() }
                     class="product-image"
@@ -52,8 +52,8 @@ console.log(client)
             </div>
         }
         <div class="card-details">
-            <h3 class="h5">{title}</h3>
-            <p class="caption">{excerpt}</p>
+            <h6 class="title body">{title}</h6>
+            <p class="excerpt caption">{excerpt}</p>
         </div>
     </div>
 </a>
@@ -67,12 +67,15 @@ console.log(client)
         flex-direction: column;
         align-items: stretch;
         gap: var(--space-xs);
+        text-decoration: none;
         /* flex-shrink: 0; */
     }
 
     .card-media {
         position: relative;
         width: 100%;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
     }
 
     .client-logo {
@@ -87,13 +90,15 @@ console.log(client)
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: flex-start;
-        gap: var(--space-xs);
+        gap: var(--space-sm);
     }
 
-    .project-media {
-        flex: 0 0 20%;
+    .product-media {
+        flex: 0 0 max(60px, 10%);
         background-color: var(--color-background-secondary);
         aspect-ratio: 1 / 1;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
     }
 
     .product-image {
@@ -104,5 +109,15 @@ console.log(client)
     .card-details {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-self: stretch;
+    }
+
+    .title {
+
+    }
+
+    .excerpt {
+        color: var(--color-foreground-secondary);
     }
 </style>
