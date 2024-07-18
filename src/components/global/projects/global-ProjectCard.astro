@@ -1,5 +1,7 @@
 ---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import { urlFor } from "../utils/cms-queries"
 
 interface Props {
     title: string,
@@ -7,35 +9,60 @@ interface Props {
     slug: Slug,
     heroMedia: Media,
     thumbnailMedia: Media,
-    brand?: string
+    brand?: string,
+    client: ClientCard,
+    logoColor: string,
 }
 
-const { title, excerpt, slug, heroMedia, thumbnailMedia, brand } = Astro.props
+const { title, excerpt, slug, heroMedia, thumbnailMedia, brand, client, logoColor } = Astro.props
+console.log(client)
 ---
 <a href={`${brand == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
-    <AtomSanityMedia 
-        video={
-            (thumbnailMedia && thumbnailMedia.video) ? 
-                thumbnailMedia.video :
-                (!thumbnailMedia && heroMedia && heroMedia.video) ? 
-                    heroMedia.video : null 
-            }
-        image={
-            (thumbnailMedia && thumbnailMedia.image && thumbnailMedia.image.asset) ? 
-                thumbnailMedia.image :
-                    (heroMedia && heroMedia.image && heroMedia.image.asset) ? 
-                        heroMedia.image : null
-            }
-        aspectRatio={3 / 4}
-        sizes="30vw"
-    />
+    <div class="media">
+        <AtomSanityMedia 
+            video={
+                (thumbnailMedia && thumbnailMedia.video) ? 
+                    thumbnailMedia.video :
+                    (!thumbnailMedia && heroMedia && heroMedia.video) ? 
+                        heroMedia.video : null 
+                }
+            image={
+                (thumbnailMedia && thumbnailMedia.image && thumbnailMedia.image.asset) ? 
+                    thumbnailMedia.image :
+                        (heroMedia && heroMedia.image && heroMedia.image.asset) ? 
+                            heroMedia.image : null
+                }
+            aspectRatio={3 / 4}
+            sizes="30vw"
+        />
+        {client && 
+            <img 
+                src={urlFor(logoColor === "dark" ? client.logoDark : client.logoLight).auto('format').url() }
+                class="client-logo"
+            />
+        }
+    </div>
     <h3>{title}</h3>
     <p>{excerpt}</p>
 </a>
 
 <style>
+    
+
     .project-card {
         flex: 0 1 100%;
         /* flex-shrink: 0; */
+    }
+
+    .media {
+        position: relative;
+        width: 100%;
+    }
+
+    .client-logo {
+        position: absolute;
+        inset: var(--space-sm);
+        max-width: 25%;
+        max-height: 1.5em;
     }
 </style>

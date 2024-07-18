@@ -25,6 +25,27 @@ declare interface Service {
     slug: Slug,
 }
 
+declare interface ImageBase {
+    asset: {
+        _id: 'string',
+        metadata: {
+        dimensions: {
+            width: number,
+            height: number,
+            aspectRatio: number,
+        },
+        blurHash: string,
+        lqip: string,
+        }
+    },
+    crop: {
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    },
+}
+
 declare interface SanityImage {
     asset: {
         _id: 'string',
@@ -46,6 +67,8 @@ declare interface SanityImage {
     },
     alt: string
 }
+
+
 
 declare interface MuxVideo {
     asset: {
@@ -83,6 +106,12 @@ declare interface Media {
     video?: MuxVideo
 }
 
+declare interface ClientCard {
+    title: string,
+    logoDark: ImageBase,
+    logoLight: ImageBase,
+}
+
 declare interface ProjectCard {
     title,
     slug: Slug,
@@ -94,4 +123,6 @@ declare interface ProjectCard {
     orderRank: number,
     thumbnailMedia: Media,
     heroMedia: Media,
+    client: ClientCard,
+    logoColor: string,
 }

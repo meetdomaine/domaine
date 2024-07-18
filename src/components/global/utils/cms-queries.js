@@ -12,7 +12,8 @@ export function urlFor(source) {
   return urlBuilder.image(source)
 }
 
-export const imageFields = 'image{ crop, asset->{_id, metadata}, alt }'
+export const imageBaseFields = `crop, asset->{_id, metadata}`
+export const imageFields = `image{${imageBaseFields}, alt }`
 export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
 
 
@@ -23,6 +24,8 @@ export const projectGridFields = `
   slug, 
   industry->{...}, 
   partners[]->{...}, 
+  client->{title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}} },
+  logoColor,
   features[]->{ title, slug, _id }, 
   services[]->{ serviceGroup->{title, slug} },
   orderRank,

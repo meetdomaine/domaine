@@ -1,0 +1,80 @@
+import {defineField, defineType} from 'sanity'
+import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
+
+import { iconClients } from '../variables'
+import { media } from 'sanity-plugin-media'
+
+export default defineType({
+  name: 'type_client',
+  title: 'Client',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: Rule => Rule.required(),
+      // readOnly: true,
+    }),
+    defineField({
+      name: 'logoDark',
+      title: 'Logo: Dark',
+      description: 'A transparent PNG of the client logo that works on light backgrounds.',
+      type: 'image',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'logoLight',
+      title: 'Logo: Light',
+      description: 'A transparent PNG of the client logo that works on dark backgrounds.',
+      type: 'image',
+      validation: Rule => Rule.required(),
+    }),
+    // defineField({
+    //   name: 'logo',
+    //   title: 'Logo',
+    //   type: 'inlineSvg',
+    // }),
+    defineField({
+      name: 'agencyBrands',
+      title: 'Agency Brands',
+      type: 'array',
+      of: [
+        {
+          name: 'agencyBrand',
+          title: 'Agency Brand',
+          type: 'reference',
+          to: [{ type: 'type_agencyBrand'}]
+        }
+      ]
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      media: 'logoDark',
+    },
+    prepare(selection) {
+      const { title, media } = selection
+      return {
+        title: title,
+        media: iconClients,
+      }
+    }
+  },
+})

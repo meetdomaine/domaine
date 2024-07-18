@@ -87,6 +87,7 @@ export default defineType({
           { title: "Light", value: "light" },
           { title: "Dark", value: "dark" },
         ],
+        layout: 'radio'
       },
       initialValue: "dark",
     }),
@@ -99,34 +100,6 @@ export default defineType({
         scheme: ['http', 'https']
       })
     }),
-    // defineField({
-    //   name: 'thumbnailIsVideo',
-    //   title: 'Thumbnail Image/Video',
-    //   type: 'boolean',
-    //   initialValue: false,
-    //   description: 'Defines whether project card media is an image or video.',
-    //   group: 'media',
-    // }),
-    // defineField({
-    //   name: 'thumbnailImage',
-    //   title: 'Thumbnail Image',
-    //   type: 'snippet_image',
-    //   group: 'media',
-    //   hidden: ({document}) => document?.thumbnailIsVideo,
-    //   validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
-    //     return !thumbnailIsVideo && !value ? "Field required" : true
-    //   })
-    // }),
-    // defineField({
-    //   name: 'thumbnailVideo',
-    //   title: 'Thumbnail Video',
-    //   type: 'mux.video',
-    //   group: 'media',
-    //   hidden: ({document}) => !document?.thumbnailIsVideo,
-    //   validation: (Rule) => Rule.custom((value, { document: { thumbnailIsVideo } }) => {
-    //     return thumbnailIsVideo && !value ? "Field required" : true
-    //   })
-    // }),
     defineField({
       name: 'heroMedia',
       title: 'Hero Media',
@@ -148,6 +121,21 @@ export default defineType({
       type: 'reference',
       group: 'info',
       to: [{ type: 'type_client'}]
+    }),
+    defineField({
+      name: 'logoColor',
+      title: 'Logo Color',
+      type: 'string',
+      group: 'media',
+      description: 'Project card logo color.',
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+        layout: 'radio'
+      },
+      initialValue: "light",
     }),
     defineField({
       name: 'agencyBrand',

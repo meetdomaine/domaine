@@ -1,6 +1,6 @@
 import page_projectIndex from "./projects/page_projects-index";
 import settings_projects from "./projects/settings_projects";
-import type_client from "./projects/type_client";
+import type_client from "./projects/type_client.jsx";
 import type_industry from "./projects/type_industry";
 import type_project from "./projects/type_project";
 import type_service from "./services/type_service";
