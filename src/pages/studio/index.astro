@@ -2,8 +2,8 @@
 import { sanityClient } from "sanity:client";
 import { globalSectionsFields } from "../../components/global/utils/cms-queries";
 import LayoutStudio from "../../layouts/Layout-Studio.astro";
-import HomeHero from "../../components/studio/sections/home/home_Hero.astro";
-import GlobalSections from "../../components/global/sections/section_GlobalSections.astro";
+import HomeHero from "../../components/studio/sections/home/home-Hero.astro";
+import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]{ ...,  globalSections{ ${globalSectionsFields} } }`)
 
