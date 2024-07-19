@@ -1,11 +1,13 @@
 ---
 import { sanityClient } from "sanity:client";
-import { globalSectionsFields } from "../../components/global/utils/cms-queries";
+import { globalSectionsFields, imageFields, videoFields } from "../../components/global/utils/cms-queries";
 import LayoutStudio from "../../layouts/Layout-Studio.astro";
 import HomeHero from "../../components/studio/sections/home/home-Hero.astro";
+import HomeAbout from "../../components/studio/sections/home/home-About.astro";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
+import AtomSanityMedia from "../../components/global/atoms/atom-sanityMedia.astro";
 
-const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]{ ...,  globalSections{ ${globalSectionsFields} } }`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]{ ...,  globalSections{ ${globalSectionsFields}}, media{ ..., ${imageFields}, ${videoFields} } }`)
 
 ---
 <LayoutStudio
@@ -13,12 +15,45 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]
     title="Home"
     searchFilter="type:page"
 >
-    <HomeHero 
-        heading="Tailor-made for the needs of small & medium businesses."
-    />
+    <div class="hero-banner">
+        <HomeHero 
+            eyebrow={pageSettings.eyebrow}
+            heading={pageSettings.heading}
+            subheading={pageSettings.subheading}
+            button={pageSettings.button}
+            textColor={pageSettings.heroTextColor}
+        />
+        <HomeAbout 
+            eyebrow={pageSettings.eyebrow}
+            heading={pageSettings.heading}
+            subheading={pageSettings.subheading}
+            textColor={pageSettings.heroTextColor}
+        />
+        {pageSettings.media &&
+            <div class="hero-banner__media">
+                <AtomSanityMedia 
+                    video={pageSettings.media.video}
+                    image={pageSettings.media.image}
+                    cover={true}
+                    sizes="100vw"
+                />
+            </div>
+        }
+    </div>
 
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
         <GlobalSections brand="studio" section={section} />
     ))}
 
 </LayoutStudio>
+
+<style>
+    .hero-banner {
+        position: relative;
+    }
+
+    .hero-banner__media {
+        position: absolute;
+        inset: 0;
+    }
+</style>

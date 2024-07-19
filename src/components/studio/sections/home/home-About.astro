@@ -1,0 +1,23 @@
+---
+const { eyebrow, heading, subheading, textColor } = Astro.props
+---
+<section class="home-about" data-color={textColor === "light" ? "light" : "dark"}>
+    <h2>Lorem ipsum</h2>
+</section>
+
+<style>
+    .home-about {
+        position: relative;
+        z-index: 1;
+        min-height: 90svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .home-about[data-color="light"] {
+        color: var(--color-studio-lightest);
+    }
+</style>

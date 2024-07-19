@@ -1,20 +1,48 @@
 ---
-const { heading } = Astro.props
+const { heading, subheading, eyebrow, button, textColor } = Astro.props
 ---
-<section class="home_hero">
-    <h1>{heading}</h1>
+<section class="home-hero" data-color={textColor === "light" ? "light" : "dark"}>
+    <div class="section-content">
+        <div class="section-text">
+            {eyebrow && <p class="utility">{eyebrow}</p>}
+            {heading && <h1>{heading}</h1>}
+            {subheading && <p class="caption">{subheading}</p>}
+        </div>
+        {button.text && button.url &&
+            <a class={`button ${textColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
+        }
+    </div>
 </section>
 
 <style>
-    .home_hero {
+    .home-hero {
+        position: relative;
+        z-index: 1;
         padding-inline: var(--page-margin);
-        min-height: 80svh;
+        min-height: 90svh;
         display: flex;
         flex-direction: column;
-        justify-content: center
+        justify-content: center;
+        align-items: center;
     }
 
-    h1 {
-        max-width: 10em;
+    .home-hero[data-color="light"] {
+        color: var(--color-studio-lightest);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-md);
+    }
+
+    .section-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 40em;
+        gap: var(--space-sm);
     }
 </style>

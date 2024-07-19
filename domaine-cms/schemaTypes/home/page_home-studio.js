@@ -6,9 +6,42 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
+      name: 'eyebrow',
+      title: 'Eyebrow',
       type: 'string',
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'button',
+      title: 'Button',
+      type: 'snippet_button',
+    }),
+    defineField({
+      name: 'media',
+      title: 'Media',
+      type: 'snippet_video',
+    }),
+    defineField({
+      name: 'heroTextColor',
+      title: 'Hero Text Color',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+        layout: 'radio'
+      },
+      initialValue: "light",
     }),
     defineField({
       name: 'globalSections',
