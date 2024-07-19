@@ -1,14 +1,15 @@
 ---
 const id = Math.random().toString(16).slice(2)
-const canvasWidth = 300
+
 const canvasHeight = 30
 ---
-<canvas id={`pixel-border-${id}`} class="pixel-canvas" width={canvasWidth} height={canvasHeight}></canvas>
-<p>PIXELSSS</p>
+<canvas id={`pixel-border-${id}`} class="pixel-canvas" width="100" height={canvasHeight}></canvas>
 
-<script define:vars={{ id, canvasWidth, canvasHeight }}>
+<script define:vars={{ id, canvasHeight }}>
 
     const canvas = document.getElementById(`pixel-border-${id}`)
+
+    const _density = 5 // Should be divisible by canvasHeight
 
     const drawPixels = () => {
 
@@ -20,12 +21,12 @@ const canvasHeight = 30
         const draw = (t) => {
             const arr = new Uint32Array(image.data.buffer);
 
-            const size = 5;
+            const size = canvasHeight / _density;
 
             for (let y = 0; y < height; y += size) {
+                const probability = y / height
                 for (let x = 0; x < width; x += size) {
-                    const randomFloat = Math.random() * height + y;
-                    const color = randomFloat > height * 0.9 ? 0xFFFFFFFF : 0x00000000;
+                    const color = Math.random() < probability ? 0xFFFFFFFF : 0x00000000;
                     for (let dy = 0; dy < size; dy++) {
                         for (let dx = 0; dx < size; dx++) {
                             const index = (y + dy) * width + (x + dx);
@@ -35,6 +36,10 @@ const canvasHeight = 30
                 }
             }
             ctx.putImageData(image, 0, 0);
+            // requestAnimationFrame(draw)
+            // setTimeout(() => {
+            //     draw()
+            // }, 500)
         };
 
         onresize = (evt) => {
@@ -61,6 +66,10 @@ const canvasHeight = 30
 
 <style>
     .pixel-canvas {
+        /* position: relative; */
         translate: 0 -100%;
+        /* height: 0; */
+        /* margin-top: -100%; */
+        /* z-index: 2; */
     }
 </style>
