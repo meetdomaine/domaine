@@ -288,7 +288,16 @@ export default defineType({
     select: {
       title: 'title', 
       subtitle: 'agencyBrand.name',
-      media: 'thumbnailImage.image'
+      thumbnail: 'thumbnailMedia.image',
+      hero: 'heroMedia.image',
     },
+    prepare(selection) {
+      const { title, subtitle, thumbnail, hero } = selection
+      return {
+        title: title,
+        subtitle: subtitle,
+        media: thumbnail ? thumbnail : hero
+      }
+    }
   },
 })
