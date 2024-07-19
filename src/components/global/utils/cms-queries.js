@@ -55,6 +55,7 @@ export const projectPageFields = `
 export const blogCardFields = `
     title,
     excerpt,
+    postDate,
     category->{ title, slug{...} },
     slug{...},
     agencyBrand->{slug},

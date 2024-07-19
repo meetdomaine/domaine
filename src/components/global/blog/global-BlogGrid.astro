@@ -26,4 +26,10 @@ const { blogPosts } = Astro.props
         padding-inline: var(--page-margin);
         gap: var(--space-sm);
     }
+
+    @media screen and (max-width: 768px) {
+        .blog-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
 </style>

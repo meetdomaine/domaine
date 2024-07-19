@@ -1,5 +1,6 @@
 ---
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTag from "../atoms/atom-tag.astro"
 
 interface Props {
     title: string,
@@ -10,19 +11,44 @@ interface Props {
 }
 
 const { title, thumbnailImage, slug, category, agencyBrand } = Astro.props
----
-<a href={`${agencyBrand.slug.current == 'studio' ? '/studio' : ''}/insights/${category.slug.current}/${slug.current}`} class="blog-card">
-    <AtomSanityMedia
-        image={thumbnailImage.image}
-        aspectRatio={3 / 4}
-        sizes="30vw"
-    />
-    <h3>{title}</h3>
 
-</a>
+const categoryUrl = `${agencyBrand.slug.current == 'studio' ? '/studio' : ''}/insights/${category.slug.current}`
+const postUrl = `${categoryUrl}/${slug.current}`
+---
+<article class="blog-card">
+    <a href={postUrl} class="card-media">
+        <AtomSanityMedia
+            image={thumbnailImage.image}
+            aspectRatio={3 / 4}
+            sizes="30vw"
+        />
+    </a>
+    <AtomTag 
+        title="Category"
+        text={category.title}
+        url={categoryUrl}
+    />
+    <a href={postUrl} class="card-text">
+        <h3 class="h5">{title}</h3>
+    </a>
+
+</article>
 
 <style>
     .blog-card {
         flex: 0 1 100%;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .card-media {
+        align-self: stretch;
+    }
+
+    .card-text {
+        text-decoration: none;
     }
 </style>

@@ -1,0 +1,29 @@
+---
+interface Props {
+    title?: string,
+    text: string,
+    url: string
+}
+
+const { title, text, url} = Astro.props
+---
+<a class="tag" href={url}>
+    {title && <span class="title caption">{title}</span>}
+    <span class="text caption">{text}</span>
+</a>
+
+<style>
+    .tag {
+        background-color: var(--color-background-secondary);
+        display: flex;
+        flex-direction: row;
+        text-decoration: none;
+        padding-inline: var(--space-2xs);
+        padding-block: var(--space-3xs);
+        gap: 0.2em;
+    }
+
+    .title {
+        color: var(--color-foreground-secondary);
+    }
+</style>
