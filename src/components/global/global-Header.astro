@@ -31,9 +31,9 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
 // console.log(defaultBlogPosts)
 ---
-<header id="header" class="color-invert">
+<header id="header">
 
-    <div class="brand-menu" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
+    <div class="brand-menu color-invert glass-ink" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
         <div class="brands-wrapper">
             <div class="brands">
                 {brands.map((brand, i) => (
@@ -49,7 +49,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         </div>
     </div>
 
-    <div class="navigation">
+    <div class="navigation glass-ink color-invert">
         <nav class="navigation-links">
             {headerSettings.navigationLinks.links.map((link, i) => (
                 <a href={link.linkUrl} class="navigation-link caption">{link.linkText}</a>
@@ -162,10 +162,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     .brand-menu {
         --icon-width: 80px;
         --icon-height: 30px;
-        background-color: var(--color-background-secondary-translucent);
-        backdrop-filter: var(--background-blur);
+        /* background-color: var(--color-background-secondary-translucent);
+        backdrop-filter: var(--background-blur); */
         color: var(--color-foreground);
-        -webkit-backdrop-filter: var(--background-blur);
+        /* -webkit-backdrop-filter: var(--background-blur); */
         position: absolute;
         top: var(--padding-top);
         left: var(--page-margin);
@@ -262,8 +262,8 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     .navigation {
         /* background-color: var(--color-background-secondary); */
-        background-color: var(--color-background-secondary-translucent);
-        backdrop-filter: var(--background-blur);
+        /* background-color: var(--color-background-secondary-translucent);
+        backdrop-filter: var(--background-blur); */
         color: var(--color-foreground);
         display: flex;
         flex-direction: column;
