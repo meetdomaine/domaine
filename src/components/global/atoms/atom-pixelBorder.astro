@@ -1,0 +1,66 @@
+---
+const id = Math.random().toString(16).slice(2)
+const canvasWidth = 300
+const canvasHeight = 30
+---
+<canvas id={`pixel-border-${id}`} class="pixel-canvas" width={canvasWidth} height={canvasHeight}></canvas>
+<p>PIXELSSS</p>
+
+<script define:vars={{ id, canvasWidth, canvasHeight }}>
+
+    const canvas = document.getElementById(`pixel-border-${id}`)
+
+    const drawPixels = () => {
+
+        const ctx = canvas.getContext("2d");
+        let image
+        let width
+        let height
+
+        const draw = (t) => {
+            const arr = new Uint32Array(image.data.buffer);
+
+            const size = 5;
+
+            for (let y = 0; y < height; y += size) {
+                for (let x = 0; x < width; x += size) {
+                    const randomFloat = Math.random() * height + y;
+                    const color = randomFloat > height * 0.9 ? 0xFFFFFFFF : 0x00000000;
+                    for (let dy = 0; dy < size; dy++) {
+                        for (let dx = 0; dx < size; dx++) {
+                            const index = (y + dy) * width + (x + dx);
+                            arr[index] = color;
+                        }
+                    }
+                }
+            }
+            ctx.putImageData(image, 0, 0);
+        };
+
+        onresize = (evt) => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = canvasHeight;
+            image = new ImageData(width, height);
+            draw();
+        };
+
+        window.addEventListener("keypress", (e) => {
+            if (e.code === "KeyE") draw();
+            // console.log(e)
+        })
+
+        onresize();
+        draw();
+    }
+
+    drawPixels()
+
+    
+
+</script>
+
+<style>
+    .pixel-canvas {
+        translate: 0 -100%;
+    }
+</style>

@@ -28,7 +28,7 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
 <style>
     .home_hero {
         padding-inline: var(--page-margin);
-        padding-block: var(--space-lg);
+        padding-block: calc(var(--space-lg) + var(--pixel-border-height));
         min-height: 90svh;
         display: flex;
         flex-direction: column;
