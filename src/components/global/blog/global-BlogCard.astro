@@ -14,7 +14,7 @@ const { title, thumbnailImage, slug, category, agencyBrand } = Astro.props
 <a href={`${agencyBrand.slug.current == 'studio' ? '/studio' : ''}/insights/${category.slug.current}/${slug.current}`} class="blog-card">
     <AtomSanityMedia
         image={thumbnailImage.image}
-        aspectRatio={1 / 1}
+        aspectRatio={3 / 4}
         sizes="30vw"
     />
     <h3>{title}</h3>

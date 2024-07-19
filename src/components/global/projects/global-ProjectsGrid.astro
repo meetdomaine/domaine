@@ -7,15 +7,39 @@ interface Props {
 
 const { projects } = Astro.props
 ---
-{projects.map((project) => (
-    <GlobalProjectCard
-        title={project.title}
-        excerpt={project.excerpt}
-        heroMedia={project.heroMedia}
-        thumbnailMedia={project.thumbnailMedia}
-        slug={project.slug}
-        agencyBrand={project.agencyBrand}
-        client={project.client}
-        logoColor={project.logoColor}
-    />
-))}
+<div class="projects-grid">
+    {projects.map((project) => (
+        <GlobalProjectCard
+            title={project.title}
+            excerpt={project.excerpt}
+            heroMedia={project.heroMedia}
+            thumbnailMedia={project.thumbnailMedia}
+            thumbnailImageSecondary={project.thumbnailImageSecondary}
+            slug={project.slug}
+            agencyBrand={project.agencyBrand}
+            client={project.client}
+            logoColor={project.logoColor}
+        />
+    ))}
+</div>
+
+<style>
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-inline: var(--page-margin);
+        gap: var(--space-lg) var(--space-xs);
+    }
+
+    @media screen and (max-width: 768px) {
+        .projects-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .projects-grid {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+</style>

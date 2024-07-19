@@ -71,3 +71,8 @@ html {
     color: var(--color-foreground);
     background-color: var(--color-background);
 }
+
+.glass-ink {
+    backdrop-filter: var(--background-blur);
+    background-color: color-mix(in srgb, var(--color-ink) 20%, transparent);
+}

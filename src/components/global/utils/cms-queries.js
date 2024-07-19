@@ -31,6 +31,7 @@ export const projectGridFields = `
   services[]->{ serviceGroup->{title, slug} },
   orderRank,
   thumbnailMedia{${videoFields}, ${imageFields}},
+  thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
   `
 

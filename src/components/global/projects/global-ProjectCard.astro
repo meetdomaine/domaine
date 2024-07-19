@@ -3,22 +3,22 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import { urlFor } from "../utils/cms-queries"
 
-interface Props {
-    title: string,
-    excerpt: string,
-    slug: Slug,
-    heroMedia: Media,
-    thumbnailMedia: Media,
-    brand?: string,
-    client: ClientCard,
-    logoColor: string,
-    agencyBrand: {
-        slug: Slug
-    },
-}
+// interface Props {
+//     title: string,
+//     excerpt: string,
+//     slug: Slug,
+//     heroMedia: Media,
+//     thumbnailMedia: Media,
+//     brand?: string,
+//     client: ClientCard,
+//     logoColor: string,
+//     agencyBrand: {
+//         slug: Slug
+//     },
+// }
 
-const { title, excerpt, slug, heroMedia, thumbnailMedia, client, logoColor, agencyBrand } = Astro.props
-// console.log(client)
+const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary, client, logoColor, agencyBrand } = Astro.props
+// console.log(thumbnailImageSecondary)
 ---
 <a href={`${agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
     <div class="card-media">
@@ -43,6 +43,16 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, client, logoColor, agen
                 src={urlFor(logoColor === "dark" ? client.logoDark : client.logoLight).auto('format').url() }
                 class="client-logo"
             />
+        }
+        {thumbnailImageSecondary && 
+            <div class="card-overlay glass-ink">
+                <div class="hover-image">
+                    <AtomSanityImage 
+                        image={thumbnailImageSecondary.image}
+                        sizes="40vw"
+                    />
+                </div>
+            </div>
         }
     </div>
     <div class="card-content">
@@ -123,4 +133,33 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, client, logoColor, agen
     .excerpt {
         color: var(--color-foreground-secondary);
     }
+
+    .card-overlay {
+        position: absolute;
+        inset: 0;
+        /* background-color: red; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity var(--anim-md);
+    }
+
+    .project-card:hover .card-overlay {
+        opacity: 1;
+    }
+
+    .hover-image {
+        max-width: 60%;
+        border-radius: var(--radius-sm);
+        opacity: 0;
+        translate: 0 20px;
+        transition: opacity var(--anim-md), translate var(--anim-md);
+    }
+
+    .project-card:hover .card-overlay .hover-image {
+        opacity: 1;
+        translate: 0 0px;
+    }
+
 </style>

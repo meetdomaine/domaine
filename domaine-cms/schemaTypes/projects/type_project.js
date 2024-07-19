@@ -116,6 +116,13 @@ export default defineType({
       // validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'thumbnailImageSecondary',
+      title: 'Thumbnail Hover Image',
+      type: 'snippet_image',
+      group: 'media',
+      // validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'client',
       title: 'Client',
       type: 'reference',
@@ -232,7 +239,6 @@ export default defineType({
       }],
       group: 'info',
     }),
-    
     defineField({
       name: 'awards',
       title: 'Awards',
@@ -268,15 +274,6 @@ export default defineType({
       }],
       group: 'info',
     }),
-    // defineField({
-    //   name: 'thumbnail',
-    //   title: 'Thumbnail',
-    //   type: 'image',
-    //   options: {
-    //     hotspot: true,
-    //   },
-    //   validation: (Rule) => Rule.required(),
-    // }),
     defineField({
       name: 'metafields',
       title: 'Metafields',

@@ -114,7 +114,7 @@ declare interface ClientCard {
 }
 
 declare interface BlogCard {
-    
+
 }
 
 declare interface ProjectCard {
@@ -127,6 +127,7 @@ declare interface ProjectCard {
     services?: any,
     orderRank: number,
     thumbnailMedia: Media,
+    thumbnailImageSecondary?: SanityImage,
     heroMedia: Media,
     client: ClientCard,
     logoColor: string,

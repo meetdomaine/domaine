@@ -23,11 +23,9 @@ const { projects, heading, subheading, title, description, searchFilter, current
         currentPath={currentPath}
     />
     <slot name="before-grid" /> 
-    <div class="grid">
-        <GlobalProjectsGrid 
-            projects={projects}
-        />
-    </div>
+    <GlobalProjectsGrid 
+        projects={projects}
+    />
     <slot name="after-grid" />
     {relatedBlogPosts && relatedBlogPosts.length > 0 &&
         <SectionBlogFeed
@@ -35,12 +33,3 @@ const { projects, heading, subheading, title, description, searchFilter, current
         />
     }
 </LayoutStudio>
-
-<style>
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        padding-inline: var(--page-margin);
-        gap: var(--space-lg) var(--space-xs);
-    }
-</style>
