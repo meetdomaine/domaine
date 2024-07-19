@@ -152,12 +152,16 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary
     .hover-image {
         max-width: 60%;
         border-radius: var(--radius-sm);
-        translate: 0 20px;
-        transition: translate var(--anim-md);
+        /* translate: 0 20px; */
+        transition: translate var(--anim-md), clip-path var(--anim-md);
+        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+        overflow: hidden;
     }
 
     .project-card:hover .card-overlay .hover-image {
         translate: 0 0px;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        /* clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0%, 100%); */
     }
 
 </style>
