@@ -152,13 +152,11 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary
     .hover-image {
         max-width: 60%;
         border-radius: var(--radius-sm);
-        opacity: 0;
         translate: 0 20px;
-        transition: opacity var(--anim-md), translate var(--anim-md);
+        transition: translate var(--anim-md);
     }
 
     .project-card:hover .card-overlay .hover-image {
-        opacity: 1;
         translate: 0 0px;
     }
 
