@@ -207,12 +207,19 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    S.listItem()
-                        .title(labelClients)
-                        .icon(iconClients)
-                        .child(
-                            S.documentTypeList('type_client')
-                        ),
+                    // S.listItem()
+                    //     .title(labelClients)
+                    //     .icon(iconClients)
+                    //     .child(
+                    //         S.documentTypeList('type_client')
+                    //     ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_client',
+                        title: labelClients,
+                        icon: iconClients,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(labelIndustries)
                         .icon(iconIndustries)

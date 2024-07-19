@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
+import { orderRankField } from '@sanity/orderable-document-list'
 
 import { iconClients } from '../variables'
 import { media } from 'sanity-plugin-media'
@@ -69,6 +70,7 @@ export default defineType({
       title: 'Description',
       type: 'text',
     }),
+    orderRankField({ type: 'type_client'}),
   ],
   preview: {
     select: {

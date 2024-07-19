@@ -24,9 +24,9 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]
             textColor={pageSettings.heroTextColor}
         />
         <HomeAbout 
-            eyebrow={pageSettings.eyebrow}
-            heading={pageSettings.heading}
-            subheading={pageSettings.subheading}
+            eyebrow={pageSettings.aboutEyebrow}
+            heading={pageSettings.aboutHeading}
+            subheading={pageSettings.aboutSubheading}
             textColor={pageSettings.heroTextColor}
         />
         {pageSettings.media &&

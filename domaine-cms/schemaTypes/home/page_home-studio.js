@@ -44,6 +44,21 @@ export default defineType({
       initialValue: "light",
     }),
     defineField({
+      name: 'aboutEyebrow',
+      title: 'About: Eyebrow',
+      type: 'string',
+    }),
+    defineField({
+      name: 'aboutHeading',
+      title: 'About: Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'aboutSubheading',
+      title: 'About: Subheading',
+      type: 'string',
+    }),
+    defineField({
       name: 'globalSections',
       title: 'Global Sections',
       type: 'section_globalSections',
