@@ -120,6 +120,7 @@ export default defineType({
       title: 'Thumbnail Hover Image',
       type: 'snippet_image',
       group: 'media',
+      description: 'Mobile screenshot taken at iPhone SE resolution.',
       // validation: (Rule) => Rule.required(),
     }),
     defineField({
