@@ -27,6 +27,19 @@ export default defineType({
       type: 'snippet_video',
     }),
     defineField({
+      name: 'heroTextColor',
+      title: 'Hero Text Color',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+        layout: 'radio'
+      },
+      initialValue: "light",
+    }),
+    defineField({
       name: 'globalSections',
       title: 'Global Sections',
       type: 'section_globalSections',

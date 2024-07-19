@@ -31,6 +31,7 @@ const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHe
         style={{ aspectRatio: aspectRatio }}
         width={videoWidth}
         height={videoHeight}
+        data-cover={cover ? "true" : "false"}
     ></mux-player>
     : image ?
     <AtomSanityImage 
@@ -52,6 +53,10 @@ const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHe
       --dialog: none;
       --loading-indicator: none;
       /* object-fit: cover; */
+    }
+
+    mux-player[data-cover="true"] {
+      height: 100%;
     }
 
 </style>

@@ -103,7 +103,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
 <script>
 
-    document.addEventListener("astro:page-load", async () => {
+    document.addEventListener("DOMContentLoaded", async () => {
 
         const brandMenu: HTMLElement = document.querySelector('.brand-menu');
         const contactButton: HTMLButtonElement = document.querySelector('.contact-button');
@@ -120,12 +120,13 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
             element.blur()
         }
 
-        document.addEventListener("astro:before-preparation", (e) => {
+        document.addEventListener("pageswap", (e) => {
             if (brandMenu) {
                 brandMenu.classList.remove("active")
-                if (e.sourceElement instanceof HTMLElement && e.sourceElement.dataset && e.sourceElement.dataset.index) {
-                    handleBrandNavigate(e.sourceElement, e.sourceElement.dataset.index)
-                }
+                console.log(e)
+                // if (e.sourceElement instanceof HTMLElement && e.sourceElement.dataset && e.sourceElement.dataset.index) {
+                //     handleBrandNavigate(e.sourceElement, e.sourceElement.dataset.index)
+                // }
             }
         })
 
@@ -144,10 +145,11 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         justify-content: center;
         padding-inline: var(--page-margin);
         padding-block: var(--padding-top) 0;
-        position: sticky;
+        position: fixed;
         top: 0;
         height: var(--header-height);
         z-index: 999;
+        width: 100%;
     }
 
     .icon {

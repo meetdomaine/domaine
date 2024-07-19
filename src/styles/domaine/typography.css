@@ -26,7 +26,7 @@ h1, .h1 {
     --base-size: 68;
     letter-spacing: -0.03em;
     line-height: 0.99;
-    font-weight: 600;
+    font-weight: 400;
 }
   
 h2, .h2 {
@@ -34,7 +34,7 @@ h2, .h2 {
     --base-size: 54;
     letter-spacing: -0.03em;
     line-height: .95;
-    font-weight: 600;
+    font-weight: 400;
 }
   
 h3, .h3 {
@@ -42,7 +42,7 @@ h3, .h3 {
     --base-size: 44;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    font-weight: 600;
+    font-weight: 400;
 }
   
 h4, .h4 {

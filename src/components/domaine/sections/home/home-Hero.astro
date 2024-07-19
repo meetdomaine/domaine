@@ -1,28 +1,65 @@
 ---
-const { heading, subheading, button, media } = Astro.props
+import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
+
+const { heading, subheading, button, media, heroTextColor } = Astro.props
 ---
-<section class="home_hero">
-    <div class="section-title">
-        <h1>{heading}</h1>
-        <h6>{subheading}</h6>
+<section class="home_hero" data-color={heroTextColor === "light" ? "light" : "dark"}>
+    <div class="section-content">
+        <div class="section-title">
+            <h1 class="h3">{heading}</h1>
+            {subheading && <p>{subheading}</p>}
+        </div>
+        {button.text && button.url &&
+            <a class={`button ${heroTextColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
+        }
     </div>
-    {button.text && button.url &&
-        <a class="button" href={button.url}>{button.text}</a>
+    {media && 
+        <div class="section-media">
+            <AtomSanityMedia 
+                video={media.video}
+                image={media.image}
+                sizes="100vw"
+                cover={true}
+            />
+        </div>
     }
 </section>
 
 <style>
     .home_hero {
         padding-inline: var(--page-margin);
-        min-height: 80svh;
+        padding-block: var(--space-lg);
+        min-height: 90svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: var(--space-md);
+        position: relative;
+    }
+
+    .home_hero[data-color="light"] {
+        color: var(--color-lightest);
+    }
+
+    .section-title {
+        max-width: 30em;
+    }
+
+    .section-content {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
         gap: var(--space-md);
     }
 
-    h1 {
-        max-width: 8em;
+    .section-media {
+        position: absolute;
+        inset: 0;
+        height: 100%;
     }
 </style>

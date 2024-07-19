@@ -11,8 +11,8 @@ input[type="submit"],
     cursor: pointer;
     border: none;
     padding: var(--button-padding-block) var(--button-padding-inline);
-    background-color: var(--color-brand);
-    color: var(--color-brand-contrast);
+    background-color: var(--color-foreground);
+    color: var(--color-background);
     outline: none;
     border-radius: var(--button-border-radius);
     min-width: 120px;
