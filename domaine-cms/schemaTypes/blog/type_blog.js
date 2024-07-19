@@ -57,17 +57,6 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'partners',
-      title: 'Partners',
-      type: 'array',
-      of: [{
-        name: 'partner',
-        title: 'Partner',
-        type: 'reference',
-        to: [{ type: 'type_partner'}],
-      }],
-    }),
-    defineField({
       name: 'authors',
       title: 'Authors',
       type: 'array',
@@ -83,6 +72,50 @@ export default defineType({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
+    }),
+    defineField({
+      name: 'partners',
+      title: 'Related Partners',
+      type: 'array',
+      of: [{
+        name: 'partner',
+        title: 'Partner',
+        type: 'reference',
+        to: [{ type: 'type_partner'}],
+      }],
+    }),
+    defineField({
+      name: 'services',
+      title: 'Related Services',
+      type: 'array',
+      of: [{
+        name: 'service',
+        title: 'Service',
+        type: 'reference',
+        to: [{ type: 'type_service'}],
+      }],
+    }),
+    defineField({
+      name: 'industries',
+      title: 'Related Industries',
+      type: 'array',
+      of: [{
+        name: 'industry',
+        title: 'Industry',
+        type: 'reference',
+        to: [{ type: 'type_industry'}],
+      }],
+    }),
+    defineField({
+      name: 'features',
+      title: 'Related Features',
+      type: 'array',
+      of: [{
+        name: 'feature',
+        title: 'Feature',
+        type: 'reference',
+        to: [{ type: 'type_projectFeature'}],
+      }],
     }),
     defineField({
       name: 'metafields',

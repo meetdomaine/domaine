@@ -3,10 +3,9 @@ import GlobalProjectCard from './global-ProjectCard.astro'
 
 interface Props {
     projects: Array<ProjectCard>,
-    brand: string
 }
 
-const { projects, brand } = Astro.props
+const { projects } = Astro.props
 ---
 {projects.map((project) => (
     <GlobalProjectCard
@@ -15,7 +14,7 @@ const { projects, brand } = Astro.props
         heroMedia={project.heroMedia}
         thumbnailMedia={project.thumbnailMedia}
         slug={project.slug}
-        brand={brand}
+        agencyBrand={project.agencyBrand}
         client={project.client}
         logoColor={project.logoColor}
     />

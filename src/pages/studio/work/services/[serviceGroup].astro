@@ -1,10 +1,10 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { projectGridFields } from '../../../../components/global/utils/cms-queries';
+import { blogCardFields, projectGridFields } from '../../../../components/global/utils/cms-queries';
 
 export async function getStaticPaths() {
-    const serviceGroup = await sanityClient.fetch(`*[_type == "type_serviceGroup" && 'Studio' in agencyBrands[]->name ]`)
+    const serviceGroup = await sanityClient.fetch(`*[_type == "type_serviceGroup" && 'studio' in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields} } | order(postDate)}`)
     return serviceGroup.map((serviceGroup) => {
         return {
             params: { serviceGroup: serviceGroup.slug.current },
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Studio' && '${content._id}' in services[]->serviceGroup->_id ]{${projectGridFields}} | order(orderRank)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == 'studio' && '${content._id}' in services[]->serviceGroup->_id ]{${projectGridFields}} | order(orderRank)`)
 
 ---
 <LayoutStudioProjects 
@@ -29,5 +29,6 @@ const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBr
     subheading={content.excerpt}
     projects={projects}
     currentPath={`/services/${content.slug.current}`}
+    relatedBlogPosts={content.relatedBlogPosts}
 >
 </LayoutStudioProjects>

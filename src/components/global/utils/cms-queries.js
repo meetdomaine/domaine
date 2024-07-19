@@ -22,7 +22,8 @@ export const projectGridFields = `
   title,
   excerpt,
   slug, 
-  industry->{...}, 
+  industry->{...},
+  agencyBrand->{slug},
   partners[]->{...}, 
   client->{title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, productImage{${imageBaseFields}} },
   logoColor,
@@ -55,13 +56,14 @@ export const blogCardFields = `
     excerpt,
     category->{ title, slug{...} },
     slug{...},
+    agencyBrand->{slug},
     thumbnailImage{${imageFields}}`
 
 
 export const globalSectionsFields = `
   sections[]{
     ...,
-    _type == "section_projectsFeed" => { ..., heading, subheading, projects[]->{ ${projectGridFields} } },
+    _type == "section_projectsFeed" => { heading, subheading, projects[]->{ ${projectGridFields} } },
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },

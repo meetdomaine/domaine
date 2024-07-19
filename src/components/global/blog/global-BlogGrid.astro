@@ -1,0 +1,29 @@
+---
+import GlobalBlogCard from "./global-BlogCard.astro"
+
+interface Props {
+    blogPosts: any
+}
+
+const { blogPosts } = Astro.props
+---
+<div class="blog-grid">
+    {blogPosts.map((blogPost) => (
+        <GlobalBlogCard 
+            title={blogPost.title}
+            category={blogPost.category}
+            slug={blogPost.slug}
+            thumbnailImage={blogPost.thumbnailImage}
+            agencyBrand={blogPost.agencyBrand}
+        />
+    ))}
+</div>
+
+<style>
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-inline: var(--page-margin);
+        gap: var(--space-sm);
+    }
+</style>

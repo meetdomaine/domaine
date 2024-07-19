@@ -4,9 +4,10 @@ import LayoutStudio from './Layout-Studio.astro';
 import Hero from '../components/domaine/sections/work/workIndex-Hero.astro'
 import ProjectsFilter from '../components/global/projects/global-ProjectsFilter.astro'
 import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGrid.astro'
+import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
-const { projects, heading, subheading, title, description, searchFilter, currentPath } = Astro.props;
+const { projects, heading, subheading, title, description, searchFilter, currentPath, relatedBlogPosts } = Astro.props;
 ---
 <LayoutStudio
     title={ title ? title : pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
@@ -25,10 +26,14 @@ const { projects, heading, subheading, title, description, searchFilter, current
     <div class="grid">
         <GlobalProjectsGrid 
             projects={projects}
-            brand="studio"
         />
     </div>
-    <slot name="after-grid" /> 
+    <slot name="after-grid" />
+    {relatedBlogPosts && relatedBlogPosts.length > 0 &&
+        <SectionBlogFeed
+            posts={relatedBlogPosts}
+        />
+    }
 </LayoutStudio>
 
 <style>

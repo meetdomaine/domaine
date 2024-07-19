@@ -23,6 +23,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
     />
 
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
-        <GlobalSections brand="Domaine" section={section} />
+        <GlobalSections brand="domaine" section={section} />
     ))}
 </LayoutDomaine>

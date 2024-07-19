@@ -113,6 +113,10 @@ declare interface ClientCard {
     productImage: ImageBase,
 }
 
+declare interface BlogCard {
+    
+}
+
 declare interface ProjectCard {
     title,
     slug: Slug,
@@ -126,4 +130,5 @@ declare interface ProjectCard {
     heroMedia: Media,
     client: ClientCard,
     logoColor: string,
+    agencyBrand: any,
 }

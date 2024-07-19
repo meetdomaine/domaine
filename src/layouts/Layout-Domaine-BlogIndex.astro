@@ -1,9 +1,8 @@
 ---
-import { sanityClient } from 'sanity:client';
 import LayoutDomaine from './Layout-Domaine.astro';
-import GlobalBlogCard from '../components/global/blog/global-BlogCard.astro';
 import GlobalBlogIndexHero from '../components/global/blog/global-BlogIndexHero.astro';
 import GlobalBlogFilter from '../components/global/blog/global-BlogFilter.astro';
+import GlobalBlogGrid from '../components/global/blog/global-BlogGrid.astro';
 
 
 const { title, description, heading, subheading, searchFilter, blogPosts, pageSettings, brand, slug } = Astro.props;
@@ -17,29 +16,11 @@ const { title, description, heading, subheading, searchFilter, blogPosts, pageSe
         heading={heading}
         subheading={subheading}
     />
-
     <GlobalBlogFilter 
         brand="domaine"
         slug={slug}
     />
-
-    <div class="blog-grid">
-        {blogPosts.map((project) => (
-            <GlobalBlogCard 
-                title={project.title}
-                category={project.category}
-                slug={project.slug}
-                thumbnailImage={project.thumbnailImage}
-            />
-        ))}
-    </div>
+    <GlobalBlogGrid 
+        blogPosts={blogPosts}
+    />
 </LayoutDomaine>
-
-<style>
-    .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        padding-inline: var(--page-margin);
-        gap: var(--space-sm);
-    }
-</style>

@@ -11,7 +11,7 @@ let projects = null
 if (section.projects) {
     projects = section.projects
 } else {
-    projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0...3]`)
+    projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0...3]`)
 }
 
 ---
@@ -31,6 +31,7 @@ if (section.projects) {
                     heroMedia={project.heroMedia}
                     client={project.client}
                     logoColor={project.logoColor}
+                    agencyBrand={project.agencyBrand}
                 />
             ))}
         </div>

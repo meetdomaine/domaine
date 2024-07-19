@@ -12,12 +12,15 @@ interface Props {
     brand?: string,
     client: ClientCard,
     logoColor: string,
+    agencyBrand: {
+        slug: Slug
+    },
 }
 
-const { title, excerpt, slug, heroMedia, thumbnailMedia, brand, client, logoColor } = Astro.props
-console.log(client)
+const { title, excerpt, slug, heroMedia, thumbnailMedia, client, logoColor, agencyBrand } = Astro.props
+// console.log(client)
 ---
-<a href={`${brand == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
+<a href={`${agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
     <div class="card-media">
         <AtomSanityMedia 
             video={

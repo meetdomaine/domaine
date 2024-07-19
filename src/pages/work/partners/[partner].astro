@@ -1,10 +1,10 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { projectGridFields } from '../../../components/global/utils/cms-queries';
+import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
 
 export async function getStaticPaths() {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner" ]`)
+    const partners = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type=='type_project' && agencyBrand->slug.current == 'domaine' && references(^._id)]) > 0 ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
     return partners.map((partner) => {
         return {
             params: { partner: partner.slug.current },
@@ -29,5 +29,6 @@ const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBr
     subheading={content.excerpt}
     projects={projects}
     currentPath={`/partners/${content.slug.current}`}
+    relatedBlogPosts={content.relatedBlogPosts}
 >
 </LayoutDomaineProjects>
