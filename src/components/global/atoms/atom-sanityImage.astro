@@ -14,7 +14,7 @@ interface Props {
 
 const { image, sizes, eager, aspectRatio, cover, alt, transitionName } = Astro.props;
 
-// console.log(image)
+console.log(image)
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -27,12 +27,13 @@ const cropLeft = crop ? crop.left : 0
 
 const width = srcWidth - (srcWidth * cropLeft) - (srcWidth * cropRight)
 const height = srcHeight - (srcHeight * cropTop) - (srcHeight * cropBottom)
+
 const ratio = aspectRatio ? aspectRatio : width / height
 
 const generateSrcSets = () => {
   const sources = []
   for (let i = 1; i <=6; i+= 0.5) {
-    sources.push( `${urlFor(image).width(Math.floor(width / i)).height(Math.floor((width / i) / ratio )).auto('format').url()} ${Math.floor(width / i)}w`)
+    sources.push( `${urlFor(image).width(Math.floor(width / i)).height(Math.floor((width / i) / ratio )).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
   }
   return sources.toString()
 }

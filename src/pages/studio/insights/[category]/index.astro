@@ -22,6 +22,8 @@ const { content } = Astro.props;
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "studio" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
+const relatedBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "domaine" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
+
 ---
 <LayoutStudioBlogIndex
     pageSetting={pageSettings}
@@ -30,6 +32,9 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
     subheading="Lorem ipsum dolor sit amet."
     searchFilter="type:blog-category"
     slug={content.slug}
+    relatedBlogPosts={relatedBlogPosts}
+    relatedPostsHeading="More from Domaine"
+    relatedPostsSubheading="Insights from the larger Domaine ecosystem"
 >
 
 </LayoutStudioBlogIndex>

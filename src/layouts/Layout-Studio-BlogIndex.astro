@@ -3,8 +3,9 @@ import LayoutStudio from './Layout-Studio.astro';
 import GlobalBlogFilter from '../components/global/blog/global-BlogFilter.astro';
 import GlobalBlogIndexHero from '../components/global/blog/global-BlogIndexHero.astro';
 import GlobalBlogGrid from '../components/global/blog/global-BlogGrid.astro';
+import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 
-const { title, description, heading, subheading, searchFilter, blogPosts, pageSettings, brand, slug } = Astro.props;
+const { title, description, heading, subheading, searchFilter, blogPosts, pageSettings, brand, slug, relatedBlogPosts, relatedPostsHeading, relatedPostsSubheading } = Astro.props;
 ---
 <LayoutStudio
     title={ title ? title : pageSettings && pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Insights"}
@@ -22,4 +23,11 @@ const { title, description, heading, subheading, searchFilter, blogPosts, pageSe
     <GlobalBlogGrid 
         blogPosts={blogPosts}
     />
+    {relatedBlogPosts && 
+        <SectionBlogFeed
+            heading={relatedPostsHeading}
+            subheading={relatedPostsSubheading}
+            posts={relatedBlogPosts}
+        />
+    }
 </LayoutStudio>

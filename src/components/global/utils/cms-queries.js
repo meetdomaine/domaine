@@ -10,7 +10,7 @@ export function urlFor(source) {
   return urlBuilder.image(source)
 }
 
-export const imageBaseFields = `crop, asset->{_id, metadata}`
+export const imageBaseFields = `crop, asset->{_id, metadata}, hotspot`
 export const imageFields = `image{${imageBaseFields}, alt }`
 export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
 
