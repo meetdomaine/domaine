@@ -6,11 +6,13 @@ import TextMedia from "./section-TextMedia.astro"
 import VideoPlayer from "./section-VideoPlayer.astro"
 import ServicesFeed from "./section-ServicesFeed.astro"
 import ContentBlocks from "./section-ContentBlocks.astro"
+import ProjectsFullBleed from "./section-ProjectsFullBleed.astro"
 
 const { section, brand } = Astro.props
 ---
 {section._type == "section_form" && <Form section={section} brand={brand} />}
 {section._type == "section_projectsFeed" && <ProjectsFeed section={section} brand={brand} />}
+{section._type == "section_projectsFullBleed" && <ProjectsFullBleed section={section} brand={brand} />}
 {section._type == "section_blogFeed" && <BlogFeed section={section} brand={brand} />}
 {section._type == "section_textMedia" && <TextMedia section={section} brand={brand} />}
 {section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} />}

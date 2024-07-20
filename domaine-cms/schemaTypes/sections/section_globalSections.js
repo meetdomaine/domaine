@@ -13,6 +13,7 @@ export default defineType({
       of: [
         { type: 'section_form'},
         { type: 'section_projectsFeed'},
+        { type: 'section_projectsFullBleed'},
         { type: 'section_blogFeed'},
         { type: 'section_textMedia'},
         { type: 'section_videoPlayer'},

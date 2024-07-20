@@ -46,6 +46,7 @@ import section_videoPlayer from "./sections/section_videoPlayer";
 import section_servicesFeed from "./sections/section_servicesFeed";
 import section_contentBlocks from "./sections/section_contentBlocks";
 import snippet_button from "./snippets/snippet_button.js";
+import section_projectsFullBleed from "./sections/section_projectsFullBleed.js";
 
 
 export const schemaTypes = [
@@ -101,4 +102,5 @@ export const schemaTypes = [
     section_videoPlayer,
     section_servicesFeed,
     section_contentBlocks,
+    section_projectsFullBleed,
 ]
