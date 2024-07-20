@@ -52,29 +52,6 @@ const id = Math.random().toString(16).slice(2)
     let sectionRect = section.getBoundingClientRect();
 
 
-    let pending = false
-    let pendingArgs;
-
-    const throttle = (callback, delay = 1000) => {
-
-        const timeout = () => {
-            if (pendingArgs == null) return pending = false
-            callback(...pendingArgs)
-            pendingArgs = null
-            setTimeout(timeout, delay);
-        }
-
-        // Returning a throttled version 
-        return (...args) => {
-
-            if (pending) return pendingArgs = args
-            
-            callback(...args); // Execute the main function 
-            pending = true
-            setTimeout(timeout, delay);
-        }
-    }
-
     window.addEventListener("resize", () => {
         sectionRect = section.getBoundingClientRect();
     })
@@ -94,14 +71,23 @@ const id = Math.random().toString(16).slice(2)
     })
 
     const followCursor = (e) => {
+        console.log('follow')
         const x = e.clientX - sectionRect.left;
         const y = e.clientY - sectionRect.top + window.scrollY;
         projectPreview.style.left = `${x}px`
         projectPreview.style.top = `${y}px`
     }
 
+    const delay = 40
+    let timeout = null
+
     section.addEventListener("mousemove", (e) => {
-        throttle(followCursor(e), 100)
+        if(!timeout) {
+            followCursor(e)
+            timeout = setTimeout(() => {
+                timeout = null
+            }, delay)
+        }
     })
 
 </script>
@@ -184,7 +170,7 @@ const id = Math.random().toString(16).slice(2)
     .project-preview {
         position: absolute;
         z-index: 3;
-        padding: var(--space-xs);
+        padding: var(--space-2xs);
         border-radius: var(--radius-sm);
         display: flex;
         flex-direction: column;
@@ -195,6 +181,7 @@ const id = Math.random().toString(16).slice(2)
         translate: 5% -105%;
         pointer-events: none;
         opacity: 0;
+        transition: opacity var(--anim-sm), top var(--anim-sm) 0s, left var(--anim-sm) 0s;
     }
 
     .project-preview.visible {
