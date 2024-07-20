@@ -1,25 +1,45 @@
 ---
-const { heading, subheading, eyebrow, button, textColor } = Astro.props
+import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
+
+const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgroundVideo } = Astro.props
 ---
-<section class="home-hero" data-color={textColor === "light" ? "light" : "dark"}>
-    <div class="section-content">
-        <div class="section-text">
-            {eyebrow && <p class="utility">{eyebrow}</p>}
-            {heading && <h1>{heading}</h1>}
-            {subheading && <p class="caption">{subheading}</p>}
+<div class="hero-banner">
+    <section class="home-hero" data-color={textColor === "light" ? "light" : "dark"}>
+        <div class="section-content">
+            <div class="section-text">
+                {eyebrow && <p class="utility">{eyebrow}</p>}
+                {heading && <h1>{heading}</h1>}
+                {subheading && <p class="caption">{subheading}</p>}
+            </div>
+            {button.text && button.url &&
+                <a class={`button ${textColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
+            }
         </div>
-        {button.text && button.url &&
-            <a class={`button ${textColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
-        }
+    </section>
+    <slot />
+    <div class="background-media">
+        <AtomSanityMedia 
+            video={backgroundVideo}
+            image={backgroundImage}
+            cover={true}
+            sizes="100vw"
+        />
     </div>
-</section>
+</div>
 
 <style>
+
+    .hero-banner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
     .home-hero {
         position: relative;
         z-index: 1;
         padding-inline: var(--page-margin);
-        min-height: 90svh;
+        min-height: 100svh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -44,5 +64,11 @@ const { heading, subheading, eyebrow, button, textColor } = Astro.props
         text-align: center;
         max-width: 40em;
         gap: var(--space-sm);
+    }
+
+    .background-media {
+        position: absolute;
+        inset: 0;
+        height: 100%;
     }
 </style>

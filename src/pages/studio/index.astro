@@ -15,45 +15,25 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]
     title="Home"
     searchFilter="type:page"
 >
-    <div class="hero-banner">
-        <HomeHero 
-            eyebrow={pageSettings.eyebrow}
-            heading={pageSettings.heading}
-            subheading={pageSettings.subheading}
-            button={pageSettings.button}
-            textColor={pageSettings.heroTextColor}
-        />
+    <HomeHero 
+        eyebrow={pageSettings.eyebrow}
+        heading={pageSettings.heading}
+        subheading={pageSettings.subheading}
+        button={pageSettings.button}
+        textColor={pageSettings.heroTextColor}
+        backgroundVideo={pageSettings.media.video}
+        backgroundImage={pageSettings.media.image}
+    >
         <HomeAbout 
             eyebrow={pageSettings.aboutEyebrow}
             heading={pageSettings.aboutHeading}
             subheading={pageSettings.aboutSubheading}
             textColor={pageSettings.heroTextColor}
         />
-        {pageSettings.media &&
-            <div class="hero-banner__media">
-                <AtomSanityMedia 
-                    video={pageSettings.media.video}
-                    image={pageSettings.media.image}
-                    cover={true}
-                    sizes="100vw"
-                />
-            </div>
-        }
-    </div>
+    </HomeHero>
 
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
         <GlobalSections brand="studio" section={section} />
     ))}
 
 </LayoutStudio>
-
-<style>
-    .hero-banner {
-        position: relative;
-    }
-
-    .hero-banner__media {
-        position: absolute;
-        inset: 0;
-    }
-</style>

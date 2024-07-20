@@ -1,4 +1,5 @@
 ---
+import AtomButton from "../atoms/atom-button.astro"
 import SanityMedia from "../atoms/atom-sanityMedia.astro"
 
 const { section, brand } = Astro.props
@@ -9,15 +10,34 @@ const { section, brand } = Astro.props
     <section class="section-text-media" data-layout={section.layout}>
 
         <div class="section-content">
-            <h2>{section.heading}</h2>
-            {section.subheading && <h3>{section.subheading}</h3>}
-            {section.text && <p>{section.text}</p>}
-            {section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a> }
+            <div class="section-text">
+                {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
+                <h2 class="h3">{section.heading}</h2>
+                {section.text && <p>{section.text}</p>}
+                {section.buttonPrimary && section.buttonPrimary.text && section.buttonPrimary.url &&
+                    <AtomButton 
+                        text={section.buttonPrimary.text}
+                        url={section.buttonPrimary.url}
+                        newTab={section.buttonSecondary.newTab}
+                        style="secondary"
+                        icon="arrow-diagonal"
+                    />
+                }
+            </div>
+            {section.buttonSecondary && section.buttonSecondary.text && section.buttonSecondary.url &&
+                <AtomButton 
+                    text={section.buttonSecondary.text}
+                    url={section.buttonSecondary.url}
+                    newTab={section.buttonSecondary.newTab}
+                    style="tertiary"
+                    icon="arrow-diagonal"
+                />
+            }
         </div>
         <div class="section-media">
             <SanityMedia 
                 video={section.media.video}
-                aspectRatio={1 / 1}
+                aspectRatio={3 / 4}
                 image={section.media.image}
                 sizes="50vw"
             />
@@ -29,19 +49,47 @@ const { section, brand } = Astro.props
     .section-text-media {
         display: flex;
         flex-direction: row;
-        justify-content: stretch;
-        align-items: center;
+        justify-content: space-between;
+        align-items: stretch;
         padding-inline: var(--page-margin);
         padding-block: var(--space-lg);
-        gap: var(--space-lg);
+        gap: var(--space-xl);
     }
 
     .section-text-media[data-layout="mediaLeft"] {
         flex-direction: row-reverse;
     }
 
-    .section-content,
-    .section-media {
-        flex: 0 1 50%;
+    .section-content {
+        flex: 1 0 50%;
+        max-width: 35em;
     }
+
+    .section-text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .section-media {
+        flex: 0 0 40%;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        height: auto;
+        aspect-ratio: 3 / 4;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .section-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
 </style>

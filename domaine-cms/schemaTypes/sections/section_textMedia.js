@@ -14,15 +14,15 @@ export default defineType({
       initialValue: true
     }),
     defineField({
+      name: 'eyebrow',
+      title: 'Eyebrow',
+      type: 'string',
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
       validation: Rule => Rule.required()
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
     }),
     defineField({
       name: 'text',
@@ -55,8 +55,13 @@ export default defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'button',
-      title: 'Button',
+      name: 'buttonPrimary',
+      title: 'Button: Primary',
+      type: 'snippet_button',
+    }),
+    defineField({
+      name: 'buttonSecondary',
+      title: 'Button: Secondary',
       type: 'snippet_button',
     }),
   ],

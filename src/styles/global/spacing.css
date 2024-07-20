@@ -12,7 +12,7 @@
     --space-4xl: max(80px, calc((120 / var(--viewport-desktop)) * 100vw));
 
     --radius-none: 0px;
-    --radius-sm: 2px;
+    --radius-sm: 4px;
     --radius-md: 6px;
     --radius-lg: 12px;
     --radius-rounded: 100vw;

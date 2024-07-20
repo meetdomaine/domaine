@@ -10,7 +10,7 @@ const clients = await sanityClient.fetch(`*[_type == "type_client" && count( *[_
 <section class="home-about" data-color={textColor === "light" ? "light" : "dark"}>
     <div class="section-text">
         {eyebrow && <p class="utility">{eyebrow}</p>}
-        {heading && <h2 class="h2">{heading}</h2>}
+        {heading && <h2 class="h3">{heading}</h2>}
         {subheading && <p class="body">{subheading}</p>}
     </div>
     <div class="client-logos">
@@ -38,7 +38,7 @@ const clients = await sanityClient.fetch(`*[_type == "type_client" && count( *[_
     }
 
     .section-text {
-        max-width: 40em;
+        max-width: 50em;
         display: flex;
         flex-direction: column;
         gap: var(--space-md);
