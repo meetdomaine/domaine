@@ -47,6 +47,7 @@ import section_servicesFeed from "./sections/section_servicesFeed";
 import section_contentBlocks from "./sections/section_contentBlocks";
 import snippet_button from "./snippets/snippet_button.js";
 import section_projectsFullBleed from "./sections/section_projectsFullBleed.js";
+import settings_preloader from "./siteSettings/settings_preloader.js";
 
 
 export const schemaTypes = [
@@ -87,6 +88,7 @@ export const schemaTypes = [
     settings_headerStudio,
     settings_footerDomaine,
     settings_footerStudio,
+    settings_preloader,
 
     snippet_SEOFields,
     snippet_linkList,

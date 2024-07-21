@@ -21,6 +21,10 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
   ],
-
-  
+  preview: {
+    select: {
+        title: 'image.alt',
+        media: 'image'
+    }
+  }
 })

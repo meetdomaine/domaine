@@ -18,6 +18,7 @@ import {
     iconPages, 
     iconPartnerTiers, 
     iconPartners, 
+    iconPreloader, 
     iconProjectFeatures, 
     iconProjects, 
     iconSEO, 
@@ -45,6 +46,7 @@ import {
     labelPages, 
     labelPartnerTiers, 
     labelPartners, 
+    labelPreloader, 
     labelProjectFeatures, 
     labelProjects, 
     labelSEO, 
@@ -552,6 +554,33 @@ export const structure = (S, context) =>
                                     .documentId(`settings_footer-${slugBrandSecondary}`)
                                     .title(labelFooter)
                                 )
+                            ])
+                        ),
+                    S.listItem()
+                        .title(labelPreloader)
+                        .icon(iconPreloader)
+                        .child(
+                            S.list()
+                            .title(labelPreloader)
+                            .items([
+                                S.listItem()
+                                    .title(labelBrandPrimary)
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                        .schemaType('settings_preloader')
+                                        .documentId(`settings_preloader-${slugBrandPrimary}`)
+                                        .title(labelPreloader)
+                                    ),
+                                S.listItem()
+                                    .title(labelBrandSecondary)
+                                    .icon(iconBrandSecondary)
+                                    .child(
+                                        S.document()
+                                        .schemaType('settings_preloader')
+                                        .documentId(`settings_preloader-${slugBrandSecondary}`)
+                                        .title(labelPreloader)
+                                    ),
                             ])
                         ),
                     S.listItem()

@@ -27,6 +27,7 @@ import {
     SparkleIcon,
     StarIcon,
     EnvelopeIcon,
+    Progress75Icon,
 } from '@sanity/icons'
 
 // Domaine
@@ -130,6 +131,10 @@ export const iconHeader = MenuIcon
 // Footer
 export const labelFooter = "Footer"
 export const iconFooter = EllipsisHorizontalIcon
+
+// Preloader
+export const labelPreloader = "Preloader"
+export const iconPreloader = Progress75Icon
 
 // SEO
 export const labelSEO = "SEO"

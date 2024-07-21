@@ -27,6 +27,7 @@ const footerSettings = footerData[0]
 // Styling
 import '../styles/domaine/typography.css'
 import '../styles/domaine/color.css'
+import GlobalPreloader from '../components/global/global-Preloader.astro';
 
 // Brand
 const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
@@ -43,6 +44,7 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     foregroundColor={foregroundColor}
     searchFilter={searchFilter}
 >
+    <GlobalPreloader />
     <Header
         brands={brands}
         currentBrand={currentBrand}

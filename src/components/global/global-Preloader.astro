@@ -1,0 +1,117 @@
+---
+import { sanityClient } from "sanity:client"
+import { imageFields } from "./utils/cms-queries"
+import AtomSanityImage from "./atoms/atom-sanityImage.astro"
+
+// sessionStorage.removeItem("key");
+
+
+// const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader-domaine"][0]{..., heading, images[]->{${imageFields}} }`)
+
+const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-domaine"][0]{..., heading, images[]{${imageFields}} }`)
+console.log(preloaderContent)
+---
+<div id="site-preloader" class="preloader">
+    <p id="preloader-heading" class="preloader-heading h1">{preloaderContent.heading}</p>
+    {preloaderContent.images.map((entry, i) => (
+        <div 
+            class="preloader-image" 
+            data-foreground={[0, 2, 4, 7, 9, 11, 12, 14, 16].includes(i) ? "true": "false"}
+            data-logo={[0, 7, 12].includes(i) ? "true": "false"}
+        >
+            <AtomSanityImage 
+                image={entry.image}
+                sizes="25vw"
+                cover={true}
+            />
+        </div>
+    ))}
+</div>
+
+<script>
+    import { gsap, SplitText } from "./utils/gsap";
+
+    const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
+    const preloader = document.getElementById("site-preloader")
+
+    let showPreloader = false
+
+    let sessionCached = sessionStorage.getItem("cachedSession");
+
+    if (!sessionCached) {
+        showPreloader = true
+        sessionStorage.setItem("cachedSession", "true");
+    }
+
+    if (showPreloader) {
+
+        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "power4.out"}})
+        preloaderTimeline.to(preloader, {
+            visibility: "visible"
+        })
+        preloaderTimeline.to(".preloader-image[data-foreground='true']", {
+            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+        })
+        preloaderTimeline.to(".preloader-image[data-foreground='false']", {
+            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+        }, "+=0.05")
+        preloaderTimeline.to(".preloader-image[data-logo='false']", {
+            clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+        }, "+=0.05")
+        preloaderTimeline.to(heading.lines, {
+            visibility: "visible",
+            y: "0%",
+            clipPath: "polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)",
+            stagger: 0.2,
+        }, "<")
+        preloaderTimeline.to(preloader, {
+            y: "-100%"
+        }, "+=0.4")
+
+    }
+
+</script>
+
+<style is:global>
+    .preloader-text-line {
+        translate: 0 100%;
+        clip-path: polygon(0% 0%, 0% 0%, 100% 100%, 100% 100%);
+    }
+</style>
+
+<style>
+    .preloader {
+        visibility: hidden;
+        --load-duration: 0.8s;
+        --load-background-delay: 0.1s;
+        --load-out-delay: 0.1s;
+        position: fixed;
+        width: 100%;
+        height: 100dvh;
+        z-index: 9;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        background-color: var(--color-background);
+    }
+
+    .preloader-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        min-width: 0px;
+        min-height: 0px;
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+    }
+
+    .preloader-heading {
+        position: absolute;
+        width: 55%;
+        top: 50%;
+        left: 45%;
+        translate: 0 -50%;
+        z-index: 2;
+        visibility: hidden;
+    }
+
+</style>
