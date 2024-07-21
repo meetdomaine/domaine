@@ -70,25 +70,27 @@ const id = Math.random().toString(16).slice(2)
         })
     })
 
-    const followCursor = (e) => {
-        console.log('follow')
-        const x = e.clientX - sectionRect.left;
-        const y = e.clientY - sectionRect.top + window.scrollY;
-        projectPreview.style.left = `${x}px`
-        projectPreview.style.top = `${y}px`
-    }
-
-    const delay = 40
+    const delay = 30
     let timeout = null
 
-    section.addEventListener("mousemove", (e) => {
+    const followCursor = (e) => {
         if(!timeout) {
-            followCursor(e)
+            const x = e.clientX - sectionRect.left;
+            const y = e.clientY - sectionRect.top + window.scrollY;
+            projectPreview.style.left = `${x}px`
+            projectPreview.style.top = `${y}px`
+
             timeout = setTimeout(() => {
                 timeout = null
             }, delay)
         }
+    }
+
+
+    section.addEventListener("mousemove", (e) => {
+        followCursor(e)
     })
+
 
 </script>
 
@@ -180,12 +182,14 @@ const id = Math.random().toString(16).slice(2)
         width: max(20px, 15vw);
         translate: 5% -105%;
         pointer-events: none;
-        opacity: 0;
-        transition: opacity var(--anim-sm), top var(--anim-sm) 0s, left var(--anim-sm) 0s;
+        /* opacity: 0; */
+        clip-path: polygon(0% 100%, 0% 100%, 100% 100%, 100% 100%);
+        transition: clip-path var(--anim-sm), top var(--anim-sm) 0s, left var(--anim-sm) 0s;
     }
 
     .project-preview.visible {
-        opacity: 1;
+        /* opacity: 1; */
+        clip-path: polygon(0% 100%, 0% 0%, 100% 0%, 100% 100%);
     }
 
     .preview-image {
