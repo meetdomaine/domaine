@@ -31,11 +31,7 @@ console.log(preloaderContent)
 <script>
     import { gsap, SplitText } from "./utils/gsap";
 
-    const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
-    const preloader = document.getElementById("site-preloader")
-
     let showPreloader = false
-
     let sessionCached = sessionStorage.getItem("cachedSession");
 
     if (!sessionCached) {
@@ -44,6 +40,9 @@ console.log(preloaderContent)
     }
 
     if (showPreloader) {
+
+        const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
+        const preloader = document.getElementById("site-preloader")
 
         const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "power4.out"}})
         preloaderTimeline.to(preloader, {
@@ -65,8 +64,9 @@ console.log(preloaderContent)
             stagger: 0.2,
         }, "<")
         preloaderTimeline.to(preloader, {
-            y: "-100%"
-        }, "+=0.4")
+            y: "-100%",
+            duration: 0.8,
+        }, "+=0.2")
 
     }
 
