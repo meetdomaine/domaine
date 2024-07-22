@@ -1,14 +1,18 @@
 ---
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
+import { replaceStringIcons } from "../../../global/utils/inline-icon-text"
 
 const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgroundVideo } = Astro.props
+
+const iconText = replaceStringIcons(heading)
 ---
 <div id="studio-home-hero" class="hero-banner">
     <section class="home-hero" data-color={textColor === "light" ? "light" : "dark"}>
         <div class="section-content">
             <div class="section-text">
                 {eyebrow && <p class="utility anim-fade-up">{eyebrow}</p>}
-                {heading && <h1 class="anim-fade-up">{heading}</h1>}
+                <!-- {heading && <h1 class="anim-fade-up">{heading}</h1>} -->
+                {heading && <h1 class="anim-fade-up"><Fragment set:html={iconText}></h1>}
                 {subheading && <p class="caption anim-fade-up">{subheading}</p>}
             </div>
             {button.text && button.url &&
