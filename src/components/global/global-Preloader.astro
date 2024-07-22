@@ -36,66 +36,66 @@ const { content, brand } = Astro.props
         sessionStorage.setItem("cachedSession", "true");
     }
 
+    // showPreloader = true
     if (showPreloader) {
 
         const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
         const preloader = document.getElementById("site-preloader")
 
         const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "power4.out"}})
-        preloaderTimeline.to(preloader, {
-            visibility: "visible"
-        })
-        preloaderTimeline.to(".preloader-image[data-foreground='true']", {
+
+        preloaderTimeline.fromTo(".preloader-image[data-foreground='true']", {
+            clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+        }, {
             clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
         })
-        preloaderTimeline.to(".preloader-image[data-foreground='false']", {
+        preloaderTimeline.fromTo(".preloader-image[data-foreground='false']", {
+            clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+        }, {
             clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-        }, "+=0.05")
+        })
         preloaderTimeline.to(".preloader-image[data-logo='false']", {
             clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
-        }, "+=0.05")
-        preloaderTimeline.to(heading.lines, {
-            visibility: "visible",
-            y: "0%",
-            clipPath: "polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)",
+        })
+        preloaderTimeline.from(heading.lines, {
+            // visibility: "visible",
+            y: "100%",
+            clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
             stagger: 0.2,
-        }, "<")
-        preloaderTimeline.fromTo("#brand-menu", {
-            x: "-150%"
-        }, {
-            x: "0%",
-            duration: 1,
-        }, "+=0.1")
-        preloaderTimeline.fromTo("#utility-menu", {
-            x: "150%"
-        }, {
-            x: "0%",
-            duration: 1,
-        }, "<")
-        preloaderTimeline.fromTo("#navigation-menu", {
+        })
+        preloaderTimeline.from("#navigation-menu", {
             y: "-150%"
-        }, {
+        }, "<+=0.2")
+        preloaderTimeline.from("#brand-menu", {
+            x: "-150%"
+        }, "<+=0.2")
+        preloaderTimeline.from("#utility-menu", {
+            x: "150%"
+        }, "<")
+        preloaderTimeline.from(preloader, {
             y: "0%",
-            duration: 1,
-        }, "<")
-        preloaderTimeline.to(preloader, {
-            y: "-100%",
-            duration: 1,
-        }, "<")
+        }, "+=0.6")
+        preloaderTimeline.from(preloader, {
+            opacity: 1,
+            visibility: "visible",
+            autoAlpha: 1
+        }, ">")
     }
 
 </script>
 
 <style is:global>
     .preloader-text-line {
-        translate: 0 100%;
-        clip-path: polygon(0% 0%, 0% 0%, 100% 100%, 100% 100%);
+        translate: 0 0%;
+        clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
     }
 </style>
 
 <style>
     .preloader {
+        opacity: 0;
         visibility: hidden;
+        translate: 0 -100%;
         --load-duration: 0.8s;
         --load-background-delay: 0.1s;
         --load-out-delay: 0.1s;
@@ -108,6 +108,7 @@ const { content, brand } = Astro.props
         grid-template-rows: 1fr 1fr 1fr;
         background-color: var(--color-background);
         color: var(--color-foreground);
+        pointer-events: none;
     }
 
     .preloader[data-brand="studio"] {
@@ -131,7 +132,10 @@ const { content, brand } = Astro.props
         left: 45%;
         translate: 0 -50%;
         z-index: 2;
-        visibility: hidden;
+    }
+
+    .preloader-image {
+        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
     }
 
 </style>
