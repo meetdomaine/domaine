@@ -40,10 +40,6 @@ const brandSettings = currentBrand
 // Preloader
 const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-studio"][0]{..., heading, images[]{${imageFields}} }`)
 ---
-<GlobalPreloader 
-    content={preloaderContent}
-    brand="studio"
-/>
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
     description={ description ? description : currentBrand.description }
@@ -51,6 +47,8 @@ const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloade
     favicon={brandSettings.favicon}
     image={image ? image : currentBrand.metafields.image}
     searchFilter={searchFilter}
+    preloaderContent={preloaderContent}
+    brand='studio'
 >
     <Header
         brands={brands}

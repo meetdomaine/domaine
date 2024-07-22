@@ -138,4 +138,19 @@ const { content, brand } = Astro.props
         clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
     }
 
+    @media screen and (max-width: 768px) {
+
+        .preloader {
+            padding-block: 30dvh;
+        }
+
+        .preloader-heading {
+            width: 55%;
+            top: unset;
+            bottom: var(--space-sm);
+            left: var(--space-sm);
+            translate: 0% 0%;
+        }
+    }
+
 </style>
