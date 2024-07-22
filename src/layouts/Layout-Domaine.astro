@@ -28,14 +28,20 @@ const footerSettings = footerData[0]
 import '../styles/domaine/typography.css'
 import '../styles/domaine/color.css'
 import GlobalPreloader from '../components/global/global-Preloader.astro';
+import { imageFields } from '../components/global/utils/cms-queries';
 
 // Brand
 const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Domaine"][0]`)
 
+// Preloader
+const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-domaine"][0]{..., heading, images[]{${imageFields}} }`)
 ---
 
-<GlobalPreloader />
+<GlobalPreloader 
+    content={preloaderContent}
+    brand="domaine"
+/>
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
     description={ description ? description : currentBrand.description }

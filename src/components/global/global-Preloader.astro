@@ -5,15 +5,11 @@ import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 
 // sessionStorage.removeItem("key");
 
-
-// const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader-domaine"][0]{..., heading, images[]->{${imageFields}} }`)
-
-const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-domaine"][0]{..., heading, images[]{${imageFields}} }`)
-console.log(preloaderContent)
+const { content, brand } = Astro.props
 ---
-<div id="site-preloader" class="preloader">
-    <p id="preloader-heading" class="preloader-heading h1">{preloaderContent.heading}</p>
-    {preloaderContent.images.map((entry, i) => (
+<div id="site-preloader" class="preloader" data-brand={brand}>
+    <p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
+    {content.images.map((entry, i) => (
         <div 
             class="preloader-image" 
             data-foreground={[0, 2, 4, 7, 9, 11, 12, 14, 16].includes(i) ? "true": "false"}
@@ -23,6 +19,7 @@ console.log(preloaderContent)
                 image={entry.image}
                 sizes="25vw"
                 cover={true}
+                eager={true}
             />
         </div>
     ))}
@@ -63,11 +60,28 @@ console.log(preloaderContent)
             clipPath: "polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)",
             stagger: 0.2,
         }, "<")
+        preloaderTimeline.fromTo("#brand-menu", {
+            x: "-150%"
+        }, {
+            x: "0%",
+            duration: 1,
+        }, "+=0.1")
+        preloaderTimeline.fromTo("#utility-menu", {
+            x: "150%"
+        }, {
+            x: "0%",
+            duration: 1,
+        }, "<")
+        preloaderTimeline.fromTo("#navigation-menu", {
+            y: "-150%"
+        }, {
+            y: "0%",
+            duration: 1,
+        }, "<")
         preloaderTimeline.to(preloader, {
             y: "-100%",
-            duration: 0.8,
-        }, "+=0.2")
-
+            duration: 1,
+        }, "<")
     }
 
 </script>
@@ -93,6 +107,12 @@ console.log(preloaderContent)
         grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
         background-color: var(--color-background);
+        color: var(--color-foreground);
+    }
+
+    .preloader[data-brand="studio"] {
+        background-color: var(--color-brand);
+        color: var(--color-brand-contrast);
     }
 
     .preloader-image {
