@@ -1,10 +1,12 @@
 ---
+import { Icon } from "astro-icon/components"
 import AtomButton from "../atoms/atom-button.astro"
 import SanityMedia from "../atoms/atom-sanityMedia.astro"
+import { replaceStringIcons } from "../../global/utils/inline-icon-text"
 
 const { section, brand } = Astro.props
 
-// console.log(section.media.video)
+const iconText = replaceStringIcons(section.heading)
 ---
 {section.showSection && 
     <section class="section-text-media" data-layout={section.layout}>
@@ -12,7 +14,7 @@ const { section, brand } = Astro.props
         <div class="section-content">
             <div class="section-text">
                 {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
-                <h2 class="h3">{section.heading}</h2>
+                <h2 class="heading h3"><Fragment set:html={iconText} /></h2>
                 {section.text && <p>{section.text}</p>}
                 {section.buttonPrimary && section.buttonPrimary.text && section.buttonPrimary.url &&
                     <AtomButton 
@@ -45,6 +47,25 @@ const { section, brand } = Astro.props
     </section>
 }
 
+<script>
+    import { addParallax, fadeUp, gsap } from "../../global/utils/gsap"
+
+    const animateSection = () => {
+        const sections = document.querySelectorAll('.section-text-media')
+        sections.forEach((section) => {
+            const sectionMedia = section.querySelector('.section-media')
+            const video = sectionMedia.querySelector('mux-player')
+            const image = sectionMedia.querySelector('img')
+            if (video) addParallax(video)
+            if (image) addParallax(image)
+        })
+    }
+
+    window.addEventListener("preload:complete", () => {
+        animateSection()
+    })
+</script>
+
 <style>
     .section-text-media {
         display: flex;
@@ -69,6 +90,11 @@ const { section, brand } = Astro.props
         display: flex;
         flex-direction: column;
         gap: var(--space-xs);
+    }
+
+    .heading .inline-icon {
+        width: 1em;
+        height: 1em;
     }
 
     .section-media {

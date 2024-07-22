@@ -106,3 +106,12 @@ code {
 p {
     margin-block: 0 0.75em;
 }
+
+.inline-icon {
+    display: inline;
+}
+
+.inline-icon svg {
+    width: 0.8em;
+    height: 0.8em;
+}
