@@ -28,13 +28,15 @@ const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgr
 </div>
 
 <script>
-    import { fadeUp, gsap } from "../../../global/utils/gsap"
+    import { fadeUp, gsap, addParallax } from "../../../global/utils/gsap"
 
     const animateSection = () => {
         const section = document.getElementById('studio-home-hero')
         const fadeUpElements = section.querySelectorAll('.anim-fade-up')
+        const backgroundMedia = section.querySelectorAll('.background-media')
         const animTimeline = gsap.timeline({ defaults: {duration:1, ease: "power4.out"}})
         if (fadeUpElements) fadeUp(fadeUpElements, animTimeline, ">", 0.2)
+        addParallax(backgroundMedia)
     }
 
     window.addEventListener("preload:complete", () => {
@@ -48,6 +50,7 @@ const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgr
         position: relative;
         display: flex;
         flex-direction: column;
+        overflow: clip;
     }
 
     .home-hero {
