@@ -34,6 +34,8 @@ const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Domaine"][0]`)
 
 ---
+
+<GlobalPreloader />
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
     description={ description ? description : currentBrand.description }
@@ -44,7 +46,6 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     foregroundColor={foregroundColor}
     searchFilter={searchFilter}
 >
-    <GlobalPreloader />
     <Header
         brands={brands}
         currentBrand={currentBrand}
