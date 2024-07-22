@@ -1,16 +1,24 @@
 ---
+import AtomButton from "../../../global/atoms/atom-button.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 
 const { heading, subheading, button, media, heroTextColor } = Astro.props
 ---
-<section class="home_hero" data-color={heroTextColor === "light" ? "light" : "dark"}>
+<section id="domaine-home-hero" class="home_hero" data-color={heroTextColor === "light" ? "light" : "dark"}>
     <div class="section-content">
         <div class="section-title">
-            <h1 class="h3">{heading}</h1>
-            {subheading && <p>{subheading}</p>}
+            <h1 class="h3 anim-fade-up">{heading}</h1>
+            {subheading && <p class="anim-fade-up">{subheading}</p>}
         </div>
         {button.text && button.url &&
-            <a class={`button ${heroTextColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
+            <AtomButton 
+                text={button.text}
+                url={button.url}
+                newTab={button.newTab}
+                style="primary"
+                icon="arrow-diagonal"
+                classList="anim-fade-up color-invert"
+            />
         }
     </div>
     {media && 
@@ -25,6 +33,21 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
     }
 </section>
 
+<script>
+    import { fadeUp, gsap } from "../../../global/utils/gsap"
+
+    const animateSection = () => {
+        const section = document.getElementById('domaine-home-hero')
+        const fadeUpElements = section.querySelectorAll('.anim-fade-up')
+        const animTimeline = gsap.timeline({ defaults: {duration:1, ease: "power4.out"}})
+        if (fadeUpElements) fadeUp(fadeUpElements, animTimeline, ">", 0.2)
+    }
+
+    window.addEventListener("preload:complete", () => {
+        animateSection()
+    })
+</script>
+
 <style>
     .home_hero {
         padding-inline: var(--page-margin);
@@ -36,6 +59,7 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
         align-items: center;
         gap: var(--space-md);
         position: relative;
+        background-color: var(--color-brand);
     }
 
     .home_hero[data-color="light"] {

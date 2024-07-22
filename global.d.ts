@@ -1,5 +1,10 @@
 declare module 'sanity:client';
 
+declare global {
+    interface Window { preloaderActive: boolean; }
+}
+
+
 declare interface Slug {
     current: string,
     _type: 'slug',

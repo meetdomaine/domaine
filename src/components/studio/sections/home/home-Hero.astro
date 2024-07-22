@@ -3,16 +3,16 @@ import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 
 const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgroundVideo } = Astro.props
 ---
-<div class="hero-banner">
+<div id="studio-home-hero" class="hero-banner">
     <section class="home-hero" data-color={textColor === "light" ? "light" : "dark"}>
         <div class="section-content">
             <div class="section-text">
-                {eyebrow && <p class="utility">{eyebrow}</p>}
-                {heading && <h1>{heading}</h1>}
-                {subheading && <p class="caption">{subheading}</p>}
+                {eyebrow && <p class="utility anim-fade-up">{eyebrow}</p>}
+                {heading && <h1 class="anim-fade-up">{heading}</h1>}
+                {subheading && <p class="caption anim-fade-up">{subheading}</p>}
             </div>
             {button.text && button.url &&
-                <a class={`button ${textColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
+                <a class={`button anim-fade-up ${textColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
             }
         </div>
     </section>
@@ -26,6 +26,21 @@ const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgr
         />
     </div>
 </div>
+
+<script>
+    import { fadeUp, gsap } from "../../../global/utils/gsap"
+
+    const animateSection = () => {
+        const section = document.getElementById('studio-home-hero')
+        const fadeUpElements = section.querySelectorAll('.anim-fade-up')
+        const animTimeline = gsap.timeline({ defaults: {duration:1, ease: "power4.out"}})
+        if (fadeUpElements) fadeUp(fadeUpElements, animTimeline, ">", 0.2)
+    }
+
+    window.addEventListener("preload:complete", () => {
+        animateSection()
+    })
+</script>
 
 <style>
 

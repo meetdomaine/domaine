@@ -28,6 +28,7 @@ const { content, brand } = Astro.props
 <script>
     import { gsap, SplitText } from "./utils/gsap";
 
+
     let showPreloader = false
     let sessionCached = sessionStorage.getItem("cachedSession");
 
@@ -36,13 +37,19 @@ const { content, brand } = Astro.props
         sessionStorage.setItem("cachedSession", "true");
     }
 
+    const preloadComplete = new Event("preload:complete");
+
+    const handlePreloadComplete = () => {
+        window.dispatchEvent(preloadComplete)
+    }
+
     // showPreloader = true
     if (showPreloader) {
 
         const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
         const preloader = document.getElementById("site-preloader")
 
-        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "power4.out"}})
+        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "power4.out"} })
 
         preloaderTimeline.fromTo(".preloader-image[data-foreground='true']", {
             clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
@@ -74,12 +81,16 @@ const { content, brand } = Astro.props
         }, "<")
         preloaderTimeline.from(preloader, {
             y: "0%",
+            onStart: handlePreloadComplete
         }, "+=0.6")
         preloaderTimeline.from(preloader, {
             opacity: 1,
             visibility: "visible",
-            autoAlpha: 1
+            autoAlpha: 1,
         }, ">")
+
+    } else {
+        window.addEventListener("DOMContentLoaded", handlePreloadComplete)
     }
 
 </script>
