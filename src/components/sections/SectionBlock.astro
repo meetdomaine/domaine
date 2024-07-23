@@ -22,29 +22,30 @@ import BlogPosts from './global/BlogPosts.astro';
 
 interface Props {
 	block: any;
+	key: string
 }
-const { block } = Astro.props;
+const { block, key } = Astro.props;
 // console.log(block)
 
 ---
-{block._type == 'sectionHero' && <Hero content={block} />}
-{block._type == 'sectionClients' && <Clients content={block} />}
-{block._type == 'sectionAbout' && <About content={block} />}
-{block._type == 'sectionWork' && <Work content={block} />}
-{block._type == 'sectionContactForm' && <ContactForm content={block} />}
-{block._type == 'sectionPartners' && <Partners content={block} />}
-{block._type == 'sectionAgencies' && <Agencies content={block} />}
-{block._type == 'sectionServiceDetail' && <ServiceDetail content={block} />}
-{block._type == 'sectionMediaFullbleed' && <MediaFullbleed content={block} />}
-{block._type == 'sectionMediaGallery' && <MediaGallery content={block} />}
-{block._type == 'sectionContentBlocks' && <ContentBlocks content={block} />}
-{block._type == 'sectionTextImage' && <TextImage content={block} />}
-{block._type == 'sectionRichText' && <RichText content={block} />}
-{block._type == 'sectionBlogPosts' && <BlogPosts content={block} />}
-{block._type == 'sectionTextCTA' && <TextCTA content={block} />}
+{block._type == 'sectionHero' && <Hero content={block} key={key} />}
+{block._type == 'sectionClients' && <Clients content={block} key={key} />}
+{block._type == 'sectionAbout' && <About content={block} key={key} />}
+{block._type == 'sectionWork' && <Work content={block} key={key} />}
+{block._type == 'sectionContactForm' && <ContactForm content={block} key={key} />}
+{block._type == 'sectionPartners' && <Partners content={block} key={key} />}
+{block._type == 'sectionAgencies' && <Agencies content={block} key={key} />}
+{block._type == 'sectionServiceDetail' && <ServiceDetail content={block} key={key} />}
+{block._type == 'sectionMediaFullbleed' && <MediaFullbleed content={block} key={key} />}
+{block._type == 'sectionMediaGallery' && <MediaGallery content={block} key={key} />}
+{block._type == 'sectionContentBlocks' && <ContentBlocks content={block} key={key} />}
+{block._type == 'sectionTextImage' && <TextImage content={block} key={key} />}
+{block._type == 'sectionRichText' && <RichText content={block} key={key} />}
+{block._type == 'sectionBlogPosts' && <BlogPosts content={block} key={key} />}
+{block._type == 'sectionTextCTA' && <TextCTA content={block} key={key} />}
 
-{block._type == 'sectionServices' && <Services content={block} />} 
-{block._type == 'sectionMediaGrid' && <MediaGrid content={block} />}
-{block._type == 'sectionTextColumns' && <TextColumns content={block} />}
+{block._type == 'sectionServices' && <Services content={block} key={key} />} 
+{block._type == 'sectionMediaGrid' && <MediaGrid content={block} key={key} />}
+{block._type == 'sectionTextColumns' && <TextColumns content={block} key={key} />}
 
-{block._type == 'sectionSpeakers' && <EventSpeakers content={block} />}
+{block._type == 'sectionSpeakers' && <EventSpeakers content={block} key={key} />}
