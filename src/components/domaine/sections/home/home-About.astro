@@ -69,6 +69,7 @@ const featuredProject = await sanityClient.fetch(`*[_type == "type_project" && a
         display: flex;
         flex-direction: row;
         gap: var(--space-2xs);
+        flex-wrap: wrap;
     }
 
     .section-links {
@@ -78,5 +79,12 @@ const featuredProject = await sanityClient.fetch(`*[_type == "type_project" && a
         flex-direction: column;
         align-items: stretch;
         gap: var(--space-xs);
+    }
+
+    @media screen and (max-width: 768px) {
+        .section-domaine-about {
+            flex-direction: column;
+            align-items: stretch;
+        }
     }
 </style>

@@ -2,7 +2,7 @@
 interface Props {
     title?: string,
     text: string,
-    url: string
+    url?: string
 }
 
 const { title, text, url} = Astro.props
@@ -21,6 +21,7 @@ const { title, text, url} = Astro.props
         padding-inline: var(--space-2xs);
         padding-block: var(--space-3xs);
         gap: 0.2em;
+        flex: 0 0 auto;
     }
 
     .title {
