@@ -82,7 +82,11 @@ if (content.inlineLogo) inlineLogoURL = urlFor(content.inlineLogo).auto('format'
 
   initInlineLogo()
 
-  document.addEventListener("astro:after-swap", () => {
+  // document.addEventListener("astro:after-swap", () => {
+  //   initInlineLogo()
+  // })
+
+  document.addEventListener("DOMContentLoaded", () => {
     initInlineLogo()
   })
 </script>
