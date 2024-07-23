@@ -64,12 +64,37 @@
             hideNotice()
         }
 
-        if (localStorage.getItem('consentMode') === null) {
-            cookieNotice.classList.remove("hidden")
-        }
+        // document.addEventListener("astro:page-load", () => {
 
-        acceptButton.addEventListener("click", handleAccept)
-        declineButton.addEventListener("click", handleDecline)
+        //     const cookiedConsent = localStorage.getItem('consentMode')
+
+        //     if (cookiedConsent === null) {
+        //         cookieNotice.classList.remove("hidden")
+        //     } else {
+        //         setConsent(cookiedConsent)
+        //     }
+
+        //     acceptButton.addEventListener("click", handleAccept)
+        //     declineButton.addEventListener("click", handleDecline)
+
+        // })
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const cookiedConsent = localStorage.getItem('consentMode')
+
+            if (cookiedConsent === null) {
+                cookieNotice.classList.remove("hidden")
+            } else {
+                setConsent(JSON.parse(cookiedConsent))
+            }
+
+            acceptButton.addEventListener("click", handleAccept)
+            declineButton.addEventListener("click", handleDecline)
+
+        })
+
+
 
         // document.addEventListener("astro:page-load", () => {
         //     window.dataLayer.push({ event: 'astroPageLoad' });

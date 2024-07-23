@@ -32,7 +32,7 @@ const { data } = Astro.props;
   image={data.metaImage && urlFor(data.metaImage).url()}
   theme={data.colorTheme}
 >
-  {data.content.map((block) => {
-    return <SectionBlock block={block} />
+  {data.content.map((block, i) => {
+    return <SectionBlock block={block} key={i} />
   })}
 </Layout>

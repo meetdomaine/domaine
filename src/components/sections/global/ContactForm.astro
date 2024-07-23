@@ -1,5 +1,7 @@
 ---
-const { content, heading, text, hubspotFormId } = Astro.props;
+const { content, heading, text, hubspotFormId, key } = Astro.props;
+
+const formId = hubspotFormId ? hubspotFormId : content.hubspotFormId
 ---
 <section class="section_form" id="form-section">
   <div class="section_form-inner">
@@ -8,8 +10,9 @@ const { content, heading, text, hubspotFormId } = Astro.props;
       <p class="h6">{text ? text : content.subheading ? content.subheading : null}</p>
     </div>
     <div 
-      id="form" 
-      data-hubspot-form-id={hubspotFormId ? hubspotFormId : content.hubspotFormId}
+      id={`form-${formId}-${key}`} 
+      class="hubspot-form"
+      data-hubspot-form-id={formId}
       data-animate-viewport="true"
       data-animate-style="fade"
       data-animate-delay="200"
@@ -17,32 +20,24 @@ const { content, heading, text, hubspotFormId } = Astro.props;
   </div>
 </section>
 
-<script>
-
-  declare global {
-      interface Window {
-          hbspt:any;
-      }
-  }
+<script define:vars={{ formId, key }}>
 
   const initForm = () => {
-    const form: HTMLElement = document.querySelector("#form")
+    const form = document.querySelector(`#form-${formId}-${key}`)
 
     if (form && window.hbspt) {
+
       window.hbspt.forms.create({
-          region: "na1",
-          target: "#form",
-          portalId: "41750854",
-          formId: form.dataset.hubspotFormId,
+        region: "na1",
+        target: `#form-${formId}-${key}`,
+        portalId: "41750854",
+        formId: form.dataset.hubspotFormId,
       });
+      
     }
   }
 
-  // document.addEventListener("DOMContentLoaded", () => {
-  //   initForm()
-  // })
-
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     initForm()
   })
 
@@ -72,7 +67,7 @@ const { content, heading, text, hubspotFormId } = Astro.props;
     flex: 1 1 auto;
   }
 
-  #form {
+  .hubspot-form {
     min-width: min(40ch, 100%);
     flex: 1 1 50ch;
   }
@@ -88,7 +83,7 @@ const { content, heading, text, hubspotFormId } = Astro.props;
       max-width: unset;
     }
 
-    #form {
+    .hubspot-form {
       max-width: unset;
     }
 

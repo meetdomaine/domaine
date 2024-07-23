@@ -35,8 +35,8 @@ const { data } = Astro.props;
   image={data.metaImage ? urlFor(data.metaImage).url() : undefined}
 >
 	<main>
-		{data.content.map((contentBlock) => (
-			<SectionBlock block={contentBlock} />
+		{data.content.map((contentBlock, i) => (
+			<SectionBlock block={contentBlock} key={i} />
 		))}
 	</main>
 </Layout>
