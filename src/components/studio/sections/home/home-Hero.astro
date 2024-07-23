@@ -40,7 +40,7 @@ const iconText = replaceStringIcons(heading)
         const backgroundMedia = section.querySelectorAll('.background-media')
         const animTimeline = gsap.timeline({ defaults: {duration:1, ease: "power4.out"}})
         if (fadeUpElements) fadeUp(fadeUpElements, animTimeline, ">", 0.2)
-        addParallax(backgroundMedia)
+        // addParallax(backgroundMedia)
     }
 
     window.addEventListener("preload:complete", () => {
