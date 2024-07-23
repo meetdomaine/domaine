@@ -23,49 +23,51 @@ h6, .h6 {
   
 h1, .h1 {
     --min-size: 42;
-    --base-size: 68;
-    letter-spacing: -0.03em;
-    line-height: 0.99;
+    --base-size: 80;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
     font-weight: 400;
 }
   
 h2, .h2 {
     --min-size: 38;
-    --base-size: 54;
-    letter-spacing: -0.03em;
-    line-height: .95;
+    --base-size: 48;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
     font-weight: 400;
 }
   
 h3, .h3 {
     --min-size: 32;
-    --base-size: 44;
-    letter-spacing: -0.03em;
+    --base-size: 40;
+    letter-spacing: -0.04em;
     line-height: 1.1;
     font-weight: 400;
 }
   
 h4, .h4 {
     --min-size: 28;
-    --base-size: 34;
-    letter-spacing: -0.03em;
+    --base-size: 32;
+    letter-spacing: -0.04em;
     line-height: 1.1;
     font-weight: 600;
 }
 
 h5, .h5 {
     --min-size: 22;
-    --base-size: 26;
-    letter-spacing: -0.02em;
+    --base-size: 24;
+    letter-spacing: -0.01em;
     line-height: 1.1;
     font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 0.1em;
 }
 
 h6, .h6 {
-    --min-size: 18;
-    --base-size: 20;
+    --min-size: 16;
+    --base-size: 18;
     letter-spacing: -0.02em;
-    line-height: 1.2;
+    line-height: 1.1;
     font-weight: 400;
 }
   

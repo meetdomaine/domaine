@@ -39,7 +39,8 @@ input[type="submit"]:hover,
 .button[data-style="tertiary"] {
     background-color: transparent;
     padding: 0;
-    color: var(--color-brand)
+    color: var(--color-brand);
+    min-width: unset;
 }
 
 button.button-reset {

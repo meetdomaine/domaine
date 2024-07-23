@@ -17,7 +17,7 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
-      validation: Rule => Rule.required()
+      // validation: Rule => Rule.required()
     }),
     defineField({
       name: 'subheading',
@@ -42,8 +42,9 @@ export default defineType({
       title: 'heading',
     },
     prepare(selection) {
+      const { title } = selection
       return {
-        ...selection,
+        title: title ? title : "Projects Feed",
         subtitle: 'Projects Feed',
         media: iconProjects,
       }

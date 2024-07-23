@@ -18,8 +18,8 @@ if (section.projects) {
 {section.showSection && 
     <section class="section-projects-feed">
         <div class="section-title">
-            <h2>{section.heading}</h2>
-            {section.subheading && <p>{section.subheading}</p>}
+            {section.heading && <h2 class="h5">{section.heading}</h2>}
+            {section.subheading && <p class="caption">{section.subheading}</p>}
         </div>
         <div class="section-content">
             {projects.map((project) => (
@@ -43,6 +43,9 @@ if (section.projects) {
     .section-projects-feed {
         padding-inline: var(--page-margin);
         padding-block: var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
     }
 
     .section-content {

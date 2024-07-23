@@ -1,0 +1,74 @@
+---
+import { Icon } from "astro-icon/components"
+import AtomSanityImage from "./atom-sanityImage.astro"
+
+const { categoryTitle, title, excerpt, url, image } = Astro.props
+---
+<a class="link-card glass-ink" href={url}>
+    <div class="card-header">
+        <p class="caption">{categoryTitle}</p>
+        <Icon name="arrow-diagonal" class="icon" />
+    </div>
+    <div class="card-content">
+        <div class="card-media">
+            <AtomSanityImage
+                image={image}
+                sizes="20vw"
+                aspectRatio={1 / 1}
+            />
+        </div>
+        <div class="card-text">
+            <p class="title">{title}</p>
+            <p class="excerpt">{excerpt}</p>
+        </div>
+    </div>
+</a>
+
+<style>
+    .link-card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+        text-decoration: none;
+        color: var(--color-background);
+        border-radius: var(--radius-md);
+        padding-inline: var(--space-xs);
+        padding-block: var(--space-xs);
+    }
+
+    .card-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .icon {
+        width: 0.6rem;
+        height: 0.6rem;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+
+    .card-media {
+        flex: 0 0 20%;
+    }
+
+    .card-text {
+        line-height: 1.2;
+    }
+
+    .title {
+        display: inline;
+    }
+
+    .excerpt {
+        display: inline;
+        color: var(--color-background-secondary);
+    }
+</style>

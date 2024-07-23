@@ -7,6 +7,7 @@ import VideoPlayer from "./section-VideoPlayer.astro"
 import ServicesFeed from "./section-ServicesFeed.astro"
 import ContentBlocks from "./section-ContentBlocks.astro"
 import ProjectsFullBleed from "./section-ProjectsFullBleed.astro"
+import HomeAbout from "../../domaine/sections/home/home-About.astro"
 
 const { section, brand } = Astro.props
 ---
@@ -18,4 +19,5 @@ const { section, brand } = Astro.props
 {section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} />}
 {section._type == "section_servicesFeed" && <ServicesFeed section={section} brand={brand} />}
 {section._type == "section_contentBlocks" && <ContentBlocks section={section} brand={brand} />}
+{section._type == "section_domaine-about" && <HomeAbout section={section} brand={brand} />}
 

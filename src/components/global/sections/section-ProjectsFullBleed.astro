@@ -70,7 +70,7 @@ const id = Math.random().toString(16).slice(2)
         })
     })
 
-    const delay = 30
+    const delay = 20
     let timeout = null
 
     const followCursor = (e) => {
@@ -185,7 +185,7 @@ const id = Math.random().toString(16).slice(2)
         pointer-events: none;
         /* opacity: 0; */
         clip-path: polygon(0% 100%, 0% 100%, 100% 100%, 100% 100%);
-        transition: clip-path var(--anim-sm), top var(--anim-sm) 0s, left var(--anim-sm) 0s;
+        transition: clip-path var(--anim-sm);
     }
 
     .project-preview.visible {

@@ -19,6 +19,8 @@ export default defineType({
         { type: 'section_videoPlayer'},
         { type: 'section_servicesFeed'},
         { type: 'section_contentBlocks'},
+        
+        { type: 'section_domaine-about'},
     ]
     }),
   ],

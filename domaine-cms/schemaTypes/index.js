@@ -48,6 +48,7 @@ import section_contentBlocks from "./sections/section_contentBlocks";
 import snippet_button from "./snippets/snippet_button.js";
 import section_projectsFullBleed from "./sections/section_projectsFullBleed.js";
 import settings_preloader from "./siteSettings/settings_preloader.js";
+import section_domaineAbout from "./home/section_domaine-about.js";
 
 
 export const schemaTypes = [
@@ -105,4 +106,5 @@ export const schemaTypes = [
     section_servicesFeed,
     section_contentBlocks,
     section_projectsFullBleed,
+    section_domaineAbout,
 ]

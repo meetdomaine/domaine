@@ -81,11 +81,6 @@ const iconText = replaceStringIcons(section.heading)
         flex-direction: row-reverse;
     }
 
-    .section-content {
-        flex: 1 0 50%;
-        max-width: 35em;
-    }
-
     .section-text {
         display: flex;
         flex-direction: column;
@@ -110,12 +105,31 @@ const iconText = replaceStringIcons(section.heading)
         flex-direction: column;
         align-items: flex-start;
         justify-content: space-between;
+        flex: 1 0 50%;
+        max-width: 45em;
+        gap: var(--space-md);
     }
 
     .section-text {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    @media screen and (max-width: 768px) {
+        .section-text-media {
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex: 0 0 auto;
+            gap: var(--space-lg);
+        }
     }
 
 </style>
