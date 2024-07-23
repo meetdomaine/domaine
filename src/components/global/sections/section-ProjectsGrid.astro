@@ -1,0 +1,112 @@
+---
+import AtomButton from "../atoms/atom-button.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+
+const { section, brand } = Astro.props
+console.log(section)
+---
+<section class="section-projects-grid">
+    <div class="section-text">
+        <div class="section-title">
+            <h2 class="h5">{section.title}</h2>
+        </div>
+        <div class="section-heading">
+            <h3>{section.heading}</h3>
+            {section.button && section.button.text && section.button.url && 
+                <AtomButton 
+                    text={section.button.text}
+                    url={section.button.url}
+                    newTab={section.button.newTab}
+                    style="primary"
+                />
+            }
+        </div>
+    </div>
+    <div class="project-tiles">
+        {section.projects.map((project, i) => (
+            <div class="project-tile">
+                <a class="project-link-card">
+                    <div class="project-media">
+                        <AtomSanityMedia 
+                            image={project.thumbnailImage.image}
+                            video={project.thumbnailVideo}
+                            aspectRatio={3 / 4}
+                            sizes="15vw"
+                        />
+                    </div>
+                </a>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-projects-grid {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-3xl);
+    }
+
+    .section-title {
+        grid-column: 1 / span 2;
+    }
+
+    .section-heading {
+        grid-column: 3 / span 3;
+    }
+
+    .section-text,
+    .project-tiles {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(n, 1fr);
+        gap: var(--space-2xs);
+        /* justify-content: stretch; */
+    }
+
+    .project-tile {
+        /* display: flex;
+        flex-direction: row;
+        justify-content: flex-end; */
+        /* float: right; */
+        
+    }
+
+    .project-link-card {
+        height: 100%;
+        max-height: 100%;
+        /* float: right; */
+    }
+
+    .project-tile:nth-child(1),
+    .project-tile:nth-child(4),
+    .project-tile:nth-child(5),
+    .project-tile:nth-child(7),
+    .project-tile:nth-child(10) {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2xs);
+        grid-template-areas: 
+            "pr .";
+    }
+
+    .project-tile:nth-child(5) {
+        grid-template-areas: 
+            ". pr";
+    }
+
+    .project-link-card {
+        grid-area: pr;
+    }
+
+    /* .project-tiles {
+        grid-template-areas: 
+            "pr pr ."
+            "pr pr ."
+            "pr pr .";
+    } */
+</style>
