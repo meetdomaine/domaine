@@ -77,3 +77,22 @@ html {
     -webkit-backdrop-filter: var(--background-blur);
     background-color: color-mix(in srgb, var(--color-ink) 40%, transparent);
 }
+
+.glass-darkest {
+    backdrop-filter: var(--background-blur);
+    -webkit-backdrop-filter: var(--background-blur);
+    background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
+    color: var(--color-lightest);
+}
+
+.glass-darker {
+    backdrop-filter: var(--background-blur);
+    -webkit-backdrop-filter: var(--background-blur);
+    background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
+}
+
+.glass-dark {
+    backdrop-filter: var(--background-blur);
+    -webkit-backdrop-filter: var(--background-blur);
+    background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
+}

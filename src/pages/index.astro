@@ -24,7 +24,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
         heroTextColor = {pageSettings.heroTextColor}
     />
     <!-- <AtomPixelBorder /> -->
-    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
-        <GlobalSections brand="domaine" section={section} />
+    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 </LayoutDomaine>

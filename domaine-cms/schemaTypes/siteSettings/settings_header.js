@@ -1,8 +1,8 @@
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
-  name: 'settings_header-studio',
-  title: 'Studio Header',
+  name: 'settings_header',
+  title: 'Header',
   type: 'document',
   fields: [
     defineField({

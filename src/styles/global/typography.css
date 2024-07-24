@@ -61,9 +61,11 @@
     --form-input-base-size: 16;
 }
   
-html {
+html,
+body {
     font-family: var(--font-family-primary);
-    font-size: 16px;
+    --base-size: 16;
+    --min-size: 12;
     font-weight: 400;
 }
   
@@ -81,7 +83,9 @@ select,
 textarea,
 label,
 .caption,
-.utility {
+.utility,
+html,
+body {
     --base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
     font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
 }

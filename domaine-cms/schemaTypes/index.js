@@ -26,10 +26,6 @@ import page_aboutDomaine from "./about/page_about-domaine";
 import page_aboutStudio from "./about/page_about-studio";
 import page_contactDomaine from "./contact/page_contact-domaine";
 import page_contactStudio from "./contact/page_contact-studio";
-import settings_headerDomaine from "./siteSettings/settings_header-domaine";
-import settings_headerStudio from "./siteSettings/settings_header-studio";
-import settings_footerDomaine from "./siteSettings/settings_footer-domaine";
-import settings_footerStudio from "./siteSettings/settings_footer-studio";
 import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_linkList from "./snippets/snippet_link-list";
 import type_agencyBrand from "./siteSettings/type_agencyBrand.jsx";
@@ -50,6 +46,8 @@ import section_projectsFullBleed from "./sections/section_projectsFullBleed.js";
 import settings_preloader from "./siteSettings/settings_preloader.js";
 import section_domaineAbout from "./home/section_domaine-about.js";
 import section_projectsGrid from "./sections/section_projectsGrid.js";
+import settings_footer from "./siteSettings/settings_footer.js";
+import settings_header from "./siteSettings/settings_header.js";
 
 
 export const schemaTypes = [
@@ -86,10 +84,11 @@ export const schemaTypes = [
     settings_partners,
     settings_blog,
     settings_events,
-    settings_headerDomaine,
-    settings_headerStudio,
-    settings_footerDomaine,
-    settings_footerStudio,
+    settings_header,
+    // settings_headerStudio,
+    // settings_footerDomaine,
+    // settings_footerStudio,
+    settings_footer,
     settings_preloader,
 
     snippet_SEOFields,

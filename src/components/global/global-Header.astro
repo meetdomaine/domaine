@@ -10,18 +10,19 @@ const { headerSettings, currentBrand } = Astro.props;
 const brands = [
     {
         path: "/",
-        logo: "domaine-icon"
+        logo: "domaine-wordmark",
+        title: "Domaine",
+        description: "Purpose-built for ambitious & beloved enterprise brands."
     },
     {
         path: "/studio",
-        logo: "domaine-accelerate"
+        logo: "domaine-studio",
+        title: "Domaine Studio",
+        description: "Tailor-made for the needs of small & medium businesses."
     },
 ]
 
-
-
 const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
-
 
 // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
 const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug} } | order( postDate desc)[0...3]`)
@@ -33,15 +34,17 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 ---
 <header id="header">
 
-    <div id="brand-menu" class="brand-menu color-invert glass-ink" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
-        <div class="brands-wrapper">
-            <div class="brands">
-                {brands.map((brand, i) => (
-                    <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
-                        <Icon class="logo" name={brand.logo} />
-                    </a>
-                ))}
-            </div>
+    <div id="brand-menu" class="brand-menu" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
+        <div class="brands" data-brand={currentBrand.name}>
+            {brands.map((brand, i) => (
+                <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
+                    <Icon class="logo" name={brand.logo} />
+                    {/* <div class="brand-text">
+                        <p class="brand-title caption">{brand.title}</p>
+                        <p class="brand-description caption">{brand.description}</p>
+                    </div> */}
+                </a>
+            ))}
         </div>
         <div class="icon-expand">
             <span class="expand-line"></span>
@@ -49,27 +52,26 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         </div>
     </div>
 
-    <div id="navigation-menu" class="navigation glass-ink color-invert">
+    <div id="navigation-menu" class="navigation">
         <nav class="navigation-links">
             {headerSettings.navigationLinks.links.map((link, i) => (
                 <a href={link.linkUrl} class="navigation-link caption">{link.linkText}</a>
             ))}
-            <button class="notification-button">
-                <Icon name="pixel_bell" class="icon" />
-            </button>
         </nav>
 
-        <button class="search-button caption" popovertarget="search-menu">
+        <button class="search-button glass-darkest caption" popovertarget="search-menu">
             <span>Search <em>projects, insights, and more...</em></span>
             <Icon class="icon" name="pixel_search" />
         </button>
 
     </div>
 
-    <div id="utility-menu" class="utility-links">
-        <button class="contact-button utility" popovertarget="contact-menu">
-            <span>Get in Touch!</span>
-            <Icon class="icon" name="pixel_email" />
+    <div id="utility-menu" class="utility-menu">
+        <button class="utility-button notification-button">
+            <Icon name="pixel_bell" class="utility-icon" />
+        </button>
+        <button class="utility-button contact-button" popovertarget="contact-menu">
+            <Icon name="pixel_email" class="utility-icon" />
         </button>
     </div>
 
@@ -106,14 +108,14 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     document.addEventListener("DOMContentLoaded", async () => {
 
         const brandMenu: HTMLElement = document.querySelector('.brand-menu');
-        const contactButton: HTMLButtonElement = document.querySelector('.contact-button');
-        const contactMenu: HTMLElement = document.querySelector('.contact-menu');
+        // const contactButton: HTMLButtonElement = document.querySelector('.contact-button');
+        // const contactMenu: HTMLElement = document.querySelector('.contact-menu');
 
-        if (brandMenu) {
-            brandMenu.classList.remove("active")
-            brandMenu.addEventListener("mouseenter", () => brandMenu.classList.add("active"))
-            brandMenu.addEventListener("mouseleave", () => brandMenu.classList.remove("active"))
-        }
+        // if (brandMenu) {
+        //     brandMenu.classList.remove("active")
+        //     brandMenu.addEventListener("mouseenter", () => brandMenu.classList.add("active"))
+        //     brandMenu.addEventListener("mouseleave", () => brandMenu.classList.remove("active"))
+        // }
 
         const handleBrandNavigate = (element, index) => {
             brandMenu.style.setProperty("--current-index", index)
@@ -150,11 +152,9 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         height: var(--header-height);
         z-index: 999;
         width: 100%;
-    }
-
-    .icon {
-        width: var(--icon-sm);
-        height: var(--icon-sm);
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1fr;
+        align-items: stretch;
     }
 
     /* --- Brand Menu --- */
@@ -162,92 +162,63 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     .brand-menu {
         --icon-width: 80px;
         --icon-height: 30px;
-        /* background-color: var(--color-background-secondary-translucent);
-        backdrop-filter: var(--background-blur); */
-        color: var(--color-foreground);
-        /* -webkit-backdrop-filter: var(--background-blur); */
-        position: absolute;
-        top: var(--padding-top);
-        left: var(--page-margin);
         display: flex;
         flex-direction: row;
-        align-items: center;
-        padding: 2px var(--space-2xs) 2px 2px;
+        align-items: stretch;
         gap: var(--space-2xs);
         border-radius: var(--radius-md);
+        justify-self: start;
+        background-color: var(--color-background-secondary);
+        height: var(--header-element-height);
+        transition: height var(--anim-sm);
     }
 
-    .brands-wrapper {
-        position: relative;
-        overflow: clip;
-        width: var(--icon-width);
-        transition: width var(--anim-sm);
-    }
-
-    .brand-menu.active .brands-wrapper,
-    .brands-wrapper:focus-within {
-        width: calc(var(--icon-width) * var(--brand-count));
+    .brand-menu:hover {
+        height: calc(var(--header-element-height) * 2);
     }
 
     .brands {
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
+        flex-direction: column;
         align-items: stretch;
-        width: max-content;
-        translate: calc(-1 * var(--icon-width) * (var(--current-index) ) ) 0;
+        justify-content: flex-start;
+        overflow-y: clip;
+        /* translate: calc(-1 * var(--icon-width) * (var(--current-index) ) ) 0; */
         transition: translate var(--anim-sm);
+        /* height: calc(var(--header-element-height) * 2); */
+        /* height: var(--header-element-height); */
     }
 
-    .brand-menu.active .brands,
-    .brand-menu:focus-within .brands {
-        translate: 0 0;
-    }
-
-    .brands::before {
-        content: "";
-        background-color: var(--color-foreground);
-        width: var(--icon-width);
-        height: 100%;
-        position: absolute;
-        left: calc(var(--icon-width) * (var(--current-index)));
-        top: 0;
-        border-radius: var(--radius-md);
+    .brands[data-brand="Studio"] {
+        justify-content: flex-end;
     }
 
     .brand-link {
-        position: relative;
-        flex: 0 0 auto;
-        width: var(--icon-width);
-        padding: var(--space-xs);
+        text-decoration: none;
         display: flex;
         flex-direction: row;
-        justify-content: center;
         align-items: center;
-        border: 2px solid transparent;
+        justify-content: center;
+        padding-inline: var(--space-xs);
+        gap: var(--space-xs);
+        flex: 0 0 var(--header-element-height);
     }
 
-    .brand-link[data-active="true"] {
-        color: var(--color-background);
-    }
-
-    .brand-link:focus-visible {
-        outline: none;
-        border-radius: var(--radius-md);
-        border-color: var(--color-focus);
+    .brand-link:hover {
+        /* background-color: var(--color-background); */
     }
 
     .logo {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
+        flex: 0 0 auto;
     }
 
     .icon-expand {
         display: flex;
         flex-direction: row;
         gap: 2px;
+        height: var(--header-element-height);
+        align-items: center;
+        padding-right: var(--space-xs);
     }
 
     .expand-line {
@@ -269,7 +240,12 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         flex-direction: column;
         align-items: stretch;
         border-radius: var(--radius-md);
-        /* overflow: clip; */
+        overflow: clip;
+        justify-self: center;
+    }
+
+    .navigation::after {
+        content: "";
     }
 
     .navigation-links {
@@ -278,9 +254,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         justify-content: center;
         align-items: center;
         gap: var(--space-sm);
-        padding: var(--space-xs) var(--space-md);
-        border-bottom: 1px solid var(--color-border);
+        padding-inline: var(--space-md);
         min-width: 300px;
+        background-color: var(--color-background-secondary);
+        height: var(--header-element-height);
     }
 
     .navigation-link {
@@ -317,12 +294,12 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         justify-content: space-between;
         align-items: center;
         padding-inline: var(--space-md);
-        color: var(--color-foreground);
-        background-color: transparent;
         overflow: clip;
         transition: color var(--anim-sm);
         transition-delay: 0s;
-        border-radius: 0 0 var(--radius-md) var(--radius-md);
+        border-radius: 0px;
+        height: var(--header-element-height);
+        /* display: none; */
     }
 
     .search-button * {
@@ -353,7 +330,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     }
 
     .search-button em {
-        color: var(--color-foreground-secondary);
+        color: var(--color-light);
         translate: 0 0%;
         opacity: 1;
         font-style: normal;
@@ -385,7 +362,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         transition: opacity var(--anim-md), max-height var(--anim-md), display var(--anim-md) allow-discrete;
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        /* align-items: stretch; */
         gap: var(--space-md);
         display: none;
     }
@@ -423,23 +400,38 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     /* --- Utility Links --- */
 
-    .utility-links {
-        position: absolute;
-        top: var(--padding-top);
-        right: var(--page-margin);
-    }
-
-    .contact-button {
-
-    }
-
-    /* .utility-link {
+    .utility-menu {
         display: flex;
         flex-direction: row;
+        /* align-items: stretch; */
+        gap: var(--space-2xs);
+        justify-self: end;
+        height: var(--header-element-height);
+    }
+
+    .utility-button {
+        min-width: 0;
+        /* width: var(--header-element-height);
+        height: var(--header-element-height); */
+        aspect-ratio: 1 / 1;
+        background-color: var(--color-background-secondary);
+        color: var(--color-foreground);
+        display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 1ch;
-        text-decoration: none;
-    } */
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .utility-icon {
+        height: 40%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        /* width: var(--icon-sm);
+        height: var(--icon-sm); */
+    }
 
 
 

@@ -3,7 +3,7 @@ import { sanityClient } from 'sanity:client';
 import LayoutGlobal from './Layout-Global.astro';
 // import Header from '../components/studio/sections/Header.astro';
 import Header from '../components/global/global-Header.astro';
-import Footer from '../components/studio/sections/Footer.astro';
+import Footer from '../components/global/global-Footer.astro';
 
 interface Props {
 	title: string;
@@ -20,11 +20,10 @@ const { title, description, image, theme, searchFilter } = Astro.props;
 // const seoSettings = seoData[0]
 
 // Header
-const headerSettings = await sanityClient.fetch(`*[_type == "settings_header-studio"][0]`)
+const headerSettings = await sanityClient.fetch(`*[_type == "settings_header" && _id == "settings_header--studio"][0]`)
 
 // Footer
-const footerData = await sanityClient.fetch(`*[_type == "settings_footer-studio"]`)
-const footerSettings = footerData[0]
+const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`)
 
 // Styling
 import '../styles/studio/typography.css'
@@ -60,6 +59,6 @@ const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloade
         <slot />
     </main>
     <Footer 
-        footerLinks={footerSettings.footerLinks}
+        footerSettings={footerSettings}
     />
 </LayoutGlobal>

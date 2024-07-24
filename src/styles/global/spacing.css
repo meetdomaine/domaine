@@ -19,15 +19,19 @@
   
     --page-margin: clamp(20px, 2vw, 60px);
     --content-margin: 1440px;
-    --header-height: min(var(--space-4xl), 15lvh);
     --button-height: 40px;
     --grid-gap: var(--space-md);
-  
+    
+    --header-padding-inline: var(--space-sm);
+    --header-element-height: 40px;
+    /* --header-element-height: clamp(20px, 4rem, 80px); */
+    --header-height: calc(var(--header-element-height) + var(--header-padding-inline) * 2);
+
     /* Icons */
-    --icon-sm: 10px;
+    --icon-sm: 12px;
     --icon-md: 16px;
     --icon-lg: 20px;
 
-    --pixel-border-height: 30px;
+    /* --pixel-border-height: 30px; */
   }
   

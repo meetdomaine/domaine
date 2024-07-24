@@ -110,9 +110,6 @@ const currentPath = Astro.url.pathname;
 		/>
 		<slot />
         <!-- <VisualEditing enabled={visualEditingEnabled} zIndex={1000} /> -->
-		<!-- <PageTransition />
-		<PageLoadAnimation />
-		<ViewportAnimation /> -->
 		<Lenis />
 		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
 	</body>
@@ -121,33 +118,4 @@ const currentPath = Astro.url.pathname;
 <script>
 	import '@mux/mux-player';
 	import "@mux/mux-player/themes/minimal";
-
-	// window.addEventListener("pageswap", async (e) => {
-	// 	if (e.viewTransition) {
-
-	// 		console.log("swap start")
-	// 		await e.viewTransition.ready;
-	// 		console.log("swap ready")
-
-	// 		await e.viewTransition.finished;
-	// 		console.log("swap finished")
-	// 	} else {
-	// 		console.log('no view transition')
-	// 	}
-	// });
-
-	// // After Swap
-	// window.addEventListener("pagereveal", async (e) => {
-
-	// 	if (e.viewTransition) {
-
-	// 		console.log("reveal start")
-	// 		await e.viewTransition.ready;
-	// 		console.log("reveal ready")
-	// 		await e.viewTransition.finished;
-	// 		console.log('reveal finished')
-	// 	} else {
-	// 		console.log('no view transition')
-	// 	}
-	// });
 </script>

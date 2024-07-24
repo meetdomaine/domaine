@@ -1,0 +1,98 @@
+---
+import { Icon } from "astro-icon/components"
+import NewsletterCard from "../global/atoms/atom-newsletterCard.astro"
+
+const { footerSettings } = Astro.props
+// console.log(footerSettings)
+
+
+---
+<footer>
+    <div class="link-columns">
+        {footerSettings.linkColumns.map((column) => (
+            <div class="link-column">
+                <p>{column.title}</p>
+                <div class="column-links">
+                    {column.links.links.map((link) => (
+                        <a class="footer-link h5" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+                    ))}
+                </div>
+            </div>
+        ))}
+        <div class="link-column">
+            <p>Social</p>
+            {footerSettings.socialLinks.links.map((link) => (
+                <a class="footer-link h5" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+            ))}
+        </div>
+        <NewsletterCard />
+    </div>
+    <div class="subfooter">
+        <Icon name="domaine-icon" class="footer-logo" />
+        <div class="subfooter-links">
+            {footerSettings.legalLinks.links.map((link) => (
+                <a class="footer-link caption" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+            ))}
+        </div>
+    </div>
+</footer>
+
+<style>
+
+    footer {
+        min-height: 100svh;
+        background-color: var(--color-brand);
+        color: var(--color-brand-contrast);
+        padding-inline: var(--page-margin);
+        padding-block: 30svh var(--space-md);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: var(--space-2xl);
+    }
+
+    .link-columns {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--space-2xl);
+    }
+
+    .link-column {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        padding-right: var(--space-xl);
+    }
+
+    .column-links {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .footer-link {
+        text-decoration: none;
+    }
+
+    .subfooter {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .footer-logo {
+        flex: 0 1 25%;
+        height: auto;
+        max-width: 100px;
+    }
+
+    .subfooter-links {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-md);
+    }
+</style>

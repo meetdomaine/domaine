@@ -32,8 +32,8 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]
         />
     </HomeHero>
 
-    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section) => (
-        <GlobalSections brand="studio" section={section} />
+    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} />
     ))}
 
 </LayoutStudio>

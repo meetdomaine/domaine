@@ -496,6 +496,11 @@ export const structure = (S, context) =>
                 S.documentTypeList('page_general')
             ),
         S.listItem()
+            .title('TEST')
+            .child(
+                S.documentTypeList('settings_header')
+            ),
+        S.listItem()
             .title(labelSiteSettings)
             .icon(iconSiteSettings)
             .child(
@@ -510,23 +515,23 @@ export const structure = (S, context) =>
                             .title(labelHeader)
                             .items([
                                 S.listItem()
-                                .title(labelBrandPrimary)
-                                .icon(iconBrandPrimary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_header-domaine')
-                                    .documentId(`settings_header-${slugBrandPrimary}`)
-                                    .title(labelHeader)
-                                ),
+                                    .title(labelBrandPrimary)
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                            .schemaType('settings_header')
+                                            .documentId(`settings_header--${slugBrandPrimary}`)
+                                            .title(labelHeader)
+                                    ),
                                 S.listItem()
-                                .title(labelBrandSecondary)
-                                .icon(iconBrandSecondary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_header-studio')
-                                    .documentId(`settings_header-${slugBrandSecondary}`)
-                                    .title(labelHeader)
-                                )
+                                    .title(labelBrandSecondary)
+                                    .icon(iconBrandSecondary)
+                                    .child(
+                                        S.document()
+                                            .schemaType('settings_header')
+                                            .documentId(`settings_header--${slugBrandSecondary}`)
+                                            .title(labelHeader)
+                                    )
                             ])
                         ),
                     S.listItem()
@@ -537,23 +542,23 @@ export const structure = (S, context) =>
                             .title(labelFooter)
                             .items([
                                 S.listItem()
-                                .title(labelBrandPrimary)
-                                .icon(iconBrandPrimary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_footer-domaine')
-                                    .documentId(`settings_footer-${slugBrandPrimary}`)
-                                    .title(labelFooter)
-                                ),
+                                    .title(labelBrandPrimary)
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                        .schemaType('settings_footer')
+                                        .documentId(`settings_footer--${slugBrandPrimary}`)
+                                        .title(labelFooter)
+                                    ),
                                 S.listItem()
-                                .title(labelBrandSecondary)
-                                .icon(iconBrandSecondary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_footer-studio')
-                                    .documentId(`settings_footer-${slugBrandSecondary}`)
-                                    .title(labelFooter)
-                                )
+                                    .title(labelBrandSecondary)
+                                    .icon(iconBrandSecondary)
+                                    .child(
+                                        S.document()
+                                        .schemaType('settings_footer')
+                                        .documentId(`settings_footer--${slugBrandSecondary}`)
+                                        .title(labelFooter)
+                                    )
                             ])
                         ),
                     S.listItem()
