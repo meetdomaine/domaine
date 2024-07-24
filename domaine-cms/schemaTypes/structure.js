@@ -496,11 +496,6 @@ export const structure = (S, context) =>
                 S.documentTypeList('page_general')
             ),
         S.listItem()
-            .title('TEST')
-            .child(
-                S.documentTypeList('settings_header')
-            ),
-        S.listItem()
             .title(labelSiteSettings)
             .icon(iconSiteSettings)
             .child(

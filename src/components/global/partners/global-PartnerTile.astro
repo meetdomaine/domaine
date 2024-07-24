@@ -1,0 +1,30 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { title, slug, logo, excerpt } = Astro.props
+
+console.log(logo)
+
+---
+<a href={`/partners/${slug.current}`} class="partner-card">
+    <div class="card-text">
+        <AtomSanityImage 
+            image={logo.image}
+            sizes="15vw"
+        />
+    </div>
+    <div class="card-text">
+        <p class="h6">{title}</p>
+        <p>{excerpt}</p>
+    </div>
+</a>
+
+<style>
+    .partner-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: var(--color-background-secondary);
+        text-decoration: none;
+    }
+</style>

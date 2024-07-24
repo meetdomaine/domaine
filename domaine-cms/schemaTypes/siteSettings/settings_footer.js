@@ -26,11 +26,11 @@ export default defineType({
         }],
         validation: Rule => Rule.max(3),
     }),
-    defineField({
-      name: 'footerLinks',
-      title: 'Footer Links',
-      type: 'snippet_link-list',
-    }),
+    // defineField({
+    //   name: 'footerLinks',
+    //   title: 'Footer Links',
+    //   type: 'snippet_link-list',
+    // }),
     defineField({
       name: 'socialLinks',
       title: 'Social Links',

@@ -2,9 +2,10 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 import { paths } from '../../components/global/utils/paths';
+import PartnerTile from '../../components/global/partners/global-PartnerTile.astro'
+import { imageFields } from '../../components/global/utils/cms-queries';
 
-const partners = await sanityClient.fetch(`*[_type == "type_partner"] { ..., tier->{...} }`)
-const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]`)
+const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]{ ..., "partners": *[_type == "type_partner" && references(^._id)]{ ..., logo{${imageFields}}} }`)
 ---
 <LayoutDomaine
     title="Partners"
@@ -14,21 +15,17 @@ const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]`)
     {partnerTiers.map((tier) => (
         <div>
             <h3>{tier.title}</h3>
-            {partners.map((partner) => {
-                if (partner.tier && partner.tier.slug.current == tier.slug.current) {
-                    return (
-                        <div>
-                            {tier.createLandingPages ? 
-                                <a href={`${paths.root.partners.path}/${partner.slug.current}`}>
-                                    <h6>{partner.title}</h6>
-                                </a>
-                            : (
-                                <h6>{partner.title}</h6>
-                            )}
-                        </div>
-                    )
-                }
-            })}
+            {tier.partners.map((partner) => (
+                    <PartnerTile 
+                        title={partner.title}
+                        slug={partner.slug}
+                        tier={partner.tier}
+                        logo={partner.logo}
+                        excerpt={partner.excerpt}
+                        createLandingPage={tier.createLandingPages}
+                    />
+                )
+            )}
         </div>
     ))}
 
