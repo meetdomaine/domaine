@@ -25,7 +25,7 @@ const { section, brand } = Astro.props
     <div class="project-tiles">
         {section.projects.map((project, i) => (
             <div class="project-tile">
-                <a class="project-link-card">
+                <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
                     <div class="project-media">
                         <AtomSanityMedia 
                             image={project.thumbnailImage.image}
