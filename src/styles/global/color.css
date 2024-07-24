@@ -53,9 +53,9 @@ html[data-theme="dark"] .color-invert {
 html .color-invert,
 html[data-theme="dark"] {
     --color-foreground: var(--color-lightest);
-    --color-foreground-secondary: var(--color-lighter);
+    --color-foreground-secondary: var(--color-light);
     --color-background: var(--color-darkest);
-    --color-background-secondary: var(--color-dark);
+    --color-background-secondary: var(--color-darker);
     --color-border: var(--color-neutral);
 
     

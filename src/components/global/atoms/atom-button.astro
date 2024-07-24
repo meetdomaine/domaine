@@ -1,10 +1,10 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const { text, url, icon, newTab, style, classList} = Astro.props
+const { text, url, icon, newTab, style, invert, classList} = Astro.props
 ---
 <a 
-    class={`button ${classList} ${style === "tertiary" ? "utility" : "caption"}`} 
+    class={`button ${classList} ${style === "tertiary" ? "utility" : "caption"} ${invert ? "color-inver" : ""}`} 
     href={url} 
     target={newTab ? "_blank" : ""} 
     data-style={style}

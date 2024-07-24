@@ -13,8 +13,7 @@ export function urlFor(source) {
 export const imageBaseFields = `crop, asset->{_id, metadata}, hotspot`
 export const imageFields = `image{${imageBaseFields}, alt }`
 export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
-
-
+export const partnerTileFields = `title, excerpt, slug, icon{${imageFields}}`
 
 export const projectGridFields = `
   title,
@@ -69,6 +68,7 @@ export const globalSectionsFields = `
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
+    _type == "section_partnersFeed" => { eyebrow, heading, button },
   }
 `
 

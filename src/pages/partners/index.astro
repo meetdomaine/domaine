@@ -3,30 +3,42 @@ import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 import { paths } from '../../components/global/utils/paths';
 import PartnerTile from '../../components/global/partners/global-PartnerTile.astro'
-import { imageFields } from '../../components/global/utils/cms-queries';
+import { imageFields, partnerTileFields } from '../../components/global/utils/cms-queries';
 
-const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]{ ..., "partners": *[_type == "type_partner" && references(^._id)]{ ..., logo{${imageFields}}} }`)
+const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]{ ..., "partners": *[_type == "type_partner" && references(^._id)]{ ${partnerTileFields} } }`)
 ---
 <LayoutDomaine
     title="Partners"
     searchFilter="type:page"
 >
-    <h1>Partners</h1>
-    {partnerTiers.map((tier) => (
-        <div>
-            <h3>{tier.title}</h3>
-            {tier.partners.map((partner) => (
-                    <PartnerTile 
-                        title={partner.title}
-                        slug={partner.slug}
-                        tier={partner.tier}
-                        logo={partner.logo}
-                        excerpt={partner.excerpt}
-                        createLandingPage={tier.createLandingPages}
-                    />
-                )
-            )}
-        </div>
-    ))}
+    <div class="partner-tiers">
+        <h1>Partners</h1>
+        {partnerTiers.map((tier) => (
+            <section>
+                <h3>{tier.title}</h3>
+                <div class="partners">
+                    {tier.partners.map((partner) => (
+                        <PartnerTile 
+                            partner={partner}
+                        />
+                    ))}
+                </div>
+            </section>
+        ))}
+    </div>
 
 </LayoutDomaine>
+
+<style>
+
+    .partner-tiers {
+        padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-xl);
+    }
+
+    .partners {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-xs);
+    }
+</style>

@@ -14,9 +14,20 @@ export default defineType({
       initialValue: true
     }),
     defineField({
+      name: 'eyebrow',
+      title: 'Eyebrow',
+      type: 'string',
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'button',
+      title: 'Button',
+      type: 'snippet_button',
     }),
   ],
   preview: {
@@ -24,9 +35,10 @@ export default defineType({
       title: 'heading', 
     },
     prepare(selection) {
+      const { title } = selection
       return {
-        ...selection,
-        subheading: 'Partners Feed',
+        title: title,
+        subtitle: 'Partners Feed',
         media: iconPartners,
       }
     }

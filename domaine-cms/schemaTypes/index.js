@@ -48,6 +48,7 @@ import section_domaineAbout from "./home/section_domaine-about.js";
 import section_projectsGrid from "./sections/section_projectsGrid.js";
 import settings_footer from "./siteSettings/settings_footer.js";
 import settings_header from "./siteSettings/settings_header.js";
+import section_partnersFeed from "./sections/section_partnersFeed.js";
 
 
 export const schemaTypes = [
@@ -108,4 +109,5 @@ export const schemaTypes = [
     section_projectsFullBleed,
     section_domaineAbout,
     section_projectsGrid,
+    section_partnersFeed,
 ]

@@ -1,0 +1,59 @@
+---
+import AtomButton from "../atoms/atom-button.astro"
+import { partnerTileFields } from "../utils/cms-queries"
+import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
+
+const { section, brand } = Astro.props
+
+const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->slug.current == "innovation" ]{${partnerTileFields}}`)
+// console.log(partners)
+---
+<section class="section-partners-feed color-invert">
+    <div class="section-text">
+        {section.eyebrow && <p>{section.eyebrow}</p>}
+        <h2>{section.heading}</h2>
+        { section.button && section.button.text && section.button.url &&
+            <AtomButton
+                text={section.button.text}
+                url={section.button.url}
+                newTab={false}
+                invert={true}
+            />
+        }
+    </div>
+    <div class="partners">
+        {partners.map((partner) => (
+            <GlobalPartnerTile 
+                partner={partner}
+            />
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-partners-feed {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        gap: var(--space-xl);
+    }
+
+    .section-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 50em;
+    }
+
+    .partners {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-xs);
+        max-width: 400px;
+    }
+</style>

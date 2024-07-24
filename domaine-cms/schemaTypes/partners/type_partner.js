@@ -72,12 +72,15 @@ export default defineType({
   preview: {
     select: {
       title: 'title', 
-      subtitle: 'tier.title'
+      subtitle: 'tier.title',
+      media: 'icon.image'
     },
     prepare(selection) {
+      const { title, subtitle, media } = selection
       return {
-        ...selection,
-        media: iconPartners
+        title: title,
+        subtitle: subtitle,
+        media: media ? media : iconPartners
       }
     }
   },
