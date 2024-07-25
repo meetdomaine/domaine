@@ -32,7 +32,9 @@ const { content } = Astro.props;
     {content.tier && <h4>{content.tier.title}</h4>}
     <h1>{content.title}</h1>
 
-    <SectionProjectsFeed 
-        projects={content.projects}
-    />
+    {content.projects &&
+        <SectionProjectsFeed 
+            projects={content.projects}
+        />
+    }
 </LayoutDomaine>

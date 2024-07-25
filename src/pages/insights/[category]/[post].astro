@@ -2,10 +2,24 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
 import { paths } from '../../../components/global/utils/paths';
-import { urlFor } from '../../../components/global/utils/cms-queries';
+import { blogCardFields, projectGridFields, urlFor } from '../../../components/global/utils/cms-queries';
+import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
+import SectionProjectsFeed from '../../../components/global/sections/section-ProjectsFeed.astro';
 
 export async function getStaticPaths() {
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine"]{ ..., category->{..., slug{...} }, authors[]->{...} }`)
+    const posts = await sanityClient.fetch(`
+    *[_type == "type_blog" && agencyBrand->name == "Domaine"]{ 
+        ..., 
+        category->{..., slug{...} }, 
+        authors[]->{...}, 
+        "relatedPosts": *[_type == "type_blog" && references(^.category->_id)]{${blogCardFields}} | order(orderRank asc),
+        "relatedProjects": 
+            *[_type == "type_project" 
+                && references(^.features[]->_id)
+                // || references(^.services[]->_id)
+                || references(^.industries[]->_id)
+            ]{${projectGridFields}} | order(orderRank asc)[0...4]
+        }`)
     return posts.map((post) => {
         // console.log(post)
         return {
@@ -20,8 +34,9 @@ interface Props {
 }
 
 const { content } = Astro.props;
+console.log(content.relatedProjects.length)
 
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
+// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
 ---
 <LayoutDomaine
     title={content.title}
@@ -44,4 +59,18 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
         <p>{author.name}</p>
         <p>{author.role}</p>
     ))}
+
+    { content.relatedPosts && 
+        <SectionBlogFeed 
+            heading="Related Posts"
+            posts={content.relatedPosts}
+        />
+    }
+
+    { content.relatedProjects.length > 0 && 
+        <SectionProjectsFeed
+            heading="Related Projects"
+            projects={content.relatedProjects}
+        />
+    }
 </LayoutDomaine>
