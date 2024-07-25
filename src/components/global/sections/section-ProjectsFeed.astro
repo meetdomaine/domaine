@@ -4,25 +4,27 @@ import { imageFields } from "../utils/cms-queries";
 import ProjectCard from "../projects/global-ProjectCard.astro";
 import { projectGridFields } from "../utils/cms-queries";
 
-const { section, brand } = Astro.props
+const { section, brand, projects, heading, subheading } = Astro.props
 
-let projects = null
+let feedProjects
 
-if (section.projects) {
-    projects = section.projects
+if (section && section.projects) {
+    feedProjects = section.projects
+} else if (projects) {
+    feedProjects = projects
 } else {
-    projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0...3]`)
+    feedProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0...3]`)
 }
 
 ---
-{section.showSection && 
+{(!section || section && section.showSection) && 
     <section class="section-projects-feed">
         <div class="section-title">
-            {section.heading && <h2 class="h5">{section.heading}</h2>}
-            {section.subheading && <p class="caption">{section.subheading}</p>}
+            {(heading || section && section.heading) && <h2 class="h5">{heading ? heading : section.heading}</h2>}
+            {(subheading || section && section.subheading) && <p class="caption">{subheading ? subheading : section.subheading}</p>}
         </div>
         <div class="section-content">
-            {projects.map((project) => (
+            {feedProjects.map((project) => (
                 <ProjectCard
                     title={project.title}
                     excerpt={project.excerpt}

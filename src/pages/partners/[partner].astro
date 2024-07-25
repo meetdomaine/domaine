@@ -2,13 +2,13 @@
 import { sanityClient } from 'sanity:client';
 import { paths } from '../../components/global/utils/paths';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
+import { projectGridFields } from '../../components/global/utils/cms-queries';
+import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
 
 export async function getStaticPaths() {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner" ] { ..., tier->{...} }`)
-    // const landingPagePartners = await partners.filter((partner) => partner.tier && partner.tier.createLandingPages)
-    const landingPagePartners = partners // For now, create landing pages for all partners
+    const partners = await sanityClient.fetch(`*[_type == "type_partner" && tier->createLandingPages == true ]{ title, slug, tier->{...}, "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)[0...3]  }`)
 
-    return landingPagePartners.map((partner) => {
+    return partners.map((partner) => {
         return {
             params: { partner: partner.slug.current },
             props: { content: partner }
@@ -20,6 +20,7 @@ interface Props {
     content: any
 }
 
+
 const { content } = Astro.props;
 
 ---
@@ -30,4 +31,8 @@ const { content } = Astro.props;
     
     {content.tier && <h4>{content.tier.title}</h4>}
     <h1>{content.title}</h1>
+
+    <SectionProjectsFeed 
+        projects={content.projects}
+    />
 </LayoutDomaine>
