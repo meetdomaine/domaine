@@ -1,0 +1,48 @@
+---
+const { serviceType, brand } = Astro.props
+---
+<section class="service-type-feature">
+    <a href={`${brand === "studio" ? "/studio" : ""}/services/${serviceType.slug.current}/`}><h2>{serviceType.title}</h2></a>
+    <p>{serviceType.excerpt}</p>
+    <div class="service-groups">
+        {serviceType.serviceGroups.map((serviceGroup) => (
+            <div class="service-group">
+                <a href={`${brand === "studio" ? "/studio" : ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3 class="h5">{serviceGroup.title}</h3></a>
+                <div class="services">
+                    {serviceGroup.services.map((service) => (
+                        <a href={`${brand === "studio" ? "/studio" : ""}/services/${serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
+                    ))}
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .service-type-feature {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
+
+    .service-groups {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-lg);
+    }
+
+    .service-group {
+        flex: 0 0 30%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .services {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
+</style>

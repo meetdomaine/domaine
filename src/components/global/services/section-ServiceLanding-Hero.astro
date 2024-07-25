@@ -1,0 +1,14 @@
+---
+const { eyebrow, title } = Astro.props
+---
+<section class="services-landing-hero">
+    <p>{eyebrow}</p>
+    <h1>{title}</h1>
+</section>
+
+<style>
+    .services-landing-hero {
+        padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-lg);
+    }
+</style>

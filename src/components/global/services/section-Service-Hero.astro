@@ -1,0 +1,36 @@
+---
+const { service, brand } = Astro.props
+---
+<section class="service-hero">
+    <div class="breadcrumbs">
+        <a class="h5" 
+            href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services</a> /
+        <a 
+            class="h5"
+            href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}`}
+        >{service.serviceGroup.serviceType.title}</a> /
+        <a 
+            class="h5"
+            href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}/${service.serviceGroup.slug.current}`}
+        >{service.serviceGroup.title}</a>
+    </div>
+    <h1>{service.title}</h1>
+    {service.description && <p>{service.description}</p>}
+</section>
+
+<style>
+    .service-hero {
+        padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .breadcrumbs {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+</style>

@@ -24,6 +24,12 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'agencyBrands',
       title: 'Agency Brands',
       type: 'array',

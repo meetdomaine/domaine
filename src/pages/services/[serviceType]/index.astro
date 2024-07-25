@@ -2,44 +2,68 @@
 import { sanityClient } from "sanity:client"
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
 import { paths } from "../../../components/global/utils/paths"
+import SectionServiceTypeHero from "../../../components/global/services/section-ServiceType-Hero.astro"
+import SectionServiceGroupFeature from "../../../components/global/services/section-ServiceGroup-Feature.astro"
+import { blogCardFields, projectGridFields } from "../../../components/global/utils/cms-queries"
+import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
+import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
+import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 
 export async function getStaticPaths() {
-    const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && "Domaine" in agencyBrands[]->name ]`)
+    const serviceTypes = await sanityClient.fetch(`
+        *[_type == "type_serviceType" 
+            && "domaine" in agencyBrands[]->slug.current ]{
+                ...,
+                "serviceGroups":  *[_type == "type_serviceGroup" && references(^._id)]{
+                    ...,
+                    serviceType->{..., slug{...}},
+                    "services": *[_type == "type_service" && references(^._id)]{
+                        ...
+                    } | order(orderRank)
+                } | order(orderRank),
+                "projects": *[_type == "type_project" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
+                "blogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate),
+            }`)
     return serviceTypes.map((serviceType) => {
         return {
             params: { serviceType: serviceType.slug.current },
-            props: { content: serviceType, serviceType: serviceType }
+            props: { content: serviceType }
         }
     })
 }
 
 interface Props {
     content: any,
-    serviceType: any
 }
 
-const { content, serviceType } = Astro.props;
-const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType->_id == '${content._id}' && "Domaine" in agencyBrands[]->name ]{..., serviceType->{...}} | order(orderRank)`)
-const servicesObject = await Promise.all(
-    serviceGroups.map(async serviceGroup => {
-        const services = await sanityClient.fetch(`*[_type == "type_service" && serviceGroup->_id == '${serviceGroup._id}' && "Domaine" in agencyBrands[]->name] | order(orderRank)`)
-        serviceGroup.services = await services
-        return serviceGroup
-    })
-);
+const { content } = Astro.props;
+// console.log(content.projects.length)
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service-type"
 >
-    <h1>{content.title}</h1>
-    {servicesObject.map((serviceGroup) => (
-        <div>
-            <a href={`${paths.root.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3>{serviceGroup.title}</h3></a>
-            {serviceGroup.services.map((service) => (
-                <a href={`${paths.root.services.path}/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
-            ))}
-        </div>
+    <SectionServiceTypeHero
+        serviceType={content}
+    />
+    {content.serviceGroups.map((serviceGroup) => (
+        <SectionServiceGroupFeature 
+            serviceGroup={serviceGroup}
+        />
     ))}
+
+    {content.blogPosts && content.blogPosts.length > 0 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={content.blogPosts}
+        />
+    }
+
+    {content.projects.length > 0 &&
+        <GlobalProjectsGrid 
+            heading={`${content.title} Work`}
+            projects={content.projects}
+        />
+    }
 
 </LayoutDomaine>

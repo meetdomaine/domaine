@@ -29,6 +29,12 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'serviceGroup',
       title: 'Service Group',
       type: 'reference',

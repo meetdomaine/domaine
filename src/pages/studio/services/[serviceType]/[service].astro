@@ -1,10 +1,24 @@
 ---
 import { sanityClient } from "sanity:client"
-import { paths } from "../../../../components/global/utils/paths"
 import LayoutStudio from "../../../../layouts/Layout-Studio.astro"
+import SectionServiceHero from "../../../../components/global/services/section-Service-Hero.astro"
+import { blogCardFields, projectGridFields } from "../../../../components/global/utils/cms-queries"
+import GlobalProjectsGrid from "../../../../components/global/projects/global-ProjectsGrid.astro"
+import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
 
 export async function getStaticPaths() {
-    const services = await sanityClient.fetch(`*[_type == "type_service" && "Studio" in agencyBrands[]->name ] {..., serviceGroup->{..., serviceType->{...}} }`)
+    const services = await sanityClient.fetch(`
+    *[_type == "type_service" 
+        && "studio" in agencyBrands[]->slug.current 
+    ]{
+        ..., 
+        serviceGroup->{
+            ..., 
+            serviceType->{...}
+        },
+        "projects": *[_type == "type_project" && agencyBrand->slug.current == "studio" && references(^._id)]{${projectGridFields}} | order(orderRank),
+        "blogPosts": *[_type == "type_blog" && agencyBrand->slug.current == "studio" && references(^._id)]{${blogCardFields}} | order(postDate desc)[0...4]
+    } | order(orderRank)`)
     return services.map((service) => {
         return {
             params: { serviceType: service.serviceGroup.serviceType.slug.current, service: service.slug.current },
@@ -20,12 +34,29 @@ interface Props {
 }
 
 const { content, serviceType, serviceGroup } = Astro.props;
+console.log(content.blogPosts.length)
 ---
 <LayoutStudio
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service"
 >
-    <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}/`}><h6>{serviceType.title}</h6>
-    <a href={`${paths.root.studio.services.path}/${serviceType.slug.current}/${serviceGroup.slug.current}`}><h3>{serviceGroup.title}</h3></a>
-    <h1>{content.title}</h1>
+    <SectionServiceHero
+        brand="studio"
+        service={content}
+    />
+
+    {content.blogPosts && content.blogPosts.length > 0 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={content.blogPosts}
+        />
+    }
+
+    {content.projects && content.projects.length > 0 &&
+        <GlobalProjectsGrid 
+            heading={`${content.title} Work`}
+            projects={content.projects}
+        />
+    }
+
 </LayoutStudio>

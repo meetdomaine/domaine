@@ -28,6 +28,12 @@ export default defineType({
       title: 'Excerpt',
       type: 'string',
     }),
+
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+    }),
     defineField({
       name: 'serviceType',
       title: 'Service Type',

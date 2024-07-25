@@ -2,11 +2,24 @@
 import { sanityClient } from "sanity:client"
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
 import { paths } from "../../../components/global/utils/paths"
+import SectionServiceGroupHero from "../../../components/global/services/section-ServiceGroup-Hero.astro"
+import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
+import { blogCardFields, projectGridFields } from "../../../components/global/utils/cms-queries"
+import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
+import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 
 export async function getStaticPaths() {
-    const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "Domaine" in agencyBrands[]->name ] {..., serviceType->{...}} | order(orderRank)`)
+    const serviceGroups = await sanityClient.fetch(`
+        *[_type == "type_serviceGroup" 
+            && "domaine" in agencyBrands[]->slug.current ] {
+                ..., 
+                serviceType->{...},
+                "services": *[_type == "type_service" && references(^._id)] | order(orderRank),
+                "projects": *[_type == "type_project" && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank),
+                "blogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}} | order(postDate),
+            } | order(orderRank)
+        `)
     return serviceGroups.map((serviceGroup) => {
-        // console.log(serviceGroup.serviceType.slug)
         return {
             params: { serviceType: serviceGroup.serviceType.slug.current, serviceGroup: serviceGroup.slug.current },
             props: { content: serviceGroup, serviceType: serviceGroup.serviceType }
@@ -21,19 +34,40 @@ interface Props {
 }
 
 const { content, serviceType } = Astro.props;
-const services = await sanityClient.fetch(`*[_type == "type_service" && serviceGroup->_id == '${content._id}' && "Domaine" in agencyBrands[]->name] | order(orderRank)`)
-
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service-group"
 >
-    <a href={`${paths.root.services.path}/${serviceType.slug.current}`}><h3>{serviceType.title}</h3></a>
-    <h1>{content.title}</h1>
-    {services.map((service) => (
-        <div>
-            <a href={`${paths.root.services.path}/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
-        </div>
-    ))}
+    <SectionServiceGroupHero 
+        serviceGroup={content}
+    />
+    <div class="services">
+        {content.services.map((service) => (
+            <div>
+                <a href={`/services/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
+            </div>
+        ))}
+    </div>
 
+    {content.blogPosts && content.blogPosts.length > 0 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={content.blogPosts}
+        />
+    }
+
+    {content.projects && content.projects.length > 0 &&
+        <GlobalProjectsGrid 
+            heading={`${content.title} Work`}
+            projects={content.projects}
+        />
+    }
 </LayoutDomaine>
+
+<style>
+    .services {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+</style>
