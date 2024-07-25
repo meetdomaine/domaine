@@ -370,12 +370,13 @@ export const structure = (S, context) =>
                         .child(
                             S.documentTypeList('type_partnerTier')
                         ),
-                    S.listItem()
-                        .title(labelPartners)
-                        .icon(iconPartners)
-                        .child(
-                            S.documentTypeList('type_partner')
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_partner',
+                        title: labelPartners,
+                        icon: iconPartners,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(`${labelPartners} ${labelSettings}`)
                         .icon(iconSettings)

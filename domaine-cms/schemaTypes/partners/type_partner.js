@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import { iconPartners } from '../variables'
+import { orderRankField } from '@sanity/orderable-document-list'
 
 export default defineType({
   name: 'type_partner',
@@ -55,18 +56,7 @@ export default defineType({
         allowRelative: false
       })
     }),
-    // defineField({
-    //   name: 'agencyBrands',
-    //   title: 'Agency Brands',
-    //   type: 'array',
-    //   of: [{
-    //     name: 'agencyBrand',
-    //     title: 'Agency Brand',
-    //     type: 'reference',
-    //     to: [{ type: 'type_agencyBrand'}]
-    //   }],
-    //   validation: Rule => Rule.required(),
-    // }),
+    orderRankField({ type: 'type_partner'}),
   ],
 
   preview: {

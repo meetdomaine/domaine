@@ -5,12 +5,12 @@ import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
 
 const { section, brand } = Astro.props
 
-const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->slug.current == "innovation" ]{${partnerTileFields}}`)
+const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->slug.current == "innovation" ]{${partnerTileFields}} | order( orderRank asc)`)
 // console.log(partners)
 ---
 <section class="section-partners-feed color-invert">
     <div class="section-text">
-        {section.eyebrow && <p>{section.eyebrow}</p>}
+        {section.eyebrow && <p class="h5">{section.eyebrow}</p>}
         <h2>{section.heading}</h2>
         { section.button && section.button.text && section.button.url &&
             <AtomButton
@@ -33,12 +33,12 @@ const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->s
 <style>
     .section-partners-feed {
         padding-inline: var(--page-margin);
-        padding-block: var(--space-lg);
+        padding-block: var(--space-3xl);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        background-color: var(--color-background);
-        color: var(--color-foreground);
+        background-color: var(--color-brand);
+        color: var(--color-brand-contrast);
         gap: var(--space-xl);
     }
 
@@ -47,6 +47,7 @@ const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->s
         flex-direction: column;
         align-items: flex-start;
         max-width: 50em;
+        gap: var(--space-sm);
     }
 
     .partners {
