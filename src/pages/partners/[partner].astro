@@ -34,6 +34,7 @@ const { content } = Astro.props;
 
     {content.projects &&
         <SectionProjectsFeed 
+            heading={`Our work with ${content.title}`}
             projects={content.projects}
         />
     }

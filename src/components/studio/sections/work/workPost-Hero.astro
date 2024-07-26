@@ -7,7 +7,7 @@ const { heading, description, root, url, client, services, heroMedia, industry, 
 console.log(heroMedia)
 ---
 <section class="work-post_hero">
-    <a href={`/work/studio/indutries/${industry.slug.current}`}>{industry.title}</a>
+    <a href={`/studio/work/industries/${industry.slug.current}`}>{industry.title}</a>
     <h1>{heading}</h1>
 
     <AtomSanityMedia
@@ -85,5 +85,6 @@ console.log(heroMedia)
 <style>
     .work-post_hero {
         padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-lg);
     }
 </style>

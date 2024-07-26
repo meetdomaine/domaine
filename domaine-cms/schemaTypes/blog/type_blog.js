@@ -118,6 +118,11 @@ export default defineType({
       }],
     }),
     defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'snippet_rich-content',
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_SEO-fields',

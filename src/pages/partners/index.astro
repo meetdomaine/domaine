@@ -4,8 +4,16 @@ import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 import { paths } from '../../components/global/utils/paths';
 import PartnerTile from '../../components/global/partners/global-PartnerTile.astro'
 import { imageFields, partnerTileFields } from '../../components/global/utils/cms-queries';
+import PartnerCard from '../../components/global/partners/global-PartnerCard.astro';
 
-const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]{ ..., "partners": *[_type == "type_partner" && references(^._id)]{ ${partnerTileFields} } }`)
+const partnerTiers =  await sanityClient.fetch(`
+    *[_type == "type_partnerTier"]{ 
+        ..., 
+        "partners": *[_type == "type_partner" && references(^._id)]{
+            ${partnerTileFields} 
+        } | order(orderRank)
+    }`)
+
 ---
 <LayoutDomaine
     title="Partners"
@@ -14,11 +22,20 @@ const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]{ 
     <div class="partner-tiers">
         <h1>Partners</h1>
         {partnerTiers.map((tier) => (
-            <section>
-                <h3>{tier.title}</h3>
+            <section class="partner-tier">
+                <div class="partner-tier-header">
+                    <div class="icon">
+                        <Fragment set:html={tier.icon} />
+                    </div>
+                    <div class="header-text">
+                        <h3>{tier.title}</h3>
+                        <p>{tier.description}</p>
+                    </div>
+                </div>
+
                 <div class="partners">
                     {tier.partners.map((partner) => (
-                        <PartnerTile 
+                        <PartnerCard 
                             partner={partner}
                         />
                     ))}
@@ -34,11 +51,31 @@ const partnerTiers =  await sanityClient.fetch(`*[_type == "type_partnerTier"]{ 
     .partner-tiers {
         padding-inline: var(--page-margin);
         padding-block: var(--header-height) var(--space-xl);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xl);
+    }
+
+    .partner-tier {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .partner-tier-header {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-sm);
+        /* align-items: center; */
     }
 
     .partners {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: var(--space-xs);
+    }
+
+    .icon {
+        width: 30px;
     }
 </style>

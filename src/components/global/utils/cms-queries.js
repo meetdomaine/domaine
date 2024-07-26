@@ -13,7 +13,7 @@ export function urlFor(source) {
 export const imageBaseFields = `crop, asset->{_id, metadata}, hotspot`
 export const imageFields = `image{${imageBaseFields}, alt }`
 export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
-export const partnerTileFields = `title, excerpt, slug, icon{${imageFields}}, orderRank`
+export const partnerTileFields = `title, excerpt, slug, icon{${imageFields}}, tier->{slug, title, createLandingPages}, websiteUrl, orderRank`
 
 export const projectGridFields = `
   title,

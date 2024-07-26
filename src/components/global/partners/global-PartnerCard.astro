@@ -1,0 +1,62 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { partner } = Astro.props
+
+let url, newTab
+
+if (partner.tier.createLandingPages) {
+    newTab = false
+    url = `/partners/${partner.slug.current}`
+} else if (partner.websiteUrl) {
+    newTab = true
+    url = partner.websiteUrl
+}
+
+console.log(partner)
+
+---
+<a href={url ? url : null} class="partner-card" target={newTab ? "_blank" : ""}>
+    <div class="card-media">
+        <AtomSanityImage 
+            image={partner.icon.image}
+            sizes="15vw"
+        />
+    </div>
+    <div class="card-text caption">
+        <p class="title h4">{partner.title}</p>
+        <p class="excerpt">{partner.excerpt}</p>
+    </div>
+</a>
+
+<style>
+    .partner-card {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        background-color: var(--color-background-secondary);
+        text-decoration: none;
+        border-radius: var(--radius-sm);
+        padding: var(--space-sm);
+        gap: var(--space-xs);
+    }
+
+    .card-media {
+        border-radius: var(--radius-sm);
+        overflow: clip;
+    }
+
+    .card-text {
+        /* padding-inline: var(--space-xs); */
+        /* padding-block: var(--space-xs); */
+    }
+
+    .title,
+    .excerpt {
+        /* display: inline; */
+    }
+
+    .excerpt {
+        color: var(--color-foreground-secondary);
+    }
+</style>

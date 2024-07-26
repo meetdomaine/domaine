@@ -8,7 +8,7 @@ import type_serviceType from "./services/type_serviceType";
 import type_serviceGroup from "./services/type_serviceGroup";
 import page_servicesIndex from "./services/page_services-index";
 import settings_services from "./services/settings_services";
-import type_partnerTier from "./partners/type_partnerTier";
+import type_partnerTier from "./partners/type_partnerTier.jsx";
 import type_partner from "./partners/type_partner";
 import page_partnersIndex from "./partners/page_partners-index";
 import type_blog from "./blog/type_blog";
@@ -49,6 +49,7 @@ import section_projectsGrid from "./sections/section_projectsGrid.js";
 import settings_footer from "./siteSettings/settings_footer.js";
 import settings_header from "./siteSettings/settings_header.js";
 import section_partnersFeed from "./sections/section_partnersFeed.js";
+import snippet_richContent from "./snippets/snippet_rich-content.js";
 
 
 export const schemaTypes = [
@@ -97,6 +98,7 @@ export const schemaTypes = [
     snippet_image,
     snippet_video,
     snippet_button,
+    snippet_richContent,
 
     section_globalSections,
     section_form,
