@@ -56,7 +56,7 @@ const blogPosts = await getBlogPostsByPartner(data)
       </div>
       {data.clients &&
       <div class="clients-section">
-        <h3 class="h4">Featured Partnerships</h3>
+        <h3 class="h5">{`Featured Domaine x ${data.name} Clients:`}</h3>
         <div class="client-cards">
           {data.clients.map((client) => (
             <a class="client-card" href={client.caseStudy ? `/work/${client.caseStudy.slug.current}` : null}>
@@ -75,8 +75,8 @@ const blogPosts = await getBlogPostsByPartner(data)
     </div>
   </div>
   
-  {data.contentBlocks && data.contentBlocks.map((block) => (
-    <SectionBlock block={block} />
+  {data.contentBlocks && data.contentBlocks.map((block, i) => (
+    <SectionBlock block={block} key={i} />
   ))}
 
   {blogPosts && blogPosts.length > 0 &&
