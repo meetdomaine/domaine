@@ -28,8 +28,8 @@ const { section, brand } = Astro.props
                 <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
                     <div class="project-media">
                         <AtomSanityMedia 
-                            image={project.thumbnailImage.image}
-                            video={project.thumbnailVideo}
+                            image={project.thumbnailMedia.image}
+                            video={project.thumbnailMedia.video}
                             aspectRatio={3 / 4}
                             sizes="15vw"
                         />

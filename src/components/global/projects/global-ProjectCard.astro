@@ -9,26 +9,18 @@ interface Props {
 }
 
 const { project } = Astro.props
-// console.log(project.stage)
+console.log(project.thumbnailMedia)
 ---
 <a href={`${project.agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${project.slug.current}`} class={`project-card`}>
     <div class="card-media">
-        <AtomSanityMedia 
-            video={
-                (project.thumbnailMedia && project.thumbnailMedia.video) ? 
-                    project.thumbnailMedia.video :
-                    (!project.thumbnailMedia && project.heroMedia && project.heroMedia.video) ? 
-                        project.heroMedia.video : null 
-                }
-            image={
-                (project.thumbnailMedia && project.thumbnailMedia.image && project.thumbnailMedia.image.asset) ? 
-                    project.thumbnailMedia.image :
-                        (project.heroMedia && project.heroMedia.image && project.heroMedia.image.asset) ? 
-                            project.heroMedia.image : null
-                }
-            aspectRatio={3 / 4}
-            sizes="30vw"
-        />
+        <div class="card-thumbnail">
+            <AtomSanityMedia 
+                video={ project.thumbnailMedia.video ? project.thumbnailMedia.video : null }
+                image={ project.thumbnailMedia.image }
+                aspectRatio={3 / 4}
+                sizes="30vw"
+            />
+        </div>
         {project.client && 
             <img 
                 src={urlFor(project.logoColor === "dark" ? project.client.logoDark : project.client.logoLight).auto('format').url() }
@@ -112,6 +104,18 @@ const { project } = Astro.props
         width: 100%;
         border-radius: var(--radius-sm);
         overflow: hidden;
+    }
+
+    .card-thumbnail {
+        scale: 1;
+        transition: scale var(--anim-lg);
+        /* transition: scale var(--anim-easing) 5s; */
+    }
+
+    .project-card:hover .card-thumbnail {
+        scale: 1.05;
+        /* transition: scale var(--anim-lg); */
+        transition: scale var(--anim-easing) 5s;
     }
 
     .client-logo {

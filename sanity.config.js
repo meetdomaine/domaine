@@ -27,7 +27,7 @@ export default defineConfig({
     }),
     muxInput(),
     presentationTool({
-      previewUrl: 'http://localhost:4321/staging/'
+      previewUrl: 'http://localhost:4321/'
     }),
     vercelDeployTool(),
     colorInput(),

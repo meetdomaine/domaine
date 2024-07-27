@@ -112,8 +112,8 @@ export default defineType({
       title: 'Thumbnail Media',
       type: 'snippet_video',
       group: 'media',
-      description: 'If not added, will default to Hero media.',
-      // validation: (Rule) => Rule.required(),
+      description: "Media for project card. Image is mandatory, video is optional. If you don't add an image the whole site will break :)",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'thumbnailImageSecondary',
@@ -292,11 +292,11 @@ export default defineType({
       hero: 'heroMedia.image',
     },
     prepare(selection) {
-      const { title, subtitle, thumbnail, hero } = selection
+      const { title, subtitle, thumbnail } = selection
       return {
         title: title,
         subtitle: subtitle,
-        media: thumbnail ? thumbnail : hero
+        media: thumbnail
       }
     }
   },
