@@ -60,7 +60,11 @@ export const iconProjects = PresentationIcon
 export const labelClients = "Clients"
 export const iconClients = CaseIcon
 
-// Clients
+// Client Stages
+export const labelClientStages = "Client Stages"
+export const iconClientStages = ChartUpwardIcon
+
+// Project Features
 export const labelProjectFeatures = "Project Features"
 export const iconProjectFeatures = StarIcon
 

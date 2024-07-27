@@ -116,6 +116,9 @@ declare interface ClientCard {
     logoDark: ImageBase,
     logoLight: ImageBase,
     productImage: ImageBase,
+    stage: {
+        title: string
+    }
 }
 
 declare interface BlogCard {
@@ -132,7 +135,9 @@ declare interface ProjectCard {
     services?: any,
     orderRank: number,
     thumbnailMedia: Media,
-    thumbnailImageSecondary?: SanityImage,
+    thumbnailImageSecondary?: {
+        image: SanityImage
+    },
     heroMedia: Media,
     client: ClientCard,
     logoColor: string,

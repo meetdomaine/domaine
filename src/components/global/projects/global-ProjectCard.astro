@@ -1,72 +1,95 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTag from "../atoms/atom-tag.astro"
 import { urlFor } from "../utils/cms-queries"
 
-// interface Props {
-//     title: string,
-//     excerpt: string,
-//     slug: Slug,
-//     heroMedia: Media,
-//     thumbnailMedia: Media,
-//     brand?: string,
-//     client: ClientCard,
-//     logoColor: string,
-//     agencyBrand: {
-//         slug: Slug
-//     },
-// }
+interface Props {
+    project: ProjectCard
+}
 
-const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary, client, logoColor, agencyBrand } = Astro.props
-// console.log(thumbnailImageSecondary)
+const { project } = Astro.props
+// console.log(project.stage)
 ---
-<a href={`${agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${slug.current}`} class={`project-card`}>
+<a href={`${project.agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${project.slug.current}`} class={`project-card`}>
     <div class="card-media">
         <AtomSanityMedia 
             video={
-                (thumbnailMedia && thumbnailMedia.video) ? 
-                    thumbnailMedia.video :
-                    (!thumbnailMedia && heroMedia && heroMedia.video) ? 
-                        heroMedia.video : null 
+                (project.thumbnailMedia && project.thumbnailMedia.video) ? 
+                    project.thumbnailMedia.video :
+                    (!project.thumbnailMedia && project.heroMedia && project.heroMedia.video) ? 
+                        project.heroMedia.video : null 
                 }
             image={
-                (thumbnailMedia && thumbnailMedia.image && thumbnailMedia.image.asset) ? 
-                    thumbnailMedia.image :
-                        (heroMedia && heroMedia.image && heroMedia.image.asset) ? 
-                            heroMedia.image : null
+                (project.thumbnailMedia && project.thumbnailMedia.image && project.thumbnailMedia.image.asset) ? 
+                    project.thumbnailMedia.image :
+                        (project.heroMedia && project.heroMedia.image && project.heroMedia.image.asset) ? 
+                            project.heroMedia.image : null
                 }
             aspectRatio={3 / 4}
             sizes="30vw"
         />
-        {client && 
+        {project.client && 
             <img 
-                src={urlFor(logoColor === "dark" ? client.logoDark : client.logoLight).auto('format').url() }
+                src={urlFor(project.logoColor === "dark" ? project.client.logoDark : project.client.logoLight).auto('format').url() }
                 class="client-logo"
             />
         }
-        {thumbnailImageSecondary && 
+        {project.thumbnailImageSecondary && 
             <div class="card-overlay glass-ink">
                 <div class="hover-image">
                     <AtomSanityImage 
-                        image={thumbnailImageSecondary.image}
+                        image={project.thumbnailImageSecondary.image}
                         sizes="40vw"
+                    />
+                </div>
+            </div>
+        }
+        {project.features &&
+            <div class="features">
+                <div class="feature-tags">
+                    {project.features.map((feature) => (
+                        <AtomTag 
+                            text={feature.title}
+                        />
+                    ))}
+                </div>
+                <div class="elipses-tag">
+                    <AtomTag 
+                        text="..."
                     />
                 </div>
             </div>
         }
     </div>
     <div class="card-content">
-        {client && 
+        {project.client && 
             <div class="product-media">
                 <img 
-                    src={urlFor(client.productImage).auto('format').url() }
+                    src={urlFor(project.client.productImage).auto('format').url() }
                     class="product-image"
                 />
             </div>
         }
         <div class="card-details">
-            <h6 class="title body">{title}</h6>
-            <p class="excerpt caption">{excerpt}</p>
+            <h6 class="title body">{project.title}</h6>
+            <div class="card-description">
+                <p class="description-text caption">{project.excerpt}</p>
+                <div class="description-tags">
+                    {project.industry && 
+                        <AtomTag 
+                            title="Industry"
+                            text={project.industry.title}
+                        />
+                    }
+                    {project.client && project.client.stage &&
+                        <AtomTag 
+                            title="Stage"
+                            text={project.client.stage.title}
+                        />
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </a>
@@ -112,6 +135,7 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary
     }
 
     .product-media {
+        position: relative;
         flex: 0 0 max(60px, 10%);
         background-color: var(--color-background-secondary);
         aspect-ratio: 1 / 1;
@@ -122,27 +146,130 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary
     .product-image {
         width: 100%;
         min-width: 0;
+        translate: 0 0;
+        transition: translate var(--anim-sm);
+    }
+
+    .project-card:hover .product-image {
+        translate: 0 -5%;
+    }
+
+    .features {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        /* max-width: calc(100% - var(--space-xs) * 2); */
+        padding: 0 var(--space-xs) var(--space-xs);
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        gap: var(--space-2xs);
+        opacity: 0;
+        translate: 0 1em;
+        transition: opacity var(--anim-sm), translate var(--anim-sm);
+    }
+
+    .project-card:hover .features {
+        opacity: 1;
+        translate: 0 0;
+    }
+
+    .feature-tags {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+        overflow: hidden;
+        border-radius: var(--radius-sm);
+        /* flex: 1 0 auto; */
+    }
+
+    .feature-tags::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 2em;
+        background: linear-gradient(90deg, transparent, var(--color-background-secondary));
+    }
+
+    .elipses-tag {
+        flex: 0 0 auto;
     }
 
     .card-details {
+        --inset: -0.1em;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: flex-start;
         align-self: stretch;
     }
 
     .title {
-
+        color: var(--color-foreground);
+        transition: color var(--anim-sm);
+        position: relative;
     }
 
-    .excerpt {
+    .title::after {
+        content: "";
+        position: absolute;
+        inset: var(--inset);
+        width: 0%;
+        border-radius: var(--radius-sm);
+        background-color: var(--color-foreground);
+        z-index: -1;
+        transition: width var(--anim-sm);
+    }
+
+    .project-card:hover .title {
+        color: var(--color-background);
+    }
+
+    .project-card:hover .title::after {
+        width: calc(100% - var(--inset) * 2);
+    }
+
+    .card-description {
+        position: relative;
+    }
+
+    .description-tags {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-2xs);
+        position: absolute;
+        top: var(--space-2xs);
+        left: var(--inset);
+        opacity: 0;
+        translate: 0 1em;
+        transition: opacity var(--anim-sm), translate var(--anim-sm);
+    }
+
+    .description-text {
         color: var(--color-foreground-secondary);
+        opacity: 1;
+        translate: 0 0em;
+        transition: opacity var(--anim-sm), translate var(--anim-sm);
+    }
+
+    .project-card:hover .description-text {
+        opacity: 0;
+        translate: 0 -1em;
+    }
+
+    .project-card:hover .description-tags {
+        opacity: 1;
+        translate: 0 0;
     }
 
     .card-overlay {
         position: absolute;
         inset: 0;
-        /* background-color: red; */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -168,5 +295,8 @@ const { title, excerpt, slug, heroMedia, thumbnailMedia, thumbnailImageSecondary
         clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
         /* clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0%, 100%); */
     }
+
+
+
 
 </style>

@@ -7,10 +7,17 @@ interface Props {
 
 const { title, text, url} = Astro.props
 ---
-<a class="tag" href={url}>
-    {title && <span class="title caption">{title}</span>}
-    <span class="text caption">{text}</span>
-</a>
+{url ? 
+    <a class="tag" href={url}>
+        {title && <span class="title caption">{title}</span>}
+        <span class="text caption">{text}</span>
+    </a>
+:    
+    <div class="tag">
+        {title && <span class="title caption">{title}</span>}
+        <span class="text caption">{text}</span>
+    </div>
+}
 
 <style>
     .tag {
@@ -22,6 +29,7 @@ const { title, text, url} = Astro.props
         padding-block: var(--space-3xs);
         gap: 0.2em;
         flex: 0 0 auto;
+        border-radius: var(--radius-sm);
     }
 
     .title {

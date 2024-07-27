@@ -12,15 +12,7 @@ const { projects, heading } = Astro.props
     {heading && <h2>{heading}</h2>}
     {projects.map((project) => (
         <GlobalProjectCard
-            title={project.title}
-            excerpt={project.excerpt}
-            heroMedia={project.heroMedia}
-            thumbnailMedia={project.thumbnailMedia}
-            thumbnailImageSecondary={project.thumbnailImageSecondary}
-            slug={project.slug}
-            agencyBrand={project.agencyBrand}
-            client={project.client}
-            logoColor={project.logoColor}
+            project={project}
         />
     ))}
 </div>
@@ -30,7 +22,8 @@ const { projects, heading } = Astro.props
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         padding-inline: var(--page-margin);
-        gap: var(--space-lg) var(--space-xs);
+        padding-block: 0 var(--space-2xl);
+        gap: var(--space-xl) var(--space-xs);
     }
 
     @media screen and (max-width: 768px) {

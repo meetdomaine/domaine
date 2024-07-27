@@ -50,11 +50,13 @@ import settings_footer from "./siteSettings/settings_footer.js";
 import settings_header from "./siteSettings/settings_header.js";
 import section_partnersFeed from "./sections/section_partnersFeed.js";
 import snippet_richContent from "./snippets/snippet_rich-content.js";
+import type_clientStage from "./projects/type_clientStage.js";
 
 
 export const schemaTypes = [
     type_project,
     type_client,
+    type_clientStage,
     type_projectFeature,
     type_industry,
     type_service,

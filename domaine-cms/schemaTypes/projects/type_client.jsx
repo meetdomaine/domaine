@@ -70,17 +70,26 @@ export default defineType({
       title: 'Description',
       type: 'text',
     }),
+    defineField({
+      name: 'stage',
+      title: 'Stage',
+      type: 'reference',
+      to: [{ type: 'type_clientStage'}],
+      validation: Rule => Rule.required(),
+    }),
     orderRankField({ type: 'type_client'}),
   ],
   preview: {
     select: {
       title: 'title',
+      subtitle: 'stage.title',
       media: 'productImage',
     },
     prepare(selection) {
-      const { title, media } = selection
+      const { title, subtitle, media } = selection
       return {
         title: title,
+        subtitle: subtitle,
         media: media ? media : iconClients,
       }
     }

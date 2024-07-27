@@ -7,6 +7,7 @@ import {
     iconBlogCategories,
     iconBrandPrimary, 
     iconBrandSecondary, 
+    iconClientStages, 
     iconClients, 
     iconContact, 
     iconEvents, 
@@ -35,6 +36,7 @@ import {
     labelBlogCategories, 
     labelBrandPrimary, 
     labelBrandSecondary, 
+    labelClientStages, 
     labelClients, 
     labelContact, 
     labelEvents, 
@@ -222,19 +224,26 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
+                    orderableDocumentListDeskItem({
+                        type: 'type_clientStage',
+                        title: labelClientStages,
+                        icon: iconClientStages,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(labelIndustries)
                         .icon(iconIndustries)
                         .child(
                             S.documentTypeList('type_industry')
                         ),
-
-                    S.listItem()
-                        .title(labelProjectFeatures)
-                        .icon(iconProjectFeatures)
-                        .child(
-                            S.documentTypeList('type_projectFeature')
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_projectFeature',
+                        title: labelProjectFeatures,
+                        icon: iconProjectFeatures,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(`${labelProjects} ${labelSettings}`)
                         .icon(iconSettings)

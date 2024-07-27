@@ -13,7 +13,11 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0...3]`)
+    feedProjects = await sanityClient.fetch(`
+        *[_type == "type_project" 
+            && agencyBrand->slug.current == "${brand}" ]{ 
+                ${projectGridFields} 
+            } | order( orderRank asc)[0...3]`)
 }
 
 ---
@@ -26,15 +30,7 @@ if (section && section.projects) {
         <div class="section-content">
             {feedProjects.map((project) => (
                 <ProjectCard
-                    title={project.title}
-                    excerpt={project.excerpt}
-                    slug={project.slug}
-                    thumbnailMedia={project.thumbnailMedia}
-                    thumbnailImageSecondary={project.thumbnailImageSecondary}
-                    heroMedia={project.heroMedia}
-                    client={project.client}
-                    logoColor={project.logoColor}
-                    agencyBrand={project.agencyBrand}
+                    project={project}
                 />
             ))}
         </div>

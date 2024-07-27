@@ -33,7 +33,7 @@ export default defineType({
       title: 'Metafields',
       type: 'snippet_SEO-fields',
     }),
-    orderRankField({ type: 'type_projectfeature'})
+    orderRankField({ type: 'type_projectFeature'})
     // defineField({
     //   name: 'agencyBrands',
     //   title: 'Agency Brands',
