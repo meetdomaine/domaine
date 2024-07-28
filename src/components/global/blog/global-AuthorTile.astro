@@ -1,0 +1,30 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { author } = Astro.props
+// console.log(author)
+---
+<div class="author-tile">
+    <div class="tile-media">
+        {author.image && 
+            <AtomSanityImage 
+                sizes="15vw"
+                image={author.image}
+            />
+        }
+    </div>
+
+    <div class="tile-content">
+        <h4>{author.name}</h4>
+        <p>{author.role}</p>
+    </div>
+</div>
+
+<style>
+    .author-tile {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xs)
+    }
+</style>

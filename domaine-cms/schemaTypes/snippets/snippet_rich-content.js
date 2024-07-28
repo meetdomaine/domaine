@@ -1,5 +1,6 @@
 import {defineType, defineArrayMember} from 'sanity'
-import {PlayIcon, ImageIcon, BellIcon, EnvelopeIcon} from '@sanity/icons'
+import {PlayIcon, ImageIcon, BellIcon, EnvelopeIcon, CodeBlockIcon} from '@sanity/icons'
+
 
 export default defineType({
   title: 'Content',
@@ -53,11 +54,6 @@ export default defineType({
         name: 'inlineImage',
         title: 'Image',
         type: 'snippet_image',
-        fields: [{
-          name: 'test',
-          title: 'Test',
-          type: 'boolean'
-        }],
         validation: Rule => Rule.required(),
         preview: {
           select: {
@@ -198,7 +194,16 @@ export default defineType({
           title: 'Markup',
           type: 'text',
         }
-      ]
+      ],
+      preview: {
+        prepare() {
+          return {
+            title: 'Schema Markup',
+            subtitle: 'For SEO purposes',
+            icon: CodeBlockIcon
+          }
+        }
+      }
     }),
   ],
 })

@@ -8,14 +8,15 @@ import SectionProjectsFeed from '../../../components/global/sections/section-Pro
 import AtomRichContent from '../../../components/global/atoms/atom-richContent.astro';
 import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
+import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
 
 export async function getStaticPaths() {
     const posts = await sanityClient.fetch(`
     *[_type == "type_blog" && agencyBrand->name == "Domaine"]{ 
         ..., 
+        authors[]->{name, role, bio, ${imageFields}, department->{title} },
         thumbnailImage{${imageFields}},
         category->{..., slug{...} }, 
-        authors[]->{...},
         body[]{ 
             ...,
             _type == "inlineImage" => {${imageFields}},
@@ -59,6 +60,12 @@ const { content } = Astro.props;
     <BlogPostBody 
         content={content.body}
     />
+
+    { content.authors && 
+        <BlogPostAuthors 
+            authors={content.authors}
+        />
+    }
 
     { content.relatedPosts && 
         <SectionBlogFeed 

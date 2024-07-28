@@ -1,3 +1,10 @@
 ---
+const { node } = Astro.props;
+const markup = JSON.parse(node.markup);
 ---
-<h1>Schema</h1>
+<script define:vars={{ markup }}>
+  const markupScript = document.createElement("script");
+  markupScript.type = "application/ld+json";
+  markupScript.innerText = JSON.stringify(markup);
+  document.head.appendChild(markupScript);
+</script>

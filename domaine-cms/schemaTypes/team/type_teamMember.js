@@ -11,11 +11,13 @@ export default defineType({
       name: 'name',
       title: 'Name',
       type: 'string',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'role',
       title: 'Role',
       type: 'string',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'bio',
@@ -28,7 +30,8 @@ export default defineType({
       type: 'image',
       options: {
         hotspot: true
-      }
+      },
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'department',

@@ -1,0 +1,42 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { authors } = Astro.props
+---
+<section class="blog-post-authors">
+    <h1>{authors.length > 1 ? "About the Authors" : "About the Author"}</h1>
+    <div class="authors">
+        {authors.map((author) => (
+            <div class="author">
+                <div class="author-media">
+                    <AtomSanityImage 
+                        sizes="20vw"
+                        image={author.image}
+                    />
+                </div>
+                <div class="author-details">
+                    {author.department && <p class="utility">{author.department.title}</p>}
+                    <h6 class="h3">{author.name}</h6>
+                    <p>{author.role}</p>
+                    {author.bio && <p>{author.bio}</p>}
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .blog-post-authors {
+        padding-inline: var(--page-margin);
+    }
+
+    .authors {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-md);
+    }
+
+    .author-media {
+        max-width: 20vw;
+    }
+</style>

@@ -1,6 +1,7 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
+import GlobalAuthorTile from "./global-AuthorTile.astro"
 
 const { post } = Astro.props
 ---
@@ -22,8 +23,9 @@ const { post } = Astro.props
 
         <h6>Authors:</h6>
         {post.authors.map((author) => (
-            <p>{author.name}</p>
-            <p>{author.role}</p>
+            <GlobalAuthorTile 
+                author={author}
+            />
         ))}
     </div>
 

@@ -27,18 +27,12 @@ const { images, aspectRatio } = Astro.props
     swipers.forEach((swiper) => {
         const carousel = new Swiper(swiper, {
             direction: 'horizontal',
-            // loop: true,
-            // autoHeight: true,
             slidesPerGroup: 1,
-            slidesPerView: 1.2,
-            // centerInsufficientSlides: true,
+            slidesPerView: 1.5,
             centeredSlides: true,
-            // centeredSlidesBounds: true,
-            spaceBetween: "5%",
+            spaceBetween: "10%",
             grabCursor: true,
-            // freeMode: true,
-            // watchSlidesProgress: true
-            // lazyPreloadPrevNext: 3,
+            slideToClickedSlide: true,
         });
     })
 
