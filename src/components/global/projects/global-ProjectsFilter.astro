@@ -30,6 +30,11 @@ const allFilters = await Promise.all([
         path: 'services/',
         filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
     },
+    // {
+    //     title: 'Stages',
+    //     path: '/',
+    //     filters:  await sanityClient.fetch(`*[_type == "type_clientStage" && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
+    // },
 ])
 
 // console.log(brand)

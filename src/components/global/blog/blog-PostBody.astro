@@ -1,0 +1,15 @@
+---
+import AtomRichContent from "../atoms/atom-richContent.astro"
+const { content } = Astro.props
+---
+<section class="blog-post-body">
+    <AtomRichContent 
+        content={content}
+    />
+</section>
+
+<style>
+    .blog-post-body {
+        /* padding-inline: var(--page-margin); */
+    }
+</style>

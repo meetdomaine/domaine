@@ -15,7 +15,10 @@ export default defineConfig({
     projectId: 'cxeknc6v',
     dataset: 'production',
     useCdn: false,
-    studioBasePath: '/admin'
+    studioBasePath: '/admin',
+    stega: {
+      studioUrl: '/admin',
+    },
   }), solid({
     devtools: true,
     include: 'src/**/*'

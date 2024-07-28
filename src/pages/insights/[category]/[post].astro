@@ -2,16 +2,26 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
 import { paths } from '../../../components/global/utils/paths';
-import { blogCardFields, projectGridFields, urlFor } from '../../../components/global/utils/cms-queries';
+import { blogCardFields, imageFields, projectGridFields, urlFor } from '../../../components/global/utils/cms-queries';
 import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
 import SectionProjectsFeed from '../../../components/global/sections/section-ProjectsFeed.astro';
+import AtomRichContent from '../../../components/global/atoms/atom-richContent.astro';
+import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
+import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
 
 export async function getStaticPaths() {
     const posts = await sanityClient.fetch(`
     *[_type == "type_blog" && agencyBrand->name == "Domaine"]{ 
         ..., 
+        thumbnailImage{${imageFields}},
         category->{..., slug{...} }, 
-        authors[]->{...}, 
+        authors[]->{...},
+        body[]{ 
+            ...,
+            _type == "inlineImage" => {${imageFields}},
+            _type == "imageGallery" => { images[]{${imageFields}} },
+        },
+        agencyBrand->{slug},
         "relatedPosts": *[_type == "type_blog" && references(^.category->_id)]{${blogCardFields}} | order(orderRank asc),
         "relatedProjects": 
             *[_type == "type_project" 
@@ -34,7 +44,7 @@ interface Props {
 }
 
 const { content } = Astro.props;
-console.log(content.relatedProjects.length)
+// console.log(content.body)
 
 // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
 ---
@@ -42,23 +52,13 @@ console.log(content.relatedProjects.length)
     title={content.title}
     searchFilter="type:blog-post"
 >
-    <a href={`${paths.root.blog.path}/${content.category.slug.current}`}><h6>{content.category.title}</h6></a>
-    <h1>{content.title}</h1>
-    <h6>{content.excerpt}</h6>
-
-    <!-- <img src={urlFor(content.thumbnail).url()} -->
-
-    <h6>Date:</h6>
-    <p>{content.postDate}</p>
-
-    <h6>Category:</h6>
-    <p>{content.category.title}</p>
-
-    <h6>Authors:</h6>
-    {content.authors.map((author) => (
-        <p>{author.name}</p>
-        <p>{author.role}</p>
-    ))}
+    <BlogPostHero
+        post={content}
+    />
+    
+    <BlogPostBody 
+        content={content.body}
+    />
 
     { content.relatedPosts && 
         <SectionBlogFeed 

@@ -1,0 +1,52 @@
+---
+import AtomSanityImage from "./atom-sanityImage.astro"
+
+const { images, aspectRatio } = Astro.props
+---
+<div class="swiper-carousel">
+    <div class="swiper-wrapper">
+        {images.map((carouselItem) => (
+            <div class="swiper-slide">
+                <AtomSanityImage 
+                    image={carouselItem.image}
+                    sizes="90vw"
+                    aspectRatio={aspectRatio}
+                    eager={true}
+                />
+            </div>
+        ))}
+    </div>
+</div>
+
+<script>
+    import Swiper from 'swiper';
+    import 'swiper/css';
+
+    const swipers: NodeListOf<HTMLElement> = document.querySelectorAll('.swiper-carousel')
+
+    swipers.forEach((swiper) => {
+        const carousel = new Swiper(swiper, {
+            direction: 'horizontal',
+            // loop: true,
+            // autoHeight: true,
+            slidesPerGroup: 1,
+            slidesPerView: 1.2,
+            // centerInsufficientSlides: true,
+            centeredSlides: true,
+            // centeredSlidesBounds: true,
+            spaceBetween: "5%",
+            grabCursor: true,
+            // freeMode: true,
+            // watchSlidesProgress: true
+            // lazyPreloadPrevNext: 3,
+        });
+    })
+
+</script>
+
+<style>
+    .swiper-carousel {
+        overflow: clip;
+        /* width: 100%; */
+    }
+</style>

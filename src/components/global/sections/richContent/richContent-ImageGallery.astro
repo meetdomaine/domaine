@@ -1,0 +1,21 @@
+---
+import AtomCarousel from "../../atoms/atom-carousel.astro"
+import AtomSanityImage from "../../atoms/atom-sanityImage.astro"
+
+const { node } = Astro.props
+// console.log(node)
+---
+<div class="image-gallery">
+    <AtomCarousel 
+        images={node.images}
+    />
+</div>
+
+<style>
+    .image-gallery {
+        /* width: 100%;
+        max-width: 100%;
+        overflow-x: clip; */
+        padding-block: var(--space-lg);
+    }
+</style>

@@ -20,12 +20,6 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{ type: 'type_blogCategory' }]
-    }),
-    defineField({
       name: 'postDate',
       title: 'Post Date',
       type: 'date',
@@ -35,26 +29,26 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'agencyBrand',
-      title: 'Agency Brand',
-      type: 'reference',
-      to: [{ type: 'type_agencyBrand'}],
-      validation: Rule => Rule.required(),
-    }),
-    // defineField({
-    //   name: 'thumbnail',
-    //   title: 'Thumbnail',
-    //   type: 'image',
-    //   options: {
-    //     hotspot: true
-    //   },
-    //   validation: Rule => Rule.required(),
-    // }),
-    defineField({
       name: 'thumbnailImage',
       title: 'Thumbnail Image',
       type: 'snippet_image',
       validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'type_blogCategory' }]
+    }),
+    defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'text',
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'snippet_rich-content',
     }),
     defineField({
       name: 'authors',
@@ -69,9 +63,11 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
+      name: 'agencyBrand',
+      title: 'Agency Brand',
+      type: 'reference',
+      to: [{ type: 'type_agencyBrand'}],
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'partners',
@@ -116,11 +112,6 @@ export default defineType({
         type: 'reference',
         to: [{ type: 'type_projectFeature'}],
       }],
-    }),
-    defineField({
-      name: 'body',
-      title: 'Body',
-      type: 'snippet_rich-content',
     }),
     defineField({
       name: 'metafields',

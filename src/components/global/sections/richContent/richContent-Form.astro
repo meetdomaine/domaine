@@ -1,0 +1,50 @@
+---
+const { node } = Astro.props;
+const formId = node.hubspotFormId
+const key = node._key
+// console.log(key)
+---
+<aside class="inline-form">
+  <div class="section-form__title">
+    <h2 class="h2">{node.heading}</h2>
+    <p class="h6">{node.subheading}</p>
+  </div>
+    
+  <div 
+    class="form"
+    id={`form-${formId}-${key}`} 
+    data-hubspot-form-id={formId}
+  ></div>
+</aside>
+
+<script define:vars={{ formId, key }}>
+
+  const initForm = () => {
+    const form = document.querySelector(`#form-${formId}-${key}`)
+
+    if (form && window.hbspt) {
+
+      window.hbspt.forms.create({
+        region: "na1",
+        target: `#form-${formId}-${key}`,
+        portalId: "41750854",
+        formId: formId,
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initForm()
+  })
+
+</script>
+
+<style>
+  .inline-form {
+    margin-inline: auto;
+    margin-block: var(--space-md);
+    max-width: var(--content-width);
+    background-color: var(--color-background-secondary);
+    padding: var(--space-lg) var(--space-md);
+  }
+</style>

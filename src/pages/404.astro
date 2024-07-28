@@ -1,0 +1,114 @@
+---
+import LayoutDomaine from "../layouts/Layout-Domaine.astro"
+---
+
+<LayoutDomaine
+    title="Page Not Found"
+>
+    <section class="not-found-section">
+        <!-- <h2>404</h2> -->
+        <h1 class="h4">Whoops! Page not found.</h1> 
+        <div id="three-canvas"></div>
+    </section>
+</LayoutDomaine>
+
+<script>
+    import { 
+        Scene, 
+        PerspectiveCamera, 
+        WebGLRenderer,
+        BoxGeometry,
+        MeshBasicMaterial,
+        MeshPhysicalMaterial,
+        Mesh,
+        Group,
+        CubeTextureLoader
+    } from 'three';
+
+    const canvas = document.getElementById("three-canvas")
+    let canvasRect = canvas.getBoundingClientRect()
+
+    let scene, camera, renderer
+
+    const logoGroup = new Group
+
+    const material = new MeshPhysicalMaterial({ 
+        color: 0x00ff00,
+        metalness: 1,
+        roughness: 0,
+    });
+
+    const animate = () => {
+        renderer.render( scene, camera );
+    }
+
+    const handleResize = () => {
+        canvasRect = canvas.getBoundingClientRect()
+        camera.aspect = canvasRect.width / canvasRect.height
+        camera.updateProjectionMatrix();
+        renderer.setSize( canvasRect.width, canvasRect.height );
+    }
+
+    const initScene = () => {
+        scene = new Scene();
+
+        scene.environment = new CubeTextureLoader()
+            .setPath( 'three/textures/environment/' )
+            .load( [
+                        'small_deepblue-gasgiant-0.png',
+                        'small_deepblue-gasgiant-1.png',
+                        'small_deepblue-gasgiant-2.png',
+                        'small_deepblue-gasgiant-3.png',
+                        'small_deepblue-gasgiant-4.png',
+                        'small_deepblue-gasgiant-5.png'
+                    ] );
+
+        camera = new PerspectiveCamera( 75, canvasRect.width / canvasRect.height, 0.1, 1000 );
+        camera.position.z = 5;
+
+        renderer = new WebGLRenderer({ alpha: true});
+        renderer.setSize( canvasRect.width, canvasRect.height );
+        renderer.setAnimationLoop( animate );
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        canvas.appendChild(renderer.domElement);
+        scene.add(logoGroup)
+    }
+
+    const initGeometry = () => {
+        for (let i = 0; i < 10; i++) {
+            const geometry = new BoxGeometry( 1, 1, 1 );
+            const cube = new Mesh( geometry, material );
+            logoGroup.add( cube );
+        }
+    }
+    
+    if (canvas) { 
+        initScene()
+        initGeometry()
+    }
+
+    window.addEventListener("mousemove", (e) => {
+        // console.log(e)
+    })
+
+    window.addEventListener("resize", handleResize)
+    
+</script>
+
+<style>
+    .not-found-section {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    #three-canvas {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+    }
+</style>

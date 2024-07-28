@@ -1,0 +1,30 @@
+---
+import AtomButton from "../../atoms/atom-button.astro"
+
+const { node } = Astro.props
+---
+<aside class="call-to-action">
+    <p class="h3">{node.heading}</p>
+    {node.subheading && <p>{node.subheading}</p>}
+    {node.button && node.button.text && node.button.url &&
+        <AtomButton 
+            text={node.button.text}
+            url={node.button.url}
+            newTab={node.button.newTab}
+        />
+    }
+</aside>
+
+<style>
+.call-to-action {
+    margin-inline: auto;
+    max-width: var(--content-width-wide);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-background-secondary);
+    padding: var(--space-xl);
+    margin-block: var(--space-lg);
+    border-radius: var(--radius-sm);
+}
+</style>

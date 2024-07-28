@@ -1,0 +1,54 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomTag from "../atoms/atom-tag.astro"
+
+const { post } = Astro.props
+---
+<section class="blog-post-hero">
+
+    <div class="section-content">
+        <h1 class="h2">{post.title}</h1>
+        <AtomTag 
+            title="Category"
+            text={post.category.title}
+            url={`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}
+        />
+        <h6>{post.excerpt}</h6>
+
+        <AtomTag 
+            title="Published"
+            text={post.postDate}
+        />
+
+        <h6>Authors:</h6>
+        {post.authors.map((author) => (
+            <p>{author.name}</p>
+            <p>{author.role}</p>
+        ))}
+    </div>
+
+    <div class="section-media">
+        <AtomSanityImage 
+            image={post.thumbnailImage.image}
+            sizes="50vw"
+        />
+    </div>
+
+</section>
+
+<style>
+    .blog-post-hero {
+        padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-lg);
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-lg);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 40em;
+    }
+</style>

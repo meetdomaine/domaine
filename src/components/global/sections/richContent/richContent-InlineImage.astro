@@ -1,0 +1,22 @@
+---
+import AtomSanityImage from "../../atoms/atom-sanityImage.astro"
+import { urlFor } from "../../utils/cms-queries"
+
+const { node } = Astro.props
+---
+<div class="inline-image">
+    <AtomSanityImage 
+        sizes="100vw"
+        image={node.image}
+    />
+</div>
+
+<style>
+    .inline-image {
+        margin-inline: auto;
+        max-width: calc(100% - var(--page-margin) * 2);
+        /* max-width: var(--content-width-wide); */
+        height: auto;
+        padding-block: var(--space-lg) var(--space-xl);
+    }
+</style>

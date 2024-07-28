@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { project } = Astro.props
-console.log(project.thumbnailMedia)
+// console.log(project.thumbnailMedia)
 ---
 <a href={`${project.agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${project.slug.current}`} class={`project-card`}>
     <div class="card-media">

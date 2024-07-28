@@ -1,0 +1,75 @@
+---
+import { PortableText } from "astro-portabletext";
+const { content } = Astro.props
+
+import InlineImage from "../sections/richContent/richContent-InlineImage.astro"
+import YouTubeEmbed from "../sections/richContent/richContent-YouTubeEmbed.astro"
+import CallToAction from "../sections/richContent/richContent-CallToAction.astro"
+import Form from "../sections/richContent/richContent-Form.astro"
+import ImageGallery from "../sections/richContent/richContent-ImageGallery.astro"
+import Schema from "../sections/richContent/richContent-Schema.astro"
+
+---
+<div class="rich-content">
+  <PortableText
+    value={content}
+    components={{
+      type: {
+          inlineImage: InlineImage,
+          imageGallery: ImageGallery,
+          form: Form,
+          callToAction: CallToAction,
+          youTubeEmbed: YouTubeEmbed,
+          schema: Schema,
+      }
+      }}
+  />
+</div>
+
+<style is:global>
+
+  .rich-content {
+    --content-width: min(calc(100% - var(--page-margin) * 2), 50rem);
+    --content-width-wide: min(calc(100%), 60rem);;
+  }
+
+
+  .rich-content > h1,
+  .rich-content > h2,
+  .rich-content > h3,
+  .rich-content > h4,
+  .rich-content > h5,
+  .rich-content > h6 {
+    margin-block-start: 0.8em;
+  }
+
+  .rich-content > h1,
+  .rich-content > h2,
+  .rich-content > h3,
+  .rich-content > h4,
+  .rich-content > h5,
+  .rich-content > h6,
+  .rich-content > p,
+  .rich-content > ul,
+  .rich-content > ol {
+    margin-inline: auto;
+    max-width: var(--content-width);
+  }
+
+  .rich-content > blockquote {
+    margin-block: 1em 2em;
+    margin-inline: auto;
+    max-width: var(--content-width-wide);
+  }
+
+  .rich-content > ul,
+  .rich-content > ol {
+    margin-block: 1.5em;
+    padding-inline-start: 2em;
+  }
+
+  .rich-content > ul li,
+  .rich-content > ol li {
+    margin-block-end: 1em;
+  }
+</style>

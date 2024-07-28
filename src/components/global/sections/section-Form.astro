@@ -1,5 +1,6 @@
 ---
-const { section } = Astro.props;
+const { section, key } = Astro.props;
+const formId = section.hubspotFormId
 ---
 {section.showSection && 
   <section class="section-form">
@@ -10,36 +11,32 @@ const { section } = Astro.props;
       </div>
       
       <div 
-        id="form" 
-        data-hubspot-form-id={section.hubspotFormId}
+        id={`form-${formId}-${key}`} 
+        data-hubspot-form-id={formId}
       ></div>
   </section>
-
 }
 
-<script>
-
-  declare global {
-      interface Window {
-          hbspt:any;
-      }
-  }
+<script define:vars={{ formId, key }}>
 
   const initForm = () => {
-    const form: HTMLElement = document.querySelector("#form")
+    const form = document.querySelector(`#form-${formId}-${key}`)
 
     if (form && window.hbspt) {
+
       window.hbspt.forms.create({
-          region: "na1",
-          target: "#form",
-          portalId: "41750854",
-          formId: "6bb0a8f8-9497-40be-96c1-c1232f9eecba",
+        region: "na1",
+        target: `#form-${formId}-${key}`,
+        portalId: "41750854",
+        formId: form.dataset.hubspotFormId,
       });
+      
     }
   }
 
-  document.addEventListener("astro:page-load", () => initForm())
-  // initForm()
+  document.addEventListener("DOMContentLoaded", () => {
+    initForm()
+  })
 
 </script>
 

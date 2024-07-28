@@ -55,13 +55,13 @@ declare interface SanityImage {
     asset: {
         _id: 'string',
         metadata: {
-        dimensions: {
-            width: number,
-            height: number,
-            aspectRatio: number,
-        },
-        blurHash: string,
-        lqip: string,
+            dimensions: {
+                width: number,
+                height: number,
+                aspectRatio: number,
+            },
+            blurHash: string,
+            lqip: string,
         }
     },
     crop: {

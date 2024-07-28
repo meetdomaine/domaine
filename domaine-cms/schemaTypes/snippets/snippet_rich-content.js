@@ -1,5 +1,5 @@
 import {defineType, defineArrayMember} from 'sanity'
-import {PlayIcon, ImageIcon} from '@sanity/icons'
+import {PlayIcon, ImageIcon, BellIcon, EnvelopeIcon} from '@sanity/icons'
 
 export default defineType({
   title: 'Content',
@@ -50,24 +50,22 @@ export default defineType({
       },
     }),
     defineArrayMember({
-      name: 'inlineImage',
-      title: 'Image',
-      type: 'image',
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          validation: Rule => Rule.required()
+        name: 'inlineImage',
+        title: 'Image',
+        type: 'snippet_image',
+        fields: [{
+          name: 'test',
+          title: 'Test',
+          type: 'boolean'
+        }],
+        validation: Rule => Rule.required(),
+        preview: {
+          select: {
+            title: 'inlineImage.alt',
+            subtitle: 'Image',
+            media: 'inlineImage.image'
+          },
         }
-      ],
-      validation: Rule => Rule.required(),
-      preview: {
-        select: {
-          title: 'inlineImage.alt',
-          media: 'inlineImage'
-        },
-      }
     }),
     defineArrayMember({
       name: 'imageGallery',
@@ -77,18 +75,20 @@ export default defineType({
         name: 'images',
         title: 'Images',
         type: 'array',
-        of: [{
-          name: 'image',
-          title: 'Image',
-          type: 'image',
-          fields: [{
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'string',
-              validation: Rule => Rule.required()
-          }]
-        }]
-      }]
+        of: [{ type: 'snippet_image' }]
+      }],
+      preview: {
+        select: {
+          media: 'images.0.image'
+        },
+        prepare(selection) {
+          const { media } = selection
+          return {
+            title: 'Image Gallery',
+            media: media
+          }
+        }
+      }
     }),
     defineArrayMember({
       name: 'callToAction',
@@ -110,7 +110,20 @@ export default defineType({
             title: 'Button',
             type: 'snippet_button',
           },
-      ]
+      ],
+      preview: {
+        select: {
+          title: 'heading'
+        },
+        prepare(selection) {
+          const { title } = selection
+          return {
+            title: title,
+            subtitle: 'Call to Action',
+            media: BellIcon
+          }
+        }
+      }
     }),
     defineArrayMember({
       name: 'form',
@@ -121,6 +134,7 @@ export default defineType({
             name: 'heading',
             title: 'Heading',
             type: 'string',
+            validation: Rule => Rule.required(),
           },
           {
             name: 'subheading',
@@ -131,8 +145,22 @@ export default defineType({
             name: 'hubspotFormId',
             title: 'Hubspot Form ID',
             type: 'string',
+            validation: Rule => Rule.required(),
           },
-      ]
+      ],
+      preview: {
+        select: {
+          title: 'heading'
+        },
+        prepare(selection) {
+          const { title } = selection
+          return {
+            title: title,
+            subtitle: 'Form',
+            media: EnvelopeIcon
+          }
+        }
+      }
     }),
     defineArrayMember({
       name: 'youTubeEmbed',
