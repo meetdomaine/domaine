@@ -96,3 +96,10 @@ html {
     -webkit-backdrop-filter: var(--background-blur);
     background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
 }
+
+.glass-lightest {
+    backdrop-filter: var(--background-blur);
+    -webkit-backdrop-filter: var(--background-blur);
+    background-color: color-mix(in srgb, var(--color-lightest) 40%, transparent);
+    color: var(--color-darkest);
+}

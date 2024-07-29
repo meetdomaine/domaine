@@ -15,7 +15,7 @@ const { title, thumbnailImage, slug, category, agencyBrand } = Astro.props
 const categoryUrl = `${agencyBrand.slug.current == 'studio' ? '/studio' : ''}/insights/${category.slug.current}`
 const postUrl = `${categoryUrl}/${slug.current}`
 ---
-<article class="blog-card">
+<article class="blog-card" data-pagefind-ignore>
     <a href={postUrl} class="card-media">
         <AtomSanityMedia
             image={thumbnailImage.image}

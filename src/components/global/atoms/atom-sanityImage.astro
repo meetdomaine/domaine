@@ -1,6 +1,7 @@
 ---
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import { urlFor } from '../utils/cms-queries';
+import { string } from 'astro/zod';
 
 interface Props {
   image: SanityImage,
@@ -10,9 +11,10 @@ interface Props {
   aspectRatio?: number,
   alt?: string,
   transitionName?: string,
+  dataPagefindMeta?: string,
 }
 
-const { image, sizes, eager, aspectRatio, cover, alt, transitionName } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, alt, transitionName, dataPagefindMeta } = Astro.props;
 
 // console.log(image)
 
@@ -50,6 +52,7 @@ const generateSrcSets = () => {
   loading={eager ? 'eager' : 'lazy'}
   alt={alt ? alt : image.alt}
   data-cover={cover ? "true" : "false"}
+  data-pagefind-meta={dataPagefindMeta}
 />
 
 <!-- <img

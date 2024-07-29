@@ -7,7 +7,9 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
 >
     <section class="not-found-section">
         <!-- <h2>404</h2> -->
-        <h1 class="h4">Whoops! Page not found.</h1> 
+        <h1 class="h1">Whoops!</h1> 
+        <p>Page not found.</p>
+        <a class="button" href="/work">View our Work</a>
         <div id="three-canvas"></div>
     </section>
 </LayoutDomaine>
@@ -19,26 +21,49 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         WebGLRenderer,
         BoxGeometry,
         MeshBasicMaterial,
+        Vector2,
         MeshPhysicalMaterial,
         Mesh,
         Group,
-        CubeTextureLoader
+        CubeTextureLoader,
+        Raycaster
     } from 'three';
+    import { gsap } from '../components/global/utils/gsap';
 
     const canvas = document.getElementById("three-canvas")
     let canvasRect = canvas.getBoundingClientRect()
 
     let scene, camera, renderer
+    let mousePosition = new Vector2(0, 0)
+    const raycaster = new Raycaster();
 
     const logoGroup = new Group
 
     const material = new MeshPhysicalMaterial({ 
-        color: 0x00ff00,
+        color: 0xffffff,
         metalness: 1,
-        roughness: 0,
+        roughness: 0.3,
     });
 
     const animate = () => {
+        gsap.to(logoGroup.rotation, {
+            x: - mousePosition.y * 0.25, 
+            y: mousePosition.x * 0.25,
+            duration: 1,
+            ease: "power4.out"
+        })
+
+        raycaster.setFromCamera( mousePosition, camera );
+        const intersects = raycaster.intersectObjects( scene.children );
+
+        for ( let i = 0; i < intersects.length; i ++ ) {
+            gsap.to(intersects[i].object.rotation, {
+                x: intersects[i].object.rotation.x + Math.PI / 4,
+                duration: 2,
+                ease: "power4.out"
+            })
+        }
+
         renderer.render( scene, camera );
     }
 
@@ -55,41 +80,89 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         scene.environment = new CubeTextureLoader()
             .setPath( 'three/textures/environment/' )
             .load( [
-                        'small_deepblue-gasgiant-0.png',
-                        'small_deepblue-gasgiant-1.png',
-                        'small_deepblue-gasgiant-2.png',
-                        'small_deepblue-gasgiant-3.png',
-                        'small_deepblue-gasgiant-4.png',
-                        'small_deepblue-gasgiant-5.png'
-                    ] );
+                        'bluecloud_lf.jpg',
+                        'bluecloud_rt.jpg',
+                        'bluecloud_up.jpg',
+                        'bluecloud_dn.jpg',
+                        'bluecloud_ft.jpg',
+                        'bluecloud_bk.jpg'
+                    ], () =>{
+                        console.log('loaded')
+                        initGeometry()
+                    });
+        scene.environmentIntensity = 1.5
 
         camera = new PerspectiveCamera( 75, canvasRect.width / canvasRect.height, 0.1, 1000 );
-        camera.position.z = 5;
+        camera.position.z = 10;
 
-        renderer = new WebGLRenderer({ alpha: true});
+        renderer = new WebGLRenderer({ alpha: true, antialias: true});
         renderer.setSize( canvasRect.width, canvasRect.height );
         renderer.setAnimationLoop( animate );
         renderer.setPixelRatio(window.devicePixelRatio);
 
         canvas.appendChild(renderer.domElement);
-        scene.add(logoGroup)
+
+        
     }
 
     const initGeometry = () => {
-        for (let i = 0; i < 10; i++) {
-            const geometry = new BoxGeometry( 1, 1, 1 );
-            const cube = new Mesh( geometry, material );
-            logoGroup.add( cube );
-        }
+
+        const sizeExtraWide = 2
+        const sizeWide = 1.5
+        const sizeNormal = 1
+
+        const geometryExtraWide= new BoxGeometry( sizeExtraWide, 1, 1 );
+        const geometryWide = new BoxGeometry( sizeWide, 1, 1 );
+        const geometryNormal = new BoxGeometry( sizeNormal, 1, 1 );
+
+        const box01 = new Mesh( geometryExtraWide, material );
+        box01.position.set(-2.75, sizeNormal, 0)
+        logoGroup.add( box01 );
+
+        const box02 = new Mesh( geometryExtraWide, material );
+        box02.position.set(-2.75, sizeNormal * -1, 0)
+        logoGroup.add( box02 );
+
+        const box03 = new Mesh( geometryNormal, material );
+        box03.position.set(-1.25, 0, 0)
+        logoGroup.add( box03 );
+
+        const box04 = new Mesh( geometryWide, material );
+        box04.position.set(0, sizeNormal, 0)
+        logoGroup.add( box04 );
+
+        const box05 = new Mesh( geometryWide, material );
+        box05.position.set(0, -sizeNormal, 0)
+        logoGroup.add( box05 );
+
+        const box06 = new Mesh( geometryNormal, material );
+        box06.position.set(1.25, 0, 0)
+        logoGroup.add( box06 );
+
+        const box07 = new Mesh( geometryNormal, material );
+        box07.position.set(2.25, sizeNormal, 0)
+        logoGroup.add( box07 );
+
+        const box08 = new Mesh( geometryNormal, material );
+        box08.position.set(2.25, -sizeNormal, 0)
+        logoGroup.add( box08 );
+
+        const box09 = new Mesh( geometryNormal, material );
+        box09.position.set(3.25, 0, 0)
+        logoGroup.add( box09 );
+
+        scene.add(logoGroup)
     }
     
     if (canvas) { 
         initScene()
-        initGeometry()
     }
 
     window.addEventListener("mousemove", (e) => {
-        // console.log(e)
+        const posX = (e.clientX / window.innerWidth - 0.5) * 2
+        const posY = - (e.clientY / window.innerHeight - 0.5) * 2
+        mousePosition = new Vector2(posX, posY)
+        // console.log(mousePosition)
     })
 
     window.addEventListener("resize", handleResize)
@@ -110,5 +183,18 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         position: absolute;
         inset: 0;
         z-index: -1;
+    }
+
+    .button {
+        backdrop-filter: var(--background-blur);
+        -webkit-backdrop-filter: var(--background-blur);
+        background-color: color-mix(in srgb, var(--color-lightest) 40%, transparent);
+        color: var(--color-darkest);
+        transition: background-color var(--anim-sm), color var(--anim-sm);
+    }
+
+    .button:hover {
+        background-color: var(--color-brand);
+        color: var(--color-brand-contrast);
     }
 </style>
