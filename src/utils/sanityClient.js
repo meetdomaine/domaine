@@ -106,7 +106,7 @@ export async function getBlogCategories() {
   return categories
 }
 
-const blogPostQuery = `..., mainImage{${imageFields}}, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...}, metaImage, metaDescription`
+const blogPostQuery = `..., mainImage{${imageFields}}, publishedAt, authors[]->{..., image{${imageFields}}}, category->{...}, categories[]->{...}, metaImage, metaDescription`
 
 export async function getBlogPosts() {
   const postContent = await client.fetch(`
@@ -124,7 +124,7 @@ export async function getRelatedBlogPosts(project) {
 
 export async function getBlogPostsByPartner(partner) {
   const posts = await client.fetch(`
-    *[_type == 'contentBlog' && '${partner._id}' in partners[]->_id ]{${blogPostQuery}}
+    *[_type == 'contentBlog' && '${partner._id}' in partners[]->_id ]{${blogPostQuery}} | order(publishedAt desc)
   `)
   return posts
 }
