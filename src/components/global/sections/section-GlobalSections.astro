@@ -10,6 +10,7 @@ import ProjectsFullBleed from "./section-ProjectsFullBleed.astro"
 import HomeAbout from "../../domaine/sections/home/home-About.astro"
 import ProjectsGrid from "./section-ProjectsGrid.astro"
 import PartnersFeed from "./section-PartnersFeed.astro"
+import TextClients from "./section-TextClients.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -19,6 +20,7 @@ const { section, brand, key } = Astro.props
 {section._type == "section_projectsGrid" && <ProjectsGrid section={section} brand={brand} key={key} />}
 {section._type == "section_blogFeed" && <BlogFeed section={section} brand={brand} key={key} />}
 {section._type == "section_textMedia" && <TextMedia section={section} brand={brand} key={key} />}
+{section._type == "section_textClients" && <TextClients section={section} brand={brand} key={key} />}
 {section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} key={key} />}
 {section._type == "section_servicesFeed" && <ServicesFeed section={section} brand={brand} key={key} />}
 {section._type == "section_contentBlocks" && <ContentBlocks section={section} brand={brand} key={key} />}

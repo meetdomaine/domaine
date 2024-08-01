@@ -17,6 +17,7 @@ export default defineType({
         { type: 'section_projectsGrid'},
         { type: 'section_blogFeed'},
         { type: 'section_textMedia'},
+        { type: 'section_textClients'},
         { type: 'section_videoPlayer'},
         { type: 'section_servicesFeed'},
         { type: 'section_contentBlocks'},

@@ -7,6 +7,7 @@ interface Props {
   image: SanityImage,
   sizes: string,
   cover?: boolean,
+  contain?: boolean,
   eager?: boolean,
   aspectRatio?: number,
   alt?: string,
@@ -14,7 +15,7 @@ interface Props {
   dataPagefindMeta?: string,
 }
 
-const { image, sizes, eager, aspectRatio, cover, alt, transitionName, dataPagefindMeta } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, contain, alt, transitionName, dataPagefindMeta } = Astro.props;
 
 // console.log(image)
 
@@ -52,6 +53,7 @@ const generateSrcSets = () => {
   loading={eager ? 'eager' : 'lazy'}
   alt={alt ? alt : image.alt}
   data-cover={cover ? "true" : "false"}
+  data-contain={contain ? "true" : "false"}
   data-pagefind-meta={dataPagefindMeta}
 />
 
@@ -88,6 +90,13 @@ const generateSrcSets = () => {
   .sanity-image[data-cover="true"] {
     height: 100%;
     object-fit: cover;
+    /* opacity: 0; */
+  }
+
+  .sanity-image[data-contain="true"] {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
     /* opacity: 0; */
   }
 

@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 import SearchMenu from "./search/SearchMenu"
 import { sanityClient } from "sanity:client";
-import { imageFields } from "./utils/cms-queries";
+import { imageFields, videoFields } from "./utils/cms-queries";
 import ContactMenu from "./global-ContactMenu.astro";
 
 const { headerSettings, currentBrand } = Astro.props;
@@ -25,12 +25,12 @@ const brands = [
 const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
 
 // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
-const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug} } | order( postDate desc)[0...3]`)
-const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{title, slug, thumbnailImage{${imageFields}} } | order( orderRank asc)[0...5]`)
-const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug } | order( orderRank asc)[0...10]`)
-const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug } | order( orderRank asc)[0...10]`)
+const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug}, postDate } | order( postDate desc)[0...3]`)
+const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{orderRank, title, slug, thumbnailMedia{${videoFields}, ${imageFields}} } | order( orderRank asc)[0...5]`)
+const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug, orderRank } | order( orderRank asc)[0...10]`)
+const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug, orderRank } | order(orderRank)[0...10]`)
 
-// console.log(defaultBlogPosts)
+// console.log(defaultProjects)
 ---
 <header id="header">
 

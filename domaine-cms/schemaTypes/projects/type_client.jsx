@@ -27,20 +27,35 @@ export default defineType({
       validation: Rule => Rule.required(),
       // readOnly: true,
     }),
+    
     defineField({
       name: 'logoDark',
       title: 'Logo: Dark',
       description: 'A transparent PNG of the client logo that works on light backgrounds.',
-      type: 'image',
+      type: 'snippet_image',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'logoLight',
       title: 'Logo: Light',
       description: 'A transparent PNG of the client logo that works on dark backgrounds.',
-      type: 'image',
+      type: 'snippet_image',
       validation: Rule => Rule.required(),
     }),
+    // defineField({
+    //   name: 'logoDark',
+    //   title: 'Logo: Dark',
+    //   description: 'A transparent PNG of the client logo that works on light backgrounds.',
+    //   type: 'image',
+    //   validation: Rule => Rule.required(),
+    // }),
+    // defineField({
+    //   name: 'logoLight',
+    //   title: 'Logo: Light',
+    //   description: 'A transparent PNG of the client logo that works on dark backgrounds.',
+    //   type: 'image',
+    //   validation: Rule => Rule.required(),
+    // }),
     defineField({
       name: 'productImage',
       title: 'Product Image',

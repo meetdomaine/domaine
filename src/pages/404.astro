@@ -21,7 +21,9 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         WebGLRenderer,
         BoxGeometry,
         MeshBasicMaterial,
+        ShaderMaterial,
         Vector2,
+        Vector3,
         MeshPhysicalMaterial,
         Mesh,
         Group,
@@ -29,6 +31,9 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         Raycaster
     } from 'three';
     import { gsap } from '../components/global/utils/gsap';
+
+    // import * as vertex from '../shaders/vertex.glsl'
+    // import * as fragment from '../shaders/frag.glsl'
 
     const canvas = document.getElementById("three-canvas")
     let canvasRect = canvas.getBoundingClientRect()
@@ -42,27 +47,72 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
     const material = new MeshPhysicalMaterial({ 
         color: 0xffffff,
         metalness: 1,
-        roughness: 0.3,
+        roughness: 0.9,
+        // wireframe: true,
     });
 
+    const shader = new ShaderMaterial( {
+
+        uniforms: {
+            time: { value: 1.0 },
+            resolution: { value: new Vector2() },
+            uMousePosition: { value: mousePosition }
+        },
+
+        vertexShader: `
+            uniform vec2 uMousePosition;
+
+            varying vec2 vUv;
+            varying float vMouseDistance;
+
+            void main() {
+                vUv = uv;
+
+                vMouseDistance = distance(uMousePosition, position.xy);  
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform vec2 uMousePosition;
+
+            varying vec2 vUv;
+            varying float vMouseDistance;
+
+
+            void main() {
+
+                gl_FragColor = vec4(1.0 * vMouseDistance, 0.2, 1.0, 1.0);
+            }
+        `
+
+    }); 
+
     const animate = () => {
-        gsap.to(logoGroup.rotation, {
-            x: - mousePosition.y * 0.25, 
-            y: mousePosition.x * 0.25,
+        // gsap.to(logoGroup.rotation, {
+        //     x: - mousePosition.y * 0.25, 
+        //     y: mousePosition.x * 0.25,
+        //     duration: 1,
+        //     ease: "power4.out"
+        // })
+
+        // shader.uniforms.uMousePosition.value = mousePosition
+        gsap.to(shader.uniforms.uMousePosition.value, { 
+            x: mousePosition.x,
+            y: mousePosition.y,
             duration: 1,
-            ease: "power4.out"
+            ease: "power4.out",
         })
 
         raycaster.setFromCamera( mousePosition, camera );
         const intersects = raycaster.intersectObjects( scene.children );
 
-        for ( let i = 0; i < intersects.length; i ++ ) {
-            gsap.to(intersects[i].object.rotation, {
-                x: intersects[i].object.rotation.x + Math.PI / 4,
-                duration: 2,
-                ease: "power4.out"
-            })
-        }
+        // for ( let i = 0; i < intersects.length; i ++ ) {
+        //     gsap.to(intersects[i].object.rotation, {
+        //         x: "+=0.5",
+        //         duration: 2,
+        //         ease: "power4.out"
+        //     })
+        // }
 
         renderer.render( scene, camera );
     }
@@ -87,10 +137,10 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
                         'bluecloud_ft.jpg',
                         'bluecloud_bk.jpg'
                     ], () =>{
-                        console.log('loaded')
+                        // console.log('loaded')
                         initGeometry()
                     });
-        scene.environmentIntensity = 1.5
+        scene.environmentIntensity = 2
 
         camera = new PerspectiveCamera( 75, canvasRect.width / canvasRect.height, 0.1, 1000 );
         camera.position.z = 10;
@@ -111,15 +161,16 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         const sizeWide = 1.5
         const sizeNormal = 1
 
-        const geometryExtraWide= new BoxGeometry( sizeExtraWide, 1, 1 );
-        const geometryWide = new BoxGeometry( sizeWide, 1, 1 );
-        const geometryNormal = new BoxGeometry( sizeNormal, 1, 1 );
+        const geometryExtraWide= new BoxGeometry( sizeExtraWide, 1, 1, 20, 10, 10 );
+        const geometryWide = new BoxGeometry( sizeWide, 1, 1, 15, 10, 10 );
+        const geometryNormal = new BoxGeometry( sizeNormal, 1, 1, 10, 10, 10 );
 
-        const box01 = new Mesh( geometryExtraWide, material );
+        const box01 = new Mesh( geometryExtraWide, shader );
         box01.position.set(-2.75, sizeNormal, 0)
+        box01.rotation.set(0, 0, 0)
         logoGroup.add( box01 );
 
-        const box02 = new Mesh( geometryExtraWide, material );
+        const box02 = new Mesh( geometryExtraWide, shader );
         box02.position.set(-2.75, sizeNormal * -1, 0)
         logoGroup.add( box02 );
 
@@ -149,7 +200,28 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
 
         const box09 = new Mesh( geometryNormal, material );
         box09.position.set(3.25, 0, 0)
+        box09.rotation.set(0, 0, 0)
         logoGroup.add( box09 );
+
+        const loadTimeline = gsap.timeline({ ease: "power4.out"})
+        loadTimeline.from(box01.position, { x: -8, y: 8, z: 4, duration: 2 })
+        loadTimeline.from(box01.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box02.position, { x: -6, y: -8, z: -2, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box02.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box03.position, { x: -10, y: -1, z: -1, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box03.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box04.position, { x: -1, y: 6, z: 2, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box04.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box05.position, { x: 1.5, y: -6, z: -2, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box05.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box06.position, { x: 3, y: 6, z: -4, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box06.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box07.position, { x: 6, y: 8, z: -1, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box07.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box08.position, { x: 8, y: -10, z: 3, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box08.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
+        loadTimeline.from(box09.position, { x: 8, y: 1, z: 8, duration: 2 }, "<+=0.05")
+        loadTimeline.from(box09.rotation, { z: Math.PI * 2, y: Math.PI, duration: 2}, "<")
 
         scene.add(logoGroup)
     }

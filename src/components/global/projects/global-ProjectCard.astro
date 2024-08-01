@@ -22,10 +22,12 @@ const { project } = Astro.props
             />
         </div>
         {project.client && 
-            <img 
-                src={urlFor(project.logoColor === "dark" ? project.client.logoDark : project.client.logoLight).auto('format').url() }
-                class="client-logo"
-            />
+            <div class="client-logo">
+                <AtomSanityImage 
+                    image={project.logoColor === "dark" ? project.client.logoDark : project.client.logoLight}
+                    sizes="30vw"
+                />
+            </div>
         }
         {project.thumbnailImageSecondary && 
             <div class="card-overlay glass-ink">
@@ -120,14 +122,12 @@ const { project } = Astro.props
 
     .client-logo {
         position: absolute;
-        inset: var(--space-sm);
-        width: 30%;
-        aspect-ratio: 4 / 1;
-        height: auto;
-        object-fit: contain;
-        object-position: top left;
-        /* max-width: 25%;
-        max-height: 1.5em; */
+        top: var(--space-sm);
+        left: var(--space-sm);
+        /* inset: var(--space-sm); */
+        max-width: 30%;
+        height: 8%;
+        /* object-fit: cover; */
     }
 
     .card-content {

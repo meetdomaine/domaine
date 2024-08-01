@@ -16,9 +16,6 @@ export default defineConfig({
     dataset: 'production',
     useCdn: false,
     studioBasePath: '/admin',
-    stega: {
-      studioUrl: '/admin',
-    },
   }), solid({
     devtools: true,
     include: 'src/**/*'

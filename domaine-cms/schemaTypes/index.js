@@ -51,6 +51,7 @@ import settings_header from "./siteSettings/settings_header.js";
 import section_partnersFeed from "./sections/section_partnersFeed.js";
 import snippet_richContent from "./snippets/snippet_rich-content.js";
 import type_clientStage from "./projects/type_clientStage.js";
+import section_textClients from "./sections/section_textClients.js";
 
 
 export const schemaTypes = [
@@ -89,9 +90,6 @@ export const schemaTypes = [
     settings_blog,
     settings_events,
     settings_header,
-    // settings_headerStudio,
-    // settings_footerDomaine,
-    // settings_footerStudio,
     settings_footer,
     settings_preloader,
 
@@ -114,4 +112,5 @@ export const schemaTypes = [
     section_domaineAbout,
     section_projectsGrid,
     section_partnersFeed,
+    section_textClients,
 ]

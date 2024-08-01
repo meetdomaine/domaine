@@ -1,6 +1,7 @@
 import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
 import { urlFor } from '../utils/cms-queries';
+import AtomSanityImage from '../atoms/atom-sanityImage.astro';
 
 function ProjectCard(props) {
     return (
@@ -128,11 +129,21 @@ export default function SearchMenu(props) {
                     <p>Projects</p>
                     {projectResults() ?
                         <For each={projectResults()}>{result => 
-                            <ProjectCard url={result.url} title={result.meta.title} image={result.meta.image} alt={result.meta.image_alt} />
+                            <ProjectCard 
+                                url={result.url} 
+                                title={result.meta.title} 
+                                image={result.meta.image} 
+                                alt={result.meta.image_alt} 
+                            />
                         }</For>
                     :
                         <For each={props.defaultProjects}>{project => 
-                            <ProjectCard url={`/work/${project.slug.current}`} title={project.title} image={urlFor(project.thumbnailImage.image).width(300).height(300).auto('format').url()} alt={project.thumbnailImage.image.alt} />
+                            <ProjectCard
+                                url={`/work/${project.slug.current}`} 
+                                title={project.title} 
+                                image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
+                                alt={project.thumbnailMedia.image.alt} 
+                                />
                         }</For>
                     }
                 </div>
