@@ -23,8 +23,9 @@ export default defineType({
         { type: 'section_servicesFeed'},
         { type: 'section_contentBlocks'},
         { type: 'section_partnersFeed'},
-        { type: 'section_domaine-about'},
         { type: 'section_masonryContent'},
+        { type: 'section_mediaCarousel'},
+        { type: 'section_domaine-about'},
     ]
     }),
   ],

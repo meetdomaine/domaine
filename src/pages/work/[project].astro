@@ -48,6 +48,7 @@ const { content } = Astro.props
             industry={content.industry}
             client={content.client}
             agencyBrand="domaine"
+            theme={content.foregroundColor === "light" ? "dark" : "light"}
         />
 
         {content.sections && content.sections.map((section, i) => (

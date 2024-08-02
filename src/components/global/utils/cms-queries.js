@@ -54,6 +54,7 @@ export const globalSectionsFields = `
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
     _type == "section_partnersFeed" => { eyebrow, heading, button },
     _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
+    _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
   }
 `
 

@@ -55,6 +55,7 @@ import section_textClients from "./sections/section_textClients.js";
 import section_masonryContent from "./sections/section_masonryContent.js";
 import section_imageFullHeight from "./sections/section_imageFullHeight.js";
 import section_textColumns from "./sections/section_textColumns.js";
+import section_mediaCarousel from "./sections/section_mediaCarousel.js";
 
 
 export const schemaTypes = [
@@ -119,4 +120,5 @@ export const schemaTypes = [
     section_masonryContent,
     section_imageFullHeight,
     section_textColumns,
+    section_mediaCarousel,
 ]

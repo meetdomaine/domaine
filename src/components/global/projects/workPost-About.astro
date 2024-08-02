@@ -4,7 +4,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { paths } from "../utils/paths"
 
-const { description, agencyBrand, client, industry } = Astro.props
+const { description, agencyBrand, client, industry, theme } = Astro.props
 ---
 <section class="work-post_about">
 
@@ -16,20 +16,20 @@ const { description, agencyBrand, client, industry } = Astro.props
                 title="Industry"
                 text={industry.title}
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
-                theme="dark"
+                theme={theme}
             />
             <AtomTag 
                 title="Stage"
                 text={client.stage.title}
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/stages/${client.stage.slug.current}`}
-                theme="dark"
+                theme={theme}
             />
         </div>
     </div>
 
 
 
-    {client && client.description && (
+    <!-- {client && client.description && (
         <div class="client-sidebar">
             <div class="client-logo">
                 <AtomSanityImage 
@@ -39,7 +39,7 @@ const { description, agencyBrand, client, industry } = Astro.props
             </div>
             <p class="caption">{client.description}</p>
         </div>
-    )}
+    )} -->
 </section>
 
 

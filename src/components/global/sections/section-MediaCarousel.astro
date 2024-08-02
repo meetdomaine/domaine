@@ -1,0 +1,22 @@
+---
+import AtomCarousel from "../atoms/atom-carousel.astro"
+const { section, brand, key } = Astro.props
+
+// console.log(section)
+---
+<div class="section-media-carousel">
+    <AtomCarousel 
+        slides={section.slides}
+        spacing={section.carouselSize === "large" ? "5%" : "5%"}
+        slideCount={section.carouselSize === "large" ? 1.5 : 3.5}
+        centered={section.carouselSize === "large" ? true : false}
+    />
+</div>
+
+<style>
+    .section-media-carousel {
+        /* padding-inline: var(--page-margin); */
+        padding-block: var(--space-lg);
+        /* overflow: visible; */
+    }
+</style>

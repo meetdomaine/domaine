@@ -1,36 +1,62 @@
 ---
 import AtomSanityImage from "./atom-sanityImage.astro"
+import AtomSanityMedia from "./atom-sanityMedia.astro";
 
-const { images, aspectRatio } = Astro.props
+interface Props {
+    slides: Array<Media>,
+    aspectRatio?: number,
+    slideCount: number,
+    centered?: boolean,
+    spacing?: string,
+}
+
+const { slides, aspectRatio, slideCount, centered, spacing } = Astro.props
 ---
-<div class="swiper-carousel">
+<div 
+    class="swiper-carousel" 
+    data-slide-count={slideCount} 
+    data-centered={centered ? "true" : "false"}
+    data-spacing={spacing}
+>
     <div class="swiper-wrapper">
-        {images.map((carouselItem) => (
+        {slides.map((carouselItem) => (
             <div class="swiper-slide">
-                <AtomSanityImage 
+                <AtomSanityMedia
+                    image={carouselItem.image}
+                    video={carouselItem.video}
+                    aspectRatio={aspectRatio}
+                    sizes="90vw"
+                />
+                {/* <AtomSanityImage 
                     image={carouselItem.image}
                     sizes="90vw"
                     aspectRatio={aspectRatio}
                     eager={true}
-                />
+                /> */}
             </div>
         ))}
     </div>
 </div>
 
 <script>
+    import { slide } from 'astro:transitions';
     import Swiper from 'swiper';
     import 'swiper/css';
 
     const swipers: NodeListOf<HTMLElement> = document.querySelectorAll('.swiper-carousel')
 
     swipers.forEach((swiper) => {
+        
+        const slideCount = parseFloat(swiper.dataset.slideCount)
+        const centered = swiper.dataset.centered === "true"
+        const spacing = swiper.dataset.spacing
+
         const carousel = new Swiper(swiper, {
             direction: 'horizontal',
             slidesPerGroup: 1,
-            slidesPerView: 1.5,
-            centeredSlides: true,
-            spaceBetween: "10%",
+            slidesPerView: slideCount ? slideCount : 1.5,
+            centeredSlides: centered,
+            spaceBetween: spacing ? spacing : "10%",
             grabCursor: true,
             slideToClickedSlide: true,
         });
@@ -41,6 +67,7 @@ const { images, aspectRatio } = Astro.props
 <style>
     .swiper-carousel {
         overflow: clip;
+        padding-inline: var(--page-margin);
         /* width: 100%; */
     }
 </style>

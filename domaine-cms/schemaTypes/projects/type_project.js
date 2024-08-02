@@ -293,8 +293,9 @@ export default defineType({
         { type: 'section_contentBlocks'},
         { type: 'section_imageFullHeight'},
         { type: 'section_textColumns'},
+        { type: 'section_mediaCarousel'},
       ],
-      group: 'info',
+      group: 'content',
     }),
     defineField({
       name: 'metafields',
