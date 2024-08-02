@@ -23,6 +23,7 @@ export default defineType({
         { type: 'section_contentBlocks'},
         { type: 'section_partnersFeed'},
         { type: 'section_domaine-about'},
+        { type: 'section_masonryContent'},
     ]
     }),
   ],

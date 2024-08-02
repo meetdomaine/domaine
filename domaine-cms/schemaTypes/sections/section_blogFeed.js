@@ -11,7 +11,7 @@ export default defineType({
       name: 'showSection',
       title: 'Show Section',
       type: 'boolean',
-      initialValue: true
+      initialValue: true,
     }),
     defineField({
       name: 'heading',
@@ -20,9 +20,26 @@ export default defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
+      name: 'showHero',
+      title: 'Show Section Hero',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'featuredPost',
+      title: 'Featured Post',
+      type: 'reference',
+      description: 'Main post in section. If none is added, will pull the most recent.',
+      hidden: ({parent}) => !parent?.showHero,
+      to: [{ type: 'type_blog'}],
+    }),
+    defineField({
+      name: 'featuredCategory',
+      title: 'Featured Category',
+      type: 'reference',
+      description: 'Defines sidebar posts. If none is added, will be hidden.',
+      hidden: ({parent}) => !parent?.showHero,
+      to: [{ type: 'type_blogCategory'}],
     }),
   ],
   preview: {

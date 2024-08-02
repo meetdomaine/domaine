@@ -27,12 +27,17 @@ export default defineType({
     defineField({
       name: 'image',
       title: 'Image',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
-      validation: Rule => Rule.required(),
+      type: 'snippet_image',
     }),
+    // defineField({
+    //   name: 'image',
+    //   title: 'Image',
+    //   type: 'image',
+    //   options: {
+    //     hotspot: true
+    //   },
+    //   validation: Rule => Rule.required(),
+    // }),
     defineField({
       name: 'department',
       title: 'Department',
@@ -47,7 +52,7 @@ export default defineType({
     select: {
       title: 'name',
       subtitle: 'role',
-      image: 'image'
+      image: 'image.image'
     },
     prepare(selection) {
       return {

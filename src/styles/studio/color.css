@@ -2,8 +2,8 @@
   /* Primitives */
   --color-brand: var(--color-blue);
   --color-brand-contrast: var(--color-reverse);
-  --color-brand-secondary: var(--color-orange);
-  --color-brand-secondary-contrast: var(--color-reverse);
+  --color-brand-secondary: var(--color-orange-light);
+  --color-brand-secondary-contrast: var(--color-foreground);
 
   --gradient-primary: var(--gradient-ink);
 

@@ -52,6 +52,7 @@ import section_partnersFeed from "./sections/section_partnersFeed.js";
 import snippet_richContent from "./snippets/snippet_rich-content.js";
 import type_clientStage from "./projects/type_clientStage.js";
 import section_textClients from "./sections/section_textClients.js";
+import section_masonryContent from "./sections/section_masonryContent.js";
 
 
 export const schemaTypes = [
@@ -113,4 +114,5 @@ export const schemaTypes = [
     section_projectsGrid,
     section_partnersFeed,
     section_textClients,
+    section_masonryContent,
 ]

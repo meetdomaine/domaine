@@ -3,7 +3,6 @@ import { sanityClient } from "sanity:client";
 import { globalSectionsFields, imageFields, videoFields } from "../../components/global/utils/cms-queries";
 import LayoutStudio from "../../layouts/Layout-Studio.astro";
 import HomeHero from "../../components/studio/sections/home/home-Hero.astro";
-import HomeAbout from "../../components/studio/sections/home/home-About.astro";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
 import AtomSanityMedia from "../../components/global/atoms/atom-sanityMedia.astro";
 
@@ -23,14 +22,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-studio"][0]
         textColor={pageSettings.heroTextColor}
         backgroundVideo={pageSettings.media.video}
         backgroundImage={pageSettings.media.image}
-    >
-        <HomeAbout 
-            eyebrow={pageSettings.aboutEyebrow}
-            heading={pageSettings.aboutHeading}
-            subheading={pageSettings.aboutSubheading}
-            textColor={pageSettings.heroTextColor}
-        />
-    </HomeHero>
+    />
 
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
         <GlobalSections brand="studio" section={section} key={i} />

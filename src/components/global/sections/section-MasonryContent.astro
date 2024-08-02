@@ -1,0 +1,223 @@
+---
+import { sanityClient } from "sanity:client"
+import { blogCardFields, imageFields, projectGridFields } from "../utils/cms-queries"
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomTag from "../atoms/atom-tag.astro"
+import { Icon } from "astro-icon/components"
+const { section, brand, key } = Astro.props
+
+const projects = await sanityClient.fetch(`
+    *[_type == "type_project" 
+        && agencyBrand->slug.current == "${brand}"
+    ]{ foregroundColor, backgroundColor, ${projectGridFields} } | order( postDate desc)[0...2]`)
+
+const blogPosts = await sanityClient.fetch(`
+    *[_type == "type_blog" 
+        && agencyBrand->slug.current == "${brand}"
+    ]{ ${blogCardFields}, authors[]->{..., ${imageFields}} } | order( postDate desc)[0...2]`)
+
+console.log(projects[0].backgroundColor)
+console.log(projects[1].backgroundColor)
+---
+<section class="section-masonry-content">
+    <div class="blog-card">
+        <div class="blog-header">
+            <div class="blog-media">
+                <div class="author-images">
+                    {blogPosts[0].authors.map((author) => (
+                        <div class="author-image">
+                            <AtomSanityImage 
+                                image={author.image}
+                                sizes="20vw"
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <Icon name="arrow-diagonal" class="blog-icon" />
+        </div>
+        <div class="blog-content">
+            <AtomTag 
+                url={`${blogPosts[0].agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${blogPosts[0].category.slug.current}`}
+                text={blogPosts[0].category.title}
+            />
+            <p class="h4">{blogPosts[0].title}</p>
+        </div>
+    </div>
+
+    <a class="link-card"></a>
+    <a class="project-card" data-color={projects[0].foregroundColor} style={`background-color: ${projects[0].backgroundColor ? projects[0].backgroundColor.hex : null}`}>
+        <div class="project-media">
+            <AtomSanityImage 
+                cover={true}
+                image={projects[0].thumbnailMedia.image}
+                aspectRatio={3 / 4}
+                sizes="33vw"
+            />
+        </div>
+        <div class="project-content">
+            <p class="h6">{projects[0].title}</p>
+            <p class="caption">{projects[0].excerpt}</p>
+        </div>
+    </a>
+    <a class="project-card" data-color={projects[1].foregroundColor} style={`background-color: ${projects[1].backgroundColor ? projects[1].backgroundColor.hex : null}`}>
+        <div class="project-media">
+            <AtomSanityImage 
+                cover={true}
+                image={projects[1].thumbnailMedia.image}
+                aspectRatio={3 / 4}
+                sizes="33vw"
+            />
+        </div>
+        <div class="project-content">
+            <p class="h6">{projects[1].title}</p>
+            <p class="caption">{projects[1].excerpt}</p>
+        </div>
+    </a>
+    <a class="partners-card"></a>
+
+    <div class="blog-card">
+        <div class="blog-header">
+            <div class="blog-media">
+                <div class="author-images">
+                    {blogPosts[1].authors.map((author) => (
+                        <div class="author-image">
+                            <AtomSanityImage 
+                                image={author.image}
+                                sizes="20vw"
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <Icon name="arrow-diagonal" class="blog-icon" />
+        </div>
+        <div class="blog-content">
+            <AtomTag 
+                url={`${blogPosts[1].agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${blogPosts[0].category.slug.current}`}
+                text={blogPosts[1].category.title}
+            />
+            <p class="h4">{blogPosts[1].title}</p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .section-masonry-content {
+        padding: var(--space-lg) var(--page-margin);
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        gap: var(--space-xs);
+        min-height: 100svh;
+    }
+
+    .blog-card,
+    .link-card,
+    .project-card,
+    .partners-card {
+        border-radius: var(--radius-sm);
+    }
+
+    .blog-card {
+        border: 1px solid var(--color-border);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        padding: var(--space-sm);
+    }
+
+    .blog-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .author-images {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
+    }
+
+    .author-image {
+        width: clamp(50px, 5vw, 100px);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+
+    .blog-icon {
+        width: var(--icon-lg);
+        height: var(--icon-lg);
+    }
+
+    .blog-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .link-card {
+        background-color: var(--color-brand-secondary);
+    }
+
+    .project-card {
+        background-color: var(--color-background-secondary);
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        padding: var(--space-xs);
+        gap: var(--space-xs);
+    }
+
+    .project-card[data-color="light"]{
+        color: var(--color-background);
+    }
+
+    /* .project-card[data-color="dark"]{
+        color: var(--color-foreground);
+    } */
+
+    .project-media {
+        border-radius: var(--radius-sm);
+        flex: 0 1 100%;
+        overflow: hidden;
+    }
+
+    .partners-card {
+        background-color: var(--color-brand);
+    }
+
+    .section-masonry-content *:nth-child(1) {
+        grid-column: 1 / span 3;
+        grid-row: 1 / span 2;
+    }
+
+    .section-masonry-content *:nth-child(2) {
+        grid-column: 4 / span 1;
+        grid-row: 1 / span 2;
+    }
+
+    .section-masonry-content *:nth-child(3) {
+        grid-column: 5 / span 2;
+        grid-row: 1 / span 4;
+    }
+
+    .section-masonry-content *:nth-child(4) {
+        grid-column: 1 / span 2;
+        grid-row: 3 / span 4;
+    }
+
+    .section-masonry-content *:nth-child(5) {
+        grid-column: 3 / span 2;
+        grid-row: 3 / span 4;
+    }
+
+    .section-masonry-content *:nth-child(6) {
+        grid-column: 5 / span 2;
+        grid-row: 5 / span 2;
+    }
+
+</style>

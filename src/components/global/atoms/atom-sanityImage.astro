@@ -15,9 +15,7 @@ interface Props {
   dataPagefindMeta?: string,
 }
 
-const { image, sizes, eager, aspectRatio, cover, contain, alt, transitionName, dataPagefindMeta } = Astro.props;
-
-// console.log(image)
+const { image, sizes, eager, aspectRatio, cover, contain, alt, dataPagefindMeta } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -48,7 +46,7 @@ const generateSrcSets = () => {
   height={height}
   sizes={sizes}
   srcset={generateSrcSets()}
-  src={urlFor(image).width(width).height(height).auto('format').url()}
+  src={urlFor(image).width(width).height(width / ratio).auto('format').url()}
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
   alt={alt ? alt : image.alt}

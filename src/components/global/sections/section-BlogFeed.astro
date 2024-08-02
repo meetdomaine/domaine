@@ -2,29 +2,90 @@
 import { sanityClient } from "sanity:client";
 import BlogCard from "../blog/global-BlogCard.astro";
 import { blogCardFields } from "../utils/cms-queries"
+import AtomLinkCard from "../atoms/atom-linkCard.astro";
+import AtomSanityImage from "../atoms/atom-sanityImage.astro";
+import AtomTag from "../atoms/atom-tag.astro";
 
 
 const { section, brand, heading, subheading, posts } = Astro.props
 
+const postCount = 3
 let blogPosts
+let featuredPost
+let sidebarPosts
+
+if (section && section.showHero) {
+    if (section.featuredPost) featuredPost = section.featuredPost
+    if (section.featuredCategory) {
+        sidebarPosts = await sanityClient.fetch(`
+            *[_type == "type_blog" 
+                && agencyBrand->slug.current == "${brand}" 
+                    && references('${section.featuredCategory._id}')]{ ${blogCardFields} } | order( postDate desc)[0...4]`)
+    }
+}
 
 if (section && section.blogPosts) {
     blogPosts = section.blogPosts
 } else if (posts) {
-    blogPosts = posts.slice(0, 3)
+    blogPosts = posts
 } else {
-    blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "${brand}" ]{ ${blogCardFields} } | order( postDate desc)[0...3]`)
+    blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "${brand}" ]{ ${blogCardFields} } | order( postDate desc)[0...${section.featuredPost ? postCount : postCount + 1}]`)
 }
 
-// console.log(blogPosts)
+if (section && section.showHero && !section.featuredPost) featuredPost = blogPosts.shift()
+
 ---
 {(!section || section.showSection) && 
     <section class="section-blog-feed">
         <div class="section-title">
-            <h2>{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
+            <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
             {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}
         </div>
-        <div class="section-content">
+        {section && section.showHero && 
+            <div class="section-hero">
+                <article class="featured-post">
+                    <a 
+                        class="featured-post-image" 
+                        href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
+                    >
+                        <AtomSanityImage 
+                            image={featuredPost.thumbnailImage.image}
+                            sizes="50vw"
+                            aspectRatio={3 / 4}
+                        />
+                    </a>
+                    <div class="featured-post-content">
+                        <AtomTag 
+                            title="Category"
+                            text={featuredPost.category.title}
+                        />
+                        <a 
+                            class="featured-post-heading h2" 
+                            href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
+                        >{featuredPost.title}</a>
+
+                    </div>
+                </article>
+                {sidebarPosts &&
+                    <aside class="sidebar">
+                        {/* <p class="sidebar-heading">{section.featuredCategory.title}</p> */}
+                        <div class="sidebar-posts">
+                            {sidebarPosts.map((post) => (
+                                <div class="sidebar-post">
+                                    <AtomLinkCard 
+                                        categoryTitle={section.featuredCategory.title}
+                                        title={post.title}
+                                        url={`${brand === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`}
+                                        image={post.thumbnailImage.image}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </aside>
+                }
+            </div>
+        }
+        <div class="section-posts">
             {blogPosts.map((post) => (
                 <BlogCard 
                     title={post.title}
@@ -40,13 +101,94 @@ if (section && section.blogPosts) {
 
 <style>
     .section-blog-feed {
+        --gap: var(--space-sm);
         padding-inline: var(--page-margin);
-        padding-block: var(--space-lg);
+        padding-block: var(--space-xl);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--gap);
     }
 
-    .section-content {
+    .section-hero {
         display: flex;
         flex-direction: row;
-        gap: var(--space-sm);
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--gap);
+    }
+
+    .featured-post {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        flex: 0 0 66.66%;
+    }
+
+    .featured-post-image {
+        flex: 0 0 calc(50% - var(--gap) / 2);
+    }
+
+    .featured-post-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        align-items: flex-start;
+    }
+
+    .featured-post-heading {
+        text-decoration: none;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        /* flex: 1 0 30%; */
+    }
+
+    .sidebar-heading {
+        margin: 0;
+    }
+
+    .sidebar-posts {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .section-posts {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+    }
+
+    @media screen and (max-width: 1024px) {
+        .section-hero {
+            align-items: flex-end;
+        }
+
+        .featured-post {
+            flex: 0 0 calc(50% - var(--gap) / 2);
+            flex-direction: column-reverse;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .section-hero {
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--space-lg);
+        }
+
+        .featured-post {
+            flex: 0 0 calc(50% - var(--gap) / 2);
+            flex-direction: column;
+        }
+
+        .section-posts {
+            flex-direction: column;
+            gap: var(--gap);
+        }
     }
 </style>

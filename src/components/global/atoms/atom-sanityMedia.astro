@@ -10,13 +10,14 @@ interface Props {
   videoWidth?: string,
   videoHeight?: string,
   cover?: boolean,
+  contain?: boolean,
   eager?: boolean,
   aspectRatio?: number,
   alt?: string,
   transitionName?: string,
 }
 
-const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHeight, transitionName } = Astro.props;
+const { video, image, sizes, eager, aspectRatio, cover, contain, alt, videoWidth, videoHeight, transitionName } = Astro.props;
 // console.log(video)
 ---
 
@@ -41,6 +42,7 @@ const { video, image, sizes, eager, aspectRatio, cover, alt, videoWidth, videoHe
         eager={eager}
         aspectRatio={aspectRatio}
         cover={cover}
+        contain={contain}
         alt={alt}
     />
     : <p>NO MEDIA</p>

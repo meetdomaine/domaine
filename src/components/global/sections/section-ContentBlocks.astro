@@ -5,24 +5,16 @@ const { section, brand } = Astro.props
 // console.log(section)
 ---
 <section class="section-content-blocks">
-    <div class="section-title">
-        {section.heading && <h2>{section.heading}</h2>}
-        {section.subheading && <p>{section.subheading}</p>}
-        {section.button && section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a>}
-    </div>
-    <div class="section-content">
+    <div class="content-blocks">
         {section.contentBlocks.map((contentBlock) => (
-            <div class="content-block">
+            <div class="content-block" data-inset={contentBlock.insetMedia ? "true" : "false"}>
                 <AtomSanityMedia
                     video={contentBlock.media.video}
                     image={contentBlock.media.image}
+                    cover={contentBlock.insetMedia ? false : true}
+                    contain={contentBlock.insetMedia ? true : false}
                     sizes="100vw"
                 />
-                <div class="content-block__text">
-                    {contentBlock.heading && <h3>{contentBlock.heading}</h3>}
-                    {contentBlock.text && <p>{contentBlock.text}</p>}
-                    {contentBlock.button && contentBlock.button.text && contentBlock.button.url && <a href={contentBlock.button.url} target={contentBlock.button.newTab ? "_blank" : ""}>{contentBlock.button.text}</a>}
-                </div>
             </div>
         ))}
     </div>
@@ -34,23 +26,36 @@ const { section, brand } = Astro.props
         padding-block: var(--space-lg);
     }
 
-    .section-title {
-
-    }
-
-    .section-content {
+    .content-blocks {
         display: flex;
         flex-direction: row;
         justify-content: stretch;
-        align-items: flex-start;
-        gap: var(--space-md);
+        align-items: stretch;
     }
 
     .content-block {
         flex: 0 1 100%;
+        background-color: var(--color-background-secondary);
+        max-height: 100svh;
     }
 
-    .content-block__text {
-        
+    .content-block[data-inset="true"] {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-2xl);
+    }
+
+    @media screen and (max-width: 768px) {
+        .content-blocks {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+
+        .content-block {
+            flex: 0 0 auto;
+            max-height: unset;
+        }
     }
 </style>

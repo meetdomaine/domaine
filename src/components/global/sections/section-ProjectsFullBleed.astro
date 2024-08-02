@@ -6,40 +6,42 @@ const { section } = Astro.props
 
 const id = Math.random().toString(16).slice(2)
 ---
-<section class="media-fullbleed" id={`media-fullbleed-${id}`}>
-    <div class="section-media">
-        <div class="background-images">
+{section.showSection &&
+    <section class="media-fullbleed" id={`media-fullbleed-${id}`}>
+        <div class="section-media">
+            <div class="background-images">
+                {section.projects.map((entry, i) => (
+                    <div class={`background-image ${i == 0 ? 'active' : ''}`} data-index={i}>
+                        <AtomSanityImage
+                            image={entry.media.image}
+                            sizes="100vw"
+                            cover={true}
+                        />
+                    </div>
+                ))}
+            </div>
+        </div>
+        <div class="section-content">
             {section.projects.map((entry, i) => (
-                <div class={`background-image ${i == 0 ? 'active' : ''}`} data-index={i}>
-                    <AtomSanityImage
-                        image={entry.media.image}
-                        sizes="100vw"
-                        cover={true}
-                    />
-                </div>
+                <a 
+                    class='project-title' 
+                    data-index={i} 
+                    href={`${entry.project.agencyBrand.slug.current === 'studio' ? '/studio' : null}/work/${entry.project.slug.current}`}
+                    data-preview-image={urlFor(entry.project.thumbnailImageSecondary.image).width(400).auto('format').url()}
+                >
+                    {entry.project.title}
+                </a>
             ))}
         </div>
-    </div>
-    <div class="section-content">
-        {section.projects.map((entry, i) => (
-            <a 
-                class='project-title' 
-                data-index={i} 
-                href={`${entry.project.agencyBrand.slug.current === 'studio' ? '/studio' : null}/work/${entry.project.slug.current}`}
-                data-preview-image={urlFor(entry.project.thumbnailImageSecondary.image).width(400).auto('format').url()}
-            >
-                {entry.project.title}
-            </a>
-        ))}
-    </div>
-    <div class="project-preview glass-ink">
-        <img class="preview-image" src={urlFor(section.projects[0].project.thumbnailImageSecondary.image).width(400).auto('format').url()} />
-        <div class="preview-text">
-            <p class="caption">View Project</p>
-            <Icon class="icon" name="arrow-diagonal" />
+        <div class="project-preview glass-ink">
+            <img class="preview-image" src={urlFor(section.projects[0].project.thumbnailImageSecondary.image).width(400).auto('format').url()} />
+            <div class="preview-text">
+                <p class="caption">View Project</p>
+                <Icon class="icon" name="arrow-diagonal" />
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+}
 
 <script define:vars={{ id }}>
 

@@ -11,6 +11,7 @@ import HomeAbout from "../../domaine/sections/home/home-About.astro"
 import ProjectsGrid from "./section-ProjectsGrid.astro"
 import PartnersFeed from "./section-PartnersFeed.astro"
 import TextClients from "./section-TextClients.astro"
+import MasonryContent from "./section-MasonryContent.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -26,4 +27,5 @@ const { section, brand, key } = Astro.props
 {section._type == "section_contentBlocks" && <ContentBlocks section={section} brand={brand} key={key} />}
 {section._type == "section_domaine-about" && <HomeAbout section={section} brand={brand} key={key} />}
 {section._type == "section_partnersFeed" && <PartnersFeed section={section} brand={brand} key={key} />}
+{section._type == "section_masonryContent" && <MasonryContent section={section} brand={brand} key={key} />}
 

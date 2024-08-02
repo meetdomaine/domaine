@@ -65,6 +65,7 @@ export const globalSectionsFields = `
     _type == "section_projectsFeed" => { heading, subheading, projects[]->{ ${projectGridFields} } },
     _type == "section_projectsFullBleed" => { projects[]{ project->{title, slug, agencyBrand->{slug}, thumbnailImageSecondary{${imageFields}} }, media{${imageFields}} } },
     _type == "section_projectsGrid" => { title, heading, button{...}, projects[]->{title, slug, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}} } },
+    _type == "section_blogFeed" => { heading, showHero, featuredPost->{${blogCardFields}}, featuredCategory->{ ... } },
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },

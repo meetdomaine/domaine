@@ -14,21 +14,6 @@ export default defineType({
       initialValue: true
     }),
     defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
-    }),
-    defineField({
-      name: 'button',
-      title: 'Button',
-      type: 'snippet_button',
-    }),
-    defineField({
       name: 'contentBlocks',
       title: 'Content Blocks',
       type: 'array',
@@ -42,31 +27,20 @@ export default defineType({
             type: 'snippet_video',
           },
           {
-            name: 'heading',
-            title: 'Heading',
-            type: 'string',
+            name: 'insetMedia',
+            title: 'Inset Media',
+            type: 'boolean',
+            initialValue: false,
           },
-          {
-            name: 'text',
-            title: 'Text',
-            type: 'text',
-          },
-          {
-            name: 'button',
-            title: 'Button',
-            type: 'snippet_button',
-          }
         ],
         preview: {
           select: {
-            title: 'heading',
             image: 'media.image'
           },
           prepare(selection) {
             const { title, image } = selection
             return {
-              title: title ? title : "No Heading",
-              subtitle: 'Content Block',
+              title: 'Content Block',
               icon: ToggleArrowRightIcon,
               media: image,
             }
@@ -77,17 +51,10 @@ export default defineType({
     }),
   ],
   preview: {
-    select: {
-      title: 'heading',
-      blockTitle1: 'contentBlocks.0.heading',
-      blockTitle2: 'contentBlocks.1.heading',
-      blockTitle3: 'contentBlocks.2.heading',
-    },
     prepare(selection) {
       const { title, blockTitle1, blockTitle2, blockTitle3 } = selection
       return {
-        title: title ? title : blockTitle1 ? blockTitle1 : blockTitle2 ? blockTitle2 : blockTitle3,
-        subtitle: 'Content Blocks',
+        title: 'Content Blocks',
         media: ProjectsIcon
       }
     }
