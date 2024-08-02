@@ -31,32 +31,15 @@ export const projectGridFields = `
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
   `
-
-export const projectPageFields = `
-  title,
-  description,
-  industry->{...},
-  url,
-  client->{...},
-  services->{...},
-  features->{...},
-  partners->{...},
-  metrics{...},
-  awards{...},
-  slug{...},
-  category->{..., slug{...} }, 
-  authors[]->{...},
-  heroMedia{..., ${videoFields}, ${imageFields}},
-`
-
 export const blogCardFields = `
-    title,
-    excerpt,
-    postDate,
-    category->{ title, slug{...} },
-    slug{...},
-    agencyBrand->{slug},
-    thumbnailImage{${imageFields}}`
+  title,
+  excerpt,
+  postDate,
+  category->{ title, slug{...} },
+  slug{...},
+  agencyBrand->{slug},
+  thumbnailImage{${imageFields}}
+  `
 
 
 export const globalSectionsFields = `
@@ -70,8 +53,32 @@ export const globalSectionsFields = `
     _type == "section_videoPlayer" => { ..., ${videoFields} },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
     _type == "section_partnersFeed" => { eyebrow, heading, button },
+    _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
   }
 `
+
+export const projectPageFields = `
+  title,
+  description,
+  industry->{...},
+  url,
+  client->{..., stage->{...}, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}} },
+  foregroundColor,
+  backgroundColor,
+  accentColor,
+  services->{...},
+  features->{...},
+  partners->{...},
+  metrics{...},
+  awards{...},
+  slug{...},
+  heroMedia{..., ${videoFields}, ${imageFields}},
+  ${globalSectionsFields}
+`
+
+
+
+
 
 export const projectsGridQuery = (brand) => {
   return `*[_type == "type_project" && agencyBrand->name == "${brand}" ] { ${projectGridFields} } | order(orderRank)`

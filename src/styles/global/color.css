@@ -69,7 +69,9 @@ html[data-theme="dark"] {
     
 html {
     color: var(--color-foreground);
-    background-color: var(--color-background);
+    background-color: var(--page-background, var(--color-background));
+    --page-accent-light: color-mix(in srgb, var(--page-background), var(--color-lightest) 10%);
+    --page-accent-dark: color-mix(in srgb, var(--page-background), var(--color-darkest) 10%);
 }
 
 .glass-ink {

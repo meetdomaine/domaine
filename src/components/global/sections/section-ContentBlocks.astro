@@ -5,9 +5,12 @@ const { section, brand } = Astro.props
 // console.log(section)
 ---
 <section class="section-content-blocks">
-    <div class="content-blocks">
+    <div class="content-blocks" >
         {section.contentBlocks.map((contentBlock) => (
-            <div class="content-block" data-inset={contentBlock.insetMedia ? "true" : "false"}>
+            <div 
+                class="content-block" 
+                data-inset={contentBlock.insetMedia ? "true" : "false"}
+            >
                 <AtomSanityMedia
                     video={contentBlock.media.video}
                     image={contentBlock.media.image}
@@ -31,11 +34,15 @@ const { section, brand } = Astro.props
         flex-direction: row;
         justify-content: stretch;
         align-items: stretch;
+        background-color: var(--page-accent-dark, var(--color-background-secondary));
+    }
+
+    html[data-theme="dark"] .content-blocks {
+        background-color: var(--page-accent-light, var(--color-background-secondary));
     }
 
     .content-block {
         flex: 0 1 100%;
-        background-color: var(--color-background-secondary);
         max-height: 100svh;
     }
 
@@ -43,7 +50,7 @@ const { section, brand } = Astro.props
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: var(--space-2xl);
+        padding: var(--space-3xl);
     }
 
     @media screen and (max-width: 768px) {

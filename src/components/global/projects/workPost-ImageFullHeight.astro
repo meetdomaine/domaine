@@ -1,0 +1,31 @@
+---
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+
+const { section, brand, key } = Astro.props
+---
+<section class="section-image-fullheight">
+    <div class="section-content">
+        <AtomSanityMedia 
+            image={section.media.image}
+            video={section.media.video}
+            sizes="100vw"
+        />
+    </div>
+</section>
+
+<style>
+    .section-image-fullheight {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+
+    .section-content {
+        background-color: var(--page-accent-dark, var(--color-background-secondary));
+        padding-inline: var(--space-3xl);
+        padding-block: var(--space-3xl) 0;
+    }
+
+    html[data-theme="dark"] .section-content {
+        background-color: var(--page-accent-light, var(--color-background-secondary));
+    }
+</style>

@@ -5,6 +5,9 @@ import { paths } from '../../components/global/utils/paths';
 import WorkPostHero from '../../components/domaine/sections/work/workPost-Hero.astro';
 import { imageFields, projectGridFields, projectPageFields } from '../../components/global/utils/cms-queries';
 import { projectPostQuery } from "../../components/global/utils/cms-queries"
+import WorkPostAbout from '../../components/global/projects/workPost-About.astro';
+import WorkPostDetails from '../../components/global/projects/workPost-Details.astro';
+import GlobalSections from '../../components/global/sections/section-GlobalSections.astro';
 
 interface Props {
     content: any
@@ -29,6 +32,23 @@ const { content } = Astro.props
     searchFilter="type:case-study"
 >
     <WorkPostHero
+        title={content.title}
+        heroMedia={content.heroMedia}
+        accentColor={content.accentColor}
+    />
+
+    <WorkPostAbout
+        description={content.description}
+        industry={content.industry}
+        client={content.client}
+        agencyBrand="domaine"
+    />
+
+    {content.sections && content.sections.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
+    ))}
+
+    <WorkPostDetails
         heading={content.title}
         description={content.description}
         industry={content.industry}
@@ -44,3 +64,4 @@ const { content } = Astro.props
         metafields={content.metafields}
     />
 </LayoutDomaine>
+

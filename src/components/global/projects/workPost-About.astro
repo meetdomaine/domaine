@@ -1,0 +1,80 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTag from "../atoms/atom-tag.astro"
+import { paths } from "../utils/paths"
+
+const { description, agencyBrand, client, industry } = Astro.props
+---
+<section class="work-post_about">
+
+    <div class="section-content">
+        <p class="h3">{description}</p>
+
+        <div class="tags">
+            <AtomTag 
+                title="Industry"
+                text={industry.title}
+                url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
+            />
+            <AtomTag 
+                title="Stage"
+                text={client.stage.title}
+                url={`${agencyBrand == "studio" ? "/studio" : ""}/work/stages/${client.stage.slug.current}`}
+            />
+        </div>
+    </div>
+
+
+
+    {client && client.description && (
+        <div class="client-sidebar">
+            <div class="client-logo">
+                <AtomSanityImage 
+                    sizes="20vw"
+                    image={client.logoDark}
+                />
+            </div>
+            <p class="caption">{client.description}</p>
+        </div>
+    )}
+</section>
+
+
+<style>
+    .work-post_about {
+        padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-lg);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--space-xl);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+        max-width: 60rem;
+    }
+
+    .tags {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
+    }
+
+    .client-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+        align-items: flex-start;
+    }
+
+    .client-logo {
+        width: clamp(60px, 6vw, 250px);
+    }
+
+
+</style>

@@ -42,9 +42,10 @@ const currentPath = Astro.url.pathname;
 <!doctype html>
 <html 
 	lang="en" 
-	data-theme={theme}
-	data-foreground={foregroundColor}
-	style={backgroundColor && `background-color: ${backgroundColor};`}>
+	data-theme={foregroundColor === "light" ? "dark" : theme}
+	style={`
+		${backgroundColor ? `--page-background: ${backgroundColor};` : null}
+	`}>
 	<head>
 
 		<!-- Remove once live -->
@@ -119,3 +120,4 @@ const currentPath = Astro.url.pathname;
 	import '@mux/mux-player';
 	import "@mux/mux-player/themes/minimal";
 </script>
+

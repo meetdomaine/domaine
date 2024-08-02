@@ -77,6 +77,16 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'accentColor',
+      title: 'Accent Color',
+      type: 'color',
+      group: 'info',
+      description: 'Optional accent color.',
+      options: {
+        disableAlpha: true
+      },
+    }),
+    defineField({
       name: 'foregroundColor',
       title: 'Foreground Color',
       type: 'string',
@@ -273,6 +283,16 @@ export default defineType({
           }
         }
       }],
+      group: 'info',
+    }),
+    defineField({
+      name: 'sections',
+      title: 'Content Sections',
+      type: 'array',
+      of: [
+        { type: 'section_contentBlocks'},
+        { type: 'section_imageFullHeight'}
+      ],
       group: 'info',
     }),
     defineField({
