@@ -1,12 +1,16 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
-const { partner } = Astro.props
+const { partner, collapsed, theme } = Astro.props
 
 // console.log(icon)
 
 ---
-<a href={`/partners/${partner.slug.current}`} class="partner-tile">
+<a 
+    href={`/partners/${partner.slug.current}`} 
+    class={`partner-tile ${theme === "dark" ? "glass-dark" : ""}`}
+    data-collapsed={collapsed ? "true" : "false"}
+>
     <div class="card-media">
         <AtomSanityImage 
             image={partner.icon.image}
@@ -14,8 +18,8 @@ const { partner } = Astro.props
         />
     </div>
     <div class="card-text caption">
-        <p class="title">{partner.title}</p>
-        <p class="excerpt">{partner.excerpt}</p>
+        <p class="title caption">{partner.title}</p>
+        <p class="excerpt caption">{partner.excerpt}</p>
     </div>
 </a>
 
@@ -24,14 +28,19 @@ const { partner } = Astro.props
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: var(--color-background-secondary);
         text-decoration: none;
         border-radius: var(--radius-sm);
         overflow: hidden;
+        max-width: 20em;
+    }
+
+    .partner-tile:not(.glass-dark) {
+        color: var(--color-foreground);
+        background-color: var(--color-background-secondary);
     }
 
     .card-media {
-        flex: 0 0 20%;
+        flex: 0 0 30%;
     }
 
     .card-text {

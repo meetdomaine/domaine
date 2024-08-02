@@ -34,15 +34,11 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 ---
 <header id="header">
 
-    <div id="brand-menu" class="brand-menu" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
+    <div id="brand-menu" class="brand-menu glass-dark" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
         <div class="brands" data-brand={currentBrand.name}>
             {brands.map((brand, i) => (
                 <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
                     <Icon class="logo" name={brand.logo} />
-                    {/* <div class="brand-text">
-                        <p class="brand-title caption">{brand.title}</p>
-                        <p class="brand-description caption">{brand.description}</p>
-                    </div> */}
                 </a>
             ))}
         </div>
@@ -59,7 +55,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
             ))}
         </nav>
 
-        <button class="search-button glass-darkest caption" popovertarget="search-menu">
+        <button class="search-button glass-dark caption" popovertarget="search-menu">
             <span>Search <em>projects, insights, and more...</em></span>
             <Icon class="icon" name="pixel_search" />
         </button>
@@ -67,10 +63,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     </div>
 
     <div id="utility-menu" class="utility-menu">
-        <button class="utility-button notification-button">
+        <button class="utility-button notification-button glass-dark">
             <Icon name="pixel_bell" class="utility-icon" />
         </button>
-        <button class="utility-button contact-button" popovertarget="contact-menu">
+        <button class="utility-button contact-button glass-dark" popovertarget="contact-menu">
             <Icon name="pixel_email" class="utility-icon" />
         </button>
     </div>
@@ -82,7 +78,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     />
 
-    <dialog popover id="search-menu" class="search-menu color-invert">
+    <dialog popover id="search-menu" class="search-menu">
         <button class="close-button" popovertarget="search-menu">
             <Icon class="icon close-icon" name="pixel_x" />
         </button>
@@ -168,7 +164,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         gap: var(--space-2xs);
         border-radius: var(--radius-md);
         justify-self: start;
-        background-color: var(--color-background-secondary);
+        /* background-color: var(--color-background-secondary); */
         height: var(--header-element-height);
         transition: height var(--anim-sm);
     }
@@ -210,6 +206,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     .logo {
         flex: 0 0 auto;
+        color: var(--color-foreground);
     }
 
     .icon-expand {
@@ -414,8 +411,6 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         /* width: var(--header-element-height);
         height: var(--header-element-height); */
         aspect-ratio: 1 / 1;
-        background-color: var(--color-background-secondary);
-        color: var(--color-foreground);
         display: flex;
         justify-content: center;
         align-items: center;

@@ -1,49 +1,67 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTag from "../atoms/atom-tag.astro"
+import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
 import { paths } from "../utils/paths"
 
-const { heading, description, root, url, client, services, heroMedia, heroImage, heroVideo, industry, partners, features, metrics, awards, metafields } = Astro.props
-// console.log(features)
+const { url, client, services, partners, features, metrics, theme, agencyBrand } = Astro.props
+// console.log(partners)
 ---
-<section class="work-post_hero">
+<section class="work-post_details">
 
-    {url && <a href={url} target="_blank">View Live Site</a>}
+    <!-- {url && <a href={url} target="_blank">View Live Site</a>} -->
 
-    {services && 
-        <div class="services">
-            <h4>Services</h4>
-            {services.map((service) => (
-                <div>
-                    <a href={`${paths.root.services.path}/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
+    <div class="section-content">
+
+        {services && 
+            <div class="services">
+                <h4 class="h5">Services</h4>
+                <div class="tags">
+                    {services.map((service) => (
+                        <AtomTag 
+                            title={service.serviceGroup.title}
+                            text={service.title}
+                            url={`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`}
+                            theme={theme}
+                        />
+                    ))}
                 </div>
-            ))}
-        </div>
-    }
+            </div>
+        }
 
-    {features && 
-        <div class="features">
-            <h4>Features</h4>
-            {features.map((feature) => (
-                <div>
-                    <a href={`${root}?feature=${feature.slug.current}`}>{feature.title}</a>
+        {features && 
+            <div class="features">
+                <h4 class="h5">Features</h4>
+                <div class="tags">
+                    {features.map((feature) => (
+                        <AtomTag 
+                            text={feature.title}
+                            url={`${agencyBrand === "studio" ? "/studio" : ""}/work/features/${feature.slug.current}`}
+                            theme={theme}
+                        />
+                    ))}
                 </div>
-            ))}
-        </div>
-    }
+            </div>
+        }
 
-    {partners && 
-        <div class="partners">
-            <h4>Partners</h4>
-            {partners.map((partner) => (
-                <div>
-                    <a href={`${root}?partner=${partner.slug.current}`}>{partner.title}</a>
+
+        {partners && 
+            <div class="partners">
+                <h4 class="h5">Partners</h4>
+                <div class="partner-tiles">
+                    {partners.map((partner) => (
+                        <GlobalPartnerTile 
+                            partner={partner}
+                            theme={theme}
+                        />
+                    ))}
                 </div>
-            ))}
-        </div>
-    }
+            </div>
+        }
 
-    {awards && 
+    </div>
+    <!-- {awards && 
         <div class="awards">
             <h4>Awards</h4>
             {awards.map((award) => (
@@ -63,25 +81,45 @@ const { heading, description, root, url, client, services, heroMedia, heroImage,
                 </div>
             ))}
         </div>
-    }
+    } -->
 </section>
 
 
 <style>
-    .work-post_hero {
+    .work-post_details {
         padding-inline: var(--page-margin);
-        padding-block: var(--header-height) var(--space-lg);
+        padding-block: var(--space-3xl);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 60svh;
     }
 
-    .video {
-        --media-object-fit: cover;
-        --media-object-position: center;
-        aspect-ratio: 2 / 1;
-        --controls: none;
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-2xl);
+        max-width: 60em;
     }
 
-    .media {
-        aspect-ratio: 2 / 1;
-        position: relative;
+    .services,
+    .features,
+    .partners {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
     }
+
+    .tags,
+    .partner-tiles {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+        flex-wrap: wrap;
+        flex-basis: 70%;
+    }
+
 </style>
