@@ -7,7 +7,8 @@ const { node } = Astro.props
 ---
 <div class="image-gallery">
     <AtomCarousel 
-        images={node.images}
+        slides={node.images}
+        slideCount={1.5}
     />
 </div>
 

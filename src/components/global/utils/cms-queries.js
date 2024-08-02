@@ -74,6 +74,7 @@ export const projectPageFields = `
   awards{...},
   slug{...},
   heroMedia{..., ${videoFields}, ${imageFields}},
+  "relatedProjects": *[_type == "type_project" && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
   ${globalSectionsFields}
 `
 

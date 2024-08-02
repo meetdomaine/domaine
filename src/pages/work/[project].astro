@@ -8,13 +8,16 @@ import { projectPostQuery } from "../../components/global/utils/cms-queries"
 import WorkPostAbout from '../../components/global/projects/workPost-About.astro';
 import WorkPostDetails from '../../components/global/projects/workPost-Details.astro';
 import GlobalSections from '../../components/global/sections/section-GlobalSections.astro';
+import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
 
 interface Props {
     content: any
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == 'domaine' ]{ ${projectPageFields} }`)
+    const projects = await sanityClient.fetch(`
+        *[_type == "type_project" 
+            && agencyBrand->slug.current == 'domaine']{ ${projectPageFields} }`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
@@ -24,6 +27,8 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
+
+console.log(content.relatedProjects)
 ---
 <LayoutDomaine
     title={content.title}
@@ -71,6 +76,11 @@ const { content } = Astro.props
             metafields={content.metafields}
         />
     </div>
+
+    <SectionProjectsFeed 
+        heading="Related Projects"
+        projects={content.relatedProjects}
+    />
 </LayoutDomaine>
 
 <style>
