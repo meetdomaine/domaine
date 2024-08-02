@@ -13,6 +13,7 @@ import PartnersFeed from "./section-PartnersFeed.astro"
 import TextClients from "./section-TextClients.astro"
 import MasonryContent from "./section-MasonryContent.astro"
 import ImageFullHeight from "../projects/workPost-ImageFullHeight.astro"
+import TextColumns from "./section-TextColumns.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -21,6 +22,7 @@ const { section, brand, key } = Astro.props
 {section._type == "section_projectsFullBleed" && <ProjectsFullBleed section={section} brand={brand} key={key} />}
 {section._type == "section_projectsGrid" && <ProjectsGrid section={section} brand={brand} key={key} />}
 {section._type == "section_blogFeed" && <BlogFeed section={section} brand={brand} key={key} />}
+{section._type == "section_textColumns" && <TextColumns section={section} brand={brand} key={key} />}
 {section._type == "section_textMedia" && <TextMedia section={section} brand={brand} key={key} />}
 {section._type == "section_textClients" && <TextClients section={section} brand={brand} key={key} />}
 {section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} key={key} />}

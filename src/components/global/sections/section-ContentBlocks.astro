@@ -34,16 +34,13 @@ const { section, brand } = Astro.props
         flex-direction: row;
         justify-content: stretch;
         align-items: stretch;
-        background-color: var(--page-accent-dark, var(--color-background-secondary));
-    }
-
-    html[data-theme="dark"] .content-blocks {
-        background-color: var(--page-accent-light, var(--color-background-secondary));
+        gap: var(--space-sm);
     }
 
     .content-block {
         flex: 0 1 100%;
         max-height: 100svh;
+        background-color: var(--color-accent-shade, var(--color-background-secondary));
     }
 
     .content-block[data-inset="true"] {

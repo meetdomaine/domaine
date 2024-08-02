@@ -2,18 +2,19 @@
 interface Props {
     title?: string,
     text: string,
-    url?: string
+    url?: string,
+    theme?: string,
 }
 
-const { title, text, url} = Astro.props
+const { title, text, url, theme} = Astro.props
 ---
 {url ? 
-    <a class="tag" href={url}>
+    <a class={`tag ${theme === "dark" ? "glass-dark" : ""}`} href={url}>
         {title && <span class="title caption">{title}</span>}
         <span class="text caption">{text}</span>
     </a>
 :    
-    <div class="tag">
+    <div class={`tag ${theme === "dark" ? "glass-dark" : ""}`} data-theme={theme}>
         {title && <span class="title caption">{title}</span>}
         <span class="text caption">{text}</span>
     </div>
@@ -21,7 +22,6 @@ const { title, text, url} = Astro.props
 
 <style>
     .tag {
-        background-color: var(--color-background-secondary);
         display: flex;
         flex-direction: row;
         text-decoration: none;
@@ -30,6 +30,11 @@ const { title, text, url} = Astro.props
         gap: 0.2em;
         flex: 0 0 auto;
         border-radius: var(--radius-sm);
+    }
+
+    .tag:not(.glass-dark) {
+        background-color: var(--color-background-secondary);
+        color: var(--color-foreground);
     }
 
     .title {

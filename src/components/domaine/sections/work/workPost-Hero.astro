@@ -9,7 +9,6 @@ const { title, heroMedia, accentColor } = Astro.props
 <section class="work-post_hero">
     <h1 
         class="project-title"
-        style={`color: ${accentColor ? accentColor.hex : ""}`}
     >{title}</h1>
 
     <AtomSanityMedia 
@@ -26,6 +25,7 @@ const { title, heroMedia, accentColor } = Astro.props
     .work-post_hero {
         height: 95svh;
         position: relative;
+        color: var(--color-accent-secondary);
     }
 
     .project-title {

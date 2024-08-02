@@ -20,12 +20,9 @@ const { section, brand, key } = Astro.props
     }
 
     .section-content {
-        background-color: var(--page-accent-dark, var(--color-background-secondary));
+        background-color: var(--color-accent-shade, var(--color-background-secondary));
         padding-inline: var(--space-3xl);
         padding-block: var(--space-3xl) 0;
     }
 
-    html[data-theme="dark"] .section-content {
-        background-color: var(--page-accent-light, var(--color-background-secondary));
-    }
 </style>

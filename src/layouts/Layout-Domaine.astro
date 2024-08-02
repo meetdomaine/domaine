@@ -15,7 +15,7 @@ interface Props {
     searchFilter?: string;
 }
 
-const { title, description, image, theme, backgroundColor, foregroundColor, searchFilter } = Astro.props;
+const { title, description, image, searchFilter } = Astro.props;
 
 // Header
 const headerSettings = await sanityClient.fetch(`*[_type == "settings_header" && _id == "settings_header--domaine"][0]`)
@@ -43,8 +43,6 @@ const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloade
     theme="light"
     favicon={currentBrand.favicon}
     image={image ? image : currentBrand.metafields.image}
-    backgroundColor={backgroundColor}
-    foregroundColor={foregroundColor}
     searchFilter={searchFilter}
     preloaderContent={preloaderContent}
     brand="domaine"

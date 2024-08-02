@@ -70,8 +70,6 @@ html[data-theme="dark"] {
 html {
     color: var(--color-foreground);
     background-color: var(--page-background, var(--color-background));
-    --page-accent-light: color-mix(in srgb, var(--page-background), var(--color-lightest) 10%);
-    --page-accent-dark: color-mix(in srgb, var(--page-background), var(--color-darkest) 10%);
 }
 
 .glass-ink {
@@ -80,23 +78,15 @@ html {
     background-color: color-mix(in srgb, var(--color-ink) 40%, transparent);
 }
 
-.glass-darkest {
-    backdrop-filter: var(--background-blur);
-    -webkit-backdrop-filter: var(--background-blur);
-    background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
-    color: var(--color-lightest);
-}
-
-.glass-darker {
-    backdrop-filter: var(--background-blur);
-    -webkit-backdrop-filter: var(--background-blur);
-    background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
-}
-
 .glass-dark {
     backdrop-filter: var(--background-blur);
     -webkit-backdrop-filter: var(--background-blur);
     background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
+    --color-foreground: var(--color-lightest);
+    --color-foreground-secondary: var(--color-light);
+    --color-background: var(--color-darkest);
+    --color-background-secondary: var(--color-darker);
+    
 }
 
 .glass-lightest {

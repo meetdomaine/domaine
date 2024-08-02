@@ -16,11 +16,13 @@ const { description, agencyBrand, client, industry } = Astro.props
                 title="Industry"
                 text={industry.title}
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
+                theme="dark"
             />
             <AtomTag 
                 title="Stage"
                 text={client.stage.title}
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/stages/${client.stage.slug.current}`}
+                theme="dark"
             />
         </div>
     </div>

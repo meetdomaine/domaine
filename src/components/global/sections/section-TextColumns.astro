@@ -1,0 +1,42 @@
+---
+const { section, brand, key } = Astro.props
+---
+<section class="section-text-columns" data-layout={section.layout}>
+    {section.title && <h3 class="title h5">{section.title}</h3>}
+    <p class={`text ${section.layout === "large" ? 'h3' : 'h6'}`}>{section.text}</p>
+</section>
+
+<style>
+    .section-text-columns {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: var(--space-md);
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+
+    .section-text-columns[data-layout="large"] {
+        flex-direction: column;
+    }
+
+    .title {
+        max-width: 10em;
+    }
+
+    .text {
+        max-width: 30em;
+    }
+
+    .section-text-columns[data-layout="large"] .text {
+        max-width: 25em;
+        align-self: center;
+    }
+
+    @media screen and (max-width: 768px) {
+        .section-text-columns {
+            flex-direction: column;
+        }
+    }
+</style>

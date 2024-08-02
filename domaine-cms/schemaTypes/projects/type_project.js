@@ -291,7 +291,8 @@ export default defineType({
       type: 'array',
       of: [
         { type: 'section_contentBlocks'},
-        { type: 'section_imageFullHeight'}
+        { type: 'section_imageFullHeight'},
+        { type: 'section_textColumns'},
       ],
       group: 'info',
     }),

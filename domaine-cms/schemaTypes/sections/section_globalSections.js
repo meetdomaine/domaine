@@ -16,6 +16,7 @@ export default defineType({
         { type: 'section_projectsFullBleed'},
         { type: 'section_projectsGrid'},
         { type: 'section_blogFeed'},
+        { type: 'section_textColumns'},
         { type: 'section_textMedia'},
         { type: 'section_textClients'},
         { type: 'section_videoPlayer'},

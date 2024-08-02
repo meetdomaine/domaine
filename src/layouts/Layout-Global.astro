@@ -34,18 +34,13 @@ interface Props {
 
 const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
 
-const { title, description, image, theme, favicon, backgroundColor, foregroundColor, searchFilter, preloaderContent, brand } = Astro.props;
+const { title, description, image, favicon, searchFilter, preloaderContent, brand } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 ---
 
 <!doctype html>
-<html 
-	lang="en" 
-	data-theme={foregroundColor === "light" ? "dark" : theme}
-	style={`
-		${backgroundColor ? `--page-background: ${backgroundColor};` : null}
-	`}>
+<html lang="en">
 	<head>
 
 		<!-- Remove once live -->
