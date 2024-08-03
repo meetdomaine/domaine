@@ -2,8 +2,20 @@
 const { section, brand, key } = Astro.props
 ---
 <section class="section-text-columns" data-layout={section.layout}>
-    {section.title && <h3 class="title h5">{section.title}</h3>}
-    <p class={`text ${section.layout === "large" ? 'h3' : 'h6'}`}>{section.text}</p>
+    {section.title && 
+        <h3 
+            class="title h5"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+        >{section.title}</h3>
+    }
+    <p 
+        class={`text ${section.layout === "large" ? 'h3' : 'h6'}`}
+        class="title h5"
+        data-animate-viewport="true"
+        data-animation="fade-up"
+        data-animation-delay={200}
+    >{section.text}</p>
 </section>
 
 <style>

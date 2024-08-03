@@ -7,12 +7,17 @@ import { gsap, zoomIn } from "../utils/gsap"
 ---
 <section class="section-content-blocks">
     <div class="content-blocks" >
-        {section.contentBlocks.map((contentBlock) => (
+        {section.contentBlocks.map((contentBlock, i) => (
             <div 
                 class="content-block" 
                 data-inset={contentBlock.insetMedia ? "true" : "false"}
             >
-                <div class="block-media">
+                <div 
+                    class="block-media" 
+                    data-animate-viewport="true" 
+                    data-animation="zoom"
+                    data-animate-delay={i * 200}
+                >
                     <AtomSanityMedia
                         video={contentBlock.media.video}
                         image={contentBlock.media.image}
@@ -70,6 +75,7 @@ import { gsap, zoomIn } from "../utils/gsap"
     .content-block {
         aspect-ratio: 3 / 4;
         position: relative;
+        overflow: clip;
         flex: 0 1 100%;
         max-height: 100svh;
         background-color: var(--color-accent-shade, var(--color-background-secondary));

@@ -9,9 +9,17 @@ const { description, agencyBrand, client, industry, theme } = Astro.props
 <section class="work-post_about">
 
     <div class="section-content">
-        <p class="h3">{description}</p>
+        <p 
+            class="h3"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+        >{description}</p>
 
-        <div class="tags">
+        <div 
+            class="tags"
+            data-animate-viewport="true"
+            data-animation="fade"
+        >
             <AtomTag 
                 title="Industry"
                 text={industry.title}

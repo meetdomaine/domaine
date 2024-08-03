@@ -32,10 +32,15 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
 // console.log(defaultProjects)
 ---
-<header id="header">
+<header id="header" class="glass-dark">
+
+
+    <button class="utility-button menu-button" popovertarget="contact-menu">
+        <Icon name="pixel_email" class="utility-icon" />
+    </button>
 
     <div id="brand-menu" class="brand-menu glass-dark" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
-        <div class="brands" data-brand={currentBrand.name}>
+        <div class="brands" data-brand={currentBrand.slug.current}>
             {brands.map((brand, i) => (
                 <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
                     <Icon class="logo" name={brand.logo} />
@@ -104,14 +109,6 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     document.addEventListener("DOMContentLoaded", async () => {
 
         const brandMenu: HTMLElement = document.querySelector('.brand-menu');
-        // const contactButton: HTMLButtonElement = document.querySelector('.contact-button');
-        // const contactMenu: HTMLElement = document.querySelector('.contact-menu');
-
-        // if (brandMenu) {
-        //     brandMenu.classList.remove("active")
-        //     brandMenu.addEventListener("mouseenter", () => brandMenu.classList.add("active"))
-        //     brandMenu.addEventListener("mouseleave", () => brandMenu.classList.remove("active"))
-        // }
 
         const handleBrandNavigate = (element, index) => {
             brandMenu.style.setProperty("--current-index", index)
@@ -121,16 +118,9 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         document.addEventListener("pageswap", (e) => {
             if (brandMenu) {
                 brandMenu.classList.remove("active")
-                console.log(e)
-                // if (e.sourceElement instanceof HTMLElement && e.sourceElement.dataset && e.sourceElement.dataset.index) {
-                //     handleBrandNavigate(e.sourceElement, e.sourceElement.dataset.index)
-                // }
             }
         })
 
-        // if (contactButton && contactMenu) {
-        //     contactButton.addEventListener("click", () => contactMenu.classList.add("visible"))
-        // }
     })
 </script>
 
@@ -185,7 +175,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         /* height: var(--header-element-height); */
     }
 
-    .brands[data-brand="Studio"] {
+    .brands[data-brand="studio"] {
         justify-content: flex-end;
     }
 
@@ -253,7 +243,8 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         gap: var(--space-sm);
         padding-inline: var(--space-md);
         min-width: 300px;
-        background-color: var(--color-background-secondary);
+        background-color: var(--color-lighter);
+        color: var(--color-darkest);
         height: var(--header-element-height);
     }
 
@@ -267,7 +258,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         padding: 0;
         min-width: unset;
         background-color: transparent;
-        color: inherit;
+        color: var(--color-darkest);
     }
 
     .navigation-links .notification-button::after {
@@ -428,6 +419,79 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         height: var(--icon-sm); */
     }
 
+    @media screen and (min-width: 768px) {
+        header {
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
 
+        .menu-button {
+            display: none;
+        }
+        
+    }
+
+    @media screen and (max-width: 768px) {
+        header {
+            height: var(--header-height);
+            margin-inline: var(--page-margin);
+            margin-top: var(--space-sm);
+            width: calc(100% - var(--page-margin) * 2);
+            /* padding: var(--space-2xs); */
+            padding: 0;
+            border-radius: var(--radius-sm);
+            display: flex;
+            flex-direction: row;
+            justify-content: stretch;
+            align-items: stretch;
+        }
+
+        .notification-button,
+        .navigation,
+        .icon-expand {
+            display: none;
+        }
+
+        .brand-menu,
+        .brand-menu:hover {
+            height: auto;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            filter: none;
+        }
+
+        .brand-menu {
+            flex: 0 1 100%;
+            display: flex;
+            place-items: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brand-link {
+            flex: 1 0 auto;
+        }
+
+        .brand-link:not([data-active="true"]) {
+            display: none;
+        }
+
+        .utility-menu {
+            height: auto;
+            justify-self: auto;
+        }
+
+        .utility-button {
+            /* border: 1px solid var(--color-background); */
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+
+        
+    }
 
 </style>

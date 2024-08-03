@@ -35,14 +35,15 @@ const { title, heroMedia } = Astro.props
 
     const handleResize = () => {
         let scaleFactor
-        const scaleFactorWidth = (window.innerWidth * 0.95) / title.clientWidth
-        const scaleFactorHeight = (window.innerHeight * 0.7) / title.clientHeight
+        const boundingRect = title.getBoundingClientRect()
+        const scaleFactorWidth = (window.innerWidth * 0.95) / boundingRect.width
+        const scaleFactorHeight = (window.innerHeight * 0.7) / boundingRect.height
         if (scaleFactorWidth >= scaleFactorHeight) {
             scaleFactor = scaleFactorHeight
         } else {
             scaleFactor = scaleFactorWidth
         }
-        title.style.scale = scaleFactor.toString()
+        title.style.scale = Math.max(scaleFactor, 1).toString()
     }
 
     if (title) handleResize()
