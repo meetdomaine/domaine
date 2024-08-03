@@ -23,64 +23,85 @@ const brands = [
 ]
 
 const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
-
-// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
 const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug}, postDate } | order( postDate desc)[0...3]`)
 const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{orderRank, title, slug, thumbnailMedia{${videoFields}, ${imageFields}} } | order( orderRank asc)[0...5]`)
 const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug, orderRank } | order( orderRank asc)[0...10]`)
 const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug, orderRank } | order(orderRank)[0...10]`)
-
-// console.log(defaultProjects)
 ---
 <header id="header" class="glass-dark">
 
+    <div class="header-content">
 
-    <button class="utility-button menu-button" popovertarget="contact-menu">
-        <Icon name="pixel_email" class="utility-icon" />
-    </button>
+        <button id="menu-button-mobile" class="utility-button menu-button">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
 
-    <div id="brand-menu" class="brand-menu glass-dark" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
-        <div class="brands" data-brand={currentBrand.slug.current}>
-            {brands.map((brand, i) => (
-                <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
-                    <Icon class="logo" name={brand.logo} />
-                </a>
-            ))}
+        <div id="brand-menu" class="brand-menu glass-dark" transition:name="brand-menu" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
+            <div class="brands" data-brand={currentBrand.slug.current}>
+                {brands.map((brand, i) => (
+                    <a href={brand.path} class="brand-link" data-index={i} data-active={brandIndex === i ? "true" : "false"}>
+                        <Icon class="logo" name={brand.logo} />
+                        <div class="brand-details">
+                            <p class="brand-description caption">{brand.description}</p>
+                        </div>
+                    </a>
+                ))}
+            </div>
+            <div class="icon-expand">
+                <span class="expand-line"></span>
+                <span class="expand-line"></span>
+            </div>
         </div>
-        <div class="icon-expand">
-            <span class="expand-line"></span>
-            <span class="expand-line"></span>
+
+        <div id="navigation-menu" class="navigation">
+
+            <div class="brand-cards--mobile">
+                {brands.map((brand, i) => {
+                    if (brandIndex != i) {
+                        return (
+                            <a href={brand.path} class="brand-card--mobile" data-index={i} >
+                                <div class="brand-card--mobile__header">
+                                    <Icon class="logo" name={brand.logo} />
+                                    <Icon class="icon" name="arrow-diagonal" />
+                                </div>
+                                <p class="brand-card--mobile__content">{brand.description}</p>
+                            </a>
+                        )
+                    }
+                })}
+            </div>
+
+            <nav class="navigation-links">
+                {headerSettings.navigationLinks.links.map((link, i) => (
+                    <a href={link.linkUrl} class="navigation-link caption" style={`transition-delay: ${0.1 * i}s`}>{link.linkText}</a>
+                ))}
+            </nav>
+
+            <div class="search-wrapper">
+                <button class="search-button glass-dark" popovertarget="search-menu">
+                    <Icon class="icon" name="pixel_search" />
+                    <span>Search <em>projects, insights, and more...</em></span>
+                </button>
+            </div>
+
         </div>
-    </div>
 
-    <div id="navigation-menu" class="navigation">
-        <nav class="navigation-links">
-            {headerSettings.navigationLinks.links.map((link, i) => (
-                <a href={link.linkUrl} class="navigation-link caption">{link.linkText}</a>
-            ))}
-        </nav>
+        <div id="utility-menu" class="utility-menu">
+            <button class="utility-button notification-button glass-dark">
+                <Icon name="pixel_bell" class="utility-icon" />
+            </button>
+            <button class="utility-button contact-button glass-dark" popovertarget="contact-menu">
+                <Icon name="pixel_email" class="utility-icon" />
+            </button>
+        </div>
 
-        <button class="search-button glass-dark caption" popovertarget="search-menu">
-            <span>Search <em>projects, insights, and more...</em></span>
-            <Icon class="icon" name="pixel_search" />
-        </button>
-
-    </div>
-
-    <div id="utility-menu" class="utility-menu">
-        <button class="utility-button notification-button glass-dark">
-            <Icon name="pixel_bell" class="utility-icon" />
-        </button>
-        <button class="utility-button contact-button glass-dark" popovertarget="contact-menu">
-            <Icon name="pixel_email" class="utility-icon" />
-        </button>
     </div>
 
     <ContactMenu 
         hubspotFormId={headerSettings.hubspotFormId}
         processConsentMessage={headerSettings.processConsentMessage}
         marketingConsentMessage={headerSettings.marketingConsentMessage}
-
     />
 
     <dialog popover id="search-menu" class="search-menu">
@@ -108,7 +129,22 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     document.addEventListener("DOMContentLoaded", async () => {
 
-        const brandMenu: HTMLElement = document.querySelector('.brand-menu');
+        const brandMenu: HTMLElement = document.getElementById('brand-menu');
+        const navigationMenu: HTMLElement = document.getElementById('navigation-menu');
+        const header: HTMLElement = document.getElementById('header');
+        const menuButtonMobile: HTMLElement = document.getElementById('menu-button-mobile')
+
+        menuButtonMobile.addEventListener("click", (e) => {
+            if (navigationMenu) header.classList.toggle("navigation-open")
+        })
+
+        brandMenu.addEventListener("mouseenter", () => {
+            brandMenu.classList.add("active")
+        })
+
+        brandMenu.addEventListener("mouseleave", () => {
+            brandMenu.classList.remove("active")
+        })
 
         const handleBrandNavigate = (element, index) => {
             brandMenu.style.setProperty("--current-index", index)
@@ -125,216 +161,73 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 </script>
 
 <style>
+
     header {
-        --padding-top: var(--space-sm);
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: center;
-        padding-inline: var(--page-margin);
-        padding-block: var(--padding-top) 0;
         position: fixed;
         top: 0;
-        height: var(--header-height);
         z-index: 999;
-        width: 100%;
+    }
+
+    .header-content {
         display: grid;
         grid-template-columns: 1fr 1.5fr 1fr;
-        align-items: stretch;
-    }
-
-    /* --- Brand Menu --- */
-
-    .brand-menu {
-        --icon-width: 80px;
-        --icon-height: 30px;
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
-        gap: var(--space-2xs);
-        border-radius: var(--radius-md);
-        justify-self: start;
-        /* background-color: var(--color-background-secondary); */
-        height: var(--header-element-height);
-        transition: height var(--anim-sm);
-    }
-
-    .brand-menu:hover {
-        height: calc(var(--header-element-height) * 2);
-    }
-
-    .brands {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-        overflow-y: clip;
-        /* translate: calc(-1 * var(--icon-width) * (var(--current-index) ) ) 0; */
-        transition: translate var(--anim-sm);
-        /* height: calc(var(--header-element-height) * 2); */
-        /* height: var(--header-element-height); */
-    }
-
-    .brands[data-brand="studio"] {
-        justify-content: flex-end;
-    }
-
-    .brand-link {
-        text-decoration: none;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding-inline: var(--space-xs);
-        gap: var(--space-xs);
-        flex: 0 0 var(--header-element-height);
-    }
-
-    .brand-link:hover {
-        /* background-color: var(--color-background); */
-    }
-
-    .logo {
-        flex: 0 0 auto;
-        color: var(--color-foreground);
-    }
-
-    .icon-expand {
-        display: flex;
-        flex-direction: row;
-        gap: 2px;
-        height: var(--header-element-height);
-        align-items: center;
-        padding-right: var(--space-xs);
-    }
-
-    .expand-line {
-        width: 1px;
-        height: 14px;
-        background-color: var(--color-foreground);
-        /* opacity: 0.2; */
-    }
-
-
-    /* --- Navigation Menu --- */
-
-    .navigation {
-        /* background-color: var(--color-background-secondary); */
-        /* background-color: var(--color-background-secondary-translucent);
-        backdrop-filter: var(--background-blur); */
-        color: var(--color-foreground);
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        border-radius: var(--radius-md);
-        overflow: clip;
-        justify-self: center;
-    }
-
-    .navigation::after {
-        content: "";
     }
 
     .navigation-links {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: var(--space-sm);
-        padding-inline: var(--space-md);
-        min-width: 300px;
-        background-color: var(--color-lighter);
-        color: var(--color-darkest);
-        height: var(--header-element-height);
     }
 
     .navigation-link {
-        /* padding: 0 var(--space-2xs); */
         text-decoration: none;
     }
 
-    .navigation-links .notification-button {
-        position: relative;
-        padding: 0;
-        min-width: unset;
-        background-color: transparent;
-        color: var(--color-darkest);
-    }
-
-    .navigation-links .notification-button::after {
-        content: "";
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 4px;
-        height: 4px;
-        background-color: var(--color-brand);
-        border-radius: var(--radius-rounded);
-    }
-
-    /* --- Search --- */
-
     .search-button {
-        --hover-delay: .2s;
-        position: relative;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
-        padding-inline: var(--space-md);
-        overflow: clip;
-        transition: color var(--anim-sm);
-        transition-delay: 0s;
-        border-radius: 0px;
-        height: var(--header-element-height);
-        /* display: none; */
-    }
-
-    .search-button * {
-        z-index: 2;
-    }
-
-    .search-button:hover {
-        color: var(--color-brand-contrast);
-        transition-delay: var(--hover-delay);
-    }
-
-    .search-button::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 0%;
-        background-color: var(--color-brand);
-        transition: height var(--anim-sm);
-        transition-delay: 0s;
-        z-index: 1;
-    }
-
-    .search-button:hover::after {
-        height: 100%;
-        transition-delay: var(--hover-delay);
+        gap: var(--space-xs);
+        width: 100%;
     }
 
     .search-button em {
-        color: var(--color-light);
-        translate: 0 0%;
-        opacity: 1;
         font-style: normal;
-        transition: all var(--anim-sm);
-        transition-delay: 0s;
-        display: inline-block;
+        color: var(--color-dark);
     }
 
-    .search-button:hover em {
-        opacity: 0;
-        transition-delay: var(--hover-delay);
+    .utility-menu {
+        justify-self: flex-end;
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
     }
 
-    /* --- Search Dialog --- */
+    .utility-button {
+        min-width: 0;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex: 0 0 auto;
+        color: var(--color-foreground);
+    }
 
-    .search-menu {
+    .utility-icon {
+        height: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+    }
+
+    .brand-card {
+        display: none;
+    }
+
+        /* --- Search Dialog --- */
+
+        .search-menu {
         margin: var(--space-md);
         width: calc(100% - var(--space-md) * 2);
         height: calc(100% - var(--space-md) * 2);
@@ -386,80 +279,377 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
     }
 
 
-    /* --- Utility Links --- */
-
-    .utility-menu {
-        display: flex;
-        flex-direction: row;
-        /* align-items: stretch; */
-        gap: var(--space-2xs);
-        justify-self: end;
-        height: var(--header-element-height);
-    }
-
-    .utility-button {
-        min-width: 0;
-        /* width: var(--header-element-height);
-        height: var(--header-element-height); */
-        aspect-ratio: 1 / 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        flex: 0 0 auto;
-    }
-
-    .utility-icon {
-        height: 40%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        translate: -50% -50%;
-        /* width: var(--icon-sm);
-        height: var(--icon-sm); */
-    }
-
-    @media screen and (min-width: 768px) {
+    @media screen and (width > 768px) {
         header {
-            background-color: transparent;
+            --header-top-margin: var(--space-xs);
+            height: var(--header-height);
+            width: 100%;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
+            background-color: transparent;
+            padding-inline: var(--page-margin);
+            padding-block: var(--header-padding-block);
         }
 
+        .header-content {
+            background-color: transparent;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: var(--space-sm);
+        }
+
+        .brand-cards--mobile,
         .menu-button {
             display: none;
         }
-        
+
+        .brand-menu {
+            --anim-begin: 0.4s;
+            --anim-step-1: 0.8s;
+            --anim-step-2: 1.0s;
+            border-radius: var(--radius-sm);
+            height: var(--header-element-height);
+            overflow: clip;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-self: flex-start;
+            transition: 
+                background-color var(--anim-sm),
+                height var(--anim-sm);
+        }
+
+        .brand-menu.active {
+            height: calc( var(--header-element-height) * 4 + var(--space-2xs) * 2);
+            background-color: var(--color-lighter);
+            transition: 
+                background-color var(--anim-md),
+                height var(--anim-sm) var(--anim-step-1);
+        }
+
+        .brands {
+            padding: var(--space-2xs);
+        }
+
+        .brand-link {
+            text-decoration: none;
+            color: var(--color-darkest);
+            padding: 0 var(--space-xs);
+            /* padding: var(--space-2xs) var(--space-xs); */
+
+            /* flex: 0 0 calc( var(--header-element-height) - var(--space-2xs) * 2); */
+            height: calc( var(--header-element-height) - var(--space-2xs) * 2);
+            /* flex: 0 0 calc( var(--header-element-height) ); */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* justify-content: space-between; */
+            align-items: flex-start;
+            vertical-align: middle;
+            gap: 0;
+            border-radius: var(--radius-sm);
+            width: auto;
+            opacity: 0;
+            /* vertical-align: middle; */
+            transition: 
+                flex-basis var(--anim-sm),
+                height var(--anim-sm),
+                gap var(--anim-sm), 
+                color var(--anim-sm), 
+                opacity var(--anim-sm), 
+                background-color var(--anim-sm);
+        }
+
+        .brand-menu.active .brand-link {
+            /* flex-basis: calc(var(--header-element-height) * 2); */
+            height: calc(var(--header-element-height) * 2);
+            color: var(--color-darkest);
+            gap: var(--space-2xs);
+            opacity: 1;
+            transition: 
+            /* flex-basis var(--anim-sm) var(--anim-step-1), */
+                height var(--anim-sm) var(--anim-step-1),
+                gap var(--anim-sm) var(--anim-step-1), 
+                opacity var(--anim-lg) var(--anim-step-1), 
+                color var(--anim-lg), 
+                background-color var(--anim-md);
+        }
+
+        .brand-link:hover {
+            color: var(--color-darkest);
+            background-color: var(--color-lightest);
+        }
+
+        .brand-link .logo {
+            flex: 0 0 calc(var(--header-element-height) - 25px);
+            /* height: auto; */
+            /* justify-self: center; */
+            /* vertical-align: middle; */
+        }
+
+        .brand-link[data-active="true"] {
+            opacity: 1;
+            color: var(--color-lightest);
+        }
+
+        .brand-link .brand-details {
+            /* flex: 0 1 0px; */
+            /* flex: 0 0 0; */
+            opacity: 0;
+            /* flex-grow: 0; */
+            /* flex-shrink: 1; */
+            visibility: hidden;
+            color: var(--color-dark);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 0fr;
+            grid-template-rows: 0fr;
+            min-height: 0px;
+            margin: 0;
+            padding: 0;
+            transition: 
+                opacity var(--anim-sm),  
+                grid-template-columns var(--anim-md) 0.2s,
+                grid-template-rows var(--anim-md),
+                flex-basis var(--anim-sm);
+        }
+
+        .brand-menu.active .brand-details {
+            grid-template-columns: 1fr;
+            /* flex: 0 0 auto; */
+            grid-template-rows: 1fr;
+            /* flex: 0 1 fit-content; */
+            /* flex: 0 1 100%; */
+            opacity: 1;
+            visibility: visible;
+            transition: 
+                grid-template-columns var(--anim-md) var(--anim-begin),
+                flex-basis var(--anim-md) var(--anim-begin),
+                grid-template-rows var(--anim-sm) var(--anim-step-1),
+                opacity var(--anim-lg) var(--anim-step-2);
+        }
+
+        .brand-description {
+            margin: 0;
+            padding: 0;
+            min-height: 0;
+        }
+
+        .navigation {
+            max-width: 25em;
+        }
+
+        .navigation-links {
+            height: var(--header-element-height);
+            background-color: var(--color-lighter);
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3xs);
+            padding-inline: var(--space-2xs);
+            padding-block: var(--space-2xs);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        }
+
+        .navigation-link {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1 0 auto;
+            border-radius: var(--radius-sm);
+            background-color: var(--color-lightest);
+            transition-delay: 0s !important;
+        }
+
+        .search-button {
+            height: var(--header-element-height);
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        }
+
+        .search-button em {
+            color: var(--color-light);
+        }
+
+        .utility-button {
+            height: var(--header-element-height);
+            width: var(--header-element-height);
+        }
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (width <= 768px) {
         header {
+            --header-top-margin: var(--space-xs);
             height: var(--header-height);
-            margin-inline: var(--page-margin);
-            margin-top: var(--space-sm);
             width: calc(100% - var(--page-margin) * 2);
-            /* padding: var(--space-2xs); */
-            padding: 0;
-            border-radius: var(--radius-sm);
             display: flex;
             flex-direction: row;
             justify-content: stretch;
-            align-items: stretch;
+            align-items: flex-start;
+            border-radius: var(--radius-sm);
+            transition: width var(--anim-sm), margin var(--anim-sm), height var(--anim-sm), padding var(--anim-sm), border-radius var(--anim-sm);
         }
 
+        header.navigation-open {
+            width: 100%;
+            height: 100lvh;
+            border-radius: 0;
+        }
+        
+        header,
+        header.navigation-open .header-content {
+            margin-top: var(--header-top-margin);
+            margin-inline: var(--page-margin);
+        }
+
+        header.navigation-open,
+        .header-content {
+            margin: 0;
+        }
+
+        .header-content {
+            width: calc(100vw - var(--page-margin) * 2);
+            background-color: transparent;
+            color: var(--color-lightest);
+            transition: background-color var(--anim-sm);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            transition: width var(--anim-sm), margin var(--anim-sm), height var(--anim-sm), padding var(--anim-sm), border-radius var(--anim-sm), background-color var(--anim-sm), color var(--anim-sm);
+        }
+
+        header.navigation-open .header-content {
+            --color-foreground: var(--color-darkest);
+            background-color: var(--color-lightest);
+            color: var(--color-foreground);
+            top: calc( var(--header-top-margin) + var(--header-height));
+        }
+
+        .navigation {
+            /* visibility: hidden; */
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            width: calc(100vw - var(--page-margin) * 2);
+            display: flex;
+            flex-direction: column-reverse;
+            color: var(--color-darkest);
+            opacity: 0;
+            visibility: hidden;
+            transition: top var(--anim-sm), left var(--anim-sm), right var(--anim-sm), top var(--anim-sm), visibility var(--anim-sm), opacity var(--anim-sm);
+        }
+
+        header.navigation-open .navigation {
+            /* height: 100px; */
+            top: var(--header-height);
+            left: var(--page-margin);
+            right: var(--page-margin);
+            top: calc(var(--header-height) + var(--header-top-margin));
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-wrapper {
+            padding-top: var(--space-md);
+        }
+
+        .search-wrapper,
+        .navigation-links {
+            background-color: var(--color-lighter);
+            padding-inline: var(--space-sm);
+        }
+
+        .search-button {
+            translate: 0 1em;
+            opacity: 0;
+            transition: translate var(--anim-md), opacity var(--anim-md);
+        }
+
+        header.navigation-open .search-button {
+            translate: 0 0;
+            opacity: 1;
+        }
+
+        .navigation-links {
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+            height: auto;
+            gap: var(--space-md);
+            padding-block: var(--space-xl);
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        }
+
+        .navigation::after {
+            display: none;
+        }
+
+        .navigation-link {
+            --base-size: 32;
+            --min-size: 28;
+            letter-spacing: -0.03em;
+            translate: 0 0.5em;
+            opacity: 0;
+            transition: translate var(--anim-md), opacity var(--anim-md);
+        }
+
+        header.navigation-open .navigation-link {
+            opacity: 1;
+            translate: 0 0;
+        }
+
+        .menu-button {
+            position: relative;
+        }
+
+        .hamburger-line {
+            width: 25%;
+            height: 1px;
+            background-color: currentColor;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            transition: translate var(--anim-sm), rotate var(--anim-sm);
+        }
+
+        .hamburger-line:nth-child(1) {
+            rotate: 0deg;
+            translate: -50% 0.2em;
+        }
+
+        .hamburger-line:nth-child(2) {
+            rotate: 0deg;
+            translate: -50% -0.2em;
+        }
+
+        header.navigation-open .hamburger-line:nth-child(1) {
+            rotate: -45deg;
+            translate: -50% 0;
+        }
+
+        header.navigation-open .hamburger-line:nth-child(2) {
+            rotate: 45deg;
+            translate: -50% 0;
+        }
+
+        .search-button {
+            background-color: var(--color-lightest);
+            color: var(--color-darkest);
+            height: var(--header-height);
+        }
+
+
         .notification-button,
-        .navigation,
         .icon-expand {
             display: none;
         }
 
         .brand-menu,
         .brand-menu:hover {
-            height: auto;
             background: transparent;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
             filter: none;
+            height: var(--header-height);
         }
 
         .brand-menu {
@@ -471,7 +661,21 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         }
 
         .brand-link {
-            flex: 1 0 auto;
+            height: var(--header-height);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brand-details {
+            display: none;
+        }
+
+        .brand-link .logo {
+            /* height: 50%; */
+            flex: 0 0 25%;
+            width: auto;
         }
 
         .brand-link:not([data-active="true"]) {
@@ -480,7 +684,6 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
         .utility-menu {
             height: auto;
-            justify-self: auto;
         }
 
         .utility-button {
@@ -488,6 +691,50 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
             background-color: transparent;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
+            height: var(--header-height);
+            color: currentColor;
+        }
+
+        .brand-cards--mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding-top: var(--space-xs);
+            gap: var(--space-2xs);
+        }
+
+        .brand-card--mobile {
+            display: block;
+            border-radius: var(--radius-sm);
+            background-color: var(--color-lighter);
+            overflow: hidden;
+            text-decoration: none;
+            translate: 0 1em;
+            opacity: 0;
+            transition: translate var(--anim-lg), opacity var(--anim-lg);
+        }
+
+        header.navigation-open .brand-card--mobile {
+            translate: 0 0;
+            opacity: 1;
+            transition-delay: 0.6s;
+        }
+
+        .brand-card--mobile__header {
+            padding-inline: var(--space-md);
+            padding-block: var(--space-sm);
+            background-color: var(--color-lightest);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-card--mobile__content {
+            padding-inline: var(--space-md);
+            padding-block: var(--space-sm);
+            color: var(--color-dark);
+            margin: 0;
         }
 
 
