@@ -1,7 +1,8 @@
 ---
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
-const { section, brand } = Astro.props 
+const { section, brand, key } = Astro.props 
+import { gsap, zoomIn } from "../utils/gsap"
 // console.log(section)
 ---
 <section class="section-content-blocks">
@@ -11,17 +12,45 @@ const { section, brand } = Astro.props
                 class="content-block" 
                 data-inset={contentBlock.insetMedia ? "true" : "false"}
             >
-                <AtomSanityMedia
-                    video={contentBlock.media.video}
-                    image={contentBlock.media.image}
-                    cover={contentBlock.insetMedia ? false : true}
-                    contain={contentBlock.insetMedia ? true : false}
-                    sizes="100vw"
-                />
+                <div class="block-media">
+                    <AtomSanityMedia
+                        video={contentBlock.media.video}
+                        image={contentBlock.media.image}
+                        cover={contentBlock.insetMedia ? false : true}
+                        contain={contentBlock.insetMedia ? true : false}
+                        aspectRatio={!contentBlock.insetMedia ? 3/4 : null}
+                        sizes="100vw"
+                    />
+                </div>
             </div>
         ))}
     </div>
 </section>
+
+<script>
+    // console.log(gsap)
+    // import { addParallax } from "../utils/gsap"
+    // import { gsap, zoomIn } from "../utils/gsap"
+    // const instances = document.querySelectorAll('.section-content-blocks')
+
+
+    // instances.forEach((instance) => {
+    //     const media = instance.querySelectorAll('.block-media')
+    //     const timeline = gsap.timeline({ defaults: { ease: "cubic", duration: 5} })
+    //     media.forEach((image, i) => { 
+    //         zoomIn(image, timeline, i * 0.2)
+    //     })
+    // })
+
+    // const section = document.getElementById(`content-blocks_${key}`)
+    
+
+
+    
+
+
+    // console.log(media)
+</script>
 
 <style>
     .section-content-blocks {
@@ -35,18 +64,28 @@ const { section, brand } = Astro.props
         justify-content: stretch;
         align-items: stretch;
         gap: var(--space-sm);
+        overflow: clip;
     }
 
     .content-block {
+        aspect-ratio: 3 / 4;
+        position: relative;
         flex: 0 1 100%;
         max-height: 100svh;
         background-color: var(--color-accent-shade, var(--color-background-secondary));
     }
 
-    .content-block[data-inset="true"] {
+    .block-media {
         display: flex;
         justify-content: center;
         align-items: center;
+        position: absolute;
+        inset: 0;
+        /* max-width: 100%;
+        max-height: 100%; */
+    }
+
+    .content-block[data-inset="true"] .block-media {
         padding: var(--space-3xl);
     }
 

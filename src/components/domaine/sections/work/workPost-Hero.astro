@@ -3,40 +3,84 @@ import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 import { paths } from "../../../global/utils/paths"
 
-const { title, heroMedia, accentColor } = Astro.props
-// console.log(features)
+const { title, heroMedia } = Astro.props
 ---
 <section class="work-post_hero">
-    <h1 
-        class="project-title"
-    >{title}</h1>
-
-    <AtomSanityMedia 
-        image={heroMedia.image}
-        video={heroMedia.video}
-        cover={true}
-        sizes="100vw"
-    />
-
+    <h1 id="project-title" class="project-title">{title}</h1>
+    <div id="hero-media" class="section-media">
+        <AtomSanityMedia 
+            image={heroMedia.image}
+            video={heroMedia.video}
+            cover={true}
+            sizes="100vw"
+        />
+    </div>
 </section>
 
+<script>
+
+    import { fadeUp, addParallax, gsap } from "../../../global/utils/gsap"
+
+    const title = document.getElementById("project-title")
+    const media = document.getElementById("hero-media")
+    
+    addParallax(media)
+    const timeline = gsap.timeline({ defaults: { ease: "cubic", duration: 2 } })
+
+    window.addEventListener("preload:complete", () => {
+        timeline.to(title, {
+            y: "0%"
+        })
+    })
+
+    const handleResize = () => {
+        let scaleFactor
+        const scaleFactorWidth = (window.innerWidth * 0.95) / title.clientWidth
+        const scaleFactorHeight = (window.innerHeight * 0.7) / title.clientHeight
+        if (scaleFactorWidth >= scaleFactorHeight) {
+            scaleFactor = scaleFactorHeight
+        } else {
+            scaleFactor = scaleFactorWidth
+        }
+        title.style.scale = scaleFactor.toString()
+    }
+
+    if (title) handleResize()
+
+    window.addEventListener("resize", handleResize)
+</script>
 
 <style>
     .work-post_hero {
-        height: 95svh;
+        overflow: clip;
+        height: 90svh;
         position: relative;
         color: var(--color-accent-secondary);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
     }
 
     .project-title {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        width: min-content;
+        display: inline;
+        position: relative;
         text-align: center;
-        font-size: 25vw;
+        font-size: 20vw;
         margin: 0;
-        line-height: 0.7;
+        line-height: 0.8;
+        translate: 0 100%;
+        margin: 0;
+        letter-spacing: -0.04em;
         z-index: 2;
+        transform-origin: center bottom;
+        /* word-spacing: 100vw; */
+    }
+
+    .section-media {
+        position: absolute;
+        inset: 0;
+        min-height: 100%;
     }
 </style>

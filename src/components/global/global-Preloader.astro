@@ -49,7 +49,7 @@ const { content, brand } = Astro.props
         const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
         const preloader = document.getElementById("site-preloader")
 
-        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "power4.out"} })
+        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "cubic"} })
 
         preloaderTimeline.fromTo(".preloader-image[data-foreground='true']", {
             clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'

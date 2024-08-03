@@ -1,10 +1,8 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { paths } from '../../components/global/utils/paths';
 import WorkPostHero from '../../components/domaine/sections/work/workPost-Hero.astro';
-import { imageFields, projectGridFields, projectPageFields } from '../../components/global/utils/cms-queries';
-import { projectPostQuery } from "../../components/global/utils/cms-queries"
+import { projectPageFields } from '../../components/global/utils/cms-queries';
 import WorkPostAbout from '../../components/global/projects/workPost-About.astro';
 import WorkPostDetails from '../../components/global/projects/workPost-Details.astro';
 import GlobalSections from '../../components/global/sections/section-GlobalSections.astro';
@@ -51,7 +49,7 @@ const { content } = Astro.props
             industry={content.industry}
             client={content.client}
             agencyBrand={content.agencyBrand.slug.current}
-            theme={content.foregroundColor === "light" ? "dark" : "light"}
+            theme={content.foregroundColor === "light" ? "light" : "dark"}
         />
 
         {content.sections && content.sections.map((section, i) => (
@@ -66,7 +64,7 @@ const { content } = Astro.props
             partners={content.partners}
             metrics={content.metrics}
             agencyBrand={content.agencyBrand.slug.current}
-            theme={content.foregroundColor === "light" ? "dark" : "light"}
+            theme={content.foregroundColor === "light" ? "light" : "dark"}
         />
     </div>
 
