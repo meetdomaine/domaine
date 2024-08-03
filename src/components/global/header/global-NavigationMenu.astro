@@ -1,12 +1,8 @@
 ---
 import { Icon } from "astro-icon/components"
 const { brands, brandIndex, links, activePath } = Astro.props
-
-// console.log(activePath)
-// console.log(links[0].linkPath)
-console.log(links[0])
 ---
-<div id="navigation-menu" class="navigation">
+<div id="navigation-menu" class="navigation glass-dark">
 
     <div class="brand-cards--mobile">
         {brands.map((brand, i) => {
@@ -36,7 +32,7 @@ console.log(links[0])
     </nav>
 
     <div class="search-wrapper">
-        <button class="search-button glass-dark" popovertarget="search-menu">
+        <button class="search-button" popovertarget="search-menu">
             <Icon class="icon" name="pixel_search" />
             <span>Search <em>projects, insights, and more...</em></span>
         </button>
@@ -44,19 +40,31 @@ console.log(links[0])
 
 </div>
 
+<script>
 
+    const menu = document.getElementById("navigation-menu")
+
+    let previousScroll = 0
+
+    document.addEventListener("scroll", (e) => {
+        if (menu) {
+
+            if (document.documentElement.scrollTop < previousScroll) {
+                menu.dataset.scrolled = "false"
+            } else {
+                menu.dataset.scrolled = "true"
+            }
+        }
+        previousScroll = document.documentElement.scrollTop
+    })
+
+</script>
 
 <style is:global>
 
-    header {
-        position: fixed;
-        top: 0;
-        z-index: 999;
-    }
-
-    .header-content {
-        display: grid;
-        grid-template-columns: 1fr 1.5fr 1fr;
+    .navigation {
+        border-radius: var(--radius-sm);
+        overflow: hidden;
     }
 
     .navigation-links {
@@ -74,6 +82,7 @@ console.log(links[0])
         align-items: center;
         gap: var(--space-xs);
         width: 100%;
+        background-color: transparent;
     }
 
     .search-button em {
@@ -131,6 +140,12 @@ console.log(links[0])
             padding-inline: var(--space-2xs);
             padding-block: var(--space-2xs);
             border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            transition: color var(--anim-md), background-color var(--anim-md);
+        }
+
+        .navigation[data-scrolled="true"] .navigation-links {
+            background-color: transparent;
+            color: var(--color-lightest);
         }
 
         .navigation-link {
@@ -141,15 +156,31 @@ console.log(links[0])
             flex: 1 0 auto;
             border-radius: var(--radius-sm);
             transition-delay: 0s !important;
+            transition: background-color var(--anim-sm), color var(--anim-sm);
+        }
+
+        .navigation-link:hover {
+            background-color: var(--color-light);
+            color: var(--color-dark);
         }
 
         .navigation-link[data-active="true"] {
             background-color: var(--color-lightest);
+            color: var(--color-darkest);
         }
 
         .search-button {
             height: var(--header-element-height);
+            max-height: var(--header-element-height);
             border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            transition: max-height var(--anim-md), padding var(--anim-md), opacity var(--anim-md);
+            opacity: 1;
+        }
+
+        .navigation[data-scrolled="true"] .search-button {
+            max-height: 0px;
+            padding-block: 0;
+            opacity: 0;
         }
 
         .search-button em {
@@ -186,7 +217,10 @@ console.log(links[0])
 
         .search-wrapper {
             padding-top: var(--space-md);
+            transition: height var(--anim-sm);
         }
+
+       
 
         .search-wrapper,
         .navigation-links {

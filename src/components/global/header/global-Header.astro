@@ -88,28 +88,12 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     document.addEventListener("DOMContentLoaded", async () => {
 
-        const brandMenu: HTMLElement = document.getElementById('brand-menu');
         const navigationMenu: HTMLElement = document.getElementById('navigation-menu');
         const header: HTMLElement = document.getElementById('header');
         const menuButtonMobile: HTMLElement = document.getElementById('menu-button-mobile')
 
         menuButtonMobile.addEventListener("click", (e) => {
             if (navigationMenu) header.classList.toggle("navigation-open")
-        })
-
-        brandMenu.addEventListener("mouseenter", () => {
-            brandMenu.classList.add("active")
-        })
-
-        brandMenu.addEventListener("mouseleave", () => {
-            brandMenu.classList.remove("active")
-        })
-
-
-        document.addEventListener("pageswap", (e) => {
-            if (brandMenu) {
-                brandMenu.classList.remove("active")
-            }
         })
 
     })

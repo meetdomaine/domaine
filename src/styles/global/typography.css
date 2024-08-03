@@ -95,9 +95,9 @@ a {
     /* color: var(--color-link); */
 }
   
-a:not(.button):hover {
+/* a:not(.button):hover {
     color: var(--color-link-secondary);
-}
+} */
   
 em {
     font-style: italic;
