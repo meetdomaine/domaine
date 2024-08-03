@@ -15,7 +15,7 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
                 text={button.text}
                 url={button.url}
                 newTab={button.newTab}
-                style="primary"
+                style="tertiary"
                 icon="arrow-diagonal"
                 classList="anim-fade-up color-invert"
             />
@@ -53,12 +53,13 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
 <style>
     .home_hero {
         padding-inline: var(--page-margin);
-        padding-block: calc(var(--space-lg) + var(--pixel-border-height));
+        padding-block: var(--header-height) var(--space-xl);
         min-height: 95svh;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        align-items: center;
+        align-items: flex-start;
+        /* align-items: center; */
         gap: var(--space-md);
         position: relative;
         background-color: var(--color-brand);
@@ -79,10 +80,11 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        /* text-align: center; */
         gap: var(--space-md);
-        mix-blend-mode: difference;
+        color: var(--color-foreground);
+        /* mix-blend-mode: difference; */
     }
 
     .section-media {
