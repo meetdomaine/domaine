@@ -1,0 +1,316 @@
+---
+import { Icon } from "astro-icon/components";
+import { sanityClient } from "sanity:client";
+import { imageFields, videoFields } from "../utils/cms-queries";
+import ContactMenu from "./global-ContactMenu.astro";
+import GlobalSearchMenu from "./searchMenu/global-SearchMenu.astro";
+import BrandToggle from './global-BrandToggle.astro'
+import GlobalNavigationMenu from "./global-NavigationMenu.astro";
+
+const { headerSettings, currentBrand, activePath } = Astro.props;
+
+const brands = [
+    {
+        path: "/",
+        logo: "domaine-wordmark",
+        title: "Domaine",
+        description: "Purpose-built for ambitious & beloved enterprise brands."
+    },
+    {
+        path: "/studio",
+        logo: "domaine-studio",
+        title: "Domaine Studio",
+        description: "Tailor-made for the needs of small & medium businesses."
+    },
+]
+
+const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
+const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug}, postDate } | order( postDate desc)[0...3]`)
+const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{orderRank, title, slug, thumbnailMedia{${videoFields}, ${imageFields}} } | order( orderRank asc)[0...5]`)
+const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug, orderRank } | order( orderRank asc)[0...10]`)
+const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug, orderRank } | order(orderRank)[0...10]`)
+---
+<header id="header" class="glass-dark">
+
+    <div class="header-content">
+
+        <button id="menu-button-mobile" class="utility-button menu-button">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <BrandToggle 
+            brands={brands}
+            currentBrand={currentBrand}
+            brandIndex={brandIndex}
+        />
+        
+        <GlobalNavigationMenu 
+            brands={brands}
+            links={headerSettings.navigationLinks.links}
+            brandIndex={brandIndex}
+            activePath={activePath}
+        />
+
+        <div id="utility-menu" class="utility-menu">
+            <button class="utility-button notification-button glass-dark">
+                <Icon name="pixel_bell" class="utility-icon" />
+            </button>
+            <button class="utility-button contact-button glass-dark" popovertarget="contact-menu">
+                <Icon name="pixel_email" class="utility-icon" />
+            </button>
+        </div>
+
+    </div>
+
+    <ContactMenu 
+        hubspotFormId={headerSettings.hubspotFormId}
+        processConsentMessage={headerSettings.processConsentMessage}
+        marketingConsentMessage={headerSettings.marketingConsentMessage}
+    />
+
+    <GlobalSearchMenu 
+        defaultBlogPosts={defaultBlogPosts}
+        defaultProjects={defaultProjects}
+        defaultFeatures={defaultFeatures}
+        defaultPartners={defaultPartners}
+    />
+</header>
+
+<script is:inline>
+    const loadSearch = async () => {
+        window.pagefind = await import("/pagefind/pagefind.js");
+    }
+    loadSearch()
+</script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const brandMenu: HTMLElement = document.getElementById('brand-menu');
+        const navigationMenu: HTMLElement = document.getElementById('navigation-menu');
+        const header: HTMLElement = document.getElementById('header');
+        const menuButtonMobile: HTMLElement = document.getElementById('menu-button-mobile')
+
+        menuButtonMobile.addEventListener("click", (e) => {
+            if (navigationMenu) header.classList.toggle("navigation-open")
+        })
+
+        brandMenu.addEventListener("mouseenter", () => {
+            brandMenu.classList.add("active")
+        })
+
+        brandMenu.addEventListener("mouseleave", () => {
+            brandMenu.classList.remove("active")
+        })
+
+
+        document.addEventListener("pageswap", (e) => {
+            if (brandMenu) {
+                brandMenu.classList.remove("active")
+            }
+        })
+
+    })
+</script>
+
+<style>
+
+    header {
+        position: fixed;
+        top: 0;
+        z-index: 999;
+    }
+
+    .header-content {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1fr;
+    }
+
+    .navigation-links {
+        display: flex;
+    }
+
+    .navigation-link {
+        text-decoration: none;
+    }
+
+    .search-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--space-xs);
+        width: 100%;
+    }
+
+    .search-button em {
+        font-style: normal;
+        color: var(--color-dark);
+    }
+
+    .utility-menu {
+        justify-self: flex-end;
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+    }
+
+    .utility-button {
+        min-width: 0;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex: 0 0 auto;
+        color: var(--color-foreground);
+    }
+
+    .utility-icon {
+        height: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+    }
+
+    .brand-card {
+        display: none;
+    }
+
+      
+
+
+    @media screen and (width > 768px) {
+        header {
+            --header-top-margin: var(--space-xs);
+            height: var(--header-height);
+            width: 100%;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background-color: transparent;
+            padding-inline: var(--page-margin);
+            padding-block: var(--header-padding-block);
+        }
+
+        .header-content {
+            background-color: transparent;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: var(--space-sm);
+        }
+
+        .menu-button {
+            display: none;
+        }
+
+        .utility-button {
+            height: var(--header-element-height);
+            width: var(--header-element-height);
+        }
+    }
+
+    @media screen and (width <= 768px) {
+        header {
+            --header-top-margin: var(--space-xs);
+            height: var(--header-height);
+            width: calc(100% - var(--page-margin) * 2);
+            display: flex;
+            flex-direction: row;
+            justify-content: stretch;
+            align-items: flex-start;
+            border-radius: var(--radius-sm);
+            transition: width var(--anim-sm), margin var(--anim-sm), height var(--anim-sm), padding var(--anim-sm), border-radius var(--anim-sm);
+        }
+
+        header.navigation-open {
+            width: 100%;
+            height: 100lvh;
+            border-radius: 0;
+        }
+        
+        header,
+        header.navigation-open .header-content {
+            margin-top: var(--header-top-margin);
+            margin-inline: var(--page-margin);
+        }
+
+        header.navigation-open,
+        .header-content {
+            margin: 0;
+        }
+
+        .header-content {
+            width: calc(100vw - var(--page-margin) * 2);
+            background-color: transparent;
+            color: var(--color-lightest);
+            transition: background-color var(--anim-sm);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            transition: width var(--anim-sm), margin var(--anim-sm), height var(--anim-sm), padding var(--anim-sm), border-radius var(--anim-sm), background-color var(--anim-sm), color var(--anim-sm);
+        }
+
+        header.navigation-open .header-content {
+            --color-foreground: var(--color-darkest);
+            background-color: var(--color-lightest);
+            color: var(--color-foreground);
+            top: calc( var(--header-top-margin) + var(--header-height));
+        }
+
+        .menu-button {
+            position: relative;
+        }
+
+        .hamburger-line {
+            width: 25%;
+            height: 1px;
+            background-color: currentColor;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            transition: translate var(--anim-sm), rotate var(--anim-sm);
+        }
+
+        .hamburger-line:nth-child(1) {
+            rotate: 0deg;
+            translate: -50% 0.2em;
+        }
+
+        .hamburger-line:nth-child(2) {
+            rotate: 0deg;
+            translate: -50% -0.2em;
+        }
+
+        header.navigation-open .hamburger-line:nth-child(1) {
+            rotate: -45deg;
+            translate: -50% 0;
+        }
+
+        header.navigation-open .hamburger-line:nth-child(2) {
+            rotate: 45deg;
+            translate: -50% 0;
+        }
+
+        .notification-button,
+        .icon-expand {
+            display: none;
+        }
+
+        .utility-menu {
+            height: auto;
+        }
+
+        .utility-button {
+            /* border: 1px solid var(--color-background); */
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            height: var(--header-height);
+            color: currentColor;
+        }
+
+    }
+
+</style>

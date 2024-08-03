@@ -38,6 +38,7 @@ const { content, serviceType } = Astro.props;
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service-group"
+    activePath="/services"
 >
     <SectionServiceGroupHero 
         serviceGroup={content}

@@ -36,6 +36,7 @@ const { content, serviceType } = Astro.props;
 <LayoutStudio
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service-group"
+    activePath="/studio/services"
 >
     <SectionServiceGroupHero 
         brand="studio"

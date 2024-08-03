@@ -70,15 +70,9 @@ const { content, brand } = Astro.props
             clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
             stagger: 0.2,
         })
-        preloaderTimeline.from("#navigation-menu", {
+        preloaderTimeline.from("#header", {
             y: "-150%"
         }, "<+=0.2")
-        preloaderTimeline.from("#brand-menu", {
-            x: "-150%"
-        }, "<+=0.2")
-        preloaderTimeline.from("#utility-menu", {
-            x: "150%"
-        }, "<")
         preloaderTimeline.from(preloader, {
             y: "0%",
             onStart: handlePreloadComplete

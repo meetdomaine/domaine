@@ -1,0 +1,288 @@
+---
+import { Icon } from "astro-icon/components"
+const { brands, brandIndex, links, activePath } = Astro.props
+
+// console.log(activePath)
+// console.log(links[0].linkPath)
+console.log(links[0])
+---
+<div id="navigation-menu" class="navigation">
+
+    <div class="brand-cards--mobile">
+        {brands.map((brand, i) => {
+            if (brandIndex != i) {
+                return (
+                    <a href={brand.path} class="brand-card--mobile" data-index={i} >
+                        <div class="brand-card--mobile__header">
+                            <Icon class="logo" name={brand.logo} />
+                            <Icon class="icon" name="arrow-diagonal" />
+                        </div>
+                        <p class="brand-card--mobile__content">{brand.description}</p>
+                    </a>
+                )
+            }
+        })}
+    </div>
+
+    <nav class="navigation-links">
+        {links.map((link, i) => (
+            <a 
+                href={link.linkUrl} 
+                class="navigation-link caption" 
+                style={`transition-delay: ${0.1 * i}s`}
+                data-active={activePath === link.linkUrl ? "true" : "false"}
+            >{link.linkText}</a>
+        ))}
+    </nav>
+
+    <div class="search-wrapper">
+        <button class="search-button glass-dark" popovertarget="search-menu">
+            <Icon class="icon" name="pixel_search" />
+            <span>Search <em>projects, insights, and more...</em></span>
+        </button>
+    </div>
+
+</div>
+
+
+
+<style is:global>
+
+    header {
+        position: fixed;
+        top: 0;
+        z-index: 999;
+    }
+
+    .header-content {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1fr;
+    }
+
+    .navigation-links {
+        display: flex;
+    }
+
+    .navigation-link {
+        text-decoration: none;
+    }
+
+    .search-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--space-xs);
+        width: 100%;
+    }
+
+    .search-button em {
+        font-style: normal;
+        color: var(--color-dark);
+    }
+
+    .utility-menu {
+        justify-self: flex-end;
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+    }
+
+    .utility-button {
+        min-width: 0;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex: 0 0 auto;
+        color: var(--color-foreground);
+    }
+
+    .utility-icon {
+        height: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+    }
+
+    .brand-card {
+        display: none;
+    }
+
+    .brand-cards--mobile {
+        display: none;
+    }
+
+
+    @media screen and (width > 768px) {
+
+        .navigation {
+            max-width: 25em;
+        }
+
+        .navigation-links {
+            height: var(--header-element-height);
+            background-color: var(--color-lighter);
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3xs);
+            padding-inline: var(--space-2xs);
+            padding-block: var(--space-2xs);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        }
+
+        .navigation-link {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1 0 auto;
+            border-radius: var(--radius-sm);
+            transition-delay: 0s !important;
+        }
+
+        .navigation-link[data-active="true"] {
+            background-color: var(--color-lightest);
+        }
+
+        .search-button {
+            height: var(--header-element-height);
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        }
+
+        .search-button em {
+            color: var(--color-light);
+        }
+    }
+
+    @media screen and (width <= 768px) {
+
+        .navigation {
+            /* visibility: hidden; */
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            width: calc(100vw - var(--page-margin) * 2);
+            display: flex;
+            flex-direction: column-reverse;
+            color: var(--color-darkest);
+            opacity: 0;
+            visibility: hidden;
+            transition: top var(--anim-sm), left var(--anim-sm), right var(--anim-sm), top var(--anim-sm), visibility var(--anim-sm), opacity var(--anim-sm);
+        }
+
+        header.navigation-open .navigation {
+            /* height: 100px; */
+            top: var(--header-height);
+            left: var(--page-margin);
+            right: var(--page-margin);
+            top: calc(var(--header-height) + var(--header-top-margin));
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-wrapper {
+            padding-top: var(--space-md);
+        }
+
+        .search-wrapper,
+        .navigation-links {
+            background-color: var(--color-lighter);
+            padding-inline: var(--space-sm);
+        }
+
+        .search-button {
+            translate: 0 1em;
+            opacity: 0;
+            transition: translate var(--anim-md), opacity var(--anim-md);
+        }
+
+        header.navigation-open .search-button {
+            translate: 0 0;
+            opacity: 1;
+        }
+
+        .navigation-links {
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+            height: auto;
+            gap: var(--space-md);
+            padding-block: var(--space-xl);
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        }
+
+        .navigation::after {
+            display: none;
+        }
+
+        .navigation-link {
+            --base-size: 32;
+            --min-size: 28;
+            letter-spacing: -0.03em;
+            translate: 0 0.5em;
+            opacity: 0;
+            transition: translate var(--anim-md), opacity var(--anim-md);
+        }
+
+        header.navigation-open .navigation-link {
+            opacity: 1;
+            translate: 0 0;
+        }
+
+        .search-button {
+            background-color: var(--color-lightest);
+            color: var(--color-darkest);
+            height: var(--header-height);
+        }
+
+        .brand-cards--mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding-top: var(--space-xs);
+            gap: var(--space-2xs);
+        }
+
+        .brand-card--mobile {
+            display: block;
+            border-radius: var(--radius-sm);
+            background-color: var(--color-lighter);
+            overflow: hidden;
+            text-decoration: none;
+            translate: 0 1em;
+            opacity: 0;
+            transition: translate var(--anim-lg), opacity var(--anim-lg);
+        }
+
+        header.navigation-open .brand-card--mobile {
+            translate: 0 0;
+            opacity: 1;
+            transition-delay: 0.6s;
+        }
+
+        .brand-card--mobile__header {
+            padding-inline: var(--space-md);
+            padding-block: var(--space-sm);
+            background-color: var(--color-lightest);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-card--mobile__content {
+            padding-inline: var(--space-md);
+            padding-block: var(--space-sm);
+            color: var(--color-dark);
+            margin: 0;
+        }
+
+
+        
+    }
+
+</style>

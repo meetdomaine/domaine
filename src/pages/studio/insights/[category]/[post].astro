@@ -26,6 +26,7 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
 <LayoutStudio
     title={content.title}
     searchFilter="type:blog-post"
+    activePath="/studio/insights"
 >
     <a href={`${paths.root.blog.path}/${content.category.slug.current}`}><h6>{content.category.title}</h6></a>
     <h1>{content.title}</h1>

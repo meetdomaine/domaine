@@ -27,6 +27,7 @@ const { content } = Astro.props;
 <LayoutDomaine
     title={content.title}
     searchFilter="type:partner"
+    activePath="/partners"
 >
     
     {content.tier && <h4>{content.tier.title}</h4>}

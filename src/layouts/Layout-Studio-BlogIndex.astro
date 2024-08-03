@@ -11,6 +11,7 @@ const { title, description, heading, subheading, searchFilter, blogPosts, pageSe
     title={ title ? title : pageSettings && pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Insights"}
     description={description ? description : pageSettings && pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
     searchFilter={searchFilter}
+    activePath="/studio/insights"
 >
     <GlobalBlogIndexHero
         heading={heading}

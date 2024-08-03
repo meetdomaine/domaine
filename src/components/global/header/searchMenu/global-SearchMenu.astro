@@ -1,0 +1,72 @@
+---
+import SearchMenu from "./SearchMenu"
+import { Icon } from "astro-icon/components"
+
+const { defaultBlogPosts, defaultProjects, defaultFeatures, defaultPartners } = Astro.props
+---
+<dialog popover id="search-menu" class="search-menu">
+    <button class="close-button" popovertarget="search-menu">
+        <Icon class="icon close-icon" name="pixel_x" />
+    </button>
+    <SearchMenu 
+        client:only="solid-js"
+        defaultBlogPosts={defaultBlogPosts}
+        defaultProjects={defaultProjects}
+        defaultFeatures={defaultFeatures}
+        defaultPartners={defaultPartners}
+    />
+</dialog>
+
+<style>
+
+    .search-menu {
+        margin: var(--space-md);
+        width: calc(100% - var(--space-md) * 2);
+        height: calc(100% - var(--space-md) * 2);
+        color: var(--color-foreground);
+        background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: var(--radius-lg);
+        border: none;
+        padding: var(--space-md);
+        max-height: 0%;
+        opacity: 0;
+        transition: opacity var(--anim-md), max-height var(--anim-md), display var(--anim-md) allow-discrete;
+        display: flex;
+        flex-direction: column;
+        /* align-items: stretch; */
+        gap: var(--space-md);
+        display: none;
+    }
+
+    .search-menu:popover-open {
+        opacity: 1;
+        max-height: 100%;
+        display: flex;
+    }
+
+    .search-menu::backdrop {
+        background-color: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+    }
+
+    @starting-style {
+        .search-menu:popover-open {
+            opacity: 0;
+            max-height: 0%;
+        }
+    }
+
+    .close-button {
+        padding: 0;
+        min-width: unset;
+        background-color: transparent;
+        align-self: flex-end;
+        color: currentColor;
+    }
+
+    .close-icon {
+        width: var(--icon-md);
+        height: var(--icon-md);
+    }
+</style>

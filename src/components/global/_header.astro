@@ -1,9 +1,9 @@
 ---
 import { Icon } from "astro-icon/components";
-import SearchMenu from "./search/SearchMenu"
+import SearchMenu from "./header/searchMenu/SearchMenu"
 import { sanityClient } from "sanity:client";
 import { imageFields, videoFields } from "./utils/cms-queries";
-import ContactMenu from "./global-ContactMenu.astro";
+import ContactMenu from "./header/global-ContactMenu.astro";
 
 const { headerSettings, currentBrand } = Astro.props;
 

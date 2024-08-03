@@ -1,7 +1,6 @@
 import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
-import { urlFor } from '../utils/cms-queries';
-import AtomSanityImage from '../atoms/atom-sanityImage.astro';
+import { urlFor } from '../../utils/cms-queries';
 
 function ProjectCard(props) {
     return (
