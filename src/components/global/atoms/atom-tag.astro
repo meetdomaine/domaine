@@ -4,17 +4,27 @@ interface Props {
     text: string,
     url?: string,
     theme?: string,
+    animateViewport?: boolean,
+    animation?: string,
+    animationDelay?: number,
 }
 
-const { title, text, url, theme} = Astro.props
+const { title, text, url, theme } = Astro.props
 ---
 {url ? 
-    <a class={`tag ${theme === "dark" ? "glass-dark" : ""}`} href={url}>
+    <a 
+        class={`tag ${theme === "dark" ? "glass-dark" : ""}`} 
+        href={url}
+        data-theme={theme}
+    >
         {title && <span class="title caption">{title}</span>}
         <span class="text caption">{text}</span>
     </a>
 :    
-    <div class={`tag ${theme === "dark" ? "glass-dark" : ""}`} data-theme={theme}>
+    <div 
+        class={`tag ${theme === "dark" ? "glass-dark" : ""}`} 
+        data-theme={theme}
+    >
         {title && <span class="title caption">{title}</span>}
         <span class="text caption">{text}</span>
     </div>

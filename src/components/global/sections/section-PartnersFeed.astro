@@ -5,28 +5,67 @@ import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
 
 const { section, brand } = Astro.props
 
-const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->slug.current == "innovation" ]{${partnerTileFields}} | order( orderRank asc)`)
+
+const partnerTileCount = 4
+
+const partners =  await sanityClient.fetch(`
+    *[_type == "type_partner" 
+    && tier->slug.current == "innovation" ]{
+        ${partnerTileFields}
+    } | order( orderRank asc)[0...${partnerTileCount}]`)
 // console.log(partners)
 ---
-<section class="section-partners-feed color-invert">
-    <div class="section-text">
-        {section.eyebrow && <p class="h5">{section.eyebrow}</p>}
-        <h2>{section.heading}</h2>
+<section class="section-partners-feed">
+    <div 
+        class="section-title"
+        data-animate-viewport="true"
+        data-animation="fade"
+    >
+        {section.eyebrow && <p class="eyebrow h5">{section.eyebrow}</p>}
+        <h2 class="heading">{section.heading}</h2>
         { section.button && section.button.text && section.button.url &&
-            <AtomButton
-                text={section.button.text}
-                url={section.button.url}
-                newTab={false}
-                invert={true}
-            />
+            <div class="button-wrapper-primary">
+                <AtomButton
+                    text={section.button.text}
+                    url={section.button.url}
+                    newTab={false}
+                    icon="arrow-diagonal"
+                    fill={true}
+                />
+            </div>
         }
     </div>
-    <div class="partners">
-        {partners.map((partner) => (
-            <GlobalPartnerTile 
-                partner={partner}
-            />
-        ))}
+    <div class="section-content">
+        <div class="partners">
+            {partners.map((partner, i) => (
+                <div 
+                    class="partner-tile-wrapper"
+                    data-animate-viewport="true"
+                    data-animation="fade-up"
+                    data-animation-delay={150 * i}
+                >
+                    <GlobalPartnerTile 
+                        partner={partner}
+                        theme="light"
+                    />
+                </div>
+            ))}
+        </div>
+        <div 
+            class="button-wrapper-secondary"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+            data-animation-delay={150 * partnerTileCount}
+        >
+        <AtomButton
+            text="All Partners"
+            url="/partners"
+            newTab={false}
+            style="tertiary"
+            icon="arrow-diagonal"
+            invert={true}
+        />
+        </div>
     </div>
 </section>
 
@@ -39,15 +78,29 @@ const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->s
         justify-content: space-between;
         background-color: var(--color-brand);
         color: var(--color-brand-contrast);
+        /* color: var(--color-background); */
         gap: var(--space-xl);
     }
 
-    .section-text {
+    .section-title {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        max-width: 50em;
+        max-width: 40em;
         gap: var(--space-sm);
+    }
+
+    .button-wrapper-primary {
+        min-width: 30em;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        /* max-width: 30em; */
+        flex-basis: clamp(25em, 25%, 32em);
+        gap: var(--space-md);
     }
 
     .partners {
@@ -55,6 +108,16 @@ const partners =  await sanityClient.fetch(`*[_type == "type_partner" && tier->s
         flex-direction: column;
         align-items: stretch;
         gap: var(--space-xs);
-        max-width: 400px;
+    }
+
+    @media screen and (width < 768px) {
+        .section-partners-feed {
+            flex-direction: column;
+        }
+
+        .section-content {
+            max-width: 40em;
+            align-self: center;
+        }
     }
 </style>

@@ -25,7 +25,7 @@ export default defineType({
         { type: 'section_partnersFeed'},
         { type: 'section_masonryContent'},
         { type: 'section_mediaCarousel'},
-        { type: 'section_domaine-about'},
+        { type: 'section_textFeed'},
     ]
     }),
   ],

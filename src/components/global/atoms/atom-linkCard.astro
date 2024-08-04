@@ -4,7 +4,10 @@ import AtomSanityImage from "./atom-sanityImage.astro"
 
 const { categoryTitle, title, excerpt, url, image } = Astro.props
 ---
-<a class="link-card glass-ink" href={url}>
+<a 
+    class="link-card glass-ink" 
+    href={url}
+>
     <div class="card-header">
         <p class="caption">{categoryTitle}</p>
         <Icon name="arrow-diagonal" class="icon" />
@@ -34,7 +37,8 @@ const { categoryTitle, title, excerpt, url, image } = Astro.props
         border-radius: var(--radius-md);
         padding-inline: var(--space-xs);
         padding-block: var(--space-xs);
-        transition: background-color var(--anim-sm), color var(--anim-sm);
+        transition: background-color var(--anim-sm), color var(--anim-sm), translate var(--anim-lg), opacity var(--anim-lg);
+        min-width: 30em;
     }
 
     .link-card:hover {

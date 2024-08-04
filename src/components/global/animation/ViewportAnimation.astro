@@ -56,7 +56,7 @@
 
   *[data-animation="fade-up"][data-animate-viewport="true"] {
     opacity: 0;
-    translate: 0 60px;
+    translate: 0 40px;
   }
 
   *[data-animation="fade-up"][data-animate-viewport="false"] {
@@ -74,5 +74,14 @@
 
   *[data-animation="fade"][data-animate-viewport="false"] {
     opacity: 1;
+  }
+
+
+  @media screen and (width < 768px) {
+    *[data-animate-viewport="true"][data-animate-mobile="false"] {
+      opacity: 1;
+      translate: 0;
+      transition: none;
+    }
   }
 </style>

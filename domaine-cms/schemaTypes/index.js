@@ -44,7 +44,6 @@ import section_contentBlocks from "./sections/section_contentBlocks";
 import snippet_button from "./snippets/snippet_button.js";
 import section_projectsFullBleed from "./sections/section_projectsFullBleed.js";
 import settings_preloader from "./siteSettings/settings_preloader.js";
-import section_domaineAbout from "./home/section_domaine-about.js";
 import section_projectsGrid from "./sections/section_projectsGrid.js";
 import settings_footer from "./siteSettings/settings_footer.js";
 import settings_header from "./siteSettings/settings_header.js";
@@ -56,6 +55,7 @@ import section_masonryContent from "./sections/section_masonryContent.js";
 import section_imageFullHeight from "./sections/section_imageFullHeight.js";
 import section_textColumns from "./sections/section_textColumns.js";
 import section_mediaCarousel from "./sections/section_mediaCarousel.js";
+import section_textFeed from "./sections/section_textFeed.js";
 
 
 export const schemaTypes = [
@@ -113,7 +113,7 @@ export const schemaTypes = [
     section_servicesFeed,
     section_contentBlocks,
     section_projectsFullBleed,
-    section_domaineAbout,
+    section_textFeed,
     section_projectsGrid,
     section_partnersFeed,
     section_textClients,

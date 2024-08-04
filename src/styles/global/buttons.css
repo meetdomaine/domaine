@@ -38,8 +38,15 @@ input[type="submit"]:hover,
 
 .button[data-style="tertiary"] {
     background-color: transparent;
+    color: var(--color-foreground);
+    border: 1px solid var(--color-border);
+}
+
+.button[data-style="text-link"] {
+    background-color: transparent;
     padding: 0;
-    color: var(--color-brand);
+    color: var(--color-foreground);
+    border: 1px solid var(--color-border);
     min-width: unset;
 }
 

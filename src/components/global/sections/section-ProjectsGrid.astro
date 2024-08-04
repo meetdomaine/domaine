@@ -1,16 +1,31 @@
 ---
 import AtomButton from "../atoms/atom-button.astro"
+import AtomCounter from "../atoms/atom-counter.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
 const { section, brand } = Astro.props
+
+const allProjects =  await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == '${brand}' ]`)
 // console.log(section)
 ---
 <section class="section-projects-grid">
     <div class="section-text">
-        <div class="section-title">
+        <div 
+            class="section-title"
+            data-animate-viewport="true"
+            data-animation="fade"
+        >
             <h2 class="h5">{section.title}</h2>
+            <AtomCounter 
+                count={allProjects.length}
+            />
         </div>
-        <div class="section-heading">
+        <div 
+            class="section-heading"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+            data-animation-delay="150"
+        >
             <h3>{section.heading}</h3>
             {section.button && section.button.text && section.button.url && 
                 <AtomButton 
@@ -18,13 +33,20 @@ const { section, brand } = Astro.props
                     url={section.button.url}
                     newTab={section.button.newTab}
                     style="primary"
+                    icon="arrow-diagonal"
                 />
             }
         </div>
     </div>
     <div class="project-tiles">
         {section.projects.map((project, i) => (
-            <div class="project-tile">
+            <div 
+                class="project-tile"
+                data-hide-mobile={ i >= 8 ? "true" : "false"}
+                data-animate-viewport="true"
+                data-animation="fade"
+                data-animation-delay={Math.random() * 400}
+            >
                 <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
                     <div class="project-media">
                         <AtomSanityMedia 
@@ -52,6 +74,10 @@ const { section, brand } = Astro.props
 
     .section-title {
         grid-column: 1 / span 2;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--space-xs);
     }
 
     .section-heading {
@@ -106,10 +132,21 @@ const { section, brand } = Astro.props
         grid-area: pr;
     }
 
-    /* .project-tiles {
-        grid-template-areas: 
-            "pr pr ."
-            "pr pr ."
-            "pr pr .";
-    } */
+    @media screen and (width < 768px) {
+        .section-text {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+
+        .project-tiles {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(n, 1fr);
+        }
+
+        .project-tile[data-hide-mobile="true"] {
+            display: none;
+        }
+    }
 </style>

@@ -7,7 +7,7 @@ import VideoPlayer from "./section-VideoPlayer.astro"
 import ServicesFeed from "./section-ServicesFeed.astro"
 import ContentBlocks from "./section-ContentBlocks.astro"
 import ProjectsFullBleed from "./section-ProjectsFullBleed.astro"
-import HomeAbout from "../../domaine/sections/home/home-About.astro"
+import TextFeed from "./section-TextFeed.astro"
 import ProjectsGrid from "./section-ProjectsGrid.astro"
 import PartnersFeed from "./section-PartnersFeed.astro"
 import TextClients from "./section-TextClients.astro"
@@ -29,7 +29,7 @@ const { section, brand, key } = Astro.props
 {section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} key={key} />}
 {section._type == "section_servicesFeed" && <ServicesFeed section={section} brand={brand} key={key} />}
 {section._type == "section_contentBlocks" && <ContentBlocks section={section} brand={brand} key={key} />}
-{section._type == "section_domaine-about" && <HomeAbout section={section} brand={brand} key={key} />}
+{section._type == "section_textFeed" && <TextFeed section={section} brand={brand} key={key} />}
 {section._type == "section_partnersFeed" && <PartnersFeed section={section} brand={brand} key={key} />}
 {section._type == "section_masonryContent" && <MasonryContent section={section} brand={brand} key={key} />}
 {section._type == "section_imageFullHeight" && <ImageFullHeight section={section} brand={brand} key={key} />}

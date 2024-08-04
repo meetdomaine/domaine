@@ -5,7 +5,7 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
 ---
 {popoverTarget ? 
     <button 
-        class={`button ${classList} ${style === "tertiary" ? "utility" : "caption"} ${invert ? "color-inver" : ""}`} 
+        class={`button ${classList} ${style === "tertiary" ? "utility" : "caption"} ${invert ? "color-invert" : ""}`} 
         data-style={style}
         data-fill={fill ? "true" : "false"}
         popovertarget={popoverTarget}
@@ -15,7 +15,7 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
     </button>
 :
     <a 
-        class={`button ${classList} ${style === "tertiary" ? "utility" : "caption"} ${invert ? "color-inver" : ""}`} 
+        class={`button ${classList} ${style === "text-link" ? "utility" : "caption"} ${invert ? "color-invert" : ""}`} 
         href={url} 
         target={newTab ? "_blank" : ""} 
         data-style={style}

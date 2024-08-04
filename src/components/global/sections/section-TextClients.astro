@@ -16,13 +16,22 @@ const clientLogos = await sanityClient.fetch(`
 // console.log(clientLogos)
 ---
 <section class="section-text-clients">
-    <div class="section-text">
+    <div 
+        class="section-text"
+        data-animate-viewport="true"
+        data-animation="fade-up"
+    >
         {section.eyebrow && <p class="utility">{section.eyebrow}</p>}
         <h2 class="h1">{section.heading}</h2>
     </div>
     <div class="logos">
-        {clientLogos.map((client) => (
-            <div class="logo">
+        {clientLogos.map((client, i) => (
+            <div 
+                class="logo"
+                data-animate-viewport="true"
+                data-animation="fade"
+                data-animation-delay={150 * i}
+            >
                 <AtomSanityImage 
                     image={client.logoDark} 
                     contain={true}
@@ -42,7 +51,7 @@ const clientLogos = await sanityClient.fetch(`
         justify-content: center;
         align-items: center;
         text-align: center;
-        min-height: 80svh;
+        min-height: 60svh;
     }
 
     .section-text {
@@ -65,5 +74,11 @@ const clientLogos = await sanityClient.fetch(`
         width: 70%;
         height: 20%;
         aspect-ratio: 1 / 1;
+    }
+
+    @media screen and (width < 768px) {
+        .logos {
+            grid-template-columns: repeat(3, 1fr);
+        }
     }
 </style>

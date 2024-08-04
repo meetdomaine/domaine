@@ -5,9 +5,9 @@ const { className, hubspotFormId, processConsentMessage, marketingConsentMessage
 
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 ---
-<dialog popover  id="contact-menu" class="color-invert" data-lenis-prevent>
-    <div class="menu-header">
-        <div>Contact</div>
+<dialog popover  id="contact-menu" class="contact-menu" data-lenis-prevent>
+    <div class="section-title">
+        <h2 class="h5">Contact</h2>
         <button popovertarget="contact-menu" class="contact-close-button button-reset">
             <Icon name="pixel_x" class="close-button" />
         </button>
@@ -108,50 +108,58 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 
 
 <style>
-    #contact-menu {
+    .contact-menu {
         --inset: var(--space-sm);
+        --color-foreground: var(--color-darkest);
+        --color-foreground-secondary: var(--color-dark);
+        --color-background: var(--color-lightest);
+        --color-background-secondary: var(--color-light);
         border: none;
         margin: auto var(--inset) auto auto;
         height: calc(100% - var(--inset) * 2);
         max-width: 500px;
-        background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
+        background-color: var(--color-background);
         border-radius: var(--radius-md);
         position: fixed;
         translate: calc(100% + var(--inset) + var(--page-margin)) 0;
-        color: var(--color-foreground);
         padding-block: var(--space-md);
         z-index: 19;
         flex-direction: column;
         gap: var(--space-md);
-        float: right;
         display: flex;
+        justify-content: space-between;
         transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
     }
 
-    #contact-menu:popover-open {
+    .contact-menu:popover-open {
         translate: 0 0;
         display: flex;
     }
 
-    #contact-menu::backdrop {
-        background-color: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+    .contact-menu::backdrop {
+        background-color: var(--background-blur-color);
+        backdrop-filter: var(--background-blur);
+        -webkit-backdrop-filter: var(--background-blur);
     }
 
     @starting-style {
-        #contact-menu:popover-open {
+        .contact-menu:popover-open {
             display: flex;
             /* translate: calc(100% + var(--inset)) 0; */
         }
     }
 
-    .menu-header { 
+    .section-title { 
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         padding-inline: var(--space-md);
+    }
+
+    .close-button {
+        width: var(--icon-md);
+        height: var(--icon-md);
     }
 
     .contact-form {

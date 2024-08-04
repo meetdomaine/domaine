@@ -31,7 +31,7 @@ const { partner, collapsed, theme } = Astro.props
         text-decoration: none;
         border-radius: var(--radius-sm);
         overflow: hidden;
-        max-width: 20em;
+        /* max-width: 20em; */
     }
 
     .partner-tile:not(.glass-dark) {
@@ -40,7 +40,7 @@ const { partner, collapsed, theme } = Astro.props
     }
 
     .card-media {
-        flex: 0 0 30%;
+        flex: 0 0 clamp(60px, 30%, 10em);
     }
 
     .card-text {

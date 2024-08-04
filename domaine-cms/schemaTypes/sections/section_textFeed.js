@@ -4,8 +4,8 @@ import { iconStat } from '../variables'
 
 
 export default defineType({
-  name: 'section_domaine-about',
-  title: 'Domaine | About',
+  name: 'section_textFeed',
+  title: 'Text + Feed',
   type: 'document',
   icon: InfoOutlineIcon,
   fields: [
@@ -59,7 +59,7 @@ export default defineType({
       const { title } = selection
       return {
         title: title,
-        subtitle: 'Domaine | About',
+        subtitle: 'Text + Feed',
         icon: InfoOutlineIcon
       }
     }
