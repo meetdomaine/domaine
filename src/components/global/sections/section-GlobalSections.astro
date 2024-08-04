@@ -18,20 +18,20 @@ import MediaCarousel from "./section-MediaCarousel.astro"
 
 const { section, brand, key } = Astro.props
 ---
-{section._type == "section_form" && <Form section={section} brand={brand} key={key} />}
-{section._type == "section_projectsFeed" && <ProjectsFeed section={section} brand={brand} key={key} />}
-{section._type == "section_projectsFullBleed" && <ProjectsFullBleed section={section} brand={brand} key={key} />}
-{section._type == "section_projectsGrid" && <ProjectsGrid section={section} brand={brand} key={key} />}
-{section._type == "section_blogFeed" && <BlogFeed section={section} brand={brand} key={key} />}
-{section._type == "section_textColumns" && <TextColumns section={section} brand={brand} key={key} />}
-{section._type == "section_textMedia" && <TextMedia section={section} brand={brand} key={key} />}
-{section._type == "section_textClients" && <TextClients section={section} brand={brand} key={key} />}
-{section._type == "section_videoPlayer" && <VideoPlayer section={section} brand={brand} key={key} />}
-{section._type == "section_servicesFeed" && <ServicesFeed section={section} brand={brand} key={key} />}
-{section._type == "section_contentBlocks" && <ContentBlocks section={section} brand={brand} key={key} />}
-{section._type == "section_textFeed" && <TextFeed section={section} brand={brand} key={key} />}
-{section._type == "section_partnersFeed" && <PartnersFeed section={section} brand={brand} key={key} />}
-{section._type == "section_masonryContent" && <MasonryContent section={section} brand={brand} key={key} />}
-{section._type == "section_imageFullHeight" && <ImageFullHeight section={section} brand={brand} key={key} />}
-{section._type == "section_mediaCarousel" && <MediaCarousel section={section} brand={brand} key={key} />}
+{section._type == "section_form" && section.showSection && <Form section={section} brand={brand} key={key} />}
+{section._type == "section_projectsFeed" && section.showSection && <ProjectsFeed section={section} brand={brand} key={key} />}
+{section._type == "section_projectsFullBleed" && section.showSection && <ProjectsFullBleed section={section} brand={brand} key={key} />}
+{section._type == "section_projectsGrid" && section.showSection && <ProjectsGrid section={section} brand={brand} key={key} />}
+{section._type == "section_blogFeed" && section.showSection && <BlogFeed section={section} brand={brand} key={key} />}
+{section._type == "section_textColumns" && section.showSection && <TextColumns section={section} brand={brand} key={key} />}
+{section._type == "section_textMedia" && section.showSection && <TextMedia section={section} brand={brand} key={key} />}
+{section._type == "section_textClients" && section.showSection && <TextClients section={section} brand={brand} key={key} />}
+{section._type == "section_videoPlayer" && section.showSection && <VideoPlayer section={section} brand={brand} key={key} />}
+{section._type == "section_servicesFeed" && section.showSection && <ServicesFeed section={section} brand={brand} key={key} />}
+{section._type == "section_contentBlocks" && section.showSection && <ContentBlocks section={section} brand={brand} key={key} />}
+{section._type == "section_textFeed" && section.showSection &&  <TextFeed section={section} brand={brand} key={key} />}
+{section._type == "section_partnersFeed" && section.showSection && <PartnersFeed section={section} brand={brand} key={key} />}
+{section._type == "section_masonryContent" && section.showSection && <MasonryContent section={section} brand={brand} key={key} />}
+{section._type == "section_imageFullHeight" && section.showSection && <ImageFullHeight section={section} brand={brand} key={key} />}
+{section._type == "section_mediaCarousel" && section.showSection && <MediaCarousel section={section} brand={brand} key={key} />}
 

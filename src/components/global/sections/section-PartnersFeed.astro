@@ -91,7 +91,7 @@ const partners =  await sanityClient.fetch(`
     }
 
     .button-wrapper-primary {
-        min-width: 30em;
+        min-width: min(30em, 100%);
     }
 
     .section-content {
@@ -115,9 +115,17 @@ const partners =  await sanityClient.fetch(`
             flex-direction: column;
         }
 
-        .section-content {
-            max-width: 40em;
-            align-self: center;
+        .partners {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: stretch;
+        }
+
+        .partner-tile-wrapper {
+            flex: 1 0 calc(50% - var(--space-xs));
+            /* max-width: 30em; */
+            min-width: 24em;
         }
     }
 </style>

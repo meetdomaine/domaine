@@ -35,58 +35,58 @@ if (section && section.blogPosts) {
 if (section && section.showHero && !section.featuredPost) featuredPost = blogPosts.shift()
 
 ---
-{(!section || section.showSection) && 
-    <section class="section-blog-feed">
-        <div class="section-title">
-            <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
-            {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}
-        </div>
-        {section && section.showHero && 
-            <div class="section-hero">
-                <article class="featured-post">
+<section class="section-blog-feed">
+    <div class="section-title">
+        <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
+        {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}
+    </div>
+    {section && section.showHero && 
+        <div class="section-hero">
+            <article class="featured-post">
+                <a 
+                    class="featured-post-image" 
+                    href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
+                >
+                    <AtomSanityImage 
+                        image={featuredPost.thumbnailImage.image}
+                        sizes="50vw"
+                        aspectRatio={3 / 4}
+                    />
+                </a>
+                <div class="featured-post-content">
+                    <AtomTag 
+                        title="Category"
+                        text={featuredPost.category.title}
+                    />
                     <a 
-                        class="featured-post-image" 
+                        class="featured-post-heading h2" 
                         href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
-                    >
-                        <AtomSanityImage 
-                            image={featuredPost.thumbnailImage.image}
-                            sizes="50vw"
-                            aspectRatio={3 / 4}
-                        />
-                    </a>
-                    <div class="featured-post-content">
-                        <AtomTag 
-                            title="Category"
-                            text={featuredPost.category.title}
-                        />
-                        <a 
-                            class="featured-post-heading h2" 
-                            href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
-                        >{featuredPost.title}</a>
+                    >{featuredPost.title}</a>
 
+                </div>
+            </article>
+            {sidebarPosts &&
+                <aside class="sidebar">
+                    {/* <p class="sidebar-heading">{section.featuredCategory.title}</p> */}
+                    <div class="sidebar-posts">
+                        {sidebarPosts.map((post) => (
+                            <div class="sidebar-post">
+                                <AtomLinkCard 
+                                    categoryTitle={section.featuredCategory.title}
+                                    title={post.title}
+                                    url={`${brand === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`}
+                                    image={post.thumbnailImage.image}
+                                />
+                            </div>
+                        ))}
                     </div>
-                </article>
-                {sidebarPosts &&
-                    <aside class="sidebar">
-                        {/* <p class="sidebar-heading">{section.featuredCategory.title}</p> */}
-                        <div class="sidebar-posts">
-                            {sidebarPosts.map((post) => (
-                                <div class="sidebar-post">
-                                    <AtomLinkCard 
-                                        categoryTitle={section.featuredCategory.title}
-                                        title={post.title}
-                                        url={`${brand === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`}
-                                        image={post.thumbnailImage.image}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </aside>
-                }
-            </div>
-        }
-        <div class="section-posts">
-            {blogPosts.map((post) => (
+                </aside>
+            }
+        </div>
+    }
+    <div class="section-posts">
+        {blogPosts.map((post) => (
+            <div class="blog-card-wrapper">
                 <BlogCard 
                     title={post.title}
                     thumbnailImage={post.thumbnailImage}
@@ -94,10 +94,10 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
                     category={post.category}
                     agencyBrand={post.agencyBrand}
                 />
-            ))}
-        </div>
-    </section>
-}
+            </div>
+        ))}
+    </div>
+</section>
 
 <style>
     .section-blog-feed {
@@ -144,6 +144,7 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
         display: flex;
         flex-direction: column;
         gap: var(--space-xs);
+        max-width: 100%;
         /* flex: 1 0 30%; */
     }
 
@@ -175,6 +176,16 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
     }
 
     @media screen and (max-width: 768px) {
+        .section-blog-feed {
+            padding-inline: 0;
+        }
+
+        .section-title,
+        .section-hero,
+        .section-posts {
+            padding-inline: var(--page-margin);
+        }
+
         .section-hero {
             flex-direction: column;
             align-items: stretch;
@@ -187,8 +198,12 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
         }
 
         .section-posts {
-            flex-direction: column;
-            gap: var(--gap);
+            overflow-x: auto;
+            /* gap: var(--gap); */
+        }
+
+        .blog-card-wrapper {
+            min-width: 60%;
         }
     }
 </style>

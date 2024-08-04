@@ -22,7 +22,7 @@ h6, .h6 {
 }
   
 h1, .h1 {
-    --min-size: 42;
+    --min-size: 38;
     --base-size: 80;
     letter-spacing: -0.04em;
     line-height: 0.9;
@@ -30,15 +30,15 @@ h1, .h1 {
 }
   
 h2, .h2 {
-    --min-size: 38;
+    --min-size: 30;
     --base-size: 48;
     letter-spacing: -0.04em;
-    line-height: 0.9;
+    line-height: 1;
     font-weight: 400;
 }
   
 h3, .h3 {
-    --min-size: 32;
+    --min-size: 26;
     --base-size: 40;
     letter-spacing: -0.04em;
     line-height: 1.1;

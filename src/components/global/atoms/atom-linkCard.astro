@@ -38,7 +38,7 @@ const { categoryTitle, title, excerpt, url, image } = Astro.props
         padding-inline: var(--space-xs);
         padding-block: var(--space-xs);
         transition: background-color var(--anim-sm), color var(--anim-sm), translate var(--anim-lg), opacity var(--anim-lg);
-        min-width: 30em;
+        min-width: min(30em, 100%);
     }
 
     .link-card:hover {

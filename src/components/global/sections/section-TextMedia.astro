@@ -8,44 +8,42 @@ const { section, brand } = Astro.props
 
 const iconText = replaceStringIcons(section.heading)
 ---
-{section.showSection && 
-    <section class="section-text-media" data-layout={section.layout}>
+<section class="section-text-media" data-layout={section.layout}>
 
-        <div class="section-content">
-            <div class="section-text">
-                {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
-                <h2 class="heading h3"><Fragment set:html={iconText} /></h2>
-                {section.text && <p>{section.text}</p>}
-                {section.buttonPrimary && section.buttonPrimary.text && section.buttonPrimary.url &&
-                    <AtomButton 
-                        text={section.buttonPrimary.text}
-                        url={section.buttonPrimary.url}
-                        newTab={section.buttonSecondary.newTab}
-                        style="secondary"
-                        icon="arrow-diagonal"
-                    />
-                }
-            </div>
-            {section.buttonSecondary && section.buttonSecondary.text && section.buttonSecondary.url &&
+    <div class="section-content">
+        <div class="section-text">
+            {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
+            <h2 class="heading h3"><Fragment set:html={iconText} /></h2>
+            {section.text && <p>{section.text}</p>}
+            {section.buttonPrimary && section.buttonPrimary.text && section.buttonPrimary.url &&
                 <AtomButton 
-                    text={section.buttonSecondary.text}
-                    url={section.buttonSecondary.url}
+                    text={section.buttonPrimary.text}
+                    url={section.buttonPrimary.url}
                     newTab={section.buttonSecondary.newTab}
-                    style="tertiary"
+                    style="secondary"
                     icon="arrow-diagonal"
                 />
             }
         </div>
-        <div class="section-media">
-            <SanityMedia 
-                video={section.media.video}
-                aspectRatio={3 / 4}
-                image={section.media.image}
-                sizes="50vw"
+        {section.buttonSecondary && section.buttonSecondary.text && section.buttonSecondary.url &&
+            <AtomButton 
+                text={section.buttonSecondary.text}
+                url={section.buttonSecondary.url}
+                newTab={section.buttonSecondary.newTab}
+                style="tertiary"
+                icon="arrow-diagonal"
             />
-        </div>
-    </section>
-}
+        }
+    </div>
+    <div class="section-media">
+        <SanityMedia 
+            video={section.media.video}
+            aspectRatio={3 / 4}
+            image={section.media.image}
+            sizes="50vw"
+        />
+    </div>
+</section>
 
 <script>
     import { addParallax, fadeUp, gsap } from "../../global/utils/gsap"

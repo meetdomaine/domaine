@@ -10,6 +10,12 @@ export default defineType({
   icon: InfoOutlineIcon,
   fields: [
     defineField({
+      name: 'showSection',
+      title: 'Show Section',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',

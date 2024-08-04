@@ -2,20 +2,18 @@
 const { section, key } = Astro.props;
 const formId = section.hubspotFormId
 ---
-{section.showSection && 
-  <section class="section-form">
-    <div class="section-form__inner">
-      <div class="section-form__title">
-        <h2 class="h2">{section.heading}</h2>
-        <p class="h6">{section.subheading}</p>
-      </div>
-      
-      <div 
-        id={`form-${formId}-${key}`} 
-        data-hubspot-form-id={formId}
-      ></div>
-  </section>
-}
+<section class="section-form">
+  <div class="section-form__inner">
+    <div class="section-form__title">
+      <h2 class="h2">{section.heading}</h2>
+      <p class="h6">{section.subheading}</p>
+    </div>
+    
+    <div 
+      id={`form-${formId}-${key}`} 
+      data-hubspot-form-id={formId}
+    ></div>
+</section>
 
 <script define:vars={{ formId, key }}>
 

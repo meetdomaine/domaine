@@ -50,7 +50,7 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         if (heading) {
             const animTimeline = gsap.timeline({ defaults: {duration: 1.2, ease: "cubic"}})
 
-            var headingLines = new SplitText(heading, { type: "lines", linesClass: "heading-line", tag: "span"} )
+            var headingLines = new SplitText(heading, { type: "lines", linesClass: "heading-line", tag: "span", lineThreshold: 0.2 } )
 
             if (eyebrow) {
                 animTimeline.from(eyebrow, {
@@ -79,9 +79,11 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        /* max-width: 100%; */
     }
 
     #domaine-home-hero .heading-line {
+        position: relative;
         background-color: var(--color-background-secondary);
         border-radius: var(--radius-sm);
         padding-inline: 0.2em;
@@ -89,7 +91,10 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         flex-direction: row;
         clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
         margin-bottom: -0.01em;
+        z-index: 1;
+        max-width: 100%;
     }
+
 </style>
 
 <style>
@@ -101,23 +106,10 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         flex-direction: column;
         justify-content: flex-end;
         align-items: flex-start;
-        /* align-items: center; */
         gap: var(--space-md);
         position: relative;
         background-color: var(--color-brand);
         overflow: clip;
-    }
-
-    .section-title {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-xs);
-        max-width: 30em;
-    }
-
-    .eyebrow {
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     }
 
     .section-content {
@@ -127,15 +119,36 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        /* text-align: center; */
         gap: var(--space-md);
         color: var(--color-foreground);
-        /* mix-blend-mode: difference; */
+    }
+    
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .eyebrow {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+
+    .heading {
+        /* padding-inline: 0.2em; */
+        /* rotate: 2deg; */
+        /* max-width: min(12em, 80%); */
+        max-width: 14em;
+        /* max-width: 13em; */
+        /* max-width: calc(100% - 0.4em); */
+        /* max-width: min(14em, 90%); */
     }
 
     .section-media {
         position: absolute;
         inset: 0;
         height: 100%;
+        width: 100%;
+        min-width: none;
     }
 </style>

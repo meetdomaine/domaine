@@ -16,8 +16,7 @@ const blogPosts = await sanityClient.fetch(`
         && agencyBrand->slug.current == "${brand}"
     ]{ ${blogCardFields}, authors[]->{..., ${imageFields}} } | order( postDate desc)[0...2]`)
 
-console.log(projects[0].backgroundColor)
-console.log(projects[1].backgroundColor)
+
 ---
 <section class="section-masonry-content">
     <div class="blog-card">

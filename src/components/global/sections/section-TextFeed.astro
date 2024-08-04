@@ -120,13 +120,7 @@ const featuredProject = await sanityClient.fetch(`*[_type == "type_project" && a
         .section-text-feed {
             flex-direction: column;
             align-items: stretch;
-            padding-inline: 0;
             gap: var(--space-2xl);
-            /* overflow-x: hidden; */
-        }
-
-        .section-content {
-            padding-inline: var(--page-margin);
         }
 
         .tags {
@@ -134,18 +128,10 @@ const featuredProject = await sanityClient.fetch(`*[_type == "type_project" && a
             align-items: flex-start;
         }
 
-        .section-links {
-            flex-direction: row;
-            flex: 0 0 auto;
-            padding-inline: var(--page-margin);
-            padding-bottom: var(--space-sm);
-            /* align-self: stretch; */
-            align-items: stretch;
-            max-width: unset;
-            gap: var(--space-xs);
-            overflow-x: auto;
+
+        .link-card-wrapper:not(:first-child) {
+            display: none;
         }
 
-        
     }
 </style>

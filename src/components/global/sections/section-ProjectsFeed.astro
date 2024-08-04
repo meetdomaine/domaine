@@ -21,41 +21,43 @@ if (section && section.projects) {
 }
 
 ---
-{(!section || section && section.showSection) && 
-    <section class="section-projects-feed">
-        <div 
-            class="section-title"
-            data-animate-viewport="true"
-            data-animation="fade"
-        >
-            {(heading || section && section.heading) && <h2 class="h5">{heading ? heading : section.heading}</h2>}
-            {(subheading || section && section.subheading) && <p class="caption">{subheading ? subheading : section.subheading}</p>}
-        </div>
-        <div class="section-content">
-            {feedProjects.map((project, i) => (
-                <div 
-                    class="project-card-wrapper"
-                    data-animate-viewport="true"
-                    data-animation="fade"
-                    data-animation-delay={150 * i}
-                >
-                    <ProjectCard
-                        project={project}
-                    />
-                </div>
-            ))}
-        </div>
-    </section>
-}
+<section class="section-projects-feed">
+    <div 
+        class="section-title"
+        data-animate-viewport="true"
+        data-animation="fade"
+    >
+        {(heading || section && section.heading) && <h2 class="h5">{heading ? heading : section.heading}</h2>}
+        {(subheading || section && section.subheading) && <p class="caption">{subheading ? subheading : section.subheading}</p>}
+    </div>
+    <div class="section-content">
+        {feedProjects.map((project, i) => (
+            <div 
+                class="project-card-wrapper"
+                data-animate-viewport="true"
+                data-animation="fade"
+                data-animation-delay={150 * i}
+            >
+                <ProjectCard
+                    project={project}
+                />
+            </div>
+        ))}
+    </div>
+</section>
 
 <style>
     .section-projects-feed {
         overflow-x: clip;
-        padding-inline: var(--page-margin);
         padding-block: var(--space-xl) var(--space-2xl);
         display: flex;
         flex-direction: column;
         gap: var(--space-sm);
+    }
+
+    .section-title,
+    .section-contents {
+        padding-inline: var(--page-margin);
     }
 
     .section-content {
@@ -71,26 +73,16 @@ if (section && section.projects) {
 
     @media screen and (width < 768px) {
 
-        .section-title {
-            text-align: center
-        }
-
         .section-content {
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            gap: var(--space-4xl);
+            overflow-x: auto;
+            padding-inline: var(--page-margin);
+            padding-bottom: var(--space-xl);
         }
 
         .project-card-wrapper {
-            max-width: 35em;
-            /* flex: 1 0 calc(33% - var(--space-sm) * 2); */
+            min-width: 60vw;
         }
     }
 
-    /* .project-card-wrapper {
-        min-width: 20em;
-        flex: 1 0 calc(33% - var(--space-sm) * 2);
-    } */
 
 </style>
