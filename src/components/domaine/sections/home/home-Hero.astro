@@ -1,23 +1,27 @@
 ---
 import AtomButton from "../../../global/atoms/atom-button.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
+import AtomTag from "../../../global/atoms/atom-tag.astro"
 
-const { heading, subheading, button, media, heroTextColor } = Astro.props
+const { heading, eyebrow, button, media, heroTextColor } = Astro.props
 ---
 <section id="domaine-home-hero" class="home_hero" data-color={heroTextColor === "light" ? "light" : "dark"}>
     <div class="section-content">
         <div class="section-title">
-            <h1 class="h3 anim-fade-up">{heading}</h1>
-            {subheading && <p class="anim-fade-up">{subheading}</p>}
+            {eyebrow && 
+                <div class="eyebrow">
+                    <AtomTag text={eyebrow} theme="light" />
+                </div>
+            }
+            <h1 class="heading h3" id="heading" >{heading}</h1>
         </div>
         {button.text && button.url &&
             <AtomButton 
                 text={button.text}
                 url={button.url}
                 newTab={button.newTab}
-                style="tertiary"
+                style="primary"
                 icon="arrow-diagonal"
-                classList="anim-fade-up color-invert"
             />
         }
     </div>
@@ -34,14 +38,33 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
 </section>
 
 <script>
-    import { addParallax, fadeUp, gsap } from "../../../global/utils/gsap"
+    import { addParallax, fadeUp, gsap, SplitText } from "../../../global/utils/gsap"
 
     const animateSection = () => {
         const section = document.getElementById('domaine-home-hero')
-        const fadeUpElements = section.querySelectorAll('.anim-fade-up')
         const backgroundMedia = section.querySelector('.section-media')
-        const animTimeline = gsap.timeline({ defaults: {duration:1, ease: "power4.out"}})
-        if (fadeUpElements) fadeUp(fadeUpElements, animTimeline, ">", 0.2)
+
+        const eyebrow = section.querySelector('.eyebrow')
+        const heading = section.querySelector('#heading')
+
+        if (heading) {
+            const animTimeline = gsap.timeline({ defaults: {duration: 1.2, ease: "cubic"}})
+
+            var headingLines = new SplitText(heading, { type: "lines", linesClass: "heading-line", tag: "span"} )
+
+            if (eyebrow) {
+                animTimeline.from(eyebrow, {
+                    clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)",
+                })
+            }
+            animTimeline.from(headingLines.lines, {
+                clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)",
+                stagger: 0.3
+            }, "<")
+        }
+
+
+
         if (backgroundMedia) addParallax(backgroundMedia)
     }
 
@@ -49,6 +72,25 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
         animateSection()
     })
 </script>
+
+<style is:global>
+
+    #domaine-home-hero .heading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #domaine-home-hero .heading-line {
+        background-color: var(--color-background-secondary);
+        border-radius: var(--radius-sm);
+        padding-inline: 0.2em;
+        display: flex;
+        flex-direction: row;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        margin-bottom: -0.01em;
+    }
+</style>
 
 <style>
     .home_hero {
@@ -66,12 +108,16 @@ const { heading, subheading, button, media, heroTextColor } = Astro.props
         overflow: clip;
     }
 
-    .home_hero[data-color="light"] {
-        color: var(--color-lightest);
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+        max-width: 30em;
     }
 
-    .section-title {
-        max-width: 30em;
+    .eyebrow {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     }
 
     .section-content {

@@ -17,8 +17,8 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
     searchFilter="type:page"
 >
     <HomeHero
+        eyebrow={pageSettings.eyebrow}
         heading={pageSettings.heading}
-        subheading={pageSettings.subheading}
         button={pageSettings.button}
         media={pageSettings.media}
         heroTextColor = {pageSettings.heroTextColor}

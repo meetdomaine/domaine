@@ -6,15 +6,15 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'eyebrow',
+      title: 'Eyebrow',
+      type: 'string',
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
       validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
     }),
     defineField({
       name: 'button',
