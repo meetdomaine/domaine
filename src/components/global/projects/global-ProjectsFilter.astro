@@ -1,5 +1,7 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { sanityClient } from 'sanity:client';
+import AtomTag from '../atoms/atom-tag.astro';
 
 const { brand, currentPath } = Astro.props;
 
@@ -7,29 +9,36 @@ const allFilters = await Promise.all([
     {
         title: 'Industries',
         path: 'industries/',
-        filters: [{
-            links: await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
-        }]
+        filters: await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
     },
     {
         title: 'Features',
         path: 'features/',
-        filters: [{
-            links: await sanityClient.fetch(`*[_type == "type_projectFeature" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
-        }]
+        filters: await sanityClient.fetch(`*[_type == "type_projectFeature" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
     },
     {
         title: 'Partners',
         path: 'partners/',
-        filters: [{
-            links: await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0] | order(title asc)`)
-        }]
+        filters: await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0] | order(title asc)`)
     },
     {
         title: 'Services',
         path: 'services/',
-        filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
+        filters: await sanityClient.fetch(`
+            *[_type == "type_serviceGroup" 
+                && count( 
+                    *[_type == "type_service" && references(^._id) 
+                    && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  
+                ]) > 0 ]{ 
+                  ..., 
+                  title, 
+                  slug } | order(orderRank asc)`)
     },
+    // {
+    //     title: 'Services',
+    //     path: 'services/',
+    //     filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
+    // },
     // {
     //     title: 'Stages',
     //     path: '/',
@@ -40,78 +49,123 @@ const allFilters = await Promise.all([
 // console.log(brand)
 
 ---
-<div class="projects-filter">
-    {allFilters.map((filterGroup) => (
-        <div class="filter-column">
-            <p class="filter-column__title caption">{filterGroup.title}</p>
-            <div class="filters">
-                {filterGroup.filters.map((filter) => {
-                    return (
-                        <div class="filter-group">
-                            {filter.title && filter.slug && (
-                                <a 
-                                    class="filter-group__title caption" 
-                                    href={`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${filter.slug.current}`}
-                                    data-active={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "true" : "false"}
-                                >{filter.title}</a>
-                            )}
-                            <div class="links">
-                                {filter.links.map((link) => (
-                                    <a 
-                                        class="link" 
-                                        href={`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${link.slug.current}`}
-                                        data-active={currentPath == `/${filterGroup.path}${link.slug.current}` ? "true" : "false"}
-                                    >{link.title}</a>
-                                ))}
-                            </div>
-                        </div>
-                    )
-                })}
+<dialog popover id="projects-filter" class="projects-filter" >
+    <div class="section-title">
+        <h2 class="h5">Filter Projects</h2>
+        <button class="close-button button-reset" popovertarget="projects-filter">
+            <Icon class="close-icon" name="pixel_x" />
+        </button>
+    </div>
+    <div class="section-content">
+        {allFilters.map((filterGroup) => (
+            <div class="filter-type">
+                <p class="filter-title h6">{filterGroup.title}</p>
+                <div class="filters">
+                    {filterGroup.filters.map((filter) => {
+                        return (
+                            <AtomTag 
+                                text={filter.title}
+                                url={`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${filter.slug.current}`}
+                                theme={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "dark" : "light"}
+                            />
+                        )
+                    })}
+                </div>
             </div>
-        </div>
-    ))}
-</div>
+        ))}
+    </div>
+</dialog>
 
 <style>
+
+    
+
     .projects-filter {
+        opacity: 0;
+        translate: 100% 0;
         display: flex;
-        flex-direction: row;
-        gap: var(--space-2xl);
+        grid-template-columns: 0fr;
+        flex-direction: column;
+        gap: var(--space-3xl);
         padding-inline: var(--page-margin);
         padding-block: var(--space-md);
+        border: none;
+        outline: none;
+        width: min(60em, calc(100% - var(--page-margin) * 2));
+        border-radius: var(--radius-sm);
+        margin-right: var(--page-margin);
+        margin-top: var(--space-sm);
+        justify-self: flex-end;
+        transition: translate var(--anim-lg), opacity var(--anim-lg);
+        overflow: hidden;
     }
 
-    .filter-column,
-    .filter-group {
+    .projects-filter:popover-open {
+        translate: 0% 0;
+        opacity: 1;
+    }
+
+    /* .projects-filter:popover-open::backdrop {
+        transition: opacity var(--anim-lg);
+    } */
+
+    .projects-filter::backdrop {
+        opacity: 1;
+        background-color: var(--background-blur-color);
+        backdrop-filter: var(--background-blur);
+        -webkit-backdrop-filter: var(--background-blur);
+        transition: opacity var(--anim-lg);
+    }
+
+    @starting-style {
+        .projects-filter {
+            translate: 100% 0;
+            opacity: 0;
+        }
+        .projects-filter::backdrop {
+            opacity: 0;
+        }
+    }
+
+
+    .section-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .close-icon  {
+        width: var(--icon-md);
+        height: var(--icon-md);
+    }
+
+    .section-content {
         display: flex;
         flex-direction: column;
-        margin-bottom: var(--space-md);
+        gap: var(--space-xl);
     }
 
-    .filter-column__title {
-        margin-bottom: var(--space-xs);
-    }
-
-    .filter-group__title {
-        margin-bottom: var(--space-xs);
-        color: var(--color-foreground-secondary);
-        text-decoration: none;
-    }
-
-    .links {
+    .filter-type {
+        border-bottom: 1px solid var(--color-border);
         display: flex;
-        flex-direction: column;
-        gap: var(--space-xs);
-        margin-bottom: var(--space-xs)
+        flex-direction: row;
     }
 
-    .link {
-        text-decoration: none;
+    .filter-type:last-child {
+        border-bottom: 1px solid transparent;
     }
 
-    .link[data-active="true"],
-    .filter-group__title[data-active="true"] {
-        text-decoration: underline var(--color-brand) 1px;
-        text-underline-offset: 0.2em;
+    .filter-title {
+        flex: 0 0 20%;
     }
+
+    .filters {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: var(--space-xl);
+        gap: var(--space-2xs);
+    }
+
 </style>

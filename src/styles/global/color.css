@@ -30,6 +30,7 @@
     --color-video-player-accent: var(--color-blue);
 
     --background-blur: blur(10px);
+    --background-blur-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
 }
 
 /* Default Colors */
@@ -72,6 +73,7 @@ html {
     background-color: var(--page-background, var(--color-background));
 }
 
+/* DO NOT USE */
 .glass-ink {
     backdrop-filter: var(--background-blur);
     -webkit-backdrop-filter: var(--background-blur);
@@ -81,7 +83,7 @@ html {
 .glass-dark {
     backdrop-filter: var(--background-blur);
     -webkit-backdrop-filter: var(--background-blur);
-    background-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
+    background-color: var(--background-blur-color);
     --color-foreground: var(--color-lightest);
     --color-foreground-secondary: var(--color-light);
     --color-background: var(--color-darkest);

@@ -1,14 +1,62 @@
 ---
-const { heading, subheading } = Astro.props;
+import AtomButton from "../../../global/atoms/atom-button.astro";
+import AtomCounter from "../../../global/atoms/atom-counter.astro";
+
+const { heading, subheading, projectCount } = Astro.props;
 ---
 <section class="work-index_hero">
-    <h1>{heading}</h1>
-    {subheading && <h2 class="h4">{subheading}</h2>}
+    <div class="section-title">
+        <h1 class="h5">{heading}</h1>
+        <AtomCounter count={projectCount} />
+    </div>
+    <div class="section-content">
+        {subheading && <h2 class="h2">{subheading}</h2>}
+        <div class="filter-toggle">
+            <AtomButton 
+                text="Filter Projects"
+                icon="filter"
+                style="primary"
+                fill={true}
+                popoverTarget="projects-filter"
+            />
+        </div>
+    </div>
 </section>
 
 <style>
     .work-index_hero {
         padding-inline: var(--page-margin);
-        padding-block: var(--header-height) var(--space-lg);
+        padding-block: calc(var(--header-height) * 2 + var(--space-2xl)) var(--space-3xl);
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
+        /* justify-content: ; */
     }
+
+    .section-title {
+        flex: 0 0 33%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--space-2xs);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-lg);
+        max-width: 40em;
+    }
+
+    .filter-toggle {
+        min-width: 25em;
+    }
+
+    @media screen and (width < 960px) {
+        .work-index_hero {
+            flex-direction: column;
+        }
+    }
+
 </style>

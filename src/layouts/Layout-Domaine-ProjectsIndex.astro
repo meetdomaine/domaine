@@ -18,6 +18,7 @@ const { projects, heading, subheading, title, description, searchFilter, current
     <Hero
         heading={heading ? heading : pageSettings.heading}
         subheading={subheading ? subheading : pageSettings.subheading}
+        projectCount={projects.length}
     />
     <ProjectsFilter 
         brand="Domaine"

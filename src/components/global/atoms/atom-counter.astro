@@ -1,0 +1,14 @@
+---
+const { count } = Astro.props
+---
+<span class="counter caption">{count}</span>
+
+<style>
+    .counter {
+        background-color: var(--color-background-secondary);
+        color: var(--color-foreground);
+        border-radius: var(--radius-sm);
+        padding: var(--space-2xs);
+        translate: 0 -100%;
+    }
+</style>
