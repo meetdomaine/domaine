@@ -20,11 +20,11 @@ const { brands, brandIndex, links, activePath } = Astro.props
         })}
     </div>
 
-    <nav class="navigation-links">
+    <nav class="navigation-links caption">
         {links.map((link, i) => (
             <a 
                 href={link.linkUrl} 
-                class="navigation-link caption" 
+                class="navigation-link" 
                 style={`transition-delay: ${0.1 * i}s`}
                 data-active={activePath === link.linkUrl ? "true" : "false"}
             >{link.linkText}</a>
@@ -128,7 +128,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
     @media screen and (width > 768px) {
 
         .navigation {
-            max-width: 25em;
+            /* max-width: 30em; */
             justify-self: center;
         }
 
@@ -158,6 +158,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
             border-radius: var(--radius-sm);
             transition-delay: 0s !important;
             transition: background-color var(--anim-sm), color var(--anim-sm);
+            padding-inline: 1em;
         }
 
         .navigation-link:hover {
@@ -203,6 +204,10 @@ const { brands, brandIndex, links, activePath } = Astro.props
             color: var(--color-darkest);
             opacity: 0;
             visibility: hidden;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             transition: top var(--anim-sm), left var(--anim-sm), right var(--anim-sm), top var(--anim-sm), visibility var(--anim-sm), opacity var(--anim-sm);
         }
 
