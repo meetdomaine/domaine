@@ -1,7 +1,7 @@
 ---
 interface Props {
     title?: string,
-    text: string,
+    text?: string,
     url?: string,
     theme?: string,
     animateViewport?: boolean,
@@ -18,7 +18,7 @@ const { title, text, url, theme } = Astro.props
         data-theme={theme}
     >
         {title && <span class="title caption">{title}</span>}
-        <span class="text caption">{text}</span>
+        {text && <span class="text caption">{text}</span>}
     </a>
 :    
     <div 
@@ -26,7 +26,7 @@ const { title, text, url, theme } = Astro.props
         data-theme={theme}
     >
         {title && <span class="title caption">{title}</span>}
-        <span class="text caption">{text}</span>
+        {text && <span class="text caption">{text}</span>}
     </div>
 }
 

@@ -1,7 +1,8 @@
 ---
 import { sanityClient } from "sanity:client";
+import AtomTag from "../atoms/atom-tag.astro";
 
-const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" ] | order( orderRank asc)`)
+const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" ] { ... } | order( orderRank asc)`)
 
 const servicesArray = await Promise.all(serviceTypes.map(async (serviceType) => {
     const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType._ref == '${serviceType._id}' ] | order( orderRank asc)`)
@@ -11,7 +12,9 @@ const servicesArray = await Promise.all(serviceTypes.map(async (serviceType) => 
             serviceGroups.map( async (serviceGroup) => {
                 return {
                     group: serviceGroup,
-                    services: await sanityClient.fetch(`*[_type == "type_service" && serviceGroup._ref == '${serviceGroup._id}' ] | order( orderRank asc)`)
+                    services: await sanityClient.fetch(`
+                        *[_type == "type_service" 
+                            && serviceGroup._ref == '${serviceGroup._id}' ] | order( orderRank asc)`)
                 }
             })
         )
@@ -33,10 +36,19 @@ const { section, brand } = Astro.props
                 <div class="service-type__groups">
                     {serviceType.groups.map((serviceGroup) => (
                     <div class="service-type__group">
-                        <h3 class="h6">{serviceGroup.group.title}</h3>
-                        {serviceGroup.services.map((service) => (
-                            <p class="caption">{service.title}</p>
-                        ))}
+                        <AtomTag 
+                            theme="dark"
+                            text={serviceGroup.group.title}
+                            url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.type.slug.current}/${serviceGroup.group.slug.current}`}
+                        />
+                        <div class="service-type__services">
+                            {serviceGroup.services.map((service, i) => (
+                                <AtomTag 
+                                    text={service.title}
+                                    url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.type.slug.current}/${service.slug.current}`}
+                                />
+                            ))}
+                        </div>
                     </div>
                     ))}
                 </div>
@@ -48,8 +60,8 @@ const { section, brand } = Astro.props
 <style>
     .section-services-feed {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
+        /* justify-content: space-between; */
         padding-inline: var(--page-margin);
         padding-block: var(--space-lg);
     }
@@ -64,5 +76,19 @@ const { section, brand } = Astro.props
         display: flex;
         flex-direction: row;
         gap: var(--space-md);
+    }
+
+    .service-type__group {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--space-2xs);
+    }
+
+    .service-type__services {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2xs);
     }
 </style>
