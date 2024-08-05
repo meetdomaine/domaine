@@ -10,7 +10,7 @@ import { urlFor } from "../../utils/sanityClient";
 const content = await getPartnersPageContent()
 const partners = await getPartnersByTier()
 // console.log(partners)
-// console.log(content.contentBlocks)
+console.log(content.video)
 ---
 <Layout
   theme="dark"
@@ -22,6 +22,7 @@ const partners = await getPartnersByTier()
     heading={content.heading}
     description={content.description}
     image={content.image}
+    video={content.video}
     eager={true}
   />
 

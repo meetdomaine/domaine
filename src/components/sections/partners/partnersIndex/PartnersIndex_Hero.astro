@@ -1,17 +1,24 @@
 ---
+import { urlFor } from "../../../../utils/sanityClient"
 import SanityImage from "../../../atoms/SanityImage.astro"
 import { Icon } from 'astro-icon/components'
 
-const { heading, description, image } = Astro.props
+const { heading, description, image, video } = Astro.props
 ---
 <section class="partners-index-hero">
   
   <div class="media">
-    <SanityImage 
-      image={image}
-      sizes="50vw"
-      aspectRatio={4 / 3}
-    />
+    {video && video.asset ? 
+      <video src={ video.asset.url } width="1920" height="1080" controls>
+        <source src={video.asset.url} type="video/mp4">
+      </video>
+    :
+      <SanityImage 
+        image={image}
+        sizes="50vw"
+        aspectRatio={4 / 3}
+      />
+    }
   </div>
 
   <div class="content" data-animate-load="true" data-animate-style="fade-up">
@@ -59,6 +66,11 @@ const { heading, description, image } = Astro.props
     flex: 0 1 50%;
     border-radius: var(--radius-lg);
     overflow: hidden;
+  }
+
+  .media video {
+    width: 100%;
+    height: auto;
   }
 
   @media screen and (max-width: 768px) {
