@@ -45,6 +45,11 @@ const { tier, partners } = Astro.props
         </a>
       ))
     ) }
+    { partners.length == 0 &&
+      <div class="coming-soon-card">
+        <p class="utility">Coming Soon!</p>
+      </div>
+    }
   </div>
 </section>
 
@@ -84,10 +89,22 @@ const { tier, partners } = Astro.props
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-lg);
+    align-content: stretch;
   }
 
   .partner-logo {
     /* flex: 0 0 25%;` */
+  }
+
+  .coming-soon-card {
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1 / span 3;
+    padding: var(--space-sm);
+    /* flex: 1 0 auto; */
   }
 
   @media screen and (max-width: 1024px) {

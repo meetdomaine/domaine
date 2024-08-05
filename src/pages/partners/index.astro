@@ -32,8 +32,8 @@ const partners = await getPartnersByTier()
     />
   ))}
 
-  {content.contentBlocks && content.contentBlocks.map((block) => (
-    <SectionBlock block={block} />
+  {content.contentBlocks && content.contentBlocks.map((block, i) => (
+    <SectionBlock block={block} key={i} />
   ))}
   
 </Layout>
