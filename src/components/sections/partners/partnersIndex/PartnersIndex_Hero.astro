@@ -25,7 +25,7 @@ const { heading, description, image, video } = Astro.props
     <Icon name="domaine-icon" class="logo" />
     <div class="text">
       <h1>{heading}</h1>
-      <p class="h6">{description}</p>
+      <p class="">{description}</p>
     </div>
   </div>
   
@@ -42,7 +42,7 @@ const { heading, description, image, video } = Astro.props
   }
 
   .content {
-    flex: 0 1 50%;
+    flex: 0 1 40%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -63,7 +63,7 @@ const { heading, description, image, video } = Astro.props
   }
 
   .media {
-    flex: 0 1 50%;
+    flex: 0 1 60%;
     border-radius: var(--radius-lg);
     overflow: hidden;
   }
