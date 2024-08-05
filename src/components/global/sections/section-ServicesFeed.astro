@@ -2,74 +2,148 @@
 import { sanityClient } from "sanity:client";
 import AtomTag from "../atoms/atom-tag.astro";
 
-const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" ] { ... } | order( orderRank asc)`)
+const { section, brand, key } = Astro.props
 
-const servicesArray = await Promise.all(serviceTypes.map(async (serviceType) => {
-    const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && serviceType._ref == '${serviceType._id}' ] | order( orderRank asc)`)
-    return {
-        type: serviceType,
-        groups: await Promise.all(
-            serviceGroups.map( async (serviceGroup) => {
-                return {
-                    group: serviceGroup,
-                    services: await sanityClient.fetch(`
-                        *[_type == "type_service" 
-                            && serviceGroup._ref == '${serviceGroup._id}' ] | order( orderRank asc)`)
-                }
-            })
-        )
-    }
-}))
+const serviceTypes = await sanityClient.fetch(`
+    *[_type == "type_serviceType" 
+    && '${brand}' in agencyBrands[]->slug.current ]{
+        ...,
+        "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
+            ...,
+            "services": *[_type == "type_service" && references(^._id)] {
+                ...
+            } | order(orderRank)
+        } | order(orderRank)
+    } | order(orderRank)`)
 
-const { section, brand } = Astro.props
+
+const defaultService = "creative"
+
 ---
-<section class="section-services-feed">
+<section class="section-services-feed" id={`section-services-feed-${key}`}>
     <div class="section-title">
-        <h2>{section.heading}</h2>
-        {section.subheading && <p>{section.subheading}</p>}
-        {section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a>}
+        <h2 class="heading h5">{section.heading}</h2>
+        {section.subheading && <p class="subheading">{section.subheading}</p>}
+        <!-- {section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a>} -->
     </div>
+
     <div class="section-content">
-        {servicesArray.map((serviceType) => (
-            <div class="service-type">
-                <h3 class="h3">{serviceType.type.title}</h3>
-                <div class="service-type__groups">
-                    {serviceType.groups.map((serviceGroup) => (
+
+        <div class="service-type__toggle">
+            {serviceTypes.map((serviceType, i) => (
+                <button 
+                    class="service-type__button h2" 
+                    data-active={serviceType.slug.current === defaultService ? "true" : "false"}
+                    data-slug={serviceType.slug.current}
+                >{serviceType.title}</button>
+            ))}
+        </div>
+
+        {serviceTypes.map((serviceType) => (
+            <div 
+                class="service-type__groups" 
+                data-slug={serviceType.slug.current}
+                data-active={serviceType.slug.current === defaultService ? "true" : "false"}
+            >
+                {serviceType.serviceGroups.map((serviceGroup) => (
                     <div class="service-type__group">
                         <AtomTag 
                             theme="dark"
-                            text={serviceGroup.group.title}
-                            url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.type.slug.current}/${serviceGroup.group.slug.current}`}
+                            text={serviceGroup.title}
+                            url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
                         />
                         <div class="service-type__services">
                             {serviceGroup.services.map((service, i) => (
                                 <AtomTag 
                                     text={service.title}
-                                    url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.type.slug.current}/${service.slug.current}`}
+                                    url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
                                 />
                             ))}
                         </div>
                     </div>
-                    ))}
-                </div>
+                ))}
             </div>
         ))}
     </div>
 </section>
 
+<script define:vars={{ key }}>
+    const section = document.getElementById(`section-services-feed-${key}`)
+
+    
+
+    if (section) {
+        const buttons = section.querySelectorAll('.service-type__button')
+        const serviceGroups = section.querySelectorAll('.service-type__groups')
+
+        const toggleServiceType = (e) => {
+            const serviceType = e.target.dataset.slug
+            const activeGroup = section.querySelector(`.service-type__groups[data-slug="${serviceType}"]`)
+            serviceGroups.forEach((serviceGroup) => serviceGroup.dataset.active = "false")
+            buttons.forEach((button) => button.dataset.active = "false")
+            activeGroup.dataset.active = "true"
+            e.target.dataset.active = "true"
+        }
+
+        buttons.forEach((button) => {
+            button.addEventListener("mouseenter", (e) => {
+                toggleServiceType(e)
+            })
+            button.addEventListener("click", (e) => {
+                toggleServiceType(e)
+            })
+        })
+    }
+</script>
+
 <style>
     .section-services-feed {
         display: flex;
         flex-direction: column;
-        /* justify-content: space-between; */
+        justify-content: flex-start;
+        gap: var(--space-4xl);
         padding-inline: var(--page-margin);
         padding-block: var(--space-lg);
+        min-height: 80svh;
+    }
+
+    .section-title {
+        display: flex;
+        flex-direction: row;
+        /* justify-self: flex-start; */
+    }
+
+    .heading {
+        flex: 0 0 20em;
+    }
+
+    .subheading {
+        max-width: 12em;
     }
 
     .section-content {
         display: flex;
         flex-direction: column;
-        gap: var(--space-lg);
+        align-items: flex-start;
+        gap: var(--space-2xl);
+    }
+
+    .service-type__toggle {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+        padding: var(--space-xs);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+    }
+
+    .service-type__button {
+        margin: 0;
+        transition: background-color var(--anim-md);
+    }
+
+    .service-type__button:not([data-active="true"]) {
+        background-color: transparent;
     }
 
     .service-type__groups {
@@ -77,6 +151,13 @@ const { section, brand } = Astro.props
         flex-direction: row;
         flex-wrap: wrap;
         gap: var(--space-md);
+        opacity: 1;
+        transition: opacity var(--anim-sm);
+    }
+
+    .service-type__groups:not([data-active="true"]) {
+        display: none;
+        opacity: 0;
     }
 
     .service-type__group {
