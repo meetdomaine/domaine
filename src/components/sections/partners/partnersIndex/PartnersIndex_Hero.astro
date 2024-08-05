@@ -9,7 +9,7 @@ const { heading, description, image, video } = Astro.props
   
   <div class="media">
     {video && video.asset ? 
-      <video src={ video.asset.url } width="1920" height="1080" controls>
+      <video src={ video.asset.url } width="1920" height="1080" poster={urlFor(image).width(1920).height(1080).url()} controls>
         <source src={video.asset.url} type="video/mp4">
       </video>
     :
