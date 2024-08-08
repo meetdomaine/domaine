@@ -9,6 +9,8 @@
     --form-accent-color: var(--color-brand);
 
     --form-border-radius: var(--radius-sm);
+
+    --input-height: 40px;
 }
 
 form {
@@ -20,26 +22,54 @@ form {
 
 label {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-xs);
+    flex-direction: row;
+    /* align-items: stretch; */
+    /* gap: var(--space-xs); */
     flex-grow: 1;
+    z-index: 1;
+    transform-origin: 0% 50%;
+    transition: top var(--anim-sm), scale var(--anim-sm);
 }
+
+.hs-form-field > label,
+.hs-form-field:has(input:placeholder-shown):has(input:focus) > label {
+    position: absolute;
+    top: 0.1em;
+    left: var(--form-padding-inline);
+    scale: 0.8;
+}
+
+.hs-form-field:has(.hs-field-desc) {
+    /* flex-direction: column-reverse; */
+}
+
+.hs-form-field:has(input:placeholder-shown) label {
+    scale: 1;
+    top: calc( (1em + var(--form-padding-block)) / 2 );
+}
+
+/* label:has(input:active) {
+    rotate: 2deg;
+} */
 
 fieldset {
     max-width: unset !important;
 }
 
-label span,
+/* label span,
 .hs-form-required {
     display: inline;
-}
+} */
 
 /* label, */
 .hs-field-desc {
+    position: absolute;
+    right: var(--form-padding-inline);
     display: block;
     margin: 0;
     padding: 0;
+    justify-self: flex-end;
+    width: auto;
 }
 
 .hs-field-desc {
@@ -50,6 +80,7 @@ label span,
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
+    position: relative;
 }
 
 .hs-datepicker button {
@@ -76,6 +107,7 @@ select {
     -webkit-appearance: none;
     background: transparent;
     font-family: inherit;
+    height: var(--input-height);
 }
 
 textarea {
@@ -91,10 +123,11 @@ select {
 input,
 select,
 textarea {
-    background-color: transparent;
-    border: 1px solid var(--color-foreground);
+    /* background-color: transparent; */
+    background-color: var(--color-background-secondary);
+    border: 1px solid transparent;
     color: var(--color-foreground);
-    padding: var(--form-padding-block) var(--form-padding-inline);
+    padding: var(--form-padding-block) var(--form-padding-inline) 0;
     border-radius: var(--form-border-radius);
 }
 
@@ -154,7 +187,7 @@ fieldset.form-columns-2 .input textarea.hs-input {
     display: flex;
     flex-direction: row;
     justify-content: stretch;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: var(--form-gap-inline);
 }
 
@@ -177,12 +210,12 @@ fieldset.form-columns-2 .input textarea.hs-input {
     list-style: none;
 }
 
-label {
+/* label {
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
     flex: 0 0 auto;
-}
+} */
 
 label.toggle {
     display: flex;

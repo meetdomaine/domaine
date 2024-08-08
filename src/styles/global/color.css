@@ -35,7 +35,8 @@
 
 /* Default Colors */
 html,
-html[data-theme="dark"] .color-invert {
+html[data-theme="dark"] .color-invert,
+.color-reset {
     --color-foreground: var(--color-darkest);
     --color-foreground-secondary: var(--color-dark);
     --color-background: var(--color-lightest);

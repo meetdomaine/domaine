@@ -164,6 +164,10 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
         gap: var(--gap);
     }
 
+    .blog-card-wrapper {
+        flex: 1 0 calc(33% - var(--gap) * 2);
+    }
+
     @media screen and (max-width: 1024px) {
         .section-hero {
             align-items: flex-end;
