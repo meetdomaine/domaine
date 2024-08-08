@@ -33,7 +33,7 @@ const categories = await getBlogCategories();
         />
 
         <BlogIndexFeed
-            content={posts.filter(post => data.featuredPost.slug.current != post.slug.current)}
+            content={posts.filter(post => data.featuredPost.slug.current != post.slug.current && !post.hidePost)}
         />
 
     </div>

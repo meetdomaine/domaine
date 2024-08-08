@@ -45,6 +45,7 @@ const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
     title={data.title}
     description={data.metaDescription}
     image={data.metaImage && urlFor(data.metaImage).url()}
+    noIndex={true}
 >
     <BlogPostHero
       title={data.title}
