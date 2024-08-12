@@ -14,37 +14,96 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
     </div>
     <form id="contact-form" class="contact-form">
         <div class="fields-inline">
-            <label for="firstname">
-                First Name
-                <input type="text" name="firstname" id="firstname" required autofocus />
-            </label>
-            <label for="lastname">
-                Last Name
-                <input type="text" name="lastname" id="lastname" required />
-            </label>
+            <div class="custom-field">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" id="firstname" placeholder="" required autofocus />
+            </div>
+            <div class="custom-field">
+                <label for="lastname">Last Name</label>
+                <input type="text" name="lastname" id="lastname" placeholder="" required />
+            </div>
         </div>
-        <label for="email">
-            Email
-            <input type="email" name="email" id="email" required />
-        </label>
-        <label for="company">
-            Company / Organization
-            <input type="text" name="company" id="company" required />
-        </label>
-        <label for="message">
-            How Can We Help?
-            <textarea name="message" id="message" rows="4" cols="50" />
-        </label>
-        <!-- <label for="processConsent" class="toggle">
-            <input name="processConsent" id="processConsent" type="checkbox" required />
-            {processConsentMessage}
-        </label> -->
-        <label for="marketingConsent" class="toggle">
-            <input name="marketingConsent" id="marketingConsent" type="checkbox" />
-            {marketingConsentMessage}
-        </label>
-        <input type="submit" value="Submit" />
+        <div class="custom-field">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="" required />
+        </div>
+        <div class="custom-field">
+            <label for="company">Company / Organization</label>
+            <input type="text" name="company" id="company" placeholder="" required />
+        </div>
+        <div class="custom-field">
+            <label for="job-title">Job Title</label>
+            <input type="text" name="job-title" id="job-title" placeholder="" required />
+        </div>
+        <div class="custom-field">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city" placeholder="" required />
+        </div>
+        <div class="custom-field">
+            <label for="country">Country</label>
+            <input type="text" name="country" id="country" placeholder="" required />
+        </div>
+        <div class="custom-field">
+            <label for="current-platform">Current E-Commerce Platform</label>
+            <input type="text" name="current-platform" id="current-platform" placeholder="" required />
+        </div>
+        <div class="custom-field">
+            <p>How Can We Help?</p>
+            <ul class="inputs-list ">
+                <li>
+                    <input type="checkbox" id="replatform-to-shopify" name="how-can-we-help" value="Replatform to Shopify">
+                    <label for="replatform-to-shopify">Replatform to Shopify</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="existing-shopify-design-development" name="how-can-we-help" value="Existing Shopify Website Design & Development">
+                    <label for="existing-shopify-design-development">Existing Site Design & Development</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="creative-only-support" name="how-can-we-help" value="Creative and/or Design-Only Support">
+                    <label for="creative-only-support">Creative Support</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="strategy-services" name="how-can-we-help" value="Ecommerce Strategy Services">
+                    <label for="strategy-services">E-commerce Strategy</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="crm-services" name="how-can-we-help" value="CRM Services">
+                    <label for="crm-services">CRM Services</label>
+                </li>
+            </ul>
+        </div>
+
+        <div class="custom-field">
+            <label for="estimated-annual-revenue">Estimated Annual Revenue</label>
+            <select name="estimated-annual-revenue" id="estimated-annual-revenue">
+                <option value="less-than-5m">Less than $5M</option>
+                <option value="5m-10m">$5M to $10M</option>
+                <option value="10m-50m">$10M to $50M</option>
+                <option value="50m-100m">$50M to $100M</option>
+                <option value="100m-500m">$100M to $500M</option>
+                <option value="500m-plus">$500M+</option>
+            </select>
+        </div>
+        
+        <div class="custom-field">
+            <label for="project-description">Project Description:</label>
+            <textarea name="project-description" id="project-description" rows="4" cols="50" placeholder="" />
+        </div>
+        <div class="custom-field">
+            <ul class="inputs-list">
+                <li>
+                    <input name="marketingConsent" id="marketingConsent" type="checkbox" />
+                    <label for="marketingConsent" class="toggle">{marketingConsentMessage}</label>
+                </li>
+            </ul>
+        </div>
     </form>
+
+    <div class="submit-button">
+        <div class="custom-field">
+            <input type="submit" value="Submit" form="contact-form" />
+        </div>
+    </div>
 </aside>
 
 <script define:vars={{ portalId, hubspotFormId, processConsentMessage, marketingConsentMessage }}>
@@ -122,13 +181,16 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
         border-radius: var(--radius-md);
         position: fixed;
         translate: calc(100% + var(--inset) + var(--page-margin)) 0;
-        padding-block: var(--space-md);
+        /* padding-block: var(--space-md); */
+        padding-inline: 0;
+        padding-block: 0;
         z-index: 19;
         flex-direction: column;
-        gap: var(--space-md);
+        /* gap: var(--space-md); */
         display: flex;
         justify-content: space-between;
         transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
+        /* overflow: visible; */
     }
 
     .contact-menu:popover-open {
@@ -158,6 +220,12 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
         justify-content: space-between;
         align-items: center;
         padding-inline: var(--space-md);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(180deg, var(--color-background) 80%, transparent);
+        /* background-color: var(--color-background); */
+        padding-block: var(--space-md);
     }
 
     .close-button {
@@ -171,28 +239,22 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
         flex: 1 0 auto;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: stretch;
+        overflow: visible;
     }
 
-    /* input[type="text"],
-    input[type="tel"],
-    input[type="email"] {
-        border: none;
-        border-bottom: 1px solid var(--color-foreground);
-        padding-inline: 0;
-        padding-block: var(--space-2xs);
-        background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+    .submit-button {
+        position: sticky;
+        bottom: 0;
+        background: linear-gradient(0deg, var(--color-background) 80%, transparent);
+        padding-block: var(--space-md);
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        /* justify-content: flex-end; */
+        padding-inline: var(--space-md);
     }
-
-    textarea {
-        padding-block: var(--space-2xs);
-        background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
-    } */
-
-    /* .fields-inline label {
-        flex: 1 0 auto;
-    } */
 
 
 </style>

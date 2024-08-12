@@ -1,21 +1,27 @@
 :root {
-    --form-padding-block: var(--space-xs);
-    --form-padding-inline: var(--space-2xs);
+    --form-padding-block: 0.25rem;
+    --form-padding-inline: 0.5rem;
+
+    --active-label-scale: 0.8;
 
     --form-gap-block: var(--space-sm);
     --form-gap-inline: var(--space-xs);
 
-    --form-toggle-size: 1em;
+    --form-toggle-size: 1rem;
     --form-accent-color: var(--color-brand);
 
     --form-border-radius: var(--radius-sm);
+}
 
-    --input-height: 40px;
+
+fieldset {
+    max-width: unset !important;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: stretch;
     gap: var(--form-gap-block);
 }
@@ -23,97 +29,20 @@ form {
 label {
     display: flex;
     flex-direction: row;
-    /* align-items: stretch; */
-    /* gap: var(--space-xs); */
     flex-grow: 1;
-    z-index: 1;
-    transform-origin: 0% 50%;
-    transition: top var(--anim-sm), scale var(--anim-sm);
-}
-
-.hs-form-field > label,
-.hs-form-field:has(input:placeholder-shown):has(input:focus) > label {
-    position: absolute;
-    top: 0.1em;
-    left: var(--form-padding-inline);
-    scale: 0.8;
-}
-
-.hs-form-field:has(.hs-field-desc) {
-    /* flex-direction: column-reverse; */
-}
-
-.hs-form-field:has(input:placeholder-shown) label {
-    scale: 1;
-    top: calc( (1em + var(--form-padding-block)) / 2 );
-}
-
-/* label:has(input:active) {
-    rotate: 2deg;
-} */
-
-fieldset {
-    max-width: unset !important;
-}
-
-/* label span,
-.hs-form-required {
-    display: inline;
-} */
-
-/* label, */
-.hs-field-desc {
-    position: absolute;
-    right: var(--form-padding-inline);
-    display: block;
-    margin: 0;
-    padding: 0;
-    justify-self: flex-end;
-    width: auto;
-}
-
-.hs-field-desc {
-    color: var(--color-foreground-secondary);
-}
-
-.hs-form-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2xs);
-    position: relative;
-}
-
-.hs-datepicker button {
-    padding: initial;
-    min-width: initial;
-}
-
-.input {
-    margin: 0 !important;
-    padding: 0;
-}
-
-input::placeholder {
-    color: var(--color-foreground-secondary);
 }
 
 input,
 select {
-    --min-size: var(--form-input-min-size);
-    --base-size: var(--form-input-base-size);
-    outline: none;
-    margin: 0;
-    appearance: none;
-    -webkit-appearance: none;
-    background: transparent;
-    font-family: inherit;
-    height: var(--input-height);
+    /* height: auto; */
+    /* height: var(--input-height); */
+    /* display: flex;
+    flex-direction: row;
+    align-items: flex-end; */
 }
 
-textarea {
-    --min-size: var(--form-input-min-size);
-    --base-size: var(--form-input-base-size);
-    font-family: inherit;
+input::placeholder {
+    color: var(--color-foreground-secondary);
 }
 
 select {
@@ -123,24 +52,32 @@ select {
 input,
 select,
 textarea {
-    /* background-color: transparent; */
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    margin: 0;
+    --min-size: var(--form-input-min-size);
+    --base-size: var(--form-input-base-size);
+    font-family: inherit;
     background-color: var(--color-background-secondary);
     border: 1px solid transparent;
     color: var(--color-foreground);
-    padding: var(--form-padding-block) var(--form-padding-inline) 0;
+    padding-block: calc(1rem * var(--active-label-scale) + var(--form-padding-block) + 0.2rem ) var(--form-padding-block);
+    padding-inline: var(--form-padding-inline);
     border-radius: var(--form-border-radius);
+    line-height: 1.5rem;
 }
 
-input[type="file"],
-input[type="submit"] {
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 1px solid var(--color-focus);
+}
+
+input[type="file"] {
     border: none;
     padding: var(--form-padding-block) var(--form-padding-inline);
 }
-
-
-/* input[type="radio"] {
-
-} */
 
 input[type="radio"],
 input[type="checkbox"] {
@@ -148,29 +85,146 @@ input[type="checkbox"] {
     width: var(--form-toggle-size) !important;
     height: var(--form-toggle-size) !important;
     padding: 0 !important;
+    transition: border var(--anim-sm), background-color var(--anim-sm);
+}
+
+input[type="radio"]:hover,
+input[type="checkbox"]:hover {
+    border: 1px solid var(--color-foreground);
+}
+
+
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+    background-color: var(--form-accent-color);
 }
 
 input[type="radio"]::before,
 input[type="checkbox"]::before {
     content: "";
-    --size: 75%;
-    width: var(--size);
-    height: var(--size);
     position: absolute;
     inset: 50% 50%;
     translate: -50% -50%;
-    background-color: var(--form-accent-color);
+    background-color: var(--color-background);
     opacity: 0;
 }
 
 input[type="radio"],
 input[type="radio"]::before {
     border-radius: var(--radius-rounded);
+    width: 50%;
+    height: 50%;
 }
 
 input[type="radio"]:checked::before,
 input[type="checkbox"]:checked::before {
     opacity: 1;
+}
+
+input[type="checkbox"]::before {
+    width: 100%;
+    height: 100%;
+    transform-origin: bottom left;
+    clip-path: polygon(17% 54%, 28% 43%, 38% 54%, 70% 22%, 81% 33%, 38% 75%, 17% 54%);
+    /* clip-path: polygon(17% 54%, 28% 43%, 38% 54%, 70% 22%, 81% 33%, 38% 75%, 17% 54%); */
+}
+
+.hs-submit {
+    position: relative;
+    align-self: flex-start;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.hs-form-field,
+.custom-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    position: relative;
+}
+
+/* Floating Labels - Active */
+.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"])) > label,
+.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown):focus-within > label,
+.hs-form-field:has(.hs-dateinput) > label,
+.hs-form-field:has(select) > label,
+.custom-field:has(input:is([type="text"], [type="email"], [type="number"])) > label,
+.custom-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown):focus-within > label,
+.custom-field:has(select) > label {
+    position: absolute;
+    left: var(--form-padding-inline);
+    top: var(--form-padding-block);
+    translate: 0 0;
+    scale: var(--active-label-scale);
+    z-index: 1;
+    transform-origin: 0% 50%;
+    transition: top var(--anim-sm), scale var(--anim-sm), translate var(--anim-sm);
+}
+
+/* Floating Labels - Default */
+.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown) > label,
+.hs-form-field:has(.hs-dateinput input[value=""]) > label,
+.custom-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown) > label,
+.custom-field:has(input:placeholder-shown) > label {
+    scale: 1;
+    /* top: calc( ( var(--form-padding-block)) / 2 ); */
+    left: var(--form-padding-inline);
+    top: 50%;
+    translate: 0 -50%;
+}
+
+/* Hide placeholder text */
+input::placeholder {
+    visibility: hidden;
+}
+
+/* Field Description */
+.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"])) > .hs-field-desc {
+    position: absolute;
+    display: block;
+    margin: 0;
+    padding: 0;
+    justify-self: flex-end;
+    width: auto !important;
+    top: 50%;
+    right: var(--space-sm);
+    translate: 0 -50%;
+    color: var(--color-foreground-secondary);
+    transition: opacity var(--anim-sm);
+}
+
+.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"])):focus-within > .hs-field-desc {
+    opacity: 0;
+}
+
+/* Clear Hubspot Styling */
+.input {
+    margin: 0 !important;
+}
+
+.hs-form-field:has(select)::after,
+.custom-field:has(select)::after {
+    --size: 0.8em;
+    --thickness: 10%;
+    content: "";
+    position: absolute;
+    top: 45%;
+    /* translate: -50% -50%; */
+    transform-origin: 30% 30%;
+    right: calc(var(--form-padding-inline) + var(--size) / 2);
+    width: var(--size);
+    height: var(--size);
+    background-color: red;
+    z-index: 3;
+    rotate: 225deg;
+    transition: rotate var(--anim-sm);
+    clip-path: polygon(0% 0%, 100% 0%, 100% var(--thickness), var(--thickness) var(--thickness), var(--thickness) 100%, 0% 100%, 0% 0% );
+}
+
+.hs-form-field:has(select):hover::after,
+.custom-field:has(select):hover::after {
+    rotate: 45deg;
 }
 
 fieldset.form-columns-1 .input input.hs-input,
@@ -189,6 +243,12 @@ fieldset.form-columns-2 .input textarea.hs-input {
     justify-content: stretch;
     align-items: flex-start;
     gap: var(--form-gap-inline);
+    width: 100%;
+}
+
+.form-columns-2 .hs-form-field,
+.fields-inline .custom-field {
+    flex: 0 1 100%;
 }
 
 .form-columns-2 label,
@@ -208,14 +268,9 @@ fieldset.form-columns-2 .input textarea.hs-input {
 
 .inputs-list li {
     list-style: none;
-}
-
-/* label {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2xs);
-    flex: 0 0 auto;
-} */
+    flex-direction: row;
+}
 
 label.toggle {
     display: flex;
@@ -224,7 +279,9 @@ label.toggle {
 
 .hs-form-radio-display,
 .hs-form-checkbox-display,
-.hs-form-booleancheckbox-display {
+.hs-form-booleancheckbox-display,
+.custom-field:has(input:is([type="radio"], [type="checkbox"])) .inputs-list li,
+.custom-field:has(input:is([type="radio"], [type="checkbox"])) .inputs-list li label {
     cursor: pointer;
     --min-size: var(--form-input-min-size);
     --base-size: var(--form-input-base-size);
