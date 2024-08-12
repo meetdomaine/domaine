@@ -26,6 +26,7 @@ button {
     border-radius: var(--button-border-radius);
     color: var(--color-foreground);
     padding: var(--button-padding-block) var(--button-padding-inline);
+    cursor: pointer;
 }
 
 .button:hover {

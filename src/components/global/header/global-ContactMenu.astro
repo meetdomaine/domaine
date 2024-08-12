@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const { className, hubspotFormId, processConsentMessage, marketingConsentMessage } = Astro.props
+const { hubspotFormId, processConsentMessage, marketingConsentMessage } = Astro.props
 
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 ---
@@ -48,25 +48,25 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
             <input type="text" name="current-platform" id="current-platform" placeholder="" required />
         </div>
         <div class="custom-field">
-            <p>How Can We Help?</p>
-            <ul class="inputs-list ">
-                <li>
+            <p class="h6">How Can We Help?</p>
+            <ul class="inputs-list toggle-button-list">
+                <li class="toggle-button">
                     <input type="checkbox" id="replatform-to-shopify" name="how-can-we-help" value="Replatform to Shopify">
                     <label for="replatform-to-shopify">Replatform to Shopify</label>
                 </li>
-                <li>
+                <li class="toggle-button">
                     <input type="checkbox" id="existing-shopify-design-development" name="how-can-we-help" value="Existing Shopify Website Design & Development">
                     <label for="existing-shopify-design-development">Existing Site Design & Development</label>
                 </li>
-                <li>
+                <li class="toggle-button">
                     <input type="checkbox" id="creative-only-support" name="how-can-we-help" value="Creative and/or Design-Only Support">
                     <label for="creative-only-support">Creative Support</label>
                 </li>
-                <li>
+                <li class="toggle-button">
                     <input type="checkbox" id="strategy-services" name="how-can-we-help" value="Ecommerce Strategy Services">
                     <label for="strategy-services">E-commerce Strategy</label>
                 </li>
-                <li>
+                <li class="toggle-button">
                     <input type="checkbox" id="crm-services" name="how-can-we-help" value="CRM Services">
                     <label for="crm-services">CRM Services</label>
                 </li>
@@ -74,6 +74,36 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
         </div>
 
         <div class="custom-field">
+            <p class="h6">Estimated Annual Revenue</p>
+            <ul class="inputs-list toggle-button-list">
+                <li class="toggle-button">
+                    <input type="radio" id="under-5m" name="estimated-annual-revenue" value="Under $5M">
+                    <label for="under-5m">Under $5M</label>
+                </li>
+                <li class="toggle-button">
+                    <input type="radio" id="5m-10m" name="estimated-annual-revenue" value="$5M-$10M">
+                    <label for="5m-10m">$5M-$10M</label>
+                </li>
+                <li class="toggle-button">
+                    <input type="radio" id="10m-50m" name="estimated-annual-revenue" value="$10M-$50M">
+                    <label for="10m-50m">$10M-$50M</label>
+                </li>
+                <li class="toggle-button">
+                    <input type="radio" id="50m-100m" name="estimated-annual-revenue" value="$50M-$100M">
+                    <label for="50m-100m">$50M-$100M</label>
+                </li>
+                <li class="toggle-button">
+                    <input type="radio" id="100m-500m" name="estimated-annual-revenue" value="$100M-$500M">
+                    <label for="100m-500m">$100M-$500M</label>
+                </li>
+                <li class="toggle-button">
+                    <input type="radio" id="over-500m" name="estimated-annual-revenue" value="$500M+">
+                    <label for="over-500m">$500M+</label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- <div class="custom-field">
             <label for="estimated-annual-revenue">Estimated Annual Revenue</label>
             <select name="estimated-annual-revenue" id="estimated-annual-revenue">
                 <option value="less-than-5m">Less than $5M</option>
@@ -83,7 +113,7 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
                 <option value="100m-500m">$100M to $500M</option>
                 <option value="500m-plus">$500M+</option>
             </select>
-        </div>
+        </div> -->
         
         <div class="custom-field">
             <label for="project-description">Project Description:</label>
@@ -169,28 +199,22 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 <style>
     .contact-menu {
         --inset: var(--space-sm);
-        /* --color-foreground: var(--color-darkest);
-        --color-foreground-secondary: var(--color-dark);
-        --color-background: var(--color-lightest);
-        --color-background-secondary: var(--color-light); */
         border: none;
         margin: auto var(--inset) auto auto;
         height: calc(100% - var(--inset) * 2);
-        max-width: 500px;
+        max-width: 40rem;
         background-color: var(--color-background);
         border-radius: var(--radius-md);
         position: fixed;
+        width: calc(100% - var(--inset) * 2);
         translate: calc(100% + var(--inset) + var(--page-margin)) 0;
-        /* padding-block: var(--space-md); */
         padding-inline: 0;
         padding-block: 0;
         z-index: 19;
         flex-direction: column;
-        /* gap: var(--space-md); */
         display: flex;
         justify-content: space-between;
         transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
-        /* overflow: visible; */
     }
 
     .contact-menu:popover-open {
@@ -253,6 +277,7 @@ const portalId = import.meta.env.HUBSPOT_PORTAL_ID
         flex-direction: row;
         justify-content: flex-start;
         /* justify-content: flex-end; */
+        z-index: 3;
         padding-inline: var(--space-md);
     }
 
