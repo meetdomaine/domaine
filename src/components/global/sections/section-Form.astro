@@ -1,4 +1,6 @@
 ---
+import AtomHubspotForm from "../atoms/atom-hubspotForm.astro";
+
 const { section, key } = Astro.props;
 const formId = section.hubspotFormId
 ---
@@ -8,35 +10,11 @@ const formId = section.hubspotFormId
       <h2 class="h2">{section.heading}</h2>
       <p class="h6">{section.subheading}</p>
     </div>
-    
-    <div 
-      id={`form-${formId}-${key}`} 
-      data-hubspot-form-id={formId}
-    ></div>
+
+    <AtomHubspotForm 
+      formId={formId}
+    />
 </section>
-
-<script define:vars={{ formId, key }}>
-
-  const initForm = () => {
-    const form = document.querySelector(`#form-${formId}-${key}`)
-
-    if (form && window.hbspt) {
-
-      window.hbspt.forms.create({
-        region: "na1",
-        target: `#form-${formId}-${key}`,
-        portalId: "41750854",
-        formId: form.dataset.hubspotFormId,
-      });
-      
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initForm()
-  })
-
-</script>
 
 <style>
     .section-form {

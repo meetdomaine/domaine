@@ -1,0 +1,272 @@
+---
+interface Props {
+    formId: any,
+    buttonToggles?: boolean,
+}
+
+const { formId, buttonToggles } = Astro.props
+
+const portalId = import.meta.env.HUBSPOT_PORTAL_ID
+
+const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
+    method: "GET",
+    headers: {
+        'Authorization': `Bearer ${import.meta.env.HUBSPOT_ACCESS_TOKEN}`,
+        "Content-type": "application/json; charset=UTF-8"
+    }
+})
+
+const formData = await hubspotResponse.json()
+const fieldGroups = formData.fieldGroups
+const consentData = formData.legalConsentOptions
+
+const fields = await fieldGroups.flatMap((group) => {
+    return group.fields.map((field) => {
+        return field
+    })
+})
+---
+<form id={`form-${formId}`} >
+    {fieldGroups.map((group) => {
+        return (
+            <div class="form-field-group">
+        
+            {group.fields.map((field) => {
+                // console.log(field)
+                switch (field.fieldType) {
+                    case('single_line_text'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="text" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId}  />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
+                    case('email'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="email" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
+                    case('datepicker'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="date" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
+                    case('number'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="number" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
+                    case('file'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="file" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
+                    case('dropdown'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                                <select name={field.name} id={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId}>
+                                    {field.options.map((option) => (
+                                        <option value={option.value}>{option.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )
+                    case('single_checkbox'):
+                        return (
+                            <div class="form-field">
+                                <div class="inputs-list toggle-button-list">
+                                    <input type="checkbox" id={field.name} name={field.name} value={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            </div>
+                        )
+                    case('multiple_checkboxes'):
+                        return (
+                            <div class="form-field">
+                                <p class="h6">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                                <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
+                                    {field.options.map((option) => (
+                                        <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
+                                            <input type="checkbox" id={option.value} name={field.name} value={option.value} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                            <label for={option.value}>{option.label}</label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+                        )
+                    case('radio'):
+                        return (
+                            <div class="form-field">
+                                <p class="h6">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                                <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
+                                    {field.options.map((option) => (
+                                        <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
+                                            <input type="radio" id={option.value} name={field.name} value={option.value} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                            <label for={option.value}>{option.label}</label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+                        )
+                    case('dropdown'):
+                        return (
+                            <div class="form-field">
+                                <p class="h6">{field.label}</p>
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                                <fieldset class="inputs-list toggle-button-list">
+                                    {field.options.map((option) => (
+                                        <div class="input-list-item toggle-button">
+                                            <input type="radio" id={option.value} name={field.name} value={option.value} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                            <label for={option.value}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+                        )
+                    case('multi_line_text'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <textarea name={field.name} id={field.name} rows="4" cols="50" placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
+                    default: null
+                }
+            })}
+            </div>
+        )
+    })}
+
+    {consentData && consentData.communicationsCheckboxes && 
+        <div class="legal-consent">
+            {consentData.communicationConsentText && <Fragment set:html={consentData.communicationConsentText} />}
+            {consentData.communicationsCheckboxes.map((checkbox) => (
+                <div class="form-field">
+                    <div class="inputs-list">
+                        <div class="input-list-item">
+                            <input type="checkbox" id={`communication-consent-${formId}`} name={`communication-consent-${formId}`} value={`communication-consent-${formId}`} required />
+                            <label for={`communication-consent-${formId}`}>{checkbox.label}</label>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    }
+
+    {consentData && 
+        <div class="legal-consent">
+            {consentData.consentToProcessText && <Fragment set:html={consentData.consentToProcessText} />}
+            {consentData.consentToProcessCheckboxLabel &&
+                <div class="form-field">
+                    <div class="inputs-list">
+                        <div class="input-list-item">
+                            <input type="checkbox" id="consentToProcess" name="consentToProcess" value="consentToProcess" required />
+                            <label for="consentToProcess">{consentData.consentToProcessCheckboxLabel}</label>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    {consentData && consentData.privacyText && 
+        <div class="legal-consent">
+            <Fragment set:html={consentData.privacyText} />
+        </div>
+    }
+
+    <div class="form-field">
+        <input type="submit" form={`form-${formId}`} value={formData.displayOptions.submitButtonText} />
+    </div>
+
+</form>
+
+    
+
+
+<script define:vars={{ portalId, formId, consentData, fields }}>
+
+    const contactForm = document.querySelector(`#form-${formId}`)
+    const formData = new FormData(contactForm);
+    // console.log(formData)
+
+    console.log(fields)
+    console.log(consentData)
+
+    const submitForm = async () => {
+
+        const formData = new FormData(contactForm);
+
+        const formBody = {
+            fields: [],
+            legalConsentOptions: {
+                consent: { 
+                    consentToProcess: true,
+                    text: consentData.consentToProcessText,
+                    communications: consentData.communicationsCheckboxes.map((checkbox) => {
+                        return {
+                            "value": true,
+                            "subscriptionTypeId": checkbox.subscriptionTypeId,
+                            "text": checkbox.label
+                        }
+                    })
+                }
+            }
+        }
+
+        let fieldIndex = 0
+        
+        for (const field of formData) {
+            console.log(field)
+            const fieldName = field[0]
+            const fieldValue = field[1]
+            formBody.fields.push({
+                objectTypeId: fields[fieldIndex].objectTypeId,
+                name: fieldName,
+                value: typeof fieldValue === "string" ? fieldValue : "Unsupported field value."
+            })
+            fieldIndex++
+        }
+        // console.log(formData)
+        console.log(formBody)
+
+        try {
+            const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
+                method: "POST",
+                body: JSON.stringify(formBody),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            console.log(await response.json())
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    contactForm.addEventListener("submit", (e) => {
+        // console.log(e)
+        e.preventDefault();
+        submitForm();  
+    })
+
+</script>

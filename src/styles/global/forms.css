@@ -1,17 +1,15 @@
 :root {
     --form-padding-block: 0.25rem;
     --form-padding-inline: 0.5rem;
-    --form-gap-block: var(--space-sm);
+    --form-gap-block: var(--space-xs);
     --form-gap-inline: var(--space-xs);
     --form-toggle-size: 1rem;
     --form-accent-color: var(--color-brand);
     --form-border-radius: var(--radius-sm);
-    --input-height: 3rem;
     --active-label-scale: 0.8;
-}
-
-fieldset {
-    max-width: unset !important;
+    --input-label-gap: var(--space-xs);
+    --input-height: calc(1em + var(--form-padding-block) * 2 + 1em * var(--active-label-scale) + var(--input-label-gap));
+    /* --input-height: 3rem; */
 }
 
 form {
@@ -20,21 +18,25 @@ form {
     justify-content: flex-start;
     align-items: stretch;
     gap: var(--form-gap-block);
+    margin-bottom: var(--space-md);
+    max-width: 50rem;
+    accent-color: pink;
+}
+
+fieldset {
+    border: none;
 }
 
 label {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    pointer-events: none;
 }
 
 input,
 select {
     height: var(--input-height);
-}
-
-input::placeholder {
-    color: var(--color-foreground-secondary);
 }
 
 input,
@@ -55,10 +57,14 @@ textarea {
     border-radius: var(--form-border-radius);
 }
 
+/* Cursor */
+input:is([type="date"]),
+.form-field:has(input:is([type="checkbox"])) label,
 select {
     cursor: pointer;
 }
 
+/* --- Hover States --- */
 input:is([type="text"], [type="email"], [type="number"]),
 select {
     transition: border var(--anim-sm), background-color var(--anim-sm);
@@ -70,15 +76,8 @@ select:hover {
     background-color: var(--color-background);
 }
 
-textarea {
-    padding-block: var(--form-padding-inline);
-}
 
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-    outline: 1px solid var(--color-focus);
-}
+/* --- Base Field Types --- */
 
 input[type="file"] {
     border: none;
@@ -136,29 +135,45 @@ input[type="checkbox"]::before {
     /* clip-path: polygon(17% 54%, 28% 43%, 38% 54%, 70% 22%, 81% 33%, 38% 75%, 17% 54%); */
 }
 
-.hs-submit {
-    position: relative;
+input[type="submit"] {
     align-self: flex-start;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
 }
 
-.hs-form-field,
-.custom-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2xs);
-    position: relative;
+textarea {
+    padding-block: var(--form-padding-inline);
 }
 
-/* Floating Labels - Active */
-.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"])) > label,
-.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown):focus-within > label,
-.hs-form-field:has(.hs-dateinput) > label,
-.hs-form-field:has(select) > label,
-.custom-field:has(input:is([type="text"], [type="email"], [type="number"])) > label,
-.custom-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown):focus-within > label,
-.custom-field:has(select) > label {
+/* --- Hide placeholder text --- */
+input::placeholder {
+    visibility: hidden;
+}
+
+/* --- Focus States --- */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 1px solid var(--color-focus);
+}
+
+input:active,
+select:active,
+textarea:active {
+    outline: 1px solid transparent;
+}
+
+/* --- Floating Labels: Default --- */
+.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"]):placeholder-shown) > label,
+.form-field:has(input:placeholder-shown) > label {
+    scale: 1;
+    left: var(--form-padding-inline);
+    top: calc( var(--input-height) / 2 );
+    translate: 0 -50%;
+}
+
+/* --- Floating Labels: Active --- */
+.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"])) > label,
+.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"]):placeholder-shown):focus-within > label,
+.form-field:has(select) > label {
     position: absolute;
     left: var(--form-padding-inline);
     top: var(--form-padding-block);
@@ -169,51 +184,9 @@ input[type="checkbox"]::before {
     transition: top var(--anim-sm), scale var(--anim-sm), translate var(--anim-sm);
 }
 
-/* Floating Labels - Default */
-.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown) > label,
-.hs-form-field:has(.hs-dateinput input[value=""]) > label,
-.custom-field:has(input:is([type="text"], [type="email"], [type="number"]):placeholder-shown) > label,
-.custom-field:has(input:placeholder-shown) > label {
-    scale: 1;
-    /* top: calc( ( var(--form-padding-block)) / 2 ); */
-    left: var(--form-padding-inline);
-    top: calc( var(--input-height) / 2 );
-    translate: 0 -50%;
-}
-
-/* Hide placeholder text */
-input::placeholder {
-    visibility: hidden;
-}
-
-/* Field Description */
-.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"])) > .hs-field-desc {
-    position: absolute;
-    display: block;
-    margin: 0;
-    padding: 0;
-    justify-self: flex-end;
-    width: auto !important;
-    top: 50%;
-    right: var(--space-sm);
-    translate: 0 -50%;
-    color: var(--color-foreground-secondary);
-    transition: opacity var(--anim-sm);
-    pointer-events: none;
-}
-
-.hs-form-field:has(input:is([type="text"], [type="email"], [type="number"])):focus-within > .hs-field-desc {
-    opacity: 0;
-}
-
-/* Clear Hubspot Styling */
-.input {
-    margin: 0 !important;
-}
 
 /* Carat */
-.hs-form-field:has(select)::after,
-.custom-field:has(select)::after {
+.form-field:has(select)::after {
     --size: 0.8em;
     --thickness: 10%;
     content: "";
@@ -230,39 +203,8 @@ input::placeholder {
     clip-path: polygon(0% 0%, 100% 0%, 100% var(--thickness), var(--thickness) var(--thickness), var(--thickness) 100%, 0% 100%, 0% 0% );
 }
 
-/* .hs-form-field:has(select):hover::after,
-.custom-field:has(select):hover::after {
-    rotate: 45deg;
-} */
 
-fieldset.form-columns-1 .input input.hs-input,
-fieldset.form-columns-2 .input input.hs-input,
-fieldset.form-columns-1 .input select.hs-input,
-fieldset.form-columns-2 .input select.hs-input,
-fieldset.form-columns-1 .input textarea.hs-input,
-fieldset.form-columns-2 .input textarea.hs-input {
-    width: 100%;
-}
-
-.form-columns-2,
-.fields-inline {
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
-    align-items: flex-start;
-    gap: var(--form-gap-inline);
-    width: 100%;
-}
-
-.form-columns-2 .hs-form-field,
-.fields-inline .custom-field {
-    flex: 0 1 100%;
-}
-
-.form-columns-2 label,
-.fields-inline label {
-    flex: 1 0 auto;
-}
+/* --- Input Lists --- */
 
 .inputs-list {
     margin: 0;
@@ -274,21 +216,31 @@ fieldset.form-columns-2 .input textarea.hs-input {
     gap: var(--space-xs);
 }
 
-.inputs-list li {
-    list-style: none;
+.inputs-list .input-list-item {
     display: flex;
     flex-direction: row;
 }
 
-.custom-field:has(.toggle-button-list) {
-    padding-block: var(--space-xs);
+.form-field:has(input:is([type="radio"], [type="checkbox"])) .inputs-list .input-list-item,
+.form-field:has(input:is([type="radio"], [type="checkbox"])) .inputs-list .input-list-item label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2xs);
 }
+
+/* Toggle Buttons -- Stylistic replacement of Radio & Checkboxes  */
 
 .toggle-button-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding: 0;
+}
+
+.form-field:has(.toggle-button-list) {
+    padding-block: var(--space-sm);
 }
 
 .toggle-button-list .toggle-button {
@@ -312,51 +264,54 @@ fieldset.form-columns-2 .input textarea.hs-input {
     display: none;
 }
 
-/* .toggle-button-list .toggle-button::after {
-    display: none;
-} */
-
-label.toggle {
-    display: flex;
-    flex-direction: row;
+.form-field:has(.toggle-button-list) {
+    padding-block: var(--space-sm);
+    flex-direction: column;
 }
 
-.hs-form-radio-display,
-.hs-form-checkbox-display,
-.hs-form-booleancheckbox-display,
-.custom-field:has(input:is([type="radio"], [type="checkbox"])) .inputs-list li,
-.custom-field:has(input:is([type="radio"], [type="checkbox"])) .inputs-list li label {
-    cursor: pointer;
-    --min-size: var(--form-input-min-size);
-    --base-size: var(--form-input-base-size);
+/* --- Layout --- */
+.form-field-group {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    gap: var(--form-gap-inline);
+}
+
+.form-field {
+    flex: 0 1 100%;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-2xs);
+    position: relative;
 }
 
-.legal-consent-container .hs-form-booleancheckbox-display>span {
-    margin-left: 0 !important;
+/* --- Legal Consent --- */
+.legal-consent {
+    margin-bottom: var(--space-2xs);
 }
 
-.hs-error-msgs {
-    padding: 0;
-    align-items: stretch;
+.legal-consent > p {
+    --min-size: 12;
+    --base-size: 12;
+    letter-spacing: 0;
+    margin: 0;
+    font-weight: 400;
+    color: var(--color-foreground-secondary);
 }
 
-.hs-error-msg {
-    background-color: var(--color-error);
-    color: var(--color-reverse);
-    border-radius: var(--form-border-radius);
-    padding: var(--space-2xs);
-    text-align: center;
+.form-field .optional-label {
+    color: var(--color-foreground-secondary);
+    margin-inline-start: 0.5ch;
 }
 
-.hs-richtext * {
-    --min-size: var(--form-label-min-size);
-    --base-size: var(--form-label-base-size);
+.field-description {
+    color: var(--color-foreground-secondary);
 }
 
-.hs-richtext:last-child p:last-child {
-    margin-bottom: 0;
+/* Annoyingly, we have to do this to control date highlight color */
+input::-webkit-datetime-edit-day-field:focus,
+input::-webkit-datetime-edit-month-field:focus,
+input::-webkit-datetime-edit-year-field:focus {
+    background-color: var(--color-brand);
+    color: var(--color-brand-contrast);
+    outline: none;
 }

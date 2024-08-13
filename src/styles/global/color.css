@@ -33,6 +33,11 @@
     --background-blur-color: color-mix(in srgb, var(--color-darkest) 40%, transparent);
 }
 
+::selection {
+    background: var(--color-brand);
+    color: var(--color-brand-contrast);
+}
+
 /* Default Colors */
 html,
 html[data-theme="dark"] .color-invert,
