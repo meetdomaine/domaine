@@ -50,6 +50,14 @@ const fields = await fieldGroups.flatMap((group) => {
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
                         )
+                    case('phone'):
+                        return (
+                            <div class="form-field">
+                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="phone" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                {field.description && <p class="field-description caption">{field.description}</p>}
+                            </div>
+                        )
                     case('datepicker'):
                         return (
                             <div class="form-field">
@@ -89,22 +97,31 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('single_checkbox'):
                         return (
                             <div class="form-field">
-                                <div class="inputs-list toggle-button-list">
-                                    <input type="checkbox" id={field.name} name={field.name} value={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                    <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                <div class="inputs-list">
+                                    <div class="input-list-item">
+                                        <input type="checkbox" id={field.name} name={field.name} value={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                        <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                        {field.description && <p class="field-description caption">{field.description}</p>}
+                                    </div>
                                 </div>
                             </div>
                         )
                     case('multiple_checkboxes'):
                         return (
                             <div class="form-field">
-                                <p class="h6">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
+                                <p class="">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                                 <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
                                     {field.options.map((option) => (
                                         <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
-                                            <input type="checkbox" id={option.value} name={field.name} value={option.value} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                            <input 
+                                                type="checkbox" 
+                                                id={option.value} 
+                                                name={field.name} 
+                                                value={option.value} 
+                                                required={field.required} 
+                                                hidden={field.hidden} 
+                                            />
                                             <label for={option.value}>{option.label}</label>
                                         </div>
                                     ))}
@@ -114,12 +131,19 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('radio'):
                         return (
                             <div class="form-field">
-                                <p class="h6">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
+                                <p class="">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                                 <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
                                     {field.options.map((option) => (
                                         <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
-                                            <input type="radio" id={option.value} name={field.name} value={option.value} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                            <input 
+                                                type="radio" 
+                                                id={option.value} 
+                                                name={field.name} 
+                                                value={option.value} 
+                                                required={field.required} 
+                                                hidden={field.hidden}
+                                            />
                                             <label for={option.value}>{option.label}</label>
                                         </div>
                                     ))}

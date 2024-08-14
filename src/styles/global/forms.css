@@ -31,7 +31,6 @@ label {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    pointer-events: none;
 }
 
 input,
@@ -65,12 +64,12 @@ select {
 }
 
 /* --- Hover States --- */
-input:is([type="text"], [type="email"], [type="number"]),
+input:is([type="text"], [type="email"], [type="number"], [type="phone"]),
 select {
     transition: border var(--anim-sm), background-color var(--anim-sm);
 }
 
-input:is([type="text"], [type="email"], [type="number"]):hover,
+input:is([type="text"], [type="email"], [type="number"], [type="phone"]):hover,
 select:hover {
     border: 1px solid var(--color-foreground);
     background-color: var(--color-background);
@@ -78,6 +77,10 @@ select:hover {
 
 
 /* --- Base Field Types --- */
+
+.form-field:has(input:is([type="text"], [type="email"], [type="date"], [type="number"], [type="phone"])) label {
+    pointer-events: none;
+}
 
 input[type="file"] {
     border: none;
@@ -162,7 +165,7 @@ textarea:active {
 }
 
 /* --- Floating Labels: Default --- */
-.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"]):placeholder-shown) > label,
+.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"], [type="phone"]):placeholder-shown) > label,
 .form-field:has(input:placeholder-shown) > label {
     scale: 1;
     left: var(--form-padding-inline);
@@ -171,8 +174,8 @@ textarea:active {
 }
 
 /* --- Floating Labels: Active --- */
-.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"])) > label,
-.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"]):placeholder-shown):focus-within > label,
+.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"], [type="phone"])) > label,
+.form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"], [type="phone"]):placeholder-shown):focus-within > label,
 .form-field:has(select) > label {
     position: absolute;
     left: var(--form-padding-inline);
@@ -264,8 +267,8 @@ textarea:active {
     display: none;
 }
 
-.form-field:has(.toggle-button-list) {
-    padding-block: var(--space-sm);
+.form-field:has(.inputs-list) {
+    padding-block: var(--space-xs);
     flex-direction: column;
 }
 
@@ -282,6 +285,10 @@ textarea:active {
     flex-direction: column;
     gap: var(--space-2xs);
     position: relative;
+}
+
+.form-field > p {
+    margin: 0;
 }
 
 /* --- Legal Consent --- */
@@ -307,6 +314,8 @@ textarea:active {
     color: var(--color-foreground-secondary);
 }
 
+/* --- Browser Resets --- */
+
 /* Annoyingly, we have to do this to control date highlight color */
 input::-webkit-datetime-edit-day-field:focus,
 input::-webkit-datetime-edit-month-field:focus,
@@ -314,4 +323,9 @@ input::-webkit-datetime-edit-year-field:focus {
     background-color: var(--color-brand);
     color: var(--color-brand-contrast);
     outline: none;
+}
+
+/* Frustratingly, we have to hide the browser default calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
 }
