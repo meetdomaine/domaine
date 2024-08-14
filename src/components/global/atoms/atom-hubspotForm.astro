@@ -222,12 +222,17 @@ const fields = await fieldGroups.flatMap((group) => {
         <input type="submit" form={`form-${formId}`} value={formData.displayOptions.submitButtonText} />
     </div>
 
+
 </form>
+
+
 
     
 
 
 <script define:vars={{ portalId, formId, consentData, fields }}>
+
+    console.log(window.location.href)
 
     const contactForm = document.querySelector(`#form-${formId}`)
     const formData = new FormData(contactForm);
@@ -242,18 +247,25 @@ const fields = await fieldGroups.flatMap((group) => {
 
         const formBody = {
             fields: [],
-            legalConsentOptions: {
+            context: {
+                "pageUri": window.location.href,
+                "pageName": document.title
+            },
+        }
+
+        if (consentData.communicationsCheckboxes) {
+            formBody.legalConsentOptions = {
                 consent: { 
                     consentToProcess: true,
                     text: consentData.consentToProcessText,
-                    communications: consentData.communicationsCheckboxes.map((checkbox) => {
-                        return {
-                            "value": true,
-                            "subscriptionTypeId": checkbox.subscriptionTypeId,
-                            "text": checkbox.label
-                        }
-                    })
-                }
+                },
+                communications: consentData.communicationsCheckboxes.map((checkbox) => {
+                    return {
+                        "value": true,
+                        "subscriptionTypeId": checkbox.subscriptionTypeId,
+                        "text": checkbox.label
+                    }
+                })
             }
         }
 
@@ -264,7 +276,7 @@ const fields = await fieldGroups.flatMap((group) => {
             const fieldName = field[0]
             const fieldValue = field[1]
             formBody.fields.push({
-                objectTypeId: fields[fieldIndex].objectTypeId,
+                objectTypeId: fields[fieldIndex] ? fields[fieldIndex].objectTypeId : null,
                 name: fieldName,
                 value: typeof fieldValue === "string" ? fieldValue : "Unsupported field value."
             })
