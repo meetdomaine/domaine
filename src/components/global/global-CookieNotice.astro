@@ -1,0 +1,116 @@
+---
+---
+<div id="cookie-notice" class="cookie-notice" data-hidden="true">
+    <p class="caption">This website uses cookies to collect data on your interactions and remember your preferences. We use this data to enhance your experience and for analytics. For more details, see our <a>Privacy Policy</a>.</p>
+    <div class="buttons">
+        <button id="cookie-accept" class="button">Accept</button>
+        <button id="cookie-deny" class="button" data-style="secondary">Deny</button>
+    </div>
+</div>
+
+<script>
+    const cookieNotice = document.getElementById("cookie-notice")
+    const acceptButton = document.getElementById("cookie-accept")
+    const denyButton = document.getElementById("cookie-deny")
+
+    declare global {
+        interface Window {
+            gtag: any,
+            dataLayer: any,
+        }
+    }
+
+    // window.dataLayer = window.dataLayer || [];
+
+    const setConsent = (consent) => {
+        const consentMode = {
+            'ad_storage': consent.marketing ? 'granted' : 'denied',
+            'ad_user_data': consent.marketing ? 'granted' : 'denied',
+            'ad_personalization': consent.marketing ? 'granted' : 'denied',
+            'analytics_storage': consent.analytics ? 'granted' : 'denied',
+            'functionality_storage': consent.necessary ? 'granted' : 'denied',
+            'personalization_storage': consent.preferences ? 'granted' : 'denied',
+            'security_storage': consent.preferences ? 'granted' : 'denied',
+        }
+        window.gtag('consent', 'update', consentMode)
+        window.dataLayer.push({ event: 'consentUpdate' });
+        localStorage.setItem('consentMode', JSON.stringify(consentMode))
+    }
+
+    const hideNotice = () => {
+        cookieNotice.dataset.hidden = "true"
+    }
+
+    const handleAccept = () => {
+        setConsent({
+            necessary: true,
+            analytics: true,
+            marketing: true,
+            preferences: false,
+        })
+        hideNotice()
+    }
+
+    const handleDecline = () => {
+        setConsent({
+            necessary: false,
+            analytics: false,
+            marketing: false,
+            preferences: false,
+        })
+        hideNotice()
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const cookiedConsent = localStorage.getItem('consentMode')
+
+        if (cookiedConsent === null) {
+            cookieNotice.dataset.hidden = "false"
+        } else {
+            setConsent(JSON.parse(cookiedConsent))
+        }
+
+        acceptButton.addEventListener("click", handleAccept)
+        denyButton.addEventListener("click", handleDecline)
+
+    })
+
+</script>
+
+<style>
+    .cookie-notice {
+        max-width: 24rem;
+        position: fixed;
+        bottom: var(--page-margin);
+        right: var(--page-margin);
+        z-index: 5;
+        padding: var(--space-xs);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+        border-radius: var(--radius-sm);
+        background-color: var(--background-blur-color);
+        color: var(--color-background);
+        backdrop-filter: var(--background-blur);
+        -webkit-backdrop-filter: var(--background-blur);
+        transition: opacity var(--anim-sm), translate var(--anim-sm);
+    }
+
+    .cookie-notice[data-hidden="true"] {
+        opacity: 0;
+        pointer-events: none;
+        translate: 0 20px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
+        align-self: stretch;
+    }
+
+    .buttons button {
+        flex: 0 1 100%;
+    }
+</style>

@@ -18,6 +18,7 @@ import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import PageTransition from '../components/global/global-PageTransition.astro';
 import { ViewTransitions } from 'astro:transitions';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
+import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 
 interface Props {
 	title: string;
@@ -55,6 +56,36 @@ const currentPath = Astro.url.pathname;
 		<!-- <link rel="expect" blocking="render" href="#header"> -->
 		 <!-- <ViewTransitions /> -->
 
+
+		 <!-- Setup Consent Mode -->
+		 <script is:inline>
+			if (typeof window !== 'undefined') {
+				window.dataLayer = window.dataLayer || [];
+				function gtag() { dataLayer.push(arguments); }
+
+				if (localStorage.getItem('consentMode') === null) {
+					gtag('consent', 'default', {
+						'ad_user_data': 'denied',
+						'ad_personalization': 'denied',
+						'ad_storage': 'denied',
+						'analytics_storage': 'denied',
+						'wait_for_update': 500,
+					});
+					dataLayer.push({'gtm.start': new Date().getTime(), 'event': 'gtm.js'})
+				} else {
+					gtag('consent', 'default', JSON.parse(localStorage.getItem('consentMode')))
+				}
+			}
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PG5JGM7P');</script>
+		<!-- End Google Tag Manager -->
+
 		<!-- HTML Meta Tags -->
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -81,15 +112,6 @@ const currentPath = Astro.url.pathname;
 		<meta name="twitter:description" content={description}>
 		<meta name="twitter:image" content={urlFor(image).url()}>
 
-		<!-- Google Tag Manager -->
-		<!-- <script is:inline>
-			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-T5Q9G6VH');
-		</script> -->
-
 		<!-- PageFind Search -->
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 
@@ -97,13 +119,15 @@ const currentPath = Astro.url.pathname;
 	<body data-pagefind-filter={searchFilter}>
 
 		<!-- Google Tag Manager (noscript) -->
-		<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5Q9G6VH"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG5JGM7P"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
+
 		<GlobalPreloader 
 			content={preloaderContent}
 			brand={brand}
 		/>
+		<GlobalCookieNotice />
 		<slot />
         <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
 		<Lenis />

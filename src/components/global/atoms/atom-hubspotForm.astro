@@ -7,11 +7,12 @@ interface Props {
 const { formId, buttonToggles } = Astro.props
 
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
+const accessToken = import.meta.env.HUBSPOT_ACCESS_TOKEN
 
 const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
     method: "GET",
     headers: {
-        'Authorization': `Bearer ${import.meta.env.HUBSPOT_ACCESS_TOKEN}`,
+        'Authorization': `Bearer ${accessToken}`,
         "Content-type": "application/json; charset=UTF-8"
     }
 })
@@ -25,6 +26,8 @@ const fields = await fieldGroups.flatMap((group) => {
         return field
     })
 })
+
+console.log(fields)
 ---
 <form id={`form-${formId}`} >
     {fieldGroups.map((group) => {
@@ -32,13 +35,12 @@ const fields = await fieldGroups.flatMap((group) => {
             <div class="form-field-group">
         
             {group.fields.map((field) => {
-                // console.log(field)
                 switch (field.fieldType) {
                     case('single_line_text'):
                         return (
                             <div class="form-field">
                                 <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="text" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId}  />
+                                <input type="text" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
                         )
@@ -99,7 +101,7 @@ const fields = await fieldGroups.flatMap((group) => {
                             <div class="form-field">
                                 <div class="inputs-list">
                                     <div class="input-list-item">
-                                        <input type="checkbox" id={field.name} name={field.name} value={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                        <input type="checkbox" id={field.name} name={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                         <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                         {field.description && <p class="field-description caption">{field.description}</p>}
                                     </div>
@@ -225,67 +227,97 @@ const fields = await fieldGroups.flatMap((group) => {
 
 </form>
 
-
-
-    
-
-
-<script define:vars={{ portalId, formId, consentData, fields }}>
-
-    console.log(window.location.href)
+<script define:vars={{ portalId, formId, consentData, fields, accessToken }}>
 
     const contactForm = document.querySelector(`#form-${formId}`)
-    const formData = new FormData(contactForm);
-    // console.log(formData)
 
-    console.log(fields)
-    console.log(consentData)
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    const hubspotCookie = getCookie('hubspotutk')
 
     const submitForm = async () => {
 
         const formData = new FormData(contactForm);
+        const formObject = Object.fromEntries(formData)
 
-        const formBody = {
-            fields: [],
-            context: {
-                "pageUri": window.location.href,
-                "pageName": document.title
-            },
+        // for (const field of formData) {
+        //     console.log(field)
+        // }
+
+        const uploadFile = async (file) => {
+            const res = await fetch(`/upload`, {
+                method: 'POST',
+                body: file,
+            });
+            return await res.json()
         }
-
-        if (consentData.communicationsCheckboxes) {
-            formBody.legalConsentOptions = {
-                consent: { 
-                    consentToProcess: true,
-                    text: consentData.consentToProcessText,
-                },
-                communications: consentData.communicationsCheckboxes.map((checkbox) => {
-                    return {
-                        "value": true,
-                        "subscriptionTypeId": checkbox.subscriptionTypeId,
-                        "text": checkbox.label
-                    }
-                })
-            }
-        }
-
-        let fieldIndex = 0
         
-        for (const field of formData) {
-            console.log(field)
-            const fieldName = field[0]
-            const fieldValue = field[1]
-            formBody.fields.push({
-                objectTypeId: fields[fieldIndex] ? fields[fieldIndex].objectTypeId : null,
-                name: fieldName,
-                value: typeof fieldValue === "string" ? fieldValue : "Unsupported field value."
-            })
-            fieldIndex++
-        }
-        // console.log(formData)
-        console.log(formBody)
+        Promise.all(Object.keys(formObject).map( async (key) => {
 
-        try {
+            const field = fields.find((field) => field.name === key)
+            let value = formObject[key]
+
+            if (field.fieldType === "file") {
+                const fieldData = new FormData()
+                fieldData.append("file", formObject[key])
+                const fileData = await uploadFile(fieldData)
+                if (await fileData && fileData.data) {
+                    value = fileData.data[0].objects[0].url
+                } else {
+                    value = ''
+                }
+            }
+
+            if (field.fieldType === 'single_checkbox' && value === 'on') value = true
+            
+            return {
+                name: key,
+                value: value,
+                objectTypeId: field.objectTypeId
+            }
+            
+        })).then(async (data) => {
+
+            const formBody = {
+                fields: data,
+                context: {
+                    pageUri: window.location.href,
+                    pageName: document.title
+                }
+            }
+
+            if (hubspotCookie) formBody.context.hutk = hubspotCookie
+
+            if (consentData.communicationsCheckboxes) {
+                formBody.legalConsentOptions = {
+                    consent: { 
+                        consentToProcess: true,
+                        text: consentData.consentToProcessText,
+                    },
+                    communications: consentData.communicationsCheckboxes.map((checkbox) => {
+                        return {
+                            "value": true,
+                            "subscriptionTypeId": checkbox.subscriptionTypeId,
+                            "text": checkbox.label
+                        }
+                    })
+                }
+            }
+
             const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
                 method: "POST",
                 body: JSON.stringify(formBody),
@@ -294,9 +326,7 @@ const fields = await fieldGroups.flatMap((group) => {
                 }
             })
             console.log(await response.json())
-        } catch(e) {
-            console.log(e)
-        }
+        })
     }
 
     contactForm.addEventListener("submit", (e) => {
