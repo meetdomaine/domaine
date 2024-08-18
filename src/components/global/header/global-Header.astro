@@ -6,29 +6,17 @@ import ContactMenu from "./global-ContactMenu.astro";
 import GlobalSearchMenu from "./searchMenu/global-SearchMenu.astro";
 import BrandToggle from './global-BrandToggle.astro'
 import GlobalNavigationMenu from "./global-NavigationMenu.astro";
+import BrandMenu from "./global-BrandMenu.astro";
 
 const { headerSettings, currentBrand, activePath } = Astro.props;
 
-const brands = [
-    {
-        path: "/",
-        logo: "domaine-wordmark",
-        title: "Domaine",
-        description: "Purpose-built for ambitious & beloved enterprise brands."
-    },
-    {
-        path: "/studio",
-        logo: "domaine-studio",
-        title: "Domaine Studio",
-        description: "Tailor-made for the needs of small & medium businesses."
-    },
-]
-
-const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
+// const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
 const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug}, postDate } | order( postDate desc)[0...3]`)
 const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{orderRank, title, slug, thumbnailMedia{${videoFields}, ${imageFields}} } | order( orderRank asc)[0...5]`)
 const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug, orderRank } | order( orderRank asc)[0...10]`)
 const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug, orderRank } | order(orderRank)[0...10]`)
+// console.log(brands[brandIndex])
+// console.log(currentBrand)
 ---
 <header id="header" class="glass-dark">
 
@@ -39,16 +27,21 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
             <span class="hamburger-line"></span>
         </button>
 
-        <BrandToggle 
-            brands={brands}
-            currentBrand={currentBrand}
-            brandIndex={brandIndex}
-        />
+        <div class="brand glass-dark">
+
+            <a href={currentBrand.url} class="brand-logo">
+                <Fragment set:html={currentBrand.logo} />
+            </a>
+            <button class="brand-button button-reset" popovertarget="brand-menu">
+                <span class="brand-button__box"></span>
+                <span class="brand-button__box"></span>
+                <span class="brand-button__box"></span>
+                <span class="brand-button__box"></span>
+            </button>
+        </div>
         
         <GlobalNavigationMenu 
-            brands={brands}
             links={headerSettings.navigationLinks.links}
-            brandIndex={brandIndex}
             activePath={activePath}
         />
 
@@ -62,6 +55,13 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         </div>
 
     </div>
+
+    <BrandMenu 
+        currentBrand={currentBrand}
+        brandMenuHeading={headerSettings.brandMenuHeading}
+        brandMenuSubheading={headerSettings.brandMenuSubheading}
+        brandMenuBrands={headerSettings.brandMenuBrands}
+    />
 
     <ContactMenu 
         hubspotFormId={headerSettings.hubspotFormId}
@@ -113,6 +113,37 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         align-items: flex-start;
     }
 
+
+    .brand-logo {
+        max-width: 90px;
+    }
+
+    .brand-logo :global(svg) {
+        height: 100%;
+        max-width: 90px;
+        vertical-align: middle;
+    }
+
+    .brand-button {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        aspect-ratio: 1 / 1;
+        gap: 3px;
+        padding: 4px;
+    }
+
+    .brand-button__box {
+        aspect-ratio: 1 / 1;
+        background-color: var(--color-foreground);
+        opacity: 0.5;
+        transition: opacity var(--anim-sm);
+
+    }
+
+    .brand-button:hover .brand-button__box {
+        opacity: 1;
+    }
+
     .navigation-links {
         display: flex;
     }
@@ -161,13 +192,6 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         translate: -50% -50%;
     }
 
-    .brand-card {
-        display: none;
-    }
-
-      
-
-
     @media screen and (width > 768px) {
         header {
             --header-top-margin: var(--space-xs);
@@ -189,6 +213,17 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
         .menu-button {
             display: none;
+        }
+
+        .brand {
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            justify-self: flex-start;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            height: var(--header-element-height);
+            gap: var(--space-sm);
         }
 
         .utility-button {
@@ -276,6 +311,39 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         header.navigation-open .hamburger-line:nth-child(2) {
             rotate: 45deg;
             translate: -50% 0;
+        }
+
+        .brand {
+            background: transparent;
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            height: var(--header-height);
+            display: flex;
+            place-content: center;
+        }
+
+        .brand-logo {
+            height: 100%;
+            width: auto;
+            display: flex;
+            max-width: none;
+            justify-content: center;
+            align-items: center;
+            opacity: color var(--anim-sm);
+        }
+
+        header.navigation-open .brand-logo {
+            color: var(--color-darkest);
+        }
+
+        .brand-logo :global(svg) {
+            max-height: 25%;
+            max-width: none;
+        }
+
+        .brand-button {
+            display: none;
         }
 
         .notification-button,

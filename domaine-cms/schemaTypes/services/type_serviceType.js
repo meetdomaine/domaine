@@ -42,6 +42,14 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'images',
+      title: 'Images',
+      description: 'Used in Services section.',
+      type: 'array',
+      of: [{ type: 'snippet_image' }],
+      validation: Rule => Rule.required().min(3).max(4),
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_SEO-fields',

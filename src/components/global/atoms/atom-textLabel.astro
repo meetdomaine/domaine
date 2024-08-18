@@ -1,0 +1,21 @@
+---
+
+interface Props {
+    text: string
+}
+
+const { text } = Astro.props
+---
+<p class="text-label utility">{text}</p>
+
+<style>
+    .text-label::before {
+        content: "";
+        display: inline-block;
+        width: 0.5em;
+        aspect-ratio: 1 / 1;
+        border-radius: 100vw;
+        border: 1px solid currentColor;
+        margin-right: 1em;
+    }
+</style>

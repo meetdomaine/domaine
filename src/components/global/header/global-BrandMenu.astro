@@ -1,0 +1,178 @@
+---
+import { Icon } from "astro-icon/components"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTextLabel from "../atoms/atom-textLabel.astro"
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { currentBrand, brandMenuHeading, brandMenuSubheading, brandMenuBrands } = Astro.props
+// console.log(currentBrand)
+// console.log(brandMenuBrands[0].brandImage)
+---
+<dialog popover id="brand-menu" class="brand-menu color-invert" data-lenis-prevent>
+    <div class="section-title">
+        <button popovertarget="brand-menu" class="close-button button-reset">
+            <Icon name="pixel_x" class="close-button" />
+        </button>
+        <div class="title-text">
+            {brandMenuHeading && <h2 class="heading h5">{brandMenuHeading}</h2>}
+            {brandMenuSubheading && <p class="subheading h5">{brandMenuSubheading}</p>}
+        </div>
+    </div>
+    <div class="brands">
+        {brandMenuBrands.map((brand) => (
+            <a class="brand-card" data-primary={brand.isPrimaryBrand ? "true" : "false"} href={brand.slug.current}>
+                {currentBrand.url === brand.slug.current && 
+                    <div class="current-brand-label">
+                        <AtomTextLabel text="You are here" />
+                    </div>
+                }
+                <div class="brand-content">
+                    <Fragment set:html={brand.logo} />
+                    <h3 class="h4">{brand.heading}</h3>
+                </div>
+                {brand.media && 
+                    <div class="brand-media">
+                        <AtomSanityMedia 
+                            video={brand.media.video}
+                            image={brand.media.image}
+                            cover={true}
+                            sizes="50vw"
+                            aspectRatio={3 / 4}
+                        />
+                    </div>
+                }
+            </a>
+        ))}
+    </div>
+</dialog>
+
+<style>
+    .brand-menu {
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+        gap: var(--space-xl);
+        /* gap: 20svh; */
+        border: none;
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+        padding-block: var(--page-margin) 0;
+        color: var(--color-brand-contrast);
+        background-color: var(--color-brand);
+        opacity: 0;
+        transition: opacity var(--anim-md), display var(--anim-md) allow-discrete;
+
+    }
+
+    
+    .brand-menu:popover-open {
+        display: flex;
+        opacity: 1;
+    }
+
+    @starting-style {
+        .brand-menu:popover-open {
+            display: flex;
+            opacity: 0;
+        }
+    }
+
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        padding-inline: var(--page-margin);
+    }
+
+    .close-button {
+        align-self: flex-end;
+        background-color: var(--color-foreground);
+        color: var(--color-background);
+        aspect-ratio: 1 / 1;
+        border-radius: var(--radius-sm);
+        padding: var(--space-xs);
+        display: flex;
+        place-items: center;
+    }
+
+    .close-button > :global(svg) {
+        margin: 0;
+        padding: 0;
+        color: inherit;
+        width: var(--icon-md);
+        height: var(--icon-md);
+    }
+
+    .brands {
+        --gap: var(--space-sm);
+        flex: 0 1 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: var(--gap);
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-inline: var(--page-margin);
+        padding-block: 0 var(--page-margin);
+    }
+
+    .brand-card {
+        flex: 0 0 calc(50% - var(--gap) / 2);
+        text-decoration: none;
+        position: relative;
+        border-radius: var(--radius-sm);
+        aspect-ratio: 4 / 3;
+        border: 1px solid var(--color-border);
+        /* border: none; */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: stretch;
+        padding: var(--space-md);
+        overflow: hidden;
+    }
+
+    .brand-card:has(.brand-media) {
+        color: var(--color-foreground);
+        border: none;
+    }
+
+    .brand-card[data-primary="true"] {
+        flex: 0 0 100%;
+        aspect-ratio: 3 / 4;
+    }
+
+    .brand-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .brand-content :global(svg) {
+        /* max-width: 20%; */
+        max-height: 1rem;
+    }
+
+    .current-brand-label {
+        /* justify-self: flex-start; */
+        position: absolute;
+        top: var(--space-md);
+        right: var(--space-md);
+        z-index: 1;
+    }
+
+    .brand-media {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        /* width: 100%;
+        height: 100%; */
+        aspect-ratio: 3 / 4;
+    }
+
+
+</style>

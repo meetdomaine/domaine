@@ -46,7 +46,7 @@ import section_projectsFullBleed from "./sections/section_projectsFullBleed.js";
 import settings_preloader from "./siteSettings/settings_preloader.js";
 import section_projectsGrid from "./sections/section_projectsGrid.js";
 import settings_footer from "./siteSettings/settings_footer.js";
-import settings_header from "./siteSettings/settings_header.js";
+import settings_header from "./siteSettings/settings_header.jsx";
 import section_partnersFeed from "./sections/section_partnersFeed.js";
 import snippet_richContent from "./snippets/snippet_rich-content.js";
 import type_clientStage from "./projects/type_clientStage.js";

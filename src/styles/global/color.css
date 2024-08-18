@@ -90,10 +90,12 @@ html {
     backdrop-filter: var(--background-blur);
     -webkit-backdrop-filter: var(--background-blur);
     background-color: var(--background-blur-color);
+    /* color: var(--color-lightest); */
     --color-foreground: var(--color-lightest);
     --color-foreground-secondary: var(--color-light);
     --color-background: var(--color-darkest);
     --color-background-secondary: var(--color-darker);
+    color: var(--color-foreground);
     
 }
 

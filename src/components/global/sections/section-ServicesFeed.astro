@@ -1,6 +1,8 @@
 ---
 import { sanityClient } from "sanity:client";
 import AtomTag from "../atoms/atom-tag.astro";
+import AtomSanityImage from "../atoms/atom-sanityImage.astro";
+import { imageFields } from "../utils/cms-queries";
 
 const { section, brand, key } = Astro.props
 
@@ -8,6 +10,7 @@ const serviceTypes = await sanityClient.fetch(`
     *[_type == "type_serviceType" 
     && '${brand}' in agencyBrands[]->slug.current ]{
         ...,
+        images[]{${imageFields}},
         "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
             ...,
             "services": *[_type == "type_service" && references(^._id)] {
@@ -17,104 +20,88 @@ const serviceTypes = await sanityClient.fetch(`
     } | order(orderRank)`)
 
 
-const defaultService = "creative"
+// console.log(serviceTypes[0])
 
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
-    <div class="section-title">
-        <h2 class="heading h5">{section.heading}</h2>
-        {section.subheading && <p class="subheading">{section.subheading}</p>}
-        <!-- {section.button.text && section.button.url && <a href={section.button.url} target={section.button.newTab ? "_blank" : ""}>{section.button.text}</a>} -->
-    </div>
 
     <div class="section-content">
-
-        <div class="service-type__toggle">
+        <h2 class="heading h5">{section.heading}</h2>
+        {section.subheading && <p class="subheading">{section.subheading}</p>}
+        <div class="service-types">
             {serviceTypes.map((serviceType, i) => (
-                <button 
-                    class="service-type__button h2" 
-                    data-active={serviceType.slug.current === defaultService ? "true" : "false"}
-                    data-slug={serviceType.slug.current}
-                >{serviceType.title}</button>
-            ))}
-        </div>
+                <div class="service-type">
+                    <a 
+                        class="service-type__button h1" 
+                        data-animate-viewport="true"
+                        data-animation="fade"
+                        data-animation-delay={i * 200}
+                        data-slug={serviceType.slug.current}
+                        href={`/services/${serviceType.slug.current}`}
+                    >{serviceType.title}</a>
 
-        {serviceTypes.map((serviceType) => (
-            <div 
-                class="service-type__groups" 
-                data-slug={serviceType.slug.current}
-                data-active={serviceType.slug.current === defaultService ? "true" : "false"}
-            >
-                {serviceType.serviceGroups.map((serviceGroup) => (
-                    <div class="service-type__group">
-                        <AtomTag 
-                            theme="dark"
-                            text={serviceGroup.title}
-                            url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
-                        />
-                        <div class="service-type__services">
-                            {serviceGroup.services.map((service, i) => (
-                                <AtomTag 
-                                    text={service.title}
-                                    url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
-                                />
+                    <div class="services">
+                        {i === 0 && 
+                            <p 
+                                class="services-description h6"
+                                data-animate-viewport="true"
+                                data-animation="fade"
+                                data-animation-delay={600}
+                            >Domaine is an ecosystem of capabilities & services that are defining the future of e-commerce.</p>
+                            }
+                        <div 
+                            class="service-type__groups" 
+                            data-slug={serviceType.slug.current}
+                            data-active="false"
+                        >
+                            {serviceType.serviceGroups.map((serviceGroup) => (
+                                <div class="service-type__group">
+                                    {/* <AtomTag 
+                                        theme="dark"
+                                        text={serviceGroup.title}
+                                        url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
+                                    /> */}
+                                    <div class="service-type__services">
+                                        {serviceGroup.services.map((service, i) => (
+                                            <AtomTag 
+                                                title={serviceGroup.title}
+                                                text={service.title}
+                                                url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </div>
-                ))}
-            </div>
-        ))}
+                </div>
+                <div class="section-media">
+                    {serviceType.images.map((imageObject) => (
+                        <div class="service-image">
+                            <AtomSanityImage 
+                                image={imageObject.image}
+                                sizes="30vw"
+                                cover={true}
+                            />
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
     </div>
+
 </section>
-
-<script define:vars={{ key }}>
-    const section = document.getElementById(`section-services-feed-${key}`)
-
-    
-
-    if (section) {
-        const buttons = section.querySelectorAll('.service-type__button')
-        const serviceGroups = section.querySelectorAll('.service-type__groups')
-
-        const toggleServiceType = (e) => {
-            const serviceType = e.target.dataset.slug
-            const activeGroup = section.querySelector(`.service-type__groups[data-slug="${serviceType}"]`)
-            serviceGroups.forEach((serviceGroup) => serviceGroup.dataset.active = "false")
-            buttons.forEach((button) => button.dataset.active = "false")
-            activeGroup.dataset.active = "true"
-            e.target.dataset.active = "true"
-        }
-
-        buttons.forEach((button) => {
-            button.addEventListener("mouseenter", (e) => {
-                toggleServiceType(e)
-            })
-            button.addEventListener("click", (e) => {
-                toggleServiceType(e)
-            })
-        })
-    }
-</script>
 
 <style>
     .section-services-feed {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        gap: var(--space-4xl);
+        gap: var(--space-2xl);
         padding-inline: var(--page-margin);
         padding-block: var(--space-lg);
-        min-height: 80svh;
-    }
-
-    .section-title {
-        display: flex;
-        flex-direction: row;
-        /* justify-self: flex-start; */
-    }
-
-    .heading {
-        flex: 0 0 20em;
+        min-height: 100lvh;
+        position: relative;
     }
 
     .subheading {
@@ -122,47 +109,93 @@ const defaultService = "creative"
     }
 
     .section-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-2xl);
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: var(--space-2xl) 0;
     }
 
-    .service-type__toggle {
-        display: flex;
-        flex-direction: row;
-        gap: var(--space-2xs);
-        padding: var(--space-xs);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-sm);
+    .service-types {
+        display: grid;
+        grid-template-columns: subgrid;
+        text-align: left;
+        grid-column: 1 / span 2;
+    }
+
+    .service-types:has(.service-type__button:hover, .service-type__groups:hover) .service-type:not(:has(:hover, .service-type__groups:hover)) .service-type__button {
+        opacity: 0.5;
+    }
+
+    .service-types:has(.service-type__button:hover, .service-type__groups:hover) .services-description {
+        opacity: 0;
+    }
+
+    .service-type {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / span 2;
+        /* z-index: 3; */
+    }
+
+    .service-type:has(.service-type__button:hover, .service-type__groups:hover) + .section-media > .service-image {
+        opacity: 1;
+    }
+
+    .service-types:not(:has(.service-type__button:hover, .service-type__groups:hover)) :is(
+        .section-media:nth-of-type(6n + 2) > .service-image:nth-child(3n + 3),
+        .section-media:nth-of-type(6n + 4) > .service-image:nth-child(3n + 3),
+        .section-media:nth-of-type(6n + 6) > .service-image:nth-child(3n + 2)) {
+        opacity: 1;
     }
 
     .service-type__button {
         margin: 0;
-        transition: background-color var(--anim-md);
+        transition: opacity var(--anim-md);
+        padding-block: 0 0.4em;
+        background-color: transparent;
+        text-decoration: none;
     }
 
-    .service-type__button:not([data-active="true"]) {
-        background-color: transparent;
+    .service-type__button:hover + .services .service-type__groups,
+    .service-type__groups:hover {
+        translate: 0 0;
+        opacity: 1;
+        z-index: 3;
+    }
+
+    .service-type__button:hover + .services > .service-type__groups,
+    .service-type__groups:hover {
+        pointer-events: all;
+    }
+
+    .services {
+        position: relative;
     }
 
     .service-type__groups {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        translate: 0 0.5em;
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: var(--space-md);
-        opacity: 1;
-        transition: opacity var(--anim-sm);
+        flex-direction: column;
+        gap: var(--space-xl);
+        transition: opacity var(--anim-sm), translate var(--anim-sm);
+        pointer-events: none;
+        padding-block: 0 var(--space-lg);
     }
 
-    .service-type__groups:not([data-active="true"]) {
-        display: none;
-        opacity: 0;
+    .services-description {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 20em;
+        transition: opacity var(--anim-md);
     }
 
     .service-type__group {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: flex-start;
         gap: var(--space-2xs);
     }
@@ -172,5 +205,74 @@ const defaultService = "creative"
         flex-direction: column;
         align-items: flex-start;
         gap: var(--space-2xs);
+    }
+
+    .section-media {
+        display: grid;
+        grid-template-columns: 1.25fr 1.25fr 1.25fr 1fr 1fr 1fr .75fr .75fr .75fr;
+        grid-template-rows: repeat(3, 1fr);
+        position: absolute;
+        inset: 0;
+        justify-items: flex-end;
+        justify-items: stretch;
+        align-items: stretch;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .section-media:nth-of-type(6n + 2) .service-image:nth-child(3n + 1) {
+        grid-column: 8 / span 2;
+        grid-row: 1 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 2) .service-image:nth-child(3n + 2) {
+        grid-column: 6 / span 2;
+        grid-row: 2 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 2) .service-image:nth-child(3n + 3) {
+        grid-column: 1 / span 3;
+        grid-row: 3 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 4) .service-image:nth-child(3n + 1) {
+        grid-column: 7 / span 2;
+        grid-row: 2 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 4) .service-image:nth-child(3n + 2) {
+        grid-column: 2 / span 1;
+        grid-row: 3 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 4) .service-image:nth-child(3n + 3) {
+        grid-column: 6 / span 3;
+        grid-row: 3 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 6) .service-image:nth-child(3n + 1) {
+        grid-column: 6 / span 3;
+        grid-row: 1 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 6) .service-image:nth-child(3n + 2) {
+        grid-column: 8 / span 2;
+        grid-row: 2 / span 1;
+    }
+
+    .section-media:nth-of-type(6n + 6) .service-image:nth-child(3n + 3) {
+        grid-column: 2 / span 3;
+        grid-row: 3 / span 1;
+    }
+
+    .service-image {
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        object-fit: cover;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity var(--anim-md);
     }
 </style>

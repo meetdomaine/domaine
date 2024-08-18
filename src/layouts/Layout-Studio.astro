@@ -21,7 +21,7 @@ const { title, description, image, theme, searchFilter, activePath } = Astro.pro
 // const seoSettings = seoData[0]
 
 // Header
-const headerSettings = await sanityClient.fetch(`*[_type == "settings_header" && _id == "settings_header--studio"][0]`)
+const headerSettings = await sanityClient.fetch(`*[_type == "settings_header" && _id == "settings_header--studio"]{${headerSettingsQuery}}[0]`)
 
 // Footer
 const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`)
@@ -30,7 +30,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
 import '../styles/studio/typography.css'
 import '../styles/studio/color.css'
 import GlobalPreloader from '../components/global/global-Preloader.astro';
-import { imageFields } from '../components/global/utils/cms-queries';
+import { headerSettingsQuery, imageFields } from '../components/global/utils/cms-queries';
 
 // Brand
 const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)

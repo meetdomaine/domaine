@@ -1,60 +1,165 @@
 ---
-import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
+import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import { replaceStringIcons } from "../../../global/utils/inline-icon-text"
 
-const { heading, subheading, eyebrow, button, textColor, backgroundImage, backgroundVideo } = Astro.props
+const { heading, subheading, eyebrow, button, backgroundVideo, projects } = Astro.props
 
 const iconText = replaceStringIcons(heading)
 ---
-<div id="studio-home-hero" class="hero-banner">
-    <section class="home-hero" data-color={textColor === "light" ? "light" : "dark"}>
-        <div class="section-content">
-            <div class="section-text">
-                {eyebrow && <p class="utility anim-fade-up">{eyebrow}</p>}
-                <!-- {heading && <h1 class="anim-fade-up">{heading}</h1>} -->
-                {heading && <h1 class="anim-fade-up"><Fragment set:html={iconText}></h1>}
-                {subheading && <p class="caption anim-fade-up">{subheading}</p>}
-            </div>
-            {button.text && button.url &&
-                <a class={`button anim-fade-up ${textColor === "light" ? "color-invert" : "d"}`} href={button.url}>{button.text}</a>
-            }
+<section id="home-hero" class="home-hero">
+    <div class="section-content">
+        <div class="section-text">
+            {eyebrow && <p class="utility">{eyebrow}</p>}
+            {heading && <h1 class=""><Fragment set:html={iconText}/></h1>}
+            {subheading && <p class="caption">{subheading}</p>}
         </div>
-    </section>
-    <div class="background-media">
-        <AtomSanityMedia 
-            video={backgroundVideo}
-            image={backgroundImage}
-            cover={true}
-            sizes="100vw"
-        />
+        {button.text && button.url &&
+            <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}</a>
+        }
     </div>
-</div>
+    <div class="section-media">
+        {projects.map((projectCard, i) => (
+            <div class="project-card" data-index={i} data-project={projectCard.project.slug.current}>
+                <AtomSanityImage 
+                    sizes="50vw"
+                    image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
+                />
+            </div>
+        ))}
+    </div>
+    <div id="three-canvas"></div>
+</section>
 
 <script>
     import { fadeUp, gsap, addParallax } from "../../../global/utils/gsap"
 
-    const animateSection = () => {
-        const section = document.getElementById('studio-home-hero')
-        const fadeUpElements = section.querySelectorAll('.anim-fade-up')
-        const backgroundMedia = section.querySelectorAll('.background-media')
-        const animTimeline = gsap.timeline({ defaults: {duration:1, ease: "power4.out"}})
-        if (fadeUpElements) fadeUp(fadeUpElements, animTimeline, ">", 0.2)
-        // addParallax(backgroundMedia)
+    import { 
+        Scene,
+        PerspectiveCamera,
+        WebGLRenderer,
+        PlaneGeometry,
+        MeshBasicMaterial,
+        Mesh,
+        Group,
+        TextureLoader,
+        DoubleSide,
+        Vector3,
+        LinearSRGBColorSpace,
+        SRGBColorSpace,
+    } from 'three'
+
+    let renderer, scene, camera, imageGroup, meshPositions
+
+    // DOM Elements
+    const section = document.getElementById('home-hero')
+    const canvas = section.querySelector('#three-canvas')
+    const projectCards = section.querySelectorAll('.project-card')
+    const container = section.getBoundingClientRect()
+
+
+    const animate = () => {
+        renderer.render( scene, camera );
+
+        // imageGroup.rotation.x += 0.01
     }
 
+    const animateLoad = () => {
+        const animTimeline = gsap.timeline({ defaults: { duration: 2, ease: "cubic"}})
+        animTimeline.from(imageGroup.position, {
+            y: -10,
+        })
+        animTimeline.to(imageGroup.rotation, {
+            x: Math.PI * 2
+        }, ">")
+        // animTimeline.to(imageGroup.rotation, {
+        //     x: - Math.PI * 2
+        // }, ">")
+        animTimeline.to(meshPositions, {
+            x: "random(-8, 8)",
+            y: "random(-8, 8)",
+            z: "random(-4, 4)",
+            // stagger: 0.05
+        }, "<")
+    }
+
+    const initImages = async () => {
+
+        imageGroup = new Group()
+        const loader = new TextureLoader()
+
+        const texturePromises = []
+
+        projectCards.forEach((card, i) => {
+
+            const _width = 3
+            const _subdivisions = 20
+            const _stackDistance = 0.1
+            const _projectCount = projectCards.length
+            
+            texturePromises.push( new Promise((resolve, reject) => {
+                const image = card.querySelector('img')
+                const imageSrc = image.currentSrc
+
+                const imageRect = image.getBoundingClientRect()
+                const imageRatio = imageRect.width / imageRect.height
+
+                loader.load(imageSrc, (image) => {
+                    // image.colorSpace = SRGBColorSpace
+                    image.colorSpace = LinearSRGBColorSpace
+                    const geometry = new PlaneGeometry(_width, _width / imageRatio, _subdivisions, _subdivisions)
+                    const material = new MeshBasicMaterial({
+                        map: image,
+                        side: DoubleSide,
+                    })
+                    const mesh = new Mesh(geometry, material)
+
+                    const startPoint = (_projectCount * _stackDistance) / 2 * -1
+
+                    mesh.position.z = startPoint + _stackDistance * i 
+
+                    imageGroup.add(mesh)
+                    resolve(mesh)
+                })
+            }))
+        })
+
+        Promise.all(texturePromises).then((meshes) => {
+            meshPositions = meshes.map((mesh) => mesh.position)
+            scene.add(imageGroup)
+            animateLoad()
+        })
+
+    }
+
+
+    const initScene = () => {
+        scene = new Scene();
+        camera = new PerspectiveCamera( 75, container.width / container.height, 0.1, 1000 );
+
+        renderer = new WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setAnimationLoop( animate );
+
+        renderer.setSize( container.width, container.height );
+        canvas.appendChild( renderer.domElement );
+
+        camera.position.z = 10
+
+        initImages()
+    }
+
+    initScene()
+
+
+
+
+    
+
     window.addEventListener("preload:complete", () => {
-        animateSection()
+        // animateSection()
     })
 </script>
 
 <style>
-
-    .hero-banner {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        overflow: clip;
-    }
 
     .home-hero {
         position: relative;
@@ -65,10 +170,9 @@ const iconText = replaceStringIcons(heading)
         flex-direction: column;
         justify-content: center;
         align-items: center;
-    }
-
-    .home-hero[data-color="light"] {
-        color: var(--color-studio-lightest);
+        background-color: var(--color-brand);
+        color: var(--color-brand-contrast);
+        overflow: hidden;
     }
 
     .section-content {
@@ -76,6 +180,8 @@ const iconText = replaceStringIcons(heading)
         flex-direction: column;
         align-items: center;
         gap: var(--space-md);
+        position: relative;
+        z-index: 1;
     }
 
     .section-text {
@@ -87,9 +193,24 @@ const iconText = replaceStringIcons(heading)
         gap: var(--space-sm);
     }
 
-    .background-media {
+    .section-media {
         position: absolute;
         inset: 0;
-        height: 100%;
+        max-height: 100%;
+        z-index: 0;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: var(--space-lg);
+        padding: var(--space-lg);
+    }
+
+    .project-card {
+        align-content: center;
+        opacity: 0;
+    }
+
+    #three-canvas {
+        position: absolute;
+        inset: 0;
     }
 </style>

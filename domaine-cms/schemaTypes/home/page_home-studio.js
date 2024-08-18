@@ -26,23 +26,56 @@ export default defineType({
       type: 'snippet_button',
     }),
     defineField({
-      name: 'media',
-      title: 'Media',
-      type: 'snippet_video',
-    }),
-    defineField({
-      name: 'heroTextColor',
-      title: 'Hero Text Color',
-      type: 'string',
-      options: {
-        list: [
-          { title: "Light", value: "light" },
-          { title: "Dark", value: "dark" },
+      name: 'projects',
+      title: 'Projects',
+      description: 'Hero project cards.',
+      type: 'array',
+      of: [{
+        type: 'object',
+        fields: [
+          { 
+            name: 'project',
+            type: 'reference',
+            to: [{type: 'type_project'}],
+            validation: Rule => Rule.required()
+          },
+          {
+            name: 'image',
+            title: 'Image',
+            type: 'snippet_image',
+          }
         ],
-        layout: 'radio'
-      },
-      initialValue: "light",
+        preview: {
+          select: {
+            title: 'project.title',
+            media: 'image.image',
+            fallbackMedia: 'project.thumbnailMedia.image'
+          },
+          prepare(selection) {
+            const { title, media, fallbackMedia } = selection
+            return {
+              title: title,
+              subtitle: 'Hero Project',
+              media: media ? media : fallbackMedia,
+            }
+          }
+        }
+      }],
+      validation: Rule => Rule.max(10),
     }),
+    // defineField({
+    //   name: 'heroTextColor',
+    //   title: 'Hero Text Color',
+    //   type: 'string',
+    //   options: {
+    //     list: [
+    //       { title: "Light", value: "light" },
+    //       { title: "Dark", value: "dark" },
+    //     ],
+    //     layout: 'radio'
+    //   },
+    //   initialValue: "light",
+    // }),
     // defineField({
     //   name: 'aboutEyebrow',
     //   title: 'About: Eyebrow',
