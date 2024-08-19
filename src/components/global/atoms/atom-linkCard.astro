@@ -2,10 +2,19 @@
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "./atom-sanityImage.astro"
 
-const { categoryTitle, title, excerpt, url, image } = Astro.props
+interface Props {
+    categoryTitle?: string,
+    title: string,
+    excerpt?: string,
+    url: string,
+    image: SanityImage,
+    theme?: string,
+}
+
+const { categoryTitle, title, excerpt, url, image, theme } = Astro.props
 ---
 <a 
-    class="link-card glass-ink" 
+    class={`link-card ${theme === "dark" ? "glass-dark" : ""}`}
     href={url}
 >
     <div class="card-header">
@@ -33,12 +42,18 @@ const { categoryTitle, title, excerpt, url, image } = Astro.props
         flex-direction: column;
         gap: var(--space-2xs);
         text-decoration: none;
-        color: var(--color-background);
+        /* background-color: var(--color-lightest); */
+        color: var(--color-foreground);
         border-radius: var(--radius-sm);
         padding-inline: var(--space-xs);
         padding-block: var(--space-xs);
         transition: background-color var(--anim-sm), color var(--anim-sm), translate var(--anim-lg), opacity var(--anim-lg);
         min-width: min(30em, 100%);
+    }
+
+    .link-card:not(.glass-dark) {
+        background-color: var(--color-lightest);
+        color: var(--color-darkest);
     }
 
     .link-card:hover {
@@ -80,7 +95,7 @@ const { categoryTitle, title, excerpt, url, image } = Astro.props
 
     .excerpt {
         display: inline;
-        color: var(--color-background-secondary);
+        color: var(--color-foreground-secondary);
     }
 
 </style>

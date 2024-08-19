@@ -7,6 +7,7 @@ import GlobalSearchMenu from "./searchMenu/global-SearchMenu.astro";
 import BrandToggle from './global-BrandToggle.astro'
 import GlobalNavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
+import GlobalNotificationMenu from "./global-NotificationMenu.astro";
 
 const { headerSettings, currentBrand, activePath } = Astro.props;
 
@@ -46,11 +47,12 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         />
 
         <div id="utility-menu" class="utility-menu">
-            <button class="utility-button notification-button glass-dark">
-                <Icon name="pixel_bell" class="utility-icon" />
+            <button id="notification-toggle" class="utility-button notification-button glass-dark" popovertarget="notification-menu" data-active="false">
+                <Icon name="icon-bell" class="utility-icon icon-open" />
+                <Icon name="icon-x" class="utility-icon icon-close" />
             </button>
             <button class="utility-button contact-button glass-dark" popovertarget="contact-menu">
-                <Icon name="pixel_email" class="utility-icon" />
+                <Icon name="icon-email" class="utility-icon" />
             </button>
         </div>
 
@@ -73,6 +75,10 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         defaultProjects={defaultProjects}
         defaultFeatures={defaultFeatures}
         defaultPartners={defaultPartners}
+    />
+
+    <GlobalNotificationMenu 
+        currentBrand={currentBrand} 
     />
 </header>
 
@@ -181,6 +187,20 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         position: relative;
         flex: 0 0 auto;
         color: var(--color-foreground);
+    }
+
+    .notification-button .icon-open,
+    .notification-button .icon-close {
+        opacity: 1;
+        transition: opacity var(--anim-sm);
+    }
+
+    .notification-button[data-active="true"] .icon-open {
+        opacity: 0;
+    }
+
+    .notification-button[data-active="false"] .icon-close {
+        opacity: 0;
     }
 
     .utility-icon {

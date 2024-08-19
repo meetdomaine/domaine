@@ -26,6 +26,8 @@
     --header-element-height: 40px;
     --header-height: calc(var(--header-element-height) + var(--header-padding-block) * 2);
 
+    --notification-menu-width: clamp(250px, calc(100% - var(--page-margin) * 2), 30rem);
+
     /* Icons */
     --icon-sm: 12px;
     --icon-md: 16px;

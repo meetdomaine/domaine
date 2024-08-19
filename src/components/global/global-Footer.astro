@@ -115,15 +115,17 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
 <style>
 
     footer {
+        --inline-gap: var(--space-lg);
         min-height: 100svh;
         background-color: var(--color-brand);
         color: var(--color-brand-contrast);
         padding-inline: var(--page-margin);
-        padding-block: calc(var(--header-height) * 2) var(--space-md);
+        padding-block: calc(var(--header-height) * 1) var(--space-md);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: stretch;
+        gap: var(--space-2xl);
         /* justify-content: space-between; */
     }
 
@@ -136,7 +138,8 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
 
     .footer-inner,
     .subfooter {
-        max-width: 70%;
+        width: calc(100% - var(--notification-menu-width) - var(--inline-gap));
+        /* max-width: 70%; */
     }
 
     .footer-cta {
@@ -158,7 +161,8 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        gap: var(--space-4xl);
+        flex-wrap: wrap;
+        gap: var(--space-2xl);
         border-top: 1px solid var(--color-brand-subdued);
         padding-top: var(--space-2xl);
     }
@@ -167,6 +171,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         display: flex;
         flex-direction: row;
         gap: var(--space-sm);
+        flex: 0 0 auto;
 
     }
 
@@ -199,6 +204,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     .footer-form {
         display: flex;
         flex-direction: column;
+        flex: 1 0 30rem;
     }
 
     .footer-form__title {
@@ -218,12 +224,14 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        flex-wrap: wrap;
         gap: var(--space-2xl);
     }
 
     .agency-brands {
         display: flex;
         flex-direction: column;
+        flex: 1 0 35rem;
     }
 
     .agency-brands__title {
@@ -296,14 +304,15 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         display: flex;
         align-items: center;
         flex-direction: row;
-        gap: var(--space-xs);
+        gap: var(--space-md);
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .social-links {
         display: flex;
         flex-direction: row;
-        gap: var(--space-sm);
+        gap: var(--space-md);
     }
 
     .social-icon {
@@ -320,5 +329,12 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     .subfooter-link {
         text-decoration: none;
         color: var(--color-brand-contrast-subdued);
+    }
+
+    @media screen and (width <= 768px) {
+        .footer-inner,
+        .subfooter {
+            width: auto;
+        }
     }
 </style>

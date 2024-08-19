@@ -1,0 +1,127 @@
+---
+import AtomLinkCard from "../atoms/atom-linkCard.astro"
+import { sanityClient } from "sanity:client"
+import { blogCardFields, projectGridFields } from "../utils/cms-queries"
+
+const { currentBrand } = Astro.props
+
+const latestBlogPost = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == '${currentBrand.slug.current}' ]{${blogCardFields}} | order(postDate desc)[0]`)
+const latestWork = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == '${currentBrand.slug.current}' ]{${projectGridFields}} | order(orderRank)[0]`)
+const upcomingEvent = await sanityClient.fetch(`*[_type == "type_event" && isPublic ]{}[0]`)
+
+console.log(latestWork)
+---
+<dialog popover id="notification-menu" class="notification-menu">
+  {latestBlogPost &&
+    <AtomLinkCard 
+      categoryTitle="Latest Insight"
+      title={latestBlogPost.title}
+      url={`/insights/${latestBlogPost.slug.current}`}
+      image={latestBlogPost.thumbnailImage.image}
+      theme="dark"
+    />
+  }
+  {latestWork &&
+    <AtomLinkCard 
+      categoryTitle="Latest Work"
+      title={latestWork.title}
+      url={`/work/${latestWork.slug.current}`}
+      image={latestWork.thumbnailMedia.image ? latestWork.thumbnailMedia.image : latestWork.thumbnailImageSecondary.image}
+      excerpt={latestWork.excerpt}
+      theme="dark"
+    />
+  }
+  {latestWork &&
+    <AtomLinkCard 
+      categoryTitle="Latest Work"
+      title={latestWork.title}
+      url={`/work/${latestWork.slug.current}`}
+      image={latestWork.thumbnailMedia.image ? latestWork.thumbnailMedia.image : latestWork.thumbnailImageSecondary.image}
+      excerpt={latestWork.excerpt}
+      theme="dark"
+    />
+  }
+  {upcomingEvent &&
+    <AtomLinkCard 
+      categoryTitle="Latest Work"
+      title={upcomingEvent.title}
+      url={`/work/${upcomingEvent.slug.current}`}
+      image={upcomingEvent.thumbnailMedia.image ? upcomingEvent.thumbnailMedia.image : upcomingEvent.thumbnailImageSecondary.image}
+      excerpt={upcomingEvent.excerpt}
+      theme="dark"
+    />
+  }
+</dialog>
+
+<script>
+  const notificationMenu = document.getElementById('notification-menu')
+  const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
+
+  notificationMenu.addEventListener("toggle", (e: ToggleEvent) => {
+    notificationToggle.dataset.active = e.newState === "open" ? "true" : "false"
+  })
+
+  let pageEndOpen = false
+  let currentScroll = window.scrollY
+
+  window.addEventListener("scroll", (e) => {
+    const scrolledTo = window.scrollY + window.innerHeight
+    const isAtPageEnd = document.body.scrollHeight === scrolledTo
+    const newScroll = window.scrollY
+    if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
+      pageEndOpen = true
+      notificationMenu.showPopover()
+    } else if (newScroll < currentScroll && pageEndOpen) {
+      pageEndOpen = false
+      notificationMenu.hidePopover()
+    }
+    currentScroll = newScroll
+    
+  })
+
+  
+</script>
+
+<style>
+  .notification-menu {
+    /* display: flex; */
+    position: fixed;
+    justify-self: flex-end;
+    flex-direction: column;
+    justify-content: flex-start;
+    top: calc(var(--header-height));
+    right: var(--page-margin);
+    margin: 0;
+    /* gap: var(--space-3xs); */
+    gap: 1px;
+    /* opacity: 0; */
+    transition: opacity var(--anim-sm), display var(--anim-sm) allow-discrete;
+    border: none;
+    width: var(--notification-menu-width);
+    /* max-width: 30rem; */
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    /* padding: var(--space-xs); */
+    /* background-color: var(--color-background); */
+    background-color: transparent;
+  }
+
+  .notification-menu:popover-open {
+    display: flex;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .notification-menu:popover-open {
+      display: flex;
+      opacity: 0;
+    }
+  }
+
+  @media screen and (width <= 768px) {
+        .notification-menu,
+        .notification-menu:popover-open {
+            display: none;
+        }
+    }
+</style>

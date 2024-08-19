@@ -110,7 +110,7 @@ const serviceTypes = await sanityClient.fetch(`
 
     .section-content {
         display: grid;
-        grid-template-columns: 1fr 1.5fr;
+        grid-template-columns: 1fr 2fr;
         gap: var(--space-2xl) 0;
     }
 
@@ -178,7 +178,8 @@ const serviceTypes = await sanityClient.fetch(`
         opacity: 0;
         translate: 0 0.5em;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: var(--space-xl);
         transition: opacity var(--anim-sm), translate var(--anim-sm);
         pointer-events: none;
