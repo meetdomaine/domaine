@@ -1,40 +1,115 @@
 ---
 import { Icon } from "astro-icon/components"
 import NewsletterCard from "../global/atoms/atom-newsletterCard.astro"
+import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
+import { agencyBrandsQuery, practicesQuery } from "./utils/cms-queries"
 
 const { footerSettings } = Astro.props
 // console.log(footerSettings)
 
+const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)`)
+const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practicesQuery}} | order(orderRank)`)
+
 
 ---
 <footer>
-    <div class="link-columns">
-        {footerSettings.linkColumns.map((column) => (
-            <div class="link-column">
-                <p>{column.title}</p>
-                <div class="column-links">
-                    {column.links.links.map((link) => (
-                        <a class="footer-link h5" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+    <div class="footer-inner">
+
+        <div class="footer-cta">
+            <h2 class="heading">{footerSettings.heading}</h2>
+            <a 
+                href={footerSettings.button.url} 
+                class="button" data-style="primary"
+            >
+                {footerSettings.button.text}
+                <Icon name="arrow-diagonal" />
+            </a>
+        </div>
+
+        <div class="footer-info__primary">
+
+            <div class="link-columns">
+                {footerSettings.linkColumns.map((column) => (
+                    <div class="link-column">
+                        <p class="link-column___title">{column.title}</p>
+                        <div class="link-column__links">
+                            {column.links.links.map((link) => (
+                                <a class="link-column__link" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+             <div class="footer-form">
+                <p class="footer-form__title">{footerSettings.newsletterHeading}</p>
+                <AtomHubspotForm 
+                    formId={footerSettings.newsletterHubspotFormId}
+                />
+            </div>
+
+        </div>
+
+        <div class="footer-info__secondary">
+            <div class="agency-brands">
+                {footerSettings.agencyBrandsHeading && 
+                    <div class="agency-brands__title">
+                        {footerSettings.agencyBrandsHeading}
+                    </div>
+                }
+                <div class="agency-brands__content">
+                    {agencyBrands.map((brand) => (
+                        <a class="brand-card" href={brand.url}>
+                            <div class="brand-logo">
+                                <Fragment set:html={brand.logo} />
+                            </div>
+                            <div class="brand-info">
+                                <p class="brand-info__title h6">{brand.name}</p>
+                                <p class="brand-info__excerpt caption">{brand.excerpt}</p>
+                            </div>
+                        </a>
                     ))}
                 </div>
             </div>
-        ))}
-        <div class="link-column">
-            <p>Social</p>
-            {footerSettings.socialLinks.links.map((link) => (
-                <a class="footer-link h5" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
-            ))}
+            <div class="practices">
+                
+                {footerSettings.practicesHeading && 
+                    <div class="practices__title">
+                        {footerSettings.practicesHeading}
+                    </div>
+                }
+                <div class="practices__content link-column__links">
+                    {practices.map((practice) => (
+                        <a href={practice.slug.current} class="link-column__link h6">{practice.title}</a>
+                    ))}
+                </div>
+            </div>
         </div>
-        <NewsletterCard />
+
     </div>
+
+
     <div class="subfooter">
-        <Icon name="domaine-icon" class="footer-logo" />
+
+        <div class="social-links">
+            {footerSettings.instagramUrl &&
+                <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" /></a>
+            }
+            {footerSettings.twitterUrl &&
+                <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" /></a>
+            }
+            {footerSettings.linkedInUrl &&
+                <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
+            }
+        </div>
+
         <div class="subfooter-links">
             {footerSettings.legalLinks.links.map((link) => (
-                <a class="footer-link caption" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+                <a class="subfooter-link caption" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
             ))}
+            {footerSettings.copyrightText && <p class="subfooter-link caption">{footerSettings.copyrightText} </p>}
         </div>
     </div>
+
 </footer>
 
 <style>
@@ -44,56 +119,206 @@ const { footerSettings } = Astro.props
         background-color: var(--color-brand);
         color: var(--color-brand-contrast);
         padding-inline: var(--page-margin);
-        padding-block: 30svh var(--space-md);
+        padding-block: calc(var(--header-height) * 2) var(--space-md);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        /* justify-content: space-between; */
+    }
+
+    .footer-inner {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        justify-content: space-between;
         gap: var(--space-2xl);
+    }
+
+    .footer-inner,
+    .subfooter {
+        max-width: 70%;
+    }
+
+    .footer-cta {
+        /* padding-bottom: var(--space-2xl); */
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .footer-cta .heading {
+        max-width: 15em;
+    }
+
+    .footer-cta .button {
+        max-width: 30rem;
+    }
+
+    .footer-info__primary {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: var(--space-4xl);
+        border-top: 1px solid var(--color-brand-subdued);
+        padding-top: var(--space-2xl);
     }
 
     .link-columns {
         display: flex;
-        flex-wrap: wrap;
         flex-direction: row;
-        justify-content: space-between;
-        gap: var(--space-2xl);
+        gap: var(--space-sm);
+
     }
 
     .link-column {
         display: flex;
         flex-direction: column;
-        gap: var(--space-lg);
+        /* gap: var(--space-lg); */
         padding-right: var(--space-xl);
     }
 
-    .column-links {
+    .link-column,
+    .footer-form {
+        gap: var(--space-md);
+    }
+
+    .link-column__title {
+        color: var(--color-foreground-secondary);
+    }
+
+    .link-column__links {
         display: flex;
         flex-direction: column;
         gap: var(--space-xs);
     }
 
-    .footer-link {
+    .link-column__link {
         text-decoration: none;
+    }
+
+    .footer-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-form__title {
+        color: var(--color-brand-contrast-subdued);
+    }
+
+    .footer-form :global(input:not([type="submit"])) {
+        background-color: var(--color-brand-subdued);
+        color: var(--color-brand-contrast);
+    }
+
+    .footer-form :global(.legal-consent > p)  {
+        color: var(--color-brand-contrast-subdued);
+    }
+
+    .footer-info__secondary {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: var(--space-2xl);
+    }
+
+    .agency-brands {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .agency-brands__title {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .agency-brands__content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--space-lg);
+    }
+
+    .brand-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xs);
+        text-decoration: none;
+    }
+
+    .brand-logo {
+        aspect-ratio: 1 / 1;
+        flex: 0 0 25%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--color-brand-subdued);
+        border-radius: var(--radius-sm);
+    }
+
+    .brand-logo :global(svg) {
+        width: 60%;
+    }
+
+    .brand-info {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-2xs);
+    }
+
+    .brand-info__title {
+        margin: 0;
+    }
+
+    .brand-info__excerpt {
+        color: var(--color-brand-contrast-subdued)
+    }
+
+    .agency-brands__title,
+    .practices__title {
+        padding-bottom: var(--space-md);
+        color: var(--color-brand-contrast-subdued);
+    }
+
+    .agency-brands__content,
+    .practices__content {
+        padding-top: var(--space-md);
+        border-top: 1px solid var(--color-brand-subdued);
+    }
+
+    .practices {
+        flex: 1 0 auto;
+        min-width: 15em;
     }
 
     .subfooter {
         display: flex;
+        align-items: center;
         flex-direction: row;
         gap: var(--space-xs);
-        align-items: center;
         justify-content: space-between;
     }
 
-    .footer-logo {
-        flex: 0 1 25%;
-        height: auto;
-        max-width: 100px;
+    .social-links {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-sm);
+    }
+
+    .social-icon {
+        width: var(--icon-md);
+        height: var(--icon-md);
     }
 
     .subfooter-links {
         display: flex;
         flex-direction: row;
         gap: var(--space-md);
+    }
+
+    .subfooter-link {
+        text-decoration: none;
+        color: var(--color-brand-contrast-subdued);
     }
 </style>

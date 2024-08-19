@@ -2,6 +2,10 @@
   /* Primitives */
   --color-brand: var(--color-darkest);
   --color-brand-contrast: var(--color-lightest);
+
+  --color-brand-subdued: color-mix(in srgb, var(--color-lightest) 10%, var(--color-brand));
+  --color-brand-contrast-subdued: color-mix(in srgb, var(--color-lightest) 70%, var(--color-brand));
+
   --color-brand-secondary: var(--color-blue);
   --color-brand-secondary-contrast: var(--color-lightest);
 

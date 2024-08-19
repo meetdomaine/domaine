@@ -33,6 +33,10 @@ label {
     flex-grow: 1;
 }
 
+label[hidden] {
+    visibility: hidden;
+}
+
 input,
 select {
     height: var(--input-height);
@@ -140,6 +144,7 @@ input[type="checkbox"]::before {
 
 input[type="submit"] {
     align-self: flex-start;
+    color: inherit;
 }
 
 textarea {
@@ -279,6 +284,11 @@ textarea:active {
     gap: var(--form-gap-inline);
 }
 
+/* Hide form group if all fields are hidden */
+.form-field-group:not(:has(input:not([hidden]))) {
+    display: none;
+}
+
 .form-field {
     flex: 0 1 100%;
     display: flex;
@@ -294,6 +304,10 @@ textarea:active {
 /* --- Legal Consent --- */
 .legal-consent {
     margin-bottom: var(--space-2xs);
+}
+
+.legal-consent:not(:has(*)) {
+    display: none;
 }
 
 .legal-consent > p {

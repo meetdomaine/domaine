@@ -5,6 +5,17 @@ export default defineType({
   title: 'Footer',
   type: 'document',
   fields: [
+
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'button',
+      title: 'Button',
+      type: 'snippet_button',
+    }),
     defineField({
         name: 'linkColumns',
         title: 'Links Columns',
@@ -26,15 +37,52 @@ export default defineType({
         }],
         validation: Rule => Rule.max(3),
     }),
-    // defineField({
-    //   name: 'footerLinks',
-    //   title: 'Footer Links',
-    //   type: 'snippet_link-list',
-    // }),
     defineField({
-      name: 'socialLinks',
-      title: 'Social Links',
-      type: 'snippet_link-list',
+      name: 'agencyBrandsHeading',
+      title: 'Agency Brands: Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'practicesHeading',
+      title: 'Practices: Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'newsletterHeading',
+      title: 'Newsletter: Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'newsletterHubspotFormId',
+      title: 'Newsletter: Hubspot Form ID',
+      type: 'string',
+    }),
+    defineField({
+      name: 'instagramUrl',
+      title: 'Social Link: Instagram',
+      type: 'url',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
+    }),
+    defineField({
+      name: 'twitterUrl',
+      title: 'Social Link: Twitter',
+      type: 'url',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
+    }),
+    defineField({
+      name: 'linkedInUrl',
+      title: 'Social Link: LinkedIn',
+      type: 'url',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
     }),
     defineField({
       name: 'legalLinks',
@@ -42,9 +90,14 @@ export default defineType({
       type: 'snippet_link-list',
     }),
     defineField({
-        name: 'seoDescription',
-        title: 'SEO Description',
-        type: 'text',
+      name: 'copyrightText',
+      title: 'Copyright Text',
+      type: 'string',
     }),
+    // defineField({
+    //     name: 'seoDescription',
+    //     title: 'SEO Description',
+    //     type: 'text',
+    // }),
   ],
 })

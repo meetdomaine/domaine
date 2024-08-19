@@ -65,76 +65,76 @@ export default defineType({
     //   title: 'Brand Menu: Label',
     //   type: 'string',
     // }),
-    defineField({
-      name: 'brandMenuBrands',
-      title: 'Brand Menu: Brands',
-      type: 'array',
-      of: [{
-        name: 'brand',
-        title: 'Brand',
-        type: 'object',
-        fields: [
-          {
-            name: 'label',
-            title: 'Label',
-            type: 'string'
-          },
-          {
-            name: 'title',
-            title: 'Brand Title',
-            type: 'string'
-          },
-          {
-            name: 'logo',
-            title: 'Logo',
-            type: 'inlineSvg',
-          },
-          {
-            name: 'slug',
-            title: 'Slug',
-            type: 'slug',
-            options: {
-              source: 'title',
-            }
-          },
-          {
-            name: 'heading',
-            title: 'Heading',
-            type: 'string'
-          },
-          // {
-          //   name: 'brandImage',
-          //   title: 'Brand Image',
-          //   type: 'snippet_image'
-          // },
-          {
-            name: 'media',
-            title: 'Media',
-            type: 'snippet_video'
-          },
-          {
-            name: 'isPrimaryBrand',
-            title: 'Primary Brand',
-            type: 'boolean',
-            initialValue: false
-          }
-        ],
-        preview: {
-          select: {
-            title: 'title',
-            heading: 'heading'
-          },
-          prepare(selection) {
-            const { title, heading } = selection
-            return {
-              title: title,
-              subtitle: heading,
-              media: RobotIcon
-            }
-          }
-        }
-      }]
-    }),
+    // defineField({
+    //   name: 'brandMenuBrands',
+    //   title: 'Brand Menu: Brands',
+    //   type: 'array',
+    //   of: [{
+    //     name: 'brand',
+    //     title: 'Brand',
+    //     type: 'object',
+    //     fields: [
+    //       {
+    //         name: 'label',
+    //         title: 'Label',
+    //         type: 'string'
+    //       },
+    //       {
+    //         name: 'title',
+    //         title: 'Brand Title',
+    //         type: 'string'
+    //       },
+    //       {
+    //         name: 'logo',
+    //         title: 'Logo',
+    //         type: 'inlineSvg',
+    //       },
+    //       {
+    //         name: 'slug',
+    //         title: 'Slug',
+    //         type: 'slug',
+    //         options: {
+    //           source: 'title',
+    //         }
+    //       },
+    //       {
+    //         name: 'heading',
+    //         title: 'Heading',
+    //         type: 'string'
+    //       },
+    //       // {
+    //       //   name: 'brandImage',
+    //       //   title: 'Brand Image',
+    //       //   type: 'snippet_image'
+    //       // },
+    //       {
+    //         name: 'media',
+    //         title: 'Media',
+    //         type: 'snippet_video'
+    //       },
+    //       {
+    //         name: 'isPrimaryBrand',
+    //         title: 'Primary Brand',
+    //         type: 'boolean',
+    //         initialValue: false
+    //       }
+    //     ],
+    //     preview: {
+    //       select: {
+    //         title: 'title',
+    //         heading: 'heading'
+    //       },
+    //       prepare(selection) {
+    //         const { title, heading } = selection
+    //         return {
+    //           title: title,
+    //           subtitle: heading,
+    //           media: RobotIcon
+    //         }
+    //       }
+    //     }
+    //   }]
+    // }),
     // defineField({
     //   name: 'processConsentMessage',
     //   title: 'Checkbox Text: Consent to Process',

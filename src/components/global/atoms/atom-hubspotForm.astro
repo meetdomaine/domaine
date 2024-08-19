@@ -37,7 +37,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('single_line_text'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 <input type="text" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
@@ -45,7 +45,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('email'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 <input type="email" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
@@ -53,15 +53,15 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('phone'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="phone" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <input type="tel" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
                         )
                     case('datepicker'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 <input type="date" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
@@ -69,7 +69,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('number'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 <input type="number" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
@@ -77,7 +77,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('file'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 <input type="file" name={field.name} id={field.name} placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
@@ -85,7 +85,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('dropdown'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                                 <select name={field.name} id={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId}>
                                     {field.options.map((option) => (
@@ -100,7 +100,7 @@ const fields = await fieldGroups.flatMap((group) => {
                                 <div class="inputs-list">
                                     <div class="input-list-item">
                                         <input type="checkbox" id={field.name} name={field.name} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                        <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                        <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                         {field.description && <p class="field-description caption">{field.description}</p>}
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@ const fields = await fieldGroups.flatMap((group) => {
                                                 required={field.required} 
                                                 hidden={field.hidden} 
                                             />
-                                            <label for={option.value}>{option.label}</label>
+                                            <label for={option.value} hidden={field.hidden}>{option.label}</label>
                                         </div>
                                     ))}
                                 </fieldset>
@@ -144,7 +144,7 @@ const fields = await fieldGroups.flatMap((group) => {
                                                 required={field.required} 
                                                 hidden={field.hidden}
                                             />
-                                            <label for={option.value}>{option.label}</label>
+                                            <label for={option.value} hidden={field.hidden}>{option.label}</label>
                                         </div>
                                     ))}
                                 </fieldset>
@@ -159,7 +159,7 @@ const fields = await fieldGroups.flatMap((group) => {
                                     {field.options.map((option) => (
                                         <div class="input-list-item toggle-button">
                                             <input type="radio" id={option.value} name={field.name} value={option.value} required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                            <label for={option.value}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                            <label for={option.value} hidden={field.hidden}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                         </div>
                                     ))}
                                 </fieldset>
@@ -168,7 +168,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     case('multi_line_text'):
                         return (
                             <div class="form-field">
-                                <label for={field.name}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                 <textarea name={field.name} id={field.name} rows="4" cols="50" placeholder="" required={field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
