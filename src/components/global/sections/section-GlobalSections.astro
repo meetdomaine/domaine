@@ -15,6 +15,7 @@ import MasonryContent from "./section-MasonryContent.astro"
 import ImageFullHeight from "../projects/workPost-ImageFullHeight.astro"
 import TextColumns from "./section-TextColumns.astro"
 import MediaCarousel from "./section-MediaCarousel.astro"
+import PracticesFeed from "./section-PracticesFeed.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -31,7 +32,8 @@ const { section, brand, key } = Astro.props
 {section._type == "section_contentBlocks" && section.showSection && <ContentBlocks section={section} brand={brand} key={key} />}
 {section._type == "section_textFeed" && section.showSection &&  <TextFeed section={section} brand={brand} key={key} />}
 {section._type == "section_partnersFeed" && section.showSection && <PartnersFeed section={section} brand={brand} key={key} />}
-{section._type == "section_masonryContent" && section.showSection && <MasonryContent section={section} brand={brand} key={key} />}
+<!-- {section._type == "section_masonryContent" && section.showSection && <MasonryContent section={section} brand={brand} key={key} />} -->
 {section._type == "section_imageFullHeight" && section.showSection && <ImageFullHeight section={section} brand={brand} key={key} />}
 {section._type == "section_mediaCarousel" && section.showSection && <MediaCarousel section={section} brand={brand} key={key} />}
+{section._type == "section_practicesFeed" && section.showSection && <PracticesFeed section={section} brand={brand} key={key} />}
 

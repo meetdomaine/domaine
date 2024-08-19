@@ -19,6 +19,7 @@ import {
     iconPages, 
     iconPartnerTiers, 
     iconPartners, 
+    iconPractices, 
     iconPreloader, 
     iconProjectFeatures, 
     iconProjects, 
@@ -48,6 +49,7 @@ import {
     labelPages, 
     labelPartnerTiers, 
     labelPartners, 
+    labelPractices, 
     labelPreloader, 
     labelProjectFeatures, 
     labelProjects, 
@@ -445,6 +447,13 @@ export const structure = (S, context) =>
                     })
                 ])
             ),
+        orderableDocumentListDeskItem({
+            type: 'type_practice',
+            title: labelPractices,
+            icon: iconPractices,
+            S, 
+            context
+        }),
         S.listItem()
             .title(labelAbout)
             .icon(iconAbout)
@@ -593,12 +602,19 @@ export const structure = (S, context) =>
                                     ),
                             ])
                         ),
-                    S.listItem()
-                        .title(labelAgencyBrand)
-                        .icon(iconAgencyBrand)
-                        .child(
-                            S.documentTypeList('type_agencyBrand')
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_agencyBrand',
+                        title: labelAgencyBrand,
+                        icon: iconAgencyBrand,
+                        S, 
+                        context
+                    }),
+                    // S.listItem()
+                    //     .title(labelAgencyBrand)
+                    //     .icon(iconAgencyBrand)
+                    //     .child(
+                    //         S.documentTypeList('type_agencyBrand')
+                    //     ),
                 ])
             ),
       ])

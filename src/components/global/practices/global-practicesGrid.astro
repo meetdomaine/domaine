@@ -1,0 +1,67 @@
+---
+import { agencyBrandsQuery, practicesQuery } from "../utils/cms-queries"
+import GlobalPracticeCard from "./global-practiceCard.astro"
+
+const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)`)
+const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practicesQuery}} | order(orderRank)`)
+
+---
+<div class="practices-grid">
+  <div class="agency-brands">
+      {agencyBrands.map((brand) => (
+          <GlobalPracticeCard 
+              title={brand.title}
+              heading={brand.excerpt}
+              media={brand.thumbnailMedia}
+              slug={brand.slug}
+              isAgencyBrand={true}
+              logo={brand.logo}
+          />
+      ))}
+  </div>
+  <div class="practices">
+      {practices.map((practice) => (
+          <GlobalPracticeCard 
+              title={practice.title}
+              heading={practice.excerpt}
+              media={practice.thumbnailMedia}
+              slug={practice.slug}
+              isAgencyBrand={false}
+              logo={practice.logo}
+          />
+      ))}
+  </div>
+</div>
+
+
+<style>
+  .practices-grid {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: var(--space-xs);
+  }
+
+  .agency-brands {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex: 0 1 75%;
+      gap: var(--space-xs);
+  }
+
+  .practices {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      flex: 1 1 30em;
+      gap: var(--space-xs);
+      /* min-width: 5em; */
+  }
+
+  @media screen and (width <= 768px) {
+    .practices-grid {
+      flex-direction: column;
+    }
+  }
+</style>

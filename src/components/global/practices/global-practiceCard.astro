@@ -1,0 +1,81 @@
+---
+import AtomSanityMedia from '../atoms/atom-sanityMedia.astro'
+
+interface Props {
+  title: string,
+  logo: string,
+  heading: string,
+  slug: Slug,
+  media?: Media,
+  isAgencyBrand: boolean,
+}
+
+const { title, logo, heading, slug, media, isAgencyBrand } = Astro.props
+---
+<a href={slug.current} class="practice-card" data-primary={isAgencyBrand ? "true" : "false"}>
+  <div class="card-content">
+    <Fragment set:html={logo} />
+    <!-- <h3>{title}</h3> -->
+    <h3 class={`${isAgencyBrand ? "h4" : "h6"}`}>{heading}</h3>
+  </div>
+  {media && (media.image || media.video) &&
+    <div class="card-media">
+      <AtomSanityMedia 
+        video={media.video}
+        image={media.image}
+        sizes='50vw'
+        cover={true}
+        aspectRatio={3 / 4}
+      />
+    </div>
+  }
+</a>
+
+<style>
+  .practice-card {
+    position: relative;
+    display: flex;
+    justify-content: stretch;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1 1 auto;
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .practice-card[data-primary="true"] {
+    flex: 0 1 100%;
+    justify-content: flex-end;
+    aspect-ratio: 3 / 4;
+    border: none;
+    color: var(--color-lightest);
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    z-index: 1;
+    padding: var(--space-sm);
+    gap: var(--space-xs);
+    flex: 0 1 100%;
+  }
+
+  /* .practice-card[data-primary="true"] .card-content {
+
+  } */
+
+  .card-content :global(svg) {
+    max-height: 1em;
+    /* width: auto; */
+  }
+
+  .card-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+</style>

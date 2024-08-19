@@ -56,6 +56,8 @@ import section_imageFullHeight from "./sections/section_imageFullHeight.js";
 import section_textColumns from "./sections/section_textColumns.js";
 import section_mediaCarousel from "./sections/section_mediaCarousel.js";
 import section_textFeed from "./sections/section_textFeed.js";
+import section_practicesFeed from "./sections/section_practicesFeed.js";
+import type_practice from "./practices/type_practice.js";
 
 
 export const schemaTypes = [
@@ -74,6 +76,7 @@ export const schemaTypes = [
     type_teamMember,
     type_teamDepartment,
     type_agencyBrand,
+    type_practice,
 
     page_projectIndex,
     page_servicesIndex,
@@ -121,4 +124,5 @@ export const schemaTypes = [
     section_imageFullHeight,
     section_textColumns,
     section_mediaCarousel,
+    section_practicesFeed,
 ]

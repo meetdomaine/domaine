@@ -1,0 +1,46 @@
+---
+import { sanityClient } from "sanity:client"
+import { practicesQuery, agencyBrandsQuery } from "../utils/cms-queries"
+import GlobalPracticeCard from "../practices/global-practiceCard.astro"
+import GlobalPracticesGrid from "../practices/global-practicesGrid.astro"
+
+const { section, brand, key } = Astro.props
+// console.log(agencyBrands)
+---
+<section class="section-practices">
+    <div class="section-title">
+        <h2 class="h5">{section.title}</h2>
+        <div class="subheading h3">{section.heading}</div>
+    </div>
+
+    <GlobalPracticesGrid />
+    
+</section>
+
+<style>
+    .section-practices {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-4xl);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-2xl);
+    }
+
+    .section-title {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+    }
+
+    .subheading {
+        max-width: 15em;
+    }
+
+    @media screen and (width <= 768px) {
+        .section-title {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+    }
+</style>

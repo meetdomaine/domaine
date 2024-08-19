@@ -23,9 +23,10 @@ export default defineType({
         { type: 'section_servicesFeed'},
         { type: 'section_contentBlocks'},
         { type: 'section_partnersFeed'},
-        { type: 'section_masonryContent'},
+        // { type: 'section_masonryContent'},
         { type: 'section_mediaCarousel'},
         { type: 'section_textFeed'},
+        { type: 'section_practicesFeed'},
     ]
     }),
   ],

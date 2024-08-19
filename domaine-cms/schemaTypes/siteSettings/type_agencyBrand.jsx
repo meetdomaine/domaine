@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import { orderRankField } from '@sanity/orderable-document-list'
 import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
 
 import { media } from 'sanity-plugin-media'
@@ -31,6 +32,20 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'string',
+      description: 'Used in Brand menu & practices section.',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'thumbnailMedia',
+      title: 'Thumbnail Media',
+      type: 'snippet_video',
+      description: 'Used in Brand menu & practices section.',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'logo',
       title: 'Logo',
       type: 'inlineSvg',
@@ -49,6 +64,7 @@ export default defineType({
       type: 'snippet_SEO-fields',
       description: 'Default brand SEO fields.'
     }),
+    orderRankField({ type: 'type_practice'}),
   ],
   preview: {
     select: {

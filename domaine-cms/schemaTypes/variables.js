@@ -28,6 +28,7 @@ import {
     StarIcon,
     EnvelopeIcon,
     Progress75Icon,
+    ClipboardImageIcon,
 } from '@sanity/icons'
 
 // Domaine
@@ -103,6 +104,10 @@ export const iconPartnerTiers = OlistIcon
 // Events
 export const labelEvents = "Events"
 export const iconEvents = CalendarIcon
+
+// Practices
+export const labelPractices = "Practices"
+export const iconPractices = ClipboardImageIcon
 
 // Team Members
 export const labelTeamMembers = "Team Members"
