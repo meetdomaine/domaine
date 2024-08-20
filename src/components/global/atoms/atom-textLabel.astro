@@ -6,7 +6,7 @@ interface Props {
 
 const { text } = Astro.props
 ---
-<p class="text-label utility">{text}</p>
+<p class="text-label caption">{text}</p>
 
 <style>
     .text-label::before {
@@ -16,6 +16,6 @@ const { text } = Astro.props
         aspect-ratio: 1 / 1;
         border-radius: 100vw;
         border: 1px solid currentColor;
-        margin-right: 1em;
+        margin-right: 0.6em;
     }
 </style>

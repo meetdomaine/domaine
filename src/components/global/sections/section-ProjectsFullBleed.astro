@@ -2,100 +2,85 @@
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import { urlFor } from "../utils/cms-queries"
+import AtomTextLabel from "../atoms/atom-textLabel.astro"
 const { section } = Astro.props
 
 const id = Math.random().toString(16).slice(2)
+
+// console.log(section.projects[3])
 ---
-<section class="media-fullbleed" id={`media-fullbleed-${id}`}>
-    <div class="section-media">
-        <div class="background-images">
-            {section.projects.map((entry, i) => (
-                <div class={`background-image ${i == 0 ? 'active' : ''}`} data-index={i}>
-                    <AtomSanityImage
-                        image={entry.media.image}
-                        sizes="100vw"
-                        cover={true}
-                    />
-                </div>
-            ))}
-        </div>
-    </div>
+<section class="section-projects-fullbleed" id={`media-fullbleed-${id}`}>
     <div class="section-content">
         {section.projects.map((entry, i) => (
-            <a 
-                class='project-title' 
-                data-index={i} 
-                href={`${entry.project.agencyBrand.slug.current === 'studio' ? '/studio' : null}/work/${entry.project.slug.current}`}
-                data-preview-image={urlFor(entry.project.thumbnailImageSecondary.image).width(400).auto('format').url()}
-            >
-                {entry.project.title}
-            </a>
+            <div class='project-item'>
+                <a
+                    class="project-link"
+                    href={`${entry.project.agencyBrand.slug.current === 'studio' ? '/studio' : null}/work/${entry.project.slug.current}`} 
+                    style={entry.project.backgroundColor && `--project-color: ${entry.project.backgroundColor.hex}`}
+                >
+                    <Icon name={`character-${entry.project.title[0].toUpperCase()}`} class="project-icon" />
+                </a>
+                <div class="project-image">
+                    <AtomSanityImage
+                        image={entry.media.image}
+                        sizes="110vw"
+                        cover={true}
+                        aspectRatio={1 / 2}
+                    />
+                </div>
+                <div class="project-preview glass-ink">
+                    <AtomTextLabel 
+                        text={entry.project.title}
+                    />
+                    <div class="preview-media">
+                        <AtomSanityImage 
+                            image={entry.project.thumbnailImageSecondary.image}
+                            sizes="50vw"
+                        />
+                    </div>
+                </div> 
+            </div>
+            
         ))}
-    </div>
-    <div class="project-preview glass-ink">
-        <img class="preview-image" src={urlFor(section.projects[0].project.thumbnailImageSecondary.image).width(400).auto('format').url()} />
-        <div class="preview-text">
-            <p class="caption">View Project</p>
-            <Icon class="icon" name="arrow-diagonal" />
-        </div>
     </div>
 </section>
 
-<script define:vars={{ id }}>
+<script>
+    import { gsap, addParallax } from "../utils/gsap"
+    const sections = document.querySelectorAll('.section-projects-fullbleed')
 
-    const section = document.getElementById(`media-fullbleed-${id}`)
-    const projectTitles = section.querySelectorAll('.project-title')
-    const projectImages = section.querySelectorAll('.background-image')
-    const projectPreview = section.querySelector('.project-preview')
-    const previewImage = projectPreview.querySelector('.preview-image')
+    sections.forEach((section) => {
+        const projectImages = section.querySelectorAll('.project-image')
+        projectImages.forEach((image) => addParallax(image))
 
-    let sectionRect = section.getBoundingClientRect();
+        const followCursor = (e) => {
 
+            let sectionRect = section.getBoundingClientRect();
 
-    window.addEventListener("resize", () => {
-        sectionRect = section.getBoundingClientRect();
-    })
-
-    projectTitles.forEach((title) => {
-        title.addEventListener("mouseover", (e) => {
-            projectPreview.classList.add('visible')
-            previewImage.src = title.dataset.previewImage
-            projectImages.forEach((image) => {
-                if (image.dataset.index === title.dataset.index) return image.classList.add('active')
-                return image.classList.remove('active')
+            window.addEventListener("resize", () => {
+                sectionRect = section.getBoundingClientRect();
             })
-        })
-        title.addEventListener("mouseleave", (e) => {
-            projectPreview.classList.remove('visible')
-        })
-    })
 
-    const delay = 20
-    let timeout = null
+            const posX = (e.clientX - sectionRect.left) / sectionRect.width
+            const posY = (e.clientY - sectionRect.top) / sectionRect.height
 
-    const followCursor = (e) => {
-        if(!timeout) {
-            const x = e.clientX - sectionRect.left;
-            const y = e.clientY - sectionRect.top + window.scrollY;
-            projectPreview.style.left = `${x}px`
-            projectPreview.style.top = `${y}px`
-
-            timeout = setTimeout(() => {
-                timeout = null
-            }, delay)
+            gsap.to('.project-preview', {
+                "--mouseX": posX,
+                "--mouseY": posY,
+                ease: "cubic",
+                duration: 0.2
+            })
         }
-    }
 
-
-    section.addEventListener("mousemove", (e) => {
-        followCursor(e)
+        section.addEventListener("mousemove", (e) => {
+            followCursor(e)
+        })
     })
-
 
 </script>
 
 <style>
-    .media-fullbleed {
+    .section-projects-fullbleed {
         position: relative;
         --image-inset: var(--space-xs);
         padding: var(--image-inset);
@@ -105,93 +90,85 @@ const id = Math.random().toString(16).slice(2)
 
     .section-content {
         position: relative;
-        display: flex;
-        flex-direction: column;
-        /* align-items: flex-start; */
         align-items: stretch;
-        gap: 0;
-        padding-inline: var(--space-md);
-        padding-block: 50dvh;
         border-radius: var(--radius-md);
         overflow: hidden;
-        margin-top: -100dvh;
+        background-color: var(--color-brand);
     }
 
-    .project-title {
-        font-size: 14vw;
-        font-weight: 400;
-        letter-spacing: -0.05em;
-        margin: 0;
-        position: relative;
-        z-index: 2;
-        padding-block: var(--space-lg);
-        text-decoration: none;
-        color: transparent;
-        background-color: var(--color-background-translucent);
-        color: transparent;
-        background-clip: text;
-        -webkit-background-clip: text;
-        z-index: 2;
-        transition: color var(--anim-sm);
-    }
-
-    .project-title:hover {
+    .project-item {
         color: var(--color-brand-contrast);
-
-    }
-
-    .section-media {
+        padding-inline: var(--space-md);
+        padding-block: var(--space-lg);
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-self: stretch;
         width: 100%;
-        height: calc(100dvh - var(--image-inset) * 2);
-        position: sticky;
-        top: var(--image-inset);
-        border-radius: var(--radius-md);
-        overflow: hidden;
+        z-index: 3;
     }
 
-    .background-images {
+
+
+    .project-link {
         position: relative;
-        width: 100%;
-        height: 100%;
+        flex: 0 0 40%;
+        z-index: 2;
     }
 
-    .background-image {
+    .project-link:hover {
+        color: var(--project-color,  var(--color-brand-contrast));
+    }
+
+
+    .project-icon {
+        text-decoration: none;
+        /* color: var(--color-brand-contrast); */
+        transition: color var(--anim-sm);
+        width: 100%;
+        height: auto;
+    }
+
+    .project-image {
         position: absolute;
         inset: 0;
+        width: 100%;
+        /* height: 100%; */
         opacity: 0;
-        scale: 1.1;
-        transition: opacity var(--anim-sm), scale var(--anim-lg);
-        transition-delay: 0.1s;
+        transition: opacity var(--anim-lg);
+        z-index: 0;
+        pointer-events: none;
     }
-    
-    .background-image.active {
+
+    .project-item:first-child .project-image {
         opacity: 1;
-        scale: 1;
-        transition-delay: 0s;
     }
+
+    .project-item:has(.project-link:hover) > .project-image {
+        opacity: 1;
+    }
+
 
     .project-preview {
         position: absolute;
+        left: calc(100% * var(--mouseX));
+        top: calc(100% * var(--mouseY));
         z-index: 3;
-        padding: var(--space-2xs);
-        border-radius: var(--radius-sm);
+        padding: var(--space-xs);
+        border-radius: var(--radius-md);
         display: flex;
         flex-direction: column;
         align-items: stretch;
         gap: var(--space-xs);
         color: var(--color-lightest);
+        transform-origin: left bottom;
         width: max(20px, 15vw);
-        translate: 5% -105%;
         pointer-events: none;
-        /* opacity: 0; */
-        clip-path: polygon(0% 100%, 0% 100%, 100% 100%, 100% 100%);
+        translate: 0 calc(-100% - var(--space-md));
         transition: clip-path var(--anim-sm);
     }
 
-    .project-preview.visible {
-        /* opacity: 1; */
-        clip-path: polygon(0% 100%, 0% 0%, 100% 0%, 100% 100%);
-    }
+    
 
     .preview-image {
     }
@@ -206,6 +183,51 @@ const id = Math.random().toString(16).slice(2)
     .project-preview .icon {
         width: var(--icon-sm);
         height: var(--icon-sm);
+    }
+
+    @media screen and (width > 768px) {
+
+        .project-item:nth-child(4n + 2) {
+            justify-content: flex-end;
+        }
+
+        .project-item:nth-child(4n + 3) {
+            justify-content: center;
+        }
+
+        .project-preview {
+            clip-path: polygon(0% 100%, 0% 100%, 100% 100%, 100% 100%);
+        }
+
+        .project-item:has(.project-link:hover) .project-preview {
+            clip-path: polygon(0% 100%, 0% 0%, 100% 0%, 100% 100%);
+        }
+    }
+
+    @media screen and (width <= 768px) {
+
+        .project-item {
+            justify-content: space-between;
+            align-items: stretch;
+            gap: var(--space-lg)
+        }
+
+        .project-item:nth-of-type(even) {
+            flex-direction: row-reverse;
+        }
+
+        .project-link {
+            flex: 1 0 auto;
+        }
+
+        .project-preview {
+            position: relative;
+            clip-path: none;
+            top: unset;
+            left: unset;
+            translate: none;
+            flex: 1 0 auto;
+        }
     }
 
 </style>
