@@ -34,10 +34,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
                 <Fragment set:html={currentBrand.logo} />
             </a>
             <button class="brand-button button-reset" popovertarget="brand-menu">
-                <span class="brand-button__box"></span>
-                <span class="brand-button__box"></span>
-                <span class="brand-button__box"></span>
-                <span class="brand-button__box"></span>
+                <Icon name="icon-menu-box" class="brand-menu-icon" />
             </button>
         </div>
         
@@ -120,32 +117,35 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
 
     .brand-logo {
-        max-width: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        /* align-items: center; */
+        height: 30%;
     }
 
     .brand-logo :global(svg) {
-        height: 100%;
-        max-width: 90px;
-        vertical-align: middle;
+        /* max-height: 80%; */
+        /* align-self: stretch; */
     }
 
     .brand-button {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
         aspect-ratio: 1 / 1;
-        gap: 3px;
-        padding: 4px;
+        justify-content: center;
+        align-items: center;
+        height: calc(100% - var(--space-2xs) * 2);
+        width: auto;
     }
 
-    .brand-button__box {
-        aspect-ratio: 1 / 1;
-        background-color: var(--color-foreground);
+    .brand-menu-icon {
         opacity: 0.5;
+        width: 60%;
+        height: auto;
         transition: opacity var(--anim-sm);
-
     }
 
-    .brand-button:hover .brand-button__box {
+    .brand-button:hover .brand-menu-icon {
         opacity: 1;
     }
 
@@ -199,6 +199,17 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         opacity: 0;
     }
 
+    .notification-button::after {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: var(--color-brand);
+        top: 25%;
+        right: 25%;
+        border-radius: 100vw;
+    }
+
     .notification-button[data-active="false"] .icon-close {
         opacity: 0;
     }
@@ -236,11 +247,11 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
         .brand {
             border-radius: var(--radius-sm);
-            padding: 12px;
+            padding-inline: var(--space-xs) var(--space-2xs);
             justify-self: flex-start;
             display: flex;
             flex-direction: row;
-            align-items: stretch;
+            align-items: center;
             height: var(--header-element-height);
             gap: var(--space-sm);
         }

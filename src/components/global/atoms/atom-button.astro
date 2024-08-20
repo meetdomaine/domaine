@@ -1,6 +1,18 @@
 ---
 import { Icon } from "astro-icon/components"
 
+interface Props {
+    text: string,
+    url: string,
+    icon?: string,
+    newTab?: boolean,
+    invert?: boolean,
+    style?: string,
+    classList?: string,
+    fill?: boolean,
+    popoverTarget?: string,
+}
+
 const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} = Astro.props
 ---
 {popoverTarget ? 

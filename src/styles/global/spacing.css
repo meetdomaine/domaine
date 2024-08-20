@@ -23,7 +23,7 @@
     --grid-gap: var(--space-md);
     
     --header-padding-block: var(--space-sm);
-    --header-element-height: 40px;
+    --header-element-height: clamp(40px, 2rem, 100px);
     --header-height: calc(var(--header-element-height) + var(--header-padding-block) * 2);
 
     --notification-menu-width: clamp(250px, calc(100% - var(--page-margin) * 2), 30rem);

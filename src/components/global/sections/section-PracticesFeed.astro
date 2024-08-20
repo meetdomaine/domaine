@@ -9,8 +9,17 @@ const { section, brand, key } = Astro.props
 ---
 <section class="section-practices">
     <div class="section-title">
-        <h2 class="h5">{section.title}</h2>
-        <div class="subheading h3">{section.heading}</div>
+        <h2 
+            class="h5"
+            data-animate-viewport="true"
+            data-animation="fade"
+        >{section.title}</h2>
+        <div 
+            class="subheading h3"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+            data-animation-delay={200}
+        >{section.heading}</div>
     </div>
 
     <GlobalPracticesGrid />

@@ -9,7 +9,7 @@ const latestBlogPost = await sanityClient.fetch(`*[_type == "type_blog" && agenc
 const latestWork = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == '${currentBrand.slug.current}' ]{${projectGridFields}} | order(orderRank)[0]`)
 const upcomingEvent = await sanityClient.fetch(`*[_type == "type_event" && isPublic ]{}[0]`)
 
-console.log(latestWork)
+// console.log(latestWork)
 ---
 <dialog popover id="notification-menu" class="notification-menu">
   {latestBlogPost &&
@@ -94,7 +94,7 @@ console.log(latestWork)
     margin: 0;
     /* gap: var(--space-3xs); */
     gap: 1px;
-    /* opacity: 0; */
+    opacity: 0;
     transition: opacity var(--anim-sm), display var(--anim-sm) allow-discrete;
     border: none;
     width: var(--notification-menu-width);

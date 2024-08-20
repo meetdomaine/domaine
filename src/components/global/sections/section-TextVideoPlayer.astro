@@ -1,0 +1,211 @@
+---
+import { Icon } from "astro-icon/components"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomButton from "../atoms/atom-button.astro"
+
+const { section, brand, key } = Astro.props
+// console.log(section)
+---
+<section class="section-text-video-player">
+  <!-- {section.} -->
+   <div class="section-content">
+    <div class="section-title">
+      {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
+      <h2 class="h3">{section.heading}</h2>
+    </div>
+    {(section.subheading || section.text) &&
+      <div class="section-text">
+        {section.subheading && <h3 class="subheading h6">{section.subheading}</h3>}
+        <div class="text">
+          {section.text && <p class="description">{section.text}</p>}
+          <AtomButton 
+            text={section.button.text}
+            url={section.button.url}
+            style="primary"
+            icon="arrow-diagonal"
+          />
+        </div>
+      </div>
+    }
+  </div>
+  <div class="section-media">
+    <div class="media">
+      <AtomSanityMedia 
+        video={section.media.video}
+        image={section.media.image}
+        autoplay={false}
+        sizes="50vw"
+      />
+    </div>
+    {(section.mediaTitle || section.mediaSubtitle) &&
+      <div class="media-info">
+        <Icon name="icon-arrow-angle-up" class="media-icon" />
+        <div class="media-text">
+          <p class="media-title">{section.mediaTitle}</p>
+          <p class="media-subtitle">{section.mediaSubtitle}</p>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<script>
+import { gsap } from "../utils/gsap"
+
+  const sections = document.querySelectorAll('.section-text-video-player')
+
+  // Performance Improvement: Disable on mobile
+  sections.forEach((section) => {
+    const animTimeline = gsap.timeline({ defaults: { ease: 'power4.inOut', duration: 2} })
+    animTimeline.to(section, {
+      "--scroll-percent": 1,
+      scrollTrigger: {
+        trigger: section,
+        scrub: true,
+        start: 'top top',
+        end: 'bottom 90%'
+      }
+    })
+  })
+</script>
+
+<style>
+  .section-text-video-player {
+    --content-width: 50%;
+    --padding-top: var(--space-4xl);
+    --scroll-percent: 0;
+    --gap: var(--space-lg);
+    padding-inline: var(--page-margin);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: var(--space-2xl);
+    min-height: 200svh;
+    position: relative;
+  }
+
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    position: absolute;
+    top: var(--padding-top);
+    left: var(--page-margin);
+    width: var(--content-width);
+    opacity: min(1, calc( 1 - var(--scroll-percent) * 2));
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    /* max-width: 40rem; */
+  }
+
+  .eyebrow {
+    color: var(--color-brand);
+  }
+
+  .section-text {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-xl);
+  }
+  
+  .subheading {
+    flex: 0 1 auto;
+    /* min-width: 10em; */
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 1 30em;
+    gap: var(--space-sm);
+  }
+
+  .description {
+    /* max-width: 30em; */
+  }
+
+  .section-media {
+    /* flex: 0 0 40%; */
+    --initial-size: calc(100% - var(--content-width) - var(--page-margin) * 2 - var(--gap));
+    position: sticky;
+    top: 0;
+    padding-top: var(--padding-top);
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: calc( ((100% - var(--initial-size)) * var(--scroll-percent)) + var(--initial-size));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .media {
+    position: relative;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .media-info {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .media-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .media-icon {
+    height: 1em;
+    width: 1em;
+  }
+
+  .media-subtitle {
+    color: var(--color-foreground-secondary);
+  }
+
+  @media screen and (width <= 768px) {
+    .section-text-video-player {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      gap: var(--space-2xl);
+      min-height: unset;
+      padding-block: var(--space-2xl);
+    }
+
+    .section-content {
+      gap: var(--space-xl);
+      position: relative;
+      top: unset;
+      left: unset;
+      width: auto;
+      opacity: 1;
+      /* flex: 0 0 auto; */
+    }
+
+    .section-text {
+      flex-direction: column;
+      gap: var(--space-2xs);
+    }
+
+    .text {
+      max-width: 30em;
+      flex: 0 0 auto;
+    }
+
+    .section-media {
+      padding: 0;
+      position: relative;
+    }
+  }
+</style>

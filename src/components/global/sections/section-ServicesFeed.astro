@@ -75,9 +75,15 @@ const serviceTypes = await sanityClient.fetch(`
                         </div>
                     </div>
                 </div>
-                <div class="section-media">
+                <div class="section-media"
+                    data-animate-viewport="true"
+                    data-animation="fade"
+                    data-animation-delay={400}
+                >
                     {serviceType.images.map((imageObject) => (
-                        <div class="service-image">
+                        <div 
+                            class="service-image"
+                        >
                             <AtomSanityImage 
                                 image={imageObject.image}
                                 sizes="30vw"

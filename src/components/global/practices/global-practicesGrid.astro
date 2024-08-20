@@ -8,7 +8,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
 ---
 <div class="practices-grid">
   <div class="agency-brands">
-      {agencyBrands.map((brand) => (
+      {agencyBrands.map((brand, i) => (
           <GlobalPracticeCard 
               title={brand.title}
               heading={brand.excerpt}
@@ -20,7 +20,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
       ))}
   </div>
   <div class="practices">
-      {practices.map((practice) => (
+      {practices.map((practice, i) => (
           <GlobalPracticeCard 
               title={practice.title}
               heading={practice.excerpt}

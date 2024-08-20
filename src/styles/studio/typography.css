@@ -22,57 +22,57 @@ h6, .h6 {
 }
   
 h1, .h1 {
-    --min-size: 42;
-    --base-size: 68;
+    --min-size: 45;
+    --base-size: 60;
     letter-spacing: -0.03em;
     line-height: 0.99;
-    font-weight: 400;
+    font-weight: 200;
 }
   
 h2, .h2 {
-    --min-size: 38;
-    --base-size: 54;
+    --min-size: 40;
+    --base-size: 50;
     letter-spacing: -0.03em;
     line-height: .95;
-    font-weight: 400;
+    font-weight: 200;
 }
   
 h3, .h3 {
-    --min-size: 32;
-    --base-size: 44;
+    --min-size: 30;
+    --base-size: 45;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    font-weight: 400;
+    font-weight: 200;
 }
   
 h4, .h4 {
-    --min-size: 28;
-    --base-size: 34;
+    --min-size: 30;
+    --base-size: 40;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    font-weight: 400;
+    font-weight: 200;
 }
 
 h5, .h5 {
-    --min-size: 22;
-    --base-size: 26;
+    --min-size: 25;
+    --base-size: 30;
     letter-spacing: -0.02em;
     line-height: 1.1;
-    font-weight: 400;
+    font-weight: 200;
 }
 
 h6, .h6 {
-    --min-size: 18;
-    --base-size: 20;
+    --min-size: 20;
+    --base-size: 25;
     letter-spacing: -0.02em;
     line-height: 1.2;
-    font-weight: 400;
+    font-weight: 200;
 }
   
 p,
 .body {
-    --min-size: 14;
-    --base-size: 16;
+    --min-size: 13;
+    --base-size: 14;
     /* margin: 0 0 1em; */
     letter-spacing: 0;
     margin: 0;
@@ -84,16 +84,17 @@ label,
 .hs-field-desc {
     --min-size: 12;
     --base-size: 12;
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
     margin: 0;
     font-weight: 400;
+    /* font-family: var(--font-family-secondary); */
 }
   
 .utility {
     font-family: var(--font-family-secondary);
-    --min-size: 10;
+    --min-size: 12;
     --base-size: 12;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.05em;
     margin: 0;
     font-weight: 400;

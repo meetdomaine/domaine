@@ -6,6 +6,7 @@ import AtomSanityImage from './atom-sanityImage.astro';
 interface Props {
   image?: SanityImage,
   video?: MuxVideo,
+  autoplay?: boolean,
   sizes: string,
   videoWidth?: string,
   videoHeight?: string,
@@ -17,18 +18,21 @@ interface Props {
   transitionName?: string,
 }
 
-const { video, image, sizes, eager, aspectRatio, cover, contain, alt, videoWidth, videoHeight, transitionName } = Astro.props;
+const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, videoWidth, videoHeight, transitionName } = Astro.props;
 // console.log(video)
 ---
 
 
+
+
 {video ? 
     <mux-player
+        id={`mux-video_${video.asset.playbackId}`}
         playback-id={video.asset.playbackId}
         metadata-video-title={video.asset.filename}
-        autoplay
+        autoplay={autoplay === false ? false : true}
         loop
-        muted
+        muted={autoplay === false ? false : true}
         style={{ aspectRatio: aspectRatio }}
         width={videoWidth}
         height={videoHeight}
@@ -48,6 +52,36 @@ const { video, image, sizes, eager, aspectRatio, cover, contain, alt, videoWidth
     : <p>NO MEDIA</p>
 }
 
+{video && autoplay === false &&
+  <button 
+    id={`play-button_${video.asset.playbackId}`} 
+    class="glass-dark play-button"
+    data-active="false"
+  >Play</button>
+}
+
+<script define:vars={{ video }}>
+  if (video) {
+    const muxVideo = document.getElementById(`mux-video_${video.asset.playbackId}`)
+    const playButton = document.getElementById(`play-button_${video.asset.playbackId}`)
+    if (playButton) {
+      playButton.addEventListener("click", () => {
+        if (playButton.dataset.active === "true") {
+          muxVideo.pause()
+          playButton.innerText = "Play"
+          playButton.dataset.active = "false"
+        } else {
+          muxVideo.play()
+          playButton.innerText = "Pause"
+          playButton.dataset.active = "true"
+        }
+      })
+      console.log(playButton)
+    }
+    // console.log(muxVideo)
+  }
+</script>
+
 <style>
     mux-player {
       --media-object-fit: cover;
@@ -60,6 +94,24 @@ const { video, image, sizes, eager, aspectRatio, cover, contain, alt, videoWidth
 
     mux-player[data-cover="true"] {
       height: 100%;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      z-index: 2;
+      transition: opacity var(--anim-lg);
+    }
+
+    mux-player:hover + .play-button[data-active="true"],
+    .play-button[data-active="true"]:hover {
+      opacity: 1;
+    }
+
+    .play-button[data-active="true"] {
+      opacity: 0;
     }
 
 </style>

@@ -20,7 +20,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
         })}
     </div> -->
 
-    <nav class="navigation-links caption">
+    <nav class="navigation-links">
         {links.map((link, i) => (
             <a 
                 href={link.linkUrl} 
@@ -33,7 +33,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
 
     <div class="search-wrapper">
         <button class="search-button" popovertarget="search-menu">
-            <Icon class="icon" name="pixel_search" />
+            <Icon class="icon" name="icon-search" />
             <span>Search <em>projects, insights, and more...</em></span>
         </button>
     </div>

@@ -1,10 +1,12 @@
 ---
+import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import { replaceStringIcons } from "../../../global/utils/inline-icon-text"
 
 const { heading, subheading, eyebrow, button, backgroundVideo, projects } = Astro.props
 
 const iconText = replaceStringIcons(heading)
+
 ---
 <section id="home-hero" class="home-hero">
     <div class="section-content">
@@ -14,7 +16,7 @@ const iconText = replaceStringIcons(heading)
             {subheading && <p class="caption">{subheading}</p>}
         </div>
         {button.text && button.url &&
-            <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}</a>
+            <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}<Icon name="arrow-diagonal" /></a>
         }
     </div>
     <div class="section-media">
@@ -189,7 +191,7 @@ const iconText = replaceStringIcons(heading)
         flex-direction: column;
         align-items: center;
         text-align: center;
-        max-width: 40em;
+        max-width: 50rem;
         gap: var(--space-sm);
     }
 
