@@ -10,4 +10,9 @@
   --color-brand-secondary-contrast: var(--color-lightest);
 
   --gradient-primary: var(--gradient-ink);
+
+  --color-button-primary: var(--color-background-secondary);
+  --color-button-primary-contrast: var(--color-darkest);
+  --color-button-primary-hover: var(--color-brand);
+  --color-button-primary-hover-contrast: var(--color-brand-contrast);
 }

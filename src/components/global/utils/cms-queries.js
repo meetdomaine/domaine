@@ -59,6 +59,7 @@ export const globalSectionsFields = `
     _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
     _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
+    _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
   }
 `
 

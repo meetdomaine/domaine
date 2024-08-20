@@ -2,6 +2,7 @@
 import { sanityClient } from "sanity:client"
 import { imageBaseFields, imageFields, urlFor } from "../utils/cms-queries"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomButton from "../atoms/atom-button.astro"
 const { section, brand, key } = Astro.props
 
 const clientLogos = await sanityClient.fetch(`
@@ -12,73 +13,184 @@ const clientLogos = await sanityClient.fetch(`
                     title, 
                     orderRank, 
                     logoDark{${imageBaseFields}} 
-                } | order(orderRank)[0...6]`)
+                } | order(orderRank)[0...10]`)
 // console.log(clientLogos)
 ---
 <section class="section-text-clients">
     <div 
-        class="section-text"
+        class="section-title"
         data-animate-viewport="true"
         data-animation="fade-up"
     >
-        {section.eyebrow && <p class="utility">{section.eyebrow}</p>}
-        <h2 class="h1">{section.heading}</h2>
+        {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
+        <h2 class="h3">{section.heading}</h2>
     </div>
-    <div class="logos">
-        {clientLogos.map((client, i) => (
-            <div 
-                class="logo"
-                data-animate-viewport="true"
-                data-animation="fade"
-                data-animation-delay={150 * i}
-            >
-                <AtomSanityImage 
-                    image={client.logoDark} 
-                    contain={true}
-                    sizes="30vw"
-                />
+    <div class="client-logos">
+        <div 
+            class="logo-track"
+        >
+            {clientLogos.map((client, i) => (
+                <div class="logo">
+                    <AtomSanityImage 
+                        image={client.logoDark} 
+                        contain={true}
+                        sizes="30vw"
+                    />
+                </div>
+            ))}
+            {clientLogos.map((client, i) => (
+                <div class="logo">
+                    <AtomSanityImage 
+                        image={client.logoDark} 
+                        contain={true}
+                        sizes="30vw"
+                    />
+                </div>
+            ))}
+        </div>
+    </div>
+    <div class="section-content">
+        {section.quote && section.quoteAuthor &&
+            <div class="client-quote">
+                <p class="quote h6">{section.quote}</p>
+                <p class="author">{section.quoteAuthor}</p>
+                {section.quoteClient && 
+                    <div class="quote-logo">
+                        <AtomSanityImage 
+                            image={section.quoteClient.logoDark.image}
+                            sizes="20vw"
+                        />
+                    </div>
+                }
             </div>
-        ))}
+        }
+
+        {section.text &&
+            <div class="section-text">
+                <p>{section.text}</p>
+                {section.button.text && section.button.url && 
+                    <AtomButton 
+                        text={section.button.text}
+                        url={section.button.url}
+                        icon="arrow-diagonal"
+                    />
+                }
+            </div>
+        }
     </div>
 </section>
 
 <style>
     .section-text-clients {
         padding-inline: var(--page-margin);
-        padding-block: var(--space-xl);
+        padding-block: var(--space-4xl);
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        justify-content: flex-start;
+        gap: var(--space-2xl);
+        /* align-items: center; */
         min-height: 60svh;
+        overflow: hidden;
+    }
+
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+        max-width: 50em;
+    }
+
+    .eyebrow {
+        color: var(--color-brand);
+    }
+
+    .client-logos {
+        /* overflow: hidden; */
+        /* overflow: visible; */
+        /* display: flex;
+        flex-direction: row;
+        justify-content: flex-start; */
+        /* max-width: 100%; */
+        /* overflow: hidden; */
+    }
+
+    .logo-track {
+        --gap: var(--space-4xl);
+        display: flex;
+        flex-direction: row;
+        width: max-content;
+        gap: var(--gap);
+        animation: ticker-scroll 40s linear infinite;
+    }
+
+    @keyframes ticker-scroll {
+        from {
+            translate: 0 0;
+        }
+        to {
+            translate: calc(-50% - var(--gap) / 2) 0;
+        }
+    }
+
+    .logo {
+        aspect-ratio: 1.5 / 1;
+        object-fit: contain;
+        /* flex: 0 0 8rem; */
+        width: 8rem;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     .section-text {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: var(--space-sm);
-        max-width: 60rem;
+        gap: var(--space-xs);
+        align-items: flex-start;
+        flex: 0 0 30em;
+        gap: var(--space-md);
     }
 
-    .logos {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        justify-items: center;
-        align-items: center;
-        width: 80%;
+    .client-quote {
+        display: flex;
+        flex-direction: column;
+        border-inline-start: 1px solid var(--color-brand);
+        padding-inline-start: var(--space-xl);
+        padding-block: var(--space-sm);
+        gap: var(--space-xs);
     }
 
-    .logo {
-        width: 70%;
-        height: 20%;
-        aspect-ratio: 1 / 1;
+    .quote {
+
+    }
+
+    .author {
+        /* margin-bottom: 0.5em; */
+    }
+
+    .quote-logo {
+        max-width: 5rem;
     }
 
     @media screen and (width < 768px) {
-        .logos {
-            grid-template-columns: repeat(3, 1fr);
+
+        .section-text-clients {
+            min-height: unset;
+        }
+
+        .section-content {
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: var(--space-xl);
+        }
+
+        .section-text {
+            max-width: 30rem;
+            flex: 0 0 auto;
         }
     }
 </style>

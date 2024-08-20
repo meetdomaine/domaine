@@ -7,7 +7,6 @@ const { section, brand, key } = Astro.props
 // console.log(section)
 ---
 <section class="section-text-video-player">
-  <!-- {section.} -->
    <div class="section-content">
     <div class="section-title">
       {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
@@ -148,6 +147,7 @@ import { gsap } from "../utils/gsap"
     position: relative;
     border-radius: var(--radius-sm);
     overflow: hidden;
+    max-height: 80svh;
   }
 
   .media-info {

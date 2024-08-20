@@ -24,6 +24,32 @@ export default defineType({
       type: 'string',
       validation: Rule => Rule.required()
     }),
+    defineField({
+      name: 'quote',
+      title: 'Quote',
+      type: 'string',
+    }),
+    defineField({
+      name: 'quoteAuthor',
+      title: 'Quote: Author',
+      type: 'string',
+    }),
+    defineField({
+      name: 'quoteClient',
+      title: 'Quote: Client',
+      type: 'reference',
+      to: [{ type: 'type_client' }],
+    }),
+    defineField({
+      name: 'text',
+      title: 'Text',
+      type: 'text',
+    }),
+    defineField({
+      name: 'button',
+      title: 'Button',
+      type: 'snippet_button',
+    }),
   ],
   preview: {
     select: {

@@ -17,6 +17,12 @@
   --color-studio-neutral: #abae9d;
   --color-studio-dark: #5a5b50;
   --color-studio-darkest: #000000;
+
+
+  --color-button-primary: var(--color-brand);
+  --color-button-primary-contrast: var(--color-brand-contrast);
+  --color-button-primary-hover: var(--color-brand-secondary);
+  --color-button-primary-hover-contrast: var(--color-brand-secondary-contrast);
 }
 
 /* Default Colors */

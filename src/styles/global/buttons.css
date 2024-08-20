@@ -3,13 +3,13 @@
     --button-padding-inline: var(--space-sm);
     --button-border-radius: var(--radius-sm);
 }
-
+  
 .button,
 input[type="submit"] {
     cursor: pointer;
     padding: var(--button-padding-block) var(--button-padding-inline);
-    background-color: var(--color-background-secondary);
-    color: var(--color-foreground);
+    background-color: var(--color-button-primary);
+    color: var(--color-button-primary-contrast);
     border-radius: var(--button-border-radius);
     min-width: 120px;
     text-decoration: none;
@@ -37,8 +37,8 @@ button {
 
 .button:hover,
 input[type="submit"]:hover {
-    background-color: var(--color-brand);
-    color: var(--color-brand-contrast);
+    background-color: var(--color-button-primary-hover);
+    color: var(--color-button-primary-hover-contrast);
 }
 
 .button[data-style="secondary"] {
