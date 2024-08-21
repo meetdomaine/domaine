@@ -1,3 +1,25 @@
+:root {
+    --viewport-desktop: 1440;
+    --font-family-code: 'Suisse Intl Mono', monospace;
+
+    --form-label-min-size: 10;
+    --form-label-base-size: 12;
+
+    --form-input-min-size: 14;
+    --form-input-base-size: 16;
+
+    --font-family-primary: 'Suisse Intl', Helvetica, Arial, system-ui, sans-serif;
+    --font-family-secondary: 
+      'Suisse Intl Mono',
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+}
 
 @font-face {
     font-family: 'Suisse Intl';
@@ -20,26 +42,6 @@
     font-display: fallback;
 }
 
-/* @font-face {
-    font-display: fallback;
-    font-family: 'Suisse Intl';
-    src: url('/SuisseIntl-SemiBold.otf') format('otf'),
-            url('/SuisseIntl-SemiBold.woff2') format('woff2'),
-            url('/SuisseIntl-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-display: fallback;
-    font-family: 'Suisse Intl';
-    src: url('/SuisseIntl-SemiBoldItalic.otf') format('otf'),
-            url('/SuisseIntl-SemiBoldItalic.woff2') format('woff2'),
-            url('/SuisseIntl-SemiBoldItalic.woff') format('woff');
-    font-weight: 600;
-    font-style: italic;
-} */
-
 @font-face {
     font-display: fallback;
     font-family: 'Suisse Intl';
@@ -56,7 +58,7 @@
     src: url('/SuisseIntl-LightItalic.otf') format('otf'),
             url('/SuisseIntl-LightItalic.woff2') format('woff2'),
             url('/SuisseIntl-LightItalic.woff') format('woff');
-    font-weight: 200;
+    font-weight: 00;
     font-style: italic;
 }
 
@@ -68,25 +70,6 @@
     font-weight: 400;
     font-style: normal;
     font-display: fallback;
-}
-  
-:root {
-    --viewport-desktop: 1440;
-    --font-family-code: 'Suisse Intl Mono', monospace;
-
-    --form-label-min-size: 10;
-    --form-label-base-size: 12;
-
-    --form-input-min-size: 14;
-    --form-input-base-size: 16;
-}
-  
-html,
-body {
-    font-family: var(--font-family-primary);
-    --base-size: 16;
-    --min-size: 12;
-    font-weight: 400;
 }
   
 h1, .h1,
@@ -112,25 +95,119 @@ body {
     font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
 }
   
-a {
-    color: inherit;
-    /* color: var(--color-link); */
+html,
+body {
+    font-family: var(--font-family-primary);
+    --base-size: 16;
+    --min-size: 12;
+    font-weight: 400;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+    margin: 0 0 0.2em;
 }
   
-/* a:not(.button):hover {
-    color: var(--color-link-secondary);
-} */
+h1, .h1 {
+    --min-size: 38;
+    --base-size: 80;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    font-weight: 400;
+}
   
+h2, .h2 {
+    --min-size: 30;
+    --base-size: 48;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-weight: 400;
+}
+  
+h3, .h3 {
+    --min-size: 26;
+    --base-size: 40;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 0.1em;
+}
+  
+h4, .h4 {
+    --min-size: 28;
+    --base-size: 32;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    font-weight: 400;
+}
+
+h5, .h5,
+input[type="submit"] {
+    --min-size: 22;
+    --base-size: 24;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 0.1em;
+}
+
+h6, .h6 {
+    --min-size: 16;
+    --base-size: 18;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-weight: 400;
+}
+  
+p,
+.body {
+    --min-size: 13;
+    --base-size: 14;
+    letter-spacing: 0;
+    font-weight: 400;
+    margin-block: 0 0.75em;
+}
+  
+.caption,
+label,
+.hs-field-desc {
+    --min-size: 12;
+    --base-size: 12;
+    letter-spacing: 0;
+    margin: 0;
+    font-weight: 400;
+}
+  
+.utility {
+    font-family: var(--font-family-secondary);
+    --min-size: 10;
+    --base-size: 12;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+    font-weight: 400;
+}
+
+strong {
+    font-weight: 600;
+}
+
 em {
     font-style: italic;
 }
 
-code {
-    font-family: var(--font-family-code);
+a {
+    color: inherit;
+    /* color: var(--color-link); */
 }
 
-p {
-    margin-block: 0 0.75em;
+code {
+    font-family: var(--font-family-code);
 }
 
 .inline-icon {

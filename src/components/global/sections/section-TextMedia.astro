@@ -8,32 +8,28 @@ const { section, brand } = Astro.props
 
 const iconText = replaceStringIcons(section.heading)
 ---
-<section class="section-text-media" data-layout={section.layout}>
+<section class="section-text-media" data-layout={section.layout} data-color-scheme="brand-02">
 
     <div class="section-content">
         <div class="section-text">
             {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
-            <h2 class="heading h3"><Fragment set:html={iconText} /></h2>
-            {section.text && <p>{section.text}</p>}
-            {section.buttonPrimary && section.buttonPrimary.text && section.buttonPrimary.url &&
+            <h2 class="heading h2"><Fragment set:html={iconText} /></h2>
+            {section.text && <p class="text">{section.text}</p>}
+            {section.button && section.button.text && section.button.url &&
                 <AtomButton 
-                    text={section.buttonPrimary.text}
-                    url={section.buttonPrimary.url}
+                    text={section.button.text}
+                    url={section.button.url}
                     newTab={section.buttonSecondary.newTab}
-                    style="secondary"
+                    style="primary"
                     icon="arrow-diagonal"
                 />
             }
         </div>
-        {section.buttonSecondary && section.buttonSecondary.text && section.buttonSecondary.url &&
-            <AtomButton 
-                text={section.buttonSecondary.text}
-                url={section.buttonSecondary.url}
-                newTab={section.buttonSecondary.newTab}
-                style="tertiary"
-                icon="arrow-diagonal"
-            />
-        }
+        <div class="bullets">
+            {section.bulletPoints.map((bulletPoint) => (
+                <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(bulletPoint)} /></p>
+            ))}
+        </div>
     </div>
     <div class="section-media">
         <SanityMedia 
@@ -70,13 +66,24 @@ const iconText = replaceStringIcons(section.heading)
         flex-direction: row;
         justify-content: space-between;
         align-items: stretch;
-        padding-inline: var(--page-margin);
-        padding-block: var(--space-lg);
+        /* padding-inline: var(--page-margin); */
+        /* padding-block: var(--space-lg); */
         gap: var(--space-xl);
     }
 
     .section-text-media[data-layout="mediaLeft"] {
         flex-direction: row-reverse;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-block: var(--space-2xl);
+        padding-inline: var(--page-margin);
+        flex: 0 1 50%;
+        max-width: 45em;
+        gap: var(--space-3xl);
     }
 
     .section-text {
@@ -90,23 +97,28 @@ const iconText = replaceStringIcons(section.heading)
         height: 1em;
     }
 
+    .text {
+        margin-bottom: 1em;
+    }
+
+    .bullets {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .bullet-point :global(svg) {
+        margin-right: 0.5em;
+    }
+
     .section-media {
-        flex: 0 0 40%;
+        flex: 0 0 50%;
         border-radius: var(--radius-sm);
         overflow: hidden;
         height: auto;
-        aspect-ratio: 3 / 4;
+        /* aspect-ratio: 3 / 4; */
     }
 
-    .section-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-between;
-        flex: 1 0 50%;
-        max-width: 45em;
-        gap: var(--space-md);
-    }
 
     .section-text {
         display: flex;

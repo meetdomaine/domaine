@@ -3,12 +3,12 @@ import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import { replaceStringIcons } from "../../../global/utils/inline-icon-text"
 
-const { heading, subheading, eyebrow, button, backgroundVideo, projects } = Astro.props
+const { heading, subheading, eyebrow, button, projects } = Astro.props
 
 const iconText = replaceStringIcons(heading)
 
 ---
-<section id="home-hero" class="home-hero">
+<section id="home-hero" class="home-hero" data-color-scheme="brand-02">
     <div class="section-content">
         <div class="section-text">
             {eyebrow && <p class="utility">{eyebrow}</p>}
@@ -172,8 +172,6 @@ const iconText = replaceStringIcons(heading)
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: var(--color-brand);
-        color: var(--color-brand-contrast);
         overflow: hidden;
     }
 

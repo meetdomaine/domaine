@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 const { brands, brandIndex, links, activePath } = Astro.props
 ---
-<div id="navigation-menu" class="navigation glass-dark">
+<div id="navigation-menu" class="navigation" data-color-scheme="glass-dark">
 
     <!-- <div class="brand-cards--mobile">
         {brands.map((brand, i) => {
@@ -20,7 +20,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
         })}
     </div> -->
 
-    <nav class="navigation-links">
+    <nav class="navigation-links color-reset" data-color-scheme="secondary">
         {links.map((link, i) => (
             <a 
                 href={link.linkUrl} 
@@ -87,7 +87,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
 
     .search-button em {
         font-style: normal;
-        color: var(--color-dark);
+        color: var(--color-foreground-secondary);
     }
 
     .utility-menu {
@@ -134,7 +134,6 @@ const { brands, brandIndex, links, activePath } = Astro.props
 
         .navigation-links {
             height: var(--header-element-height);
-            background-color: var(--color-lighter);
             align-items: center;
             justify-content: center;
             gap: var(--space-3xs);
@@ -142,7 +141,6 @@ const { brands, brandIndex, links, activePath } = Astro.props
             padding-block: var(--space-2xs);
             border-radius: var(--radius-sm) var(--radius-sm) 0 0;
             transition: color var(--anim-md), background-color var(--anim-md);
-            color: var(--color-darkest);
         }
 
         .navigation[data-scrolled="true"] .navigation-links {
@@ -163,7 +161,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
         }
 
         .navigation-link:hover {
-            background-color: var(--color-light);
+            background-color: var(--color-lightest);
             color: var(--color-dark);
         }
 

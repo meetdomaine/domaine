@@ -15,7 +15,7 @@ const partners =  await sanityClient.fetch(`
     } | order( orderRank asc)[0...${partnerTileCount}]`)
 // console.log(partners)
 ---
-<section class="section-partners-feed">
+<section class="section-partners-feed" data-color-scheme="brand-02">
     <div 
         class="section-title"
         data-animate-viewport="true"
@@ -39,7 +39,7 @@ const partners =  await sanityClient.fetch(`
         <div class="partners">
             {partners.map((partner, i) => (
                 <div 
-                    class="partner-tile-wrapper"
+                    class="partner-tile-wrapper color-reset"
                     data-animate-viewport="true"
                     data-animation="fade-up"
                     data-animation-delay={150 * i}
@@ -61,7 +61,7 @@ const partners =  await sanityClient.fetch(`
             text="All Partners"
             url="/partners"
             newTab={false}
-            style="tertiary"
+            style="secondary"
             icon="arrow-diagonal"
             invert={true}
         />
@@ -76,9 +76,6 @@ const partners =  await sanityClient.fetch(`
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        background-color: var(--color-brand);
-        color: var(--color-brand-contrast);
-        /* color: var(--color-background); */
         gap: var(--space-xl);
     }
 
@@ -108,6 +105,10 @@ const partners =  await sanityClient.fetch(`
         flex-direction: column;
         align-items: stretch;
         gap: var(--space-xs);
+    }
+
+    .partner-tile-wrapper {
+        background-color: transparent;
     }
 
     @media screen and (width < 768px) {

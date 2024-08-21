@@ -9,7 +9,7 @@ const { currentBrand, brandMenuHeading, brandMenuSubheading } = Astro.props
 // console.log(currentBrand)
 // console.log(brandMenuBrands[0].brandImage)
 ---
-<dialog popover id="brand-menu" class="brand-menu color-invert" data-lenis-prevent>
+<dialog popover id="brand-menu" class="brand-menu" data-color-scheme="brand-02" data-lenis-prevent>
     <div class="section-title">
         <button popovertarget="brand-menu" class="close-button button-reset">
             <Icon name="pixel_x" class="close-button" />
@@ -36,8 +36,6 @@ const { currentBrand, brandMenuHeading, brandMenuSubheading } = Astro.props
         max-height: 100dvh;
         overflow: hidden;
         padding-block: var(--space-sm) var(--page-margin);
-        color: var(--color-brand-contrast);
-        background-color: var(--color-brand);
         opacity: 0;
         transition: opacity var(--anim-md), display var(--anim-md) allow-discrete;
         padding-inline: var(--page-margin);

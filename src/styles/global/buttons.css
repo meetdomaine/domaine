@@ -8,8 +8,8 @@
 input[type="submit"] {
     cursor: pointer;
     padding: var(--button-padding-block) var(--button-padding-inline);
-    background-color: var(--color-button-primary);
-    color: var(--color-button-primary-contrast);
+    color: var(--button-primary-foreground);
+    background-color: var(--button-primary-background);
     border-radius: var(--button-border-radius);
     min-width: 120px;
     text-decoration: none;
@@ -37,14 +37,19 @@ button {
 
 .button:hover,
 input[type="submit"]:hover {
-    background-color: var(--color-button-primary-hover);
-    color: var(--color-button-primary-hover-contrast);
+    color: var(--button-primary-foreground-hover);
+    background-color: var(--button-primary-background-hover);
 }
 
 .button[data-style="secondary"] {
     background-color: transparent;
     border: 1px solid var(--color-border);
-    color: currentColor;
+    color: var(--button-secondary-foreground);
+}
+
+.button[data-style="secondary"]:hover {
+    color: var(--button-secondary-foreground-hover);
+    background-color: var(--button-secondary-background-hover);
 }
 
 .button[data-style="tertiary"],

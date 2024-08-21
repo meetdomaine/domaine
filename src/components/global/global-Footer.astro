@@ -12,7 +12,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
 
 
 ---
-<footer>
+<footer data-color-scheme="brand-02">
     <div class="footer-inner">
 
         <div class="footer-cta">
@@ -117,8 +117,6 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     footer {
         --inline-gap: var(--space-lg);
         min-height: 100svh;
-        background-color: var(--color-brand);
-        color: var(--color-brand-contrast);
         padding-inline: var(--page-margin);
         padding-block: calc(var(--header-height) * 1) var(--space-md);
         display: flex;
@@ -126,6 +124,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         justify-content: space-between;
         align-items: stretch;
         gap: var(--space-2xl);
+        border-top: 1px solid var(--color-border);
         /* justify-content: space-between; */
     }
 
@@ -163,7 +162,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         justify-content: flex-start;
         flex-wrap: wrap;
         gap: var(--space-2xl);
-        border-top: 1px solid var(--color-brand-subdued);
+        border-top: 1px solid var(--color-border);
         padding-top: var(--space-2xl);
     }
 
@@ -188,7 +187,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     }
 
     .link-column__title {
-        color: var(--color-foreground-secondary);
+        color: var(--color-border);
     }
 
     .link-column__links {
@@ -204,7 +203,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     .footer-form {
         display: flex;
         flex-direction: column;
-        flex: 1 0 30rem;
+        flex: 1 0 min(30rem, 100%);
     }
 
     .footer-form__title {
@@ -212,7 +211,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     }
 
     .footer-form :global(input:not([type="submit"])) {
-        background-color: var(--color-brand-subdued);
+        background-color: var(--color-background-secondary);
         color: var(--color-brand-contrast);
     }
 
@@ -231,7 +230,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     .agency-brands {
         display: flex;
         flex-direction: column;
-        flex: 1 0 35rem;
+        flex: 1 0 min(35rem, 100%);
     }
 
     .agency-brands__title {
@@ -243,6 +242,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         display: flex;
         flex-direction: row;
         align-items: flex-start;
+        flex-wrap: wrap;
         gap: var(--space-lg);
     }
 
@@ -260,7 +260,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--color-brand-subdued);
+        background-color: var(--color-background-secondary);
         border-radius: var(--radius-sm);
     }
 
@@ -292,7 +292,7 @@ const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practi
     .agency-brands__content,
     .practices__content {
         padding-top: var(--space-md);
-        border-top: 1px solid var(--color-brand-subdued);
+        border-top: 1px solid var(--color-border);
     }
 
     .practices {

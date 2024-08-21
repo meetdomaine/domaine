@@ -4,7 +4,6 @@ import { sanityClient } from "sanity:client";
 import { imageFields, videoFields } from "../utils/cms-queries";
 import ContactMenu from "./global-ContactMenu.astro";
 import GlobalSearchMenu from "./searchMenu/global-SearchMenu.astro";
-import BrandToggle from './global-BrandToggle.astro'
 import GlobalNavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
 import GlobalNotificationMenu from "./global-NotificationMenu.astro";
@@ -19,7 +18,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 // console.log(brands[brandIndex])
 // console.log(currentBrand)
 ---
-<header id="header" class="glass-dark">
+<header id="header" data-color-scheme="glass-dark">
 
     <div class="header-content">
 
@@ -28,7 +27,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
             <span class="hamburger-line"></span>
         </button>
 
-        <div class="brand glass-dark">
+        <div class="brand" data-color-scheme="glass-dark">
 
             <a href={currentBrand.url} class="brand-logo">
                 <Fragment set:html={currentBrand.logo} />
@@ -44,11 +43,11 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
         />
 
         <div id="utility-menu" class="utility-menu">
-            <button id="notification-toggle" class="utility-button notification-button glass-dark" popovertarget="notification-menu" data-active="false">
+            <button id="notification-toggle" class="utility-button notification-button" data-color-scheme="glass-dark" popovertarget="notification-menu" data-active="false">
                 <Icon name="icon-bell" class="utility-icon icon-open" />
                 <Icon name="icon-x" class="utility-icon icon-close" />
             </button>
-            <button class="utility-button contact-button glass-dark" popovertarget="contact-menu">
+            <button class="utility-button contact-button" data-color-scheme="glass-dark" popovertarget="contact-menu">
                 <Icon name="icon-email" class="utility-icon" />
             </button>
         </div>

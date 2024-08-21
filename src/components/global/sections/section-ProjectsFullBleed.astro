@@ -10,7 +10,7 @@ const id = Math.random().toString(16).slice(2)
 // console.log(section.projects[3])
 ---
 <section class="section-projects-fullbleed" id={`media-fullbleed-${id}`}>
-    <div class="section-content">
+    <div class="section-content" data-color-scheme="brand-02">
         {section.projects.map((entry, i) => (
             <div class='project-item'>
                 <a
@@ -28,7 +28,7 @@ const id = Math.random().toString(16).slice(2)
                         aspectRatio={1 / 2}
                     />
                 </div>
-                <div class="project-preview glass-ink">
+                <div class="project-preview" data-color-scheme="glass-dark">
                     <AtomTextLabel 
                         text={entry.project.title}
                     />
@@ -93,7 +93,6 @@ const id = Math.random().toString(16).slice(2)
         align-items: stretch;
         border-radius: var(--radius-md);
         overflow: hidden;
-        background-color: var(--color-brand);
     }
 
     .project-item {

@@ -1,0 +1,40 @@
+---
+import AtomButton from "../atoms/atom-button.astro";
+const { title, colorScheme } = Astro.props
+---
+<div class="color-scheme" data-color-scheme={colorScheme}>
+  <h2>{title}</h2>
+  <p class="accent caption">Accent</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. </p>
+  <p class="foreground-secondary caption">Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+  <AtomButton 
+    text="Button Primary"
+    style="primary"
+    url="#"
+  />
+  <AtomButton 
+    text="Button Secondary"
+    style="secondary"
+    url="#"
+  />
+</div>
+
+<style>
+  .color-scheme {
+    border: 1px solid var(--color-border);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .accent {
+    color: var(--color-accent);
+  }
+
+  .foreground-secondary {
+    color: var(--color-foreground-secondary);
+  }
+</style>

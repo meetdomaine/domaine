@@ -55,15 +55,25 @@ export default defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'buttonPrimary',
-      title: 'Button: Primary',
+      name: 'button',
+      title: 'Button',
       type: 'snippet_button',
     }),
     defineField({
-      name: 'buttonSecondary',
-      title: 'Button: Secondary',
-      type: 'snippet_button',
+      name: 'bulletPoints',
+      title: 'Bullet Points',
+      type: 'array',
+      of: [{
+        name: 'bulletPointText',
+        title: 'Bullet Point Text',
+        type: 'string'
+      }]
     }),
+    // defineField({
+    //   name: 'buttonSecondary',
+    //   title: 'Button: Secondary',
+    //   type: 'snippet_button',
+    // }),
   ],
   preview: {
     select: {

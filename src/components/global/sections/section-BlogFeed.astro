@@ -35,7 +35,7 @@ if (section && section.blogPosts) {
 if (section && section.showHero && !section.featuredPost) featuredPost = blogPosts.shift()
 
 ---
-<section class="section-blog-feed">
+<section class="section-blog-feed" data-color-scheme="brand-01">
     <div class="section-title">
         <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
         {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}

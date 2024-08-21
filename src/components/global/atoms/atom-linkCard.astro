@@ -14,7 +14,8 @@ interface Props {
 const { categoryTitle, title, excerpt, url, image, theme } = Astro.props
 ---
 <a 
-    class={`link-card ${theme === "dark" ? "glass-dark" : ""}`}
+    class="link-card" 
+    data-color-scheme={theme === "dark" ? "glass-dark" : "secondary"}
     href={url}
 >
     <div class="card-header">
@@ -42,8 +43,6 @@ const { categoryTitle, title, excerpt, url, image, theme } = Astro.props
         flex-direction: column;
         gap: var(--space-2xs);
         text-decoration: none;
-        /* background-color: var(--color-lightest); */
-        color: var(--color-foreground);
         border-radius: var(--radius-sm);
         padding-inline: var(--space-xs);
         padding-block: var(--space-xs);
@@ -51,15 +50,10 @@ const { categoryTitle, title, excerpt, url, image, theme } = Astro.props
         min-width: min(30em, 100%);
     }
 
-    .link-card:not(.glass-dark) {
-        background-color: var(--color-lightest);
-        color: var(--color-darkest);
-    }
-
-    .link-card:hover {
+    /* .link-card:hover {
         background-color: var(--color-foreground);
         color: var(--color-background);
-    }
+    } */
 
     .card-header {
         display: flex;

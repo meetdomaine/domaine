@@ -42,7 +42,8 @@ export default defineType({
                   media: 'media.image'
                 },
               },
-        }]
+        }],
+        validation: Rule => Rule.required().max(3)
     }),
   ],
   preview: {

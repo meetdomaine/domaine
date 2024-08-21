@@ -5,7 +5,7 @@ import AtomTag from "../../../global/atoms/atom-tag.astro"
 
 const { heading, eyebrow, button, media, heroTextColor } = Astro.props
 ---
-<section id="domaine-home-hero" class={`home_hero ${heroTextColor === "light" && "color-invert"}`}>
+<section id="domaine-home-hero" class="section-home-hero" data-color-scheme={heroTextColor === "light" ? "invert" : ""}>
     <div class="section-content">
         <div class="section-title">
             {eyebrow && 
@@ -51,32 +51,8 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
     })
 </script>
 
-<style is:global>
-
-    #domaine-home-hero .heading {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        /* max-width: 100%; */
-    }
-
-    #domaine-home-hero .heading-line {
-        position: relative;
-        background-color: var(--color-background-secondary);
-        border-radius: var(--radius-sm);
-        padding-inline: 0.2em;
-        display: flex;
-        flex-direction: row;
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        margin-bottom: -0.01em;
-        z-index: 1;
-        max-width: 100%;
-    }
-
-</style>
-
 <style>
-    .home_hero {
+    .section-home-hero {
         padding-inline: var(--page-margin);
         padding-block: var(--header-height) var(--space-xl);
         min-height: 95svh;
@@ -86,7 +62,6 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         align-items: flex-start;
         gap: var(--space-md);
         position: relative;
-        background-color: var(--color-brand);
         overflow: clip;
     }
 
@@ -98,7 +73,6 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         justify-content: center;
         align-items: flex-start;
         gap: var(--space-md);
-        color: var(--color-foreground);
     }
     
     .section-title {
@@ -113,13 +87,7 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
     }
 
     .heading {
-        /* padding-inline: 0.2em; */
-        /* rotate: 2deg; */
-        /* max-width: min(12em, 80%); */
         max-width: 14em;
-        /* max-width: 13em; */
-        /* max-width: calc(100% - 0.4em); */
-        /* max-width: min(14em, 90%); */
     }
 
     .section-media {
