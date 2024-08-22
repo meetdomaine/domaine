@@ -2,11 +2,11 @@
 import AtomButton from "../atoms/atom-button.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
 
 const { section, brand } = Astro.props
 
-const allProjects =  await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == '${brand}' ]`)
-// console.log(section)
+const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
 ---
 <section class="section-projects-grid">
     <div class="section-text">
@@ -17,7 +17,7 @@ const allProjects =  await sanityClient.fetch(`*[_type == "type_project" && agen
         >
             <h2 class="h5">{section.title}</h2>
             <AtomCounter 
-                count={allProjects.length}
+                count={projects.length}
             />
         </div>
         <div 

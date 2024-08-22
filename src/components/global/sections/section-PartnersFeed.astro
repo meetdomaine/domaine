@@ -2,17 +2,19 @@
 import AtomButton from "../atoms/atom-button.astro"
 import { partnerTileFields } from "../utils/cms-queries"
 import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
+import { allPartners } from "../utils/cms-content"
 
 const { section, brand } = Astro.props
 
 
 const partnerTileCount = 4
 
-const partners =  await sanityClient.fetch(`
-    *[_type == "type_partner" 
-    && tier->slug.current == "innovation" ]{
-        ${partnerTileFields}
-    } | order( orderRank asc)[0...${partnerTileCount}]`)
+
+// const partners =  await sanityClient.fetch(`
+//     *[_type == "type_partner" 
+//     && tier->slug.current == "innovation" ]{
+//         ${partnerTileFields}
+//     } | order( orderRank asc)[0...${partnerTileCount}]`)
 // console.log(partners)
 ---
 <section class="section-partners-feed" data-color-scheme="brand-02">
@@ -37,7 +39,7 @@ const partners =  await sanityClient.fetch(`
     </div>
     <div class="section-content">
         <div class="partners">
-            {partners.map((partner, i) => (
+            {allPartners.slice(0, 4).map((partner, i) => (
                 <div 
                     class="partner-tile-wrapper color-reset"
                     data-animate-viewport="true"

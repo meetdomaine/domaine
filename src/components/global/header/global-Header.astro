@@ -32,7 +32,6 @@ const headerSettings = await sanityClient.fetch(`
         </button>
 
         <div class="brand" data-color-scheme="glass-dark">
-
             <a href={currentBrand.url} class="brand-logo">
                 <Fragment set:html={currentBrand.logo} />
             </a>
@@ -63,7 +62,6 @@ const headerSettings = await sanityClient.fetch(`
         heading={headerSettings.brandMenuHeading}
         subheading={headerSettings.brandMenuSubheading}
     />
-
     <ContactMenu hubspotFormId={headerSettings.hubspotFormId} />
     <SearchMenu currentBrand={currentBrand} />
     <NotificationMenu currentBrand={currentBrand} />

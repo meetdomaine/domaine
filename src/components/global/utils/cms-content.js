@@ -1,4 +1,4 @@
-import { agencyBrandsQuery, blogCardFields, partnerTileFields, practicesQuery, projectFeatureQuery, projectGridFields } from "./cms-queries"
+import { agencyBrandsQuery, blogCardFields, partnerTileFields, practicesQuery, projectFeatureQuery, projectGridFields, serviceTypeQuery } from "./cms-queries"
 
 // Global Content
 export const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)`)
@@ -19,5 +19,9 @@ export const allProjectFeatures_Studio = await sanityClient.fetch(`*[_type == "t
 
 // Partners - All
 export const allPartners = await sanityClient.fetch(`*[_type == "type_partner"]{${partnerTileFields}} | order(orderRank)[0...10]`)
+
+// Service Types - All
+export const allServiceTypes_Domaine = await sanityClient.fetch(`*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name ]{${serviceTypeQuery}} | order(orderRank)`)
+export const allServiceTypes_Studio = await sanityClient.fetch(`*[_type == "type_serviceType" && 'Studio' in agencyBrands[]->name ]{${serviceTypeQuery}} | order(orderRank)`)
 
 export const latestProjects = 'test'

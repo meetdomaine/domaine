@@ -1,8 +1,6 @@
 ---
-import { sanityClient } from "sanity:client";
-import { imageFields } from "../utils/cms-queries";
 import ProjectCard from "../projects/global-ProjectCard.astro";
-import { projectGridFields } from "../utils/cms-queries";
+import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content";
 
 const { section, brand, projects, heading, subheading, key } = Astro.props
 
@@ -13,11 +11,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = await sanityClient.fetch(`
-        *[_type == "type_project" 
-            && agencyBrand->slug.current == "${brand}" ]{ 
-                ${projectGridFields} 
-            } | order( orderRank asc)[0...3]`)
+    feedProjects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
 }
 
 ---
@@ -31,7 +25,7 @@ if (section && section.projects) {
         {(subheading || section && section.subheading) && <p class="caption">{subheading ? subheading : section.subheading}</p>}
     </div>
     <div class="section-content">
-        {feedProjects.map((project, i) => (
+        {feedProjects.slice(0, 3).map((project, i) => (
             <div 
                 class="project-card-wrapper"
                 data-animate-viewport="true"

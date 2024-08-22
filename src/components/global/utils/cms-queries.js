@@ -116,3 +116,12 @@ export const projectPostQuery = (brand) => {
   }`
 }
 
+export const serviceTypeQuery = `
+    ...,
+    images[]{${imageFields}},
+    "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
+        ...,
+        "services": *[_type == "type_service" && references(^._id)] {
+            ...
+        } | order(orderRank)
+    } | order(orderRank)`

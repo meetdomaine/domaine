@@ -5,11 +5,10 @@ import { blogCardFields } from "../utils/cms-queries"
 import AtomLinkCard from "../atoms/atom-linkCard.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomTag from "../atoms/atom-tag.astro";
-
+import { allBlogPosts_Domaine, allBlogPosts_Studio } from "../utils/cms-content";
 
 const { section, brand, heading, subheading, posts } = Astro.props
 
-const postCount = 3
 let blogPosts
 let featuredPost
 let sidebarPosts
@@ -29,7 +28,7 @@ if (section && section.blogPosts) {
 } else if (posts) {
     blogPosts = posts
 } else {
-    blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "${brand}" ]{ ${blogCardFields} } | order( postDate desc)[0...${section.featuredPost ? postCount : postCount + 1}]`)
+    blogPosts = brand === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
 }
 
 if (section && section.showHero && !section.featuredPost) featuredPost = blogPosts.shift()
@@ -86,7 +85,7 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
         </div>
     }
     <div class="section-posts">
-        {blogPosts.map((post) => (
+        {blogPosts.slice(0, 3).map((post) => (
             <div class="blog-card-wrapper">
                 <BlogCard 
                     title={post.title}

@@ -3,25 +3,11 @@ import { sanityClient } from "sanity:client";
 import AtomTag from "../atoms/atom-tag.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import { imageFields } from "../utils/cms-queries";
+import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-content";
 
 const { section, brand, key } = Astro.props
 
-const serviceTypes = await sanityClient.fetch(`
-    *[_type == "type_serviceType" 
-    && '${brand}' in agencyBrands[]->slug.current ]{
-        ...,
-        images[]{${imageFields}},
-        "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
-            ...,
-            "services": *[_type == "type_service" && references(^._id)] {
-                ...
-            } | order(orderRank)
-        } | order(orderRank)
-    } | order(orderRank)`)
-
-
-// console.log(serviceTypes[0])
-
+const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTypes_Domaine
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 
