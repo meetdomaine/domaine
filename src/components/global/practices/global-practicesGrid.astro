@@ -1,10 +1,7 @@
 ---
 import { agencyBrandsQuery, practicesQuery } from "../utils/cms-queries"
 import GlobalPracticeCard from "./global-practiceCard.astro"
-
-const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)`)
-const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practicesQuery}} | order(orderRank)`)
-
+import { agencyBrands, practices } from "../utils/cms-content";
 ---
 <div class="practices-grid">
   <div class="agency-brands">

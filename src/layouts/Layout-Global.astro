@@ -1,9 +1,7 @@
 ---
 import { urlFor } from '../components/global/utils/cms-queries';
-import PageLoadAnimation from '../components/global/animation/PageLoadAnimation.astro';
 import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
 import {VisualEditing} from '@sanity/astro/visual-editing'
-
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -15,8 +13,6 @@ import '../styles/global/buttons.css'
 import '../styles/global/forms.css'
 import Lenis from '../components/global/animation/Lenis.astro';
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
-import PageTransition from '../components/global/global-PageTransition.astro';
-import { ViewTransitions } from 'astro:transitions';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 
@@ -24,18 +20,16 @@ interface Props {
 	title: string;
 	description: string;
 	image: string;
-	theme: string;
-    favicon: SanityAsset;
+	favicon: SanityAsset;
 	backgroundColor?: string;
 	foregroundColor?: string;
 	searchFilter?: string;
-	preloaderContent: any,
-	brand: string
+	currentBrand: any
 }
 
 const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
 
-const { title, description, image, favicon, searchFilter, preloaderContent, brand } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 ---
@@ -51,11 +45,6 @@ const currentPath = Astro.url.pathname;
 		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
 		<link rel="preconnect" href="https://snap.licdn.com">
 		<link rel="preconnect" href="https://www.google-analytics.com"> -->
-
-		<!-- View Transition blocker -->
-		<!-- <link rel="expect" blocking="render" href="#header"> -->
-		 <!-- <ViewTransitions /> -->
-
 
 		 <!-- Setup Consent Mode -->
 		 <script is:inline>
@@ -123,16 +112,13 @@ const currentPath = Astro.url.pathname;
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<GlobalPreloader 
-			content={preloaderContent}
-			brand={brand}
-		/>
+		<GlobalPreloader currentBrand={currentBrand} />
 		<GlobalCookieNotice />
 		<slot />
-        <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+		<VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
 		<Lenis />
 		<ViewportAnimation />
-		<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+		<!-- <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script> -->
 	</body>
 </html>
 

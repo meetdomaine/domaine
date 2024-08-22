@@ -1,8 +1,22 @@
 ---
 import SearchMenu from "./SearchMenu"
 import { Icon } from "astro-icon/components"
+import { 
+    allBlogPosts_Domaine, 
+    allBlogPosts_Studio,
+    allProjects_Domaine,
+    allProjects_Studio,
+    allProjectFeatures_Domaine,
+    allProjectFeatures_Studio,
+    allPartners,
+} from "../../utils/cms-content"
 
-const { defaultBlogPosts, defaultProjects, defaultFeatures, defaultPartners } = Astro.props
+const { currentBrand } = Astro.props
+
+const defaultBlogPosts = currentBrand.slug.current === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const defaultProjects = currentBrand.slug.current === "studio" ? allProjects_Studio : allProjects_Domaine
+const defaultProjectFeatures = currentBrand.slug.current === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
+const defaultPartners = allPartners
 ---
 <dialog popover id="search-menu" class="search-menu">
     <button class="close-button" popovertarget="search-menu">
@@ -10,10 +24,10 @@ const { defaultBlogPosts, defaultProjects, defaultFeatures, defaultPartners } = 
     </button>
     <SearchMenu 
         client:only="solid-js"
-        defaultBlogPosts={defaultBlogPosts}
-        defaultProjects={defaultProjects}
-        defaultFeatures={defaultFeatures}
-        defaultPartners={defaultPartners}
+        defaultBlogPosts={defaultBlogPosts.slice(0, 3)}
+        defaultProjects={defaultProjects.slice(0, 3)}
+        defaultFeatures={defaultProjectFeatures.slice(0, 8)}
+        defaultPartners={defaultPartners.slice(0, 6)}
     />
 </dialog>
 

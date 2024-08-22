@@ -5,9 +5,10 @@ import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 
 // sessionStorage.removeItem("key");
 
-const { content, brand } = Astro.props
+const { currentBrand } = Astro.props
+const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
 ---
-<div id="site-preloader" class="preloader" data-brand={brand}>
+<div id="site-preloader" class="preloader" data-color-scheme="brand-01">
     <p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
     {content.images.map((entry, i) => (
         <div 
@@ -114,11 +115,6 @@ const { content, brand } = Astro.props
         background-color: var(--color-background);
         color: var(--color-foreground);
         pointer-events: none;
-    }
-
-    .preloader[data-brand="studio"] {
-        background-color: var(--color-brand);
-        color: var(--color-brand-contrast);
     }
 
     .preloader-image {

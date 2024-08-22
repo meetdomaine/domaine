@@ -3,20 +3,24 @@ import { Icon } from "astro-icon/components";
 import { sanityClient } from "sanity:client";
 import { imageFields, videoFields } from "../utils/cms-queries";
 import ContactMenu from "./global-ContactMenu.astro";
-import GlobalSearchMenu from "./searchMenu/global-SearchMenu.astro";
-import GlobalNavigationMenu from "./global-NavigationMenu.astro";
+import SearchMenu from "./searchMenu/global-SearchMenu.astro";
+import NavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
-import GlobalNotificationMenu from "./global-NotificationMenu.astro";
+import NotificationMenu from "./global-NotificationMenu.astro";
 
-const { headerSettings, currentBrand, activePath } = Astro.props;
+const { currentBrand, activePath } = Astro.props;
 
-// const brandIndex = brands.findIndex(brand => brand.path == currentBrand.url )
-const defaultBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" ]{title, slug, thumbnailImage{${imageFields}}, category->{slug}, postDate } | order( postDate desc)[0...3]`)
-const defaultProjects = await sanityClient.fetch(`*[_type == "type_project"]{orderRank, title, slug, thumbnailMedia{${videoFields}, ${imageFields}} } | order( orderRank asc)[0...5]`)
-const defaultFeatures = await sanityClient.fetch(`*[_type == "type_projectFeature"]{title, slug, orderRank } | order( orderRank asc)[0...10]`)
-const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{title, slug, orderRank } | order(orderRank)[0...10]`)
-// console.log(brands[brandIndex])
-// console.log(currentBrand)
+const headerSettings = await sanityClient.fetch(`
+    *[_type == "settings_header" 
+    && _id == "settings_header--${currentBrand.slug.current === "studio" ? "studio" : "domaine"}"]{ 
+        ..., 
+        brandMenuBrands[]{
+            ..., 
+            media{${videoFields}, ${imageFields}} 
+        }
+    }[0]`
+)
+
 ---
 <header id="header" data-color-scheme="glass-dark">
 
@@ -37,7 +41,7 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
             </button>
         </div>
         
-        <GlobalNavigationMenu 
+        <NavigationMenu 
             links={headerSettings.navigationLinks.links}
             activePath={activePath}
         />
@@ -56,26 +60,13 @@ const defaultPartners = await sanityClient.fetch(`*[_type == "type_partner"]{tit
 
     <BrandMenu 
         currentBrand={currentBrand}
-        brandMenuHeading={headerSettings.brandMenuHeading}
-        brandMenuSubheading={headerSettings.brandMenuSubheading}
+        heading={headerSettings.brandMenuHeading}
+        subheading={headerSettings.brandMenuSubheading}
     />
 
-    <ContactMenu 
-        hubspotFormId={headerSettings.hubspotFormId}
-        processConsentMessage={headerSettings.processConsentMessage}
-        marketingConsentMessage={headerSettings.marketingConsentMessage}
-    />
-
-    <GlobalSearchMenu 
-        defaultBlogPosts={defaultBlogPosts}
-        defaultProjects={defaultProjects}
-        defaultFeatures={defaultFeatures}
-        defaultPartners={defaultPartners}
-    />
-
-    <GlobalNotificationMenu 
-        currentBrand={currentBrand} 
-    />
+    <ContactMenu hubspotFormId={headerSettings.hubspotFormId} />
+    <SearchMenu currentBrand={currentBrand} />
+    <NotificationMenu currentBrand={currentBrand} />
 </header>
 
 <script is:inline>

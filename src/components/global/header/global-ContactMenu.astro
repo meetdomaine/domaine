@@ -2,20 +2,7 @@
 import { Icon } from "astro-icon/components"
 import AtomHubspotForm from "../atoms/atom-hubspotForm.astro"
 
-const { hubspotFormId, processConsentMessage, marketingConsentMessage } = Astro.props
-
-const portalId = import.meta.env.HUBSPOT_PORTAL_ID
-
-// const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${hubspotFormId}`, {
-//     method: "GET",
-//     headers: {
-//         'Authorization': `Bearer ${import.meta.env.HUBSPOT_ACCESS_TOKEN}`,
-//         "Content-type": "application/json; charset=UTF-8"
-//     }
-// })
-
-// const formData = await hubspotResponse.json()
-
+const { hubspotFormId } = Astro.props
 ---
 <dialog popover id="contact-menu" class="contact-menu color-reset" data-lenis-prevent>
     <div class="section-title">

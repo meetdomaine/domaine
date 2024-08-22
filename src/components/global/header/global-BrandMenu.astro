@@ -5,7 +5,7 @@ import AtomTextLabel from "../atoms/atom-textLabel.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import GlobalPracticesGrid from "../practices/global-practicesGrid.astro"
 
-const { currentBrand, brandMenuHeading, brandMenuSubheading } = Astro.props
+const { currentBrand, heading, subheading } = Astro.props
 // console.log(currentBrand)
 // console.log(brandMenuBrands[0].brandImage)
 ---
@@ -15,8 +15,8 @@ const { currentBrand, brandMenuHeading, brandMenuSubheading } = Astro.props
             <Icon name="pixel_x" class="close-button" />
         </button>
         <div class="title-text">
-            {brandMenuHeading && <h2 class="heading h5">{brandMenuHeading}</h2>}
-            {brandMenuSubheading && <p class="subheading h5">{brandMenuSubheading}</p>}
+            {heading && <h2 class="heading h5">{heading}</h2>}
+            {subheading && <p class="subheading h5">{subheading}</p>}
         </div>
     </div>
     <GlobalPracticesGrid />

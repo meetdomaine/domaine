@@ -1,9 +1,10 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutGlobal from './Layout-Global.astro';
-// import Header from '../components/studio/sections/Header.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
+import '../styles/studio/typography.css'
+import '../styles/studio/color.css'
 
 interface Props {
 	title: string;
@@ -16,51 +17,23 @@ interface Props {
 
 const { title, description, image, theme, searchFilter, activePath } = Astro.props;
 
-// SEO
-// const seoData = await sanityClient.fetch(`*[_type == "settings_SEO" && _id == "settings_SEO-studio"]`)
-// const seoSettings = seoData[0]
-
-// Header
-const headerSettings = await sanityClient.fetch(`*[_type == "settings_header" && _id == "settings_header--studio"]{${headerSettingsQuery}}[0]`)
-
-// Footer
-const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`)
-
-// Styling
-import '../styles/studio/typography.css'
-import '../styles/studio/color.css'
-import GlobalPreloader from '../components/global/global-Preloader.astro';
-import { headerSettingsQuery, imageFields } from '../components/global/utils/cms-queries';
-
-// Brand
-const brands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]`)
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && name == "Studio"][0]`)
-const brandSettings = currentBrand
-
-// Preloader
-const preloaderContent = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-studio"][0]{..., heading, images[]{${imageFields}} }`)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
     description={ description ? description : currentBrand.description }
-    theme="light"
-    favicon={brandSettings.favicon}
+    favicon={currentBrand.favicon}
     image={image ? image : currentBrand.metafields.image}
     searchFilter={searchFilter}
-    preloaderContent={preloaderContent}
-    brand='studio'
+    currentBrand={currentBrand}
 >
     <Header
-        brands={brands}
         currentBrand={currentBrand}
-        headerSettings={headerSettings}
         activePath={activePath}
     />
 
     <main>
         <slot />
     </main>
-    <Footer 
-        footerSettings={footerSettings}
-    />
+    <Footer currentBrand={currentBrand} />
 </LayoutGlobal>
