@@ -6,22 +6,10 @@ import SectionServiceGroupFeature from "../../../../components/global/services/s
 import { blogCardFields, projectGridFields } from "../../../../components/global/utils/cms-queries"
 import GlobalProjectsGrid from "../../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
+import { allServiceTypes_Studio } from "../../../../components/global/utils/cms-content"
 
 export async function getStaticPaths() {
-    const serviceTypes = await sanityClient.fetch(`
-        *[_type == "type_serviceType" 
-            && "studio" in agencyBrands[]->slug.current ]{
-                ...,
-                "serviceGroups":  *[_type == "type_serviceGroup" && references(^._id)]{
-                    ...,
-                    serviceType->{..., slug{...}},
-                    "services": *[_type == "type_service" && references(^._id)]{
-                        ...
-                    } | order(orderRank)
-                } | order(orderRank),
-                "projects": *[_type == "type_project" && agencyBrand->slug.current == "studio" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
-                "blogPosts": *[_type == "type_blog" && agencyBrand->slug.current == "studio" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate),
-            }`)
+    const serviceTypes = allServiceTypes_Studio
     return serviceTypes.map((serviceType) => {
         return {
             params: { serviceType: serviceType.slug.current },
@@ -53,17 +41,17 @@ const { content } = Astro.props;
         />
     ))}
 
-    {content.blogPosts && content.blogPosts.length > 0 &&
+    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
-            posts={content.blogPosts}
+            posts={content.relatedBlogPosts}
         />
     }
 
-    {content.projects.length > 0 &&
+    {content.relatedProjects.length > 0 &&
         <GlobalProjectsGrid 
             heading={`${content.title} Work`}
-            projects={content.projects}
+            projects={content.relatedProjects}
         />
     }
 

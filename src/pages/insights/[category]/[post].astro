@@ -9,30 +9,11 @@ import AtomRichContent from '../../../components/global/atoms/atom-richContent.a
 import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
+import { allBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const posts = await sanityClient.fetch(`
-    *[_type == "type_blog" && agencyBrand->name == "Domaine"]{ 
-        ..., 
-        authors[]->{name, role, bio, ${imageFields}, department->{title} },
-        thumbnailImage{${imageFields}},
-        category->{..., slug{...} }, 
-        body[]{ 
-            ...,
-            _type == "inlineImage" => {${imageFields}},
-            _type == "imageGallery" => { images[]{${imageFields}} },
-        },
-        agencyBrand->{slug},
-        "relatedPosts": *[_type == "type_blog" && references(^.category->_id)]{${blogCardFields}} | order(orderRank asc),
-        "relatedProjects": 
-            *[_type == "type_project" 
-                && references(^.features[]->_id)
-                // || references(^.services[]->_id)
-                || references(^.industries[]->_id)
-            ]{${projectGridFields}} | order(orderRank asc)[0...4]
-        }`)
+    const posts = allBlogPosts_Domaine
     return posts.map((post) => {
-        // console.log(post)
         return {
             params: { post: post.slug.current, category: post.category.slug.current },
             props: { content: post }

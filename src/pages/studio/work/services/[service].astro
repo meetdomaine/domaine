@@ -1,11 +1,9 @@
 ---
-import { sanityClient } from 'sanity:client';
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { blogCardFields, projectGridFields } from '../../../../components/global/utils/cms-queries';
-import { allProjects_Studio } from '../../../../components/global/utils/cms-content';
+import { allProjects_Studio, allServices_Studio } from '../../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const services = await sanityClient.fetch(`*[_type == "type_service" && 'studio' in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
+    const services = allServices_Studio
     return services.map((service) => {
         return {
             params: { service: service.slug.current },

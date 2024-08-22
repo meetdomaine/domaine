@@ -2,10 +2,10 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
 import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
-import { allProjects_Domaine } from '../../../components/global/utils/cms-content';
+import { allProjects_Domaine, allServices_Domaine } from '../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const services = await sanityClient.fetch(`*[_type == "type_service" && 'domaine' in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
+    const services = allServices_Domaine
     return services.map((service) => {
         return {
             params: { service: service.slug.current },

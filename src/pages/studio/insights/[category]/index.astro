@@ -2,10 +2,10 @@
 import { sanityClient } from 'sanity:client';
 import { blogCardFields } from '../../../../components/global/utils/cms-queries';
 import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
-import { allBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
+import { allBlogCategories_Studio, allBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
+    const categories = allBlogCategories_Studio
     return categories.map((category) => {
         // console.log(category)
         return {

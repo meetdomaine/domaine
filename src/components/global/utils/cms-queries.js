@@ -17,7 +17,6 @@ export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
 export const partnerTileFields = `title, excerpt, slug, icon{${imageFields}}, tier->{slug, title, createLandingPages}, websiteUrl, orderRank`
 export const agencyBrandsQuery = `..., thumbnailMedia{${videoFields}, ${imageFields}}`
 export const practicesQuery = `..., thumbnailMedia{${videoFields}, ${imageFields}}`
-
 export const projectFeatureQuery = `title, slug, orderRank`
 
 export const projectGridFields = `
@@ -119,11 +118,53 @@ export const projectPostQuery = (brand) => {
 export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}`
 
 export const serviceTypeQuery = `
-    ...,
-    images[]{${imageFields}},
-    "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
-        ...,
-        "services": *[_type == "type_service" && references(^._id)] {
-            ...
-        } | order(orderRank)
-    } | order(orderRank)`
+  ...,
+  images[]{${imageFields}},
+  "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
+      ...,
+      serviceType->{slug},
+      "services": *[_type == "type_service" && references(^._id)] {
+          ...
+      } | order(orderRank)
+  } | order(orderRank),
+  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
+  "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
+`
+
+export const serviceGroupQuery = `
+  ..., 
+  serviceType->{...},
+  "services": *[_type == "type_service" && references(^._id)] | order(orderRank),
+  "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
+  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
+`
+
+export const serviceQuery = `
+  ..., 
+  serviceGroup->{
+      ..., 
+      serviceType->{...}
+  },
+  "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(orderRank),
+  "relatedProjects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank),
+`
+
+export const blogQuery = `
+  ..., 
+  authors[]->{name, role, bio, ${imageFields}, department->{title} },
+  thumbnailImage{${imageFields}},
+  category->{..., slug{...} }, 
+  body[]{ 
+      ...,
+      _type == "inlineImage" => {${imageFields}},
+      _type == "imageGallery" => { images[]{${imageFields}} },
+  },
+  agencyBrand->{slug},
+  "relatedPosts": *[_type == "type_blog" && references(^.category->_id)]{${blogCardFields}} | order(orderRank asc),
+  "relatedProjects": 
+      *[_type == "type_project" 
+          && references(^.features[]->_id)
+          // || references(^.services[]->_id)
+          || references(^.industries[]->_id)
+      ]{${projectGridFields}} | order(orderRank asc)[0...4]
+`

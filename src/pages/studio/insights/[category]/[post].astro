@@ -1,11 +1,10 @@
 ---
-import { sanityClient } from 'sanity:client';
 import LayoutStudio from '../../../../layouts/Layout-Studio.astro';
 import { paths } from '../../../../components/global/utils/paths';
-import { urlFor } from '../../../../components/global/utils/cms-queries';
+import { allBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio"]{ ..., category->{..., slug{...} }, authors[]->{...} }`)
+    const posts = allBlogPosts_Studio
     return posts.map((post) => {
         // console.log(post)
         return {

@@ -5,18 +5,10 @@ import SectionServiceGroupHero from "../../../../components/global/services/sect
 import { blogCardFields, projectGridFields } from "../../../../components/global/utils/cms-queries"
 import GlobalProjectsGrid from "../../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
+import { allServiceGroups_Studio } from "../../../../components/global/utils/cms-content"
 
 export async function getStaticPaths() {
-    const serviceGroups = await sanityClient.fetch(`
-        *[_type == "type_serviceGroup" 
-            && "studio" in agencyBrands[]->slug.current ] {
-                ..., 
-                serviceType->{...},
-                "services": *[_type == "type_service" && references(^._id)] | order(orderRank),
-                "projects": *[_type == "type_project" && agencyBrand->slug.current == "studio" && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank),
-                "blogPosts": *[_type == "type_blog" && agencyBrand->slug.current == "studio" && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}} | order(postDate),
-            } | order(orderRank)
-        `)
+    const serviceGroups = allServiceGroups_Studio
     return serviceGroups.map((serviceGroup) => {
         return {
             params: { serviceType: serviceGroup.serviceType.slug.current, serviceGroup: serviceGroup.slug.current },
@@ -50,17 +42,17 @@ const { content, serviceType } = Astro.props;
         ))}
     </div>
 
-    {content.blogPosts && content.blogPosts.length > 0 &&
+    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
-            posts={content.blogPosts}
+            posts={content.relatedBlogPosts}
         />
     }
 
-    {content.projects && content.projects.length > 0 &&
+    {content.relatedProjects && content.relatedProjects.length > 0 &&
         <GlobalProjectsGrid 
             heading={`${content.title} Work`}
-            projects={content.projects}
+            projects={content.relatedProjects}
         />
     }
 </LayoutStudio>

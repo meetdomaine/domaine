@@ -8,20 +8,10 @@ import SectionProjectsFeed from "../../../components/global/sections/section-Pro
 import SectionProjectsGrid from "../../../components/global/sections/section-ProjectsGrid.astro"
 import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
+import { allServices_Domaine } from "../../../components/global/utils/cms-content"
 
 export async function getStaticPaths() {
-    const services = await sanityClient.fetch(`
-    *[_type == "type_service" 
-        && "domaine" in agencyBrands[]->slug.current 
-    ]{
-        ..., 
-        serviceGroup->{
-            ..., 
-            serviceType->{...}
-        },
-        "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank),
-        "blogPosts": *[_type == "type_blog" && references(^._id)]{${blogCardFields}} | order(postDate desc)[0...4]
-    } | order(orderRank)`)
+    const services = allServices_Domaine
     return services.map((service) => {
         return {
             params: { serviceType: service.serviceGroup.serviceType.slug.current, service: service.slug.current },
@@ -37,7 +27,7 @@ interface Props {
 }
 
 const { content, serviceType, serviceGroup } = Astro.props;
-console.log(content.blogPosts.length)
+console.log(content.relatedBlogPosts.length)
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
@@ -48,17 +38,17 @@ console.log(content.blogPosts.length)
         service={content}
     />
 
-    {content.blogPosts && content.blogPosts.length > 0 &&
+    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
-            posts={content.blogPosts}
+            posts={content.relatedBlogPosts}
         />
     }
 
-    {content.projects && content.projects.length > 0 &&
+    {content.relatedProjects && content.relatedProjects.length > 0 &&
         <GlobalProjectsGrid 
             heading={`${content.title} Work`}
-            projects={content.projects}
+            projects={content.relatedProjects}
         />
     }
 
