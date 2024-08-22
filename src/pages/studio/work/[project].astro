@@ -11,7 +11,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const projects = allProjects_Studio
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio"]{${projectPageFields}} | order( orderRank asc)`)
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },
