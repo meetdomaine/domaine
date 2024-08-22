@@ -2,6 +2,16 @@
 import { Icon } from 'astro-icon/components';
 import { sanityClient } from 'sanity:client';
 import AtomTag from '../atoms/atom-tag.astro';
+import { 
+    allProjectFeatures_Domaine, 
+    allProjectFeatures_Studio,
+    allPartners_Domaine,
+    allPartners_Studio,
+    allClientIndustries_Domaine,
+    allClientIndustries_Studio,
+    allServiceGroups_Domaine,
+    allServiceGroups_Studio,
+} from '../utils/cms-content';
 
 const { brand, currentPath } = Astro.props;
 
@@ -9,41 +19,23 @@ const allFilters = await Promise.all([
     {
         title: 'Industries',
         path: 'industries/',
-        filters: await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
+        filters: brand.toLowerCase() === "studio" ? allClientIndustries_Studio : allClientIndustries_Domaine
     },
     {
         title: 'Features',
         path: 'features/',
-        filters: await sanityClient.fetch(`*[_type == "type_projectFeature" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] | order(title asc)`)
+        filters: brand.toLowerCase() === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
     },
     {
         title: 'Partners',
         path: 'partners/',
-        filters: await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0] | order(title asc)`)
+        filters: brand.toLowerCase() === "studio" ? allPartners_Studio : allPartners_Domaine
     },
     {
         title: 'Services',
         path: 'services/',
-        filters: await sanityClient.fetch(`
-            *[_type == "type_serviceGroup" 
-                && count( 
-                    *[_type == "type_service" && references(^._id) 
-                    && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  
-                ]) > 0 ]{ 
-                  ..., 
-                  title, 
-                  slug } | order(orderRank asc)`)
+        filters: brand.toLowerCase() === "studio" ? allServiceGroups_Studio : allServiceGroups_Domaine
     },
-    // {
-    //     title: 'Services',
-    //     path: 'services/',
-    //     filters:  await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
-    // },
-    // {
-    //     title: 'Stages',
-    //     path: '/',
-    //     filters:  await sanityClient.fetch(`*[_type == "type_clientStage" && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0  ]) > 0 ]{ ..., title, slug, "links":  *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == '${brand}']) > 0 ] } | order(orderRank asc)`)
-    // },
 ])
 
 // console.log(brand)

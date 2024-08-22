@@ -8,7 +8,8 @@ import {
     allProjects_Studio,
     allProjectFeatures_Domaine,
     allProjectFeatures_Studio,
-    allPartners,
+    allPartners_Studio,
+    allPartners_Domaine,
 } from "../../utils/cms-content"
 
 const { currentBrand } = Astro.props
@@ -16,7 +17,7 @@ const { currentBrand } = Astro.props
 const defaultBlogPosts = currentBrand.slug.current === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
 const defaultProjects = currentBrand.slug.current === "studio" ? allProjects_Studio : allProjects_Domaine
 const defaultProjectFeatures = currentBrand.slug.current === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
-const defaultPartners = allPartners
+const defaultPartners = currentBrand.slug.current === "studio" ? allPartners_Studio : allPartners_Domaine
 ---
 <dialog popover id="search-menu" class="search-menu">
     <button class="close-button" popovertarget="search-menu">
