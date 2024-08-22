@@ -2,6 +2,7 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
 import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
+import { allProjects_Domaine } from '../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
     const serviceGroup = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "domaine" in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields} } | order(postDate)}`)
@@ -18,8 +19,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Domaine' && '${content._id}' in services[]->serviceGroup->_id ]{${projectGridFields}} | order(orderRank)`)
-// console.log(content.relatedBlogPosts)
+const projects = allProjects_Domaine.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
 ---
 <LayoutDomaineProjects 
     title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}

@@ -2,6 +2,7 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
 import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
+import { allProjects_Domaine } from '../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
     const partners = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type=='type_project' && agencyBrand->slug.current == 'domaine' && references(^._id)]) > 0 ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
@@ -18,7 +19,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Domaine' && '${content._id}' in partners[]->_id ]{${projectGridFields}} | order(orderRank)`)
+const projects = allProjects_Domaine.filter((project) => project.partners && project.partners.some((partner) => partner._id === content._id))
 
 ---
 <LayoutDomaineProjects 

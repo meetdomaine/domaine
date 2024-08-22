@@ -2,6 +2,7 @@
 import { sanityClient } from 'sanity:client';
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
 import { blogCardFields, projectGridFields } from '../../../../components/global/utils/cms-queries';
+import { allProjects_Studio } from '../../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
     const services = await sanityClient.fetch(`*[_type == "type_service" && 'studio' in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
@@ -18,7 +19,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == 'Studio' && '${content._id}' in services[]->_id ]{${projectGridFields}} | order(orderRank)`)
+const projects = allProjects_Studio.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
 
 ---
 <LayoutStudioProjects 
