@@ -7,15 +7,14 @@ import WorkPostAbout from '../../components/global/projects/workPost-About.astro
 import WorkPostDetails from '../../components/global/projects/workPost-Details.astro';
 import GlobalSections from '../../components/global/sections/section-GlobalSections.astro';
 import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
+import { allProjects_Domaine } from '../../components/global/utils/cms-content';
 
 interface Props {
     content: any
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`
-        *[_type == "type_project" 
-            && agencyBrand->slug.current == 'domaine']{ ${projectPageFields} }`)
+    const projects = allProjects_Domaine
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },

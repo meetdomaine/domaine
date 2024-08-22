@@ -14,10 +14,37 @@ export const imageBaseFields = `crop, asset->{_id, metadata}, hotspot`
 export const imageFields = `image{${imageBaseFields}, alt }`
 export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
 
-export const partnerTileFields = `title, excerpt, slug, icon{${imageFields}}, tier->{slug, title, createLandingPages}, websiteUrl, orderRank`
+export const partnerTileFields = `
+  _id,
+  title, 
+  excerpt, 
+  slug, 
+  icon{${imageFields}}, 
+  tier->{slug, title, createLandingPages}, 
+  websiteUrl, 
+  orderRank
+`
+
 export const agencyBrandsQuery = `..., thumbnailMedia{${videoFields}, ${imageFields}}`
 export const practicesQuery = `..., thumbnailMedia{${videoFields}, ${imageFields}}`
-export const projectFeatureQuery = `title, slug, orderRank`
+
+export const blogCardFields = `
+  title,
+  excerpt,
+  postDate,
+  category->{ _id, title, slug{...} },
+  slug{...},
+  agencyBrand->{slug},
+  thumbnailImage{${imageFields}}
+  `
+
+export const projectFeatureQuery = `
+  _id,
+  title, 
+  slug, 
+  orderRank,
+  "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}}
+`
 
 export const projectGridFields = `
   title,
@@ -35,15 +62,7 @@ export const projectGridFields = `
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
   `
-export const blogCardFields = `
-  title,
-  excerpt,
-  postDate,
-  category->{ _id, title, slug{...} },
-  slug{...},
-  agencyBrand->{slug},
-  thumbnailImage{${imageFields}}
-  `
+
 
 export const globalSectionsFields = `
   sections[]{

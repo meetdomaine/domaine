@@ -2,10 +2,10 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
 import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
-import { allProjects_Domaine } from '../../../components/global/utils/cms-content';
+import { allClientIndustries_Domaine, allProjects_Domaine } from '../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const industries = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type=='type_project' && agencyBrand->slug.current == 'domaine' && references(^._id)]) > 0 ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
+    const industries = allClientIndustries_Domaine
     return industries.map((industry) => {
         return {
             params: { industry: industry.slug.current },

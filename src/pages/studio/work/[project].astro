@@ -4,13 +4,14 @@ import { paths } from '../../../components/global/utils/paths';
 import LayoutStudio from '../../../layouts/Layout-Studio.astro';
 import WorkPostHero from '../../../components/studio/sections/work/workPost-Hero.astro';
 import { projectPageFields, projectPostQuery } from "../../../components/global/utils/cms-queries"
+import { allProjects_Studio } from '../../../components/global/utils/cms-content';
 
 interface Props {
     content: any
 }
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == 'studio' ]{ ${projectPageFields} }`)
+    const projects = allProjects_Studio
     return projects.map((project) => {
         return {
             params: { project: project.slug.current },

@@ -2,10 +2,10 @@
 import { sanityClient } from 'sanity:client';
 import { blogCardFields, projectGridFields } from '../../../../components/global/utils/cms-queries';
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { allProjects_Studio } from '../../../../components/global/utils/cms-content';
+import { allProjectFeatures_Studio, allProjects_Studio } from '../../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
-    const features = await sanityClient.fetch(`*[_type == "type_projectFeature" && count(*[_type=='type_project' && agencyBrand->slug.current == 'studio' && references(^._id)]) > 0 ]{..., "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(postDate)}`)
+    const features = allProjectFeatures_Studio
     return features.map((feature) => {
         return {
             params: { feature: feature.slug.current },
