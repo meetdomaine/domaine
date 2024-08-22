@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
-import { blogCardFields } from '../../../components/global/utils/cms-queries';
 import LayoutDomaineBlogIndex from '../../../layouts/Layout-Domaine-BlogIndex.astro';
+import { allBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
     const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
@@ -21,7 +21,7 @@ interface Props {
 const { content } = Astro.props;
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "domaine" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
+const blogPosts = allBlogPosts_Domaine.filter((post) => post.category._id === content._id)
 ---
 <LayoutDomaineBlogIndex
     pageSetting={pageSettings}

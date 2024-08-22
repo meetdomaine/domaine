@@ -4,19 +4,9 @@ import LayoutStudio from "../../../layouts/Layout-Studio.astro";
 import { paths } from "../../../components/global/utils/paths";
 import SectionServiceLandingHero from "../../../components/global/services/section-ServiceLanding-Hero.astro";
 import SectionServiceTypeFeature from "../../../components/global/services/section-ServiceType-Feature.astro";
+import { allServiceTypes_Studio } from "../../../components/global/utils/cms-content";
 
-const serviceTypes = await sanityClient.fetch(`
-    *[_type == "type_serviceType" 
-        && "studio" in agencyBrands[]->slug.current ]{
-            ...,
-            "serviceGroups":  *[_type == "type_serviceGroup" && references(^._id)]{
-                ...,
-                "services": *[_type == "type_service" && references(^._id)]{
-                    ...
-                } | order(orderRank)
-            } | order(orderRank)
-        }`)
-
+const serviceTypes = allServiceTypes_Studio
 ---
 <LayoutStudio
     title="Services"

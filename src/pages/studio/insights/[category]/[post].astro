@@ -20,8 +20,6 @@ interface Props {
 }
 
 const { content } = Astro.props;
-
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "studio" && category->_id == '${content._id}' ] | order( postDate desc)`)
 ---
 <LayoutStudio
     title={content.title}

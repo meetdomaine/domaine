@@ -2,6 +2,7 @@
 import { sanityClient } from 'sanity:client';
 import { blogCardFields } from '../../../../components/global/utils/cms-queries';
 import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
+import { allBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
 
 export async function getStaticPaths() {
     const categories = await sanityClient.fetch(`*[_type == "type_blogCategory"]`)
@@ -21,9 +22,7 @@ interface Props {
 const { content } = Astro.props;
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "studio" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
-const relatedBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->slug.current == "domaine" && category->_id == '${content._id}' ] { ..., ${blogCardFields}} | order( postDate desc)`)
-
+const blogPosts = allBlogPosts_Studio.filter((post) => post.category._id === content._id)
 ---
 <LayoutStudioBlogIndex
     pageSetting={pageSettings}
@@ -32,9 +31,6 @@ const relatedBlogPosts = await sanityClient.fetch(`*[_type == "type_blog" && age
     subheading="Lorem ipsum dolor sit amet."
     searchFilter="type:blog-category"
     slug={content.slug}
-    relatedBlogPosts={relatedBlogPosts}
-    relatedPostsHeading="More from Domaine"
-    relatedPostsSubheading="Insights from the larger Domaine ecosystem"
 >
 
 </LayoutStudioBlogIndex>
