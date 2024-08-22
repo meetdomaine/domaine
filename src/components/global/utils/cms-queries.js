@@ -116,6 +116,8 @@ export const projectPostQuery = (brand) => {
   }`
 }
 
+export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}`
+
 export const serviceTypeQuery = `
     ...,
     images[]{${imageFields}},

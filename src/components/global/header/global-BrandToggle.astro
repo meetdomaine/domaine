@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 const { brands, currentBrand, brandIndex } = Astro.props
-// console.log(brands)
+
 ---
 <div id="brand-toggle" class="brand-toggle glass-dark" style={`--brand-count: ${brands.length}; --current-index: ${brandIndex}`}>
     <div class="brands" data-brand={currentBrand.slug.current}>

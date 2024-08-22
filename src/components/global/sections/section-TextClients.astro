@@ -3,18 +3,10 @@ import { sanityClient } from "sanity:client"
 import { imageBaseFields, imageFields, urlFor } from "../utils/cms-queries"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomButton from "../atoms/atom-button.astro"
+import { allClients_Domaine, allClients_Studio } from "../utils/cms-content"
 const { section, brand, key } = Astro.props
 
-const clientLogos = await sanityClient.fetch(`
-    *[_type == "type_client" 
-        && count(*[_type == "type_project" 
-            && agencyBrand->slug.current == '${brand}'
-                && references(^._id) ]) > 0 ]{ 
-                    title, 
-                    orderRank, 
-                    logoDark{${imageBaseFields}} 
-                } | order(orderRank)[0...10]`)
-// console.log(clientLogos)
+const clients = brand === "studio" ? allClients_Studio : allClients_Domaine
 ---
 <section class="section-text-clients">
     <div 
@@ -29,7 +21,7 @@ const clientLogos = await sanityClient.fetch(`
         <div 
             class="logo-track"
         >
-            {clientLogos.map((client, i) => (
+            {clients.map((client, i) => (
                 <div class="logo">
                     <AtomSanityImage 
                         image={client.logoDark} 
@@ -38,7 +30,7 @@ const clientLogos = await sanityClient.fetch(`
                     />
                 </div>
             ))}
-            {clientLogos.map((client, i) => (
+            {clients.map((client, i) => (
                 <div class="logo">
                     <AtomSanityImage 
                         image={client.logoDark} 

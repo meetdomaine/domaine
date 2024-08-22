@@ -1,18 +1,14 @@
 ---
 import AtomTag from "../atoms/atom-tag.astro"
-import { blogCardFields, projectGridFields } from "../utils/cms-queries"
 import AtomLinkCard from "../atoms/atom-linkCard.astro"
-import { sanityClient } from "sanity:client"
+import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
 
 const { section, brand } = Astro.props
 
-
-
-const featuredPost = await sanityClient.fetch(`*[_type == "type_blog" && category->slug.current != "agency-news" && agencyBrand->slug.current == "${brand}" ]{ ${blogCardFields} } | order( postDate desc)[0]`)
-const featuredNews = await sanityClient.fetch(`*[_type == "type_blog" && category->slug.current == "agency-news" && agencyBrand->slug.current == "${brand}" ]{ ${blogCardFields} } | order( orderRank desc)[0]`)
-const featuredProject = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->slug.current == "${brand}" ]{ ${projectGridFields} } | order( orderRank asc)[0]`)
-
-
+const allPosts = brand === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const featuredPost = allPosts.find((post) => post.category.slug.current != "agency-news")
+const featuredNews = allPosts.find((post) => post.category.slug.current === "agency-news")
+const featuredProject = brand === "studio" ? allProjects_Studio[0] : allProjects_Domaine[0]
 ---
 <section class="section-text-feed">
     <div class="section-content">
