@@ -1,0 +1,1 @@
+export const isMobileBreakpoint = window.innerWidth <= 768

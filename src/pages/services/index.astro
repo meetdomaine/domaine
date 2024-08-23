@@ -2,24 +2,35 @@
 import { sanityClient } from "sanity:client";
 import LayoutDomaine from "../../layouts/Layout-Domaine.astro";
 import { paths } from "../../components/global/utils/paths";
-import SectionServiceLandingHero from "../../components/global/services/section-ServiceLanding-Hero.astro";
-import SectionServiceTypeFeature from "../../components/global/services/section-ServiceType-Feature.astro";
+import ServicesHero from "../../components/domaine/sections/services/services-Hero.astro";
+// import SectionServiceTypeFeature from "../../components/global/sections/section-ServiceType.astro";
 import { allServiceTypes_Domaine } from "../../components/global/utils/cms-content";
+import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
+import { globalSectionsFields } from "../../components/global/utils/cms-queries";
 
+const pageSettings = await sanityClient.fetch(`
+    *[_type == "page_services-index" && _id == "page_services-index-domaine"]{
+        title,
+        heading,
+        ${globalSectionsFields}
+    }[0]
+`)
 const serviceTypes = allServiceTypes_Domaine
+
+// console.log(pageSettings.sections)
 ---
 <LayoutDomaine
     title="Services"
     searchFilter="type:page"
     activePath="/services"
 >   
-    <SectionServiceLandingHero
-        eyebrow="Domaine"
-        title={"Services"}
+    <ServicesHero
+        title={pageSettings.title}
+        heading={pageSettings.heading}
     />
-    {serviceTypes.map((serviceType) => (
-        <SectionServiceTypeFeature 
-            serviceType={serviceType}
-        />
+
+    {pageSettings.sections && pageSettings.sections.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
     ))}
+
 </LayoutDomaine>

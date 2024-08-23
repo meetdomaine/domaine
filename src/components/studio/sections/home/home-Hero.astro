@@ -56,8 +56,10 @@ const iconText = replaceStringIcons(heading)
     const section = document.getElementById('home-hero')
     const canvas = section.querySelector('#three-canvas')
     const projectCards = section.querySelectorAll('.project-card')
-    const container = section.getBoundingClientRect()
+    let container = section.getBoundingClientRect()
 
+    const _cameraDistance = 10
+    let cameraFOV = Math.atan( container.height / 2 / _cameraDistance ) * 2 * (180 / Math.PI)
 
     const animate = () => {
         renderer.render( scene, camera );
@@ -93,7 +95,7 @@ const iconText = replaceStringIcons(heading)
 
         projectCards.forEach((card, i) => {
 
-            const _width = 3
+            const _width = 10
             const _subdivisions = 20
             const _stackDistance = 0.1
             const _projectCount = projectCards.length
@@ -126,9 +128,17 @@ const iconText = replaceStringIcons(heading)
         })
 
         Promise.all(texturePromises).then((meshes) => {
+
+
+            const testGeo = new PlaneGeometry(10, 10, 10, 10)
+            const testMat = new MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true})
+            const testMesh = new Mesh(testGeo, testMat)
+            scene.add(testMesh)
+
+
             meshPositions = meshes.map((mesh) => mesh.position)
             scene.add(imageGroup)
-            animateLoad()
+            // animateLoad()
         })
 
     }
@@ -136,7 +146,7 @@ const iconText = replaceStringIcons(heading)
 
     const initScene = () => {
         scene = new Scene();
-        camera = new PerspectiveCamera( 75, container.width / container.height, 0.1, 1000 );
+        camera = new PerspectiveCamera( 75, cameraFOV, 0.1, 1000 );
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
         renderer.setAnimationLoop( animate );
@@ -144,21 +154,22 @@ const iconText = replaceStringIcons(heading)
         renderer.setSize( container.width, container.height );
         canvas.appendChild( renderer.domElement );
 
-        camera.position.z = 10
+        camera.position.z = _cameraDistance
 
         initImages()
     }
 
-    initScene()
-
-
-
-
-    
+    const handleResize = () => {
+        container = section.getBoundingClientRect()
+        renderer.setSize( container.width, container.height );
+        camera.fov = cameraFOV
+    }
 
     window.addEventListener("preload:complete", () => {
-        // animateSection()
+        initScene()
     })
+
+    window.addEventListener("resize", handleResize)
 </script>
 
 <style>

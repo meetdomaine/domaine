@@ -30,8 +30,8 @@
 }
 
 ::selection {
-    background: var(--color-brand);
-    color: var(--color-brand-contrast);
+    background: var(--color-darkest);
+    color: var(--color-lightest);
 }
 
 html,
@@ -77,7 +77,7 @@ html .color-invert,
 [data-color-scheme="brand-02"] {
 
     --color-foreground: var(--color-lightest);
-    --color-foreground-secondary: var(--color-neutral);
+    --color-foreground-secondary: var(--color-light);
     --color-background: var(--color-darkest);
     --color-background-secondary: color-mix(in srgb, var(--color-darkest) 85%, var(--color-lightest));
 

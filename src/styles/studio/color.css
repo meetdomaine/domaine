@@ -1,3 +1,8 @@
+::selection {
+  background: var(--color-blue);
+  color: var(--color-lightest);
+}
+
 html,
 html [data-color-scheme="glass-light"] {
     
@@ -18,7 +23,7 @@ html [data-color-scheme="invert"],
 html [data-color-scheme="glass-dark"] {
 
   --color-foreground: var(--color-lightest);
-  --color-foreground-secondary: var(--color-neutral);
+  --color-foreground-secondary: var(--color-light);
   --color-background: var(--color-darkest);
   --color-background-secondary: var(--color-dark);
   --color-border: var(--color-neutral);

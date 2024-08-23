@@ -1,0 +1,234 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { section, brand, key } = Astro.props
+console.log(section.serviceType.images)
+---
+<section class="section-service-type" id={`service-type-${section.serviceType.slug.current}`}>
+    <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.serviceType.slug.current}/`} class="service-type-title">{section.serviceType.title}</a></h2>
+    <div class="section-content">
+        <p class="service-type-heading h4">{section.heading}</p>
+        <div class="service-groups" data-color-scheme="glass-light">
+            {section.serviceType.serviceGroups.map((serviceGroup) => (
+                <div class="services">
+                    {serviceGroup.services.map((service) => (
+                        <div class="service">
+                            <a class="service-group-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.serviceType.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a>
+                            <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
+    </div>
+    <div class="section-media">
+        {section.serviceType.images.slice(0,3).map((asset) => (
+            <div class="service-image">
+                <AtomSanityImage 
+                    image={asset.image}
+                    sizes="30vw"
+                    cover={true}
+                />
+            </div>
+        ))}
+    </div>
+</section>
+
+<script>
+import { addParallax, gsap } from "../utils/gsap"
+import { isMobileBreakpoint } from "../../global/utils/check-device"
+
+if (!isMobileBreakpoint) {
+    const sections = document.querySelectorAll('.section-service-type')
+
+    const _parallaxStrength = 30
+
+    sections.forEach((section) => {
+
+        const images = section.querySelectorAll('.service-image')
+
+        images.forEach((image) => {
+
+            const timeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: image,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true,
+                }
+             })
+            
+            timeline.fromTo(image, { y: _parallaxStrength }, { y: -_parallaxStrength });
+        })
+        
+    })
+}
+</script>
+
+<style>
+    .section-service-type {
+        position: relative;
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-4xl) var(--space-4xl);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-lg);
+    }
+
+    .service-type-title {
+        position: relative;
+        text-decoration: none;
+        font-size: 15vw;
+        letter-spacing: -0.05em;
+        z-index: 2;
+    }
+
+    .section-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        width: 85%;
+        align-self: flex-end;
+        z-index: 1;
+    }
+
+    .service-type-heading {
+        max-width: 24em;
+    }
+
+    .service-groups {
+        display: flex;
+        flex-direction: column;
+        max-width: 35rem;
+        /* background-color: rgba(255, 255, 255, 0.9); */
+        padding: var(--space-xs);
+        border-radius: var(--radius-sm);
+        /* gap: var(--space-lg); */
+    }
+
+    .services {
+        display: flex;
+        flex-direction: column;
+        /* gap: var(--space-2xs); */
+    }
+
+    .service {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        /* border-top: 1px solid color-mix(in srgb, var(--color-foreground) 10%, transparent); */
+        border-top: 1px solid var(--color-border);
+        padding-block: 0.5em;
+    }
+
+    .service-group-title,
+    .service-title {
+        margin: 0;
+        text-decoration: none;
+        /* background-color: var(--color-background); */
+        /* border-radius: var(--radius-sm,); */
+        /* padding: 0.2em 0.2em; */
+    }
+
+    .service-group-title {
+        color: var(--color-foreground-secondary);
+    }
+
+    .section-media {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        /* grid-template-columns: .5fr .5fr 1.5fr 1.5fr 2.5fr 2.5fr; */
+        grid-template-columns: 1.5fr 1.5fr 1fr 1fr .5fr .5fr;
+        grid-template-rows: repeat(6, 1fr);
+        /* grid-auto-rows: 1fr; */
+        z-index: 0;
+    }
+
+    .service-image {
+        position: relative;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .service-image:nth-child(3n + 1) {
+        grid-column: 5 / span 2;
+        grid-row: 1 / span 2;
+    }
+
+    .service-image:nth-child(3n + 2) {
+        grid-column: 4 / span 1;
+        grid-row: 3 / span 1;
+        /* opacity: 0; */
+    }
+
+    .service-image:nth-child(3n + 3) {
+        grid-column: 1 / span 1;
+        grid-row: 6 / span 1;
+        /* opacity: 0; */
+    }
+    
+    .section-service-type:nth-child(even) .service-image:nth-child(3n + 1) {
+        grid-column: 4 / span 1;
+        grid-row: 1 / span 1;
+    }
+
+    .section-service-type:nth-child(even) .service-image:nth-child(3n + 2) {
+        grid-column: 5 / span 2;
+        grid-row: 3 / span 2;
+        /* opacity: 0; */
+    }
+
+    .section-service-type:nth-child(even) .service-image:nth-child(3n + 3) {
+        grid-column: 1 / span 1;
+        grid-row: 4 / span 1;
+        /* opacity: 0; */
+    }
+
+    @media screen and (width <= 768px) {
+        .section-content {
+            width: 100%;
+        }
+
+        .section-media {
+            position: relative;
+            grid-template-columns: var(--grid-template-extreme-1);
+            grid-template-rows: repeat(3, 1fr);
+            height: 50svh;
+        }
+
+        .service-image:nth-child(3n + 1) {
+            grid-column: 2 / span 1;
+            grid-row: 1 / span 1;
+        }
+
+        .service-image:nth-child(3n + 2) {
+            grid-column: 3 / span 1;
+            grid-row: 2 / span 1;
+        }
+
+        .service-image:nth-child(3n + 3) {
+            grid-column: 1 / span 1;
+            grid-row: 3 / span 1;
+        }
+
+        .section-service-type:nth-child(even) .service-image:nth-child(3n + 1) {
+            grid-column: 3 / span 1;
+            grid-row: 1 / span 1;
+        }
+
+        .section-service-type:nth-child(even) .service-image:nth-child(3n + 2) {
+            grid-column: 1 / span 1;
+            grid-row: 2 / span 1;
+            /* opacity: 0; */
+        }
+
+        .section-service-type:nth-child(even) .service-image:nth-child(3n + 3) {
+            grid-column: 2 / span 1;
+            grid-row: 3 / span 1;
+            /* opacity: 0; */
+        }
+    }
+</style>

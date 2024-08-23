@@ -1,8 +1,8 @@
-<script>
+
   import Lenis from '@studio-freight/lenis'
   export let lenis;
 
-  const initLenis = () => {
+  export const initLenis = () => {
     lenis = new Lenis()
 
     function raf(time) {
@@ -10,6 +10,10 @@
       requestAnimationFrame(raf)
     } 
     requestAnimationFrame(raf)
+  }
+
+  export const scrollTo = (target) => {
+    if (lenis) lenis.scrollTo(target)
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -28,4 +32,3 @@
   //   lenis.start();
   // })
 
-</script>

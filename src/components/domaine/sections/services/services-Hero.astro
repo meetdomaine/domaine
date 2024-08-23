@@ -1,0 +1,81 @@
+---
+import AtomCounter from "../../../global/atoms/atom-counter.astro"
+import { allServices_Domaine, allServiceTypes_Domaine } from "../../../global/utils/cms-content"
+
+const { title, heading } = Astro.props
+const serviceCount = allServices_Domaine.length
+---
+<section class="services-hero">
+    <div class="section-title">
+        <h1 class="h5">{title}</h1>
+        <AtomCounter count={serviceCount} />
+    </div>
+    <div class="section-content">
+        <p class="heading">{heading}</p>
+        <div class="service-buttons">
+            {allServiceTypes_Domaine.map((serviceType) => (
+                <button class="serviceType-jumplink" data-slug={serviceType.slug.current}>{serviceType.title}</button>
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    import { gsap } from "../../../global/utils/gsap"
+    const jumplinks = document.querySelectorAll('.serviceType-jumplink')
+
+    jumplinks.forEach((button: HTMLButtonElement) => {
+        button.addEventListener("click", () => gsap.to(window, { duration: 1, ease: 'cubic', scrollTo: { y: `#service-type-${button.dataset.slug}`, offsetY: 50 } } ))
+    })
+</script>
+
+<style>
+    .services-hero {
+        padding-inline: var(--page-margin);
+        padding-block: calc(var(--header-height) * 2) var(--space-lg);
+        display: grid;
+        grid-template-columns: var(--grid-columns-default);
+    }
+
+    .section-title {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--space-2xs);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4xl);
+    }
+
+    .heading {
+        max-width: 12em;
+    }
+
+    .service-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+    }
+
+    .service-buttons button {
+        padding: 0.2em 0.4em;
+    }
+
+    @media screen and ( width <= 768px) {
+        .services-hero {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-content {
+            gap: var(--space-xs);
+        }
+
+        .heading {
+            max-width: unset;
+        }
+    }
+</style>

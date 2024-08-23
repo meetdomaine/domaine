@@ -2,9 +2,9 @@ import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CustomEase } from "gsap/all";
+import { CustomEase, ScrollToPlugin } from "gsap/all";
 
-gsap.registerPlugin(TextPlugin, SplitText, ScrollTrigger, CustomEase);
+gsap.registerPlugin(TextPlugin, SplitText, ScrollTrigger, ScrollToPlugin, CustomEase);
 
 export { gsap, TextPlugin, SplitText, ScrollTrigger }
 

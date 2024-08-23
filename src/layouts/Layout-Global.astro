@@ -11,7 +11,7 @@ import '../styles/global/typography.css'
 import '../styles/global/color.css'
 import '../styles/global/buttons.css'
 import '../styles/global/forms.css'
-import Lenis from '../components/global/animation/Lenis.astro';
+// import l../components/global/utils/leniss/lenis'
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
@@ -116,7 +116,7 @@ const currentPath = Astro.url.pathname;
 		<GlobalCookieNotice />
 		<slot />
 		<VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
-		<Lenis />
+		<lenis />
 		<ViewportAnimation />
 		<!-- <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script> -->
 	</body>
@@ -125,5 +125,10 @@ const currentPath = Astro.url.pathname;
 <script>
 	import '@mux/mux-player';
 	import "@mux/mux-player/themes/minimal";
+	import { initLenis } from '../components/global/utils/lenis';
+
+	document.addEventListener("DOMContentLoaded", () => {
+    initLenis()
+  })
 </script>
 

@@ -59,6 +59,7 @@ import section_practicesFeed from "./sections/section_practicesFeed.js";
 import type_practice from "./practices/type_practice.js";
 import section_textVideoPlayer from "./sections/section_textVideoPlayer.js";
 import section_textMediaTabs from "./sections/section_textMediaTabs.js";
+import section_serviceType from "./sections/section_serviceType.js";
 
 
 export const schemaTypes = [
@@ -109,22 +110,23 @@ export const schemaTypes = [
     snippet_richContent,
 
     section_globalSections,
-    section_form,
-    section_projectsFeed,
     section_blogFeed,
-    section_textMedia,
-    section_videoPlayer,
-    section_servicesFeed,
     section_contentBlocks,
-    section_projectsFullBleed,
-    section_textFeed,
-    section_projectsGrid,
-    section_partnersFeed,
-    section_textClients,
+    section_form,
     section_imageFullHeight,
-    section_textColumns,
     section_mediaCarousel,
+    section_partnersFeed,
     section_practicesFeed,
-    section_textVideoPlayer,
+    section_projectsFeed,
+    section_projectsFullBleed,
+    section_projectsGrid,
+    section_servicesFeed,
+    section_serviceType,
+    section_textClients,
+    section_textColumns,
+    section_textFeed,
+    section_textMedia,
     section_textMediaTabs,
+    section_textVideoPlayer,
+    section_videoPlayer,
 ]

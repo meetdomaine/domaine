@@ -1,9 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutStudioProjects from '../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { projectGridFields } from '../../../components/global/utils/cms-queries';
 import { allProjects_Studio } from '../../../components/global/utils/cms-content';
-
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
 const projects = allProjects_Studio

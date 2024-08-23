@@ -11,23 +11,41 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'sections',
+      title: 'Sections',
+      type: 'array',
+      of: [
+        { type: 'section_serviceType'},
+        { type: 'section_form'},
+        { type: 'section_projectsFeed'},
+        // { type: 'section_projectsGrid'},
+        // { type: 'section_projectsFullBleed'},
+        { type: 'section_blogFeed'},
+        // { type: 'section_servicesFeed'},
+        { type: 'section_partnersFeed'},
+        { type: 'section_practicesFeed'},
+        { type: 'section_textMedia'},
+        { type: 'section_textVideoPlayer'},
+        { type: 'section_textClients'},
+        { type: 'section_textColumns'},
+        { type: 'section_textMediaTabs'},
+        { type: 'section_textFeed'},
+        { type: 'section_videoPlayer'},
+        { type: 'section_contentBlocks'},
+        { type: 'section_mediaCarousel'},
+    ]
     }),
   ],
 
   preview: {
     select: {
       title: 'title',
-    },
-    prepare(selection) {
-      // const {author} = selection
-      return {...selection}
+      subtitle: 'heading'
     },
   },
 })
