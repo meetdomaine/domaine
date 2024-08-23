@@ -207,6 +207,7 @@ em {
 
 a {
     color: inherit;
+    transition: color var(--anim-sm);
     /* color: var(--color-link); */
 }
 

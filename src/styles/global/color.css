@@ -24,9 +24,9 @@
     --color-error: red;
     --color-focus: rgb(60, 0, 255);
 
-    --background-blur: blur(10px);
-    --color-glass-dark: color-mix(in srgb, var(--color-darkest) 40%, transparent);
-    --color-glass-light: color-mix(in srgb, var(--color-lightest) 40%, transparent);
+    --background-blur: blur(30px);
+    --color-glass-dark: color-mix(in srgb, var(--color-darkest) 50%, transparent);
+    --color-glass-light: color-mix(in srgb, var(--color-lightest) 50%, transparent);
 }
 
 ::selection {
