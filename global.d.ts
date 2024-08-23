@@ -113,8 +113,8 @@ declare interface Media {
 
 declare interface ClientCard {
     title: string,
-    logoDark: SanityImage,
-    logoLight: SanityImage,
+    logoDark: {image: SanityImage},
+    logoLight: {image: SanityImage},
     productImage: ImageBase,
     stage: {
         title: string

@@ -51,7 +51,6 @@ import section_partnersFeed from "./sections/section_partnersFeed.js";
 import snippet_richContent from "./snippets/snippet_rich-content.js";
 import type_clientStage from "./projects/type_clientStage.js";
 import section_textClients from "./sections/section_textClients.js";
-import section_masonryContent from "./sections/section_masonryContent.js";
 import section_imageFullHeight from "./sections/section_imageFullHeight.js";
 import section_textColumns from "./sections/section_textColumns.js";
 import section_mediaCarousel from "./sections/section_mediaCarousel.js";
@@ -59,6 +58,7 @@ import section_textFeed from "./sections/section_textFeed.js";
 import section_practicesFeed from "./sections/section_practicesFeed.js";
 import type_practice from "./practices/type_practice.js";
 import section_textVideoPlayer from "./sections/section_textVideoPlayer.js";
+import section_textMediaTabs from "./sections/section_textMediaTabs.js";
 
 
 export const schemaTypes = [
@@ -121,10 +121,10 @@ export const schemaTypes = [
     section_projectsGrid,
     section_partnersFeed,
     section_textClients,
-    section_masonryContent,
     section_imageFullHeight,
     section_textColumns,
     section_mediaCarousel,
     section_practicesFeed,
     section_textVideoPlayer,
+    section_textMediaTabs,
 ]

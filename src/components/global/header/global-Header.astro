@@ -103,6 +103,10 @@ const headerSettings = await sanityClient.fetch(`
         align-items: flex-start;
     }
 
+    .brand {
+        justify-content: center;
+        align-items: center;
+    }
 
     .brand-logo {
         display: flex;
@@ -113,6 +117,7 @@ const headerSettings = await sanityClient.fetch(`
     }
 
     .brand-logo :global(svg) {
+        height: 100%;
         /* max-height: 80%; */
         /* align-self: stretch; */
     }
@@ -338,17 +343,6 @@ const headerSettings = await sanityClient.fetch(`
             -webkit-backdrop-filter: none;
             height: var(--header-height);
             display: flex;
-            place-content: center;
-        }
-
-        .brand-logo {
-            height: 100%;
-            width: auto;
-            display: flex;
-            max-width: none;
-            justify-content: center;
-            align-items: center;
-            opacity: color var(--anim-sm);
         }
 
         header.navigation-open .brand-logo {
@@ -356,8 +350,8 @@ const headerSettings = await sanityClient.fetch(`
         }
 
         .brand-logo :global(svg) {
-            max-height: 25%;
-            max-width: none;
+            /* height: 8s0%; */
+            /* max-width: none; */
         }
 
         .brand-button {

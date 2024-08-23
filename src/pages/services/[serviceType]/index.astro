@@ -25,7 +25,7 @@ interface Props {
 }
 
 const { content } = Astro.props;
-// console.log(content.projects.length)
+console.log(content.relatedBlogPosts.length)
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}

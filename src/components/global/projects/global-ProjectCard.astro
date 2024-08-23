@@ -21,10 +21,10 @@ const { project } = Astro.props
                 sizes="30vw"
             />
         </div>
-        {project.client && 
+        {project.client && project.client.logoDark && project.client.logoLight && 
             <div class="client-logo">
                 <AtomSanityImage 
-                    image={project.logoColor === "dark" ? project.client.logoDark : project.client.logoLight}
+                    image={project.logoColor === "dark" ? project.client.logoDark.image : project.client.logoLight.image}
                     sizes="30vw"
                 />
             </div>

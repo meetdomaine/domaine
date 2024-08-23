@@ -53,7 +53,7 @@ export const projectGridFields = `
   industry->{..., _id },
   agencyBrand->{slug},
   partners[]->{..., _id}, 
-  client->{title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, productImage{${imageBaseFields}}, stage->{ title } },
+  client->{title, logoDark{${imageFields}}, logoLight{${imageFields}}, productImage{${imageBaseFields}}, stage->{ title } },
   logoColor,
   features[]->{ title, slug, _id } | order(orderRank), 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
@@ -61,7 +61,7 @@ export const projectGridFields = `
   thumbnailMedia{${videoFields}, ${imageFields}},
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
-  `
+`
 
 
 export const globalSectionsFields = `
@@ -78,6 +78,7 @@ export const globalSectionsFields = `
     _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
     _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
+    _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
   }
 `

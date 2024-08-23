@@ -103,6 +103,10 @@ body {
     font-weight: 400;
 }
 
+button {
+    font-family: var(--font-family-primary);
+}
+
 h1, .h1,
 h2, .h2,
 h3, .h3,

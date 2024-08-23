@@ -1,0 +1,229 @@
+---
+import AtomButton from "../atoms/atom-button.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+
+const { section, brand, key } = Astro.props
+// console.log(section.insetMedia)
+---
+<section class="section-text-media-tabs" data-key={key}>
+
+  <div class="section-content">
+
+    <div class="section-title">
+      {section.eyebrow && <p class="accent utility">{section.eyebrow}</p>}
+      <h1 class="h5">{section.heading}</h1>
+      {section.button.text && section.button.url &&
+        <AtomButton 
+          text={section.button.text}
+          url={section.button.url}
+          icon="arrow-diagonal"
+        />
+      } 
+    </div>
+
+    <div class="tabs">
+      {section.tabs.map((tab, i) => (
+        <button 
+          class="tab-button h3 button-reset" 
+          data-index={`${key}-${i}`}
+          data-active={i === 0 ? "true" : "false"}
+        >{tab.title}</button>
+      ))}
+    </div>
+
+    <div class="content">
+      {section.tabs.map((currentTab, i) => (
+        <div 
+          class="tab-content" 
+          data-index={`${key}-${i}`}
+          data-active={i === 0 ? "true" : "false"}
+        >
+          <p class="content-title h6">{currentTab.title}</p>
+          <p>{currentTab.text}</p>
+          {currentTab.button.text && currentTab.button.url &&
+            <AtomButton 
+              text={currentTab.button.text}
+              url={currentTab.button.url}
+              style="tertiary"
+              icon="arrow-diagonal"
+            />
+          } 
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="section-media">
+    <div class="media">
+      {section.tabs.map((currentTab, i) => (
+        <div 
+          class="tab-media" 
+          data-inset={section.insetMedia ? "true" : "false"}
+          data-index={`${key}-${i}`}
+          data-active={i === 0 ? "true" : "false"}
+        >
+          <AtomSanityMedia 
+            image={currentTab.media.image}
+            video={currentTab.media.video}
+            sizes="50vw"
+            cover={!section.insetMedia}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+</section>
+
+<script>
+  const sections = document.querySelectorAll('.section-text-media-tabs')
+
+  sections.forEach((section: HTMLElement) => {
+    const tabs = section.querySelectorAll('.tab-button')
+    const media = section.querySelectorAll('.tab-media')
+    const contents = section.querySelectorAll('.tab-content')
+
+    const handleClick = (e) => {
+
+      tabs.forEach((tab: HTMLElement) => {
+        if (tab.dataset.index === e.target.dataset.index) return tab.dataset.active = "true"
+        return tab.dataset.active = "false" 
+      })
+
+      media.forEach((asset: HTMLElement) => {
+        if (asset.dataset.index === e.target.dataset.index) return asset.dataset.active = "true"
+        return asset.dataset.active = "false" 
+      })
+
+      contents.forEach((content: HTMLElement) => {
+        if (content.dataset.index === e.target.dataset.index) return content.dataset.active = "true"
+        return content.dataset.active = "false" 
+      })
+    }
+
+    tabs.forEach((button) => button.addEventListener("click", handleClick))
+  })
+
+</script>
+
+<style>
+  .section-text-media-tabs {
+    padding-inline: var(--page-margin);
+    padding-block: var(--space-2xl);
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: var(--space-lg);
+  }
+
+  .section-content {
+    flex: 0 1 50%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+    padding-block: var(--space-md);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    max-width: 30rem;
+  }
+
+  .accent {
+    color: var(--color-accent);
+  }
+
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .tab-button {
+    color: var(--color-foreground-secondary);
+    transition: color var(--anim-md);
+  }
+
+  .tab-button:hover {
+    color: var(--color-accent);
+  }
+
+  .tab-button[data-active="true"] {
+    color: var(--color-foreground);
+  }
+
+  .content {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    opacity: 0;
+    transition: opacity var(--anim-md);
+    max-width: 30rem;
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+  }
+
+  .section-media {
+    /* aspect-ratio: 7 / 9; */
+    flex: 0 0 50%;
+    position: relative;
+    padding: var(--space-md);
+    background-color: var(--color-background-secondary);
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    /* min-height: 80svh; */
+  }
+
+  .tab-media {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity var(--anim-md);
+  }
+
+  .tab-media[data-inset="true"] {
+    inset: var(--space-md);
+  }
+
+  .tab-button[data-active="true"],
+  .tab-media[data-active="true"],
+  .tab-content[data-active="true"] {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @media screen and (width <= 768px) {
+
+    .section-text-media-tabs {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .section-content {
+      gap: var(--space-xl);
+    }
+
+    .content-title {
+      display: none;
+    }
+  }
+
+</style>

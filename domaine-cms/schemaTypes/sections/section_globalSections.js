@@ -23,11 +23,11 @@ export default defineType({
         { type: 'section_textVideoPlayer'},
         { type: 'section_textClients'},
         { type: 'section_textColumns'},
+        { type: 'section_textMediaTabs'},
         { type: 'section_textFeed'},
         { type: 'section_videoPlayer'},
         { type: 'section_contentBlocks'},
         { type: 'section_mediaCarousel'},
-        // { type: 'section_masonryContent'},
     ]
     }),
   ],
