@@ -62,8 +62,20 @@ export const projectGridFields = `
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
 `
+
+export const serviceQuery = `
+  ..., 
+  serviceGroup->{
+      ..., 
+      serviceType->{...}
+  },
+  "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(orderRank),
+  "relatedProjects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank),
+`
+
 export const serviceTypeQuery = `
   ...,
+  excerpt,
   images[]{${imageFields}},
   "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
       ...,
@@ -75,9 +87,15 @@ export const serviceTypeQuery = `
   "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
   "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
 `
+export const serviceGroupQuery = `
+  ..., 
+  serviceType->{...},
+  "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
+  "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
+  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
+`
 
 export const globalSectionsFields = `
-  sections[]{
     ...,
     _type == "section_projectsFeed" => { heading, subheading, projects[]->{ ${projectGridFields} } },
     _type == "section_projectsFullBleed" => { projects[]{ project->{title, slug, backgroundColor, accentColor, agencyBrand->{slug}, thumbnailImageSecondary{${imageFields}} }, media{${imageFields}} } },
@@ -92,8 +110,29 @@ export const globalSectionsFields = `
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
     _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
-    _type == "section_serviceType" => { heading, button, serviceType->{${serviceTypeQuery}} },
-  }
+    _type == "section_serviceFeature" => { heading, button, featuredService->{ 
+      _type == "type_serviceType" => {${serviceTypeQuery}},
+      _type == "type_serviceGroup" => {${serviceGroupQuery}}
+      } 
+    },
+`
+
+
+export const serviceTypePageQuery = `
+  ...,
+  excerpt,
+  pageSectionsDomaine[]{${globalSectionsFields}},
+  pageSectionsStudio[]{${globalSectionsFields}},
+  images[]{${imageFields}},
+  "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
+      ...,
+      serviceType->{slug},
+      "services": *[_type == "type_service" && references(^._id)] {
+          ...
+      } | order(orderRank)
+  } | order(orderRank),
+  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
+  "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
 `
 
 export const projectPageFields = `
@@ -114,7 +153,7 @@ export const projectPageFields = `
   slug{...},
   heroMedia{..., ${videoFields}, ${imageFields}},
   "relatedProjects": *[_type == "type_project" && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
-  ${globalSectionsFields}
+  sections[]{${globalSectionsFields}},
 `
 
 export const projectsGridQuery = (brand) => {
@@ -150,25 +189,6 @@ export const projectPostQuery = (brand) => {
 
 export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}`
 
-
-
-export const serviceGroupQuery = `
-  ..., 
-  serviceType->{...},
-  "services": *[_type == "type_service" && references(^._id)] | order(orderRank),
-  "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
-  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
-`
-
-export const serviceQuery = `
-  ..., 
-  serviceGroup->{
-      ..., 
-      serviceType->{...}
-  },
-  "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank),
-`
 
 export const blogQuery = `
   ..., 

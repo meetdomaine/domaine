@@ -11,14 +11,19 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
     <div class="footer-inner">
 
         <div class="footer-cta">
-            <h2 class="heading">{footerSettings.heading}</h2>
-            <a 
-                href={footerSettings.button.url} 
-                class="button" data-style="primary"
-            >
-                {footerSettings.button.text}
-                <Icon name="arrow-diagonal" />
-            </a>
+            <div class="cta-text">
+                <h2 class="heading">{footerSettings.heading}</h2>
+                <a 
+                    href={footerSettings.button.url} 
+                    class="button" data-style="primary"
+                >
+                    {footerSettings.button.text}
+                    <Icon name="arrow-diagonal" />
+                </a>
+            </div>
+            {footerSettings.showIcon && 
+                <Icon name="dot-peace" class="cta-icon" />
+            }
         </div>
 
         <div class="footer-info__primary">
@@ -139,8 +144,22 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
     .footer-cta {
         /* padding-bottom: var(--space-2xl); */
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+
+    .cta-text {
+        display: flex;
         flex-direction: column;
         gap: var(--space-sm);
+        flex: 1 0 20em;
+    }
+
+    .cta-icon {
+        flex: 0 1 10em;
+        height: auto;
     }
 
     .footer-cta .heading {

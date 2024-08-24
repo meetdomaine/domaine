@@ -42,18 +42,19 @@ const { title, text, url, theme } = Astro.props
         border-radius: var(--radius-sm);
         /* color: inherit; */
         transition: background-color var(--anim-sm);
+        background-color: var(--color-background-secondary);
     }
 
-    .tag:not(.glass-dark) {
+    /* .tag:not(.glass-dark) {
         background-color: var(--color-lighter);
         color: var(--color-darkest);
-    }
+    } */
 
     .title {
-        color: var(--color-dark);
+        color: var(--color-foreground-secondary);
     }
 
-    a.tag:not(.glass-dark):hover {
+    /* a.tag:not(.glass-dark):hover {
         background-color: var(--color-light);
-    }
+    } */
 </style>

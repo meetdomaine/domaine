@@ -1,7 +1,7 @@
 ---
-import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
-import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
-import { paths } from "../../../global/utils/paths"
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import { paths } from "../utils/paths"
 
 const { title, heroMedia } = Astro.props
 ---
@@ -19,7 +19,7 @@ const { title, heroMedia } = Astro.props
 
 <script>
 
-    import { fadeUp, addParallax, gsap } from "../../../global/utils/gsap"
+    import { fadeUp, addParallax, gsap } from "../../global/utils/gsap"
 
     const title = document.getElementById("project-title")
     const media = document.getElementById("hero-media")

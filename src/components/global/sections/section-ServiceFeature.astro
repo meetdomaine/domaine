@@ -2,27 +2,37 @@
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
 const { section, brand, key } = Astro.props
-console.log(section.serviceType.images)
+// console.log(section.serviceType.images)
+console.log(section)
 ---
-<section class="section-service-type" id={`service-type-${section.serviceType.slug.current}`}>
-    <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.serviceType.slug.current}/`} class="service-type-title">{section.serviceType.title}</a></h2>
+<section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
+    <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title">{section.featuredService.title}</a></h2>
     <div class="section-content">
+
         <p class="service-type-heading h4">{section.heading}</p>
         <div class="service-groups" data-color-scheme="glass-light">
-            {section.serviceType.serviceGroups.map((serviceGroup) => (
-                <div class="services">
-                    {serviceGroup.services.map((service) => (
-                        <div class="service">
-                            <a class="service-group-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.serviceType.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a>
-                            <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
-                        </div>
-                    ))}
-                </div>
-            ))}
+            {section.featuredService._type === "type_serviceType" ? 
+                section.featuredService.serviceGroups.map((serviceGroup) => (
+                    <div class="services">
+                        {serviceGroup.services.map((service) => (
+                            <div class="service">
+                                <a class="service-group-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a>
+                                <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}>{service.title}</a>
+                            </div>
+                        ))}
+                    </div>
+                )) : 
+                section.featuredService.services.map((service) => (
+                    <div class="service">
+                        {/* <a class="service-group-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a> */}
+                        <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}>{service.title}</a>
+                    </div>
+                ))
+            }
         </div>
     </div>
     <div class="section-media">
-        {section.serviceType.images.slice(0,3).map((asset) => (
+        {section.featuredService.images && section.featuredService.images.slice(0,3).map((asset) => (
             <div class="service-image">
                 <AtomSanityImage 
                     image={asset.image}

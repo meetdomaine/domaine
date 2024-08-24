@@ -2,16 +2,18 @@
 import { sanityClient } from "sanity:client"
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
 import { paths } from "../../../components/global/utils/paths"
-import SectionServiceTypeHero from "../../../components/global/services/section-ServiceType-Hero.astro"
-import SectionServiceGroupFeature from "../../../components/global/services/section-ServiceGroup-Feature.astro"
-import { blogCardFields, projectGridFields } from "../../../components/global/utils/cms-queries"
+import SectionServiceTypeHero from "../../../components/global/services/serviceType-Hero.astro"
+import SectionServiceGroupFeature from "../../../components/global/services/serviceGroup-Feature.astro"
+import { blogCardFields, projectGridFields, serviceTypePageQuery } from "../../../components/global/utils/cms-queries"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
 import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import { allServiceTypes_Domaine } from "../../../components/global/utils/cms-content"
+import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro"
+
 
 export async function getStaticPaths() {
-    const serviceTypes = allServiceTypes_Domaine
+    const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name ]{${serviceTypePageQuery}} | order(orderRank)`)
     return serviceTypes.map((serviceType) => {
         return {
             params: { serviceType: serviceType.slug.current },
@@ -25,7 +27,7 @@ interface Props {
 }
 
 const { content } = Astro.props;
-console.log(content.relatedBlogPosts.length)
+// console.log(content)
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
@@ -35,10 +37,14 @@ console.log(content.relatedBlogPosts.length)
     <SectionServiceTypeHero
         serviceType={content}
     />
-    {content.serviceGroups.map((serviceGroup) => (
+    <!-- {content.serviceGroups.map((serviceGroup) => (
         <SectionServiceGroupFeature 
             serviceGroup={serviceGroup}
         />
+    ))} -->
+
+    {content.pageSectionsDomaine && content.pageSectionsDomaine.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
     {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&

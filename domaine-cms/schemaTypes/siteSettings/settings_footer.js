@@ -17,6 +17,12 @@ export default defineType({
       type: 'snippet_button',
     }),
     defineField({
+      name: 'showIcon',
+      title: 'Show Dot Illustration',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
         name: 'linkColumns',
         title: 'Links Columns',
         type: 'array',

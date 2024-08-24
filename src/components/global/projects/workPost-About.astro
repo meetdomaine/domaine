@@ -4,7 +4,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { paths } from "../utils/paths"
 
-const { description, agencyBrand, client, industry, theme } = Astro.props
+const { description, agencyBrand, client, industry, theme, metrics } = Astro.props
 ---
 <section class="work-post_about">
 
@@ -24,30 +24,25 @@ const { description, agencyBrand, client, industry, theme } = Astro.props
                 title="Industry"
                 text={industry.title}
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
-                theme={theme}
             />
             <AtomTag 
                 title="Stage"
                 text={client.stage.title}
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/stages/${client.stage.slug.current}`}
-                theme={theme}
             />
         </div>
     </div>
 
-
-
-    <!-- {client && client.description && (
-        <div class="client-sidebar">
-            <div class="client-logo">
-                <AtomSanityImage 
-                    sizes="20vw"
-                    image={client.logoDark}
-                />
-            </div>
-            <p class="caption">{client.description}</p>
-        </div>
-    )} -->
+    {metrics &&
+        <aside class="metrics">
+            {metrics.map((metric) => (
+                <div class="metric">
+                    <p class="h5">{metric.number}</p>
+                    <p>{metric.label}</p>
+                </div>
+            ))}
+        </aside>
+    }
 </section>
 
 
@@ -86,5 +81,40 @@ const { description, agencyBrand, client, industry, theme } = Astro.props
         width: clamp(60px, 6vw, 250px);
     }
 
+    .metrics {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        flex: 0 0 20rem;
+    }
+
+    .metric {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3xs);
+        padding-inline-start: var(--space-md);
+        border-left: 1px solid var(--color-border);
+    }
+
+    @media screen and (width <= 768px) {
+
+        .work-post_about {
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: var(--space-2xl);
+        }
+
+        .metrics {
+            flex-direction: row;
+            gap: var(--space-2xl);
+        }
+
+        .metric {
+            border-top: 1px solid var(--color-border);
+            border-inline-start: none;
+            padding-inline-start: 0;
+            padding-block-start: var(--space-sm);
+        }
+    }
 
 </style>

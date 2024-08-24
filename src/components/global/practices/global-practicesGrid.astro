@@ -16,18 +16,6 @@ import { agencyBrands, practices } from "../utils/cms-content";
           />
       ))}
   </div>
-  <div class="practices">
-      {practices.map((practice, i) => (
-          <GlobalPracticeCard 
-              title={practice.title}
-              heading={practice.excerpt}
-              media={practice.thumbnailMedia}
-              slug={practice.slug}
-              isAgencyBrand={false}
-              logo={practice.logo}
-          />
-      ))}
-  </div>
 </div>
 
 
@@ -45,15 +33,6 @@ import { agencyBrands, practices } from "../utils/cms-content";
       align-items: stretch;
       flex: 0 1 75%;
       gap: var(--space-xs);
-  }
-
-  .practices {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      flex: 1 1 30em;
-      gap: var(--space-xs);
-      /* min-width: 5em; */
   }
 
   @media screen and (width <= 768px) {

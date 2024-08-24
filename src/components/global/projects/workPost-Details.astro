@@ -10,8 +10,6 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
 ---
 <section class="work-post_details">
 
-    <!-- {url && <a href={url} target="_blank">View Live Site</a>} -->
-
     <div class="section-content">
 
         {services && 
@@ -23,7 +21,6 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                             title={service.serviceGroup.title}
                             text={service.title}
                             url={`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`}
-                            theme={theme}
                         />
                     ))}
                 </div>
@@ -38,7 +35,6 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                         <AtomTag 
                             text={feature.title}
                             url={`${agencyBrand === "studio" ? "/studio" : ""}/work/features/${feature.slug.current}`}
-                            theme={theme}
                         />
                     ))}
                 </div>

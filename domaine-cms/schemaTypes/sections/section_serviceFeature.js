@@ -2,8 +2,8 @@ import {defineField, defineType} from 'sanity'
 import { iconServices, iconServiceTypes } from '../variables'
 
 export default defineType({
-  name: 'section_serviceType',
-  title: 'Service Type',
+  name: 'section_serviceFeature',
+  title: 'Service Feature',
   type: 'document',
   icon: iconServiceTypes,
   fields: [
@@ -14,10 +14,14 @@ export default defineType({
       initialValue: true
     }),
     defineField({
-      name: 'serviceType',
-      title: 'Service Type',
+      name: 'featuredService',
+      title: 'Featured Service',
+      description: 'Either a Service Type or Service Group.',
       type: 'reference',
-      to: [{ type: 'type_serviceType'}]
+      to: [
+        { type: 'type_serviceType'},
+        { type: 'type_serviceGroup'}
+      ]
     }),
     defineField({
       name: 'heading',
@@ -32,14 +36,14 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'serviceType.title',
+      title: 'featuredService.title',
       subtitle: 'heading' 
     },
     prepare(selection) {
       const { title, subtitle } = selection
       return {
         title: title,
-        subtitle: 'Service Type',
+        subtitle: 'Service Feature',
         media: iconServiceTypes,
       }
     }

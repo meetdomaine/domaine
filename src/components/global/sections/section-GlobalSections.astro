@@ -17,7 +17,7 @@ import MediaCarousel from "./section-MediaCarousel.astro"
 import PracticesFeed from "./section-PracticesFeed.astro"
 import TextVideoPlayer from "./section-TextVideoPlayer.astro"
 import TextMediaTabs from "./section-TextMediaTabs.astro"
-import ServiceType from "./section-ServiceType.astro"
+import ServiceFeature from "./section-ServiceFeature.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -39,5 +39,5 @@ const { section, brand, key } = Astro.props
 {section._type == "section_practicesFeed" && section.showSection && <PracticesFeed section={section} brand={brand} key={key} />}
 {section._type == "section_textVideoPlayer" && section.showSection && <TextVideoPlayer section={section} brand={brand} key={key} />}
 {section._type == "section_textMediaTabs" && section.showSection && <TextMediaTabs section={section} brand={brand} key={key} />}
-{section._type == "section_serviceType" && section.showSection && <ServiceType section={section} brand={brand} key={key} />}
+{section._type == "section_serviceFeature" && section.showSection && <ServiceFeature section={section} brand={brand} key={key} />}
 

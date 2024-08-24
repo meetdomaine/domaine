@@ -1,0 +1,56 @@
+---
+const { serviceType, brand } = Astro.props
+// console.log(serviceType)
+// console.log(serviceType.pageSectionsDomaine)
+---
+<section class="service-type-hero" data-color-scheme="brand-02">
+    <!-- <a class="h5" href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services</a> -->
+     <div class="section-title">
+         <p class="service-exerpt h5">{serviceType.excerpt}</p>
+         <h1 class="service-title">{serviceType.title}</h1>
+    </div>
+    <div class="section-content">
+        <p class="service-eyebrow utility">{serviceType.excerpt}</p>
+        <p class="service-description h4">{serviceType.description}</p>
+    </div>
+</section>
+
+<style>
+    .service-type-hero {
+        padding-inline: var(--page-margin);
+        padding-block: calc(var(--header-height) * 1) var(--space-4xl);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-xl);
+    }
+
+    .section-title,
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .section-title {
+        gap: var(--space-xl);
+        min-height: 80svh;
+    }
+
+    .service-title {
+        font-size: 16vw;
+    }
+
+    .section-content {
+        gap: var(--space-md);
+    }
+
+    .service-exerpt,
+    .service-description {
+        text-align: center;
+        max-width: 22em;
+    }
+</style>

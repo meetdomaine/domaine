@@ -1,13 +1,14 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import WorkPostHero from '../../components/domaine/sections/work/workPost-Hero.astro';
+import WorkPostHero from '../../components/global/projects/workPost-Hero.astro';
 import { projectPageFields } from '../../components/global/utils/cms-queries';
 import WorkPostAbout from '../../components/global/projects/workPost-About.astro';
 import WorkPostDetails from '../../components/global/projects/workPost-Details.astro';
 import GlobalSections from '../../components/global/sections/section-GlobalSections.astro';
 import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
 import { allProjects_Domaine } from '../../components/global/utils/cms-content';
+import WorkPostContent from '../../components/global/projects/workPost-Content.astro';
 
 interface Props {
     content: any
@@ -30,58 +31,7 @@ const { content } = Astro.props
     searchFilter="type:case-study"
     activePath="/work"
 >
-    <div 
-        class="project-content"
-        data-invert={content.foregroundColor === "light" ? "true" : "false"}
-        style={`
-            --color-accent: ${content.backgroundColor ? content.backgroundColor.hex : null};
-            --color-accent-shade: ${content.foregroundColor === "light" ? 'var(--color-accent-light)' : 'var(--color-accent-dark'};
-            --color-accent-secondary: ${content.accentColor ? content.accentColor.hex : null};
-        `}
-    >
-        <WorkPostHero
-            title={content.title}
-            heroMedia={content.heroMedia}
-        />
-
-        <WorkPostAbout
-            description={content.description}
-            industry={content.industry}
-            client={content.client}
-            agencyBrand={content.agencyBrand.slug.current}
-            theme={content.foregroundColor === "light" ? "light" : "dark"}
-        />
-
-        {content.sections && content.sections.map((section, i) => (
-            <GlobalSections brand="domaine" section={section} key={i} />
-        ))}
-
-        <WorkPostDetails
-            url={content.url}
-            client={content.client}
-            services={content.services}
-            features={content.features}
-            partners={content.partners}
-            metrics={content.metrics}
-            agencyBrand={content.agencyBrand.slug.current}
-            theme={content.foregroundColor === "light" ? "light" : "dark"}
-        />
-    </div>
-
-    <SectionProjectsFeed 
-        heading="Related Projects"
-        projects={content.relatedProjects}
+    <WorkPostContent 
+        content={content} 
     />
 </LayoutDomaine>
-
-<style>
-    .project-content {
-        background-color: var(--color-accent);
-        --color-accent-light: color-mix(in srgb, var(--color-accent), var(--color-lightest) 10%);
-        --color-accent-dark: color-mix(in srgb, var(--color-accent), var(--color-darkest) 10%);
-    }
-
-    .project-content[data-invert="true"] {
-        color: var(--color-background);
-    }
-</style>

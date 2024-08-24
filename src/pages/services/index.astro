@@ -12,7 +12,7 @@ const pageSettings = await sanityClient.fetch(`
     *[_type == "page_services-index" && _id == "page_services-index-domaine"]{
         title,
         heading,
-        ${globalSectionsFields}
+        sections[]{${globalSectionsFields}}
     }[0]
 `)
 const serviceTypes = allServiceTypes_Domaine

@@ -29,11 +29,6 @@
     --color-glass-light: color-mix(in srgb, var(--color-lightest) 50%, transparent);
 }
 
-::selection {
-    background: var(--color-darkest);
-    color: var(--color-lightest);
-}
-
 html,
 .color-reset,
 [data-color-scheme="glass-light"],
@@ -57,6 +52,11 @@ html [data-color-scheme="brand-01"] {
     --button-secondary-foreground: var(--color-darkest);
     --button-secondary-foreground-hover: var(--color-lightest);
     --button-secondary-background-hover: var(--color-darker);
+}
+
+::selection {
+    background: var(--color-foreground);
+    color: var(--color-background);
 }
 
 [data-color-scheme="secondary"] {

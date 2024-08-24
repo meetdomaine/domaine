@@ -2,9 +2,12 @@
 import { sanityClient } from 'sanity:client'
 import { paths } from '../../../components/global/utils/paths';
 import LayoutStudio from '../../../layouts/Layout-Studio.astro';
-import WorkPostHero from '../../../components/studio/sections/work/workPost-Hero.astro';
+import WorkPostHero from '../../../components/global/projects/workPost-Hero.astro';
 import { projectPageFields, projectPostQuery } from "../../../components/global/utils/cms-queries"
 import { allProjects_Studio } from '../../../components/global/utils/cms-content';
+import WorkPostAbout from '../../../components/global/projects/workPost-About.astro';
+import GlobalSections from '../../../components/global/sections/section-GlobalSections.astro'
+import WorkPostContent from '../../../components/global/projects/workPost-Content.astro';
 
 interface Props {
     content: any
@@ -27,23 +30,9 @@ const { content } = Astro.props
     searchFilter="type:case-study"
     activePath="/studio/work"
 >
-
-    <WorkPostHero
-        heading={content.title}
-        description={content.description}
-        industry={content.industry}
-        root={paths.root.studio.projects.path}
-        url={content.url}
-        client={content.client}
-        services={content.services}
-        features={content.features}
-        partners={content.partners}
-        metrics={content.metrics}
-        awards={content.awards}
-        heroMedia={content.heroMedia}
-        metafields={content.metafields}
+    <WorkPostContent 
+        content={content} 
     />
-
 </LayoutStudio>
 
 <style>

@@ -1,0 +1,61 @@
+---
+import GlobalSections from "../sections/section-GlobalSections.astro"
+import SectionProjectsFeed from "../sections/section-ProjectsFeed.astro"
+import WorkPostAbout from "./workPost-About.astro"
+import WorkPostDetails from "./workPost-Details.astro"
+import WorkPostHero from "./workPost-Hero.astro"
+
+const { content } = Astro.props
+---
+<div 
+  class="project-content"
+  data-color-scheme={content.foregroundColor === "light" ? "invert" : "default"}
+  style={`
+    ${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}
+`}
+>
+  <WorkPostHero
+      title={content.title}
+      heroMedia={content.heroMedia}
+  />
+
+  <WorkPostAbout
+      description={content.description}
+      industry={content.industry}
+      client={content.client}
+      metrics={content.metrics}
+      agencyBrand={content.agencyBrand.slug.current}
+      theme={content.foregroundColor === "light" ? "light" : "dark"}
+  />
+
+  {content.sections && content.sections.map((section, i) => (
+      <GlobalSections brand="domaine" section={section} key={i} />
+  ))}
+
+  <WorkPostDetails
+      url={content.url}
+      client={content.client}
+      services={content.services}
+      features={content.features}
+      partners={content.partners}
+      metrics={content.metrics}
+      agencyBrand={content.agencyBrand.slug.current}
+      theme={content.foregroundColor === "light" ? "light" : "dark"}
+  />
+</div>
+
+<SectionProjectsFeed 
+    heading="Related Projects"
+    projects={content.relatedProjects}
+/>
+
+<style>
+    .project-content[data-color-scheme="invert"] {
+        --color-background-secondary: color-mix(in srgb, var(--color-background) 80%, var(--color-darkest));
+        --color-foreground-secondary: color-mix(in srgb, var(--color-background) 30%, var(--color-foreground));
+    }
+
+    .project-content[data-invert="true"] {
+        /* color: var(--color-background); */
+    }
+</style>

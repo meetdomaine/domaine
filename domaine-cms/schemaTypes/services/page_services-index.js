@@ -20,7 +20,7 @@ export default defineType({
       title: 'Sections',
       type: 'array',
       of: [
-        { type: 'section_serviceType'},
+        { type: 'section_serviceFeature'},
         { type: 'section_form'},
         { type: 'section_projectsFeed'},
         // { type: 'section_projectsGrid'},

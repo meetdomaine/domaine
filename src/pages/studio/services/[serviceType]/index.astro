@@ -1,8 +1,8 @@
 ---
 import { sanityClient } from "sanity:client"
 import LayoutStudio from "../../../../layouts/Layout-Studio.astro"
-import SectionServiceTypeHero from "../../../../components/global/services/section-ServiceType-Hero.astro"
-import SectionServiceGroupFeature from "../../../../components/global/services/section-ServiceGroup-Feature.astro"
+import SectionServiceTypeHero from "../../../../components/global/services/serviceType-Hero.astro"
+import SectionServiceGroupFeature from "../../../../components/global/services/serviceGroup-Feature.astro"
 import { blogCardFields, projectGridFields } from "../../../../components/global/utils/cms-queries"
 import GlobalProjectsGrid from "../../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
@@ -34,6 +34,7 @@ const { content } = Astro.props;
         brand="studio"
         serviceType={content}
     />
+
     {content.serviceGroups.map((serviceGroup) => (
         <SectionServiceGroupFeature 
             brand="studio"

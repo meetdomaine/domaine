@@ -17,7 +17,7 @@ interface Props {
 
 const { title, description, image, searchFilter, activePath } = Astro.props;
 
-const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "domaine"][0]`)
+const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}

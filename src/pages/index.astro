@@ -5,7 +5,7 @@ import GlobalSections from "../components/global/sections/section-GlobalSections
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 import { globalSectionsFields, imageFields, videoFields } from "../components/global/utils/cms-queries"
 
-const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ ...,  globalSections{ ${globalSectionsFields} }, media{ ..., ${imageFields}, ${videoFields} } }`)
+const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ ...,  globalSections{ sections[]{${globalSectionsFields}} }, media{ ..., ${imageFields}, ${videoFields} } }`)
 
 // const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
 // console.log(pageSettings.globalSections)

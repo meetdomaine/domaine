@@ -12,7 +12,7 @@ const { currentBrand, activePath } = Astro.props;
 
 const headerSettings = await sanityClient.fetch(`
     *[_type == "settings_header" 
-    && _id == "settings_header--${currentBrand.slug.current === "studio" ? "studio" : "domaine"}"]{ 
+    && _id == "settings_header--${currentBrand.slug.current === "/studio" ? "studio" : "domaine"}"]{ 
         ..., 
         brandMenuBrands[]{
             ..., 

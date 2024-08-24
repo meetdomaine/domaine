@@ -14,13 +14,14 @@ const pageSettings = await sanityClient.fetch(`
             image{${imageFields}}
         },
         globalSections{ 
-            ${globalSectionsFields}}, 
-            media{ 
-                ..., 
-                ${imageFields}, 
-                ${videoFields} 
-            } 
-        }
+            sections[]{${globalSectionsFields}}
+        }, 
+        media{ 
+            ..., 
+            ${imageFields}, 
+            ${videoFields} 
+        } 
+    }
     `)
 
 // console.log(pageSettings)

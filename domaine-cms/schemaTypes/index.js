@@ -59,7 +59,7 @@ import section_practicesFeed from "./sections/section_practicesFeed.js";
 import type_practice from "./practices/type_practice.js";
 import section_textVideoPlayer from "./sections/section_textVideoPlayer.js";
 import section_textMediaTabs from "./sections/section_textMediaTabs.js";
-import section_serviceType from "./sections/section_serviceType.js";
+import section_serviceFeature from "./sections/section_serviceFeature.js";
 
 
 export const schemaTypes = [
@@ -121,7 +121,7 @@ export const schemaTypes = [
     section_projectsFullBleed,
     section_projectsGrid,
     section_servicesFeed,
-    section_serviceType,
+    section_serviceFeature,
     section_textClients,
     section_textColumns,
     section_textFeed,
