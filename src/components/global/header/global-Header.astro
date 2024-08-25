@@ -13,7 +13,8 @@ const { currentBrand, activePath } = Astro.props;
 const headerSettings = await sanityClient.fetch(`
     *[_type == "settings_header" 
     && _id == "settings_header--${currentBrand.slug.current === "/studio" ? "studio" : "domaine"}"]{ 
-        ..., 
+        ...,
+        linkCardImage{${imageFields}},
         brandMenuBrands[]{
             ..., 
             media{${videoFields}, ${imageFields}} 
@@ -62,9 +63,21 @@ const headerSettings = await sanityClient.fetch(`
         heading={headerSettings.brandMenuHeading}
         subheading={headerSettings.brandMenuSubheading}
     />
-    <ContactMenu hubspotFormId={headerSettings.hubspotFormId} />
+    <ContactMenu hubspotFormId={headerSettings.hubspotFormId} forms={headerSettings.contactForms} />
     <SearchMenu currentBrand={currentBrand} />
-    <NotificationMenu currentBrand={currentBrand} />
+    <NotificationMenu 
+        showPromoMessage={headerSettings.showPromoMessage}
+        promoMessage={headerSettings.promoMessage}
+        promoMessageUrl={headerSettings.promoMessageUrl}
+        promoMessageIcon={headerSettings.promoMessageIcon}
+        clocks={headerSettings.clocks}
+        showLinkCard={headerSettings.showLinkCard}
+        linkCardTitle={headerSettings.linkCardTitle}
+        linkCardText={headerSettings.linkCardText}
+        linkCardImage={headerSettings.linkCardImage}
+        showCareers={headerSettings.showCareers}
+        currentBrand={currentBrand} 
+    />
 </header>
 
 <script is:inline>

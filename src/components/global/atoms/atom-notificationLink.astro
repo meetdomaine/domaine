@@ -1,0 +1,70 @@
+---
+import { Icon } from "astro-icon/components"
+import AtomSanityImage from "./atom-sanityImage.astro"
+
+interface Props {
+    title?: string,
+    text: string,
+    url: string,
+    image: SanityImage,
+}
+
+const { title, text, url, image } = Astro.props
+---
+<a 
+    class="notification-link-card" 
+    data-color-scheme="glass-dark"
+    href={url}
+>
+  {image &&
+    <div class="card-media">
+      <AtomSanityImage
+          image={image}
+          sizes="20vw"
+          aspectRatio={3 / 4}
+      />
+    </div>
+  }
+  <div class="card-content">
+    <p class="title">{title}</p>
+    <p class="text">{text}</p>
+  </div>
+</a>
+
+<style>
+    .notification-link-card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        text-decoration: none;
+        border-radius: var(--radius-sm);
+        padding-inline: var(--space-xs);
+        padding-block: var(--space-xs);
+        transition: background-color var(--anim-sm), color var(--anim-sm), translate var(--anim-lg), opacity var(--anim-lg);
+        /* min-width: min(30em, 100%); */
+    }
+
+    .card-media {
+        flex: 0 0 20%;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        /* gap: var(--space-2xs); */
+    }
+
+    .title {
+      flex: 0 0 auto;
+      color: var(--color-foreground-secondary);
+      margin: 0;
+    }
+
+    .text {
+        flex: 0 1 100%;
+        text-align: right;
+        margin: 0;
+    }
+
+</style>

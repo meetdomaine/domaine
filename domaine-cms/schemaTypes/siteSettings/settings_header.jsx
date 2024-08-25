@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {EnvelopeIcon, RobotIcon} from '@sanity/icons'
+import {EnvelopeIcon, RobotIcon, EarthAmericasIcon} from '@sanity/icons'
 
 export default defineType({
   name: 'settings_header',
@@ -11,11 +11,6 @@ export default defineType({
       title: 'Navigation Links',
       type: 'snippet_link-list',
     }),
-    // defineField({
-    //   name: 'hubspotFormId',
-    //   title: 'Hubspot Form ID',
-    //   type: 'string',
-    // }),
     defineField({
       name: 'contactForms',
       title: 'Contact Forms',
@@ -60,90 +55,104 @@ export default defineType({
       title: 'Brand Menu: Subheading',
       type: 'string',
     }),
-    // defineField({
-    //   name: 'brandMenuLabel',
-    //   title: 'Brand Menu: Label',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'brandMenuBrands',
-    //   title: 'Brand Menu: Brands',
-    //   type: 'array',
-    //   of: [{
-    //     name: 'brand',
-    //     title: 'Brand',
-    //     type: 'object',
-    //     fields: [
-    //       {
-    //         name: 'label',
-    //         title: 'Label',
-    //         type: 'string'
-    //       },
-    //       {
-    //         name: 'title',
-    //         title: 'Brand Title',
-    //         type: 'string'
-    //       },
-    //       {
-    //         name: 'logo',
-    //         title: 'Logo',
-    //         type: 'inlineSvg',
-    //       },
-    //       {
-    //         name: 'slug',
-    //         title: 'Slug',
-    //         type: 'slug',
-    //         options: {
-    //           source: 'title',
-    //         }
-    //       },
-    //       {
-    //         name: 'heading',
-    //         title: 'Heading',
-    //         type: 'string'
-    //       },
-    //       // {
-    //       //   name: 'brandImage',
-    //       //   title: 'Brand Image',
-    //       //   type: 'snippet_image'
-    //       // },
-    //       {
-    //         name: 'media',
-    //         title: 'Media',
-    //         type: 'snippet_video'
-    //       },
-    //       {
-    //         name: 'isPrimaryBrand',
-    //         title: 'Primary Brand',
-    //         type: 'boolean',
-    //         initialValue: false
-    //       }
-    //     ],
-    //     preview: {
-    //       select: {
-    //         title: 'title',
-    //         heading: 'heading'
-    //       },
-    //       prepare(selection) {
-    //         const { title, heading } = selection
-    //         return {
-    //           title: title,
-    //           subtitle: heading,
-    //           media: RobotIcon
-    //         }
-    //       }
-    //     }
-    //   }]
-    // }),
-    // defineField({
-    //   name: 'processConsentMessage',
-    //   title: 'Checkbox Text: Consent to Process',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'marketingConsentMessage',
-    //   title: 'Checkbox Text: Marketing Consent',
-    //   type: 'string',
-    // }),
+    defineField({
+      name: 'showPromoMessage',
+      title: 'Show Promo Message',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'promoMessage',
+      title: 'Promo Message: Text',
+      type: 'string',
+      description: 'Optional promo message bar in Notification menu.',
+      hidden: ({document}) => !document?.showPromoMessage
+    }),
+    defineField({
+      name: 'promoMessageUrl',
+      title: 'Promo Message: URL',
+      type: 'url',
+      description: 'Optional link for promo message.',
+      validation: Rule => Rule.uri({
+        allowRelative: true,
+        scheme: ['http', 'https']
+      }),
+      hidden: ({document}) => !document?.showPromoMessage
+    }),
+    defineField({
+      name: 'promoMessageIcon',
+      title: 'Promo Message: Icon',
+      type: 'string',
+      description: 'Optional icon for promo message.',
+      hidden: ({document}) => !document?.showPromoMessage,
+    }),
+    defineField({
+      name: 'clocks',
+      title: 'Clocks',
+      type: 'array',
+      of: [{
+        name: 'clock',
+        title: 'Clock',
+        type: 'object',
+        fields: [
+          {
+            name: 'location',
+            title: 'Location',
+            type: 'string',
+          },
+          {
+            name: 'timezone',
+            title: 'Timezone',
+            type: 'string',
+            description: (() => (
+              <p>Identifier from the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">TZ Database</a></p>
+            ))(),
+          }
+        ],
+        preview: {
+          select: {
+            title: 'location',
+            subtitle: 'timezone'
+          },
+          prepare(selection) {
+            const { title, subtitle } = selection
+            return {
+              title: title,
+              subtitle: subtitle,
+              icon: EarthAmericasIcon
+            }
+          }
+        }
+      }],
+      
+    }),
+    defineField({
+      name: 'showLinkCard',
+      title: 'Show Link Card',
+      type: 'boolean',
+    }),
+    defineField({
+      name: 'linkCardTitle',
+      title: 'Link Card: Title',
+      type: 'string',
+      hidden: ({document}) => !document?.showLinkCard,
+    }),
+    defineField({
+      name: 'linkCardText',
+      title: 'Link Card: Text',
+      type: 'string',
+      hidden: ({document}) => !document?.showLinkCard,
+    }),
+    defineField({
+      name: 'linkCardImage',
+      title: 'Link Card: Image',
+      type: 'snippet_image',
+      hidden: ({document}) => !document?.showLinkCard,
+    }),
+    defineField({
+      name: 'showCareers',
+      title: 'Show Careers',
+      type: 'boolean',
+    }),
   ],
 })

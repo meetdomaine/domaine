@@ -37,12 +37,7 @@ const { content } = Astro.props;
     <SectionServiceTypeHero
         serviceType={content}
     />
-    <!-- {content.serviceGroups.map((serviceGroup) => (
-        <SectionServiceGroupFeature 
-            serviceGroup={serviceGroup}
-        />
-    ))} -->
-
+    
     {content.pageSectionsDomaine && content.pageSectionsDomaine.map((section, i) => (
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}

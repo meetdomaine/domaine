@@ -22,7 +22,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
         media={pageSettings.media}
         heroTextColor = {pageSettings.heroTextColor}
     />
-    <!-- <AtomPixelBorder /> -->
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}

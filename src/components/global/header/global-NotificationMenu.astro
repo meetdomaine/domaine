@@ -3,39 +3,82 @@ import AtomLinkCard from "../atoms/atom-linkCard.astro"
 import { sanityClient } from "sanity:client"
 import { blogCardFields, projectGridFields } from "../utils/cms-queries"
 import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
+import { Icon } from "astro-icon/components"
+import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 
-const { currentBrand } = Astro.props
+const { 
+  currentBrand, 
+  showPromoMessage, 
+  promoMessage, 
+  promoMessageUrl, 
+  promoMessageIcon,
+  clocks,
+  showLinkCard,
+  linkCardTitle,
+  linkCardText,
+  linkCardImage,
+  showCareers,
+} = Astro.props
 
+console.log(clocks)
+
+const latestProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
 const latestBlogPost = currentBrand.name === "Studio" ? allBlogPosts_Studio[0] : allBlogPosts_Domaine[0]
-const latestWork = currentBrand.name === "Studio" ? allProjects_Studio[0] : allProjects_Domaine[0]
 
 // console.log(latestWork)
 ---
 <dialog popover id="notification-menu" class="notification-menu">
-  {latestBlogPost &&
-    <AtomLinkCard 
-      categoryTitle="Latest Insight"
-      title={latestBlogPost.title}
-      url={`/insights/${latestBlogPost.slug.current}`}
-      image={latestBlogPost.thumbnailImage.image}
-      theme="dark"
-    />
+
+  {showPromoMessage && promoMessage &&
+    promoMessageUrl ? 
+      <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>
+    : <p class="promo-message caption" data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</p>
   }
-  {latestWork &&
-    <AtomLinkCard 
-      categoryTitle="Latest Work"
-      title={latestWork.title}
-      url={`/work/${latestWork.slug.current}`}
-      image={latestWork.thumbnailMedia.image ? latestWork.thumbnailMedia.image : latestWork.thumbnailImageSecondary.image}
-      excerpt={latestWork.excerpt}
-      theme="dark"
-    />
+
+  <div class="latest-projects">
+    {latestProjects.slice(0,2).map((project) => (
+      <AtomNotificationLink 
+        title="Latest Work"
+        text={project.title}
+        url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
+        image={project.thumbnailMedia.image ? project.thumbnailMedia.image : project.thumbnailImageSecondary.image}
+      />
+    ))}
+  </div>
+
+  {clocks &&
+    <div class="clocks" data-color-scheme="glass-dark">
+      {clocks.map((clock) => (
+        <div class="clock" data-timezone={clock.timezone} data-daytime="true">
+          <div class="clock-icon">
+            <span class="tick"></span>
+            <span class="tick"></span>
+            <span class="tick"></span>
+            <span class="tick"></span>
+            <span class="hour-hand"></span>
+            <span class="minute-hand"></span>
+            <span class="second-hand"></span>
+            <span class="center-pin"></span>
+          </div>
+          <div class="clock-info">
+            <p>{clock.location}</p>
+            <div class="time-info">
+              <Icon name="icon-day" class="icon-day" />
+              <Icon name="icon-night" class="icon-night" />
+              <p class="time">00:00</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   }
+
 </dialog>
 
 <script>
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
+  const clocks = notificationMenu.querySelectorAll('.clock')
 
   notificationMenu.addEventListener("toggle", (e: ToggleEvent) => {
     notificationToggle.dataset.active = e.newState === "open" ? "true" : "false"
@@ -59,34 +102,62 @@ const latestWork = currentBrand.name === "Studio" ? allProjects_Studio[0] : allP
     
   })
 
+  const updateTime = () => {
+      
+      clocks.forEach((clock: HTMLElement) => {
+        let time, hours, minutes, seconds
+        
+        const timezoneId = clock.dataset.timezone
+        const timeElement: HTMLElement = clock.querySelector('.time')
+
+        time = new Date(new Date().toLocaleString("en-US", {timeZone: timezoneId, minimumIntegerDigits: 2, useGrouping:false } ));
+        hours = time.getHours()
+        minutes = time.getMinutes()
+        seconds = time.getSeconds()
+
+        timeElement.innerText = `${hours}:${minutes}`
+        if (hours >= 18) clock.dataset.daytime = "false"
+
+        clock.style.setProperty('--hours', hours)
+        clock.style.setProperty('--minutes', minutes)
+        clock.style.setProperty('--seconds', seconds)
+        
+        
+        // console.log(hours)
+        
+      })
+      // requestAnimationFrame(updateTime)
+    }
+
+    setInterval(updateTime, 1000)
   
 </script>
 
 <style>
   .notification-menu {
-    /* display: flex; */
     position: fixed;
     justify-self: flex-end;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: stretch;
     top: calc(var(--header-height));
     right: var(--page-margin);
     margin: 0;
-    /* gap: var(--space-3xs); */
-    gap: 1px;
+    gap: var(--space-xs);
     opacity: 0;
     transition: opacity var(--anim-sm), display var(--anim-sm) allow-discrete;
     border: none;
     width: var(--notification-menu-width);
-    /* max-width: 30rem; */
     border-radius: var(--radius-sm);
     overflow: hidden;
-    /* padding: var(--space-xs); */
-    /* background-color: var(--color-background); */
     background-color: transparent;
+
+    /* filter: drop-shadow(10px ); */
+    /* filter: drop-shadow(0px 0px 30px#4444dd); */
   }
 
-  .notification-menu:popover-open {
+  .notification-menu:popover-open,
+  .notification-menu[open] {
     display: flex;
     opacity: 1;
   }
@@ -98,10 +169,198 @@ const latestWork = currentBrand.name === "Studio" ? allProjects_Studio[0] : allP
     }
   }
 
+  .promo-message {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-2xs);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    gap: var(--space-xs)
+  }
+
+  .latest-projects {
+    display: flex;
+    justify-content: stretch;
+    flex-direction: row;
+    gap: var(--space-2xs);
+    /* max-width: 100%; */
+  }
+
+  .latest-projects :global(.notification-link-card) {
+    flex: 0 1 100%;
+  }
+
+  .clocks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-xs);
+  }
+
+  .clock {
+    flex: 0 1 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+    text-align: center;
+  }
+
+  .clock-icon {
+    position: relative;
+    background-color: var(--color-background-secondary);
+    align-self: stretch;
+    margin-inline: 10%;
+    aspect-ratio: 1 / 1;
+    border-radius: 100vw;
+    --color-accent: var(--color-blue);
+  }
+
+  .clock[data-daytime="true"] .clock-icon {
+    --color-background: var(--color-lightest);
+    --color-background-secondary: var(--color-light);
+    --color-foreground: var(--color-darkest);
+    --color-foreground-secondary: var(--color-dark);
+  }
+
+  .clock[data-daytime="true"] .icon-night {
+    display: none;
+  }
+
+  .clock[data-daytime="false"] .icon-day {
+    display: none;
+  }
+
+  .clock-icon .tick {
+    --width: 2px;
+    --height: 6px;
+    --inset: var(--space-xs);
+    display: block;
+    background-color: var(--color-background-secondary);
+    position: absolute;
+    border-radius: 100vw;
+  }
+
+  .clock-icon .tick:nth-child(1),
+  .clock-icon .tick:nth-child(3) {
+    width: var(--width);
+    height: var(--height);
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .clock-icon .tick:nth-child(2),
+  .clock-icon .tick:nth-child(4) {
+    width: var(--height);
+    height: var(--width);
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .clock-icon .tick:nth-child(1) {
+    top: var(--inset);
+  }
+
+  .clock-icon .tick:nth-child(2) {
+    right: var(--inset);
+  }
+
+  .clock-icon .tick:nth-child(3) {
+    bottom: var(--inset);
+  }
+
+  .clock-icon .tick:nth-child(4) {
+    left: var(--inset);
+  }
+
+  .clock-icon .hour-hand,
+  .clock-icon .minute-hand,
+  .clock-icon .second-hand {
+    --overhang: var(--space-xs);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .clock-icon .hour-hand::before,
+  .clock-icon .minute-hand::before,
+  .clock-icon .second-hand::before {
+    content: "";
+    width: 1px;
+    background-color: var(--color);
+    height: calc(50% - var(--height) + var(--overhang));
+    margin-top: var(--height);
+    border-radius: 100vw;
+  }
+
+  .clock-icon .hour-hand {
+    --color: var(--color-foreground);
+    --height: 25%;
+    rotate: calc( (var(--hours) / 24) * 720 * 1deg);
+  }
+
+  .clock-icon .minute-hand {
+    --color: var(--color-foreground);
+    --height: 20%;
+    rotate: calc( (var(--minutes) / 60) * 360 * 1deg);
+  }
+
+  .clock-icon .second-hand {
+    --color: var(--color-accent);
+    --height: 15%;
+    --overhang: var(--space-sm);
+    rotate: calc( (var(--seconds) / 60) * 360 * 1deg);
+  }
+
+  .clock-icon .center-pin {
+    position: absolute;
+    border-radius: 100vw;
+    background-color: var(--color-accent);
+    width: 8%;
+    aspect-ratio: 1 / 1;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+  }
+
+  .clock-icon::before {
+    content: "";
+    position: absolute;
+    inset: var(--space-2xs);
+    background-color: var(--color-background);
+    border-radius: 100vw;
+  }
+
+  .clock-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3xs);
+  }
+
+  .clock-info p {
+    margin: 0;
+  }
+
+  .time-info {
+    color: var(--color-foreground-secondary);
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2xs);
+    align-items: center;
+  }
+
   @media screen and (width <= 768px) {
-        .notification-menu,
-        .notification-menu:popover-open {
-            display: none;
-        }
+    .notification-menu,
+    .notification-menu:popover-open,
+    .notification-menu[open] {
+        display: none;
     }
+  }
 </style>
