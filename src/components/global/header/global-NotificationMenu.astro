@@ -2,7 +2,7 @@
 import AtomLinkCard from "../atoms/atom-linkCard.astro"
 import { sanityClient } from "sanity:client"
 import { blogCardFields, projectGridFields } from "../utils/cms-queries"
-import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio, allEvents_upcoming } from "../utils/cms-content"
+import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio, allEvents_upcoming, allCareers } from "../utils/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
@@ -117,7 +117,7 @@ const upcomingEvent = allEvents_upcoming[0]
         <div class="careers-heading">
           <p class="h6">{careersHeading}</p>
           <AtomCounter 
-            count={3}
+            count={allCareers.length}
           />
         </div>
         {careersSubheading && <p class="careers-subheading">{careersSubheading}</p>}

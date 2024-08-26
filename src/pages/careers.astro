@@ -5,6 +5,7 @@ import { allCareers } from "../components/global/utils/cms-content";
 import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
+import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers'][0]`)
 
@@ -23,8 +24,11 @@ console.log(pageSettings)
   <section class="page-content">
 
     <div class="section-title">
-      <h1>{pageSettings.heading}</h1>
-      <p class="h6">{pageSettings.subheading}</p>
+      <Icon name="dot-peace" class="title-icon" />
+      <div class="title-text">
+        <h1>{pageSettings.heading}</h1>
+        <p class="h6">{pageSettings.subheading}</p>
+      </div>
     </div>
     
     <div class="roles">
@@ -54,6 +58,10 @@ console.log(pageSettings)
     </div>
 
   </section>
+
+  {pageSettings.sections && pageSettings.sections.sections.map((section, i) => (
+    <SectionGlobalSections brand="domaine" section={section} key={i} />
+))}
 </LayoutDomaine>
 
 
@@ -64,13 +72,28 @@ console.log(pageSettings)
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: var(--space-xl);
+    gap: var(--space-2xl);
   }
 
   .section-title {
     display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    align-items: center;
+    gap: var(--space-lg);
+    /* display: grid;
+    grid-template-columns: var(--grid-template-default); */
+  }
+
+  .title-text {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .title-icon {
+    flex: 0 1 8rem;
+    height: auto;
   }
 
   .roles {
