@@ -26,6 +26,7 @@ const {
   careersHeading,
   careersSubheading,
   careersUrl,
+  careersNewTab,
 } = Astro.props
 
 console.log(clocks)
@@ -88,8 +89,9 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
       <div class="blog-post-content">
         <AtomTag
           text={blogPost.category.title}
+          url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}`} 
         />
-        <p>{blogPost.title}</p>
+        <a class="blog-post-title" href={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}/${blogPost.slug.current}`} >{blogPost.title}</a>
       </div>
       <div class="blog-post-media">
         <AtomSanityImage 
@@ -114,7 +116,7 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
       />
     }
     {showCareers && careersHeading && careersUrl &&
-      <a href={careersUrl} class="careers-card" data-color-scheme="glass-dark">
+      <a href={careersUrl} class="careers-card" data-color-scheme="glass-dark" target={careersNewTab ? "_blank" : ""}>
         <Icon name="dot-peace" class="careers-icon" />
         <div class="careers-heading">
           <p class="h6">{careersHeading}</p>
@@ -483,6 +485,10 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-xs);
+  }
+
+  .blog-post-title {
+    text-decoration: none;
   }
 
   .blog-post-media {

@@ -160,6 +160,12 @@ export default defineType({
       hidden: ({document}) => !document?.showLinkCard,
     }),
     defineField({
+      name: 'linkCardNewTab',
+      title: 'Link Card: New Tab',
+      type: 'boolean',
+      hidden: ({document}) => !document?.showLinkCard,
+    }),
+    defineField({
       name: 'showCareers',
       title: 'Show Careers',
       type: 'boolean',
@@ -184,6 +190,12 @@ export default defineType({
         allowRelative: true,
         scheme: ['http', 'https']
       }),
+      hidden: ({document}) => !document?.showCareers,
+    }),
+    defineField({
+      name: 'careersNewTab',
+      title: 'Careers: New Tab',
+      type: 'boolean',
       hidden: ({document}) => !document?.showCareers,
     }),
   ],
