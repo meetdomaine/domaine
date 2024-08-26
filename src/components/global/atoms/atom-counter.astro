@@ -11,7 +11,13 @@ const { count } = Astro.props
         background-color: var(--color-background-secondary);
         color: var(--color-foreground);
         border-radius: var(--radius-sm);
-        padding: var(--space-2xs);
-        translate: 0 -100%;
+        padding: 0.2em 0.4em;
+        translate: 0 -60%;
+        margin-left: 0.5em;
+    }
+
+    :global([data-color-scheme="glass-dark"]) .counter {
+        background-color: var(--color-foreground-secondary);
+        color: var(--color-background);
     }
 </style>

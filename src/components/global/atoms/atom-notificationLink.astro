@@ -7,13 +7,15 @@ interface Props {
     text: string,
     url: string,
     image: SanityImage,
+    newTab?: boolean
 }
 
-const { title, text, url, image } = Astro.props
+const { title, text, url, image, newTab } = Astro.props
 ---
 <a 
     class="notification-link-card" 
     data-color-scheme="glass-dark"
+    target={newTab === true ? "_blank" : ""}
     href={url}
 >
   {image &&

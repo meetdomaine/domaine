@@ -150,9 +150,41 @@ export default defineType({
       hidden: ({document}) => !document?.showLinkCard,
     }),
     defineField({
+      name: 'linkCardUrl',
+      title: 'Link Card: URL',
+      type: 'url',
+      validation: Rule => Rule.uri({
+        allowRelative: true,
+        scheme: ['http', 'https']
+      }),
+      hidden: ({document}) => !document?.showLinkCard,
+    }),
+    defineField({
       name: 'showCareers',
       title: 'Show Careers',
       type: 'boolean',
+    }),
+    defineField({
+      name: 'careersHeading',
+      title: 'Careers: Heading',
+      type: 'string',
+      hidden: ({document}) => !document?.showCareers,
+    }),
+    defineField({
+      name: 'careersSubheading',
+      title: 'Careers: Subheading',
+      type: 'string',
+      hidden: ({document}) => !document?.showCareers,
+    }),
+    defineField({
+      name: 'careersUrl',
+      title: 'Careers: URL',
+      type: 'url',
+      validation: Rule => Rule.uri({
+        allowRelative: true,
+        scheme: ['http', 'https']
+      }),
+      hidden: ({document}) => !document?.showCareers,
     }),
   ],
 })

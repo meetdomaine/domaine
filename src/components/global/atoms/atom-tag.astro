@@ -45,10 +45,10 @@ const { title, text, url, theme } = Astro.props
         background-color: var(--color-background-secondary);
     }
 
-    /* .tag:not(.glass-dark) {
+    :global([data-color-scheme="glass-dark"]) .tag {
         background-color: var(--color-lighter);
         color: var(--color-darkest);
-    } */
+    }
 
     .title {
         color: var(--color-foreground-secondary);

@@ -26,7 +26,7 @@ html [data-color-scheme="glass-dark"] {
   --color-foreground-secondary: var(--color-light);
   --color-background: var(--color-darkest);
   --color-background-secondary: var(--color-dark);
-  --color-border: var(--color-neutral);
+  --color-border: var(--color-dark);
 
   --color-accent: var(--color-blue-lightest);
 
