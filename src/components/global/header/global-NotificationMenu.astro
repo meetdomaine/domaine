@@ -207,8 +207,9 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
     margin: 0;
     padding-bottom: var(--space-lg);
     gap: var(--space-xs);
-    opacity: 0;
-    transition: opacity var(--anim-sm), display var(--anim-sm) allow-discrete;
+    /* opacity: 0; */
+    translate: calc(100% + var(--page-margin)) 0;
+    transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
     border: none;
     width: var(--notification-menu-width);
     border-radius: var(--radius-sm);
@@ -219,13 +220,15 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
   .notification-menu:popover-open,
   .notification-menu[open] {
     display: flex;
-    opacity: 1;
+    translate: 0% 0;
+    /* opacity: 1; */
   }
 
   @starting-style {
     .notification-menu:popover-open {
       display: flex;
-      opacity: 0;
+      /* opacity: 0; */
+      translate: calc(100% + var(--page-margin)) 0;
     }
   }
 
