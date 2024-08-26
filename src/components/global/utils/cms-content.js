@@ -1,4 +1,4 @@
-import { agencyBrandsQuery, blogCardFields, blogQuery, clientQuery, partnerTileFields, practicesQuery, projectFeatureQuery, projectGridFields, serviceGroupQuery, serviceQuery, serviceTypeQuery } from "./cms-queries"
+import { agencyBrandsQuery, blogCardFields, blogQuery, clientQuery, eventQuery, partnerTileFields, practicesQuery, projectFeatureQuery, projectGridFields, serviceGroupQuery, serviceQuery, serviceTypeQuery } from "./cms-queries"
 
 // Global Content
 export const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)`)
@@ -19,8 +19,6 @@ export const allProjects_Studio = await sanityClient.fetch(`*[_type == "type_pro
 // Project Features - All
 export const allProjectFeatures_Domaine = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{${projectFeatureQuery} } | order( orderRank asc)`)
 export const allProjectFeatures_Studio = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]) > 0 ]{${projectFeatureQuery} } | order( orderRank asc)`)
-
-
 
 // Partners - All
 export const allPartners_Domaine = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0]{${partnerTileFields}} | order(orderRank)`)
@@ -45,3 +43,6 @@ export const allClients_Studio = await sanityClient.fetch(`*[_type == "type_clie
 // Client Industries
 export const allClientIndustries_Domaine = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ] | order(title asc)`)
 export const allClientIndustries_Studio = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio"]) > 0 ] | order(title asc)`)
+
+// Events
+export const allEvents_upcoming = await sanityClient.fetch(`*[_type == "type_event"]{${eventQuery}} | order(dateTime)`)

@@ -15,7 +15,7 @@ import type_blog from "./blog/type_blog";
 import type_blogCategory from "./blog/type_blogCategory";
 import page_blogIndex from "./blog/page_blog-index";
 import settings_blog from "./blog/settings_blog";
-import page_event from "./events/page_event";
+import type_event from "./events/type_event.js";
 import type_teamMember from "./team/type_teamMember";
 import page_general from "./pages/page_general";
 import page_homeDomaine from "./home/page_home-domaine";
@@ -79,12 +79,12 @@ export const schemaTypes = [
     type_teamDepartment,
     type_agencyBrand,
     type_practice,
+    type_event,
 
     page_projectIndex,
     page_servicesIndex,
     page_partnersIndex,
     page_blogIndex,
-    page_event,
     page_general,
     page_homeDomaine,
     page_homeStudio,

@@ -209,3 +209,9 @@ export const blogQuery = `
           || references(^.industries[]->_id)
       ]{${projectGridFields}} | order(orderRank asc)[0...4]
 `
+
+export const eventQuery = `
+  ...,
+  dateTime,
+  thumbnailImage{${imageFields}}
+`

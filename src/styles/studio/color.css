@@ -4,7 +4,8 @@
 } */
 
 html,
-html [data-color-scheme="glass-light"] {
+html [data-color-scheme="glass-light"],
+[data-color-scheme="default"] {
     
   --color-accent: var(--color-blue);
 

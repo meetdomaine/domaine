@@ -32,6 +32,7 @@
 html,
 .color-reset,
 [data-color-scheme="glass-light"],
+[data-color-scheme="default"],
 html [data-color-scheme="brand-01"] {
     --color-foreground: var(--color-darkest);
     --color-foreground-secondary: var(--color-dark);

@@ -2,7 +2,7 @@
 import AtomLinkCard from "../atoms/atom-linkCard.astro"
 import { sanityClient } from "sanity:client"
 import { blogCardFields, projectGridFields } from "../utils/cms-queries"
-import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
+import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio, allEvents_upcoming } from "../utils/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
@@ -29,14 +29,16 @@ const {
   careersNewTab,
 } = Astro.props
 
-console.log(clocks)
+// console.log(clocks)
 
 const latestProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
 const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const upcomingEvent = allEvents_upcoming[0]
 
+console.log(upcomingEvent)
 // console.log(latestWork)
 ---
-<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent>
+<dialog popover open id="notification-menu" class="notification-menu" data-lenis-prevent>
 
   {showPromoMessage && promoMessage &&
     promoMessageUrl ? 
@@ -82,27 +84,21 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
     </div>
   }
 
-<div class="blog-posts" data-color-scheme="glass-dark">
-  <p class="blog-posts-heading caption">Insights</p>
-  {latestBlogPost.slice(0,2).map((blogPost) => (
-    <div class="blog-post">
-      <div class="blog-post-content">
-        <AtomTag
-          text={blogPost.category.title}
-          url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}`} 
-        />
-        <a class="blog-post-title" href={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}/${blogPost.slug.current}`} >{blogPost.title}</a>
-      </div>
-      <div class="blog-post-media">
-        <AtomSanityImage 
-          sizes="20vw"
-          image={blogPost.thumbnailImage.image}
-          aspectRatio={3 / 4}
-        />
-      </div>
+  {upcomingEvent && 
+    <div class="event-card" data-color-scheme="glass-dark">
+      <p class="caption">Upcoming Events</p>
+      <a class="event-info color-reset" href={`/events/${upcomingEvent.slug.current}`} data-color-scheme="default">
+        <div class="event-date">
+          <p class="event-month caption">August</p>
+          <p class="event-day h4">20</p>
+        </div>
+        <div class="event-details">
+          <p class="event-title">{upcomingEvent.title}</p>
+          <p class="event-location caption">{upcomingEvent.location}</p>
+        </div>
+      </a>
     </div>
-  ))}
-</div>
+  }
 
 {showLinkCard && showCareers &&
   <div class="brand-cards">
@@ -130,8 +126,28 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
   </div>
 }
   
-  
 
+<div class="blog-posts" data-color-scheme="glass-dark">
+  <p class="blog-posts-heading caption">Insights</p>
+  {latestBlogPost.slice(0,2).map((blogPost) => (
+    <div class="blog-post">
+      <div class="blog-post-content">
+        <AtomTag
+          text={blogPost.category.title}
+          url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}`} 
+        />
+        <a class="blog-post-title" href={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}/${blogPost.slug.current}`} >{blogPost.title}</a>
+      </div>
+      <div class="blog-post-media">
+        <AtomSanityImage 
+          sizes="20vw"
+          image={blogPost.thumbnailImage.image}
+          aspectRatio={3 / 4}
+        />
+      </div>
+    </div>
+  ))}
+</div>
 
 
 </dialog>
@@ -421,6 +437,48 @@ const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_St
     flex-direction: row;
     gap: var(--space-2xs);
     align-items: center;
+  }
+
+  .event-card {
+    padding: var(--space-xs);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .event-title {
+    margin: 0;
+  }
+
+  .event-info {
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs);
+  }
+
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid var(--color-border);
+    padding-inline-end: var(--space-sm);
+  }
+
+  .event-day {
+    margin: 0;
+  }
+
+  .event-details {
+
+  }
+
+  .event-location {
+    color: var(--color-foreground-secondary);
   }
 
   .brand-cards {

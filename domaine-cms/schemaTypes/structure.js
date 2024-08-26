@@ -410,7 +410,7 @@ export const structure = (S, context) =>
                             .title(labelEvents)
                             .icon(iconEvents)
                             .child(
-                                S.documentTypeList('page_event')
+                                S.documentTypeList('type_event')
                             ),
                         S.listItem()
                             .title(`${labelEvents} ${labelSettings}`)
