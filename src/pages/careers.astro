@@ -1,0 +1,114 @@
+---
+import { sanityClient } from 'sanity:client'
+import LayoutDomaine from "../layouts/Layout-Domaine.astro";
+import { allCareers } from "../components/global/utils/cms-content";
+import AtomButton from "../components/global/atoms/atom-button.astro";
+import AtomTag from '../components/global/atoms/atom-tag.astro';
+import { Icon } from 'astro-icon/components';
+
+const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers'][0]`)
+
+console.log(pageSettings)
+// console.log(allCareers)
+---
+<LayoutDomaine
+    title="Careers"
+    searchFilter="type:page"
+    title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Careers"}
+    description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields && pageSettings.metafields.image ? pageSettings.metafields.image : null}
+>
+
+
+  <section class="page-content">
+
+    <div class="section-title">
+      <h1>{pageSettings.heading}</h1>
+      <p class="h6">{pageSettings.subheading}</p>
+    </div>
+    
+    <div class="roles">
+      {allCareers.length > 0 ?
+        allCareers.map((role) => (
+          <div class="role-card">
+            {role.department && 
+              <AtomTag text={role.department.label} />
+            }
+            <p class="h3" >{role.name}</p>
+            <div class="role-details">
+              <AtomButton
+                text="Learn More"
+                url={role.url}
+                newTab={true}
+              />
+              <div class="location">
+                <Icon name="icon-pin" class="location-icon" />
+                {role.workLocation && <p>{role.workLocation.label}</p>}
+              </div>
+            </div>
+          </div>
+        ))
+      :
+      <p>Ro Openings!</p>
+      }
+    </div>
+
+  </section>
+</LayoutDomaine>
+
+
+<style>
+  .page-content {
+    padding-block: calc(var(--header-height) * 2) var(--space-xl);
+    padding-inline: var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xl);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .roles {
+    align-self: center;
+    /* min-width: 30rem; */
+    width: 100%;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .role-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-md);
+    gap: var(--space-xs);
+  }
+
+  .location {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .location > * {
+    margin: 0;
+  }
+
+  .role-details {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
+</style>

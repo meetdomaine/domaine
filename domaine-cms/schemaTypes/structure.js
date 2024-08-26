@@ -1,4 +1,7 @@
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
+import {
+    CaseIcon
+} from '@sanity/icons'
 
 import { 
     iconAbout,
@@ -62,7 +65,7 @@ import {
     labelTeamDepartments, 
     labelTeamMembers, 
     slugBrandPrimary, 
-    slugBrandSecondary
+    slugBrandSecondary,
 } from "./variables";
 
 export const structure = (S, context) =>
@@ -512,7 +515,24 @@ export const structure = (S, context) =>
             .title(labelPages)
             .icon(iconPages)
             .child(
-                S.documentTypeList('page_general')
+                S.list()
+                    .title(labelContact)
+                    .items([
+                        S.listItem()
+                            .title('Careers')
+                            .icon(CaseIcon)
+                            .child(
+                                S.document()
+                                .schemaType('page_careers')
+                                .documentId(`page_careers`)
+                                .title('Careers')
+                            ),
+                        S.listItem()
+                            .title(labelPages)
+                            .child(
+                                S.documentTypeList('page_general')
+                            )
+                        ])
             ),
         S.listItem()
             .title(labelSiteSettings)

@@ -60,6 +60,7 @@ import type_practice from "./practices/type_practice.js";
 import section_textVideoPlayer from "./sections/section_textVideoPlayer.js";
 import section_textMediaTabs from "./sections/section_textMediaTabs.js";
 import section_serviceFeature from "./sections/section_serviceFeature.js";
+import page_careers from "./pages/page_careers.js";
 
 
 export const schemaTypes = [
@@ -90,8 +91,10 @@ export const schemaTypes = [
     page_homeStudio,
     page_aboutDomaine,
     page_aboutStudio,
-    page_contactDomaine,
-    page_contactStudio,
+    page_careers,
+
+    // page_contactDomaine,
+    // page_contactStudio,
 
     settings_projects,
     settings_services,

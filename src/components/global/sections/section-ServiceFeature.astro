@@ -3,7 +3,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
 const { section, brand, key } = Astro.props
 // console.log(section.serviceType.images)
-console.log(section)
+// console.log(section)
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
     <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title">{section.featuredService.title}</a></h2>

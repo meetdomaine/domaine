@@ -46,3 +46,7 @@ export const allClientIndustries_Studio = await sanityClient.fetch(`*[_type == "
 
 // Events
 export const allEvents_upcoming = await sanityClient.fetch(`*[_type == "type_event"]{${eventQuery}} | order(dateTime)`)
+
+// Careers
+const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
+export const allCareers = await careersResponse.json();

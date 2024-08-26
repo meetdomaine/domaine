@@ -22,7 +22,7 @@
     --button-height: 40px;
 
     --grid-gap: var(--space-md);
-    --grid-columns-default: 1fr 2fr;
+    --grid-template-default: 1fr 2fr;
     --grid-template-extreme-1: 1fr 1.5fr 2fr;
     --grid-template-extreme-2: .5fr 1.5fr 2.5fr;
     --grid-template-extreme-3: .25fr 1.5fr 2.75fr;
