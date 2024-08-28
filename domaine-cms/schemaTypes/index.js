@@ -64,6 +64,7 @@ import snippet_richContent from "./snippets/snippet_rich-content.js";
 import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_video from "./snippets/snippet_video";
 import section_serviceCards from "./sections/section_serviceCards.js";
+import section_linkList from "./sections/section_linkList.js";
 
 
 export const schemaTypes = [
@@ -121,6 +122,7 @@ export const schemaTypes = [
     section_contentBlocks,
     section_form,
     section_imageFullHeight,
+    section_linkList,
     section_mediaCarousel,
     section_partnersFeed,
     section_practicesFeed,

@@ -6,7 +6,7 @@ const { section, brand, key } = Astro.props
 // console.log(section)
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
-    <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title">{section.featuredService.title}</a></h2>
+    <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title title-xl">{section.featuredService.title}</a></h2>
     <div class="section-content">
 
         <p class="service-type-heading h4">{section.heading}</p>
@@ -89,8 +89,6 @@ if (!isMobileBreakpoint) {
     .service-type-title {
         position: relative;
         text-decoration: none;
-        font-size: 15vw;
-        letter-spacing: -0.05em;
         z-index: 2;
     }
 

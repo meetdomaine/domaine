@@ -7,7 +7,7 @@ const { serviceType, brand } = Astro.props
     <!-- <a class="h5" href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services</a> -->
      <div class="section-title">
          <p class="service-exerpt h5">{serviceType.excerpt}</p>
-         <h1 class="service-title">{serviceType.title}</h1>
+         <h1 class="service-title title-xl">{serviceType.title}</h1>
     </div>
     <div class="section-content">
         <p class="service-eyebrow utility">{serviceType.excerpt}</p>
@@ -40,9 +40,9 @@ const { serviceType, brand } = Astro.props
         min-height: 80svh;
     }
 
-    .service-title {
+    /* .service-title {
         font-size: 16vw;
-    }
+    } */
 
     .section-content {
         gap: var(--space-md);

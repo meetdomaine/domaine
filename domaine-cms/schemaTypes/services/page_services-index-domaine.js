@@ -39,6 +39,7 @@ export default defineType({
         { type: 'section_contentBlocks'},
         { type: 'section_mediaCarousel'},
         { type: 'section_statsCarousel'},
+        { type: 'section_linkList'},
     ]
     }),
   ],

@@ -46,6 +46,7 @@ export default defineType({
         { type: 'section_mediaCarousel'},
         { type: 'section_statsCarousel'},
         { type: 'section_serviceCards'},
+        { type: 'section_linkList'},
     ]
     }),
   ],

@@ -107,6 +107,11 @@ button {
     font-family: var(--font-family-primary);
 }
 
+.title-xl {
+    font-size: 15vw;
+    letter-spacing: -0.05em;
+}
+
 h1, .h1,
 h2, .h2,
 h3, .h3,

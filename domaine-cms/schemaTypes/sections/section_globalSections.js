@@ -29,6 +29,7 @@ export default defineType({
         { type: 'section_videoPlayer'},
         { type: 'section_contentBlocks'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_linkList'},
     ]
     }),
   ],

@@ -6,7 +6,7 @@ import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-co
 const { section, brand, key } = Astro.props
 
 const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTypes_Domaine
-console.log(section.services)
+// console.log(section.services)
 
 const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
 
@@ -54,7 +54,8 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
     background-color: var(--color-background);
     position: sticky;
     top: var(--header-height);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-radius: var(--radius-lg);
+    /* border-radius: var(--radius-lg) var(--radius-lg) 0 0; */
   }
 
   .card-content {
