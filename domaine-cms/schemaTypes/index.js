@@ -63,6 +63,7 @@ import snippet_linkList from "./snippets/snippet_link-list";
 import snippet_richContent from "./snippets/snippet_rich-content.js";
 import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_video from "./snippets/snippet_video";
+import section_serviceCards from "./sections/section_serviceCards.js";
 
 
 export const schemaTypes = [
@@ -126,6 +127,7 @@ export const schemaTypes = [
     section_projectsFeed,
     section_projectsFullBleed,
     section_projectsGrid,
+    section_serviceCards,
     section_servicesFeed,
     section_serviceFeature,
     section_statsCarousel,

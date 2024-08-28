@@ -19,6 +19,7 @@ import TextVideoPlayer from "./section-TextVideoPlayer.astro"
 import TextMediaTabs from "./section-TextMediaTabs.astro"
 import ServiceFeature from "./section-ServiceFeature.astro"
 import StatsCarousel from "./section-StatsCarousel.astro"
+import ServiceCards from "./section-ServiceCards.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -42,4 +43,5 @@ const { section, brand, key } = Astro.props
 {section._type == "section_textMediaTabs" && section.showSection && <TextMediaTabs section={section} brand={brand} key={key} />}
 {section._type == "section_serviceFeature" && section.showSection && <ServiceFeature section={section} brand={brand} key={key} />}
 {section._type == "section_statsCarousel" && section.showSection && <StatsCarousel section={section} brand={brand} key={key} />}
+{section._type == "section_serviceCards" && section.showSection && <ServiceCards section={section} brand={brand} key={key} />}
 

@@ -1,0 +1,116 @@
+---
+import AtomButton from "../atoms/atom-button.astro";
+import AtomSanityImage from "../atoms/atom-sanityImage.astro";
+import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-content";
+
+const { section, brand, key } = Astro.props
+
+const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTypes_Domaine
+console.log(section.services)
+
+const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
+
+---
+<section class="section-service-cards">
+  {section.services.map((serviceEntry, i) => (
+    <div class="service-card" data-color-scheme={colorSchemes[i % 4]}>
+      <div class="card-content">
+        <div class="card-title">
+          <h2 class="h1">{serviceEntry.service.title}</h2>
+          <div class="card-details">
+            <p>{serviceEntry.service.description}</p>
+            <AtomButton 
+              text="Learn More"
+              url={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`}
+              style="primary"
+            />
+          </div>
+        </div>
+        <div class="service-groups">
+          {serviceEntry.service.serviceGroups.map((serviceGroup) => (
+            <a href="#" class="service-group h5">{serviceGroup.title}</a>
+          ))}
+        </div>
+      </div>
+      <div class="card-media">
+        <AtomSanityImage 
+          sizes="50vw"
+          image={serviceEntry.thumbnailImage.image}
+          aspectRatio={3 / 4}
+        />
+      </div>
+    </div>
+  ))}
+</section>
+
+<style>
+  .service-card {
+    padding-inline: var(--page-margin);
+    padding-block: var(--space-2xl);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: var(--color-background);
+    position: sticky;
+    top: var(--header-height);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .card-content {
+    flex: 0 1 30rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .card-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .card-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .service-groups {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  .service-group {
+    text-decoration: none;
+  }
+
+  .card-media {
+    flex: 0 1 40%;
+    /* max-height: 100%; */
+  }
+
+  @media screen and (width <= 768px) {
+    .service-card {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      gap: var(--space-lg);
+    }
+
+    .card-content {
+      flex: 0 0 auto;
+      gap: var(--space-xl);
+    }
+
+    .card-media {
+      flex: 0 0 auto;
+    }
+  }
+
+</style>

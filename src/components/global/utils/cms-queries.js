@@ -116,6 +116,7 @@ export const globalSectionsFields = `
       } 
     },
     _type == "section_statsCarousel" => { heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
+    _type == "section_serviceCards" => { services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
 `
 
 
