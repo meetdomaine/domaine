@@ -297,7 +297,7 @@ export const structure = (S, context) =>
                                 .icon(iconBrandPrimary)
                                 .child(
                                     S.document()
-                                    .schemaType('page_services-index')
+                                    .schemaType(`page_services-index-${slugBrandPrimary}`)
                                     .documentId(`page_services-index-${slugBrandPrimary}`)
                                     .title(labelBrandPrimary)
                                 ),
@@ -306,7 +306,7 @@ export const structure = (S, context) =>
                                 .icon(iconBrandSecondary)
                                 .child(
                                     S.document()
-                                    .schemaType('page_services-index')
+                                    .schemaType(`page_services-index-${slugBrandSecondary}`)
                                     .documentId(`page_services-index-${slugBrandSecondary}`)
                                     .title(labelBrandSecondary)
                                 )

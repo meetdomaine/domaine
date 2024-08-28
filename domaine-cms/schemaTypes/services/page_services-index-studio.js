@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
-  name: 'page_services-index',
+  name: 'page_services-index-studio',
   title: 'Services Index',
   type: 'document',
   fields: [
@@ -14,6 +14,12 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+    }),
+    defineField({
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [{ type: 'snippet_image'}],
     }),
     defineField({
       name: 'sections',
@@ -38,6 +44,7 @@ export default defineType({
         { type: 'section_videoPlayer'},
         { type: 'section_contentBlocks'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_statsCarousel'},
     ]
     }),
   ],

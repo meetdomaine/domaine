@@ -9,13 +9,13 @@ import GlobalSections from "../../components/global/sections/section-GlobalSecti
 import { globalSectionsFields } from "../../components/global/utils/cms-queries";
 
 const pageSettings = await sanityClient.fetch(`
-    *[_type == "page_services-index" && _id == "page_services-index-domaine"]{
+    *[_type == "page_services-index-domaine" && _id == "page_services-index-domaine"]{
         title,
         heading,
         sections[]{${globalSectionsFields}}
     }[0]
 `)
-const serviceTypes = allServiceTypes_Domaine
+// const serviceTypes = allServiceTypes_Domaine
 
 // console.log(pageSettings.sections)
 ---

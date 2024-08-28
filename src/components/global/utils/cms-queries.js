@@ -115,6 +115,7 @@ export const globalSectionsFields = `
       _type == "type_serviceGroup" => {${serviceGroupQuery}}
       } 
     },
+    _type == "section_statsCarousel" => { heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
 `
 
 

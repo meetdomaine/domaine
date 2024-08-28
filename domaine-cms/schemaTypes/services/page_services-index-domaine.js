@@ -1,25 +1,34 @@
 import {defineField, defineType} from 'sanity'
-import { iconIndustries } from '../variables'
 
 export default defineType({
-  name: 'section_globalSections',
-  title: 'Global Sections',
+  name: 'page_services-index-domaine',
+  title: 'Services Index',
   type: 'document',
   fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+    }),
     defineField({
       name: 'sections',
       title: 'Sections',
       type: 'array',
       of: [
+        { type: 'section_serviceFeature'},
         { type: 'section_form'},
         { type: 'section_projectsFeed'},
-        { type: 'section_projectsGrid'},
-        { type: 'section_projectsFullBleed'},
+        // { type: 'section_projectsGrid'},
+        // { type: 'section_projectsFullBleed'},
         { type: 'section_blogFeed'},
-        { type: 'section_servicesFeed'},
+        // { type: 'section_servicesFeed'},
         { type: 'section_partnersFeed'},
         { type: 'section_practicesFeed'},
-        { type: 'section_statsCarousel'},
         { type: 'section_textMedia'},
         { type: 'section_textVideoPlayer'},
         { type: 'section_textClients'},
@@ -29,18 +38,15 @@ export default defineType({
         { type: 'section_videoPlayer'},
         { type: 'section_contentBlocks'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_statsCarousel'},
     ]
     }),
   ],
-//   preview: {
-//     select: {
-//       title: 'title', 
-//     },
-//     prepare(selection) {
-//       return {
-//         ...selection,
-//         media: iconIndustries
-//       }
-//     }
-//   },
+
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'heading'
+    },
+  },
 })

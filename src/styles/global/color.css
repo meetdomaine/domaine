@@ -60,7 +60,8 @@ html [data-color-scheme="brand-01"] {
     color: var(--color-background);
 }
 
-[data-color-scheme="secondary"] {
+[data-color-scheme="secondary"],
+[data-color-scheme="brand-03"] {
     --color-background: var(--color-lighter);
     --color-background-secondary: var(--color-light);
 
@@ -99,7 +100,8 @@ html,
 .color-reset,
 [data-color-scheme="invert"],
 [data-color-scheme="brand-01"],
-[data-color-scheme="brand-02"] {
+[data-color-scheme="brand-02"],
+[data-color-scheme="brand-03"] {
     color: var(--color-foreground);
     background-color: var(--page-background, var(--color-background));
 }

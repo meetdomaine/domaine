@@ -61,3 +61,25 @@ html [data-color-scheme="brand-02"] {
   --button-secondary-foreground-hover: var(--color-lightest);
   --button-secondary-background-hover: var(--color-blue-lighter);
 }
+
+html [data-color-scheme="brand-03"] {
+
+  --color-foreground: var(--color-darkest);
+  --color-foreground-secondary: var(--color-blue-contrast-dark);
+  --color-background: var(--color-orange-light);
+  --color-background-secondary: var(--color-blue-light);
+
+  --color-border: var(--color-orange);
+
+  --color-accent: var(--color-blue);
+
+  /* Buttons */
+  --button-primary-foreground: var(--color-lightest);
+  --button-primary-background: var(--color-blue);
+  --button-primary-foreground-hover: var(--color-lightest);
+  --button-primary-background-hover: var(--color-darkest);
+
+  --button-secondary-foreground: var(--color-darkest);
+  --button-secondary-foreground-hover: var(--color-lightest);
+  --button-secondary-background-hover: var(--color-orange);
+}
