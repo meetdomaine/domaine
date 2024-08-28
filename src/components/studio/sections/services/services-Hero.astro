@@ -2,7 +2,7 @@
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 const { title, heading, images } = Astro.props
 ---
-<section class="services-hero" data-color-scheme="brand-02">
+<section class="services-hero" data-color-scheme="secondary">
     <div class="section-title">
         <h1 class="utility">{title}</h1>
         <p class="heading h1">{heading}</p>
@@ -26,6 +26,7 @@ const { title, heading, images } = Astro.props
     .services-hero {
       position: relative;
       overflow: hidden;
+      background-color: var(--color-background);
     }
 
     .section-title {
