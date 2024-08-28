@@ -57,7 +57,7 @@ const { title, heading, images } = Astro.props
       gap: var(--space-xl);
       scale: 1.75;
       transform-style: preserve-3d;
-      height: 80svh;
+      height: 95svh;
     }
 
     .hero-image {
@@ -65,7 +65,7 @@ const { title, heading, images } = Astro.props
       --screen-offset: 100%;
       border-radius: var(--radius-sm);
       overflow: hidden;
-      animation: image-zoom 9.5s linear calc(var(--index) * 1.5s) infinite both;
+      animation: image-zoom 9.5s linear calc(var(--index) * 2.5s) infinite both;
     }
 
     @keyframes image-zoom {
@@ -76,7 +76,7 @@ const { title, heading, images } = Astro.props
       5% {
         opacity: 0.8;
       }
-      30% {
+      20% {
         opacity: 0.8;
       }
       100% {
