@@ -41,7 +41,6 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
         <AtomSanityImage 
           sizes="50vw"
           image={serviceEntry.thumbnailImage.image}
-          // aspectRatio={3 / 4}
           cover={true}
         />
       </div>
@@ -59,8 +58,6 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
     display: flex;
     flex-direction: column;
     align-content: stretch;
-    padding-bottom: 50vh;
-    box-sizing: content-box;
   }
 
   .service-card {
@@ -76,7 +73,6 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
     top: calc(var(--stack-height) * var(--index) + var(--header-height) );
     border-radius: var(--radius-lg);
     flex: 0 0 calc(100lvh - var(--header-height) - var(--stack-height) * var(--index));
-    /* border-radius: var(--radius-lg) var(--radius-lg) 0 0; */
   }
 
   .card-header {
@@ -135,21 +131,30 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
   }
 
   .card-media {
-    flex: 0 1 40%;
+    flex: 0 1 50%;
     max-height: 100%;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
   }
 
   @media screen and (width <= 768px) {
     .service-card {
-      flex-direction: column;
+      /* flex-direction: column;
       justify-content: flex-start;
-      align-items: stretch;
-      gap: var(--space-lg);
+      align-items: stretch; */
+      /* gap: var(--space-lg); */
+      flex: 0 0 auto;
     }
 
     .card-content {
+      /* flex: 0 0 auto; */
+      flex-direction: column;
+      gap: var(--space-md);
+      justify-content: flex-start;
+    }
+
+    .card-text {
       flex: 0 0 auto;
-      gap: var(--space-xl);
     }
 
     .card-media {
