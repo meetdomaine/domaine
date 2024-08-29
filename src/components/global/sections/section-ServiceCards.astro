@@ -4,19 +4,23 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-content";
 
 const { section, brand, key } = Astro.props
-
-const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTypes_Domaine
-// console.log(section.services)
-
 const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
-
 ---
 <section class="section-service-cards">
   {section.services.map((serviceEntry, i) => (
-    <div class="service-card" data-color-scheme={colorSchemes[i % 4]}>
+    <div class="service-card" data-color-scheme={colorSchemes[i % 4]} style={`--index: ${i};`}>
+      <div class="card-header">
+        <p class="utility">{(i + 1).toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+          })}
+        </p>
+        <p class="utility">{serviceEntry.service.title}</p>
+      </div>
       <div class="card-content">
+        <div class="card-text">
         <div class="card-title">
-          <h2 class="h1">{serviceEntry.service.title}</h2>
+          <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`}><h2 class="h1">{serviceEntry.service.title}</h2></a>
           <div class="card-details">
             <p>{serviceEntry.service.description}</p>
             <AtomButton 
@@ -28,42 +32,77 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
         </div>
         <div class="service-groups">
           {serviceEntry.service.serviceGroups.map((serviceGroup) => (
-            <a href="#" class="service-group h5">{serviceGroup.title}</a>
+            <a href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}/${serviceGroup.slug.current}`} class="service-group h5">{serviceGroup.title}</a>
           ))}
         </div>
       </div>
+      
       <div class="card-media">
         <AtomSanityImage 
           sizes="50vw"
           image={serviceEntry.thumbnailImage.image}
-          aspectRatio={3 / 4}
+          // aspectRatio={3 / 4}
+          cover={true}
         />
       </div>
+
+    </div>
+
     </div>
   ))}
 </section>
 
 <style>
-  .service-card {
-    padding-inline: var(--page-margin);
-    padding-block: var(--space-2xl);
+
+  .section-service-cards {
+    padding-block: 0 var(--space-xl);
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    align-content: stretch;
+    padding-bottom: 50vh;
+    box-sizing: content-box;
+  }
+
+  .service-card {
+    --stack-height: var(--space-2xl);
+    padding-inline: var(--page-margin);
+    padding-block: 0 var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
     align-items: stretch;
     background-color: var(--color-background);
     position: sticky;
-    top: var(--header-height);
+    top: calc(var(--stack-height) * var(--index) + var(--header-height) );
     border-radius: var(--radius-lg);
+    flex: 0 0 calc(100lvh - var(--header-height) - var(--stack-height) * var(--index));
     /* border-radius: var(--radius-lg) var(--radius-lg) 0 0; */
   }
 
+  .card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--stack-height);
+    flex: 0 0 auto;
+  }
+
   .card-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex: 0 1 100%;
+  }
+
+  .card-text {
     flex: 0 1 30rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-md);
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--space-xl);
   }
 
   .card-title {
@@ -71,6 +110,10 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
+  }
+
+  .service-title {
+    text-decoration: none;
   }
 
   .card-details {
@@ -84,7 +127,7 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-lg);
+    gap: var(--space-sm);
   }
 
   .service-group {
@@ -93,7 +136,7 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
 
   .card-media {
     flex: 0 1 40%;
-    /* max-height: 100%; */
+    max-height: 100%;
   }
 
   @media screen and (width <= 768px) {
