@@ -1,0 +1,46 @@
+---
+---
+<div class="cursor-follow">
+  <slot />
+</div>
+
+<script>
+  import { gsap } from "../utils/gsap"
+
+  const cursors = document.querySelectorAll('.cursor-follow')
+
+
+  const followCursor = (element) => {
+
+    window.addEventListener("mousemove", (e) => {
+      const posX = e.clientX / window.innerWidth
+      const posY = e.clientY / window.innerHeight
+
+      console.log(posY)
+
+      gsap.to(element, {
+          "--mouseX": posX,
+          "--mouseY": posY,
+          ease: "cubic",
+          duration: 0.2
+      })
+    })
+  }
+
+
+  cursors.forEach((cursor) => followCursor(cursor))
+
+</script>
+
+<style>
+  .cursor-follow {
+    --offsetX: 20px;
+    --offsetY: 0px;
+    position: fixed;
+    left: calc(100% * var(--mouseX) + var(--offsetX));
+    top: calc(100% * var(--mouseY) + var(--offsetY));
+    translate: 0 -50%;
+    z-index: 1;
+    margin: 0;
+  }
+</style>

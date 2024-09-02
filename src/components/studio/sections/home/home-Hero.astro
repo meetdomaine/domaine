@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import { replaceStringIcons } from "../../../global/utils/inline-icon-text"
+import AtomCursorFollow from "../../../global/atoms/atom-cursorFollow.astro"
 
 const { heading, subheading, eyebrow, button, projects } = Astro.props
 
@@ -24,7 +25,8 @@ const iconText = replaceStringIcons(heading)
             <div 
                 class="project-card" 
                 data-index={i} 
-                data-project={projectCard.project.slug.current} 
+                data-project={projectCard.project.slug.current}
+                data-project-title={projectCard.project.title} 
                 style={`--index: ${i}; --random-seed: ${Math.random()};`}
             >
                 {/* <div 
@@ -41,12 +43,21 @@ const iconText = replaceStringIcons(heading)
             </div>
         ))}
     </div>
-    <div id="three-canvas"></div>
+    <AtomCursorFollow>
+        <div 
+            class="project-label" 
+            data-color-scheme="glass-dark"
+        >
+            <Icon name="arrow-diagonal" />
+            <p class="project-title">Project Title</p>
+        </div>
+    </AtomCursorFollow>
 </section>
 
 <script>
     const section: any = document.getElementById('home-hero')
     const projectCards = section.querySelectorAll('.project-card')
+    const projectTitle = section.querySelector('.project-title')
     let container = section.getBoundingClientRect()
 
     let mouseX = 0.5
@@ -59,6 +70,12 @@ const iconText = replaceStringIcons(heading)
             --mouseY: ${mouseY};
         `
     }
+
+    projectCards.forEach((projectCard) => {
+        projectCard.addEventListener("mouseenter", (e) => {
+            projectTitle.innerText = e.target.dataset.projectTitle
+        })
+    })
 
     window.addEventListener("mousemove", (e) => {
         mouseX = (e.clientX - container.left) / container.width
@@ -305,7 +322,7 @@ const iconText = replaceStringIcons(heading)
 
     .section-media {
         --depth: 400px;
-        --parallax-factor: 20deg;
+        --parallax-factor: 3deg;
         --spread-factor: 0.75;
         --entrance-duration: 3s;
         --entrance-depth-factor: 0.05;
@@ -321,13 +338,9 @@ const iconText = replaceStringIcons(heading)
         animation-play-state: paused;
     }
 
-
-
     .project-card {
         --index-of-total: calc(var(--index) / var(--image-count));
         position: absolute;
-        /* top: 150%;
-        left: 50%; */
         left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
         top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
         transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) );
@@ -338,12 +351,34 @@ const iconText = replaceStringIcons(heading)
         animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal both paused;
     }
 
-    /* .project-card[data-animation-playing="true"] {
-        animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal forwards;
-    } */
-
     .project-card:hover {
-        opacity: 0.2;
+        /* opacity: 0.2; */
+    }
+
+    .project-label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-sm);
+        border-radius: var(--radius-sm);
+        padding: var(--space-2xs) var(--space-xs);
+        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+        transition: clip-path var(--anim-sm);
+    }
+
+    .home-hero:has(.project-card:hover) .project-label {
+        /* rotate: 2deg; */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+
+    .project-label :global(svg) {
+        flex: 0 0 1rem;
+    }
+
+    .project-title {
+        flex: 0 0 auto;
+        word-wrap: normal;
+        word-break: keep-all;
     }
 
     @keyframes image-card-enter {
