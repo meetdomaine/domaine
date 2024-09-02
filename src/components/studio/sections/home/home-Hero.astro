@@ -59,11 +59,9 @@ const iconText = replaceStringIcons(heading)
     let mouseY = 0.5
 
     const updateVariables = () => {
-        section.style = `
-            --image-count: ${projectCards.length};
-            --mouseX: ${mouseX}; 
-            --mouseY: ${mouseY};
-        `
+        section.style.setProperty('--image-count', projectCards.length )
+        section.style.setProperty('--mouseX', mouseX )
+        section.style.setProperty('--mouseY', mouseY )
     }
 
     projectCards.forEach((projectCard) => {
@@ -84,13 +82,14 @@ const iconText = replaceStringIcons(heading)
     window.addEventListener("mousemove", (e) => {
         mouseX = (e.clientX - container.left) / container.width
         mouseY = (e.clientY - container.top) / container.height
+        updateVariables()
         if (activeCard) {
-            const hoverX = (e.clientX - activeCard.rect.left) / activeCard.rect.width * 2 - 1
-            const hoverY = (e.clientY - activeCard.rect.top) / activeCard.rect.height * 2 - 1
+            const rect = activeCard.element.getBoundingClientRect()
+            const hoverX = (e.clientX - rect.left) / rect.width
+            const hoverY = (e.clientY - rect.top) / rect.height
             activeCard.element.style.setProperty('--hoverX', hoverX )
             activeCard.element.style.setProperty('--hoverY', hoverY )
         }
-        updateVariables()
     })
 
     updateVariables()
@@ -317,7 +316,7 @@ const iconText = replaceStringIcons(heading)
         flex-direction: column;
         align-items: center;
         gap: var(--space-md);
-        /* position: relative; */
+        width: min(60rem, 100%);
         z-index: 1;
     }
 
@@ -350,22 +349,26 @@ const iconText = replaceStringIcons(heading)
     .project-card {
         --index-of-total: calc(var(--index) / var(--image-count));
         --hover-rotation-factor: 20deg;
+        --card-top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
+        --card-left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
+        --card-transforms: translate3d(-50%, -50%, calc(var(--depth) * var(--random-seed) - var(--depth)/2));
         position: absolute;
-        left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        transform: translate3d(-50%, -50%, calc(var(--depth) * var(--random-seed) - var(--depth)/2)) ;
+        left: var(--card-left);
+        top: var(--card-top);
+        transform: var(--card-transforms);
         transform-origin: center center;
-        /* transform-style: preserve-3d; */
         width: 12%;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        transition: all var(--anim-md);
-        /* rotate: calc(pi * 0.2) 0 0; */
         animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal both paused;
     }
 
+    .project-card :global(img) {
+        transform: rotateX(calc(var(--hoverY) * var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor))) rotateY(calc( var(--hoverX) * var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor)));
+        transition: transform var(--anim-sm);
+        border-radius: var(--radius-sm);
+    }
+
     .project-card:hover {
-        scale: 1.2;
+        /* scale: 1.2; */
         /* opacity: 0.2; */
     }
 
@@ -409,12 +412,9 @@ const iconText = replaceStringIcons(heading)
         }
 
         100% {
-            top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-            left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-            /* transform: rotate3d(1, 0, 0, calc(var(--hoverX) * 30deg)) translate3d(-50%, -50%, calc(var(--depth) * var(--random-seed) - var(--depth)/2)); */
-            /* transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) ) rotate3d(1, 0, 0, 0deg); */
-            /* transform: translate3d(-50%, -50%, calc((var(--depth) * var(--random-seed) - var(--depth) / 2))) rotateX(calc( var(--hoverY) * 90deg * 2 - 90deg )); */
-        /* transform: translate3d(-50%, -50%, calc((var(--depth) * var(--random-seed) - var(--depth) / 2))) rotate3d(1, 0, 0, calc( var(--hoverY) / var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor) )); */
+            top: var(--card-top);
+            left: var(--card-left);
+            transform: var(--card-transforms);
         }
     }
 </style>
