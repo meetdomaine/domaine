@@ -22,25 +22,18 @@ const iconText = replaceStringIcons(heading)
     </div>
     <div class="section-media">
         {projects.map((projectCard, i) => (
-            <div 
+            <a 
                 class="project-card" 
                 data-index={i} 
-                data-project={projectCard.project.slug.current}
+                href={`${projectCard.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${projectCard.project.slug.current}`}
                 data-project-title={projectCard.project.title} 
                 style={`--index: ${i}; --random-seed: ${Math.random()};`}
             >
-                {/* <div 
-                    class="project-info caption"
-                    data-color-scheme="glass-dark"
-                >
-                    <Icon name="arrow-diagonal" />
-                    {projectCard.project.title}
-                </div> */}
                 <AtomSanityImage 
                     sizes="50vw"
                     image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
                 />
-            </div>
+            </a>
         ))}
     </div>
     <AtomCursorFollow>
@@ -60,6 +53,8 @@ const iconText = replaceStringIcons(heading)
     const projectTitle = section.querySelector('.project-title')
     let container = section.getBoundingClientRect()
 
+    let activeCard = null
+
     let mouseX = 0.5
     let mouseY = 0.5
 
@@ -74,12 +69,27 @@ const iconText = replaceStringIcons(heading)
     projectCards.forEach((projectCard) => {
         projectCard.addEventListener("mouseenter", (e) => {
             projectTitle.innerText = e.target.dataset.projectTitle
+            activeCard = {
+                element: e.target,
+                rect: e.target.getBoundingClientRect()
+            }
+        })
+        projectCard.addEventListener("mouseleave", (e) => {
+            e.target.style.setProperty('--hoverX', 0.5 )
+            e.target.style.setProperty('--hoverY', 0.5 )
+            activeCard = null
         })
     })
 
     window.addEventListener("mousemove", (e) => {
         mouseX = (e.clientX - container.left) / container.width
         mouseY = (e.clientY - container.top) / container.height
+        if (activeCard) {
+            const hoverX = (e.clientX - activeCard.rect.left) / activeCard.rect.width * 2 - 1
+            const hoverY = (e.clientY - activeCard.rect.top) / activeCard.rect.height * 2 - 1
+            activeCard.element.style.setProperty('--hoverX', hoverX )
+            activeCard.element.style.setProperty('--hoverY', hoverY )
+        }
         updateVariables()
     })
 
@@ -334,24 +344,28 @@ const iconText = replaceStringIcons(heading)
         perspective: var(--depth);
         transform: rotateX(calc( var(--mouseY) * var(--parallax-factor) * 2 - var(--parallax-factor) )) rotateY(calc( var(--mouseX) * var(--parallax-factor) * 2 - var(--parallax-factor) )) translateZ(calc(var(--depth) / 2 * -1));
         transform-style: preserve-3d;
-        transition: all var(--anim-md);
         animation-play-state: paused;
     }
 
     .project-card {
         --index-of-total: calc(var(--index) / var(--image-count));
+        --hover-rotation-factor: 20deg;
         position: absolute;
         left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
         top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) );
+        transform: translate3d(-50%, -50%, calc(var(--depth) * var(--random-seed) - var(--depth)/2)) ;
         transform-origin: center center;
+        /* transform-style: preserve-3d; */
         width: 12%;
         border-radius: var(--radius-sm);
         overflow: hidden;
+        transition: all var(--anim-md);
+        /* rotate: calc(pi * 0.2) 0 0; */
         animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal both paused;
     }
 
     .project-card:hover {
+        scale: 1.2;
         /* opacity: 0.2; */
     }
 
@@ -385,19 +399,22 @@ const iconText = replaceStringIcons(heading)
         0% {
             top: 150%;
             left: 50%;
-            transform: translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1)) rotate3d(1, 0, 0, 360deg);
+            transform: rotate3d(1, 0, 0, 360deg) translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1));
         }
 
         50% {
             top: 50%;
             left: 50%;
-            transform: translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1)) rotate3d(1, 0, 0, 360deg);
+            transform: rotate3d(1, 0, 0, 360deg) translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1));
         }
 
-        99% {
+        100% {
             top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
             left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-            transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) ) rotate3d(1, 0, 0, 0deg);
+            /* transform: rotate3d(1, 0, 0, calc(var(--hoverX) * 30deg)) translate3d(-50%, -50%, calc(var(--depth) * var(--random-seed) - var(--depth)/2)); */
+            /* transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) ) rotate3d(1, 0, 0, 0deg); */
+            /* transform: translate3d(-50%, -50%, calc((var(--depth) * var(--random-seed) - var(--depth) / 2))) rotateX(calc( var(--hoverY) * 90deg * 2 - 90deg )); */
+        /* transform: translate3d(-50%, -50%, calc((var(--depth) * var(--random-seed) - var(--depth) / 2))) rotate3d(1, 0, 0, calc( var(--hoverY) / var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor) )); */
         }
     }
 </style>

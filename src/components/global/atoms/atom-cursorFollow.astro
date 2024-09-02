@@ -9,14 +9,11 @@
 
   const cursors = document.querySelectorAll('.cursor-follow')
 
-
   const followCursor = (element) => {
 
     window.addEventListener("mousemove", (e) => {
       const posX = e.clientX / window.innerWidth
       const posY = e.clientY / window.innerHeight
-
-      console.log(posY)
 
       gsap.to(element, {
           "--mouseX": posX,
@@ -26,7 +23,6 @@
       })
     })
   }
-
 
   cursors.forEach((cursor) => followCursor(cursor))
 
