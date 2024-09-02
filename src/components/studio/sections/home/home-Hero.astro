@@ -21,7 +21,7 @@ const iconText = replaceStringIcons(heading)
     </div>
     <div class="section-media">
         {projects.map((projectCard, i) => (
-            <div class="project-card" data-index={i} data-project={projectCard.project.slug.current}>
+            <div class="project-card" data-index={i} data-project={projectCard.project.slug.current} style={`--index: ${i};`}>
                 <AtomSanityImage 
                     sizes="50vw"
                     image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
@@ -33,7 +33,8 @@ const iconText = replaceStringIcons(heading)
 </section>
 
 <script>
-    import { fadeUp, gsap, addParallax } from "../../../global/utils/gsap"
+    import { isMobileBreakpoint } from "../../../global/utils/check-device"
+import { fadeUp, gsap, addParallax } from "../../../global/utils/gsap"
 
     import { 
         Scene,
@@ -58,7 +59,7 @@ const iconText = replaceStringIcons(heading)
     const projectCards = section.querySelectorAll('.project-card')
     let container = section.getBoundingClientRect()
 
-    const _cameraDistance = 10
+    const _cameraDistance = 500
     let cameraFOV = Math.atan( container.height / 2 / _cameraDistance ) * 2 * (180 / Math.PI)
 
     const animate = () => {
@@ -68,36 +69,53 @@ const iconText = replaceStringIcons(heading)
     }
 
     const animateLoad = () => {
+
+        const _spreadFactor = 0.3
+        const _maxDepth = 300
+        const _parallaxFactor = 50
+
         const animTimeline = gsap.timeline({ defaults: { duration: 2, ease: "cubic"}})
         animTimeline.from(imageGroup.position, {
-            y: -10,
+            y: -container.height,
         })
         animTimeline.to(imageGroup.rotation, {
-            x: Math.PI * 2
-        }, ">")
-        // animTimeline.to(imageGroup.rotation, {
-        //     x: - Math.PI * 2
-        // }, ">")
-        animTimeline.to(meshPositions, {
-            x: "random(-8, 8)",
-            y: "random(-8, 8)",
-            z: "random(-4, 4)",
-            // stagger: 0.05
-        }, "<")
+            x: Math.PI * 2,
+            ease: 'power4.inOut'
+        }, "<+=0.0")
+
+        for ( let i = 0; i < meshPositions.length; i++) {
+            animTimeline.to(meshPositions[i], {
+                x: Math.sin( Math.PI * i / meshPositions.length * 2 ) * window.innerWidth * _spreadFactor,
+                y: Math.cos( Math.PI * i / meshPositions.length * 2 ) * window.innerHeight * _spreadFactor,
+                z: `random(-${_maxDepth / 2}, ${_maxDepth / 2})`,
+            }, i === 0 ? "<+=0.8" : "<+=0.05")
+        }
+
+        if (!isMobileBreakpoint) {
+            window.addEventListener("mousemove", (e) => {
+                gsap.to(camera.position, {
+                    x: e.clientX / window.innerWidth * _parallaxFactor,
+                    y: - e.clientY / window.innerHeight * _parallaxFactor,
+                    ease: 'cubic',
+                    duration: 1.2
+                })
+            })
+        }
     }
 
     const initImages = async () => {
 
         imageGroup = new Group()
+        imageGroup.position.y = 0
         const loader = new TextureLoader()
 
         const texturePromises = []
 
         projectCards.forEach((card, i) => {
 
-            const _width = 10
+            const _width = 100
             const _subdivisions = 20
-            const _stackDistance = 0.1
+            const _stackDistance = 20
             const _projectCount = projectCards.length
             
             texturePromises.push( new Promise((resolve, reject) => {
@@ -128,17 +146,9 @@ const iconText = replaceStringIcons(heading)
         })
 
         Promise.all(texturePromises).then((meshes) => {
-
-
-            const testGeo = new PlaneGeometry(10, 10, 10, 10)
-            const testMat = new MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true})
-            const testMesh = new Mesh(testGeo, testMat)
-            scene.add(testMesh)
-
-
             meshPositions = meshes.map((mesh) => mesh.position)
             scene.add(imageGroup)
-            // animateLoad()
+            animateLoad()
         })
 
     }
@@ -146,23 +156,28 @@ const iconText = replaceStringIcons(heading)
 
     const initScene = () => {
         scene = new Scene();
-        camera = new PerspectiveCamera( 75, cameraFOV, 0.1, 1000 );
+
+        camera = new PerspectiveCamera( cameraFOV, container.width / container.height, 0.1, 1000 );
+        camera.position.z = _cameraDistance
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
         renderer.setAnimationLoop( animate );
-
+        renderer.setPixelRatio(window.devicePixelRatio)
         renderer.setSize( container.width, container.height );
-        canvas.appendChild( renderer.domElement );
+        renderer.colorSpace = LinearSRGBColorSpace
 
-        camera.position.z = _cameraDistance
+        canvas.appendChild( renderer.domElement );
 
         initImages()
     }
 
     const handleResize = () => {
         container = section.getBoundingClientRect()
+        // cameraFOV = Math.atan( container.height / 2 / _cameraDistance ) * 2 * (180 / Math.PI)
         renderer.setSize( container.width, container.height );
         camera.fov = cameraFOV
+        camera.aspect = container.width / container.height
+        camera.updateProjectionMatrix();
     }
 
     window.addEventListener("preload:complete", () => {

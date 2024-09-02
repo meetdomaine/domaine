@@ -72,14 +72,14 @@ const partners = brand.toLowerCase() === "studio" ? allPartners_Studio : allPart
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        gap: var(--space-xl);
+        gap: var(--space-lg);
     }
 
     .section-title {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        max-width: 40em;
+        flex: 0 1 40em;
         gap: var(--space-sm);
     }
 
@@ -92,7 +92,7 @@ const partners = brand.toLowerCase() === "studio" ? allPartners_Studio : allPart
         flex-direction: column;
         align-items: stretch;
         /* max-width: 30em; */
-        flex-basis: clamp(25em, 25%, 32em);
+        flex: 0 0 clamp(28em, 40%, 40em);
         gap: var(--space-md);
     }
 

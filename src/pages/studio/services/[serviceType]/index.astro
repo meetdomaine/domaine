@@ -3,13 +3,14 @@ import { sanityClient } from "sanity:client"
 import LayoutStudio from "../../../../layouts/Layout-Studio.astro"
 import SectionServiceTypeHero from "../../../../components/global/services/serviceType-Hero.astro"
 import SectionServiceGroupFeature from "../../../../components/global/services/serviceGroup-Feature.astro"
-import { blogCardFields, projectGridFields } from "../../../../components/global/utils/cms-queries"
+import { blogCardFields, projectGridFields, serviceTypePageQuery } from "../../../../components/global/utils/cms-queries"
 import GlobalProjectsGrid from "../../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
 import { allServiceTypes_Studio } from "../../../../components/global/utils/cms-content"
+import GlobalSections from "../../../../components/global/sections/section-GlobalSections.astro"
 
 export async function getStaticPaths() {
-    const serviceTypes = allServiceTypes_Studio
+    const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && '/studio' in agencyBrands[]->slug.current ]{${serviceTypePageQuery}} | order(orderRank)`)
     return serviceTypes.map((serviceType) => {
         return {
             params: { serviceType: serviceType.slug.current },
@@ -35,14 +36,18 @@ const { content } = Astro.props;
         serviceType={content}
     />
 
-    {content.serviceGroups.map((serviceGroup) => (
+    <!-- {content.serviceGroups.map((serviceGroup) => (
         <SectionServiceGroupFeature 
             brand="studio"
             serviceGroup={serviceGroup}
         />
+    ))} -->
+
+    {content.pageSectionsStudio && content.pageSectionsStudio.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} />
     ))}
 
-    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
+    <!-- {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
             posts={content.relatedBlogPosts}
@@ -54,6 +59,6 @@ const { content } = Astro.props;
             heading={`${content.title} Work`}
             projects={content.relatedProjects}
         />
-    }
+    } -->
 
 </LayoutStudio>

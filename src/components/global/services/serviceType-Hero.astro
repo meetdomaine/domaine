@@ -1,19 +1,54 @@
 ---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 const { serviceType, brand } = Astro.props
-// console.log(serviceType)
-// console.log(serviceType.pageSectionsDomaine)
 ---
 <section class="service-type-hero" data-color-scheme="brand-02">
-    <!-- <a class="h5" href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services</a> -->
      <div class="section-title">
-         <p class="service-exerpt h5">{serviceType.excerpt}</p>
+         <p class="service-excerpt h5">{serviceType.excerpt}</p>
          <h1 class="service-title title-xl">{serviceType.title}</h1>
+        <div class="section-media">
+            {serviceType.images.map((image) => (
+                <div class="service-image">
+                    <AtomSanityImage 
+                        sizes="30vw"
+                        image={image.image}
+                    />
+                </div>
+            ))}
+        </div>
     </div>
     <div class="section-content">
         <p class="service-eyebrow utility">{serviceType.excerpt}</p>
         <p class="service-description h4">{serviceType.description}</p>
     </div>
 </section>
+
+<script>
+import { gsap } from "../utils/gsap"
+
+    const sections = document.querySelectorAll('.service-type-hero')
+    sections.forEach((section) => {
+        const timeline = gsap.timeline({ duration: 0.3, ease: 'cubic'})
+        const images = section.querySelectorAll('.service-image')
+
+        timeline.to(images, {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            stagger: 1,
+            duration: 0.4
+        })
+
+        window.addEventListener("mousemove", (e) => {
+            const movementFactor = 0.2
+            const posX = ((e.clientX / window.innerWidth) * 200 - 100) * movementFactor
+            const posY = ((e.clientY / window.innerHeight) * 200 - 100) * movementFactor
+            gsap.to(images, {
+                translate: `${posX}% ${posY}%`,
+                stagger: 0.05,
+                duration: 0.4
+            })
+        })
+    })
+</script>
 
 <style>
     .service-type-hero {
@@ -24,6 +59,7 @@ const { serviceType, brand } = Astro.props
         justify-content: center;
         align-items: center;
         gap: var(--space-xl);
+        position: relative;
     }
 
     .section-title,
@@ -40,17 +76,54 @@ const { serviceType, brand } = Astro.props
         min-height: 80svh;
     }
 
-    /* .service-title {
-        font-size: 16vw;
-    } */
+    .service-title,
+    .service-excerpt {
+        z-index: 2;
+        /* font-size: 16vw; */
+    }
 
     .section-content {
         gap: var(--space-md);
     }
 
-    .service-exerpt,
+    .service-excerpt,
     .service-description {
         text-align: center;
         max-width: 22em;
+    }
+
+    .section-media {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100lvh;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 0;
+    }
+
+    .service-image {
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        flex: 0 1 15%;
+        clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100% );
+    }
+
+    .service-image:nth-child(3n + 1) {
+        /* align-self: flex-end; */
+        /* translate: 0 10vh; */
+    }
+
+    .service-image:nth-child(3n + 2) {
+        /* translate: 10vw -20vh; */
+        transform: translate(10vw -20vh;);
+    }
+
+    .service-image:nth-child(3n + 3) {
+        /* align-self: flex-start; */
+        /* translate: 0 20vh; */
     }
 </style>
