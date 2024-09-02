@@ -49,8 +49,8 @@ const iconText = replaceStringIcons(heading)
     const projectCards = section.querySelectorAll('.project-card')
     let container = section.getBoundingClientRect()
 
-    let mouseX = 0
-    let mouseY = 0
+    let mouseX = 0.5
+    let mouseY = 0.5
 
     const updateVariables = () => {
         section.style = `
@@ -69,7 +69,7 @@ const iconText = replaceStringIcons(heading)
     updateVariables()
 
     window.addEventListener("preload:complete", () => {
-        
+        projectCards.forEach((projectCard) => projectCard.style.animationPlayState = "running")
     })
 
 </script>
@@ -307,6 +307,9 @@ const iconText = replaceStringIcons(heading)
         --depth: 400px;
         --parallax-factor: 20deg;
         --spread-factor: 0.75;
+        --entrance-duration: 3s;
+        --entrance-depth-factor: 0.05;
+        --entrance-easing: cubic-bezier(0.83, 0, 0.17, 1);
         position: relative;
         flex: 1 0 100%;
         z-index: 0;
@@ -314,7 +317,8 @@ const iconText = replaceStringIcons(heading)
         perspective: var(--depth);
         transform: rotateX(calc( var(--mouseY) * var(--parallax-factor) * 2 - var(--parallax-factor) )) rotateY(calc( var(--mouseX) * var(--parallax-factor) * 2 - var(--parallax-factor) )) translateZ(calc(var(--depth) / 2 * -1));
         transform-style: preserve-3d;
-        transition: transform var(--anim-md);
+        transition: all var(--anim-md);
+        animation-play-state: paused;
     }
 
 
@@ -322,6 +326,8 @@ const iconText = replaceStringIcons(heading)
     .project-card {
         --index-of-total: calc(var(--index) / var(--image-count));
         position: absolute;
+        /* top: 150%;
+        left: 50%; */
         left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
         top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
         transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) );
@@ -329,21 +335,34 @@ const iconText = replaceStringIcons(heading)
         width: 12%;
         border-radius: var(--radius-sm);
         overflow: hidden;
+        animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal both paused;
     }
+
+    /* .project-card[data-animation-playing="true"] {
+        animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal forwards;
+    } */
 
     .project-card:hover {
         opacity: 0.2;
     }
 
-    .project-info {
-        /* position: absolute;
-        left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) ); */
-    }
+    @keyframes image-card-enter {
+        0% {
+            top: 150%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1)) rotate3d(1, 0, 0, 360deg);
+        }
 
-    /* #three-canvas {
-        position: absolute;
-        inset: 0;
-    } */
+        50% {
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1)) rotate3d(1, 0, 0, 360deg);
+        }
+
+        99% {
+            top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
+            left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
+            transform: translate3d(-50%, -50%, calc( (var(--depth) * var(--random-seed) - var(--depth) / 2) ) ) rotate3d(1, 0, 0, 0deg);
+        }
+    }
 </style>
