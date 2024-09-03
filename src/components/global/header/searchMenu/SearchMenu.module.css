@@ -7,10 +7,13 @@
 }
 
 input[type="search"].input {
+    /* rotate: 3deg; */
+    /* color: var(--color-foreground); */
+    /* padding-inline: 0; */
     border: none;
     padding-block: 0.3em;
-    height: auto;
-    max-width: 30rem;/
+    height: var(--header-element-height);
+    max-width: 30rem;
 }
 
 .results {

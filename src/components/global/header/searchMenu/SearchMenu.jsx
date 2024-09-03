@@ -109,10 +109,9 @@ export default function SearchMenu(props) {
                 return setter(null)
             }
 
-            await getFilteredResults('case-study', setProjectResults)
-            await getFilteredResults('blog-post', setBlogResults, 3)
-            // await getFilteredResults('service', setServiceResults)
-            await getFilteredResults('partner', setPartnerResults)
+            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'case-study_studio' : 'case-study_domaine', setProjectResults, 4)
+            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine', setBlogResults, 3)
+            await getFilteredResults('partner', setPartnerResults, 5)
             await getFilteredResults('project-feature', setFeatureResults, 10)
 
             console.log(partnerResults())
@@ -138,14 +137,6 @@ export default function SearchMenu(props) {
                 oninput={handleInput}
                 // value={query()}
             />
-
-            <Show when={!query()}>
-                <h5>Recently Featured</h5>
-            </Show>
-{/* 
-            {query() && !projectResults() ? 
-                <h5>No Results</h5> : <p>OK</p>} */}
-                
 
             <div class={styles.results}>
 
@@ -217,19 +208,6 @@ export default function SearchMenu(props) {
                         }
                     </div>
                 </div>
-
-                {/* <div class={styles.resultsColumn}>
-                    <p>Services</p>
-                    {serviceResults() ? 
-                        <For each={serviceResults()}>{result => 
-                            <a href={result.url} class="h6">{result.meta.title}</a>
-                        }</For>
-                    :
-                        <For each={props.defaultServices}>{service => 
-                            <BlogCard url={'#'} title={"test"} />
-                        }</For>
-                    }
-                </div> */}
 
                 <div class={styles.resultsColumn}>
                     <p class={styles.columnTitle}>Partners</p>

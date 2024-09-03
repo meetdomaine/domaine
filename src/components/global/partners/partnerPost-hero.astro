@@ -2,14 +2,14 @@
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
 
-const { title, excerpt, tier, logo, websiteUrl } = Astro.props
+const { title, excerpt, tier, icon, websiteUrl } = Astro.props
 ---
 <section class="partner-hero">
   <p>{tier.title}</p>
   <h1 data-pagefind-meta="title">{title}</h1>
   <p data-pagefind-meta="excerpt">{excerpt}</p>
   <AtomSanityImage 
-    image={logo.image}
+    image={icon.image}
     sizes="30vw"
     pagefindMeta="image[src], image_alt[alt]"
   />

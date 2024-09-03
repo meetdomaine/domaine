@@ -15,10 +15,10 @@ import AtomCloseButton from "../../atoms/atom-closeButton.astro"
 
 const { currentBrand } = Astro.props
 
-const defaultBlogPosts = currentBrand.slug.current === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
-const defaultProjects = currentBrand.slug.current === "studio" ? allProjects_Studio : allProjects_Domaine
-const defaultProjectFeatures = currentBrand.slug.current === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
-const defaultPartners = currentBrand.slug.current === "studio" ? allPartners_Studio : allPartners_Domaine
+const defaultBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const defaultProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
+const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
+const defaultPartners = currentBrand.slug.current === "/studio" ? allPartners_Studio : allPartners_Domaine
 ---
 <dialog popover id="search-menu" class="search-menu" data-color-scheme="default" data-lenis-prevent>
     <div class="close-button">
@@ -31,7 +31,8 @@ const defaultPartners = currentBrand.slug.current === "studio" ? allPartners_Stu
         defaultBlogPosts={defaultBlogPosts.slice(0, 3)}
         defaultProjects={defaultProjects.slice(0, 4)}
         defaultFeatures={defaultProjectFeatures.slice(0, 8)}
-        defaultPartners={defaultPartners.slice(0, 6)}
+        defaultPartners={defaultPartners.slice(0, 5)}
+        currentBrand={currentBrand}
     />
 </dialog>
 
