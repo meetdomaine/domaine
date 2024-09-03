@@ -6,13 +6,18 @@ import { paths } from "../utils/paths"
 const { title, heroMedia } = Astro.props
 ---
 <section class="work-post_hero">
-    <h1 id="project-title" class="project-title">{title}</h1>
+    <h1 
+        id="project-title" 
+        class="project-title" 
+        data-pagefind-meta="title"
+    >{title}</h1>
     <div id="hero-media" class="section-media">
         <AtomSanityMedia 
             image={heroMedia.image}
             video={heroMedia.video}
             cover={true}
             sizes="100vw"
+            pagefindMeta="image[src]"
         />
     </div>
 </section>

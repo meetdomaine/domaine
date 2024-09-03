@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components"
+
+const { popoverTarget } = Astro.props
+---
+<button class="close-button button-reset" popovertarget={popoverTarget}>
+  <Icon class="close-icon" name="icon-x" />
+</button>
+
+<style>
+  .close-button {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1 / 1;
+    background-color: var(--color-background-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+</style>

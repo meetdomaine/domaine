@@ -1,0 +1,26 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+
+const { title, excerpt, tier, logo, websiteUrl } = Astro.props
+---
+<section class="partner-hero">
+  <p>{tier.title}</p>
+  <h1 data-pagefind-meta="title">{title}</h1>
+  <p data-pagefind-meta="excerpt">{excerpt}</p>
+  <AtomSanityImage 
+    image={logo.image}
+    sizes="30vw"
+    pagefindMeta="image[src], image_alt[alt]"
+  />
+  {websiteUrl && 
+    <a href={websiteUrl} target="_blank">{websiteUrl}</a>
+  }
+</section>
+
+<style>
+  .partner-hero {
+    padding-top: var(--header-height);
+    padding-inline: var(--page-margin);
+  }
+</style>

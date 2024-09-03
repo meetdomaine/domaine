@@ -11,6 +11,7 @@ import {
     allPartners_Studio,
     allPartners_Domaine,
 } from "../../utils/cms-content"
+import AtomCloseButton from "../../atoms/atom-closeButton.astro"
 
 const { currentBrand } = Astro.props
 
@@ -19,14 +20,16 @@ const defaultProjects = currentBrand.slug.current === "studio" ? allProjects_Stu
 const defaultProjectFeatures = currentBrand.slug.current === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
 const defaultPartners = currentBrand.slug.current === "studio" ? allPartners_Studio : allPartners_Domaine
 ---
-<dialog popover id="search-menu" class="search-menu">
-    <button class="close-button" popovertarget="search-menu">
-        <Icon class="icon close-icon" name="pixel_x" />
-    </button>
+<dialog popover id="search-menu" class="search-menu" data-color-scheme="default" data-lenis-prevent>
+    <div class="close-button">
+        <AtomCloseButton 
+            popoverTarget="search-menu"
+        />
+    </div>
     <SearchMenu 
         client:only="solid-js"
         defaultBlogPosts={defaultBlogPosts.slice(0, 3)}
-        defaultProjects={defaultProjects.slice(0, 3)}
+        defaultProjects={defaultProjects.slice(0, 4)}
         defaultFeatures={defaultProjectFeatures.slice(0, 8)}
         defaultPartners={defaultPartners.slice(0, 6)}
     />
@@ -35,53 +38,48 @@ const defaultPartners = currentBrand.slug.current === "studio" ? allPartners_Stu
 <style>
 
     .search-menu {
-        margin: var(--space-md);
-        width: calc(100% - var(--space-md) * 2);
-        height: calc(100% - var(--space-md) * 2);
-        color: var(--color-foreground);
-        background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border-radius: var(--radius-lg);
+        /* position: relative; */
+        display: flex;
+        width: 100%;
         border: none;
         padding: var(--space-md);
-        max-height: 0%;
-        opacity: 0;
-        transition: opacity var(--anim-md), max-height var(--anim-md), display var(--anim-md) allow-discrete;
-        display: flex;
+        transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
         flex-direction: column;
-        /* align-items: stretch; */
         gap: var(--space-md);
-        display: none;
+        translate: 0 -100%;
+        overflow-y: auto;
     }
 
     .search-menu:popover-open {
-        opacity: 1;
-        max-height: 100%;
-        display: flex;
+        translate: 0 0;
     }
 
     .search-menu::backdrop {
         background-color: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+        backdrop-filter: blur(2px);
+        transition: opacity var(--anim-md);
+        opacity: 0;
+    }
+
+    .search-menu:popover-open::backdrop {
+        opacity: 1;
     }
 
     @starting-style {
         .search-menu:popover-open {
+            display: flex;
+        }
+
+        .search-menu:popover-open::backdrop {
             opacity: 0;
-            max-height: 0%;
         }
     }
 
     .close-button {
-        padding: 0;
-        min-width: unset;
-        background-color: transparent;
-        align-self: flex-end;
-        color: currentColor;
+        position: absolute;
+        top: var(--page-margin);
+        right: var(--page-margin);
+        height: var(--header-element-height);
     }
 
-    .close-icon {
-        width: var(--icon-md);
-        height: var(--icon-md);
-    }
 </style>

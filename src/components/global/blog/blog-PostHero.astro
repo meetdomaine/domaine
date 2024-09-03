@@ -8,10 +8,15 @@ const { post } = Astro.props
 <section class="blog-post-hero">
 
     <div class="section-content">
-        <h1 class="h2">{post.title}</h1>
+        <h1 
+            class="h2"
+            data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
+        >{post.title}</h1>
         <AtomTag 
             title="Category"
             text={post.category.title}
+            pagefindMetaText="categoryTitle"
+            pagefindMetaUrl="categoryUrl[href]"
             url={`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}
         />
         <h6>{post.excerpt}</h6>
@@ -31,9 +36,9 @@ const { post } = Astro.props
 
     <div class="section-media">
         <AtomSanityImage 
-            data-pagefind-meta="image[src], image_alt[alt]"
             image={post.thumbnailImage.image}
             sizes="50vw"
+            pagefindMeta="image[src], image_alt[alt]"
         />
     </div>
 

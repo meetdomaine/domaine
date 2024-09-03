@@ -16,9 +16,10 @@ interface Props {
   aspectRatio?: number,
   alt?: string,
   transitionName?: string,
+  pagefindMeta?: string,
 }
 
-const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, videoWidth, videoHeight, transitionName } = Astro.props;
+const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, videoWidth, videoHeight, transitionName, pagefindMeta } = Astro.props;
 // console.log(video)
 ---
 
@@ -48,6 +49,7 @@ const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, 
         cover={cover}
         contain={contain}
         alt={alt}
+        pagefindMeta={pagefindMeta}
     />
     : <p>NO MEDIA</p>
 }
@@ -76,7 +78,7 @@ const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, 
           playButton.dataset.active = "true"
         }
       })
-      console.log(playButton)
+      // console.log(playButton)
     }
     // console.log(muxVideo)
   }
