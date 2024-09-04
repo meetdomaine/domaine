@@ -2,6 +2,7 @@
 import LayoutStudio from '../../../../layouts/Layout-Studio.astro';
 import { paths } from '../../../../components/global/utils/paths';
 import { allBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
+import BlogPostHero from '../../../../components/global/blog/blog-PostHero.astro';
 
 export async function getStaticPaths() {
     const posts = allBlogPosts_Studio
@@ -25,19 +26,8 @@ const { content } = Astro.props;
     searchFilter="type:blog-post_studio"
     activePath="/studio/insights"
 >
-    <a href={`${paths.root.blog.path}/${content.category.slug.current}`}><h6>{content.category.title}</h6></a>
-    <h1>{content.title}</h1>
-    <h6>{content.excerpt}</h6>
-
-    <h6>Date:</h6>
-    <p>{content.postDate}</p>
-
-    <h6>Category:</h6>
-    <p>{content.category.title}</p>
-
-    <h6>Authors:</h6>
-    {content.authors.map((author) => (
-        <p>{author.name}</p>
-        <p>{author.role}</p>
-    ))}
+    <BlogPostHero
+        post={content}
+    />
+    
 </LayoutStudio>

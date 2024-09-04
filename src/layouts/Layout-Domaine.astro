@@ -13,9 +13,10 @@ interface Props {
     foregroundColor?: string;
     searchFilter?: string;
     activePath?: string;
+    searchExposed?: boolean,
 }
 
-const { title, description, image, searchFilter, activePath } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed } = Astro.props;
 
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
 ---
@@ -30,6 +31,7 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     <Header
         currentBrand={currentBrand}
         activePath={activePath}
+        searchExposed={searchExposed}
     />
     <main>
         <slot />

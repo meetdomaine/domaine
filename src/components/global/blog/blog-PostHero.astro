@@ -7,56 +7,111 @@ const { post } = Astro.props
 ---
 <section class="blog-post-hero">
 
-    <div class="section-content">
-        <h1 
-            class="h2"
-            data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
-        >{post.title}</h1>
-        <AtomTag 
-            title="Category"
-            text={post.category.title}
-            pagefindMetaText="categoryTitle"
-            pagefindMetaUrl="categoryUrl[href]"
-            url={`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}
-        />
-        <h6>{post.excerpt}</h6>
-
-        <AtomTag 
-            title="Published"
-            text={post.postDate}
-        />
-
-        <h6>Authors:</h6>
-        {post.authors.map((author) => (
-            <GlobalAuthorTile 
-                author={author}
-            />
-        ))}
-    </div>
 
     <div class="section-media">
         <AtomSanityImage 
             image={post.thumbnailImage.image}
             sizes="50vw"
             pagefindMeta="image[src], image_alt[alt]"
+            aspectRatio={3 / 4}
+            cover={true}
         />
     </div>
+
+    <div class="section-content">
+        <h1 
+            class="post-title h2"
+            data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
+        >{post.title}</h1>
+
+        <div class="post-info">
+            <div class="post-details">
+                
+                <AtomTag 
+                    text={post.category.title}
+                    pagefindMetaText="categoryTitle"
+                    pagefindMetaUrl="categoryUrl[href]"
+                    url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}
+                />
+
+                <p class="caption">{post.postDate}</p>
+
+                <span class="post-authors">
+                    <span class="caption">by:</span>
+                    {post.authors.map((author, i) => (
+                        <span class="caption">{author.name}{i < post.authors.length - 1 ? ", " : ""}</span>
+                        // <GlobalAuthorTile 
+                        //     author={author}
+                        // />
+                    ))}
+                </span>
+            </div>
+            <h6>{post.excerpt}</h6>
+
+        </div>
+
+    </div>
+
 
 </section>
 
 <style>
     .blog-post-hero {
-        padding-inline: var(--page-margin);
-        padding-block: var(--header-height) var(--space-lg);
         display: flex;
         flex-direction: row;
-        gap: var(--space-lg);
+        height: 90svh;
+    }
+
+    .section-media {
+        aspect-ratio: 3 / 4;
+        flex: 0 0 auto;
+        max-height: 100%;
+        max-width: 50%;
     }
 
     .section-content {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        max-width: 40em;
+        justify-content: space-between;
+        padding-inline: var(--page-margin);
+        padding-block: calc(var(--header-height) + var(--space-md)) var(--space-lg);
+        flex: 1 1 auto;
+        /* max-width: 40em; */
+    }
+
+    .post-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .post-details {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xl);
+    }
+
+    @media screen and ( width <= 768px) {
+        .blog-post-hero {
+            flex-direction: column-reverse;
+            gap: var(--space-lg);
+            align-items: stretch;
+            height: auto;
+            padding-block: var(--header-height) 0;
+        }
+
+        .section-media {
+            max-height: unset;
+            max-width: unset;
+        }
+
+        .section-content {
+            justify-content: flex-start;
+            padding-inline: var(--page-margin);
+            padding-block: 0;
+            flex: 0 0 auto;
+        }
     }
 </style>

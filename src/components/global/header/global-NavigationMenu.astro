@@ -1,8 +1,14 @@
 ---
 import { Icon } from "astro-icon/components"
-const { brands, brandIndex, links, activePath } = Astro.props
+const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
 ---
-<div id="navigation-menu" class="navigation" data-color-scheme="glass-dark">
+<div 
+    id="navigation-menu" 
+    class="navigation" 
+    data-color-scheme="glass-dark" 
+    data-visible={searchExposed ? "true" : "false"}
+    data-default-visible={searchExposed ? "true" : "false"}
+>
 
     <!-- <div class="brand-cards--mobile">
         {brands.map((brand, i) => {
@@ -50,9 +56,16 @@ const { brands, brandIndex, links, activePath } = Astro.props
         if (menu) {
 
             if (document.documentElement.scrollTop < previousScroll) {
-                menu.dataset.scrolled = "false"
+                if (menu.dataset.defaultVisible === "true") {
+                    menu.dataset.visible = "true"
+                    
+                } else {
+                    if (document.documentElement.scrollTop >= 300) {
+                        menu.dataset.visible = "true"
+                    }
+                }
             } else {
-                menu.dataset.scrolled = "true"
+                menu.dataset.visible = "false"
             }
         }
         previousScroll = document.documentElement.scrollTop
@@ -143,7 +156,7 @@ const { brands, brandIndex, links, activePath } = Astro.props
             transition: color var(--anim-md), background-color var(--anim-md);
         }
 
-        .navigation[data-scrolled="true"] .navigation-links {
+        .navigation[data-visible="false"] .navigation-links {
             background-color: transparent;
             color: var(--color-lightest);
         }
@@ -172,16 +185,16 @@ const { brands, brandIndex, links, activePath } = Astro.props
 
         .search-button {
             height: var(--header-element-height);
-            max-height: var(--header-element-height);
+            max-height: 0px;
             border-radius: 0 0 var(--radius-sm) var(--radius-sm);
             transition: max-height var(--anim-md), padding var(--anim-md), opacity var(--anim-md);
-            opacity: 1;
+            opacity: 0;
+            padding-block: 0;
         }
 
-        .navigation[data-scrolled="true"] .search-button {
-            max-height: 0px;
-            padding-block: 0;
-            opacity: 0;
+        .navigation[data-visible="true"] .search-button {
+            max-height: var(--header-element-height);
+            opacity: 1;
         }
 
         .search-button em {

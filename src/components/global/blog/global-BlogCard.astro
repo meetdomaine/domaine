@@ -12,7 +12,7 @@ interface Props {
 
 const { title, thumbnailImage, slug, category, agencyBrand } = Astro.props
 
-const categoryUrl = `${agencyBrand.slug.current == 'studio' ? '/studio' : ''}/insights/${category.slug.current}`
+const categoryUrl = `${agencyBrand.slug.current == '/studio' ? '/studio' : ""}/insights/${category.slug.current}`
 const postUrl = `${categoryUrl}/${slug.current}`
 ---
 <article class="blog-card" data-pagefind-ignore>

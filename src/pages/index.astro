@@ -13,6 +13,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
 <LayoutDomaine
     title="Home"
     searchFilter="type:page"
+    searchExposed={true}
 >
     <HomeHero
         eyebrow={pageSettings.eyebrow}

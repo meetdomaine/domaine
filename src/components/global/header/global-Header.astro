@@ -3,12 +3,29 @@ import { Icon } from "astro-icon/components";
 import { sanityClient } from "sanity:client";
 import { imageFields, videoFields } from "../utils/cms-queries";
 import ContactMenu from "./global-ContactMenu.astro";
-import SearchMenu from "./searchMenu/global-SearchMenu.astro";
+// import SearchMenu from "./searchMenu/global-SearchMenu.astro";
 import NavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
 import NotificationMenu from "./global-NotificationMenu.astro";
 
-const { currentBrand, activePath } = Astro.props;
+const { currentBrand, activePath, searchExposed } = Astro.props;
+
+import SearchMenu from "./searchMenu/SearchMenu"
+import { 
+    allBlogPosts_Domaine, 
+    allBlogPosts_Studio,
+    allProjects_Domaine,
+    allProjects_Studio,
+    allProjectFeatures_Domaine,
+    allProjectFeatures_Studio,
+    allPartners_Studio,
+    allPartners_Domaine,
+} from "../utils/cms-content"
+
+const defaultBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const defaultProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
+const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
+const defaultPartners = currentBrand.slug.current === "/studio" ? allPartners_Studio : allPartners_Domaine
 
 const headerSettings = await sanityClient.fetch(`
     *[_type == "settings_header" 
@@ -45,6 +62,7 @@ const headerSettings = await sanityClient.fetch(`
         <NavigationMenu 
             links={headerSettings.navigationLinks.links}
             activePath={activePath}
+            searchExposed={searchExposed}
         />
 
         <div id="utility-menu" class="utility-menu">
@@ -65,7 +83,17 @@ const headerSettings = await sanityClient.fetch(`
         subheading={headerSettings.brandMenuSubheading}
     />
     <ContactMenu hubspotFormId={headerSettings.hubspotFormId} forms={headerSettings.contactForms} />
-    <SearchMenu currentBrand={currentBrand} />
+    <!-- <SearchMenu currentBrand={currentBrand} /> -->
+
+    <SearchMenu 
+        client:only="solid-js"
+        defaultBlogPosts={defaultBlogPosts.slice(0, 3)}
+        defaultProjects={defaultProjects.slice(0, 4)}
+        defaultFeatures={defaultProjectFeatures.slice(0, 8)}
+        defaultPartners={defaultPartners.slice(0, 5)}
+        currentBrand={currentBrand}
+    />
+
     <NotificationMenu 
         showPromoMessage={headerSettings.showPromoMessage}
         promoMessage={headerSettings.promoMessage}

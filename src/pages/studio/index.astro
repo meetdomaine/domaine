@@ -30,6 +30,7 @@ const pageSettings = await sanityClient.fetch(`
     theme="dark"
     title="Home"
     searchFilter="type:page"
+    searchExposed={true}
 >
     <HomeHero 
         eyebrow={pageSettings.eyebrow}

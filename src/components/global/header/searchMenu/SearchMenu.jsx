@@ -1,7 +1,6 @@
 import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
 import { urlFor } from '../../utils/cms-queries';
-import AtomSanityImage from '../../atoms/atom-sanityImage.astro';
 
 function ProjectCard(props) {
     return (
@@ -64,28 +63,37 @@ function PartnerCard(props) {
     )
 }
 
-export default function SearchMenu(props) {
+function SearchIcon() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-4.5-4.5m1.5-3.75a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"/>
+        </svg>
+    )
+}
 
-    // console.log(props)
+function CloseIcon() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M15 3 3 15M3 3l12 12"/>
+        </svg>
+    )
+}
+
+export default function SearchMenu(props) {
 
     const [ pageFind, setPageFind ] = createSignal(null)
     const [ query, setQuery ] = createSignal(null)
-
     const [ projectResults, setProjectResults ] = createSignal(null)
     const [ blogResults, setBlogResults ] = createSignal(null)
     const [ partnerResults, setPartnerResults ] = createSignal(null)
-    const [ serviceResults, setServiceResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
-    const [ pageResults, setPageResults ] = createSignal(null)
 
     const clearResults = () => {
         setQuery(null)
         setProjectResults(null)
         setBlogResults(null)
         setPartnerResults(null)
-        setServiceResults(null)
         setFeatureResults(null)
-        setPageResults(null)
     }
 
     const handleInput = (e) => {
@@ -128,115 +136,156 @@ export default function SearchMenu(props) {
     })
 
     return (
-        <div class={styles.searchMenu}>
-            <input 
-                autofocus 
-                type="search" 
-                class={`${styles.input} h4`} 
-                placeholder="Search"
-                oninput={handleInput}
-                // value={query()}
-            />
+
+        <dialog popover id="search-menu" class={styles.searchMenu} data-color-scheme="default" data-lenis-prevent>
+
+            {/* Search Input */}
+            <div class={styles.menuControls} data-color-scheme="glass-light">
+                
+                <div class={styles.searchInput}>  
+                    <input 
+                        autofocus 
+                        type="search" 
+                        class={`${styles.input} h4`} 
+                        placeholder="Search"
+                        oninput={handleInput}
+                    />
+                    <span class={styles.searchIcon}><SearchIcon /></span>
+                </div>
+
+                <button class={`${styles.closeIcon}`} popoverTarget='search-menu'>
+                    <CloseIcon />
+                </button>
+            </div>
 
             <div class={styles.results}>
 
-                <div class={styles.resultsColumn}>
-                    <p class={styles.columnTitle}>Projects</p>
-                    <div class={styles.projectsList}>
-                        {projectResults() ?
-                            <For each={projectResults()}>{result => 
-                                <ProjectCard 
-                                    url={result.url} 
-                                    title={result.meta.title} 
-                                    image={result.meta.image} 
-                                    alt={result.meta.image_alt} 
-                                />
-                            }</For>
-                        :
-                            <For each={props.defaultProjects}>{project => 
-                                <ProjectCard
-                                    url={`/work/${project.slug.current}`} 
-                                    title={project.title} 
-                                    image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
-                                    alt={project.thumbnailMedia.image.alt} 
+                {/* Projects */}
+                <Show when={!query() || (query() && projectResults() && projectResults().length > 0)}>
+                    <div class={styles.resultsColumn}>
+                        <p class={styles.columnTitle}>Projects</p>
+                        <div class={styles.projectsList}>
+
+                            {projectResults() ?
+                                <For each={projectResults()}>{result => 
+                                    <ProjectCard 
+                                        url={result.url} 
+                                        title={result.meta.title} 
+                                        image={result.meta.image} 
+                                        alt={result.meta.image_alt} 
                                     />
-                            }</For>
-                        }
-                    </div>
-                </div>
-
-                <div class={styles.resultsColumn}>
-                    <p class={styles.columnTitle}>Insights</p>
-                    <div class={styles.projectsList}>
-                        {blogResults() ? 
-                            <For each={blogResults()}>{result => 
-                                <BlogCard 
-                                    url={result.url} 
-                                    title={result.meta.title} 
-                                    categoryTitle={result.meta.categoryTitle}
-                                    categoryUrl={result.meta.categoryUrl}
-                                    image={result.meta.image} 
-                                    alt={result.meta.image_alt} 
-                                />
-                            }</For>
-                        :
-                            <For each={props.defaultBlogPosts}>{post => 
-                                <BlogCard 
-                                    url={`/insights/${post.category.slug.current}/${post.slug.current}`} 
-                                    title={post.title}
-                                    categoryTitle={post.category.title}
-                                    categoryUrl={`/insights/${post.category.slug.current}`}
-                                    image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} 
-                                    alt={post.thumbnailImage.image.alt} 
-                                />
-                            }</For>
-                        }
-                    </div>
-                </div>
-
-                <div class={styles.resultsColumn}>
-                    <p class={styles.columnTitle}>Features</p>
-                    <div class={styles.featuresList}>
-                        {featureResults() ? 
-                            <For each={featureResults()}>{result => 
-                                <FeatureCard url={result.url} title={result.meta.title} />
-                            }</For>
-                        :
-                            <For each={props.defaultFeatures}>{feature => 
-                                <FeatureCard url={`/work/features/${feature.slug.current}`} title={feature.title} />
-                            }</For>
-                        }
-                    </div>
-                </div>
-
-                <div class={styles.resultsColumn}>
-                    <p class={styles.columnTitle}>Partners</p>
-                    <div class={styles.partnersList}>
-                        {partnerResults() ?
-                            <For each={partnerResults()}>{result => 
-                                <PartnerCard 
-                                    url={result.url} 
-                                    title={result.meta.title} 
-                                    icon={result.meta.image}
-                                    alt={result.meta.image_alt} 
-                                    excerpt={result.meta.excerpt}
-                                />
-                            }</For>
+                                }</For>
                             :
-                            <For each={props.defaultPartners}>{partner => 
-                                <PartnerCard 
-                                    url={`/partners/${partner.slug.current}`} 
-                                    title={partner.title}
-                                    icon={urlFor(partner.icon.image).auto('format').width(300).height(300).url()}
-                                    alt={partner.icon.alt} 
-                                    excerpt={partner.excerpt}
-                                />
-                            }</For>
-                        }
+                                <For each={props.defaultProjects}>{project => 
+                                    <ProjectCard
+                                        url={`/work/${project.slug.current}`} 
+                                        title={project.title} 
+                                        image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
+                                        alt={project.thumbnailMedia.image.alt} 
+                                        />
+                                }</For>
+                            }
+                        </div>
                     </div>
-                </div>
+                </Show>
+
+                {/* Blog */}
+                <Show when={!query() || (query() && blogResults() && blogResults().length > 0)}>
+                    <div class={styles.resultsColumn}>
+                        <p class={styles.columnTitle}>Insights</p>
+                        <div class={styles.projectsList}>
+                            {blogResults() ? 
+                                <For each={blogResults()}>{result => 
+                                    <BlogCard 
+                                        url={result.url} 
+                                        title={result.meta.title} 
+                                        categoryTitle={result.meta.categoryTitle}
+                                        categoryUrl={result.meta.categoryUrl}
+                                        image={result.meta.image} 
+                                        alt={result.meta.image_alt} 
+                                    />
+                                }</For>
+                            :
+                                <For each={props.defaultBlogPosts}>{post => 
+                                    <BlogCard 
+                                        url={`/insights/${post.category.slug.current}/${post.slug.current}`} 
+                                        title={post.title}
+                                        categoryTitle={post.category.title}
+                                        categoryUrl={`/insights/${post.category.slug.current}`}
+                                        image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} 
+                                        alt={post.thumbnailImage.image.alt} 
+                                    />
+                                }</For>
+                            }
+                        </div>
+                    </div>
+                </Show>
+
+                {/* Features/ */}
+                <Show when={!query() || (query() && featureResults() && featureResults().length > 0)}>
+                    <div class={styles.resultsColumn}>
+                        <p class={styles.columnTitle}>Features</p>
+                        <div class={styles.featuresList}>
+                            {featureResults() ? 
+                                <For each={featureResults()}>{result => 
+                                    <FeatureCard 
+                                        url={result.url} 
+                                        title={result.meta.title} 
+                                    />
+                                }</For>
+                            :
+                                <For each={props.defaultFeatures}>{feature => 
+                                    <FeatureCard 
+                                        url={`/work/features/${feature.slug.current}`} 
+                                        title={feature.title} 
+                                    />
+                                }</For>
+                            }
+                        </div>
+                    </div>
+                </Show>
+
+                {/* Partners */}
+                <Show when={!query() || (query() && partnerResults() && partnerResults().length > 0)}>
+                    <div class={styles.resultsColumn}>
+                        <p class={styles.columnTitle}>Partners</p>
+                        <div class={styles.partnersList}>
+                            {partnerResults() ?
+                                <For each={partnerResults()}>{result => 
+                                    <PartnerCard 
+                                        url={result.url} 
+                                        title={result.meta.title} 
+                                        icon={result.meta.image}
+                                        alt={result.meta.image_alt} 
+                                        excerpt={result.meta.excerpt}
+                                    />
+                                }</For>
+                                :
+                                <For each={props.defaultPartners}>{partner => 
+                                    <PartnerCard 
+                                        url={`/partners/${partner.slug.current}`} 
+                                        title={partner.title}
+                                        icon={urlFor(partner.icon.image).auto('format').width(300).height(300).url()}
+                                        alt={partner.icon.alt} 
+                                        excerpt={partner.excerpt}
+                                    />
+                                }</For>
+                            }
+                        </div>
+                    </div>
+                </Show>
+
+                {/* No Results */}
+                <Show when={ query() && 
+                    (!projectResults() || projectResults().length <= 0) &&
+                    (!projectResults() || blogResults().length <= 0) &&
+                    (!projectResults() || featureResults().length <= 0) &&
+                    (!projectResults() || partnerResults().length <= 0)
+                }>
+                    <h2>NO RESULTS</h2>
+                </Show>
 
             </div>
-        </div>
+        </dialog>
     )
 }

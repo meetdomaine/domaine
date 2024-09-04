@@ -7,15 +7,16 @@ import '../styles/studio/typography.css'
 import '../styles/studio/color.css'
 
 interface Props {
-	title: string;
-	description?: string;
-	image?: string;
-	theme?: string;
-    searchFilter?: string;
-    activePath?: string;
+	title: string,
+	description?: string,
+	image?: string,
+	theme?: string,
+    searchFilter?: string,
+    activePath?: string,
+    searchExposed?: boolean,
 }
 
-const { title, description, image, theme, searchFilter, activePath } = Astro.props;
+const { title, description, image, theme, searchFilter, activePath, searchExposed } = Astro.props;
 
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`)
 ---
@@ -30,6 +31,7 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     <Header
         currentBrand={currentBrand}
         activePath={activePath}
+        searchExposed={searchExposed}
     />
 
     <main>
