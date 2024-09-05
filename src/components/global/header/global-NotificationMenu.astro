@@ -31,8 +31,8 @@ const {
 
 // console.log(clocks)
 
-const latestProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
-const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const latestProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio.data : allProjects_Domaine.data
+const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio.data : allBlogPosts_Domaine.data
 const upcomingEvent = allEvents_upcoming[0]
 
 // console.log(upcomingEvent)

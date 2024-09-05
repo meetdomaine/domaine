@@ -19,22 +19,22 @@ const allFilters = await Promise.all([
     {
         title: 'Industries',
         path: 'industries/',
-        filters: brand.toLowerCase() === "studio" ? allClientIndustries_Studio : allClientIndustries_Domaine
+        filters: brand.toLowerCase() === "studio" ? allClientIndustries_Studio.data : allClientIndustries_Domaine.data
     },
     {
         title: 'Features',
         path: 'features/',
-        filters: brand.toLowerCase() === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
+        filters: brand.toLowerCase() === "studio" ? allProjectFeatures_Studio.data : allProjectFeatures_Domaine.data
     },
     {
         title: 'Partners',
         path: 'partners/',
-        filters: brand.toLowerCase() === "studio" ? allPartners_Studio : allPartners_Domaine
+        filters: brand.toLowerCase() === "studio" ? allPartners_Studio.data : allPartners_Domaine.data
     },
     {
         title: 'Services',
         path: 'services/',
-        filters: brand.toLowerCase() === "studio" ? allServiceGroups_Studio : allServiceGroups_Domaine
+        filters: brand.toLowerCase() === "studio" ? allServiceGroups_Studio.data : allServiceGroups_Domaine.data
     },
 ])
 

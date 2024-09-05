@@ -5,7 +5,7 @@ import LayoutStudioBlogIndex from '../../../layouts/Layout-Studio-BlogIndex.astr
 import { allBlogPosts_Studio } from '../../../components/global/utils/cms-content';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const blogPosts = allBlogPosts_Studio
+const blogPosts = allBlogPosts_Studio.data
 ---
 <LayoutStudioBlogIndex
     pageSettings={pageSettings}

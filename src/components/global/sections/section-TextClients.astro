@@ -6,7 +6,7 @@ import AtomButton from "../atoms/atom-button.astro"
 import { allClients_Domaine, allClients_Studio } from "../utils/cms-content"
 const { section, brand, key } = Astro.props
 
-const clients = brand === "studio" ? allClients_Studio : allClients_Domaine
+const clients = brand === "studio" ? allClients_Studio.data : allClients_Domaine.data
 ---
 <section class="section-text-clients">
     <div 

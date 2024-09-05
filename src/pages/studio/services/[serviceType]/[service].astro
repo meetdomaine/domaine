@@ -7,8 +7,10 @@ import GlobalProjectsGrid from "../../../../components/global/projects/global-Pr
 import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
 import { allServices_Studio } from "../../../../components/global/utils/cms-content"
 
+export const prerender = true
+
 export async function getStaticPaths() {
-    const services = allServices_Studio
+    const services = allServices_Studio.data
     return services.map((service) => {
         return {
             params: { serviceType: service.serviceGroup.serviceType.slug.current, service: service.slug.current },

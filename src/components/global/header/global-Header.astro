@@ -21,11 +21,18 @@ import {
     allPartners_Studio,
     allPartners_Domaine,
 } from "../utils/cms-content"
+import { loadQuery } from "../../../../load-query";
 
-const defaultBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
-const defaultProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
-const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
-const defaultPartners = currentBrand.slug.current === "/studio" ? allPartners_Studio : allPartners_Domaine
+const test = await loadQuery({
+    query: `*[_type == 'type_blog']`
+})
+
+
+
+const defaultBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio.data : allBlogPosts_Domaine.data
+const defaultProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio.data : allProjects_Domaine.data
+const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? allProjectFeatures_Studio.data : allProjectFeatures_Domaine.data
+const defaultPartners = currentBrand.slug.current === "/studio" ? allPartners_Studio.data : allPartners_Domaine.data
 
 const headerSettings = await sanityClient.fetch(`
     *[_type == "settings_header" 
@@ -39,6 +46,7 @@ const headerSettings = await sanityClient.fetch(`
     }[0]`
 )
 
+// console.log(await blogPosts_Domaine.data)
 // console.log(currentBrand)
 ---
 <header id="header" data-color-scheme="glass-dark">

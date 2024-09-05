@@ -2,8 +2,10 @@
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
 import { allProjects_Studio, allServices_Studio } from '../../../../components/global/utils/cms-content';
 
+export const prerender = true
+
 export async function getStaticPaths() {
-    const services = allServices_Studio
+    const services = allServices_Studio.data
     return services.map((service) => {
         return {
             params: { service: service.slug.current },
@@ -17,7 +19,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = allProjects_Studio.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
+const projects = allProjects_Studio.data.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
 
 ---
 <LayoutStudioProjects 

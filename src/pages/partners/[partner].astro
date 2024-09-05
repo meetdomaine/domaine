@@ -6,6 +6,8 @@ import { imageFields, projectGridFields } from '../../components/global/utils/cm
 import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
 import PartnerPostHero from '../../components/global/partners/partnerPost-hero.astro';
 
+export const prerender = true
+
 export async function getStaticPaths() {
     const partners = await sanityClient.fetch(`*[_type == "type_partner" && tier->createLandingPages == true ]{ title, slug, excerpt, icon{${imageFields}}, tier->{...}, "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)[0...3]  }`)
 

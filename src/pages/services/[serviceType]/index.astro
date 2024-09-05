@@ -11,6 +11,7 @@ import SectionBlogFeed from "../../../components/global/sections/section-BlogFee
 import { allServiceTypes_Domaine } from "../../../components/global/utils/cms-content"
 import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro"
 
+export const prerender = true
 
 export async function getStaticPaths() {
     const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name ]{${serviceTypePageQuery}} | order(orderRank)`)

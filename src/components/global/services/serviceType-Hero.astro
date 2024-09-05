@@ -28,17 +28,22 @@ import { gsap } from "../utils/gsap"
 
     const sections = document.querySelectorAll('.service-type-hero')
     sections.forEach((section) => {
-        const timeline = gsap.timeline({ duration: 0.3, ease: 'cubic'})
+        const timeline = gsap.timeline({ duration: 0.3, ease: 'cubic', repeat: -1})
         const images = section.querySelectorAll('.service-image')
 
         timeline.to(images, {
             clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-            stagger: 1,
-            duration: 0.4
+            stagger: 0.5,
+            duration: 0.2
         })
+        timeline.to(images, {
+            opacity: 0,
+            stagger: 0.2,
+            duration: 0.1,
+        }, "<+=0.8")
 
         window.addEventListener("mousemove", (e) => {
-            const movementFactor = 0.2
+            const movementFactor = 1
             const posX = ((e.clientX / window.innerWidth) * 200 - 100) * movementFactor
             const posY = ((e.clientY / window.innerHeight) * 200 - 100) * movementFactor
             gsap.to(images, {

@@ -6,15 +6,9 @@ import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
 import {colorInput} from '@sanity/color-input'
 import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input'
-
-
-// import React from 'react'
-
-
 import { structure } from './domaine-cms/schemaTypes/structure'
 import { schemaTypes } from './domaine-cms/schemaTypes'
 import { vercelDeployTool } from 'sanity-plugin-vercel-deploy'
-
 
 export default defineConfig({
   name: 'domaine-cms',
@@ -27,7 +21,7 @@ export default defineConfig({
     }),
     muxInput(),
     presentationTool({
-      previewUrl: 'http://localhost:4321/'
+      previewUrl: 'http://localhost:4322/'
     }),
     vercelDeployTool(),
     colorInput(),

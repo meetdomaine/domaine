@@ -57,7 +57,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
                     </div>
                 }
                 <div class="agency-brands__content">
-                    {agencyBrands.map((brand) => (
+                    {agencyBrands.data.map((brand) => (
                         <a class="brand-card" href={brand.url}>
                             <div class="brand-logo">
                                 <Fragment set:html={brand.logo} />
@@ -78,7 +78,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
                     </div>
                 }
                 <div class="practices__content link-column__links">
-                    {practices.map((practice) => (
+                    {practices.data.map((practice) => (
                         <a href={practice.slug.current} class="link-column__link h6">{practice.title}</a>
                     ))}
                 </div>

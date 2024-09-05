@@ -65,7 +65,7 @@ export default defineType({
       description: 'Used in Services section.',
       type: 'array',
       of: [{ type: 'snippet_image' }],
-      validation: Rule => Rule.required().min(3).max(4),
+      validation: Rule => Rule.required().min(3),
     }),
     defineField({
       name: 'pageSectionsDomaine',

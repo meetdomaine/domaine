@@ -4,7 +4,7 @@ import { allBlogCategories_Domaine, allBlogCategories_Studio } from '../utils/cm
 
 const { brand, slug } = Astro.props
 
-const blogCategories = brand === "studio" ? allBlogCategories_Studio : allBlogCategories_Domaine
+const blogCategories = brand === "studio" ? allBlogCategories_Studio.data : allBlogCategories_Domaine.data
 // const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->slug.current == '${brand}' && references(^._id)] ) > 0]`)
 // console.log(blogCategories)
 ---

@@ -5,10 +5,10 @@ import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProj
 
 const { section, brand } = Astro.props
 
-const allPosts = brand === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const allPosts = brand === "studio" ? allBlogPosts_Studio.data : allBlogPosts_Domaine.data
 const featuredPost = allPosts.find((post) => post.category.slug.current != "agency-news")
 const featuredNews = allPosts.find((post) => post.category.slug.current === "agency-news")
-const featuredProject = brand === "studio" ? allProjects_Studio[0] : allProjects_Domaine[0]
+const featuredProject = brand === "studio" ? allProjects_Studio.data[0] : allProjects_Domaine.data[0]
 ---
 <section class="section-text-feed">
     <div class="section-content">

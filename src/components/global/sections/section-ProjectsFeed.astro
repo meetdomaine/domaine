@@ -11,7 +11,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
+    feedProjects = brand === "studio" ? allProjects_Studio.data : allProjects_Domaine.data
 }
 
 ---

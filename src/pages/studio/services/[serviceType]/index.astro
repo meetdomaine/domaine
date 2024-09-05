@@ -9,6 +9,8 @@ import SectionBlogFeed from "../../../../components/global/sections/section-Blog
 import { allServiceTypes_Studio } from "../../../../components/global/utils/cms-content"
 import GlobalSections from "../../../../components/global/sections/section-GlobalSections.astro"
 
+export const prerender = true
+
 export async function getStaticPaths() {
     const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && '/studio' in agencyBrands[]->slug.current ]{${serviceTypePageQuery}} | order(orderRank)`)
     return serviceTypes.map((serviceType) => {

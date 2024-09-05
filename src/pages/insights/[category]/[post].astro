@@ -11,8 +11,14 @@ import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
 import { allBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
 
+// console.log(await allBlogPosts_Domaine.data)
+// console.log(posts[0])
+
+export const prerender = true
+
 export async function getStaticPaths() {
-    const posts = allBlogPosts_Domaine
+    // console.log(posts)
+    const posts = await allBlogPosts_Domaine.data
     return posts.map((post) => {
         return {
             params: { post: post.slug.current, category: post.category.slug.current },
@@ -26,7 +32,6 @@ interface Props {
 }
 
 const { content } = Astro.props;
-// console.log(content.body)
 
 // const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
 ---

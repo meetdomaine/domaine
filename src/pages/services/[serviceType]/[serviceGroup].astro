@@ -5,8 +5,10 @@ import GlobalProjectsGrid from "../../../components/global/projects/global-Proje
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import { allServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
 
+export const prerender = true
+
 export async function getStaticPaths() {
-    const serviceGroups = allServiceGroups_Domaine
+    const serviceGroups = allServiceGroups_Domaine.data
     return serviceGroups.map((serviceGroup) => {
         return {
             params: { serviceType: serviceGroup.serviceType.slug.current, serviceGroup: serviceGroup.slug.current },

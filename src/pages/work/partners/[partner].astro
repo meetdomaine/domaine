@@ -4,8 +4,10 @@ import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex
 import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
 import { allPartners_Domaine, allProjects_Domaine } from '../../../components/global/utils/cms-content';
 
+export const prerender = true
+
 export async function getStaticPaths() {
-    const partners = allPartners_Domaine
+    const partners = allPartners_Domaine.data
     return partners.map((partner) => {
         return {
             params: { partner: partner.slug.current },
@@ -19,7 +21,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = allProjects_Domaine.filter((project) => project.partners && project.partners.some((partner) => partner._id === content._id))
+const projects = allProjects_Domaine.data.filter((project) => project.partners && project.partners.some((partner) => partner._id === content._id))
 
 ---
 <LayoutDomaineProjects 

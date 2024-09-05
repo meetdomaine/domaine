@@ -11,7 +11,7 @@ interface Props {
 const { project } = Astro.props
 // console.log(project.thumbnailMedia)
 ---
-<a href={`${project.agencyBrand.slug.current == "studio" ? "/studio" : ""}/work/${project.slug.current}`} class={`project-card`} data-pagefind-ignore>
+<a href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`} class={`project-card`} data-pagefind-ignore>
     <div class="card-media">
         <div class="card-thumbnail">
             <AtomSanityMedia 

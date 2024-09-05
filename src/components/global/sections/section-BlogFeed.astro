@@ -28,7 +28,7 @@ if (section && section.blogPosts) {
 } else if (posts) {
     blogPosts = posts
 } else {
-    blogPosts = brand === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+    blogPosts = brand === "studio" ? allBlogPosts_Studio.data : allBlogPosts_Domaine.data
 }
 
 if (section && section.showHero && !section.featuredPost) featuredPost = blogPosts.shift()

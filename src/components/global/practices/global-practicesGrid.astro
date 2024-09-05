@@ -5,7 +5,7 @@ import { agencyBrands, practices } from "../utils/cms-content";
 ---
 <div class="practices-grid">
   <div class="agency-brands">
-      {agencyBrands.map((brand, i) => (
+      {agencyBrands.data.map((brand, i) => (
           <GlobalPracticeCard 
               title={brand.title}
               heading={brand.excerpt}

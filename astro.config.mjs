@@ -9,6 +9,11 @@ import react from "@astrojs/react";
 
 import cloudflare from "@astrojs/cloudflare";
 
+const isProd = import.meta.env.PROD;
+const isDev = import.meta.env.DEV; 
+
+// console.log(isDev)
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
@@ -17,8 +22,12 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: false,
+      useCdn: true,
+      // useCdn: false,
       studioBasePath: '/admin',
+      stega: {
+        studioUrl: '/admin',
+      },
     }), 
     solid({
       devtools: true,
@@ -32,7 +41,8 @@ export default defineConfig({
   experimental: {
     clientPrerender: true
   },
-  output: 'hybrid',
+  output: 'server',
+  // output: 'hybrid',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/'
 });

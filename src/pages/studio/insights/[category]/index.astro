@@ -4,8 +4,10 @@ import { blogCardFields } from '../../../../components/global/utils/cms-queries'
 import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
 import { allBlogCategories_Studio, allBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
 
+export const prerender = true
+
 export async function getStaticPaths() {
-    const categories = allBlogCategories_Studio
+    const categories = allBlogCategories_Studio.data
     return categories.map((category) => {
         // console.log(category)
         return {
@@ -22,7 +24,7 @@ interface Props {
 const { content } = Astro.props;
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const blogPosts = allBlogPosts_Studio.filter((post) => post.category._id === content._id)
+const blogPosts = allBlogPosts_Studio.data.filter((post) => post.category._id === content._id)
 ---
 <LayoutStudioBlogIndex
     pageSetting={pageSettings}
