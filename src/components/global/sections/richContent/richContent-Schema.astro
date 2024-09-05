@@ -1,6 +1,7 @@
 ---
 const { node } = Astro.props;
-const markup = JSON.parse(node.markup);
+const string = JSON.stringify(node.markup);
+const markup = JSON.parse(string);
 ---
 <script define:vars={{ markup }}>
   const markupScript = document.createElement("script");
