@@ -6,13 +6,14 @@ import sitemap from '@astrojs/sitemap';
 import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
-
 import cloudflare from "@astrojs/cloudflare";
 
 const isProd = import.meta.env.PROD;
 const isDev = import.meta.env.DEV; 
 
-// console.log(isDev)
+const renderMode = import.meta.env.RENDER_MODE
+
+// console.log(isProd)
 
 // https://astro.build/config
 export default defineConfig({
@@ -41,6 +42,7 @@ export default defineConfig({
   experimental: {
     clientPrerender: true
   },
+  // output: renderMode === "server" ? 'server' : 'hybrid',
   output: 'server',
   // output: 'hybrid',
   adapter: cloudflare(),
