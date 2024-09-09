@@ -6,7 +6,7 @@ import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
 
 const { section, brand } = Astro.props
 
-const projects = brand === "studio" ? allProjects_Studio.data : allProjects_Domaine.data
+const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
 ---
 <section class="section-projects-grid">
     <div class="section-text">

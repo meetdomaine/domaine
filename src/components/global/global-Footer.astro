@@ -6,6 +6,7 @@ import { agencyBrands, practices } from "./utils/cms-content"
 const { currentBrand } = Astro.props
 
 const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]`)
+// console.log(footerSettings)
 ---
 <footer data-color-scheme="brand-02">
     <div class="footer-inner">
@@ -42,9 +43,9 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
             </div>
              <div class="footer-form">
                 <p class="footer-form__title">{footerSettings.newsletterHeading}</p>
-                <AtomHubspotForm 
+                <!-- <AtomHubspotForm 
                     formId={footerSettings.newsletterHubspotFormId}
-                />
+                /> -->
             </div>
 
         </div>
@@ -57,7 +58,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
                     </div>
                 }
                 <div class="agency-brands__content">
-                    {agencyBrands.data.map((brand) => (
+                    {agencyBrands.map((brand) => (
                         <a class="brand-card" href={brand.url}>
                             <div class="brand-logo">
                                 <Fragment set:html={brand.logo} />
@@ -78,7 +79,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
                     </div>
                 }
                 <div class="practices__content link-column__links">
-                    {practices.data.map((practice) => (
+                    {practices.map((practice) => (
                         <a href={practice.slug.current} class="link-column__link h6">{practice.title}</a>
                     ))}
                 </div>

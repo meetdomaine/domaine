@@ -8,7 +8,7 @@ import { allServiceGroups_Domaine } from "../../../components/global/utils/cms-c
 export const prerender = true
 
 export async function getStaticPaths() {
-    const serviceGroups = allServiceGroups_Domaine.data
+    const serviceGroups = allServiceGroups_Domaine
     return serviceGroups.map((serviceGroup) => {
         return {
             params: { serviceType: serviceGroup.serviceType.slug.current, serviceGroup: serviceGroup.slug.current },

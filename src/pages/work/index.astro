@@ -4,7 +4,7 @@ import LayoutDomaineProjects from '../../layouts/Layout-Domaine-ProjectsIndex.as
 import { projectGridFields, projectsGridQuery, urlFor } from '../../components/global/utils/cms-queries';
 import { allProjects_Domaine } from '../../components/global/utils/cms-content';
 
-const projects = allProjects_Domaine.data
+const projects = allProjects_Domaine
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
 ---
 <LayoutDomaineProjects

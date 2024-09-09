@@ -6,7 +6,7 @@ import { allBlogCategories_Domaine, allBlogPosts_Domaine } from '../../../compon
 export const prerender = true
 
 export async function getStaticPaths() {
-    const categories = await allBlogCategories_Domaine.data
+    const categories = await allBlogCategories_Domaine
     return categories.map((category) => {
         // console.log(category)
         return {
@@ -23,7 +23,7 @@ interface Props {
 const { content } = Astro.props;
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
-const blogPosts = allBlogPosts_Domaine.data.filter((post) => post.category._id === content._id)
+const blogPosts = allBlogPosts_Domaine.filter((post) => post.category._id === content._id)
 ---
 <LayoutDomaineBlogIndex
     pageSetting={pageSettings}

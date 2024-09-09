@@ -4,7 +4,7 @@ import LayoutStudioProjects from '../../../layouts/Layout-Studio-ProjectsIndex.a
 import { allProjects_Studio } from '../../../components/global/utils/cms-content';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
-const projects = allProjects_Studio.data
+const projects = allProjects_Studio
 ---
 <LayoutStudioProjects
     title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}

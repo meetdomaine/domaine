@@ -7,7 +7,7 @@ import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-co
 
 const { section, brand, key } = Astro.props
 
-const serviceTypes = brand === "studio" ? allServiceTypes_Studio.data : allServiceTypes_Domaine.data
+const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTypes_Domaine
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 

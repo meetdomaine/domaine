@@ -9,7 +9,7 @@ const { section, brand } = Astro.props
 
 const partnerTileCount = 4
 
-const partners = brand.toLowerCase() === "studio" ? allPartners_Studio.data : allPartners_Domaine.data
+const partners = brand.toLowerCase() === "studio" ? allPartners_Studio : allPartners_Domaine
 ---
 <section class="section-partners-feed" data-color-scheme="brand-02">
     <div 

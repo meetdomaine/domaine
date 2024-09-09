@@ -7,7 +7,7 @@ import { allProjects_Domaine, allServices_Domaine } from '../../../components/gl
 export const prerender = true
 
 export async function getStaticPaths() {
-    const services = allServices_Domaine.data
+    const services = allServices_Domaine
     return services.map((service) => {
         return {
             params: { service: service.slug.current },
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = allProjects_Domaine.data.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
+const projects = allProjects_Domaine.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
 
 // console.log(content.relatedBlogPosts.length)
 // console.log(content.relatedBlogPosts)

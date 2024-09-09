@@ -15,7 +15,7 @@ export const prerender = true
 
 export async function getStaticPaths() {
     // console.log(posts)
-    const posts = await allBlogPosts_Domaine.data
+    const posts = await allBlogPosts_Domaine
     return posts.map((post) => {
         return {
             params: { post: post.slug.current, category: post.category.slug.current },

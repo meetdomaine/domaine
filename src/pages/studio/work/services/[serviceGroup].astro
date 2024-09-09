@@ -7,7 +7,7 @@ import { allProjects_Studio, allServiceGroups_Studio } from '../../../../compone
 export const prerender = true
 
 export async function getStaticPaths() {
-    const serviceGroups = allServiceGroups_Studio.data
+    const serviceGroups = allServiceGroups_Studio
     // const serviceGroup = await sanityClient.fetch(`*[_type == "type_serviceGroup" && 'studio' in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields} } | order(postDate)}`)
     return serviceGroups.map((serviceGroup) => {
         return {
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = allProjects_Studio.data.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
+const projects = allProjects_Studio.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
 
 ---
 <LayoutStudioProjects 

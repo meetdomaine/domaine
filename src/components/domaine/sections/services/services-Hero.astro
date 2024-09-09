@@ -3,7 +3,7 @@ import AtomCounter from "../../../global/atoms/atom-counter.astro"
 import { allServices_Domaine, allServiceTypes_Domaine } from "../../../global/utils/cms-content"
 
 const { title, heading } = Astro.props
-const serviceCount = allServices_Domaine.data.length
+const serviceCount = allServices_Domaine.length
 ---
 <section class="services-hero">
     <div class="section-title">
@@ -13,7 +13,7 @@ const serviceCount = allServices_Domaine.data.length
     <div class="section-content">
         <p class="heading">{heading}</p>
         <div class="service-buttons">
-            {allServiceTypes_Domaine.data.map((serviceType) => (
+            {allServiceTypes_Domaine.map((serviceType) => (
                 <button class="serviceType-jumplink" data-slug={serviceType.slug.current}>{serviceType.title}</button>
             ))}
         </div>

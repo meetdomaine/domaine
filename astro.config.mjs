@@ -43,8 +43,8 @@ export default defineConfig({
     clientPrerender: true
   },
   // output: renderMode === "server" ? 'server' : 'hybrid',
-  output: 'server',
-  // output: 'hybrid',
+  // output: 'server',
+  output: 'hybrid',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/'
 });
