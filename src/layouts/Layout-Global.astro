@@ -27,8 +27,7 @@ interface Props {
 	currentBrand: any
 }
 
-const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
-// const visualEditingEnabled = true
+// const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
 
 const { title, description, image, favicon, searchFilter, currentBrand } = Astro.props;
 const currentPath = Astro.url.pathname;
@@ -116,7 +115,7 @@ const currentPath = Astro.url.pathname;
 		<GlobalPreloader currentBrand={currentBrand} />
 		<GlobalCookieNotice />
 		<slot />
-		<VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+		<!-- <VisualEditing enabled={visualEditingEnabled} zIndex={1000} /> -->
 		<lenis />
 		<ViewportAnimation />
 		<!-- <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script> -->
