@@ -27,12 +27,13 @@ export default defineType({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'string',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-      validation: Rule => Rule.required(),
+      // validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'serviceGroup',

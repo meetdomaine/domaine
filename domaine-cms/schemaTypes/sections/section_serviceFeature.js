@@ -23,11 +23,11 @@ export default defineType({
         { type: 'type_serviceGroup'}
       ]
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-    }),
+    // defineField({
+    //   name: 'heading',
+    //   title: 'Heading',
+    //   type: 'string',
+    // }),
     defineField({
       name: 'button',
       title: 'Button',

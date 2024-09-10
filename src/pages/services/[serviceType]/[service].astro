@@ -10,7 +10,7 @@ import GlobalProjectsGrid from "../../../components/global/projects/global-Proje
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import { allServices_Domaine } from "../../../components/global/utils/cms-content"
 
-export const prerender = true
+// export const prerender = true
 
 export async function getStaticPaths() {
     const services = allServices_Domaine
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const { content, serviceType, serviceGroup } = Astro.props;
-console.log(content.relatedBlogPosts.length)
+// console.log(content)
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
@@ -48,7 +48,11 @@ console.log(content.relatedBlogPosts.length)
     }
 
     {content.relatedProjects && content.relatedProjects.length > 0 &&
-        <GlobalProjectsGrid 
+        // <GlobalProjectsGrid 
+        //     heading={`${content.title} Work`}
+        //     projects={content.relatedProjects}
+        // />
+        <SectionProjectsFeed 
             heading={`${content.title} Work`}
             projects={content.relatedProjects}
         />

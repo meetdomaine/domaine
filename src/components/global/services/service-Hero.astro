@@ -1,36 +1,40 @@
 ---
 const { service, brand } = Astro.props
+console.log(service.description)
 ---
 <section class="service-hero">
-    <div class="breadcrumbs">
-        <a class="h5" 
-            href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services</a> /
-        <a 
-            class="h5"
-            href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}`}
-        >{service.serviceGroup.serviceType.title}</a> /
-        <a 
-            class="h5"
-            href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}/${service.serviceGroup.slug.current}`}
-        >{service.serviceGroup.title}</a>
+    <div class="section=title">
+        <div class="breadcrumbs h5">
+            <a class="breadcrumb-link" 
+                href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services /</a>
+            <a 
+                class="breadcrumb-link"
+                href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}`}
+            >{service.serviceGroup.serviceType.title}</a>
+        </div>
+        <h1 class="service-title h5">{service.title}</h1>
     </div>
-    <h1>{service.title}</h1>
-    {service.description && <p>{service.description}</p>}
+    { (service.description || service.excerpt) && <p class="service-text">{service.description ? service.description : service.excerpt}</p>}
 </section>
 
 <style>
     .service-hero {
         padding-inline: var(--page-margin);
-        padding-block: var(--header-height) var(--space-lg);
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-xs);
+        padding-block: calc(var(--header-height) * 2) var(--space-4xl);
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: var(--space-2xs);
     }
 
     .breadcrumbs {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: var(--space-xs);
+        gap: 0.5ch;
+    }
+
+    .breadcrumb-link {
+        text-decoration: none;
+        color: var(--color-foreground-secondary);
     }
 </style>

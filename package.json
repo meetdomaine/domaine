@@ -39,6 +39,7 @@
     "sanity-plugin-media": "^2.2.5",
     "sanity-plugin-mux-input": "^2.3.4",
     "sanity-plugin-vercel-deploy": "^3.3.4",
+    "sanity-plugin-webhooks-trigger": "^0.3.1",
     "solid-devtools": "^0.30.1",
     "solid-js": "^1.8.17",
     "swiper": "^11.1.8",

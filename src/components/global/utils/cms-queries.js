@@ -64,7 +64,9 @@ export const projectGridFields = `
 `
 
 export const serviceQuery = `
-  ..., 
+  ...,
+  excerpt,
+  description,
   serviceGroup->{
       ..., 
       serviceType->{...}
@@ -89,6 +91,7 @@ export const serviceTypeQuery = `
 `
 export const serviceGroupQuery = `
   ..., 
+  excerpt,
   serviceType->{...},
   "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
   "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
