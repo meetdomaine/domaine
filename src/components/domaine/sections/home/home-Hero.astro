@@ -13,7 +13,7 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
                     <AtomTag text={eyebrow} theme={heroTextColor === "light" ? "light" : "dark"} />
                 </div>
             }
-            <h1 class="heading h1" id="heading" >{heading}</h1>
+            <h1 class="heading h2" id="heading" >{heading}</h1>
         </div>
         {button.text && button.url &&
             <AtomButton 
@@ -40,22 +40,45 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
 <script>
     import { addParallax, fadeUp, gsap, SplitText } from "../../../global/utils/gsap"
 
-    const animateSection = () => {
-        const section = document.getElementById('domaine-home-hero')
-        const backgroundMedia = section.querySelector('.section-media')
-        if (backgroundMedia) addParallax(backgroundMedia)
-    }
+    const sections = document.querySelectorAll('#domaine-home-hero')
 
-    window.addEventListener("preload:complete", () => {
-        animateSection()
+    sections.forEach((section) => {
+
+        const backgroundMedia = section.querySelector('.section-media')
+        const text = section.querySelector('.section-content')
+
+        gsap.set(text, {
+            opacity: 0,
+            y: 40,
+        })
+
+        const animateSection = () => {
+
+            console.log(section)
+
+            console.log(text)
+            if (backgroundMedia) { addParallax(backgroundMedia) }
+
+            gsap.to(text, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'cubic'
+            })
+        }
+
+        window.addEventListener("preload:complete", () => {
+            animateSection()
+        })
     })
+
 </script>
 
 <style>
     .section-home-hero {
         padding-inline: var(--page-margin);
-        padding-block: var(--header-height) var(--space-xl);
-        min-height: 95svh;
+        padding-block: var(--header-height) var(--space-2xl);
+        min-height: 90svh;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;

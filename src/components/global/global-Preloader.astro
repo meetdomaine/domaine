@@ -27,7 +27,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 
 <script>
     import { isMobileBreakpoint } from "./utils/check-device";
-import { gsap, SplitText } from "./utils/gsap";
+    import { gsap, SplitText } from "./utils/gsap";
 
 
     let showPreloader = false
@@ -44,11 +44,21 @@ import { gsap, SplitText } from "./utils/gsap";
         window.dispatchEvent(preloadComplete)
     }
 
-    // showPreloader = true
     if (showPreloader) {
 
         const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
         const preloader = document.getElementById("site-preloader")
+
+        gsap.set(preloader, {
+            opacity: 1,
+            visibility: "visible",
+            y: 0,
+            autoAlpha: 1,
+        })
+
+        gsap.set("#header", {
+            y: "-150%"
+        })
 
         const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
 
@@ -59,18 +69,18 @@ import { gsap, SplitText } from "./utils/gsap";
             }, {
                 clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
             })
-            preloaderTimeline.from("#header", {
-                y: "-150%"
-            }, "<+=0.2")
-            preloaderTimeline.from(preloader, {
-                y: "0%",
+            preloaderTimeline.to("#header", {
+                y: "0%"
+            }, "<+=0.6")
+            preloaderTimeline.to(preloader, {
+                y: "-100%",
                 duration: 0.6,
                 onStart: handlePreloadComplete
-            }, "+=0.6")
-            preloaderTimeline.from(preloader, {
-                opacity: 1,
-                visibility: "visible",
+            }, "+=0.4")
+            preloaderTimeline.to(preloader, {
+                opacity: 0,
                 autoAlpha: 1,
+                visibility: 'hidden'
             }, ">")
 
         } else {
@@ -88,17 +98,17 @@ import { gsap, SplitText } from "./utils/gsap";
                 clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
                 stagger: 0.2,
             })
-            preloaderTimeline.from("#header", {
-                y: "-150%"
+            preloaderTimeline.to("#header", {
+                y: "0%"
             }, "<+=0.2")
-            preloaderTimeline.from(preloader, {
-                y: "0%",
+            preloaderTimeline.to(preloader, {
+                y: "-100%",
                 duration: 0.6,
                 onStart: handlePreloadComplete
             }, "+=0.6")
-            preloaderTimeline.from(preloader, {
-                opacity: 1,
-                visibility: "visible",
+            preloaderTimeline.to(preloader, {
+                visibility: "hidden",
+                opacity: 0,
                 autoAlpha: 1,
             }, ">")
         }
@@ -119,10 +129,8 @@ import { gsap, SplitText } from "./utils/gsap";
 <style>
     .preloader {
         opacity: 0;
-        /* opacity: 1; */
         visibility: hidden;
         translate: 0 -100%;
-        /* translate: 0 0%; */
         --load-duration: 0.8s;
         --load-background-delay: 0.1s;
         --load-out-delay: 0.1s;

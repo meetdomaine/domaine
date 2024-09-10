@@ -87,6 +87,7 @@ export default function SearchMenu(props) {
     const [ blogResults, setBlogResults ] = createSignal(null)
     const [ partnerResults, setPartnerResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
+    const [ activeTab, setActiveTab ] = createSignal('projects') // Mobile only tabs
 
     const clearResults = () => {
         setQuery(null)
@@ -160,9 +161,16 @@ export default function SearchMenu(props) {
 
             <div class={styles.results}>
 
+                <div class={styles.resultsTabs}>
+                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('projects')} data-active={activeTab() === 'projects' ? 'true' : 'false'}>Projects</button>
+                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('insights')} data-active={activeTab() === 'insights' ? 'true' : 'false'}>Insights</button>
+                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('features')} data-active={activeTab() === 'features' ? 'true' : 'false'}>Features</button>
+                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('partners')} data-active={activeTab() === 'partners' ? 'true' : 'false'}>Partners</button>
+                </div>
+
                 {/* Projects */}
                 <Show when={!query() || (query() && projectResults() && projectResults().length > 0)}>
-                    <div class={styles.resultsColumn}>
+                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'projects' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Projects</p>
                         <div class={styles.projectsList}>
 
@@ -191,7 +199,7 @@ export default function SearchMenu(props) {
 
                 {/* Blog */}
                 <Show when={!query() || (query() && blogResults() && blogResults().length > 0)}>
-                    <div class={styles.resultsColumn}>
+                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'insights' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Insights</p>
                         <div class={styles.projectsList}>
                             {blogResults() ? 
@@ -223,7 +231,7 @@ export default function SearchMenu(props) {
 
                 {/* Features/ */}
                 <Show when={!query() || (query() && featureResults() && featureResults().length > 0)}>
-                    <div class={styles.resultsColumn}>
+                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'features' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Features</p>
                         <div class={styles.featuresList}>
                             {featureResults() ? 
@@ -247,7 +255,7 @@ export default function SearchMenu(props) {
 
                 {/* Partners */}
                 <Show when={!query() || (query() && partnerResults() && partnerResults().length > 0)}>
-                    <div class={styles.resultsColumn}>
+                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'partners' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Partners</p>
                         <div class={styles.partnersList}>
                             {partnerResults() ?

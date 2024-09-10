@@ -6,7 +6,7 @@
     transition: translate var(--anim-md), display var(--anim-md) allow-discrete;
     flex-direction: column;
     gap: var(--space-md);
-    translate: 0 -100%;
+    translate: 0 calc(-100% - var(--page-margin));
     overflow-y: auto;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 }
@@ -255,4 +255,76 @@
 
 .partnerExcerpt {
     color: var(--color-foreground-secondary);
+}
+
+.resultsTabs {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+
+    .searchMenu {
+        gap: 0;
+    }
+
+    .menuControls {
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        gap: var(--space-xs);
+    }
+
+    .searchInput {
+        flex: 0 1 100%;
+        min-width: 0;
+    }
+
+    .searchInput input {
+        /* border: none;
+        padding-block: 0.3em;
+        padding-inline-end: calc(var(--icon-md) + var(--space-sm));
+        height: var(--header-element-height); */
+        max-width: unset;
+        width: 100%;
+    }
+
+    .resultsTabs {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--space-sm);
+    }
+
+    .tabButton[data-active="false"],
+    .tabButton[data-active="true"] {
+        color: var(--color-foreground-secondary);
+        padding: 0.1em 0.2em;
+    }
+
+    .tabButton[data-active="true"] {
+        color: var(--color-background);
+        background-color: var(--color-foreground);
+        border-radius: var(--radius-sm);
+    }
+
+    .results {
+        flex-direction: column;
+        gap: var(--space-md);
+        padding-block-start: 0;
+    }
+
+    .resultsColumn:not([data-tab-active="true"]) {
+        /* rotate: 2deg; */
+        display: none;
+    }
+
+    .columnTitle {
+        display: none;
+    }
+
+    .featuresList {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap:  var(--space-sm) var(--space-xs);
+    }
 }
