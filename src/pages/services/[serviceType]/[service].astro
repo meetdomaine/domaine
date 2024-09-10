@@ -36,8 +36,20 @@ const { content, serviceType, serviceGroup } = Astro.props;
     searchFilter="type:service"
     activePath="/services"
 >
-    <SectionServiceHero 
-        service={content}
+    <SectionServiceHero
+        title={content.title}
+        excerpt={content.excerpt}
+        description={content.description}
+        breadcrumbs={[
+            {
+                title: 'Services /',
+                url: '/services/'
+            },
+            {
+                title: serviceType.title,
+                url: `/services/${serviceType.slug.current}`
+            },
+        ]}
     />
 
     {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&

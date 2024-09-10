@@ -1,11 +1,11 @@
 ---
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
-import SectionServiceGroupHero from "../../../components/global/services/serviceGroup-Hero.astro"
+import SectionServiceHero from "../../../components/global/services/service-Hero.astro"
 import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import { allServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
+import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
 
-export const prerender = true
 
 export async function getStaticPaths() {
     const serviceGroups = allServiceGroups_Domaine
@@ -30,9 +30,23 @@ const { content, serviceType } = Astro.props;
     searchFilter="type:service-group"
     activePath="/services"
 >
-    <SectionServiceGroupHero 
-        serviceGroup={content}
+    <SectionServiceHero
+        title={content.title}
+        excerpt={content.excerpt}
+        description={content.description}
+        breadcrumbs={[
+            {
+                title: 'Services /',
+                url: '/services/'
+            },
+            {
+                title: serviceType.title,
+                url: `/services/${serviceType.slug.current}`
+            },
+        ]}
     />
+
+
     <div class="services">
         {content.services.map((service) => (
             <div>
@@ -49,7 +63,7 @@ const { content, serviceType } = Astro.props;
     }
 
     {content.relatedProjects && content.relatedProjects.length > 0 &&
-        <GlobalProjectsGrid 
+        <SectionProjectsFeed 
             heading={`${content.title} Work`}
             projects={content.relatedProjects}
         />

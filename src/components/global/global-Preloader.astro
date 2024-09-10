@@ -9,12 +9,10 @@ const { currentBrand } = Astro.props
 const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
 ---
 <div id="site-preloader" class="preloader" data-color-scheme="brand-01">
-    <p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
-    {content.images.map((entry, i) => (
+    {content.images.slice(0, 9).map((entry, i) => (
         <div 
-            class="preloader-image" 
-            data-foreground={[0, 2, 4, 7, 9, 11, 12, 14, 16].includes(i) ? "true": "false"}
-            data-logo={[0, 7, 12].includes(i) ? "true": "false"}
+            class="preloader-image"
+            data-logo={[0, 3, 6].includes(i) ? "true": "false"}
         >
             <AtomSanityImage 
                 image={entry.image}
@@ -24,10 +22,12 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
             />
         </div>
     ))}
+    <p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
 </div>
 
 <script>
-    import { gsap, SplitText } from "./utils/gsap";
+    import { isMobileBreakpoint } from "./utils/check-device";
+import { gsap, SplitText } from "./utils/gsap";
 
 
     let showPreloader = false
@@ -50,39 +50,58 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
         const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
         const preloader = document.getElementById("site-preloader")
 
-        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.6, ease: "cubic"} })
+        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
 
-        preloaderTimeline.fromTo(".preloader-image[data-foreground='true']", {
-            clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
-        }, {
-            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-        })
-        preloaderTimeline.fromTo(".preloader-image[data-foreground='false']", {
-            clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
-        }, {
-            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-        })
-        preloaderTimeline.to(".preloader-image[data-logo='false']", {
-            clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
-        })
-        preloaderTimeline.from(heading.lines, {
-            // visibility: "visible",
-            y: "100%",
-            clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
-            stagger: 0.2,
-        })
-        preloaderTimeline.from("#header", {
-            y: "-150%"
-        }, "<+=0.2")
-        preloaderTimeline.from(preloader, {
-            y: "0%",
-            onStart: handlePreloadComplete
-        }, "+=0.6")
-        preloaderTimeline.from(preloader, {
-            opacity: 1,
-            visibility: "visible",
-            autoAlpha: 1,
-        }, ">")
+        if (isMobileBreakpoint) {
+
+            preloaderTimeline.fromTo(".preloader-image", {
+                clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+            }, {
+                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+            })
+            preloaderTimeline.from("#header", {
+                y: "-150%"
+            }, "<+=0.2")
+            preloaderTimeline.from(preloader, {
+                y: "0%",
+                duration: 0.6,
+                onStart: handlePreloadComplete
+            }, "+=0.6")
+            preloaderTimeline.from(preloader, {
+                opacity: 1,
+                visibility: "visible",
+                autoAlpha: 1,
+            }, ">")
+
+        } else {
+            preloaderTimeline.fromTo(".preloader-image", {
+                clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+            }, {
+                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+            })
+            preloaderTimeline.to(".preloader-image[data-logo='false']", {
+                clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+            })
+            preloaderTimeline.from(heading.lines, {
+                // visibility: "visible",
+                y: "100%",
+                clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
+                stagger: 0.2,
+            })
+            preloaderTimeline.from("#header", {
+                y: "-150%"
+            }, "<+=0.2")
+            preloaderTimeline.from(preloader, {
+                y: "0%",
+                duration: 0.6,
+                onStart: handlePreloadComplete
+            }, "+=0.6")
+            preloaderTimeline.from(preloader, {
+                opacity: 1,
+                visibility: "visible",
+                autoAlpha: 1,
+            }, ">")
+        }
 
     } else {
         window.addEventListener("DOMContentLoaded", handlePreloadComplete)
@@ -100,8 +119,10 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 <style>
     .preloader {
         opacity: 0;
+        /* opacity: 1; */
         visibility: hidden;
         translate: 0 -100%;
+        /* translate: 0 0%; */
         --load-duration: 0.8s;
         --load-background-delay: 0.1s;
         --load-out-delay: 0.1s;
@@ -123,7 +144,50 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
         object-fit: cover;
         min-width: 0px;
         min-height: 0px;
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+
+        grid-column: 1 / span 1;
+        grid-row: 1 / span 1;
+        /* clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%); */
+        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+    }
+
+    .preloader-image:nth-child(1),
+    .preloader-image:nth-child(7) {
+        grid-column: 1 / span 1;
+    }
+
+    .preloader-image:nth-child(2),
+    .preloader-image:nth-child(8) {
+        grid-column: 3 / span 1;
+    }
+
+    .preloader-image:nth-child(3),
+    .preloader-image:nth-child(9) {
+        grid-column: 5 / span 1;
+    }
+
+    .preloader-image:nth-child(4) {
+        grid-column: 2 / span 1;
+    }
+
+    .preloader-image:nth-child(5) {
+        grid-column: 4 / span 1;
+    }
+
+    .preloader-image:nth-child(6) {
+        grid-column: 6 / span 1;
+    }
+
+    .preloader-image:nth-child(4),
+    .preloader-image:nth-child(5),
+    .preloader-image:nth-child(6) {
+        grid-row: 2 / span 1;
+    }
+
+    .preloader-image:nth-child(7),
+    .preloader-image:nth-child(8),
+    .preloader-image:nth-child(9) {
+        grid-row: 3 / span 1;
     }
 
     .preloader-heading {
@@ -133,11 +197,9 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
         left: 45%;
         translate: 0 -50%;
         z-index: 2;
+        text-transform: uppercase;
     }
 
-    .preloader-image {
-        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-    }
 
     @media screen and (max-width: 768px) {
 
@@ -151,6 +213,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
             bottom: var(--space-sm);
             left: var(--space-sm);
             translate: 0% 0%;
+            display: none;
         }
     }
 

@@ -1,20 +1,20 @@
 ---
-const { service, brand } = Astro.props
-console.log(service.description)
+const { service, brand, title, description, excerpt, breadcrumbs } = Astro.props
+// console.log(service.description)
 ---
 <section class="service-hero">
     <div class="section=title">
         <div class="breadcrumbs h5">
-            <a class="breadcrumb-link" 
-                href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services /</a>
-            <a 
-                class="breadcrumb-link"
-                href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}`}
-            >{service.serviceGroup.serviceType.title}</a>
+            {breadcrumbs?.map((breadcrumb) => (
+                <a 
+                    class="breadcrumb-link" 
+                    href={breadcrumb.url}>{breadcrumb.title}</a>
+
+            ))}
         </div>
-        <h1 class="service-title h5">{service.title}</h1>
+        <h1 class="service-title h5">{title}</h1>
     </div>
-    { (service.description || service.excerpt) && <p class="service-text">{service.description ? service.description : service.excerpt}</p>}
+    { (description || excerpt) && <p class="text h6">{description ? description : excerpt}</p>}
 </section>
 
 <style>
@@ -31,6 +31,10 @@ console.log(service.description)
         flex-direction: row;
         align-items: center;
         gap: 0.5ch;
+    }
+
+    .text {
+        max-width: 30em;
     }
 
     .breadcrumb-link {
