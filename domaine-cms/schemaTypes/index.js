@@ -50,7 +50,7 @@ import section_textClients from "./sections/section_textClients.js";
 import section_imageFullHeight from "./sections/section_imageFullHeight.js";
 import section_textColumns from "./sections/section_textColumns.js";
 import section_mediaCarousel from "./sections/section_mediaCarousel.js";
-import section_textFeed from "./sections/section_textFeed.js";
+import section_textLinkCard from "./sections/section_textLinkCard.js";
 import section_practicesFeed from "./sections/section_practicesFeed.js";
 import section_textVideoPlayer from "./sections/section_textVideoPlayer.js";
 import section_textMediaTabs from "./sections/section_textMediaTabs.js";
@@ -137,7 +137,7 @@ export const schemaTypes = [
     section_statsCarousel,
     section_textClients,
     section_textColumns,
-    section_textFeed,
+    section_textLinkCard,
     section_textMedia,
     section_textMediaTabs,
     section_textVideoPlayer,

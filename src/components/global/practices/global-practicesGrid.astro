@@ -1,12 +1,8 @@
 ---
-import { agencyBrandsQuery, practicesQuery } from "../utils/cms-queries"
-import GlobalPracticeCard from "./global-practiceCard.astro"
 import { agencyBrands, practices, allLocations } from "../utils/cms-content";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
-import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import { Icon } from "astro-icon/components";
 
-console.log(allLocations)
 ---
 <div class="practices-grid">
 
@@ -56,6 +52,7 @@ console.log(allLocations)
         ))}
 
         <div class="locations-secondary">
+          <Icon name="icon-globe-outline" class="locations-icon" />
           {allLocations.locations.filter((location) => !location.isPrimary).map((location) => (
             <div class="location-card">
               <div class="location-name">
@@ -179,6 +176,13 @@ console.log(allLocations)
 
   .brand-heading {
     margin: 0;
+  }
+
+  .locations-icon {
+    grid-column: 1 / span 2;
+    margin-bottom: var(--space-xs);
+    height: var(--icon-md);
+    width: auto;
   }
 
   .location-card {

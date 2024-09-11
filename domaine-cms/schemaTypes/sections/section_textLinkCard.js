@@ -4,8 +4,8 @@ import { iconStat } from '../variables'
 
 
 export default defineType({
-  name: 'section_textFeed',
-  title: 'Text + Feed',
+  name: 'section_textLinkCard',
+  title: 'Text + Link Card',
   type: 'document',
   icon: InfoOutlineIcon,
   fields: [
@@ -55,6 +55,46 @@ export default defineType({
         }
       }]
     }),
+    defineField({
+      name: 'linkCardHeading',
+      title: 'Link Card: Heading',
+      type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'linkCardImage',
+      title: 'Link Card: Image',
+      type: 'snippet_image',
+      // validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'linkCardURL',
+      title: 'Link Card: URL',
+      type: 'url',
+      validation: Rule => Rule.required().uri({
+        scheme: ['http', 'https'],
+        allowRelative: true,
+      })
+    }),
+    defineField({
+      name: 'linkCardColor',
+      title: 'Link Card: Color',
+      type: 'color',
+      // validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'linkCardTextColor',
+      title: 'Link Card: Text Color',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+        layout: 'radio'
+      },
+      initialValue: "light",
+    }),
   ],
 
   preview: {
@@ -65,7 +105,7 @@ export default defineType({
       const { title } = selection
       return {
         title: title,
-        subtitle: 'Text + Feed',
+        subtitle: 'Text + Link Card',
         icon: InfoOutlineIcon
       }
     }

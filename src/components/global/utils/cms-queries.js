@@ -112,6 +112,7 @@ export const globalSectionsFields = `
     _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
     _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
+    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label}, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
     _type == "section_serviceFeature" => { heading, button, featuredService->{ 
       _type == "type_serviceType" => {${serviceTypeQuery}},
@@ -121,7 +122,6 @@ export const globalSectionsFields = `
     _type == "section_statsCarousel" => { heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
     _type == "section_serviceCards" => { services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
 `
-
 
 export const serviceTypePageQuery = `
   ...,

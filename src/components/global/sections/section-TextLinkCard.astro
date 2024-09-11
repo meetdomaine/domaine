@@ -1,0 +1,123 @@
+---
+import AtomTag from "../atoms/atom-tag.astro"
+import AtomLinkCard from "../atoms/atom-linkCard.astro"
+import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomButton from "../atoms/atom-button.astro"
+
+const { section, brand } = Astro.props
+console.log(section)
+---
+<section class="section-text-feed">
+    <div class="section-content">
+        <h1 class="heading h2" data-animate-viewport="true" data-animation="fade-up">{section.heading}</h1>
+        {section.stats &&
+            <div class="tags">
+                {section.stats.map((stat, i) => (
+                    <div 
+                        class="tag-wrapper"
+                        data-animate-viewport="true"
+                        data-animation="fade"
+                        data-animation-delay={150 * i}
+                    >
+                        <AtomTag 
+                            title={stat.number}
+                            text={stat.label}
+                        />
+                    </div>
+                ))}
+            </div>
+        }
+    </div>
+
+    {section.linkCardHeading && section.linkCardURL &&
+        <a 
+            class="link-card" 
+            style={`background-color: ${section.linkCardColor.hex}`} 
+            data-color-scheme={section.linkCardTextColor === "light" ? "invert" : "default"}
+            href={section.linkCardURL}
+            data-animate-viewport="true" 
+            data-animation="fade"
+        >
+            {section.linkCardImage && 
+                <AtomSanityImage 
+                    sizes="40vw"
+                    image={section.linkCardImage.image}
+                />
+            }
+            <p class="link-card-text">{section.linkCardHeading}</p>
+        </a>
+    }
+</section>
+
+<style>
+    .section-text-feed {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-2xl);
+        gap: var(--space-lg);
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .heading {
+        max-width: 16em;
+    }
+
+    .tags {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
+        flex-wrap: wrap;
+    }
+
+    .link-card {
+        flex: 0 1 30rem;
+        display: flex;
+        flex-direction: row;
+        /* justify-content: center; */
+        align-items: center;
+        /* text-align: center; */
+        gap: var(--space-sm);
+        padding: var(--space-sm) var(--space-sm);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+    }
+
+    .link-card :global(img) {
+        flex: 0 0 20%;
+        height: auto;
+        min-width: 0;
+    }
+
+    .link-card-text {
+        margin: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+        .section-text-feed {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--space-4xl);
+        }
+
+        .tags {
+            /* flex-direction: column;
+            align-items: flex-start; */
+        }
+
+        .link-card {
+            flex: 0 0 auto;
+            max-width: 30rem;
+        }
+
+    }
+</style>
