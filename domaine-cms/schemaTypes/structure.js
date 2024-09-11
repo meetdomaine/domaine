@@ -19,6 +19,7 @@ import {
     iconHome, 
     iconIndex, 
     iconIndustries, 
+    iconLocation, 
     iconPages, 
     iconPartnerTiers, 
     iconPartners, 
@@ -49,6 +50,7 @@ import {
     labelHome, 
     labelIndex, 
     labelIndustries, 
+    labelLocation, 
     labelPages, 
     labelPartnerTiers, 
     labelPartners, 
@@ -629,12 +631,15 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    // S.listItem()
-                    //     .title(labelAgencyBrand)
-                    //     .icon(iconAgencyBrand)
-                    //     .child(
-                    //         S.documentTypeList('type_agencyBrand')
-                    //     ),
+                    S.listItem()
+                        .title(labelLocation)
+                        .icon(iconLocation)
+                        .child(
+                            S.document()
+                            .schemaType('settings_locations')
+                            .documentId(`settings_locations`)
+                            .title(labelLocation)
+                        ),
                 ])
             ),
       ])

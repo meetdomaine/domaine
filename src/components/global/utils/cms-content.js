@@ -1,4 +1,4 @@
-import { agencyBrandsQuery, blogCardFields, blogQuery, clientQuery, eventQuery, partnerTileFields, practicesQuery, projectFeatureQuery, projectGridFields, serviceGroupQuery, serviceQuery, serviceTypeQuery } from "./cms-queries"
+import { agencyBrandsQuery, blogCardFields, blogQuery, clientQuery, eventQuery, locationsQuery, partnerTileFields, practicesQuery, projectFeatureQuery, projectGridFields, serviceGroupQuery, serviceQuery, serviceTypeQuery } from "./cms-queries"
 
 // Global Content
 export const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)` )
@@ -46,6 +46,10 @@ export const allClientIndustries_Studio = await sanityClient.fetch(`*[_type == "
 
 // Events
 export const allEvents_upcoming = await sanityClient.fetch(`*[_type == "type_event"]{${eventQuery}} | order(dateTime)`)
+
+// Locations
+export const allLocations = await sanityClient.fetch(`*[_type == "settings_locations"]{${locationsQuery}}[0]`)
+
 
 // Careers
 const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');

@@ -21,6 +21,7 @@ import {
     InfoOutlineIcon,
     MenuIcon,
     EllipsisHorizontalIcon,
+    EarthAmericasIcon,
     ChartUpwardIcon,
     LinkIcon,
     RobotIcon,
@@ -152,6 +153,11 @@ export const iconSEO = ChartUpwardIcon
 // Agency Brand
 export const labelAgencyBrand = "Brand"
 export const iconAgencyBrand = RobotIcon
+
+// Locations
+export const labelLocation = "Locations"
+export const iconLocation = EarthAmericasIcon
+
 
 export const iconStat = ChartUpwardIcon
 

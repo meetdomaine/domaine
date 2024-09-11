@@ -65,6 +65,7 @@ import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_video from "./snippets/snippet_video";
 import section_serviceCards from "./sections/section_serviceCards.js";
 import section_linkList from "./sections/section_linkList.js";
+import settings_locations from "./siteSettings/settings_locations.jsx";
 
 
 export const schemaTypes = [
@@ -109,6 +110,7 @@ export const schemaTypes = [
     settings_header,
     settings_footer,
     settings_preloader,
+    settings_locations,
 
     snippet_SEOFields,
     snippet_linkList,

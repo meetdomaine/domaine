@@ -220,3 +220,8 @@ export const eventQuery = `
   dateTime,
   thumbnailImage{${imageFields}}
 `
+
+export const locationsQuery = `
+  ...,
+  locations[]{...}
+`

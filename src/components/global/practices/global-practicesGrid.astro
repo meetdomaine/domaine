@@ -1,43 +1,271 @@
 ---
 import { agencyBrandsQuery, practicesQuery } from "../utils/cms-queries"
 import GlobalPracticeCard from "./global-practiceCard.astro"
-import { agencyBrands, practices } from "../utils/cms-content";
+import { agencyBrands, practices, allLocations } from "../utils/cms-content";
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
+import AtomSanityImage from "../atoms/atom-sanityImage.astro";
+import { Icon } from "astro-icon/components";
+
+console.log(allLocations)
 ---
 <div class="practices-grid">
-  <div class="agency-brands">
-      {agencyBrands.map((brand, i) => (
-          <GlobalPracticeCard 
-              title={brand.title}
-              heading={brand.excerpt}
-              media={brand.thumbnailMedia}
-              slug={brand.slug}
-              isAgencyBrand={true}
-              logo={brand.logo}
-          />
-      ))}
-  </div>
-</div>
 
+    <a class="brand-card brand-primary" href="/">
+      <div class="brand-media">
+        <AtomSanityMedia 
+          sizes="50vw"
+          image={agencyBrands[0].thumbnailMedia.image}
+          video={agencyBrands[0].thumbnailMedia.video}
+          aspectRatio={1 / 1}
+          cover={true}
+        />
+      </div>
+      <div class="brand-info">
+        <div class="brand-logo" data-color-scheme="invert">
+          <Icon name="domaine-icon" />
+        </div>
+        <p class="brand-heading h5">{agencyBrands[0].excerpt}</p>
+      </div>
+    </a>
+
+    <div class="section-content">
+
+      <div class="locations">
+        {allLocations.locations.filter((location) => location.isPrimary).map((location) => (
+          <div class="location-card">
+            <div class="card-title">
+              <div class="location-name">
+                <p class="location-city h6">{location.city}</p>
+                {location.label && <p class="location-label h6">/ {location.label}</p>}
+              </div>
+              <div class="location-time">
+                <div class="location-time-icon" data-timezone={location.timezone}>
+                  <Icon class="time-icon icon-day" name="icon-day" />
+                  <Icon class="time-icon icon-night" name="icon-night" />
+                </div>
+                <p class="location-clock" data-timezone={location.timezone}>00:00</p>
+              </div>
+            </div>
+            {(location.addressLine1 || location.addressLine2) && 
+              <div class="location-address">
+                {location.addressLine1 && <p class="caption">{location.addressLine1}</p>}
+                {location.addressLine2 && <p class="caption">{location.addressLine2}</p>}
+              </div>
+            }
+          </div>
+        ))}
+
+        <div class="locations-secondary">
+          {allLocations.locations.filter((location) => !location.isPrimary).map((location) => (
+            <div class="location-card">
+              <div class="location-name">
+                <p class="location-city caption">{location.city}</p>
+                {location.country && <p class="location-label caption">/ {location.country}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <a class="brand-card brand-card-secondary" href="/studio">
+        <div class="brand-media">
+          <AtomSanityMedia 
+            sizes="50vw"
+            image={agencyBrands[1].thumbnailMedia.image}
+            video={agencyBrands[1].thumbnailMedia.video}
+            aspectRatio={4 / 3}
+            cover={true}
+          />
+        </div>
+        <div class="brand-info">
+          <div class="brand-logo" data-color-scheme="brand-01">
+            <Icon name="domaine-studio" />
+          </div>
+          <p class="brand-heading h6">{agencyBrands[1].excerpt}</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+<script>
+  import { getLocalTime, getIsDaytime } from "../utils/get-local-time"
+  const clocks = Array.from(document.getElementsByClassName('location-clock') as HTMLCollectionOf<HTMLElement>)
+  const icons = Array.from(document.getElementsByClassName('location-time-icon') as HTMLCollectionOf<HTMLElement>)
+  clocks.forEach(clock => {
+    getLocalTime(clock, clock.dataset.timezone, 'innerText')
+  });
+  icons.forEach((icon) => {
+    getIsDaytime(icon, icon.dataset.timezone)
+  })
+</script>
 
 <style>
   .practices-grid {
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      gap: var(--space-xs);
+      justify-content: stretch;
+      /* justify-content: space-between; */
+      gap: var(--space-2xl);
+      /* flex: 0 1 100%; */
   }
 
-  .agency-brands {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      flex: 0 1 75%;
-      gap: var(--space-xs);
+  .brand-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+    text-decoration: none;
+    max-height: 100%;
+  }
+
+  .brand-primary {
+    flex: 0 0 50%;
+    /* align-self: stretch; */
+  }
+
+  .section-content {
+    flex: 0 1 50%;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
+    /* padding-inline: var(--space-2xl); */
+  }
+
+  .locations,
+  .brand-card-secondary {
+    max-width: 30rem;
+    width: 100%;
+    /* align-self: stretch; */
+  }
+
+  .locations {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .brand-media {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .brand-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .brand-logo {
+    aspect-ratio: 1 / 1;
+    flex: 0 0 4rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.7rem;
+    background-color: var(--color-background-secondary);
+  }
+
+  .brand-logo :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  .brand-heading {
+    margin: 0;
+  }
+
+  .location-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .card-title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .location-name {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2em;
+  }
+
+  .location-label {
+    color: var(--color-foreground-secondary);
+  }
+
+  .location-time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .location-clock {
+    margin: 0;
+  }
+
+  .icon-day,
+  .icon-night {
+    width: 1em;
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+
+  .location-time-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .location-time-icon[data-is-daytime="true"] .icon-night {
+    display: none;
+  }
+
+  .location-time-icon[data-is-daytime="false"] .icon-day {
+    display: none;
+  }
+
+  .locations-secondary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2xs);
   }
 
   @media screen and (width <= 768px) {
     .practices-grid {
       flex-direction: column;
     }
+
+    .section-content {
+      flex-direction: row;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      flex: 0 0 auto;
+      max-width: unset;
+    }
+
+    .locations,
+    .brand-card-secondary {
+      max-width: unset;
+      flex: 1 0 20rem;
+      /* flex: 0 1 calc(50% - var(--space-lg)); */
+    }
+
+    .locations {
+      min-width: 30rem;
+    }
+
+
   }
 </style>

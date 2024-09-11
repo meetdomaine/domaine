@@ -24,7 +24,6 @@ const { currentBrand, heading, subheading } = Astro.props
     .brand-menu {
         flex-direction: column;
         justify-content: space-between;
-        /* justify-content: stretch; */
         align-items: stretch;
         gap: var(--space-xl);
         /* gap: 20svh; */
@@ -32,8 +31,8 @@ const { currentBrand, heading, subheading } = Astro.props
         width: 100%;
         height: 100dvh;
         max-height: 100dvh;
-        overflow: hidden;
-        padding-block: var(--space-sm) var(--page-margin);
+        overflow-y: auto;
+        padding-block: var(--header-padding-block) var(--space-2xl);
         opacity: 0;
         transition: opacity var(--anim-md), display var(--anim-md) allow-discrete;
         padding-inline: var(--page-margin);
@@ -59,8 +58,12 @@ const { currentBrand, heading, subheading } = Astro.props
         gap: var(--space-md);
     }
 
+    .subheading {
+        color: var(--color-foreground-secondary);
+    }
+
     .close-button {
-        align-self: flex-end;
+        align-self: flex-start;
         background-color: var(--color-foreground);
         color: var(--color-background);
         aspect-ratio: 1 / 1;
@@ -76,6 +79,12 @@ const { currentBrand, heading, subheading } = Astro.props
         color: inherit;
         width: var(--icon-md);
         height: var(--icon-md);
+    }
+
+    @media screen and (width <= 768px) {
+        .brand-menu {
+            padding-block: var(--space-sm) var(--space-2xl);
+        }
     }
 
 </style>
