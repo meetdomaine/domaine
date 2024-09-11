@@ -6,7 +6,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomButton from "../atoms/atom-button.astro"
 
 const { section, brand } = Astro.props
-console.log(section)
+// console.log(section)
 ---
 <section class="section-text-feed">
     <div class="section-content">
@@ -80,20 +80,20 @@ console.log(section)
     }
 
     .link-card {
-        flex: 0 1 30rem;
+        flex: 0 1 25rem;
         display: flex;
         flex-direction: row;
         /* justify-content: center; */
         align-items: center;
         /* text-align: center; */
         gap: var(--space-sm);
-        padding: var(--space-sm) var(--space-sm);
+        padding: var(--space-sm) var(--space-md);
         border-radius: var(--radius-sm);
         text-decoration: none;
     }
 
     .link-card :global(img) {
-        flex: 0 0 20%;
+        flex: 0 0 15%;
         height: auto;
         min-width: 0;
     }

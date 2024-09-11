@@ -27,14 +27,6 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
                     >{serviceType.title}</a>
 
                     <div class="services">
-                        {i === 0 && 
-                            <p 
-                                class="services-description h6"
-                                data-animate-viewport="true"
-                                data-animation="fade"
-                                data-animation-delay={600}
-                            >Domaine is an ecosystem of capabilities & services that are defining the future of e-commerce.</p>
-                            }
                         <div 
                             class="service-type__groups" 
                             data-slug={serviceType.slug.current}
@@ -42,15 +34,13 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
                         >
                             {serviceType.serviceGroups.map((serviceGroup) => (
                                 <div class="service-type__group">
-                                    {/* <AtomTag 
-                                        theme="dark"
-                                        text={serviceGroup.title}
-                                        url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
-                                    /> */}
                                     <div class="service-type__services">
+                                        <a 
+                                            class="service-type__group-title h6" 
+                                            href={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}`}
+                                        >{serviceGroup.title}</a>
                                         {serviceGroup.services.map((service, i) => (
                                             <AtomTag 
-                                                title={serviceGroup.title}
                                                 text={service.title}
                                                 url={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
                                             />
@@ -91,12 +81,15 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         justify-content: flex-start;
         gap: var(--space-2xl);
         padding-inline: var(--page-margin);
-        padding-block: var(--space-4xl);
+        padding-block: var(--space-xl);
         min-height: 100lvh;
         position: relative;
     }
 
+    .heading,
     .subheading {
+        color: var(--color-background);
+        mix-blend-mode: difference;
         max-width: 12em;
     }
 
@@ -117,10 +110,6 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         opacity: 0.5;
     }
 
-    .service-types:has(.service-type__button:hover, .service-type__groups:hover) .services-description {
-        opacity: 0;
-    }
-
     .service-type {
         display: grid;
         grid-template-columns: subgrid;
@@ -132,10 +121,11 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         opacity: 1;
     }
 
+    /* Default visible images */
     .service-types:not(:has(.service-type__button:hover, .service-type__groups:hover)) :is(
-        .section-media:nth-of-type(6n + 2) > .service-image:nth-child(3n + 3),
-        .section-media:nth-of-type(6n + 4) > .service-image:nth-child(3n + 3),
-        .section-media:nth-of-type(6n + 6) > .service-image:nth-child(3n + 2)) {
+        .section-media:nth-of-type(8n + 2) > .service-image:nth-child(3n + 2),
+        .section-media:nth-of-type(8n + 4) > .service-image:nth-child(3n + 2),
+        .section-media:nth-of-type(8n + 6) > .service-image:nth-child(3n + 3)) {
         opacity: 1;
     }
 
@@ -167,94 +157,116 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        max-width: 40rem;
         opacity: 0;
         translate: 0 0.5em;
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: var(--space-xl);
         transition: opacity var(--anim-sm), translate var(--anim-sm);
         pointer-events: none;
         padding-block: 0 var(--space-lg);
     }
 
-    .services-description {
-        position: absolute;
-        top: 0;
-        left: 0;
-        max-width: 20em;
-        transition: opacity var(--anim-md);
-    }
-
     .service-type__group {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: row;
+        flex-wrap: wrap; */
         align-items: flex-start;
         gap: var(--space-2xs);
     }
 
+    .service-type__group-title {
+        flex: 0 0 100%;
+        text-decoration: none;
+    }
+
     .service-type__services {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         align-items: flex-start;
         gap: var(--space-2xs);
     }
 
     .section-media {
         display: grid;
-        grid-template-columns: 1.25fr 1.25fr 1.25fr 1fr 1fr 1fr .75fr .75fr .75fr;
+        grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr;
         grid-template-rows: repeat(3, 1fr);
         position: absolute;
-        inset: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        aspect-ratio: 16 / 9;
         justify-items: flex-end;
         justify-items: stretch;
         align-items: stretch;
-        z-index: 0;
+        z-index: -1;
         pointer-events: none;
     }
 
-    .section-media:nth-of-type(6n + 2) .service-image:nth-child(3n + 1) {
-        grid-column: 8 / span 2;
-        grid-row: 1 / span 1;
-    }
-
-    .section-media:nth-of-type(6n + 2) .service-image:nth-child(3n + 2) {
-        grid-column: 6 / span 2;
-        grid-row: 2 / span 1;
-    }
-
-    .section-media:nth-of-type(6n + 2) .service-image:nth-child(3n + 3) {
-        grid-column: 1 / span 3;
-        grid-row: 3 / span 1;
-    }
-
-    .section-media:nth-of-type(6n + 4) .service-image:nth-child(3n + 1) {
-        grid-column: 7 / span 2;
-        grid-row: 2 / span 1;
-    }
-
-    .section-media:nth-of-type(6n + 4) .service-image:nth-child(3n + 2) {
+    /* First Service */
+    .section-media:nth-of-type(8n + 2) .service-image:nth-child(3n + 1) {
         grid-column: 2 / span 1;
-        grid-row: 3 / span 1;
-    }
-
-    .section-media:nth-of-type(6n + 4) .service-image:nth-child(3n + 3) {
-        grid-column: 6 / span 3;
-        grid-row: 3 / span 1;
-    }
-
-    .section-media:nth-of-type(6n + 6) .service-image:nth-child(3n + 1) {
-        grid-column: 6 / span 3;
         grid-row: 1 / span 1;
     }
 
-    .section-media:nth-of-type(6n + 6) .service-image:nth-child(3n + 2) {
-        grid-column: 8 / span 2;
+    .section-media:nth-of-type(8n + 2) .service-image:nth-child(3n + 2) {
+        grid-column: 5 / span 1;
+        grid-row: 1 / span 1;
+    }
+
+    .section-media:nth-of-type(8n + 2) .service-image:nth-child(3n + 3) {
+        grid-column: 1 / span 1;
+        grid-row: 3 / span 1;
+    }
+
+    /* Second Service */
+    .section-media:nth-of-type(8n + 4) .service-image:nth-child(3n + 1) {
+        grid-column: 6 / span 1;
+        grid-row: 1 / span 1;
+    }
+
+    .section-media:nth-of-type(8n + 4) .service-image:nth-child(3n + 2) {
+        grid-column: 4 / span 1;
         grid-row: 2 / span 1;
     }
 
-    .section-media:nth-of-type(6n + 6) .service-image:nth-child(3n + 3) {
-        grid-column: 2 / span 3;
+    .section-media:nth-of-type(8n + 4) .service-image:nth-child(3n + 3) {
+        grid-column: 4 / span 1;
+        grid-row: 3 / span 1;
+    }
+
+    /* Third Service */
+    .section-media:nth-of-type(8n + 6) .service-image:nth-child(3n + 1) {
+        grid-column: 2 / span 1;
+        grid-row: 2 / span 1;
+    }
+
+    .section-media:nth-of-type(8n + 6) .service-image:nth-child(3n + 2) {
+        grid-column: 1 / span 1;
+        grid-row: 3 / span 1;
+    }
+
+    .section-media:nth-of-type(8n + 6) .service-image:nth-child(3n + 3) {
+        grid-column: 5 / span 1;
+        grid-row: 3 / span 1;
+    }
+
+    /* Fourth Service */
+    .section-media:nth-of-type(8n + 8) .service-image:nth-child(3n + 1) {
+        grid-column: 4 / span 1;
+        grid-row: 1 / span 1;
+    }
+
+    .section-media:nth-of-type(8n + 8) .service-image:nth-child(3n + 2) {
+        grid-column: 6 / span 1;
+        grid-row: 2 / span 1;
+    }
+
+    .section-media:nth-of-type(8n + 8) .service-image:nth-child(3n + 3) {
+        grid-column: 3 / span 1;
         grid-row: 3 / span 1;
     }
 
