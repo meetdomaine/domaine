@@ -1,12 +1,15 @@
 ---
 import AtomButton from "../atoms/atom-button.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
 
 const { section, brand } = Astro.props
 
 const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
+
+console.log(section.projects[0].client)
 ---
 <section class="section-projects-grid">
     <div class="section-text">
@@ -54,7 +57,14 @@ const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
                             video={project.thumbnailMedia.video}
                             aspectRatio={3 / 4}
                             sizes="15vw"
+                            cover={true}
                         />
+                        <div class="project-logo">
+                            <AtomSanityImage 
+                                image={project.client.logoLight.image}
+                                sizes="30vw"
+                            />
+                        </div>
                     </div>
                 </a>
             </div>
@@ -97,17 +107,16 @@ const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
     }
 
     .project-tile {
-        /* display: flex;
-        flex-direction: row;
-        justify-content: flex-end; */
-        /* float: right; */
+        overflow: hidden;
         
     }
 
     .project-link-card {
         height: 100%;
         max-height: 100%;
-        /* float: right; */
+        overflow: hidden;
+        grid-area: pr;
+        position: relative;
     }
 
     .project-tile:nth-child(1),
@@ -128,8 +137,28 @@ const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
             ". pr";
     }
 
-    .project-link-card {
-        grid-area: pr;
+    .project-media {
+        transition: scale var(--anim-lg);
+        height: 100%;
+    }
+
+    .project-logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% calc(-50% + var(--space-sm));
+        width: 50%;
+        opacity: 0;
+        transition: opacity var(--anim-md), translate var(--anim-md);
+    }
+
+    .project-link-card:hover .project-media {
+        scale: 1.1;
+    }
+
+    .project-link-card:hover .project-logo {
+        opacity: 1;
+        translate: -50% -50%;
     }
 
     @media screen and (width < 768px) {

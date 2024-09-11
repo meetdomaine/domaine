@@ -89,8 +89,8 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         justify-content: flex-start;
         gap: var(--space-2xl);
         padding-inline: var(--page-margin);
-        padding-block: var(--space-xl);
-        min-height: 100lvh;
+        padding-block: var(--space-xl) 20lvh;
+        /* min-height: 100lvh; */
         position: relative;
     }
 
@@ -274,8 +274,9 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         min-height: 0;
         object-fit: cover;
         pointer-events: none;
-        opacity: 0;
-        transition: opacity var(--anim-md);
+        /* opacity: 0; */
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        transition: opacity var(--anim-md), clip-path var(--anim-md);
     }
 
 
@@ -294,7 +295,7 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         }
 
         .service-type:has(.service-type__button:hover, .service-type__groups:hover) + .section-media > .service-image {
-            opacity: 1;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
         }
 
         /* Default visible images */
@@ -302,7 +303,8 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
             .section-media:nth-of-type(8n + 2) > .service-image:nth-child(3n + 2),
             .section-media:nth-of-type(8n + 4) > .service-image:nth-child(3n + 2),
             .section-media:nth-of-type(8n + 6) > .service-image:nth-child(3n + 3)) {
-            opacity: 1;
+            /* opacity: 1; */
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
         }
 
         /* Style unhovered service titles */
