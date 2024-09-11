@@ -4,6 +4,7 @@ import AtomTag from "../atoms/atom-tag.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import { imageFields } from "../utils/cms-queries";
 import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-content";
+import { Icon } from "astro-icon/components";
 
 const { section, brand, key } = Astro.props
 
@@ -12,8 +13,10 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 
     <div class="section-content">
-        <h2 class="heading h5">{section.heading}</h2>
-        {section.subheading && <p class="subheading">{section.subheading}</p>}
+        <div class="section-title">
+            <h2 class="heading h5">{section.heading}</h2>
+            {section.subheading && <p class="subheading">{section.subheading}</p>}
+        </div>
         <div class="service-types">
             {serviceTypes.map((serviceType, i) => (
                 <div class="service-type">
@@ -24,7 +27,12 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
                         data-animation-delay={i * 200}
                         data-slug={serviceType.slug.current}
                         href={`/services/${serviceType.slug.current}`}
-                    >{serviceType.title}</a>
+                    >
+                        {serviceType.title}
+                        
+                        <span><Icon name="arrow-diagonal" class="service-type__icon" /></span>
+                        <div class="service-type__description h6">{serviceType.excerpt}</div>
+                    </a>
 
                     <div class="services">
                         <div 
@@ -86,11 +94,17 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         position: relative;
     }
 
+    .section-title {
+        display: grid;
+        grid-column: 1 / span 2;
+        grid-template-columns: 1fr 2fr;
+    }
+
     .heading,
     .subheading {
         color: var(--color-background);
         mix-blend-mode: difference;
-        max-width: 12em;
+        max-width: 20em;
     }
 
     .section-content {
@@ -106,27 +120,22 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         grid-column: 1 / span 2;
     }
 
-    .service-types:has(.service-type__button:hover, .service-type__groups:hover) .service-type:not(:has(:hover, .service-type__groups:hover)) .service-type__button {
-        opacity: 0.5;
-    }
-
     .service-type {
         display: grid;
         grid-template-columns: subgrid;
         grid-column: 1 / span 2;
         /* z-index: 3; */
     }
-
-    .service-type:has(.service-type__button:hover, .service-type__groups:hover) + .section-media > .service-image {
-        opacity: 1;
+    
+    .service-type__icon {
+        width: 0.7em;
+        margin-left: 0.2em;
+        height: auto;
     }
 
-    /* Default visible images */
-    .service-types:not(:has(.service-type__button:hover, .service-type__groups:hover)) :is(
-        .section-media:nth-of-type(8n + 2) > .service-image:nth-child(3n + 2),
-        .section-media:nth-of-type(8n + 4) > .service-image:nth-child(3n + 2),
-        .section-media:nth-of-type(8n + 6) > .service-image:nth-child(3n + 3)) {
-        opacity: 1;
+    .service-type__description {
+        color: var(--color-foreground-secondary);
+        margin-top: 0.5em;
     }
 
     .service-type__button {
@@ -137,17 +146,7 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         text-decoration: none;
     }
 
-    .service-type__button:hover + .services .service-type__groups,
-    .service-type__groups:hover {
-        translate: 0 0;
-        opacity: 1;
-        z-index: 3;
-    }
 
-    .service-type__button:hover + .services > .service-type__groups,
-    .service-type__groups:hover {
-        pointer-events: all;
-    }
 
     .services {
         position: relative;
@@ -171,8 +170,6 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
 
     .service-type__group {
         display: flex;
-        /* flex-direction: row;
-        flex-wrap: wrap; */
         align-items: flex-start;
         gap: var(--space-2xs);
     }
@@ -279,5 +276,94 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
         pointer-events: none;
         opacity: 0;
         transition: opacity var(--anim-md);
+    }
+
+
+    @media screen and ( width > 768px) {
+
+        .service-type__button:hover + .services .service-type__groups,
+        .service-type__groups:hover {
+            translate: 0 0;
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .service-type__button:hover + .services > .service-type__groups,
+        .service-type__groups:hover {
+            pointer-events: all;
+        }
+
+        .service-type:has(.service-type__button:hover, .service-type__groups:hover) + .section-media > .service-image {
+            opacity: 1;
+        }
+
+        /* Default visible images */
+        .service-types:not(:has(.service-type__button:hover, .service-type__groups:hover)) :is(
+            .section-media:nth-of-type(8n + 2) > .service-image:nth-child(3n + 2),
+            .section-media:nth-of-type(8n + 4) > .service-image:nth-child(3n + 2),
+            .section-media:nth-of-type(8n + 6) > .service-image:nth-child(3n + 3)) {
+            opacity: 1;
+        }
+
+        /* Style unhovered service titles */
+        .service-types:has(.service-type__button:hover, .service-type__groups:hover) .service-type:not(:has(:hover, .service-type__groups:hover)) .service-type__button {
+            opacity: 0.5;
+        }
+
+        .service-type__description,
+        .service-type__icon {
+            display: none;
+        }
+    }
+
+    @media screen and ( width <= 768px) {
+
+        .section-title {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .heading,
+        .subheading {
+            max-width: 30em;
+        }
+
+        .section-media {
+            display: none;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .service-type {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-type__groups {
+            position: relative;
+            opacity: 1;
+            translate: 0 0;
+            pointer-events: all;
+            display: none;
+        }
+
+        .service-types {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            max-width: 40rem;
+            align-self: flex-end;
+        }
+
+        .service-type__services {
+            /* flex-wrap: nowrap; */
+            /* align-items: flex-start;
+            gap: var(--space-2xs); */
+        }
     }
 </style>
