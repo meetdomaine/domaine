@@ -6,6 +6,7 @@ import AtomLinkCard from "../atoms/atom-linkCard.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { allBlogPosts_Domaine, allBlogPosts_Studio } from "../utils/cms-content";
+import GlobalBlogTile from "../blog/global-BlogTile.astro";
 
 const { section, brand, heading, subheading, posts } = Astro.props
 
@@ -69,15 +70,19 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
                     {/* <p class="sidebar-heading">{section.featuredCategory.title}</p> */}
                     <div class="sidebar-posts">
                         {sidebarPosts.map((post) => (
-                            <div class="sidebar-post">
-                                <AtomLinkCard 
-                                    categoryTitle={section.featuredCategory.title}
-                                    title={post.title}
-                                    url={`${brand === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`}
-                                    image={post.thumbnailImage.image}
-                                    theme="dark"
-                                />
-                            </div>
+                            <GlobalBlogTile 
+                                post={post}
+                                currentBrand={brand}
+                            />
+                            // <div class="sidebar-post">
+                            //     <AtomLinkCard 
+                            //         categoryTitle={section.featuredCategory.title}
+                            //         title={post.title}
+                            //         url={`${brand === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`}
+                            //         image={post.thumbnailImage.image}
+                            //         theme="dark"
+                            //     />
+                            // </div>
                         ))}
                     </div>
                 </aside>

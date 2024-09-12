@@ -1,7 +1,7 @@
 ---
 interface Props {
     formId: any,
-    buttonToggles?: boolean,
+    buttonToggles?: boolean
 }
 
 const { formId, buttonToggles } = Astro.props
@@ -26,6 +26,8 @@ const fields = await fieldGroups.flatMap((group) => {
         return field
     })
 })
+
+// console.log(fields)
 ---
 <form id={`form-${formId}`} >
     {fieldGroups.map((group) => {
@@ -187,7 +189,7 @@ const fields = await fieldGroups.flatMap((group) => {
                 <div class="form-field">
                     <div class="inputs-list">
                         <div class="input-list-item">
-                            <input type="checkbox" id={`communication-consent-${formId}`} name={`communication-consent-${formId}`} value={`communication-consent-${formId}`} required />
+                            <input type="checkbox" id={`communication-consent-${formId}`} name={`communication-consent`} value={`communication-consent-${formId}`} required />
                             <label for={`communication-consent-${formId}`}>{checkbox.label}</label>
                         </div>
                     </div>
@@ -203,8 +205,8 @@ const fields = await fieldGroups.flatMap((group) => {
                 <div class="form-field">
                     <div class="inputs-list">
                         <div class="input-list-item">
-                            <input type="checkbox" id="consentToProcess" name="consentToProcess" value="consentToProcess" required />
-                            <label for="consentToProcess">{consentData.consentToProcessCheckboxLabel}</label>
+                            <input type="checkbox" id={`consent-to-process-${formId}`} name={`consent-to-process`} value={`consent-to-process-${formId}`} required />
+                            <label for={`consent-to-process-${formId}`}>{consentData.consentToProcessCheckboxLabel}</label>
                         </div>
                     </div>
                 </div>
@@ -228,6 +230,7 @@ const fields = await fieldGroups.flatMap((group) => {
 <script define:vars={{ portalId, formId, consentData, fields }}>
 
     const contactForm = document.querySelector(`#form-${formId}`)
+    const submitButton = contactForm.querySelector('input[type="submit"]')
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -245,11 +248,24 @@ const fields = await fieldGroups.flatMap((group) => {
         return "";
     }
 
+    const handleSuccess = () => {
+        contactForm.reset()
+        const originalButtonText = submitButton.value
+        submitButton.value = "Thank You"
+        setTimeout(() => {
+            submitButton.value = originalButtonText
+        }, 4000)
+    }
+
     const hubspotCookie = getCookie('hubspotutk')
 
     const submitForm = async () => {
 
         const formData = new FormData(contactForm);
+
+        console.log(formData)
+        formData.delete("communication-consent");
+        formData.delete("consent-to-process");
         const formObject = Object.fromEntries(formData)
 
         // Upload file and return file data
@@ -264,9 +280,14 @@ const fields = await fieldGroups.flatMap((group) => {
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
 
+            console.log(fields)
+            console.log(key)
+
             const field = fields.find((field) => field.name === key)
             let value = formObject[key]
 
+            // if (!field) return
+                
             // Use Hubspot Filemanager API to upload file to a folder in Hubspot and return its url
             if (field.fieldType === "file") {
                 const fieldData = new FormData()
@@ -281,7 +302,7 @@ const fields = await fieldGroups.flatMap((group) => {
 
             // Weird HTML quirks
             if (field.fieldType === 'single_checkbox' && value === 'on') value = true
-            
+
             return {
                 name: key,
                 value: value,
@@ -317,6 +338,8 @@ const fields = await fieldGroups.flatMap((group) => {
                 }
             }
 
+            console.log(formBody)
+
             // Finally send the form info
             const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
                 method: "POST",
@@ -326,6 +349,9 @@ const fields = await fieldGroups.flatMap((group) => {
                 }
             })
             console.log(await response.json())
+            if (response.ok) {
+                handleSuccess()
+            }
         })
     }
 

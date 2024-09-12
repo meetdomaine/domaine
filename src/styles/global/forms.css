@@ -19,8 +19,7 @@ form {
     align-items: stretch;
     gap: var(--form-gap-block);
     margin-bottom: var(--space-md);
-    max-width: 50rem;
-    accent-color: pink;
+    max-width: 55rem;
 }
 
 fieldset {
@@ -109,7 +108,8 @@ input[type="checkbox"]:hover {
 
 input[type="radio"]:checked,
 input[type="checkbox"]:checked {
-    background-color: var(--form-accent-color);
+    /* background-color: var(--form-accent-color); */
+    background-color: var(--color-foreground);
 }
 
 input[type="radio"]::before,
@@ -269,7 +269,12 @@ textarea:active {
 }
 
 .toggle-button-list .toggle-button input:is([type="checkbox"], [type="radio"]) {
-    display: none;
+    /* display: none; */
+    /* appearance: none; */
+    /* visibility: hidden; */
+    width: 0;
+    height: 0;
+    padding: 0;
 }
 
 .form-field:has(.inputs-list) {
@@ -285,9 +290,9 @@ textarea:active {
 }
 
 /* Hide form group if all fields are hidden */
-.form-field-group:not(:has(input:not([hidden]))) {
+/* .form-field-group:not(:has(input:not([hidden]))) {
     display: none;
-}
+} */
 
 .form-field {
     flex: 0 1 100%;

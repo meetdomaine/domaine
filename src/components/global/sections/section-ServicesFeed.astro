@@ -45,7 +45,7 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
                                     <div class="service-type__services">
                                         <a 
                                             class="service-type__group-title h6" 
-                                            href={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}`}
+                                            href={`${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
                                         >{serviceGroup.title}</a>
                                         {serviceGroup.services.map((service, i) => (
                                             <AtomTag 

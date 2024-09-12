@@ -13,13 +13,16 @@ const { hubspotFormId, forms } = Astro.props
     </div>
     <div class="tab-bar">
         <ul class="tabs">
-            <li class="tab" data-active="true"><button id="tab_project-inquiry" data-menu="project-inquiry">Project Inquiry</button></li>
-            <li class="tab"><button id="tab_general-inquiry" data-menu="general-inquiry">Get in Touch</button></li>
+            {forms.map((form, i) => (
+                <li class="tab" >
+                    <button data-form-id={form.hubspotFormId} class="global-form-tab" data-active={i === 0 ? "true" : "false"}>{form.title}</button>
+                </li>
+            ))}
         </ul>
     </div>
 
-    {forms.map((form) => (
-        <div class="contact-form">
+    {forms.map((form, i) => (
+        <div data-form-id={form.hubspotFormId} class="global-contact-form" data-active={i < 1 ? "true" : "false"}>
             <AtomHubspotForm
                 formId={form.hubspotFormId}
                 buttonToggles={true}
@@ -27,12 +30,28 @@ const { hubspotFormId, forms } = Astro.props
         </div>
     ))}
 
-    <div class="submit-button">
-        <div class="custom-field">
-            <input type="submit" value="Submit" form="contact-form" />
-        </div>
-    </div>
 </aside>
+
+<script>
+    const contactTabs = Array.from(document.getElementsByClassName('global-form-tab') as HTMLCollectionOf<HTMLElement>)
+    const contactForms = Array.from(document.getElementsByClassName('global-contact-form') as HTMLCollectionOf<HTMLElement>)
+
+    contactTabs.forEach((tab) => {
+        tab.addEventListener("click", (e: Event) => {
+            const element = e.target as HTMLButtonElement
+            const tabId = element.dataset.formId
+            contactForms.forEach((form) => {
+                if (form.dataset.formId == tabId) return form.dataset.active = "true"
+                return form.dataset.active = "false"
+            })
+            contactTabs.forEach((tab) => {
+                if (tab.dataset.formId == tabId) return tab.dataset.active = "true"
+                return tab.dataset.active = "false"
+            })
+        })
+    })
+
+</script>
 
 <style>
     .contact-menu {
@@ -40,11 +59,10 @@ const { hubspotFormId, forms } = Astro.props
         border: none;
         margin: auto var(--inset) auto auto;
         height: calc(100% - var(--inset) * 2);
-        max-width: 34rem;
         background-color: var(--color-background);
         border-radius: var(--radius-sm);
         position: fixed;
-        width: calc(100% - var(--inset) * 2);
+        width: min(40rem, calc(100% - var(--inset) * 2));
         translate: calc(100% + var(--inset) + var(--page-margin)) 0;
         padding-inline: 0;
         padding-block: 0;
@@ -138,11 +156,11 @@ const { hubspotFormId, forms } = Astro.props
         /* border: 1px solid var(--color-background); */
     }
 
-    .tab[data-active="true"] button {
+    .tab button[data-active="true"] {
         background-color: var(--color-background);
     }
 
-    .contact-form {
+    .global-contact-form {
         overflow-y: auto;
         padding-inline: var(--space-md);
         flex: 1 0 auto;
@@ -153,17 +171,30 @@ const { hubspotFormId, forms } = Astro.props
         overflow: visible;
     }
 
-    .submit-button {
+    .global-contact-form :global(.form-field:has(input[type="submit"])) {
         position: sticky;
         bottom: 0;
         background: linear-gradient(0deg, var(--color-background) 80%, transparent);
-        padding-block: var(--space-md);
+        padding-block: var(--space-md) 0;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        align-items: flex-end;
         /* justify-content: flex-end; */
         z-index: 3;
-        padding-inline: var(--space-md);
+    }
+
+    .global-contact-form :global(input[type="submit"]) {
+        align-self: flex-end;
+    }
+
+    .global-contact-form :global(form) {
+        flex: 0 0 auto;
+        min-height: 100%;
+    }
+
+    .global-contact-form[data-active="false"] {
+        display: none;
     }
 
 

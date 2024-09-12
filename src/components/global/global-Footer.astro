@@ -71,19 +71,6 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
                     ))}
                 </div>
             </div>
-            <div class="practices">
-                
-                {footerSettings.practicesHeading && 
-                    <div class="practices__title">
-                        {footerSettings.practicesHeading}
-                    </div>
-                }
-                <div class="practices__content link-column__links">
-                    {practices.map((practice) => (
-                        <a href={practice.slug.current} class="link-column__link h6">{practice.title}</a>
-                    ))}
-                </div>
-            </div>
         </div>
 
     </div>

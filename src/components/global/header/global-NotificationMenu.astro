@@ -8,6 +8,7 @@ import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
+import GlobalBlogTile from "../blog/global-BlogTile.astro"
 
 const { 
   currentBrand, 
@@ -130,22 +131,10 @@ const upcomingEvent = allEvents_upcoming[0]
 <div class="blog-posts" data-color-scheme="glass-dark">
   <p class="blog-posts-heading caption">Insights</p>
   {latestBlogPost.slice(0,2).map((blogPost) => (
-    <div class="blog-post">
-      <div class="blog-post-content">
-        <AtomTag
-          text={blogPost.category.title}
-          url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}`} 
-        />
-        <a class="blog-post-title" href={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${blogPost.category.slug.current}/${blogPost.slug.current}`} >{blogPost.title}</a>
-      </div>
-      <div class="blog-post-media">
-        <AtomSanityImage 
-          sizes="20vw"
-          image={blogPost.thumbnailImage.image}
-          aspectRatio={3 / 4}
-        />
-      </div>
-    </div>
+    <GlobalBlogTile 
+      post={blogPost}
+      currentBrand={currentBrand}
+    />
   ))}
 </div>
 
@@ -153,6 +142,7 @@ const upcomingEvent = allEvents_upcoming[0]
 </dialog>
 
 <script>
+  import { getLocalTime } from "../utils/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -192,7 +182,10 @@ const upcomingEvent = allEvents_upcoming[0]
         minutes = time.getMinutes()
         seconds = time.getSeconds()
 
-        timeElement.innerText = `${hours}:${minutes}`
+        getLocalTime(timeElement, timezoneId, 'innerText')
+        // timeElement.getLocal
+
+        // timeElement.innerText = `${hours}:${minutes}`
         if (hours >= 19) clock.dataset.daytime = "false"
 
         clock.style.setProperty('--hours', hours)
@@ -529,31 +522,6 @@ const upcomingEvent = allEvents_upcoming[0]
 
   .blog-posts-heading {
     margin-bottom: 0.8em;
-  }
-
-  .blog-post {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: var(--space-xs);
-    align-items: flex-start;
-    border-top: 1px solid var(--color-border);
-    padding-block: var(--space-sm);
-  }
-
-  .blog-post-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-xs);
-  }
-
-  .blog-post-title {
-    text-decoration: none;
-  }
-
-  .blog-post-media {
-    flex: 0 0 20%;
   }
 
   @media screen and (width <= 768px) {
