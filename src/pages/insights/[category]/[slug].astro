@@ -90,9 +90,11 @@ const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
       />
     : null }
 
-    <BlogPosts
-      posts={relatedPosts}
-    />
+    {relatedPosts && relatedPosts.length > 2 &&
+      <BlogPosts
+        posts={relatedPosts}
+      />
+    }
 
 </Layout>
 

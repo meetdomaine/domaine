@@ -49,8 +49,8 @@ const relatedProjects = allRelatedProjects.slice(0, relatedProjectsCount)
     link={data.url}
     tags={data.tags}
   />
-    {data.content ? data.content.map((block) => (
-      <SectionBlock block={block} />
+    {data.content ? data.content.map((block, i) => (
+      <SectionBlock block={block} key={i} />
     )) : ''}
 
     <!-- <RelatedProjects 
