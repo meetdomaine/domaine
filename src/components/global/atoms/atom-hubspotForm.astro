@@ -27,7 +27,7 @@ const fields = await fieldGroups.flatMap((group) => {
     })
 })
 
-// console.log(fields)
+console.log(fields)
 ---
 <form id={`form-${formId}`} >
     {fieldGroups.map((group) => {
@@ -115,7 +115,7 @@ const fields = await fieldGroups.flatMap((group) => {
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                                 <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
                                     {field.options.map((option) => (
-                                        <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
+                                        <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`} role="checkbox">
                                             <input 
                                                 type="checkbox" 
                                                 id={option.value} 
