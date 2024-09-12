@@ -332,12 +332,17 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
     .subfooter-link {
         text-decoration: none;
         color: var(--color-brand-contrast-subdued);
+        flex: 0 0 auto;
     }
 
     @media screen and (width <= 768px) {
         .footer-inner,
         .subfooter {
             width: auto;
+        }
+
+        .subfooter-links {
+            flex-wrap: wrap;
         }
     }
 </style>

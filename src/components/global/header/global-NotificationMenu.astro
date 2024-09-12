@@ -142,7 +142,7 @@ const upcomingEvent = allEvents_upcoming[0]
 </dialog>
 
 <script>
-  import { getLocalTime } from "../utils/get-local-time"
+  import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -183,14 +183,16 @@ const upcomingEvent = allEvents_upcoming[0]
         seconds = time.getSeconds()
 
         getLocalTime(timeElement, timezoneId, 'innerText')
+        getLocalTime(clock, timezoneId, 'customProps')
+        getIsDaytime(clock, timezoneId)
         // timeElement.getLocal
 
         // timeElement.innerText = `${hours}:${minutes}`
-        if (hours >= 19) clock.dataset.daytime = "false"
+        // if (hours >= 19) clock.dataset.daytime = "false"
 
-        clock.style.setProperty('--hours', hours)
-        clock.style.setProperty('--minutes', minutes)
-        clock.style.setProperty('--seconds', seconds)
+        // clock.style.setProperty('--hours', hours)
+        // clock.style.setProperty('--minutes', minutes)
+        // clock.style.setProperty('--seconds', seconds)
         
         
         // console.log(hours)
@@ -296,18 +298,18 @@ const upcomingEvent = allEvents_upcoming[0]
     --color-accent: var(--color-blue);
   }
 
-  .clock[data-daytime="true"] .clock-icon {
+  .clock[data-is-daytime="true"] .clock-icon {
     --color-background: var(--color-lightest);
     --color-background-secondary: var(--color-light);
     --color-foreground: var(--color-darkest);
     --color-foreground-secondary: var(--color-dark);
   }
 
-  .clock[data-daytime="true"] .icon-night {
+  .clock[data-is-daytime="true"] .icon-night {
     display: none;
   }
 
-  .clock[data-daytime="false"] .icon-day {
+  .clock[data-is-daytime="false"] .icon-day {
     display: none;
   }
 
