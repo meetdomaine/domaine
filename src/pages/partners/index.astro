@@ -3,8 +3,10 @@ import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 import { paths } from '../../components/global/utils/paths';
 import PartnerTile from '../../components/global/partners/global-PartnerTile.astro'
-import { imageFields, partnerTileFields } from '../../components/global/utils/cms-queries';
+import { imageFields, partnerTileFields, videoFields } from '../../components/global/utils/cms-queries';
 import PartnerCard from '../../components/global/partners/global-PartnerCard.astro';
+import PartnersIndexHero from '../../components/global/partners/partnersIndex-hero.astro';
+import { allPartners_Domaine } from '../../components/global/utils/cms-content';
 
 const partnerTiers =  await sanityClient.fetch(`
     *[_type == "type_partnerTier"]{ 
@@ -14,12 +16,22 @@ const partnerTiers =  await sanityClient.fetch(`
         } | order(orderRank)
     }`)
 
+const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"] { title, heading, heroMedia{${videoFields}}, text }[0]`)
+// console.log(pageSettings)
 ---
 <LayoutDomaine
-    title="Partners"
+    title={pageSettings.title}
     searchFilter="type:page"
     activePath="/partners"
 >
+    <PartnersIndexHero 
+        title={pageSettings.title}
+        heading={pageSettings.heading}
+        media={pageSettings.heroMedia}
+        text={pageSettings.text}
+        partnersCount={allPartners_Domaine.length}
+    />
+
     <div class="partner-tiers">
         <h1>Partners</h1>
         {partnerTiers.map((tier) => (

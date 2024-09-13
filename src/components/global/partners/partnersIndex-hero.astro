@@ -1,0 +1,72 @@
+---
+import AtomCounter from "../atoms/atom-counter.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+
+const { title, heading, text, partnersCount, media } = Astro.props
+---
+<section class="partners-index-hero">
+  <div class="section-title">
+    <div class="title">
+      <h1 class="h5">{title}</h1>
+      {partnersCount && 
+        <AtomCounter 
+        count={partnersCount}
+        />
+      }
+    </div>
+    <p class="heading h4">{heading}</p>
+  </div>
+  {media && 
+    <AtomSanityMedia 
+      video={media.video}
+      image={media.image}
+      autoplay={false}
+      sizes="100vw"
+    />
+  }
+  {text && 
+    <div class="section-text">
+      <p class="text">{text}</p>
+    </div>
+  }
+</section>
+
+<style>
+  .partners-index-hero {
+    padding-block: calc(var(--header-height) * 2) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .section-title,
+  .section-text {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding-inline: var(--page-margin);
+    gap: var(--space-md);
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .heading {
+    max-width: 24em;
+  }
+
+  .text {
+    grid-column: 2 / span 1;
+    max-width: 40em;
+  }
+
+  @media screen and (width <= 768px) {
+    .section-title,
+    .section-text {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+</style>
