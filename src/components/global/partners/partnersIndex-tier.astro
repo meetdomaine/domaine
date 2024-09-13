@@ -5,10 +5,10 @@ const { tier } = Astro.props
 ---
 <section class="partners-index-tier">
   <div class="section-title">
-    <h2 class="h5">{tier.title}</h2>
+    <h2 class="h5">{tier.title} Partners</h2>
     <p class="description h6">{tier.description}</p>
   </div>
-  <div class="partners">
+  <div class="partners" data-style={tier.createLandingPages ? "primary" : "secondary"}>
     {tier.partners.map((partner) => (
       <GlobalPartnerCard 
         partner={partner}
@@ -38,22 +38,26 @@ const { tier } = Astro.props
 
   .partners {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     gap: var(--space-md);
+  }
+
+  .partners[data-style="primary"] {
+    grid-template-columns: repeat(6, 1fr);
   }
 
 
   @media screen and (width > 768px) {
-    .partners :global(> *:nth-of-type(12n + 2)) {
+    .partners[data-style="primary"] :global(> *:nth-of-type(12n + 2)) {
       grid-column: 3 / span 1;
     }
 
 
-    .partners :global(> *:nth-of-type(12n + 5)) {
+    .partners[data-style="primary"] :global(> *:nth-of-type(12n + 5)) {
       grid-column: 2 / span 1;
     }
 
-    .partners :global(> *:nth-of-type(12n + 8)) {
+    .partners[data-style="primary"] :global(> *:nth-of-type(12n + 8)) {
       grid-column: 5 / span 1;
     }
   }

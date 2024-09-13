@@ -386,6 +386,14 @@ export const structure = (S, context) =>
                         .child(
                             S.documentTypeList('type_partnerTier')
                         ),
+
+                    orderableDocumentListDeskItem({
+                        type: 'type_partnerTier',
+                        title: labelPartnerTiers,
+                        icon: iconPartnerTiers,
+                        S, 
+                        context
+                    }),
                     orderableDocumentListDeskItem({
                         type: 'type_partner',
                         title: labelPartners,

@@ -8,6 +8,7 @@ import PartnerCard from '../../components/global/partners/global-PartnerCard.ast
 import PartnersIndexHero from '../../components/global/partners/partnersIndex-hero.astro';
 import { allPartners_Domaine } from '../../components/global/utils/cms-content';
 import PartnersIndexTier from '../../components/global/partners/partnersIndex-tier.astro';
+import SectionForm from '../../components/global/sections/section-Form.astro';
 
 const partnerTiers =  await sanityClient.fetch(`
     *[_type == "type_partnerTier"]{ 
@@ -15,10 +16,10 @@ const partnerTiers =  await sanityClient.fetch(`
         "partners": *[_type == "type_partner" && references(^._id)]{
             ${partnerTileFields} 
         } | order(orderRank)
-    }`)
+    } | order(orderRank)`)
 
-const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"] { title, heading, heroMedia{${videoFields}}, text }[0]`)
-// console.log(pageSettings)
+const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"] { title, heading, heroMedia{${videoFields}}, text, formHeading, formText, hubspotFormId }[0]`)
+console.log(pageSettings)
 ---
 <LayoutDomaine
     title={pageSettings.title}
@@ -38,27 +39,16 @@ const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"
             <PartnersIndexTier 
                 tier={tier}
             />
-            // <section class="partner-tier">
-            //     <div class="partner-tier-header">
-            //         <div class="icon">
-            //             <Fragment set:html={tier.icon} />
-            //         </div>
-            //         <div class="header-text">
-            //             <h3>{tier.title}</h3>
-            //             <p>{tier.description}</p>
-            //         </div>
-            //     </div>
-
-            //     <div class="partners">
-            //         {tier.partners.map((partner) => (
-            //             <PartnerCard 
-            //                 partner={partner}
-            //             />
-            //         ))}
-            //     </div>
-            // </section>
         ))}
     </div>
+
+    {pageSettings.hubspotFormId && 
+        <SectionForm 
+            hubspotFormId={pageSettings.hubspotFormId}
+            heading={pageSettings.formHeading}
+            text={pageSettings.formText}
+        />
+    }
 
 </LayoutDomaine>
 

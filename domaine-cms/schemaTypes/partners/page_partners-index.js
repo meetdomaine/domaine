@@ -27,6 +27,21 @@ export default defineType({
       title: 'Text',
       type: 'string',
     }),
+    defineField({
+      name: 'formHeading',
+      title: 'Form: Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'formText',
+      title: 'Form: Text',
+      type: 'string',
+    }),
+    defineField({
+      name: 'hubspotFormId',
+      title: 'Form: Hubspot Form ID',
+      type: 'string',
+    }),
   ],
 
   preview: {

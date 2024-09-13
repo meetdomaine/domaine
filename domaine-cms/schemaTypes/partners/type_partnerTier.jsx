@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
 import { iconPartnerTiers } from '../variables'
-
+import { orderRankField } from '@sanity/orderable-document-list'
 
 export default defineType({
   name: 'type_partnerTier',
@@ -47,6 +47,7 @@ export default defineType({
       title: 'Create Landing Pages',
       type: 'boolean',
     }),
+    orderRankField({ type: 'type_partner'}),
   ],
 
   preview: {

@@ -1,24 +1,44 @@
 ---
 import AtomHubspotForm from "../atoms/atom-hubspotForm.astro";
 
-const { section, key } = Astro.props;
-const formId = section.hubspotFormId
+const { section, key, hubspotFormId, heading, text } = Astro.props;
+const formId = section?.hubspotFormId ? section.hubspotFormId : hubspotFormId
+const formHeading = section?.heading ? section.heading : heading
+const formText = section?.subheading ? section.subheading : text
 ---
 <section class="section-form">
-  <div class="section-form__inner">
-    <div class="section-form__title">
-      <h2 class="h2">{section.heading}</h2>
-      <p class="h6">{section.subheading}</p>
-    </div>
 
-    <AtomHubspotForm 
-      formId={formId}
-    />
+    {formHeading && 
+      <h2 class="section-title h5">{formHeading}</h2>
+    }
+
+    <div class="section-content">
+      {formText && <p class="h6">{formText}</p>}
+      <AtomHubspotForm 
+        formId={formId}
+      />
+    </div>
 </section>
 
 <style>
     .section-form {
         padding-inline: var(--page-margin);
-        padding-block: var(--space-xl);
+        padding-block: var(--space-2xl);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: var(--space-2xl);
     }
+
+    .section-title {
+      max-width: 14em;
+    }
+
+    .section-content {
+      max-width: 40rem;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+
 </style>
