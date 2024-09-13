@@ -9,8 +9,8 @@ export const allBlogPosts_Domaine = await sanityClient.fetch(`*[_type == "type_b
 export const allBlogPosts_Studio = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" ]{${blogQuery} } | order( postDate desc)`)
 
 // Blog - Categories
-export const allBlogCategories_Domaine = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)] ) > 0]`)
-export const allBlogCategories_Studio = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == "Studio" && references(^._id)] ) > 0]`)
+export const allBlogCategories_Domaine = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)] ) > 0] | order( orderRank )`)
+export const allBlogCategories_Studio = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == "Studio" && references(^._id)] ) > 0] | order( orderRank )`)
 
 // Projects - All
 export const allProjects_Domaine = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectGridFields}} | order( orderRank asc)`)

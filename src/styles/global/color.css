@@ -101,12 +101,13 @@ html .color-invert,
 
 html,
 .color-reset,
+[data-color-scheme="default"],
 [data-color-scheme="invert"],
 [data-color-scheme="brand-01"],
 [data-color-scheme="brand-02"],
 [data-color-scheme="brand-03"] {
     color: var(--color-foreground);
-    background-color: var(--page-background, var(--color-background));
+    background-color: var(--color-background);
 }
 
 [data-color-scheme="glass-dark"],

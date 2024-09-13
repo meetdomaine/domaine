@@ -10,13 +10,12 @@ const { content } = Astro.props
 <div 
   class="project-content"
   data-color-scheme={content.foregroundColor === "light" ? "invert" : "default"}
-  style={`
-    ${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}
-`}
+  style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
 >
   <WorkPostHero
       title={content.title}
       heroMedia={content.heroMedia}
+      accentColor={content.accentColor}
   />
 
   <WorkPostAbout
@@ -25,7 +24,7 @@ const { content } = Astro.props
       client={content.client}
       metrics={content.metrics}
       agencyBrand={content.agencyBrand.slug.current}
-      theme={content.foregroundColor === "light" ? "light" : "dark"}
+      theme={content.foregroundColor === "light" ? "glass-dark" : "glass-light"}
   />
 
   {content.sections && content.sections.map((section, i) => (
@@ -50,12 +49,15 @@ const { content } = Astro.props
 />
 
 <style>
+
+    .project-content {
+        --color-background-secondary: color-mix(in srgb, var(--color-background) 75%, var(--color-lightest));
+        --color-foreground-secondary: color-mix(in srgb, var(--color-background) 30%, var(--color-foreground));
+    }
+
     .project-content[data-color-scheme="invert"] {
         --color-background-secondary: color-mix(in srgb, var(--color-background) 80%, var(--color-darkest));
         --color-foreground-secondary: color-mix(in srgb, var(--color-background) 30%, var(--color-foreground));
     }
 
-    .project-content[data-invert="true"] {
-        /* color: var(--color-background); */
-    }
 </style>

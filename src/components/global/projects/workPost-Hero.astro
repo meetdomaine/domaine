@@ -3,13 +3,14 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import { paths } from "../utils/paths"
 
-const { title, heroMedia } = Astro.props
+const { title, heroMedia, accentColor } = Astro.props
 ---
 <section class="work-post_hero">
     <h1 
         id="project-title" 
         class="project-title" 
         data-pagefind-meta="title"
+        style={`${accentColor ? `color: ${accentColor.hex};` : null}`}
     >{title}</h1>
     <div id="hero-media" class="section-media">
         <AtomSanityMedia 

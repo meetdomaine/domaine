@@ -159,7 +159,7 @@ export const projectPageFields = `
   agencyBrand->{slug},
   slug{...},
   heroMedia{..., ${videoFields}, ${imageFields}},
-  "relatedProjects": *[_type == "type_project" && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
+  "relatedProjects": *[_type == "type_project" && agencyBrand->slug.current == ^.agencyBrand->slug.current && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
   sections[]{${globalSectionsFields}},
 `
 

@@ -21,6 +21,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                             title={service.serviceGroup.title}
                             text={service.title}
                             url={`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`}
+                            theme={theme === "light" ? "glass-dark" : "glass-light"}
                         />
                     ))}
                 </div>
@@ -35,6 +36,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                         <AtomTag 
                             text={feature.title}
                             url={`${agencyBrand === "studio" ? "/studio" : ""}/work/features/${feature.slug.current}`}
+                            theme={theme === "light" ? "glass-dark" : "glass-light"}
                         />
                     ))}
                 </div>
@@ -47,10 +49,12 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                 <h4 class="h5">Partners</h4>
                 <div class="partner-tiles">
                     {partners.map((partner) => (
-                        <GlobalPartnerTile 
-                            partner={partner}
-                            theme={theme}
-                        />
+                        <a class="partner-tile" href={`/partners/${partner.slug.current}`}>
+                            <AtomSanityImage 
+                                sizes="30vw"
+                                image={partner.icon.image}
+                            />
+                        </a>
                     ))}
                 </div>
             </div>
@@ -67,16 +71,6 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
             ))}
         </div>
     }
-
-    {metrics && 
-        <div class="metrics">
-            <h4>Metrics</h4>
-            {metrics.map((metric) => (
-                <div class="metric">
-                    <p>{metric.number} {metric.label}</p>
-                </div>
-            ))}
-        </div>
     } -->
 </section>
 
@@ -90,6 +84,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
         justify-content: center;
         align-items: center;
         min-height: 60svh;
+        background-color: var(--color-background-secondary);
     }
 
     .section-content {
@@ -116,6 +111,16 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
         gap: var(--space-2xs);
         flex-wrap: wrap;
         flex-basis: 70%;
+    }
+
+    .partner-tiles {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .partner-tile {
+        border-radius: var(--radius-sm);
+        overflow: hidden;
     }
 
 </style>
