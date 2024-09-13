@@ -4,7 +4,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
 const { section, brand, key } = Astro.props
 // console.log(section.serviceType.images)
-// console.log(section)
+console.log(section)
 
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
@@ -35,14 +35,19 @@ const { section, brand, key } = Astro.props
                         {/* <a class="service-group-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a> */}
                         <p class="service-title">{service.title}</p>
                         <Icon name="arrow-forward" />
+                        { service.excerpt && 
+                            <div class="service-detail" data-color-scheme="glass-light">
+                                <p>{service.excerpt}</p> 
+                            </div>
+                        }
                     </a>
                 ))
             }
         </div>
     </div>
     <div class="section-media">
-        {section.featuredService.images && section.featuredService.images.slice(0,3).map((asset) => (
-            <div class="service-image">
+        {section.featuredService.images && section.featuredService.images.slice(0,2).map((asset) => (
+            <div class="service-image" data-animate-viewport="true" data-animation="fade">
                 <AtomSanityImage 
                     image={asset.image}
                     sizes="30vw"
@@ -214,11 +219,10 @@ if (!isMobileBreakpoint) {
         position: absolute;
         inset: 0;
         display: grid;
-        /* grid-template-columns: .5fr .5fr 1.5fr 1.5fr 2.5fr 2.5fr; */
-        grid-template-columns: 1.5fr 1.5fr 1fr 1fr .5fr .5fr;
-        grid-template-rows: repeat(6, 1fr);
-        /* grid-auto-rows: 1fr; */
+        grid-template-columns: 2fr 2fr 2fr 1fr 1fr 1fr;
+        grid-template-rows: repeat(4, 1fr);
         z-index: 0;
+        aspect-ratio: 4 / 3;
     }
 
     .service-image {
@@ -227,38 +231,55 @@ if (!isMobileBreakpoint) {
         min-height: 0;
     }
 
-    .service-image:nth-child(3n + 1) {
-        grid-column: 5 / span 2;
-        grid-row: 2 / span 2;
+    .section-service-type:nth-of-type(4n + 1) {
+
+    }
+        
+    /* Every First instance */
+    .service-image:nth-child(1) {
+        grid-column: 6 / span 1;
+        grid-row: 1 / span 1;
     }
 
-    .service-image:nth-child(3n + 2) {
-        grid-column: 4 / span 1;
-        grid-row: 4 / span 1;
-        /* opacity: 0; */
+    .service-image:nth-child(2) {
+        grid-column: 4 / span 2;
+        grid-row: 2 / span 1;
     }
 
-    .service-image:nth-child(3n + 3) {
-        grid-column: 1 / span 1;
-        grid-row: 5 / span 1;
-        /* opacity: 0; */
-    }
-    
-    /* .section-service-type:nth-child(even) .service-image:nth-child(3n + 1) {
+    /* Every Fourth instance */
+    .section-service-type:nth-of-type(4n + 1) .service-image:nth-child(1) {
         grid-column: 4 / span 1;
         grid-row: 1 / span 1;
     }
 
-    .section-service-type:nth-child(even) .service-image:nth-child(3n + 2) {
-        grid-column: 5 / span 2;
-        grid-row: 2 / span 2;
+    .section-service-type:nth-of-type(4n + 1) .service-image:nth-child(2) {
+        grid-column: 5 / span 1;
+        grid-row: 2 / span 1;
     }
 
-    .section-service-type:nth-child(even) .service-image:nth-child(3n + 3) {
-        grid-column: 1 / span 1;
-        grid-row: 4 / span 1;
-    } */
+    /* Every Second instance */
+    .section-service-type:nth-of-type(4n + 3) .service-image:nth-child(1) {
+        grid-column: 5 / span 1;
+        grid-row: 1 / span 1;
+    }
 
+    .section-service-type:nth-of-type(4n + 3) .service-image:nth-child(2) {
+        grid-column: 6 / span 1;
+        grid-row: 2 / span 1;
+    }
+
+    /* Every Third instance */
+    .section-service-type:nth-of-type(4n + 4) .service-image:nth-child(1) {
+        grid-column: 5 / span 1;
+        grid-row: 2 / span 1;
+    }
+
+    .section-service-type:nth-of-type(4n + 4) .service-image:nth-child(2) {
+        grid-column: 6 / span 1;
+        grid-row: 4 / span 1;
+    }
+
+    
     @media screen and (width <= 768px) {
         .section-content {
             width: 100%;

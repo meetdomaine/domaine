@@ -53,6 +53,13 @@ export default defineType({
       }],
       validation: Rule => Rule.required(),
     }),
+    defineField({
+      name: 'images',
+      title: 'Images',
+      description: 'Used in Services section.',
+      type: 'array',
+      of: [{ type: 'snippet_image' }],
+    }),
     orderRankField({ type: 'type_serviceGroup'}),
   ],
 

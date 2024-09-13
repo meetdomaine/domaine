@@ -11,11 +11,15 @@ const serviceCount = allServices_Domaine.length
         <AtomCounter count={serviceCount} />
     </div>
     <div class="section-content">
-        <p class="heading">{heading}</p>
+        <!-- <p class="heading">{heading}</p> -->
         <div class="service-buttons">
-            {allServiceTypes_Domaine.map((serviceType) => (
-                <button class="serviceType-jumplink" data-slug={serviceType.slug.current}>{serviceType.title}</button>
-            ))}
+            <span class="h6">{heading}</span>
+                {allServiceTypes_Domaine.map((serviceType, i) => (
+                    <span class="h6">
+                        {i === allServiceTypes_Domaine.length - 1 ? "and" : ""}
+                        <button class="serviceType-jumplink button-reset h6" data-slug={serviceType.slug.current}>{serviceType.title}</button>{i < allServiceTypes_Domaine.length - 2 ? "," : ""}{i === allServiceTypes_Domaine.length - 1 ? "." : ""}
+                    </span>
+                ))}
         </div>
     </div>
 </section>
@@ -55,13 +59,14 @@ const serviceCount = allServices_Domaine.length
     }
 
     .service-buttons {
-        display: flex;
-        flex-direction: row;
-        gap: var(--space-2xs);
+        max-width: 40em;
     }
 
     .service-buttons button {
-        padding: 0.2em 0.4em;
+        text-decoration: underline;
+        text-transform: inherit;
+        display: inline;
+        /* padding: 0.2em 0.4em; */
     }
 
     @media screen and ( width <= 768px) {

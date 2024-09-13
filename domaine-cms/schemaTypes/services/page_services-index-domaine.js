@@ -14,6 +14,7 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
+      description: 'Will be followed by a list of services in sentence form.'
     }),
     defineField({
       name: 'sections',
