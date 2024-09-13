@@ -8,10 +8,11 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _
 const blogPosts = allBlogPosts_Domaine
 ---
 <LayoutDomaineBlogIndex
+    title={pageSettings.title}
     pageSettings={pageSettings}
     blogPosts={blogPosts}
-    heading="Domaine Insights"
-    subheading="Lorem ipsum dolor sit amet."
+    heading={pageSettings.title}
+    subheading={pageSettings.heading}
     searchFilter="type:page"
 >
 </LayoutDomaineBlogIndex>

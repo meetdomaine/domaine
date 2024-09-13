@@ -2,14 +2,17 @@
 import AtomButton from "../../../global/atoms/atom-button.astro";
 import AtomCounter from "../../../global/atoms/atom-counter.astro";
 
-const { heading, subheading, projectCount } = Astro.props;
+const { heading, subheading, projectCount, isTopLevel } = Astro.props;
 ---
 <section class="work-index_hero">
     <div class="section-title">
-        <h1 class="h5">{heading}</h1>
-        <AtomCounter count={projectCount} />
+        {!isTopLevel && <a class="backlink h5" href="/work/">All Projects /</a>}
+        <div class="title">
+            <h1 class="h5">{heading}</h1>
+            <AtomCounter count={projectCount} />
+        </div>
     </div>
-    <div class="section-content">
+    <div class="section-content"  data-animate-viewport="true" data-animation="fade-up">
         {subheading && <h2 class="h2">{subheading}</h2>}
         <div class="filter-toggle">
             <AtomButton 
@@ -29,16 +32,29 @@ const { heading, subheading, projectCount } = Astro.props;
         padding-block: calc(var(--header-height) * 2 + var(--space-2xl)) var(--space-3xl);
         display: flex;
         flex-direction: row;
-        gap: var(--space-xs);
+        gap: var(--space-md);
         /* justify-content: ; */
     }
 
     .section-title {
         flex: 0 0 33%;
         display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2xs);
+    }
+
+    .title {
+        flex: 0 0 33%;
+        display: flex;
         flex-direction: row;
         align-items: flex-start;
         gap: var(--space-2xs);
+    }
+
+    .backlink {
+        color: var(--color-foreground-secondary);
+        text-decoration: none;
     }
 
     .section-content {

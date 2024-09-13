@@ -15,5 +15,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" 
     subheading={pageSettings.subheading}
     projects={projects}
     searchFilter="type:page"
+    isTopLevel={true}
 >
 </LayoutDomaineProjects>

@@ -41,8 +41,8 @@ export const allClients_Domaine = await sanityClient.fetch(`*[_type == "type_cli
 export const allClients_Studio = await sanityClient.fetch(`*[_type == "type_client" && count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) ]) > 0 ]{${clientQuery}} | order(orderRank)`)
 
 // Client Industries
-export const allClientIndustries_Domaine = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ] | order(title asc)`)
-export const allClientIndustries_Studio = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio"]) > 0 ] | order(title asc)`)
+export const allClientIndustries_Domaine = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ]{ ..., excerpt } | order(title asc)`)
+export const allClientIndustries_Studio = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio"]) > 0 ]{ ..., excerpt } | order(title asc)`)
 
 // Events
 export const allEvents_upcoming = await sanityClient.fetch(`*[_type == "type_event"]{${eventQuery}} | order(dateTime)`)

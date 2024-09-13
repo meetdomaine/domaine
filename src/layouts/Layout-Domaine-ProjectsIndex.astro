@@ -7,7 +7,7 @@ import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGri
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
-const { projects, heading, subheading, title, description, searchFilter, currentPath, relatedBlogPosts } = Astro.props;
+const { projects, heading, subheading, title, description, searchFilter, currentPath, relatedBlogPosts, isTopLevel } = Astro.props;
 ---
 <LayoutDomaine
     title={ title ? title : pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
@@ -19,6 +19,7 @@ const { projects, heading, subheading, title, description, searchFilter, current
         heading={heading ? heading : pageSettings.heading}
         subheading={subheading ? subheading : pageSettings.subheading}
         projectCount={projects.length}
+        isTopLevel={isTopLevel}
     />
     <ProjectsFilter 
         brand="Domaine"

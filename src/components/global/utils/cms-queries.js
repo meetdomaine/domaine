@@ -40,7 +40,8 @@ export const blogCardFields = `
 
 export const projectFeatureQuery = `
   _id,
-  title, 
+  title,
+  excerpt,
   slug, 
   orderRank,
   "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}}

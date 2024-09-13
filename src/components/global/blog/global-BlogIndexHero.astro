@@ -8,7 +8,7 @@ const { heading, subheading, postCount } = Astro.props
         <h1 class="h5">{heading}</h1>
         <AtomCounter count={postCount} />
     </div>
-    {subheading && <p class="h2">{subheading}</p>}
+    {subheading && <p class="subheading h2">{subheading}</p>}
 </section>
 
 <style>
@@ -24,5 +24,9 @@ const { heading, subheading, postCount } = Astro.props
         display: flex;
         flex-direction: row;
         align-items: flex-start;
+    }
+
+    .subheading {
+        max-width: 16em;
     }
 </style>

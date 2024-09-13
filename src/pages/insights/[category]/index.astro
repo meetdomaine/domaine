@@ -28,8 +28,9 @@ const blogPosts = allBlogPosts_Domaine.filter((post) => post.category._id === co
 <LayoutDomaineBlogIndex
     pageSetting={pageSettings}
     blogPosts={blogPosts}
+    title={`${content.title} | Insights`}
     heading={content.title}
-    subheading="Lorem ipsum dolor sit amet."
+    subheading={content.heading}
     searchFilter="type:blog-category"
     slug={content.slug}
 >
