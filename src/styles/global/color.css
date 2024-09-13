@@ -86,7 +86,7 @@ html .color-invert,
     --color-background: var(--color-darkest);
     --color-background-secondary: color-mix(in srgb, var(--color-darkest) 85%, var(--color-lightest));
 
-    --color-border: var(--color-dark);
+    --color-border: var(--color-neutral);
 
     /* Buttons */
     --button-primary-foreground: var(--color-darkest);

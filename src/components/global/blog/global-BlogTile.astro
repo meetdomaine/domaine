@@ -7,15 +7,15 @@ interface Props {
   currentBrand: any,
 }
 
-const { post, currentBrand } = Astro.props
+const { post } = Astro.props
 ---
 <div class="blog-post">
   <div class="blog-post-content">
     <AtomTag
       text={post.category.title}
-      url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}`} 
+      url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}insights/${post.category.slug.current}`} 
     />
-    <a class="blog-post-title" href={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`} >{post.title}</a>
+    <a class="blog-post-title" href={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}insights/${post.category.slug.current}/${post.slug.current}`} >{post.title}</a>
   </div>
   <div class="blog-post-media">
     <AtomSanityImage 

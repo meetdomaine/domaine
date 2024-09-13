@@ -47,11 +47,12 @@ const { content } = Astro.props;
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
             posts={content.relatedBlogPosts}
+            sidebarTitle={content.title}
         />
     }
 
     {content.relatedProjects.length > 0 &&
-        <GlobalProjectsGrid 
+        <SectionProjectsFeed 
             heading={`${content.title} Work`}
             projects={content.relatedProjects}
         />

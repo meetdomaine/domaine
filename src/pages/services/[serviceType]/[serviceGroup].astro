@@ -59,6 +59,7 @@ const { content, serviceType } = Astro.props;
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
             posts={content.relatedBlogPosts}
+            sidebarTitle={content.title}
         />
     }
 

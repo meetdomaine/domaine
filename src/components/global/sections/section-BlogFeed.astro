@@ -8,31 +8,31 @@ import AtomTag from "../atoms/atom-tag.astro";
 import { allBlogPosts_Domaine, allBlogPosts_Studio } from "../utils/cms-content";
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
 
-const { section, brand, heading, subheading, posts } = Astro.props
+const { section, brand, heading, subheading, posts, sidebarTitle } = Astro.props
 
 let blogPosts
 let featuredPost
-let sidebarPosts
+let sidebarTitleText
 
-if (section && section.showHero) {
-    if (section.featuredPost) featuredPost = section.featuredPost
-    if (section.featuredCategory) {
-        sidebarPosts = await sanityClient.fetch(`
-            *[_type == "type_blog" 
-                && agencyBrand->slug.current == "${brand}" 
-                    && references('${section.featuredCategory._id}')]{ ${blogCardFields} } | order( postDate desc)[0...4]`)
-    }
-}
-
-if (section && section.blogPosts) {
-    blogPosts = section.blogPosts
+if (section?.featuredCategory) {
+    blogPosts = await sanityClient.fetch(`
+        *[_type == "type_blog" 
+            && agencyBrand->slug.current == "${brand === 'studio' ? '/studio' : '/'}" 
+                && references('${section.featuredCategory._id}')]{ ${blogCardFields} } | order( postDate desc)`)
+    sidebarTitleText = section.featuredCategory.title
 } else if (posts) {
     blogPosts = posts
+    sidebarTitleText = sidebarTitle ? sidebarTitle : "Insights"
 } else {
     blogPosts = brand === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+    sidebarTitleText = sidebarTitle ? sidebarTitle : "Insights"
 }
 
-if (section && section.showHero && !section.featuredPost) featuredPost = blogPosts.shift()
+if (section?.featuredPost) {
+    featuredPost = section.featuredPost
+} else {
+    featuredPost = blogPosts.shift()
+}
 
 ---
 <section class="section-blog-feed" data-color-scheme="brand-01">
@@ -40,7 +40,8 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
         <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
         {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}
     </div>
-    {section && section.showHero && 
+
+    {featuredPost && 
         <div class="section-hero">
             <article class="featured-post">
                 <a 
@@ -62,47 +63,39 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
                         class="featured-post-heading h2" 
                         href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
                     >{featuredPost.title}</a>
-
+                    <p class="">{featuredPost.excerpt}</p>
                 </div>
             </article>
-            {sidebarPosts &&
-                <aside class="sidebar">
-                    {/* <p class="sidebar-heading">{section.featuredCategory.title}</p> */}
+                <aside class="sidebar" data-color-scheme="glass-dark">
+                    <p class="sidebar-heading">{sidebarTitleText}</p>
                     <div class="sidebar-posts">
-                        {sidebarPosts.map((post) => (
+                        {blogPosts.slice(0, 3).map((post) => (
                             <GlobalBlogTile 
                                 post={post}
                                 currentBrand={brand}
                             />
-                            // <div class="sidebar-post">
-                            //     <AtomLinkCard 
-                            //         categoryTitle={section.featuredCategory.title}
-                            //         title={post.title}
-                            //         url={`${brand === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}/${post.slug.current}`}
-                            //         image={post.thumbnailImage.image}
-                            //         theme="dark"
-                            //     />
-                            // </div>
                         ))}
                     </div>
                 </aside>
-            }
         </div>
     }
-    <div class="section-posts">
-        {blogPosts.slice(0, 3).map((post) => (
-            <div class="blog-card-wrapper">
-                <BlogCard 
-                    title={post.title}
-                    thumbnailImage={post.thumbnailImage}
-                    slug={post.slug}
-                    category={post.category}
-                    agencyBrand={post.agencyBrand}
-                />
-            </div>
-        ))}
-    </div>
+    {blogPosts.length >= 6 &&
+        <div class="section-posts">
+            {blogPosts.slice(3, 6).map((post) => (
+                <div class="blog-card-wrapper">
+                    <BlogCard 
+                        title={post.title}
+                        thumbnailImage={post.thumbnailImage}
+                        slug={post.slug}
+                        category={post.category}
+                        agencyBrand={post.agencyBrand}
+                    />
+                </div>
+            ))}
+        </div>
+    }
 </section>
+
 
 <style>
     .section-blog-feed {
@@ -150,6 +143,8 @@ if (section && section.showHero && !section.featuredPost) featuredPost = blogPos
         flex-direction: column;
         gap: var(--space-xs);
         max-width: 100%;
+        padding: var(--space-sm);
+        border-radius: var(--radius-sm);
         /* flex: 1 0 30%; */
     }
 
