@@ -5,8 +5,8 @@ const { tier } = Astro.props
 ---
 <section class="partners-index-tier">
   <div class="section-title">
-    <h2 class="h5">{tier.title} Partners</h2>
-    <p class="description h6">{tier.description}</p>
+    <h2 class="h5" data-animate-viewport="true" data-animation="fade-up">{tier.title} Partners</h2>
+    <p class="description h6" data-animate-viewport="true" data-animation="fade-up" data-animation-delay="200">{tier.description}</p>
   </div>
   <div class="partners" data-style={tier.createLandingPages ? "primary" : "secondary"}>
     {tier.partners.map((partner) => (

@@ -16,7 +16,13 @@ if (partner.tier.createLandingPages) {
 // console.log(partner)
 
 ---
-<a href={url ? url : null} class="partner-card" target={newTab ? "_blank" : ""}>
+<a 
+    href={url ? url : null} 
+    class="partner-card" 
+    target={newTab ? "_blank" : ""}
+    data-animate-viewport="true"
+    data-animation="fade"
+>
     <div class="card-media">
         <AtomSanityImage 
             image={partner.icon.image}

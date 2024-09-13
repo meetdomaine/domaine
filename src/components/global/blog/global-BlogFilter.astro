@@ -1,6 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import { allBlogCategories_Domaine, allBlogCategories_Studio } from '../utils/cms-content';
+import AtomTag from '../atoms/atom-tag.astro';
 
 const { brand, slug } = Astro.props
 
@@ -10,17 +11,19 @@ const blogCategories = brand === "studio" ? allBlogCategories_Studio : allBlogCa
 ---
 <div class="blog-filters">
     <a
-        class="filter" 
+        class="filter caption" 
         href={`${brand == "studio" ? '/studio' : ''}/insights/`}
         data-active={!slug ? "true" : "false"}
     >All Insights</a>
-    {blogCategories.map((category) => (
-        <a 
-            class="filter"
-            href={`${brand == "studio" ? '/studio' : ''}/insights/${category.slug.current}`}
-            data-active={slug && slug.current == category.slug.current ? "true" : "false"}
-        >{category.title}</a>
-    ))}
+    <div class="filter-tags">
+        {blogCategories.map((category) => (
+            <AtomTag 
+                title={category.title}
+                url={`${brand == "studio" ? '/studio' : ''}/insights/${category.slug.current}`}
+                theme={slug && slug.current == category.slug.current ? "glass-dark" : "default"}
+            />
+        ))}
+    </div>
 </div>
 
 <style>
@@ -32,12 +35,16 @@ const blogCategories = brand === "studio" ? allBlogCategories_Studio : allBlogCa
         gap: var(--space-sm);
     }
 
-    .filter {
-        text-decoration: none;
+    .filter-tags {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2xs);
     }
 
-    .filter[data-active="true"] {
-        text-decoration: underline 1px solid;
-        text-underline-offset: .2em;
+    .filter {
+        text-decoration: none;
+        margin: 0;
     }
+
+    
 </style>

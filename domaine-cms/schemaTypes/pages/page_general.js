@@ -19,6 +19,16 @@ export default defineType({
         maxLength: 96,
       },
     }),
+    defineField({
+      name: 'globalSections',
+      title: 'Sections',
+      type: 'section_globalSections',
+    }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
   ],
 
   preview: {

@@ -1,14 +1,28 @@
 ---
-const { heading, subheading } = Astro.props
+import AtomCounter from "../atoms/atom-counter.astro"
+
+const { heading, subheading, postCount } = Astro.props
 ---
 <section class="blog-index-hero">
-    <h1>{heading}</h1>
-    {subheading && <p>{subheading}</p>}
+    <div class="section-title">
+        <h1 class="h5">{heading}</h1>
+        <AtomCounter count={postCount} />
+    </div>
+    {subheading && <p class="h2">{subheading}</p>}
 </section>
 
 <style>
     .blog-index-hero {
         padding-inline: var(--page-margin);
-        padding-block: var(--space-lg);
+        padding-block: calc(var(--header-height) * 2) var(--space-2xl);
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: var(--space-lg);
+    }
+
+    .section-title {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
     }
 </style>

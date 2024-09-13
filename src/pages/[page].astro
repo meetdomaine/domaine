@@ -1,0 +1,32 @@
+---
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import { globalSectionsFields } from "../components/global/utils/cms-queries";
+import LayoutDomaine from "../layouts/Layout-Domaine.astro";
+
+interface Props {
+  content: any
+}
+
+export async function getStaticPaths() {
+    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ ..., globalSections{${globalSectionsFields}} }`)
+    return pages.map((page) => {
+        return {
+            params: { page: page.slug.current },
+            props: { content: page }
+        }
+    })
+}
+
+const { content } = Astro.props
+console.log(content)
+---
+<LayoutDomaine
+    title={content.title}
+    searchFilter="type:page"
+>
+    <!-- <h1>{content.title}</h1> -->
+    {content.globalSections?.sections.map((section, i) => (
+      <GlobalSections brand="domaine" section={section} key={i} />
+    ))}
+</LayoutDomaine>
+
