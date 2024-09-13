@@ -7,6 +7,7 @@ import { imageFields, partnerTileFields, videoFields } from '../../components/gl
 import PartnerCard from '../../components/global/partners/global-PartnerCard.astro';
 import PartnersIndexHero from '../../components/global/partners/partnersIndex-hero.astro';
 import { allPartners_Domaine } from '../../components/global/utils/cms-content';
+import PartnersIndexTier from '../../components/global/partners/partnersIndex-tier.astro';
 
 const partnerTiers =  await sanityClient.fetch(`
     *[_type == "type_partnerTier"]{ 
@@ -33,27 +34,29 @@ const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"
     />
 
     <div class="partner-tiers">
-        <h1>Partners</h1>
         {partnerTiers.map((tier) => (
-            <section class="partner-tier">
-                <div class="partner-tier-header">
-                    <div class="icon">
-                        <Fragment set:html={tier.icon} />
-                    </div>
-                    <div class="header-text">
-                        <h3>{tier.title}</h3>
-                        <p>{tier.description}</p>
-                    </div>
-                </div>
+            <PartnersIndexTier 
+                tier={tier}
+            />
+            // <section class="partner-tier">
+            //     <div class="partner-tier-header">
+            //         <div class="icon">
+            //             <Fragment set:html={tier.icon} />
+            //         </div>
+            //         <div class="header-text">
+            //             <h3>{tier.title}</h3>
+            //             <p>{tier.description}</p>
+            //         </div>
+            //     </div>
 
-                <div class="partners">
-                    {tier.partners.map((partner) => (
-                        <PartnerCard 
-                            partner={partner}
-                        />
-                    ))}
-                </div>
-            </section>
+            //     <div class="partners">
+            //         {tier.partners.map((partner) => (
+            //             <PartnerCard 
+            //                 partner={partner}
+            //             />
+            //         ))}
+            //     </div>
+            // </section>
         ))}
     </div>
 

@@ -1,0 +1,66 @@
+---
+import GlobalPartnerCard from "./global-PartnerCard.astro"
+
+const { tier } = Astro.props
+---
+<section class="partners-index-tier">
+  <div class="section-title">
+    <h2 class="h5">{tier.title}</h2>
+    <p class="description h6">{tier.description}</p>
+  </div>
+  <div class="partners">
+    {tier.partners.map((partner) => (
+      <GlobalPartnerCard 
+        partner={partner}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+
+  .partners-index-tier {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    padding-block: var(--space-xl);
+  }
+
+  .section-title {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-md);
+  }
+
+  .description {
+    max-width: 36em;
+  }
+
+  .partners {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-md);
+  }
+
+
+  @media screen and (width > 768px) {
+    .partners :global(> *:nth-of-type(12n + 2)) {
+      grid-column: 3 / span 1;
+    }
+
+
+    .partners :global(> *:nth-of-type(12n + 5)) {
+      grid-column: 2 / span 1;
+    }
+
+    .partners :global(> *:nth-of-type(12n + 8)) {
+      grid-column: 5 / span 1;
+    }
+  }
+
+  @media screen and (width <= 768px) {
+    .partners {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
