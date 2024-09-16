@@ -186,7 +186,7 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultProjects}>{project => 
                                     <ProjectCard
-                                        url={`/work/${project.slug.current}`} 
+                                        url={`${project.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.slug.current}`} 
                                         title={project.title} 
                                         image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
                                         alt={project.thumbnailMedia.image.alt} 
@@ -216,7 +216,7 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultBlogPosts}>{post => 
                                     <BlogCard 
-                                        url={`/insights/${post.category.slug.current}/${post.slug.current}`} 
+                                        url={`${post.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.category.slug.current}/${post.slug.current}`} 
                                         title={post.title}
                                         categoryTitle={post.category.title}
                                         categoryUrl={`/insights/${post.category.slug.current}`}
@@ -244,7 +244,7 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultFeatures}>{feature => 
                                     <FeatureCard 
-                                        url={`/work/features/${feature.slug.current}`} 
+                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.slug.current}`} 
                                         title={feature.title} 
                                     />
                                 }</For>
