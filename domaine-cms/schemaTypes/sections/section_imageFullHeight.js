@@ -17,6 +17,7 @@ export default defineType({
       name: 'media',
       title: 'Media',
       type: 'snippet_video',
+      validation: Rule => Rule.required(),
     }),
   ],
   preview: {
