@@ -66,6 +66,7 @@ import snippet_video from "./snippets/snippet_video";
 import section_serviceCards from "./sections/section_serviceCards.js";
 import section_linkList from "./sections/section_linkList.js";
 import settings_locations from "./siteSettings/settings_locations.jsx";
+import section_quote from "./sections/section_quote.js";
 
 
 export const schemaTypes = [
@@ -131,6 +132,7 @@ export const schemaTypes = [
     section_projectsFeed,
     section_projectsFullBleed,
     section_projectsGrid,
+    section_quote,
     section_serviceCards,
     section_servicesFeed,
     section_serviceFeature,

@@ -107,22 +107,23 @@ export const globalSectionsFields = `
     _type == "section_projectsGrid" => { title, heading, button{...}, projects[]->{title, slug, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}}, client->{..., logoDark{${imageFields}}, logoLight{${imageFields}}} } },
     _type == "section_blogFeed" => { heading, showHero, featuredPost->{${blogCardFields}}, featuredCategory->{ ... } },
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
-    _type == "section_videoPlayer" => { ..., ${videoFields} },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
     _type == "section_partnersFeed" => { eyebrow, heading, button },
     _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
     _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
-    _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
-    _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
-    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label}, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
-    _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
+    _type == "section_quote" => { quote, author, authorInfo, quoteImage{${imageFields}} },
+    _type == "section_statsCarousel" => { heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
+    _type == "section_serviceCards" => { services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
     _type == "section_serviceFeature" => { heading, button, featuredService->{ 
       _type == "type_serviceType" => {${serviceTypeQuery}},
       _type == "type_serviceGroup" => {${serviceGroupQuery}}
       } 
     },
-    _type == "section_statsCarousel" => { heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
-    _type == "section_serviceCards" => { services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
+    _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
+    _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
+    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label}, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
+    _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
+    _type == "section_videoPlayer" => { ..., ${videoFields} },
 `
 
 export const serviceTypePageQuery = `

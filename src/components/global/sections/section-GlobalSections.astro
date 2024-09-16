@@ -21,6 +21,7 @@ import ServiceFeature from "./section-ServiceFeature.astro"
 import StatsCarousel from "./section-StatsCarousel.astro"
 import ServiceCards from "./section-ServiceCards.astro"
 import LinkList from "./section-LinkList.astro"
+import Quote from "./section-Quote.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -38,6 +39,7 @@ const { section, brand, key } = Astro.props
 {section._type == "section_textLinkCard" && section.showSection &&  <TextLinkCard section={section} brand={brand} key={key} />}
 {section._type == "section_partnersFeed" && section.showSection && <PartnersFeed section={section} brand={brand} key={key} />}
 {section._type == "section_imageFullHeight" && section.showSection && <ImageFullHeight section={section} brand={brand} key={key} />}
+{section._type == "section_quote" && section.showSection && <Quote section={section} brand={brand} key={key} />}
 {section._type == "section_mediaCarousel" && section.showSection && <MediaCarousel section={section} brand={brand} key={key} />}
 {section._type == "section_practicesFeed" && section.showSection && <PracticesFeed section={section} brand={brand} key={key} />}
 {section._type == "section_textVideoPlayer" && section.showSection && <TextVideoPlayer section={section} brand={brand} key={key} />}

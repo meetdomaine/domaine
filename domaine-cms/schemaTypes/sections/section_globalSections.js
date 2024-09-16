@@ -19,6 +19,7 @@ export default defineType({
         { type: 'section_servicesFeed'},
         { type: 'section_partnersFeed'},
         { type: 'section_practicesFeed'},
+        { type: 'section_quote'},
         { type: 'section_statsCarousel'},
         { type: 'section_textMedia'},
         { type: 'section_textVideoPlayer'},

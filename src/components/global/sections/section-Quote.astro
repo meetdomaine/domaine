@@ -1,0 +1,76 @@
+---
+import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+
+const { section, brand, key } = Astro.props
+---
+<section class="section-quote">
+  <div class="section-content">
+    <h2 class="quote h4">"{section.quote}"</h2>
+    <div class="attribution">
+      {section.quoteImage && 
+        <div class="quote-image">
+          <AtomSanityImage 
+            sizes="30vw"
+            image={section.quoteImage.image}
+            aspectRatio={1 / 1}
+          />
+        </div>
+      }
+      <div class="attribution-info">
+        <p class="author-name">{section.author}</p>
+        {section.authorInfo && <p class="author-info">{section.authorInfo}</p>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-quote {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-block: var(--space-4xl);
+    padding-inline: var(--page-margin);
+  }
+
+  .section-content {
+    max-width: 60rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-lg);
+    border-inline-start: 1px solid var(--color-border);
+    padding-inline-start: var(--space-3xl);
+  }
+
+  .attribution {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .quote-image {
+    flex: 0 0 max(10%, 80px);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .attribution-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-info {
+    color: var(--color-foreground-secondary);
+  }
+
+  @media screen and (width <= 768px) {
+    .section-content {
+      max-width: unset;
+      padding-inline: 0;
+      border: none;
+    }
+  }
+</style>

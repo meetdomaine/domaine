@@ -294,6 +294,7 @@ export default defineType({
         { type: 'section_imageFullHeight'},
         { type: 'section_textColumns'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_quote'},
       ],
       group: 'content',
     }),
