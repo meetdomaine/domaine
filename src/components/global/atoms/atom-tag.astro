@@ -10,9 +10,10 @@ interface Props {
     pagefindMetaTitle?: string,
     pagefindMetaText?: string,
     pagefindMetaUrl?: string,
+    newTab?: boolean
 }
 
-const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMetaUrl } = Astro.props
+const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMetaUrl, newTab } = Astro.props
 ---
 {url ? 
     <a 
@@ -21,6 +22,7 @@ const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMe
         data-theme={theme}
         data-color-scheme={theme === "glass-dark" ? "glass-dark" : "default"}
         data-pagefind-meta={pagefindMetaUrl}
+        target={newTab ? "_blank" : "_self"}
     >
         {title && <span class="title caption" data-pagefind-meta={pagefindMetaTitle}>{title}</span>}
         {text && <span class="text caption" data-pagefind-meta={pagefindMetaText}>{text}</span>}

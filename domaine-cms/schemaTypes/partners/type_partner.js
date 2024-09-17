@@ -51,6 +51,13 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      group: 'info',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'tier',
       title: 'Tier',
       type: 'reference',
@@ -66,6 +73,64 @@ export default defineType({
         scheme: ['http', 'https'],
         allowRelative: false
       })
+    }),
+    defineField({
+      name: 'websiteText',
+      title: 'Website Text',
+      group: 'info',
+      description: 'A prettier looking version of the URL (ex. Shopify.com)',
+      type: 'string',
+      // validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'instagramUrl',
+      title: 'Social Link: Instagram',
+      type: 'url',
+      group: 'info',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
+    }),
+    defineField({
+      name: 'twitterUrl',
+      title: 'Social Link: Twitter',
+      type: 'url',
+      group: 'info',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
+    }),
+    defineField({
+      name: 'linkedInUrl',
+      title: 'Social Link: LinkedIn',
+      type: 'url',
+      group: 'info',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
+    }),
+    defineField({
+      name: 'youTubeUrl',
+      title: 'Social Link: YouTube',
+      type: 'url',
+      group: 'info',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
+    }),
+    defineField({
+      name: 'tikTokUrl',
+      title: 'Social Link: TikTok',
+      type: 'url',
+      group: 'info',
+      validation: Rule => Rule.uri({
+        scheme: ['http', 'https', 'mailto', 'tel'],
+        allowRelative: false
+      }),
     }),
     defineField({
       name: 'logo',

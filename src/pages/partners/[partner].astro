@@ -9,7 +9,23 @@ import PartnerPostHero from '../../components/global/partners/partnerPost-hero.a
 export const prerender = true
 
 export async function getStaticPaths() {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner" && tier->createLandingPages == true ]{ title, slug, excerpt, icon{${imageFields}}, tier->{...}, "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)[0...3]  }`)
+    const partners = await sanityClient.fetch(`
+        *[_type == "type_partner" && tier->createLandingPages == true ]{ 
+            title, 
+            slug, 
+            excerpt,
+            description,
+            icon{${imageFields}}, 
+            tier->{...}, 
+            websiteUrl, 
+            websiteText,
+            instagramUrl,
+            twitterUrl,
+            linkedInUrl,
+            youTubeUrl,
+            tikTokUrl,
+            "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)[0...3]  
+        }`)
 
     return partners.map((partner) => {
         return {
@@ -37,8 +53,15 @@ const { content } = Astro.props;
         tier={content.tier}
         title={content.title}
         excerpt={content.excerpt}
+        description={content.description}
         icon={content.icon}
+        websiteText={content.websiteText}
         websiteUrl={content.websiteUrl}
+        instagramUrl={content.instagramUrl}
+        twitterUrl={content.twitterUrl}
+        linkedInUrl={content.linkedInUrl}
+        youTubeUrl={content.youTubeUrl}
+        tikTokUrl={content.tikTokUrl}
     />
 
     {content.projects &&

@@ -1,26 +1,143 @@
 ---
+import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomTag from "../atoms/atom-tag.astro"
 
 
-const { title, excerpt, tier, icon, websiteUrl } = Astro.props
+const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instagramUrl, twitterUrl, linkedInUrl, youTubeUrl, tikTokUrl } = Astro.props
 ---
 <section class="partner-hero">
-  <p>{tier.title}</p>
-  <h1 data-pagefind-meta="title">{title}</h1>
-  <p data-pagefind-meta="excerpt">{excerpt}</p>
-  <AtomSanityImage 
-    image={icon.image}
-    sizes="30vw"
-    pagefindMeta="image[src], image_alt[alt]"
-  />
-  {websiteUrl && 
-    <a href={websiteUrl} target="_blank">{websiteUrl}</a>
-  }
+
+  <div class="section-content">
+    <div class="section-title">
+      <div class="partner-icon">
+        <AtomSanityImage 
+          image={icon.image}
+          sizes="30vw"
+          pagefindMeta="image[src], image_alt[alt]"
+        />
+      </div>
+      <div class="title">
+        <h1 data-pagefind-meta="title" class="partner-title h4">{title}</h1>
+        <p data-pagefind-meta="excerpt" class="partner-excerpt caption">{excerpt}</p>
+      </div>
+    </div>
+
+    <div class="partner-tags">
+      <AtomTag 
+        text={`${tier.title} Partner`}
+        theme="glass-dark"
+      />
+      {websiteUrl && 
+        <AtomTag 
+          text={websiteText ? websiteText : websiteUrl}
+          url={websiteUrl} 
+          newTab={true}
+        />
+      }
+    </div>
+    <div class="social-links">
+      {instagramUrl &&
+        <a href={instagramUrl} class="social-link" target="_blank">
+          <Icon name="social-instagram" />
+        </a>
+      }
+      {twitterUrl &&
+        <a href={twitterUrl} class="social-link" target="_blank">
+          <Icon name="social-twitter" />
+        </a>
+      }
+      {linkedInUrl &&
+        <a href={linkedInUrl} class="social-link" target="_blank">
+          <Icon name="social-linkedin" />
+        </a>
+      }
+      {youTubeUrl &&
+        <a href={youTubeUrl} class="social-link" target="_blank">
+          <Icon name="social-youtube" />
+        </a>
+      }
+      {tikTokUrl &&
+        <a href={tikTokUrl} class="social-link" target="_blank">
+          <Icon name="social-tiktok" />
+        </a>
+      }
+    </div>
+  </div>
+  
+  {description && <h2 class="description">{description}</h2>}
+
 </section>
 
 <style>
+
   .partner-hero {
-    padding-top: var(--header-height);
+    padding-top: calc(var(--header-height) * 2);
     padding-inline: var(--page-margin);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-lg);
+  }
+
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .title {
+    margin: 0;
+  }
+
+  .partner-title,
+  .partner-excerpt {
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .partner-icon {
+    flex: 0 0 5rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .partner-tags {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2xs);
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-md);
+  }
+
+  .social-link {
+    text-decoration: none;
+  }
+
+  .social-link :global(svg) {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+
+  .description {
+    max-width: 18em;
+  }
+
+  @media screen and (width <= 768px) {
+    .partner-hero {
+      display: flex;
+      flex-direction: column;
+    }
   }
 </style>
