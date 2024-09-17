@@ -2,19 +2,25 @@
 import { sanityClient } from 'sanity:client';
 import { paths } from '../../components/global/utils/paths';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { imageFields, projectGridFields } from '../../components/global/utils/cms-queries';
+import { imageFields, projectGridFields, richContentFields, globalSectionsFields, blogCardFields } from '../../components/global/utils/cms-queries';
 import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
 import PartnerPostHero from '../../components/global/partners/partnerPost-hero.astro';
+import AtomRichContent from '../../components/global/atoms/atom-richContent.astro';
+import SectionGlobalSections from '../../components/global/sections/section-GlobalSections.astro';
+import SectionBlogFeed from '../../components/global/sections/section-BlogFeed.astro';
 
 export const prerender = true
 
 export async function getStaticPaths() {
     const partners = await sanityClient.fetch(`
         *[_type == "type_partner" && tier->createLandingPages == true ]{ 
+            ...,
             title, 
             slug, 
             excerpt,
             description,
+            content[]{${richContentFields}},
+            globalSections{ sections[]{${globalSectionsFields}} },
             icon{${imageFields}}, 
             tier->{...}, 
             websiteUrl, 
@@ -24,6 +30,7 @@ export async function getStaticPaths() {
             linkedInUrl,
             youTubeUrl,
             tikTokUrl,
+            "blogPosts": *[_type == "type_blog" && references(^._id)]{${blogCardFields}} | order(orderRank),
             "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)[0...3]  
         }`)
 
@@ -41,6 +48,7 @@ interface Props {
 
 
 const { content } = Astro.props;
+console.log(content.globalSections)
 
 ---
 <LayoutDomaine
@@ -63,6 +71,21 @@ const { content } = Astro.props;
         youTubeUrl={content.youTubeUrl}
         tikTokUrl={content.tikTokUrl}
     />
+
+    <AtomRichContent 
+        content={content.content}
+    />
+
+    {content.globalSections?.sections.map((section, i) => (
+        <SectionGlobalSections brand="domaine" section={section} key={i} />
+    ))}
+
+    {content.blogPosts?.length > 2 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={content.blogPosts.slice(0, 5)}
+        />
+    }
 
     {content.projects &&
         <SectionProjectsFeed 

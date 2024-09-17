@@ -5,6 +5,7 @@ import SanityMedia from "../atoms/atom-sanityMedia.astro"
 import { replaceStringIcons } from "../../global/utils/inline-icon-text"
 
 const { section, brand } = Astro.props
+// console.log(section.media)
 
 const iconText = replaceStringIcons(section.heading)
 ---
@@ -25,11 +26,13 @@ const iconText = replaceStringIcons(section.heading)
                 />
             }
         </div>
-        <div class="bullets">
-            {section.bulletPoints.map((bulletPoint) => (
-                <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(bulletPoint)} /></p>
-            ))}
-        </div>
+        {section.bulletPoints &&
+            <div class="bullets">
+                {section.bulletPoints.map((bulletPoint) => (
+                    <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(bulletPoint)} /></p>
+                ))}
+            </div>
+        }
     </div>
     <div class="section-media">
         <SanityMedia 

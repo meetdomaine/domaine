@@ -21,7 +21,7 @@ export default defineType({
     }),
     defineField({
         name: 'subheading',
-        title: 'Heading',
+        title: 'Subheading',
         type: 'string',
     }),
     defineField({
