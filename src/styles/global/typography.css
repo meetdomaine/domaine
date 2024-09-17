@@ -174,7 +174,8 @@ h6, .h6 {
 }
   
 p,
-.body {
+.body,
+li {
     --min-size: 13;
     --base-size: 14;
     letter-spacing: 0;
@@ -218,6 +219,10 @@ a {
 
 code {
     font-family: var(--font-family-code);
+}
+
+ul {
+  list-style-type: square;
 }
 
 .inline-icon {

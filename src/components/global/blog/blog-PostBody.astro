@@ -11,12 +11,18 @@ const { content } = Astro.props
 
 <style>
     .blog-post-body {
-        padding-inline: 0 var(--page-margin);
+        padding-inline: var(--page-margin);
         padding-block: var(--space-4xl);
         display: flex;
         flex-direction: row;
-        /* flex-wrap: wrap; */
         align-items: flex-start;
-        justify-content: stretch;
+        justify-content: center;
+    }
+
+    @media screen and (width <= 768px) {
+        .blog-post-body {
+            flex-direction: column;
+            gap: var(--space-4xl)
+        }
     }
 </style>

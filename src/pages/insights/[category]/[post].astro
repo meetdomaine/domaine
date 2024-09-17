@@ -44,7 +44,7 @@ const { content } = Astro.props;
     
     <BlogPostBody content={content.body}>
         <BlogPostSidebar 
-            latestPosts={allBlogPosts_Domaine.slice(0, 3)}
+            latestPosts={allBlogPosts_Domaine.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
         />
     </BlogPostBody>
 
@@ -57,7 +57,7 @@ const { content } = Astro.props;
     { content.relatedPosts && 
         <SectionBlogFeed 
             heading="Related Posts"
-            posts={content.relatedPosts}
+            posts={content.relatedPosts.filter((post) => post.slug.current != content.slug.current)}
         />
     }
 

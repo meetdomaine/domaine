@@ -14,9 +14,10 @@ const { node } = Astro.props
 <style>
     .inline-image {
         margin-inline: auto;
-        max-width: calc(100% - var(--page-margin) * 2);
-        /* max-width: var(--content-width-wide); */
+        max-width: var(--content-width);
         height: auto;
         padding-block: var(--space-lg) var(--space-xl);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
     }
 </style>
