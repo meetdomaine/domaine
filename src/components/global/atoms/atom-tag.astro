@@ -29,6 +29,7 @@ const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMe
     <div 
         class={`tag ${theme === "dark" ? "glass-dark" : ""}`} 
         data-theme={theme}
+        data-color-scheme={theme === "glass-dark" ? "glass-dark" : "default"}
     >
         {title && <span class="title caption" data-pagefind-meta={pagefindMetaTitle}>{title}</span>}
         {text && <span class="text caption" data-pagefind-meta={pagefindMetaText}>{text}</span>}

@@ -25,12 +25,12 @@ const { description, agencyBrand, client, industry, theme, metrics } = Astro.pro
                 url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
                 theme={theme}
             />
-            <AtomTag 
-                title="Stage"
-                text={client.stage.title}
-                url={`${agencyBrand == "studio" ? "/studio" : ""}/work/stages/${client.stage.slug.current}`}
-                theme={theme}
-            />
+            {client.isEnterprise && 
+                <AtomTag 
+                    title="Enterprise"
+                    theme={theme}
+                />
+            }
         </div>
     </div>
 

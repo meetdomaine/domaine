@@ -116,9 +116,10 @@ declare interface ClientCard {
     logoDark: {image: SanityImage},
     logoLight: {image: SanityImage},
     productImage: ImageBase,
-    stage: {
-        title: string
-    }
+    // stage: {
+    //     title: string
+    // },
+    isEnterprise: boolean,
 }
 
 declare interface BlogCard {

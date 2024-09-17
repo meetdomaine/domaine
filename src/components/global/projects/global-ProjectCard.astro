@@ -82,10 +82,11 @@ const { project } = Astro.props
                             text={project.industry.title}
                         />
                     }
-                    {project.client && project.client.stage &&
+                    {project.client && project.client.isEnterprise &&
                         <AtomTag 
-                            title="Stage"
-                            text={project.client.stage.title}
+                            // title="Stage"
+                            title="Enterprise"
+                            theme="brand-01"
                         />
                     }
                 </div>
