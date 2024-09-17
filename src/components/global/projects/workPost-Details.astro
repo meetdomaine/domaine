@@ -49,7 +49,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                 <h4 class="h5">Partners</h4>
                 <div class="partner-tiles">
                     {partners.map((partner) => (
-                        <a class="partner-tile" href={`/partners/${partner.slug.current}`}>
+                        <a class="partner-tile" href={`${partner.tier?.createLandingPages ? `/partners/${partner.slug.current}` : `${partner.websiteUrl}` }`} target={partner.tier?.createLandingPages ? "_self" : "_blank"}>
                             <AtomSanityImage 
                                 sizes="30vw"
                                 image={partner.icon.image}

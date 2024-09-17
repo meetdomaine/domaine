@@ -154,7 +154,7 @@ export const projectPageFields = `
   accentColor,
   services[]->{..., serviceGroup->{slug, title, serviceType->{slug} } },
   features[]->{...},
-  partners[]->{..., title, excerpt, slug, icon{${imageFields}} },
+  partners[]->{..., title, excerpt, slug, icon{${imageFields}}, tier->{..., createLandingPages}, websiteUrl },
   metrics[]{...},
   awards[]{...},
   agencyBrand->{slug},

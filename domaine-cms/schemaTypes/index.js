@@ -2,7 +2,7 @@ import type_agencyBrand from "./siteSettings/type_agencyBrand.jsx";
 import type_blog from "./blog/type_blog";
 import type_blogCategory from "./blog/type_blogCategory";
 import type_client from "./projects/type_client.jsx";
-import type_clientStage from "./projects/type_clientStage.js";
+// import type_clientStage from "./projects/type_clientStage.js";
 import type_event from "./events/type_event.js";
 import type_industry from "./projects/type_industry";
 import type_partner from "./partners/type_partner";
@@ -73,7 +73,7 @@ import page_studioGeneral from "./pages/page_studio-general.js";
 export const schemaTypes = [
     type_project,
     type_client,
-    type_clientStage,
+    // type_clientStage,
     type_projectFeature,
     type_industry,
     type_service,

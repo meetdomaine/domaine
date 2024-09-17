@@ -10,7 +10,7 @@ import {
     iconBlogCategories,
     iconBrandPrimary, 
     iconBrandSecondary, 
-    iconClientStages, 
+    // iconClientStages, 
     iconClients, 
     iconContact, 
     iconEvents, 
@@ -41,7 +41,7 @@ import {
     labelBlogCategories, 
     labelBrandPrimary, 
     labelBrandSecondary, 
-    labelClientStages, 
+    // labelClientStages, 
     labelClients, 
     labelContact, 
     labelEvents, 
@@ -231,13 +231,13 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    orderableDocumentListDeskItem({
-                        type: 'type_clientStage',
-                        title: labelClientStages,
-                        icon: iconClientStages,
-                        S, 
-                        context
-                    }),
+                    // orderableDocumentListDeskItem({
+                    //     type: 'type_clientStage',
+                    //     title: labelClientStages,
+                    //     icon: iconClientStages,
+                    //     S, 
+                    //     context
+                    // }),
                     S.listItem()
                         .title(labelIndustries)
                         .icon(iconIndustries)
