@@ -9,8 +9,6 @@ const { formId, buttonToggles } = Astro.props
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 const accessToken = import.meta.env.HUBSPOT_ACCESS_TOKEN
 
-console.log('hubspotForm')
-
 const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
     method: "GET",
     headers: {
@@ -18,7 +16,7 @@ const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/$
         "Content-type": "application/json; charset=UTF-8"
     }
 })
-
+console.log(formId)
 const formData = await hubspotResponse.json()
 const fieldGroups = await formData.fieldGroups
 const consentData = await formData.legalConsentOptions
@@ -29,6 +27,7 @@ const fields = await fieldGroups.flatMap((group) => {
     })
 })
 
+// console.log(formData.fieldGroups[0].fields)
 // console.log(fields)
 ---
 <form id={`form-${formId}`} >

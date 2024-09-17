@@ -5,6 +5,7 @@ import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
 import '../styles/studio/typography.css'
 import '../styles/studio/color.css'
+import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 
 interface Props {
 	title: string,
@@ -19,6 +20,7 @@ interface Props {
 const { title, description, image, theme, searchFilter, activePath, searchExposed } = Astro.props;
 
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`)
+const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]`)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
@@ -37,5 +39,9 @@ const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && 
     <main>
         <slot />
     </main>
-    <Footer currentBrand={currentBrand} />
+    <Footer currentBrand={currentBrand} footerSettings={footerSettings}>
+        <AtomHubspotForm 
+            formId={footerSettings.newsletterHubspotFormId}
+        />
+    </Footer>
 </LayoutGlobal>
