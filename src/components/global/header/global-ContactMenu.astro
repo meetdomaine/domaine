@@ -11,15 +11,17 @@ const { hubspotFormId, forms } = Astro.props
             <Icon name="pixel_x" class="close-button" />
         </button>
     </div>
-    <div class="tab-bar">
-        <ul class="tabs">
-            {forms.map((form, i) => (
-                <li class="tab" >
-                    <button data-form-id={form.hubspotFormId} class="global-form-tab" data-active={i === 0 ? "true" : "false"}>{form.title}</button>
-                </li>
-            ))}
-        </ul>
-    </div>
+    {forms.length > 1 &&
+        <div class="tab-bar">
+            <ul class="tabs">
+                {forms.map((form, i) => (
+                    <li class="tab" >
+                        <button data-form-id={form.hubspotFormId} class="global-form-tab" data-active={i === 0 ? "true" : "false"}>{form.title}</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    }
 
     {forms.map((form, i) => (
         <div data-form-id={form.hubspotFormId} class="global-contact-form" data-active={i < 1 ? "true" : "false"}>

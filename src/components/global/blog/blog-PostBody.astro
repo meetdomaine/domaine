@@ -6,10 +6,17 @@ const { content } = Astro.props
     <AtomRichContent 
         content={content}
     />
+    <slot />
 </section>
 
 <style>
     .blog-post-body {
-        /* padding-inline: var(--page-margin); */
+        padding-inline: 0 var(--page-margin);
+        padding-block: var(--space-4xl);
+        display: flex;
+        flex-direction: row;
+        /* flex-wrap: wrap; */
+        align-items: flex-start;
+        justify-content: stretch;
     }
 </style>

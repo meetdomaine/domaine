@@ -148,33 +148,33 @@ export const structure = (S, context) =>
                         .child(
                             S.documentTypeList('type_blog')
                         ),
-                    S.listItem()
-                        .title(`${labelBlog} ${labelSettings}`)
-                        .icon(iconSettings)
-                        .child(
-                            S.list()
-                            .title(`${labelBlog} ${labelSettings}`)
-                            .items([
-                                S.listItem()
-                                .title(labelBrandPrimary)
-                                .icon(iconBrandPrimary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_blog')
-                                    .documentId(`settings_blog-${slugBrandPrimary}`)
-                                    .title(labelBrandPrimary)
-                                ),
-                                S.listItem()
-                                .title(labelBrandSecondary)
-                                .icon(iconBrandSecondary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_blog')
-                                    .documentId(`settings_blog-${slugBrandSecondary}`)
-                                    .title(labelBrandSecondary)
-                                )
-                            ])
-                        ),
+                    // S.listItem()
+                    //     .title(`${labelBlog} ${labelSettings}`)
+                    //     .icon(iconSettings)
+                    //     .child(
+                    //         S.list()
+                    //         .title(`${labelBlog} ${labelSettings}`)
+                    //         .items([
+                    //             S.listItem()
+                    //             .title(labelBrandPrimary)
+                    //             .icon(iconBrandPrimary)
+                    //             .child(
+                    //                 S.document()
+                    //                 .schemaType('settings_blog')
+                    //                 .documentId(`settings_blog-${slugBrandPrimary}`)
+                    //                 .title(labelBrandPrimary)
+                    //             ),
+                    //             S.listItem()
+                    //             .title(labelBrandSecondary)
+                    //             .icon(iconBrandSecondary)
+                    //             .child(
+                    //                 S.document()
+                    //                 .schemaType('settings_blog')
+                    //                 .documentId(`settings_blog-${slugBrandSecondary}`)
+                    //                 .title(labelBrandSecondary)
+                    //             )
+                    //         ])
+                    //     ),
                 ])
             ),
         S.listItem()
@@ -251,33 +251,33 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    S.listItem()
-                        .title(`${labelProjects} ${labelSettings}`)
-                        .icon(iconSettings)
-                        .child(
-                            S.list()
-                            .title(`${labelProjects} ${labelSettings}`)
-                            .items([
-                                S.listItem()
-                                .title(labelBrandPrimary)
-                                .icon(iconBrandPrimary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_projects')
-                                    .documentId(`settings_project-${slugBrandPrimary}`)
-                                    .title(labelBrandPrimary)
-                                ),
-                                S.listItem()
-                                .title(labelBrandSecondary)
-                                .icon(iconBrandSecondary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_projects')
-                                    .documentId(`settings_project-${slugBrandSecondary}`)
-                                    .title(labelBrandSecondary)
-                                )
-                            ])
-                        ),
+                    // S.listItem()
+                    //     .title(`${labelProjects} ${labelSettings}`)
+                    //     .icon(iconSettings)
+                    //     .child(
+                    //         S.list()
+                    //         .title(`${labelProjects} ${labelSettings}`)
+                    //         .items([
+                    //             S.listItem()
+                    //             .title(labelBrandPrimary)
+                    //             .icon(iconBrandPrimary)
+                    //             .child(
+                    //                 S.document()
+                    //                 .schemaType('settings_projects')
+                    //                 .documentId(`settings_project-${slugBrandPrimary}`)
+                    //                 .title(labelBrandPrimary)
+                    //             ),
+                    //             S.listItem()
+                    //             .title(labelBrandSecondary)
+                    //             .icon(iconBrandSecondary)
+                    //             .child(
+                    //                 S.document()
+                    //                 .schemaType('settings_projects')
+                    //                 .documentId(`settings_project-${slugBrandSecondary}`)
+                    //                 .title(labelBrandSecondary)
+                    //             )
+                    //         ])
+                    //     ),
                 ]),
             ),
         S.listItem()
@@ -335,33 +335,33 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    S.listItem()
-                        .title(`${labelServices} ${labelSettings}`)
-                        .icon(iconSettings)
-                        .child(
-                            S.list()
-                            .title(`${labelServices} ${labelSettings}`)
-                            .items([
-                                S.listItem()
-                                .title(labelBrandPrimary)
-                                .icon(iconBrandPrimary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_services')
-                                    .documentId(`settings_services-${slugBrandPrimary}`)
-                                    .title(labelBrandPrimary)
-                                ),
-                                S.listItem()
-                                .title(labelBrandSecondary)
-                                .icon(iconBrandSecondary)
-                                .child(
-                                    S.document()
-                                    .schemaType('settings_services')
-                                    .documentId(`settings_services-${slugBrandSecondary}`)
-                                    .title(labelBrandSecondary)
-                                )
-                            ])
-                        ),
+                    // S.listItem()
+                    //     .title(`${labelServices} ${labelSettings}`)
+                    //     .icon(iconSettings)
+                    //     .child(
+                    //         S.list()
+                    //         .title(`${labelServices} ${labelSettings}`)
+                    //         .items([
+                    //             S.listItem()
+                    //             .title(labelBrandPrimary)
+                    //             .icon(iconBrandPrimary)
+                    //             .child(
+                    //                 S.document()
+                    //                 .schemaType('settings_services')
+                    //                 .documentId(`settings_services-${slugBrandPrimary}`)
+                    //                 .title(labelBrandPrimary)
+                    //             ),
+                    //             S.listItem()
+                    //             .title(labelBrandSecondary)
+                    //             .icon(iconBrandSecondary)
+                    //             .child(
+                    //                 S.document()
+                    //                 .schemaType('settings_services')
+                    //                 .documentId(`settings_services-${slugBrandSecondary}`)
+                    //                 .title(labelBrandSecondary)
+                    //             )
+                    //         ])
+                    //     ),
                 ])
             ),
         S.listItem()
@@ -380,12 +380,12 @@ export const structure = (S, context) =>
                             .documentId('page_partners-index')
                             .title(`${labelPartners} ${labelIndex}`)
                         ),
-                    S.listItem()
-                        .title(labelPartnerTiers)
-                        .icon(iconPartnerTiers)
-                        .child(
-                            S.documentTypeList('type_partnerTier')
-                        ),
+                    // S.listItem()
+                    //     .title(labelPartnerTiers)
+                    //     .icon(iconPartnerTiers)
+                    //     .child(
+                    //         S.documentTypeList('type_partnerTier')
+                    //     ),
 
                     orderableDocumentListDeskItem({
                         type: 'type_partnerTier',
@@ -401,40 +401,13 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    S.listItem()
-                        .title(`${labelPartners} ${labelSettings}`)
-                        .icon(iconSettings)
-                        .child(
-                            S.document()
-                            .schemaType('settings_partners')
-                            .documentId('settings_partners')
-                            .title(`${labelPartners} ${labelSettings}`)
-                        ),
                 ])
             ),
         S.listItem()
             .title(labelEvents)
             .icon(iconEvents)
             .child(
-                S.list()
-                    .title(labelEvents)
-                    .items([
-                        S.listItem()
-                            .title(labelEvents)
-                            .icon(iconEvents)
-                            .child(
-                                S.documentTypeList('type_event')
-                            ),
-                        S.listItem()
-                            .title(`${labelEvents} ${labelSettings}`)
-                            .icon(iconSettings)
-                            .child(
-                                S.document()
-                                .schemaType('settings_events')
-                                .documentId(`settings_events`)
-                                .title(`${labelEvents} ${labelSettings}`)
-                            ),
-                    ])
+                S.documentTypeList('type_event')
             ),
         S.listItem()
             .title(labelTeamMembers)
@@ -460,88 +433,70 @@ export const structure = (S, context) =>
                     })
                 ])
             ),
-        orderableDocumentListDeskItem({
-            type: 'type_practice',
-            title: labelPractices,
-            icon: iconPractices,
-            S, 
-            context
-        }),
-        S.listItem()
-            .title(labelAbout)
-            .icon(iconAbout)
-            .child(
-                S.list()
-                .title(labelAbout)
-                .items([
-                    S.listItem()
-                    .title(labelBrandPrimary)
-                    .icon(iconBrandPrimary)
-                    .child(
-                        S.document()
-                        .schemaType('page_about-domaine')
-                        .documentId(`page_about-${slugBrandPrimary}`)
-                        .title(labelAbout)
-                    ),
-                    S.listItem()
-                    .title(labelBrandSecondary)
-                    .icon(iconBrandSecondary)
-                    .child(
-                        S.document()
-                        .schemaType('page_about-studio')
-                        .documentId(`page_about-${slugBrandSecondary}`)
-                        .title(labelAbout)
-                    )
-                ])
-            ),
-        S.listItem()
-            .title(labelContact)
-            .icon(iconContact)
-            .child(
-                S.list()
-                .title(labelContact)
-                .items([
-                    S.listItem()
-                    .title(labelBrandPrimary)
-                    .icon(iconBrandPrimary)
-                    .child(
-                        S.document()
-                        .schemaType('page_contact-domaine')
-                        .documentId(`page_contact-${slugBrandPrimary}`)
-                        .title(labelContact)
-                    ),
-                    S.listItem()
-                    .title(labelBrandSecondary)
-                    .icon(iconBrandSecondary)
-                    .child(
-                        S.document()
-                        .schemaType('page_contact-studio')
-                        .documentId(`page_contact-${slugBrandSecondary}`)
-                        .title(labelContact)
-                    )
-                ])
-            ),
         S.listItem()
             .title(labelPages)
             .icon(iconPages)
             .child(
                 S.list()
-                    .title(labelContact)
+                    .title(labelPages)
                     .items([
                         S.listItem()
-                            .title('Careers')
-                            .icon(CaseIcon)
+                            .title(labelBrandPrimary)
+                            .icon(iconBrandPrimary)
                             .child(
-                                S.document()
-                                .schemaType('page_careers')
-                                .documentId(`page_careers`)
-                                .title('Careers')
+                                S.list()
+                                    .title('Domaine Pages')
+                                    .items([
+                                        S.listItem()
+                                            .title('General Pages')
+                                            .icon(iconPages)
+                                            .child(
+                                                S.documentTypeList('page_general')
+                                            ),
+                                        S.listItem()
+                                            .title(labelAbout)
+                                            .icon(iconAbout)
+                                            .child(
+                                                S.document()
+                                                .schemaType('page_about-domaine')
+                                                .documentId(`page_about-${slugBrandPrimary}`)
+                                                .title(labelAbout)
+                                            ),
+                                        S.listItem()
+                                            .title('Careers')
+                                            .icon(CaseIcon)
+                                            .child(
+                                                S.document()
+                                                    .schemaType('page_careers')
+                                                    .documentId(`page_careers`)
+                                                    .title('Careers')
+                                            ),
+                                    ])
                             ),
                         S.listItem()
-                            .title(labelPages)
+                            .title(labelBrandSecondary)
+                            .icon(iconBrandSecondary)
                             .child(
-                                S.documentTypeList('page_general')
-                            )
+                                S.list()
+                                    .title('Studio Pages')
+                                    .items([
+                                        S.listItem()
+                                            .title('General Pages')
+                                            .icon(iconPages)
+                                            .child(
+                                                S.documentTypeList('page_studio-general')
+                                            ),
+                                        S.listItem()
+                                            .title(labelAbout)
+                                            .icon(iconAbout)
+                                            .child(
+                                                S.document()
+                                                .schemaType('page_about-studio')
+                                                .documentId(`page_about-${slugBrandSecondary}`)
+                                                .title(labelAbout)
+                                            )
+                                    ])
+                            ),
                         ])
             ),
         S.listItem()

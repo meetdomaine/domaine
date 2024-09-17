@@ -10,6 +10,7 @@ import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
 import { allBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
+import BlogPostSidebar from '../../../components/global/blog/blogPost-Sidebar.astro';
 
 export const prerender = true
 
@@ -41,9 +42,11 @@ const { content } = Astro.props;
         post={content}
     />
     
-    <BlogPostBody 
-        content={content.body}
-    />
+    <BlogPostBody content={content.body}>
+        <BlogPostSidebar 
+            latestPosts={allBlogPosts_Domaine.slice(0, 3)}
+        />
+    </BlogPostBody>
 
     { content.authors && 
         <BlogPostAuthors 

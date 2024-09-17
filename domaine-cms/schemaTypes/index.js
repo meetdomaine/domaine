@@ -7,7 +7,7 @@ import type_event from "./events/type_event.js";
 import type_industry from "./projects/type_industry";
 import type_partner from "./partners/type_partner";
 import type_partnerTier from "./partners/type_partnerTier.jsx";
-import type_practice from "./practices/type_practice.js";
+// import type_practice from "./practices/type_practice.js";
 import type_project from "./projects/type_project";
 import type_projectFeature from "./projects/type_projectFeature";
 import type_service from "./services/type_service";
@@ -19,8 +19,8 @@ import page_aboutDomaine from "./about/page_about-domaine";
 import page_aboutStudio from "./about/page_about-studio";
 import page_blogIndex from "./blog/page_blog-index";
 import page_careers from "./pages/page_careers.js";
-import page_contactDomaine from "./contact/page_contact-domaine";
-import page_contactStudio from "./contact/page_contact-studio";
+// import page_contactDomaine from "./contact/page_contact-domaine";
+// import page_contactStudio from "./contact/page_contact-studio";
 import page_general from "./pages/page_general";
 import page_homeDomaine from "./home/page_home-domaine";
 import page_homeStudio from "./home/page_home-studio";
@@ -28,10 +28,10 @@ import page_projectIndex from "./projects/page_projects-index";
 import page_partnersIndex from "./partners/page_partners-index";
 import page_servicesIndexDomaine from "./services/page_services-index-domaine.js";
 import page_servicesIndexStudio from "./services/page_services-index-studio.js";
-import settings_blog from "./blog/settings_blog";
-import settings_projects from "./projects/settings_projects";
-import settings_services from "./services/settings_services";
-import settings_partners from "./partners/settings_partners";
+// import settings_blog from "./blog/settings_blog";
+// import settings_projects from "./projects/settings_projects";
+// import settings_services from "./services/settings_services";
+// import settings_partners from "./partners/settings_partners";
 import settings_events from "./events/settings_events";
 import section_globalSections from "./sections/section_globalSections";
 import section_form from "./sections/section_form";
@@ -67,6 +67,7 @@ import section_serviceCards from "./sections/section_serviceCards.js";
 import section_linkList from "./sections/section_linkList.js";
 import settings_locations from "./siteSettings/settings_locations.jsx";
 import section_quote from "./sections/section_quote.js";
+import page_studioGeneral from "./pages/page_studio-general.js";
 
 
 export const schemaTypes = [
@@ -85,7 +86,7 @@ export const schemaTypes = [
     type_teamMember,
     type_teamDepartment,
     type_agencyBrand,
-    type_practice,
+    // type_practice,
     type_event,
 
     page_aboutDomaine,
@@ -99,14 +100,15 @@ export const schemaTypes = [
     page_projectIndex,
     page_servicesIndexDomaine,
     page_servicesIndexStudio,
+    page_studioGeneral,
 
     // page_contactDomaine,
     // page_contactStudio,
 
-    settings_projects,
-    settings_services,
-    settings_partners,
-    settings_blog,
+    // settings_projects,
+    // settings_services,
+    // settings_partners,
+    // settings_blog,
     settings_events,
     settings_header,
     settings_footer,

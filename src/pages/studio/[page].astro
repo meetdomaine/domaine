@@ -1,0 +1,31 @@
+---
+import LayoutStudio from "../../layouts/Layout-Studio.astro";
+import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
+import { globalSectionsFields } from "../../components/global/utils/cms-queries";
+
+interface Props {
+  content: any
+}
+
+export async function getStaticPaths() {
+    const pages = await sanityClient.fetch(`*[_type == 'page_studio-general']{ ..., globalSections{${globalSectionsFields}} }`)
+    return pages.map((page) => {
+        return {
+            params: { page: page.slug.current },
+            props: { content: page }
+        }
+    })
+}
+
+const { content } = Astro.props
+// console.log(content)
+---
+<LayoutStudio
+    title={content.title}
+    searchFilter="type:page"
+>
+    {content.globalSections?.sections.map((section, i) => (
+      <GlobalSections brand="studio" section={section} key={i} />
+    ))}
+</LayoutStudio>
+

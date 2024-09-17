@@ -7,7 +7,7 @@ const { section, brand, key } = Astro.props
   <div class="section-content">
     <h2 class="quote h4">"{section.quote}"</h2>
     <div class="attribution">
-      {section.quoteImage && 
+      {section.quoteImage && section.quoteImage.image && 
         <div class="quote-image">
           <AtomSanityImage 
             sizes="30vw"
