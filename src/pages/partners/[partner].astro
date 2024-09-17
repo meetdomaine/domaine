@@ -30,8 +30,9 @@ export async function getStaticPaths() {
             linkedInUrl,
             youTubeUrl,
             tikTokUrl,
+            metafields,
             "blogPosts": *[_type == "type_blog" && references(^._id)]{${blogCardFields}} | order(orderRank),
-            "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)[0...3]  
+            "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)
         }`)
 
     return partners.map((partner) => {
@@ -48,7 +49,7 @@ interface Props {
 
 
 const { content } = Astro.props;
-console.log(content.globalSections)
+console.log(content.metafields)
 
 ---
 <LayoutDomaine
@@ -87,10 +88,10 @@ console.log(content.globalSections)
         />
     }
 
-    {content.projects &&
+    {content.projects?.length > 2 &&
         <SectionProjectsFeed 
             heading={`Our work with ${content.title}`}
-            projects={content.projects}
+            projects={content.projects.slice(0, 4)}
         />
     }
 </LayoutDomaine>

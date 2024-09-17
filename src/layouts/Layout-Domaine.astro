@@ -26,7 +26,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
-    description={ description ? description : currentBrand.description }
+    description={ description ? description : currentBrand.metafields.description }
     favicon={currentBrand.favicon}
     image={image ? image : currentBrand.metafields.image}
     searchFilter={searchFilter}
