@@ -3,9 +3,11 @@ import AtomRichContent from "../atoms/atom-richContent.astro"
 const { content } = Astro.props
 ---
 <section class="blog-post-body">
-    <AtomRichContent 
-        content={content}
-    />
+    <div class="blog-post-content">
+        <AtomRichContent 
+            content={content}
+        />
+    </div>
     <slot />
 </section>
 
@@ -17,11 +19,17 @@ const { content } = Astro.props
         flex-direction: row;
         align-items: flex-start;
         justify-content: center;
+        gap: var(--space-4xl);
+    }
+
+    .blog-post-content {
+        max-width: 46rem;
     }
 
     @media screen and (width <= 768px) {
         .blog-post-body {
             flex-direction: column;
+            align-items: center;
             gap: var(--space-4xl)
         }
     }
