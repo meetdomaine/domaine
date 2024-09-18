@@ -55,7 +55,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
   title={`${content.title} | Events`}
 >
   <section class="event-main">
-    <div class="event-image">
+    <div class="event-image event-image-large">
       <AtomSanityImage 
         sizes="50vw"
         image={content.thumbnailImage.image}
@@ -65,38 +65,51 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     </div>
 
     <div class="event-info">
-      <div class="event-title">
-        {content.eyebrow && <p class="eyebrow h5">{content.eyebrow}</p>}
-        <h1 class="title">{content.title}</h1>
-      </div>
-      <div class="event-details">
-        <div class="date">
-          <Icon name="icon-calendar" />
-          <span>{date}</span>
+
+      <div class="event-hero">
+        <div class="event-image event-image-small">
+          <AtomSanityImage 
+            sizes="50vw"
+            image={content.thumbnailImage.image}
+            aspectRatio={3 / 4}
+            cover={true}
+          />
         </div>
-        <div class="time">
-          <Icon name="icon-clock" />
-          <span>{time}</span>
-        </div>
-        <div class="location">
-          <Icon name="icon-pin" />
-          <div class="location-info">
-            <a class="venue h6" href={content.venueUrl}>{content.venue}</a>
-            <span class="location-name">{content.location}</span>
+        <div class="event-hero-content">
+          <div class="event-title">
+            {content.eyebrow && <p class="eyebrow h5">{content.eyebrow}</p>}
+            <h1 class="title">{content.title}</h1>
           </div>
-        </div>
-      </div>
-      {content.button?.url && content.button?.text && 
-        <AtomButton 
-          text={content.button.text}
-          url={content.button.url}
-          newTab={content.button.newTab}
-          icon="arrow-diagonal"
+          <div class="event-details">
+            <div class="date">
+              <Icon name="icon-calendar" />
+              <span>{date}</span>
+            </div>
+            <div class="time">
+              <Icon name="icon-clock" />
+              <span>{time}</span>
+            </div>
+            <div class="location">
+              <Icon name="icon-pin" />
+              <div class="location-info">
+                <a class="venue h6" href={content.venueUrl}>{content.venue}</a>
+                <span class="location-name">{content.location}</span>
+              </div>
+            </div>
+          </div>
+        {content.button?.url && content.button?.text && 
+          <AtomButton 
+            text={content.button.text}
+            url={content.button.url}
+            newTab={content.button.newTab}
+            icon="arrow-diagonal"
+          />
+        }
+        <AtomRichContent 
+          content={content.description}
         />
-      }
-      <AtomRichContent 
-        content={content.description}
-      />
+      </div>
+      </div>
       {content.partnerLogos &&
         <div class="partners-section">
           <div class="partners-title">
@@ -163,10 +176,33 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     align-items: flex-start;
   }
 
+  .event-hero {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .event-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
   .event-image {
+    /* aspect-ratio: 3 / 4; */
+  }
+
+  .event-image-large {
     position: sticky;
     top: 0;
     flex: 0 0 50%;
+    height: 100lvh;
+  }
+
+  .event-image-small {
+    display: none;
   }
 
   .event-info {
@@ -229,6 +265,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
+    align-self: stretch;
   }
 
   .partners-title,
@@ -250,11 +287,13 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
 
   .speaker-cards {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--space-sm);
   }
 
   .speaker-card {
+    flex: 0 1 30rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -280,6 +319,31 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
 
   .speaker-name {
     margin: 0;
+  }
+
+  @media screen and (width <= 1024px) {
+    .event-image-large {
+      display: none;
+    }
+
+    .event-image-small {
+      display: flex;
+      flex: 0 0 40%;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+  }
+
+  @media screen and (width <= 768px) {
+
+    .event-hero {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .event-image-small {
+      flex: 0 0 auto;
+    }
   }
 
 </style>

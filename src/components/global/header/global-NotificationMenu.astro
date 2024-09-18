@@ -9,6 +9,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
 import GlobalBlogTile from "../blog/global-BlogTile.astro"
+import type { UseDateTimeFormatOptions } from "sanity"
 
 const { 
   currentBrand, 
@@ -28,23 +29,24 @@ const {
   careersSubheading,
   careersUrl,
   careersNewTab,
+  showBlog,
 } = Astro.props
 
-// console.log(clocks)
+const monthOptions: UseDateTimeFormatOptions = {
+  month: "short"
+}
 
 const latestProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
-const latestBlogPost = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
-const upcomingEvent = allEvents_upcoming[0]
+const latestBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+const upcomingEvents = allEvents_upcoming.filter((event) => !event.isPrivate)
 
 // console.log(upcomingEvent)
 // console.log(latestWork)
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent>
 
-  {showPromoMessage && promoMessage &&
-    promoMessageUrl ? 
-      <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>
-    : <p class="promo-message caption" data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</p>
+  {(showPromoMessage && promoMessage) &&
+    <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>
   }
 
   <div class="latest-projects">
@@ -85,19 +87,21 @@ const upcomingEvent = allEvents_upcoming[0]
     </div>
   }
 
-  {upcomingEvent && 
+  {upcomingEvents?.length > 0 && 
     <div class="event-card" data-color-scheme="glass-dark">
       <p class="caption">Upcoming Events</p>
-      <a class="event-info color-reset" href={`/events/${upcomingEvent.slug.current}`} data-color-scheme="default">
-        <div class="event-date">
-          <p class="event-month caption">August</p>
-          <p class="event-day h4">20</p>
-        </div>
-        <div class="event-details">
-          <p class="event-title">{upcomingEvent.title}</p>
-          <p class="event-location caption">{upcomingEvent.location}</p>
-        </div>
-      </a>
+      {upcomingEvents.map((event) => (
+        <a class="event-info color-reset" href={`/events/${event.slug.current}`} data-color-scheme="default">
+          <div class="event-date">
+            <p class="event-month caption">{new Intl.DateTimeFormat("en-us", monthOptions).format(new Date(event.dateTime))}</p>
+            <p class="event-day h4">{new Date(event.dateTime).getDate()}</p>
+          </div>
+          <div class="event-details">
+            <p class="event-title">{event.title}</p>
+            <p class="event-location caption">{event.location}</p>
+          </div>
+        </a>
+      ))}
     </div>
   }
 
@@ -127,16 +131,17 @@ const upcomingEvent = allEvents_upcoming[0]
   </div>
 }
   
-
-<div class="blog-posts" data-color-scheme="glass-dark">
-  <p class="blog-posts-heading caption">Insights</p>
-  {latestBlogPost.slice(0,2).map((blogPost) => (
-    <GlobalBlogTile 
-      post={blogPost}
-      currentBrand={currentBrand}
-    />
-  ))}
-</div>
+{showBlog && latestBlogPosts.length > 1 &&
+  <div class="blog-posts" data-color-scheme="glass-dark">
+    <p class="blog-posts-heading caption">Insights</p>
+    {latestBlogPosts.slice(0,2).map((blogPost) => (
+      <GlobalBlogTile 
+        post={blogPost}
+        currentBrand={currentBrand}
+      />
+    ))}
+  </div>
+}
 
 
 </dialog>

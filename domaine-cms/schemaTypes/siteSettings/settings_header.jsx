@@ -198,5 +198,10 @@ export default defineType({
       type: 'boolean',
       hidden: ({document}) => !document?.showCareers,
     }),
+    defineField({
+      name: 'showBlog',
+      title: 'Show Blog',
+      type: 'boolean',
+    }),
   ],
 })
