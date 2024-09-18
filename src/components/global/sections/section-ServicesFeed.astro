@@ -64,7 +64,7 @@ const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTyp
                     data-animation="fade"
                     data-animation-delay={400}
                 >
-                    {serviceType.images.map((imageObject) => (
+                    {serviceType.images.slice(0, 4).map((imageObject) => (
                         <div 
                             class="service-image"
                         >
