@@ -17,7 +17,7 @@ export default defineType({
       type: 'array',
       description: 'Must be 18 images.',
       of: [{ type: 'snippet_image'}],
-      validation: Rule => Rule.required().max(18).min(18),
+      validation: Rule => Rule.required().min(9),
     }),
   ],
 })
