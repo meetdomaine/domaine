@@ -8,7 +8,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ ..., globalSections{${globalSectionsFields}} }`)
+    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ ..., globalSections{ sections[]{${globalSectionsFields}} } }`)
     return pages.map((page) => {
         return {
             params: { page: page.slug.current },
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-// console.log(content)
+console.log(content)
 ---
 <LayoutDomaine
     title={content.title}
