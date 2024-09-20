@@ -4,6 +4,7 @@ import AtomCounter from "../atoms/atom-counter.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
+import { getRawSvg } from "../utils/raw-svg"
 
 const { section, brand } = Astro.props
 
@@ -42,33 +43,41 @@ console.log(section.projects[0].client)
         </div>
     </div>
     <div class="project-tiles">
-        {section.projects.map((project, i) => (
-            <div 
-                class="project-tile"
-                data-hide-mobile={ i >= 8 ? "true" : "false"}
-                data-animate-viewport="true"
-                data-animation="fade"
-                data-animation-delay={Math.random() * 400}
-            >
-                <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
-                    <div class="project-media">
-                        <AtomSanityMedia 
-                            image={project.thumbnailMedia.image}
-                            video={project.thumbnailMedia.video}
-                            aspectRatio={3 / 4}
-                            sizes="15vw"
-                            cover={true}
-                        />
-                        <div class="project-logo">
-                            <AtomSanityImage 
-                                image={project.client.logoLight.image}
-                                sizes="30vw"
+        {section.projects.map((project, i) => {
+
+            const clientLogo = getRawSvg(project.client.logo)
+            return (
+                <div 
+                    class="project-tile"
+                    data-hide-mobile={ i >= 8 ? "true" : "false"}
+                    data-animate-viewport="true"
+                    data-animation="fade"
+                    data-animation-delay={Math.random() * 400}
+                >
+                    <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
+                        <div class="project-media">
+                            <AtomSanityMedia 
+                                image={project.thumbnailMedia.image}
+                                video={project.thumbnailMedia.video}
+                                aspectRatio={3 / 4}
+                                sizes="15vw"
+                                cover={true}
                             />
+                            <div 
+                                class="project-logo"
+                                style={`width: ${project.client.logoWidthProjectCard * 1.5}%`}
+                            >
+                                <Fragment set:html={clientLogo} />
+                                {/* <AtomSanityImage 
+                                    image={project.client.logoLight.image}
+                                    sizes="30vw"
+                                /> */}
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        ))}
+                    </a>
+                </div>
+            )
+        })}
     </div>
 </section>
 
@@ -152,6 +161,7 @@ console.log(section.projects[0].client)
         width: 50%;
         opacity: 0;
         transition: opacity var(--anim-md), translate var(--anim-md);
+        color: var(--color-lightest);
     }
 
     .project-link-card:hover .project-media {

@@ -62,6 +62,7 @@ export const projectGridFields = `
   thumbnailMedia{${videoFields}, ${imageFields}},
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
+  isHidden,
 `
 
 export const serviceQuery = `
@@ -73,7 +74,7 @@ export const serviceQuery = `
       serviceType->{...}
   },
   "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank),
+  "relatedProjects": *[_type == "type_project" && isHidden != true && references(^._id)]{${projectGridFields} } | order(orderRank),
 `
 
 export const serviceTypeQuery = `
@@ -87,7 +88,7 @@ export const serviceTypeQuery = `
           ...
       } | order(orderRank)
   } | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
+  "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
   "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
 `
 export const serviceGroupQuery = `
@@ -97,14 +98,14 @@ export const serviceGroupQuery = `
   serviceType->{...},
   "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
   "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
-  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
+  "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
 `
 
 export const globalSectionsFields = `
     ...,
     _type == "section_projectsFeed" => { heading, subheading, projects[]->{ ${projectGridFields} } },
     _type == "section_projectsFullBleed" => { projects[]{ project->{title, slug, backgroundColor, accentColor, agencyBrand->{slug}, thumbnailImageSecondary{${imageFields}} }, media{${imageFields}} } },
-    _type == "section_projectsGrid" => { title, heading, button{...}, projects[]->{title, slug, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}}, client->{..., logoDark{${imageFields}}, logoLight{${imageFields}}} } },
+    _type == "section_projectsGrid" => { title, heading, button{...}, projects[]->{title, slug, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}}, client->{..., "logo": logo.asset->url } } },
     _type == "section_blogFeed" => { heading, showHero, featuredPost->{${blogCardFields}}, featuredCategory->{ ... } },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
     _type == "section_partnersFeed" => { eyebrow, heading, button },
@@ -121,7 +122,7 @@ export const globalSectionsFields = `
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
-    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label}, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
+    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label }, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, quoteClient->{logoDark{${imageFields}} }, text, button },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
 `
@@ -139,7 +140,7 @@ export const serviceTypePageQuery = `
           ...
       } | order(orderRank)
   } | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
+  "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
   "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
 `
 
@@ -160,7 +161,7 @@ export const projectPageFields = `
   agencyBrand->{slug},
   slug{...},
   heroMedia{..., ${videoFields}, ${imageFields}},
-  "relatedProjects": *[_type == "type_project" && agencyBrand->slug.current == ^.agencyBrand->slug.current && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
+  "relatedProjects": *[_type == "type_project" && isHidden != true && agencyBrand->slug.current == ^.agencyBrand->slug.current && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
   sections[]{${globalSectionsFields}},
 `
 
@@ -169,7 +170,7 @@ export const projectsGridQuery = (brand) => {
 }
 
 export const getProjectCardsByFeature = (feature) => {
-  return `*[_type == "type_project" && references("${feature}") ] { ${projectGridFields} } | order(orderRank)`
+  return `*[_type == "type_project" && isHidden != true && references("${feature}") ] { ${projectGridFields} } | order(orderRank)`
 }
 
 export const projectPostQuery = (brand) => {
@@ -213,6 +214,7 @@ export const blogQuery = `
   "relatedPosts": *[_type == "type_blog" && references(^.category->_id)]{${blogCardFields}} | order(orderRank asc),
   "relatedProjects": 
       *[_type == "type_project" 
+          && isHidden != true
           && references(^.features[]->_id)
           // || references(^.services[]->_id)
           || references(^.industries[]->_id)

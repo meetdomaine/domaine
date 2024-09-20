@@ -45,6 +45,14 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'isHidden',
+      title: 'Hidden',
+      type: 'boolean',
+      group: 'info',
+      initialValue: false,
+      description: 'Hides the project from listing on site. Hidden projects can still be accessed directly via their url.'
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'string',

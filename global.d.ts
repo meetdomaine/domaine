@@ -113,13 +113,15 @@ declare interface Media {
 
 declare interface ClientCard {
     title: string,
-    logoDark: {image: SanityImage},
-    logoLight: {image: SanityImage},
+    // logoDark: {image: SanityImage},
+    // logoLight: {image: SanityImage},
     productImage: ImageBase,
     // stage: {
     //     title: string
     // },
     isEnterprise: boolean,
+    logo: string,
+    logoWidthProjectCard: number,
 }
 
 declare interface BlogCard {

@@ -67,6 +67,7 @@ export default defineType({
       title: 'Logo',
       description: "SVG file using viewbox (no width or height). All fills should be set to 'currentColor'.",
       type: 'file',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'logoWidthProjectCard',

@@ -6,7 +6,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomButton from "../atoms/atom-button.astro"
 
 const { section, brand } = Astro.props
-// console.log(section)
+console.log(section.linkCardImage)
 ---
 <section class="section-text-feed">
     <div class="section-content">
@@ -39,12 +39,12 @@ const { section, brand } = Astro.props
             data-animate-viewport="true" 
             data-animation="fade"
         >
-            {section.linkCardImage && 
+            {/* {section.linkCardImage && 
                 <AtomSanityImage 
                     sizes="40vw"
                     image={section.linkCardImage.image}
                 />
-            }
+            } */}
             <p class="link-card-text">{section.linkCardHeading}</p>
         </a>
     }
