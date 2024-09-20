@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
+// import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
 import { iconPartnerTiers } from '../variables'
 import { orderRankField } from '@sanity/orderable-document-list'
 
@@ -30,12 +30,12 @@ export default defineType({
       type: 'text',
       validation: Rule => Rule.required(),
     }),
-    defineField({
-      name: 'icon',
-      title: 'Icon',
-      type: 'inlineSvg',
-      validation: Rule => Rule.required(),
-    }),
+    // defineField({
+    //   name: 'icon',
+    //   title: 'Icon',
+    //   type: 'inlineSvg',
+    //   validation: Rule => Rule.required(),
+    // }),
     // defineField({
     //   name: 'icon',
     //   title: 'Icon',
@@ -56,10 +56,10 @@ export default defineType({
       icon: 'icon',
     },
   },
-  components: {
-    preview: ({ icon, title }) => {
-      const media = icon ? icon : iconPartnerTiers
-      return <InlineSvgPreviewItem icon={media} title={title} subtitle={"Partner Tier"} />
-    },
-  },
+  // components: {
+  //   preview: ({ icon, title }) => {
+  //     const media = icon ? icon : iconPartnerTiers
+  //     return <InlineSvgPreviewItem icon={media} title={title} subtitle={"Partner Tier"} />
+  //   },
+  // },
 })

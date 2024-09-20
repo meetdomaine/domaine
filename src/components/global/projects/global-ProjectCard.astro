@@ -3,12 +3,21 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { urlFor } from "../utils/cms-queries"
+import { getRawSvg } from "../utils/raw-svg"
+
 
 interface Props {
     project: ProjectCard
 }
 
 const { project } = Astro.props
+
+let clientLogo
+
+if (project.client?.logo) {
+    clientLogo = await getRawSvg(project.client.logo)
+}
+// console.log(project.client.logo)
 // console.log(project.thumbnailMedia)
 ---
 <a 
@@ -27,12 +36,13 @@ const { project } = Astro.props
                 sizes="30vw"
             />
         </div>
-        {project.client && project.client.logoDark && project.client.logoLight && 
-            <div class="client-logo">
-                <AtomSanityImage 
-                    image={project.logoColor === "dark" ? project.client.logoDark.image : project.client.logoLight.image}
-                    sizes="30vw"
-                />
+        {project.client?.logo &&
+            <div 
+                class="client-logo" 
+                data-color-scheme={project.logoColor === "dark" ? "default" : "invert"}
+                style={`width: ${project.client.logoWidthProjectCard}%`}
+            >
+                <Fragment set:html={clientLogo} />
             </div>
         }
         {project.thumbnailImageSecondary && 
@@ -131,9 +141,16 @@ const { project } = Astro.props
         top: var(--space-sm);
         left: var(--space-sm);
         /* inset: var(--space-sm); */
-        max-width: min(30%, 10em);
-        height: 8%;
+        max-width: calc(50% - var(--space-sm) * 2);
+        /* max-width: min(30%, 10em); */
+        /* height: 8%; */
+        background-color: transparent;
         /* object-fit: cover; */
+    }
+
+    .client-logo :global(svg) {
+        width: 100%;
+        height: auto;
     }
 
     .card-content {

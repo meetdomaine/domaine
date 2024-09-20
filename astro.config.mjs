@@ -7,36 +7,31 @@ import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
-
 const isProd = import.meta.env.PROD;
-const isDev = import.meta.env.DEV; 
-
-const renderMode = import.meta.env.RENDER_MODE
+const isDev = import.meta.env.DEV;
+const renderMode = import.meta.env.RENDER_MODE;
 
 // console.log(isProd)
 
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [
-    sitemap(), 
-    icon(), 
-    sanity({
-      projectId: 'cxeknc6v',
-      dataset: 'production',
-      useCdn: true,
-      // useCdn: false,
-      studioBasePath: '/admin',
-      stega: {
-        studioUrl: '/admin',
-      },
-    }), 
-    solid({
-      devtools: true,
-      include: 'src/**/*'
-    }), 
-    react({
-      include: 'domaine-cms/**/*'
-    })
+  integrations: [sitemap(), icon(), sanity({
+    projectId: 'cxeknc6v',
+    dataset: 'production',
+    // useCdn: true,
+    useCdn: false,
+    studioBasePath: '/admin'
+    // stega: {
+    //   studioUrl: '/admin',
+    // },
+  }), solid({
+    devtools: true,
+    include: 'src/**/*'
+  }),
+  react({
+    include: 'domaine-cms/**/*'
+  })
   ],
   prefetch: true,
   experimental: {

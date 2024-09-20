@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
+// import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
 import { orderRankField } from '@sanity/orderable-document-list'
 
 import { iconClients } from '../variables'
@@ -28,20 +28,20 @@ export default defineType({
       // readOnly: true,
     }),
     
-    defineField({
-      name: 'logoDark',
-      title: 'Logo: Dark',
-      description: 'A transparent PNG of the client logo that works on light backgrounds.',
-      type: 'snippet_image',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'logoLight',
-      title: 'Logo: Light',
-      description: 'A transparent PNG of the client logo that works on dark backgrounds.',
-      type: 'snippet_image',
-      validation: Rule => Rule.required(),
-    }),
+    // defineField({
+    //   name: 'logoDark',
+    //   title: 'Logo: Dark',
+    //   description: 'A transparent PNG of the client logo that works on light backgrounds.',
+    //   type: 'snippet_image',
+    //   validation: Rule => Rule.required(),
+    // }),
+    // defineField({
+    //   name: 'logoLight',
+    //   title: 'Logo: Light',
+    //   description: 'A transparent PNG of the client logo that works on dark backgrounds.',
+    //   type: 'snippet_image',
+    //   validation: Rule => Rule.required(),
+    // }),
     // defineField({
     //   name: 'logoDark',
     //   title: 'Logo: Dark',
@@ -62,36 +62,38 @@ export default defineType({
       type: 'image',
       validation: Rule => Rule.required(),
     }),
-    // defineField({
-    //   name: 'logo',
-    //   title: 'Logo',
-    //   type: 'inlineSvg',
-    // }),
     defineField({
-      name: 'agencyBrands',
-      title: 'Agency Brands',
-      type: 'array',
-      of: [
-        {
-          name: 'agencyBrand',
-          title: 'Agency Brand',
-          type: 'reference',
-          to: [{ type: 'type_agencyBrand'}]
-        }
-      ]
+      name: 'logo',
+      title: 'Logo',
+      description: "SVG file using viewbox (no width or height). All fills should be set to 'currentColor'.",
+      type: 'file',
     }),
+    defineField({
+      name: 'logoWidthProjectCard',
+      title: 'Logo Width: Project Card',
+      description: "Width (%) of logo in project card. Max 50%.",
+      initialValue: 50,
+      type: 'number',
+      validation: Rule => Rule.integer().greaterThan(0).max(50),
+    }),
+    // defineField({
+    //   name: 'agencyBrands',
+    //   title: 'Agency Brands',
+    //   type: 'array',
+    //   of: [
+    //     {
+    //       name: 'agencyBrand',
+    //       title: 'Agency Brand',
+    //       type: 'reference',
+    //       to: [{ type: 'type_agencyBrand'}]
+    //     }
+    //   ]
+    // }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
     }),
-    // defineField({
-    //   name: 'stage',
-    //   title: 'Stage',
-    //   type: 'reference',
-    //   to: [{ type: 'type_clientStage'}],
-    //   // validation: Rule => Rule.required(),
-    // }),
     defineField({
       name: 'isEnterprise',
       title: 'Enterprise Brand',
@@ -100,11 +102,13 @@ export default defineType({
     }),
     orderRankField({ type: 'type_client'}),
   ],
+  
   preview: {
     select: {
       title: 'title',
-      subtitle: 'stage.title',
+      subtitle: 'title',
       media: 'productImage',
+      icon: 'logo'
     },
     prepare(selection) {
       const { title, subtitle, media } = selection
@@ -115,4 +119,9 @@ export default defineType({
       }
     }
   },
+  // components: {
+  //   preview: ({ icon, title, subtitle }) => {
+  //     return <InlineSvgPreviewItem icon={icon} title={title} subtitle={subtitle} />
+  //   },
+  // },
 })

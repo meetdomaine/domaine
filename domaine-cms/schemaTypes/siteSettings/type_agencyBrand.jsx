@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import { orderRankField } from '@sanity/orderable-document-list'
-import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
+// import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
 
 import { media } from 'sanity-plugin-media'
 
@@ -45,11 +45,11 @@ export default defineType({
       description: 'Used in Brand menu & practices section.',
       validation: Rule => Rule.required(),
     }),
-    defineField({
-      name: 'logo',
-      title: 'Logo',
-      type: 'inlineSvg',
-    }),
+    // defineField({
+    //   name: 'logo',
+    //   title: 'Logo',
+    //   type: 'inlineSvg',
+    // }),
     defineField({
       name: 'url',
       title: 'Root URL',
@@ -72,9 +72,9 @@ export default defineType({
       icon: 'logo',
     },
   },
-  components: {
-    preview: ({ icon, title }) => {
-      return <InlineSvgPreviewItem icon={icon} title={title} subtitle={'Agency Brand'} />
-    },
-  },
+  // components: {
+  //   preview: ({ icon, title }) => {
+  //     return <InlineSvgPreviewItem icon={icon} title={title} subtitle={'Agency Brand'} />
+  //   },
+  // },
 })

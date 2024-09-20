@@ -1,14 +1,14 @@
 // sanity.config.ts
 import {defineConfig} from 'sanity'
-import {presentationTool} from 'sanity/presentation'
+// import {presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
 import {colorInput} from '@sanity/color-input'
-import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input'
+// import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input'
 import { structure } from './domaine-cms/schemaTypes/structure'
 import { schemaTypes } from './domaine-cms/schemaTypes'
-import { vercelDeployTool } from 'sanity-plugin-vercel-deploy'
+// import { vercelDeployTool } from 'sanity-plugin-vercel-deploy'
 import { webhooksTrigger } from 'sanity-plugin-webhooks-trigger'
 
 
@@ -26,12 +26,12 @@ export default defineConfig({
     //   previewUrl: 'http://localhost:4322/'
     // }),
     // vercelDeployTool(),
+    // inlineSvgInput(),
     colorInput(),
     media(),
-    inlineSvgInput(),
     webhooksTrigger({
-      // title: 'Deploy',
-      // text: 'Custom text',
+      title: 'Deploy',
+      text: 'Custom text',
       // encryptionSalt: 'replace-me-with-a-strong-string',
       // /** You can customize the event type name to trigger on your Github workflows */
       // githubEventType: 'webhook-trigger',

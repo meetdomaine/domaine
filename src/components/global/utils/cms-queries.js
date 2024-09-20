@@ -54,7 +54,7 @@ export const projectGridFields = `
   industry->{..., _id },
   agencyBrand->{slug},
   partners[]->{..., _id}, 
-  client->{title, logoDark{${imageFields}}, logoLight{${imageFields}}, productImage{${imageBaseFields}}, isEnterprise },
+  client->{title, logoDark{${imageFields}}, logoLight{${imageFields}}, "logo": logo.asset->url, logoWidthProjectCard, productImage{${imageBaseFields}}, isEnterprise },
   logoColor,
   features[]->{ title, slug, _id } | order(orderRank), 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
@@ -195,7 +195,7 @@ export const projectPostQuery = (brand) => {
   }`
 }
 
-export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}`
+export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}, logo`
 
 export const richContentFields = `
   ...,

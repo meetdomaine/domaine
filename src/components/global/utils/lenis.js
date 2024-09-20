@@ -3,7 +3,14 @@
   export let lenis;
 
   export const initLenis = () => {
-    lenis = new Lenis()
+    lenis = new Lenis({ 
+      lerp: 0.2,
+      easing: (t) => {
+        1 - Math.pow(1 - t, 5);
+      }
+    })
+
+    // lenis.lerp = 0.9
 
     function raf(time) {
       lenis.raf(time)
