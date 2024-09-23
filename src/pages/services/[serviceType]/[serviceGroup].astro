@@ -31,6 +31,7 @@ const { content, serviceType } = Astro.props;
     activePath="/services"
 >
     <SectionServiceHero
+        subservices={content.services}
         title={content.title}
         excerpt={content.excerpt}
         description={content.description}
@@ -45,15 +46,6 @@ const { content, serviceType } = Astro.props;
             },
         ]}
     />
-
-
-    <div class="services">
-        {content.services.map((service) => (
-            <div>
-                <a href={`/services/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
-            </div>
-        ))}
-    </div>
 
     {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 

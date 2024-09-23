@@ -69,6 +69,7 @@ export const serviceQuery = `
   ...,
   excerpt,
   description,
+  agencyBrands[]->{..., slug, name},
   serviceGroup->{
       ..., 
       serviceType->{...}
@@ -81,12 +82,12 @@ export const serviceTypeQuery = `
   ...,
   excerpt,
   images[]{${imageFields}},
+  agencyBrands[]->{..., slug, name},
   "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
       ...,
       serviceType->{slug},
-      "services": *[_type == "type_service" && references(^._id)] {
-          ...
-      } | order(orderRank)
+      agencyBrands[]->{..., slug, name},
+      "services": *[_type == "type_service" && references(^._id)] {${serviceQuery}} | order(orderRank)
   } | order(orderRank),
   "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
   "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
@@ -95,6 +96,7 @@ export const serviceGroupQuery = `
   ..., 
   excerpt,
   images[]{${imageFields}},
+  agencyBrands[]->{..., slug, name},
   serviceType->{...},
   "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
   "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},

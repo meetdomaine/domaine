@@ -29,8 +29,8 @@ export const allServiceTypes_Domaine = await sanityClient.fetch(`*[_type == "typ
 export const allServiceTypes_Studio = await sanityClient.fetch(`*[_type == "type_serviceType" && 'Studio' in agencyBrands[]->name ]{${serviceTypeQuery}} | order(orderRank)`)
 
 // Service Groups - All
-export const allServiceGroups_Domaine = await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine" ]) > 0  ]) > 0 ]{${serviceGroupQuery}} | order(orderRank asc)`)
-export const allServiceGroups_Studio = await sanityClient.fetch(`*[_type == "type_serviceGroup" && count( *[_type == "type_service" && references(^._id) && count( *[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio" ]) > 0  ]) > 0 ]{${serviceGroupQuery}} | order(orderRank asc)`)
+export const allServiceGroups_Domaine = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/" in agencyBrands[]->slug.current]{${serviceGroupQuery}} | order(orderRank asc)`)
+export const allServiceGroups_Studio = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/studio" in agencyBrands[]->slug.current]{${serviceGroupQuery}} | order(orderRank asc)`)
 
 // Services - All
 export const allServices_Domaine = await sanityClient.fetch(`*[_type == "type_service" && "Domaine" in agencyBrands[]->name ]{${serviceQuery}} | order(postDate desc)`)

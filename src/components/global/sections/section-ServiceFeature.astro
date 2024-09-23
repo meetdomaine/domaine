@@ -1,11 +1,11 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 
 const { section, brand, key } = Astro.props
-// console.log(section.serviceType.images)
-console.log(section)
 
+const currentSlug = brand === "studio" ? "/studio" : "/"
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
     <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title title-xl">{section.featuredService.title}</a></h2>
@@ -14,33 +14,33 @@ console.log(section)
         <p class="service-type-heading h4">{section.featuredService.excerpt}</p>
         <div class="service-groups">
             {section.featuredService._type === "type_serviceType" ? 
-                section.featuredService.serviceGroups.map((serviceGroup) => (
+                section.featuredService.serviceGroups.filter((group) => group.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((serviceGroup) => (
                     <div class="services">
                         <a class="service-group-title h6" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a>
-                        {serviceGroup.services.map((service) => (
-                            <a class="service" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}>
-                                <p class="service-title">{service.title}</p>
-                                <Icon name="arrow-forward" />
-                                { service.excerpt && 
-                                    <div class="service-detail" data-color-scheme="glass-light">
-                                        <p>{service.excerpt}</p> 
-                                    </div>
-                                }
-                            </a>
+                        {serviceGroup.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
+                            <AtomServiceLink 
+                                title={service.title}
+                                url={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}
+                                excerpt={service.excerpt}
+                            />
+                            // <a class="service" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}>
+                            //     <p class="service-title">{service.title}</p>
+                            //     <Icon name="arrow-forward" />
+                            //     { service.excerpt && 
+                            //         <div class="service-detail" data-color-scheme="glass-light">
+                            //             <p>{service.excerpt}</p> 
+                            //         </div>
+                            //     }
+                            // </a>
                         ))}
                     </div>
                 )) : 
-                section.featuredService.services.map((service) => (
-                    <a class="service" href={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}>
-                        {/* <a class="service-group-title" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a> */}
-                        <p class="service-title">{service.title}</p>
-                        <Icon name="arrow-forward" />
-                        { service.excerpt && 
-                            <div class="service-detail" data-color-scheme="glass-light">
-                                <p>{service.excerpt}</p> 
-                            </div>
-                        }
-                    </a>
+                section.featuredService.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
+                    <AtomServiceLink 
+                        title={service.title}
+                        url={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}
+                        excerpt={service.excerpt}
+                    />
                 ))
             }
         </div>
@@ -133,76 +133,14 @@ if (!isMobileBreakpoint) {
         flex-direction: column;
     }
 
-    .service {
-        position: relative;
-    }
-
-    .service:hover {
-        transition: color var(--anim-sm), padding var(--anim-sm);
-        color: var(--color-background);
-        padding-inline: var(--space-xs);
-    }
-
-    .service::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        height: 0%;
-        transition: height var(--anim-sm);
-        background-color: var(--color-foreground);
-        z-index: -1;
-        border-radius: var(--radius-sm);
-    }
-
-
-    .service-detail {
-        position: absolute;
-        max-width: 16em;
-        top: calc(var(--space-2xs) * -1);
-        right: calc(var(--space-xs) * -1);
-        translate: 100% 20px;
-        color: var(--color-foreground);
-        /* color: var(--color-background); */
-        /* mix-blend-mode: difference; */
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--anim-sm), translate var(--anim-sm);
-        padding: var(--space-2xs);
-        border-radius: var(--radius-sm);
-        /* background-color: var(--color-background); */
-    }
-
-    .service:hover::after {
-        height: 100%;
-    }
-
-    .service:hover .service-detail {
-        opacity: 1;
-        translate: 100% 0px;
-    }
-
-    .service,
     .service-group-title {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        border-bottom: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-foreground);
         padding-block: 0.5em;
+        margin: var(--space-md) 0 0;
         text-decoration: none;
-    }
-
-
-    .service-group-title,
-    .service-title {
-        margin: 0;
-        text-decoration: none;
-    }
-
-    .service-group-title {
-        border-color: var(--color-foreground);
-        margin-top: var(--space-md);
     }
 
     .service-group-title:hover {

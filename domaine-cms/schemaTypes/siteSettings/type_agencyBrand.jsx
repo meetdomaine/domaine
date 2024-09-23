@@ -3,6 +3,7 @@ import { orderRankField } from '@sanity/orderable-document-list'
 // import { InlineSvgPreviewItem } from '@focus-reactive/sanity-plugin-inline-svg-input'
 
 import { media } from 'sanity-plugin-media'
+import { iconAgencyBrand } from '../variables'
 
 export default defineType({
   name: 'type_agencyBrand',
@@ -69,8 +70,15 @@ export default defineType({
   preview: {
     select: {
       title: 'name',
-      icon: 'logo',
+      // icon: 'logo',
     },
+    prepare(selection) {
+      const { title } = selection
+      return {
+        title: title,
+        media: iconAgencyBrand
+      }
+    }
   },
   // components: {
   //   preview: ({ icon, title }) => {
