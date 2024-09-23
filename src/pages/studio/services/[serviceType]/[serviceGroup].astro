@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from "sanity:client"
 import LayoutStudio from "../../../../layouts/Layout-Studio.astro"
-import SectionServiceGroupHero from "../../../../components/global/services/serviceGroup-Hero.astro"
+import ServicesHero from "../../../../components/global/services/service-Hero.astro"
 import { blogCardFields, projectGridFields } from "../../../../components/global/utils/cms-queries"
 import GlobalProjectsGrid from "../../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../../components/global/sections/section-BlogFeed.astro"
@@ -32,17 +32,23 @@ const { content, serviceType } = Astro.props;
     searchFilter="type:service-group"
     activePath="/studio/services"
 >
-    <SectionServiceGroupHero 
+    <ServicesHero
+        subservices={content.services}
         brand="studio"
-        serviceGroup={content}
+        title={content.title}
+        excerpt={content.excerpt}
+        description={content.description}
+        breadcrumbs={[
+            {
+                title: 'Services /',
+                url: '/studio/services/'
+            },
+            {
+                title: serviceType.title,
+                url: `/studio/services/${serviceType.slug.current}`
+            },
+        ]}
     />
-    <div class="services">
-        {content.services.map((service) => (
-            <div>
-                <a href={`/studio/services/${serviceType.slug.current}/${service.slug.current}`}><p>{service.title}</p></a>
-            </div>
-        ))}
-    </div>
 
     {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 

@@ -35,7 +35,19 @@ const { content, serviceType, serviceGroup } = Astro.props;
 >
     <SectionServiceHero
         brand="studio"
-        service={content}
+        title={content.title}
+        excerpt={content.excerpt}
+        description={content.description}
+        breadcrumbs={[
+            {
+                title: 'Services /',
+                url: '/studio/services/'
+            },
+            {
+                title: serviceType.title,
+                url: `/studio/services/${serviceType.slug.current}`
+            },
+        ]}
     />
 
     {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&

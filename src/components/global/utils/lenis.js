@@ -16,6 +16,23 @@
       lenis.raf(time)
       requestAnimationFrame(raf)
     } 
+
+    const links = Array.from(document.getElementsByTagName('a'))
+    links.forEach((link) => {
+      const jumplinkValue = link.dataset.jumplink
+      if (jumplinkValue === "false") return
+      link.addEventListener("click", () => {
+        lenis.scrollTo(jumplinkValue, {
+        easing: (t) => {
+          1 - Math.pow(1 - t, 5);
+        },
+        offset: -200,
+      })
+    }
+    )
+    })
+    // console.log(jumplinks)
+
     requestAnimationFrame(raf)
   }
 

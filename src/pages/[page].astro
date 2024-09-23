@@ -24,9 +24,11 @@ const { content } = Astro.props
     title={content.title}
     searchFilter="type:page"
 >
+    <div class="page-content">
     <!-- <h1>{content.title}</h1> -->
-    {content.globalSections?.sections.map((section, i) => (
-      <GlobalSections brand="domaine" section={section} key={i} />
-    ))}
+        {content.globalSections?.sections.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
+        ))}
+    </div>
 </LayoutDomaine>
 

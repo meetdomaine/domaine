@@ -38,6 +38,7 @@ const { section, brand } = Astro.props
             href={section.linkCardURL}
             data-animate-viewport="true" 
             data-animation="fade"
+            data-jumplink={section.linkCardIsJumplink ? `${section.linkCardURL}` : "false"}
         >
             {section.linkCardImage && 
                 <AtomSanityImage 

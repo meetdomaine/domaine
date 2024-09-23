@@ -77,6 +77,12 @@ export default defineType({
       })
     }),
     defineField({
+      name: 'linkCardIsJumplink',
+      title: 'Link Card: Jumplink',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'linkCardColor',
       title: 'Link Card: Color',
       type: 'color',
