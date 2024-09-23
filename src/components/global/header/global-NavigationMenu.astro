@@ -173,6 +173,11 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
             padding-inline: 1em;
         }
 
+        .navigation[data-visible="false"] .navigation-link:hover {
+            background-color: var(--color-darkest);
+            color: var(--color-lighter);
+        }
+
         .navigation-link:hover {
             background-color: var(--color-lightest);
             color: var(--color-dark);
@@ -181,6 +186,11 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
         .navigation-link[data-active="true"] {
             background-color: var(--color-lightest);
             color: var(--color-darkest);
+        }
+
+        .navigation[data-visible="false"] .navigation-link[data-active="true"] {
+            background-color: var(--color-darkest);
+            color: var(--color-lightest);
         }
 
         .search-button {

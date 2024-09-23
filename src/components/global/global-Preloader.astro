@@ -8,7 +8,7 @@ import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 const { currentBrand } = Astro.props
 const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
 ---
-<div id="site-preloader" class="preloader" data-color-scheme="brand-01">
+<div id="site-preloader" class="preloader" data-color-scheme="brand-02">
     {content.images.slice(0, 9).map((entry, i) => (
         <div 
             class="preloader-image"

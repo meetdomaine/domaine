@@ -101,22 +101,29 @@ export const serviceGroupQuery = `
   "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
 `
 
+export const richContentFields = `
+  ...,
+  _type == "inlineImage" => {${imageFields}},
+  _type == "imageGallery" => { images[]{${imageFields}} },
+`
+
 export const globalSectionsFields = `
     ...,
-    _type == "section_projectsFeed" => { heading, subheading, projects[]->{ ${projectGridFields} } },
-    _type == "section_projectsFullBleed" => { projects[]{ project->{title, slug, backgroundColor, accentColor, agencyBrand->{slug}, thumbnailImageSecondary{${imageFields}} }, media{${imageFields}} } },
-    _type == "section_projectsGrid" => { title, heading, button{...}, projects[]->{title, slug, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}}, client->{..., "logo": logo.asset->url } } },
-    _type == "section_blogFeed" => { heading, showHero, featuredPost->{${blogCardFields}}, featuredCategory->{ ... } },
+    _type == "section_projectsFeed" => { showSection, heading, subheading, projects[]->{ ${projectGridFields} } },
+    _type == "section_projectsFullBleed" => { showSection, projects[]{ project->{title, slug, backgroundColor, accentColor, agencyBrand->{slug}, thumbnailImageSecondary{${imageFields}} }, media{${imageFields}} } },
+    _type == "section_projectsGrid" => { showSection, title, heading, button{...}, projects[]->{title, slug, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}}, client->{..., "logo": logo.asset->url } } },
+    _type == "section_blogFeed" => { showSection, heading, showHero, featuredPost->{${blogCardFields}}, featuredCategory->{ ... } },
     _type == "section_contentBlocks" => { ..., contentBlocks[]{ ..., media{..., ${imageFields}, ${videoFields}} } },
-    _type == "section_partnersFeed" => { eyebrow, heading, button },
+    _type == "section_partnersFeed" => { showSection, eyebrow, heading, button },
     _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
     _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
-    _type == "section_quote" => { quote, author, authorInfo, quoteImage{${imageFields}} },
-    _type == "section_statsCarousel" => { heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
-    _type == "section_serviceCards" => { services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
-    _type == "section_serviceFeature" => { heading, button, featuredService->{ 
-      _type == "type_serviceType" => {${serviceTypeQuery}},
-      _type == "type_serviceGroup" => {${serviceGroupQuery}}
+    _type == "section_quote" => { showSection, quote, author, authorInfo, quoteImage{${imageFields}} },
+    _type == "section_richContent" => { ..., showSection, richContent[]{..., ${richContentFields}} },
+    _type == "section_statsCarousel" => { showSection, heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
+    _type == "section_serviceCards" => { showSection, services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
+    _type == "section_serviceFeature" => { showSection, heading, button, featuredService->{ 
+      _type == "type_serviceType" => { showSection, ${serviceTypeQuery}},
+      _type == "type_serviceGroup" => { showSection, ${serviceGroupQuery}}
       } 
     },
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
@@ -197,12 +204,6 @@ export const projectPostQuery = (brand) => {
 }
 
 export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}, logo`
-
-export const richContentFields = `
-  ...,
-  _type == "inlineImage" => {${imageFields}},
-  _type == "imageGallery" => { images[]{${imageFields}} },
-`
 
 export const blogQuery = `
   ..., 
