@@ -74,47 +74,63 @@ const allFilters = await Promise.all([
 
     .projects-filter {
         opacity: 0;
-        translate: 100% 0;
-        display: flex;
-        grid-template-columns: 0fr;
+        translate: 0 5rem;
+        /* display: none; */
+        /* display: flex; */
         flex-direction: column;
         gap: var(--space-3xl);
         padding-inline: var(--page-margin);
         padding-block: var(--space-md);
         border: none;
         outline: none;
+        /* overflow: hidden; */
         width: min(60em, calc(100% - var(--page-margin) * 2));
         border-radius: var(--radius-sm);
         margin-right: var(--page-margin);
         margin-top: var(--space-sm);
         justify-self: flex-end;
-        transition: translate var(--anim-lg), opacity var(--anim-lg), display var(--anim-md) allow-discrete;
-        overflow: hidden;
+        transition: none;
+        transition: 
+            overlay var(--anim-sm) allow-discrete,
+            display var(--anim-sm) allow-discrete; 
     }
 
     .projects-filter:popover-open {
-        translate: 0% 0;
+        translate: 0 0;
         opacity: 1;
+        display: flex;
+        transition: 
+            translate var(--anim-sm), 
+            opacity var(--anim-sm), 
+            overlay var(--anim-sm) allow-discrete,
+            display var(--anim-sm) allow-discrete; 
     }
 
-    /* .projects-filter:popover-open::backdrop {
-        transition: opacity var(--anim-lg);
-    } */
-
     .projects-filter::backdrop {
-        opacity: 1;
+        opacity: 0;
         background-color: var(--background-blur-color);
         backdrop-filter: var(--background-blur);
         -webkit-backdrop-filter: var(--background-blur);
-        transition: opacity var(--anim-lg);
+        pointer-events: all;
+        transition: 
+            opacity var(--anim-sm), 
+            overlay var(--anim-sm) allow-discrete,
+            display var(--anim-sm) allow-discrete; 
+    }
+
+    .projects-filter:popover-open::backdrop {
+        opacity: 1;
     }
 
     @starting-style {
-        .projects-filter {
-            translate: 100% 0;
+        .projects-filter:popover-open {
             opacity: 0;
+            display: flex;
+            gap: var(--space-3xl);
+            translate: 0 5rem;
         }
-        .projects-filter::backdrop {
+
+        .projects-filter:popover-open::backdrop {
             opacity: 0;
         }
     }
@@ -142,6 +158,8 @@ const allFilters = await Promise.all([
         border-bottom: 1px solid var(--color-border);
         display: flex;
         flex-direction: row;
+        gap: var(--space-lg);
+        flex-wrap: wrap;
     }
 
     .filter-type:last-child {
@@ -158,6 +176,7 @@ const allFilters = await Promise.all([
         flex-wrap: wrap;
         margin-bottom: var(--space-xl);
         gap: var(--space-2xs);
+        flex: 1 0 min(30rem, 100%);
     }
 
 </style>
