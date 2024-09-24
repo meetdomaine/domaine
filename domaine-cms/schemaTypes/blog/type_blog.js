@@ -22,6 +22,12 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'isHidden',
+      title: 'Hidden',
+      type: 'boolean',
+      description: 'Hidden posts are not shown on site and are not crawled by search engines.'
+    }),
+    defineField({
       name: 'postDate',
       title: 'Post Date',
       type: 'date',

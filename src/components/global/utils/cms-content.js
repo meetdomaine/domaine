@@ -5,8 +5,8 @@ export const agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBra
 export const practices = await sanityClient.fetch(`*[_type == 'type_practice']{${practicesQuery}} | order(orderRank)` )
 
 // Blog - All
-export const allBlogPosts_Domaine = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{${blogQuery} } | order( postDate desc)`)
-export const allBlogPosts_Studio = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" ]{${blogQuery} } | order( postDate desc)`)
+export const allBlogPosts_Domaine = await sanityClient.fetch(`*[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" ]{${blogQuery} } | order( postDate desc)`)
+export const allBlogPosts_Studio = await sanityClient.fetch(`*[_type == "type_blog" && isHidden != true && agencyBrand->name == "Studio" ]{${blogQuery} } | order( postDate desc)`)
 
 // Blog - Categories
 export const allBlogCategories_Domaine = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)] ) > 0] | order( orderRank )`)

@@ -24,13 +24,14 @@ interface Props {
 	backgroundColor?: string;
 	foregroundColor?: string;
 	searchFilter?: string;
-	currentBrand: any
+	currentBrand: any,
+	noIndex?: boolean,
 }
 
 // console.log('root')
 // const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
 
-const { title, description, image, favicon, searchFilter, currentBrand } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 ---
@@ -40,7 +41,7 @@ const currentPath = Astro.url.pathname;
 	<head>
 
 		<!-- Remove once live -->
-		<meta name="robots" content="noindex">
+		{noIndex && <meta name="robots" content="noindex">}
 
 		<!-- Add back once live -->
 		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">

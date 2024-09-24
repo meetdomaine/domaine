@@ -7,15 +7,19 @@ interface Props {
     slug: any,
     thumbnailImage: any,
     category: any,
-    agencyBrand: any
+    agencyBrand: any,
+    postDate: any,
 }
 
-const { title, thumbnailImage, slug, category, agencyBrand } = Astro.props
+const { title, thumbnailImage, slug, category, agencyBrand, postDate } = Astro.props
 
 const categoryUrl = `${agencyBrand.slug.current == '/studio' ? '/studio' : ""}/insights/${category.slug.current}`
 const postUrl = `${categoryUrl}/${slug.current}`
+
+const date = new Date(postDate)
+const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
 ---
-<article class="blog-card" data-pagefind-ignore>
+<article class="blog-card" data-animate-viewport="true" data-animation="fade" data-pagefind-ignore>
     <a href={postUrl} class="card-media">
         <AtomSanityMedia
             image={thumbnailImage.image}
@@ -23,11 +27,13 @@ const postUrl = `${categoryUrl}/${slug.current}`
             sizes="30vw"
         />
     </a>
-    <AtomTag 
-        title="Category"
-        text={category.title}
-        url={categoryUrl}
-    />
+    <div class="card-info">
+        <AtomTag
+            title={category.title}
+            url={categoryUrl}
+        />
+        {postDate && <p class="date caption">{formattedDate}</p>}
+    </div>
     <a href={postUrl} class="card-text">
         <h3 class="h6">{title}</h3>
     </a>
@@ -40,7 +46,8 @@ const postUrl = `${categoryUrl}/${slug.current}`
         text-decoration: none;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        /* align-items: flex-start; */
         gap: var(--space-xs);
     }
 
@@ -48,6 +55,20 @@ const postUrl = `${categoryUrl}/${slug.current}`
         align-self: stretch;
         border-radius: var(--radius-sm);
         overflow: hidden;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--space-xs);
+        /* justify-content: space-between; */
+    }
+
+    .date {
+        margin: 0;
+        color: var(--color-foreground-secondary);
     }
 
     .card-text {

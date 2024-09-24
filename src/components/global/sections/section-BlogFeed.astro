@@ -12,6 +12,7 @@ const { section, brand, heading, subheading, posts, sidebarTitle } = Astro.props
 
 let blogPosts
 let featuredPost
+let featuredPostDate
 let sidebarTitleText
 
 if (section?.featuredCategory) {
@@ -34,6 +35,10 @@ if (section?.featuredPost) {
     featuredPost = blogPosts.shift()
 }
 
+if (featuredPost) {
+    const date = new Date(featuredPost.postDate)
+    featuredPostDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
+}
 ---
 <section class="section-blog-feed" data-color-scheme="brand-01">
     <div class="section-title">
@@ -55,10 +60,13 @@ if (section?.featuredPost) {
                     />
                 </a>
                 <div class="featured-post-content">
-                    <AtomTag 
-                        title="Category"
-                        text={featuredPost.category.title}
-                    />
+                    <div class="featured-post-info">
+                        <AtomTag 
+                            title="Category"
+                            text={featuredPost.category.title}
+                        />
+                        {featuredPostDate && <p class="featured-post-date">{featuredPostDate}</p>}
+                    </div>
                     <a 
                         class="featured-post-heading h2" 
                         href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
@@ -85,6 +93,7 @@ if (section?.featuredPost) {
                 <div class="blog-card-wrapper">
                     <BlogCard 
                         title={post.title}
+                        postDate={post.postDate}
                         thumbnailImage={post.thumbnailImage}
                         slug={post.slug}
                         category={post.category}
@@ -125,6 +134,8 @@ if (section?.featuredPost) {
 
     .featured-post-image {
         flex: 0 0 calc(50% - var(--gap) / 2);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
     }
 
     .featured-post-content {
@@ -138,12 +149,25 @@ if (section?.featuredPost) {
         text-decoration: none;
     }
 
+    .featured-post-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+
+    .featured-post-date {
+        margin: 0;
+    }
+
     .sidebar {
         display: flex;
         flex-direction: column;
         gap: var(--space-xs);
-        max-width: 100%;
-        padding: var(--space-sm);
+        flex: 0 1 25rem;
+        /* max-width: 100%; */
+        padding-block: var(--space-sm) 0;
+        padding-inline: var(--space-sm);
         border-radius: var(--radius-sm);
         /* flex: 1 0 30%; */
     }
@@ -155,7 +179,7 @@ if (section?.featuredPost) {
     .sidebar-posts {
         display: flex;
         flex-direction: column;
-        gap: var(--space-xs);
+        /* gap: var(--space-xs); */
     }
 
     .section-posts {
@@ -170,12 +194,13 @@ if (section?.featuredPost) {
 
     @media screen and (max-width: 1024px) {
         .section-hero {
-            align-items: flex-end;
+            /* align-items: flex-end; */
         }
 
         .featured-post {
             flex: 0 0 calc(50% - var(--gap) / 2);
-            flex-direction: column-reverse;
+            /* flex-direction: column-reverse; */
+            flex-direction: column;
         }
     }
 

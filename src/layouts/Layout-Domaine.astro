@@ -15,9 +15,10 @@ interface Props {
     searchFilter?: string;
     activePath?: string;
     searchExposed?: boolean,
+    noIndex?: boolean, 
 }
 
-const { title, description, image, searchFilter, activePath, searchExposed } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
 
 // console.log('layout')
 const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
@@ -31,6 +32,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
     image={image ? image : currentBrand.metafields.image}
     searchFilter={searchFilter}
     currentBrand={currentBrand}
+    noIndex={noIndex}
 >
     <Header
         currentBrand={currentBrand}

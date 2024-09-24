@@ -312,7 +312,7 @@ export default defineType({
       type: 'snippet_SEO-fields',
       group: 'seo',
     }),
-    orderRankField({ type: 'type_project'}),
+    orderRankField({ type: 'type_project', newItemPosition: "before"}),
   ],
 
   preview: {

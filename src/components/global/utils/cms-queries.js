@@ -211,6 +211,7 @@ export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}, logo
 export const blogQuery = `
   ..., 
   authors[]->{name, role, bio, ${imageFields}, department->{title} },
+  postDate,
   thumbnailImage{${imageFields}},
   category->{..., slug{...} }, 
   body[]{${richContentFields}},

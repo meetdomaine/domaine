@@ -37,6 +37,7 @@ const { content } = Astro.props;
     title={content.title}
     searchFilter="type:blog-post_domaine"
     activePath="/insights"
+    noIndex={content.isHidden}
 >
     <BlogPostHero
         post={content}
@@ -54,14 +55,14 @@ const { content } = Astro.props;
         />
     }
 
-    { content.relatedPosts && 
+    { content.relatedPosts?.length > 1 && 
         <SectionBlogFeed 
             heading="Related Posts"
             posts={content.relatedPosts.filter((post) => post.slug.current != content.slug.current)}
         />
     }
 
-    { content.relatedProjects.length > 0 && 
+    { content.relatedProjects?.length > 0 && 
         <SectionProjectsFeed
             heading="Related Projects"
             projects={content.relatedProjects}
