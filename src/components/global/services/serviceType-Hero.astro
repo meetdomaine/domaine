@@ -6,52 +6,91 @@ const { serviceType, brand } = Astro.props
      <div class="section-title">
          <p class="service-excerpt h5">{serviceType.excerpt}</p>
          <h1 class="service-title title-xl">{serviceType.title}</h1>
-        <div class="section-media">
-            {serviceType.images.map((image) => (
-                <div class="service-image">
-                    <AtomSanityImage 
-                        sizes="30vw"
-                        image={image.image}
-                    />
-                </div>
-            ))}
-        </div>
     </div>
     <div class="section-content">
         <p class="service-eyebrow utility">Our {serviceType.title} Practice</p>
         <p class="service-description h4">{serviceType.description}</p>
     </div>
+    {serviceType.images.map((image) => (
+        <div class="service-image">
+            <AtomSanityImage 
+                sizes="30vw"
+                image={image.image}
+            />
+        </div>
+    ))}
 </section>
 
 <script>
-import { gsap } from "../utils/gsap"
+    import { isMobileBreakpoint } from "../utils/check-device"
+    import { throttle } from "../utils/functions"
+    import { gsap } from "../utils/gsap"
+
+    // if (isMobileBreakpoint) return
 
     const sections = document.querySelectorAll('.service-type-hero')
+
     sections.forEach((section) => {
-        const timeline = gsap.timeline({ duration: 0.3, ease: 'cubic', repeat: -1})
-        const images = section.querySelectorAll('.service-image')
 
-        // timeline.to(images, {
-        //     clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        //     stagger: 0.5,
-        //     duration: 0.2
-        // })
-        // timeline.to(images, {
-        //     opacity: 0,
-        //     stagger: 0.2,
-        //     duration: 0.1,
-        // }, "<+=0.8")
+        const _delay = 50
 
-        window.addEventListener("mousemove", (e) => {
-            const movementFactor = 1
-            const posX = ((e.clientX / window.innerWidth) * 200 - 100) * movementFactor
-            const posY = ((e.clientY / window.innerHeight) * 200 - 100) * movementFactor
-            gsap.to(images, {
-                translate: `${posX}% ${posY}%`,
-                stagger: 0.05,
-                duration: 0.4
+        let timeout = null
+        let isPlaying = false
+        let imageIndex = 0
+        let mouseX = 0
+        let mouseY = 0
+
+        let boundingBox = section.getBoundingClientRect()
+
+        window.addEventListener("DOMContentLoaded", () => {
+
+            const images: Array<HTMLElement> = Array.from(section.querySelectorAll('.service-image'))
+
+            const animateImages = () => {
+                const currentImage = images[imageIndex]
+                currentImage.dataset.active = "true"
+                currentImage.style.left = `${mouseX}px`
+                currentImage.style.top = `${mouseY}px`
+
+                if (imageIndex < images.length - 1) {
+                    imageIndex++
+                } else {
+                    imageIndex = 0
+                }
+
+                setTimeout(() => {
+                    currentImage.dataset.active = "false"
+                    isPlaying = false
+                }, _delay)
+            }
+
+            const initAnimation = () => {
+                section.addEventListener("mousemove", (e: MouseEvent) => {
+                    mouseX = e.clientX
+                    mouseY = e.clientY - boundingBox.top
+                    if (isPlaying) return
+                    isPlaying = true
+                    timeout = setTimeout(animateImages, _delay)
+                })
+
+                window.addEventListener("scroll", () => {
+                    boundingBox = section.getBoundingClientRect()
+                })
+            }
+            
+            
+            if (!isMobileBreakpoint) {
+                initAnimation()
+            }
+
+            window.addEventListener("resize", () => {
+                if (!isMobileBreakpoint) {
+                    boundingBox = section.getBoundingClientRect()
+                    initAnimation()
+                }
             })
         })
+
     })
 </script>
 
@@ -65,6 +104,7 @@ import { gsap } from "../utils/gsap"
         align-items: center;
         gap: var(--space-xl);
         position: relative;
+        overflow: hidden;
     }
 
     .section-title,
@@ -97,7 +137,7 @@ import { gsap } from "../utils/gsap"
         max-width: 26em;
     }
 
-    .section-media {
+    /* .section-media {
         position: absolute;
         top: 0;
         left: 0;
@@ -108,27 +148,29 @@ import { gsap } from "../utils/gsap"
         justify-content: space-around;
         align-items: center;
         z-index: 0;
-    }
+    } */
 
     .service-image {
+        position: absolute;
+        /* top: 50%;
+        left: 50%; */
+        top: 0;
+        left: 0;
+        translate: -50% calc(-50% + 5rem);
         border-radius: var(--radius-sm);
         overflow: hidden;
-        flex: 0 1 15%;
-        clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100% );
+        width: 20vw;
+        opacity: 0;
+        z-index: 2;
+        /* translate: 0 10rem; */
+        transition: opacity var(--anim-lg) 0.2s, scale var(--anim-lg), translate var(--anim-lg);
+        scale: 0.9;
     }
 
-    .service-image:nth-child(3n + 1) {
-        /* align-self: flex-end; */
-        /* translate: 0 10vh; */
-    }
-
-    .service-image:nth-child(3n + 2) {
-        /* translate: 10vw -20vh; */
-        transform: translate(10vw -20vh;);
-    }
-
-    .service-image:nth-child(3n + 3) {
-        /* align-self: flex-start; */
-        /* translate: 0 20vh; */
+    .service-image[data-active="true"] {
+        opacity: 1;
+        scale: 1;
+        translate: -50% -50%;
+        transition: none;
     }
 </style>

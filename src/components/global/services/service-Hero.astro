@@ -17,7 +17,8 @@ const { subservices, brand, title, description, excerpt, breadcrumbs } = Astro.p
         <h1 class="service-title h5">{title}</h1>
     </div>
     <div class="section-content">
-        { (description || excerpt) && <p class="text h6">{description ? description : excerpt}</p>}
+        { excerpt && <p class="h4">{excerpt}</p>}
+        { description && <p class="text h6">{description}</p>}
         { subservices &&
             <div class="subservices">
                 { subservices.map((subservice) => (
