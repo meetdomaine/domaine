@@ -97,7 +97,7 @@ export const serviceGroupQuery = `
   excerpt,
   images[]{${imageFields}},
   agencyBrands[]->{..., slug, name},
-  serviceType->{...},
+  serviceType->{..., formHeading, formText, hubspotFormId },
   "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
   "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
   "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
@@ -156,6 +156,7 @@ export const serviceTypePageQuery = `
 export const projectPageFields = `
   title,
   description,
+  excerpt,
   industry->{...},
   url,
   client->{..., logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise },

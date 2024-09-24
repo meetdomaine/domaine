@@ -4,11 +4,18 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { paths } from "../utils/paths"
 
-const { description, agencyBrand, client, industry, theme, metrics } = Astro.props
+const { description, excerpt, agencyBrand, client, industry, theme, metrics } = Astro.props
 ---
 <section class="work-post_about">
 
     <div class="section-content">
+        { excerpt && 
+            <p 
+                class="h6"
+                data-animate-viewport="true"
+                data-animation="fade"
+            >{excerpt}</p>
+        }
         <p 
             class="h3"
             data-animate-viewport="true"

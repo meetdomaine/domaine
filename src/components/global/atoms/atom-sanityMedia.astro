@@ -18,9 +18,10 @@ interface Props {
   alt?: string,
   transitionName?: string,
   pagefindMeta?: string,
+  preserveAspect?: boolean,
 }
 
-const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, videoWidth, videoHeight, transitionName, pagefindMeta } = Astro.props;
+const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain, alt, autoplay, videoWidth, videoHeight, transitionName, pagefindMeta } = Astro.props;
 // console.log(video)
 ---
 
@@ -52,6 +53,7 @@ const { video, image, sizes, eager, aspectRatio, cover, contain, alt, autoplay, 
         contain={contain}
         alt={alt}
         pagefindMeta={pagefindMeta}
+        preserveAspect={preserveAspect}
     />
     : <p>NO MEDIA</p>
 }

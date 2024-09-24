@@ -56,6 +56,11 @@ html [data-color-scheme="brand-01"] {
     --button-secondary-foreground: var(--color-darkest);
     --button-secondary-foreground-hover: var(--color-lightest);
     --button-secondary-background-hover: var(--color-darker);
+
+    --button-tertiary-foreground: var(--color-darkest);
+    --button-tertiary-background: transparent;
+    --button-tertiary-foreground-hover: var(--color-lightest);
+    --button-tertiary-background-hover: var(--color-darkest);
 }
 
 ::selection {
@@ -97,6 +102,10 @@ html .color-invert,
     --button-secondary-foreground: var(--color-lightest);
     --button-secondary-foreground-hover: var(--color-darkest);
     --button-secondary-background-hover: var(--color-neutral);
+
+    --button-tertiary-foreground: var(--color-lightest);
+    --button-tertiary-foreground-hover: var(--color-darkest);
+    --button-tertiary-background-hover: var(--color-lightest);
 }
 
 html,

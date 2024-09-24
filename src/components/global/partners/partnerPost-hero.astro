@@ -19,7 +19,7 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
       </div>
       <div class="title">
         <h1 data-pagefind-meta="title" class="partner-title h4">{title}</h1>
-        <p data-pagefind-meta="excerpt" class="partner-excerpt caption">{excerpt}</p>
+        <p class="partner-description caption">{description}</p>
       </div>
     </div>
 
@@ -65,7 +65,7 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
     </div>
   </div>
   
-  {description && <h2 class="description">{description}</h2>}
+  {excerpt && <h2 class="excerpt h1" data-pagefind-meta="excerpt">{excerpt}</h2>}
 
 </section>
 
@@ -98,13 +98,13 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
   }
 
   .partner-title,
-  .partner-excerpt {
+  .partner-description {
     margin: 0;
     text-wrap: balance;
   }
 
   .partner-icon {
-    flex: 0 0 5rem;
+    flex: 0 0 6rem;
     border-radius: var(--radius-sm);
     overflow: hidden;
   }
@@ -130,7 +130,7 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
     height: var(--icon-md);
   }
 
-  .description {
+  .excerpt {
     max-width: 18em;
   }
 

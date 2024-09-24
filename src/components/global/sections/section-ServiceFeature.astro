@@ -23,15 +23,6 @@ const currentSlug = brand === "studio" ? "/studio" : "/"
                                 url={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}
                                 excerpt={service.excerpt}
                             />
-                            // <a class="service" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}>
-                            //     <p class="service-title">{service.title}</p>
-                            //     <Icon name="arrow-forward" />
-                            //     { service.excerpt && 
-                            //         <div class="service-detail" data-color-scheme="glass-light">
-                            //             <p>{service.excerpt}</p> 
-                            //         </div>
-                            //     }
-                            // </a>
                         ))}
                     </div>
                 )) : 
@@ -46,8 +37,8 @@ const currentSlug = brand === "studio" ? "/studio" : "/"
         </div>
     </div>
     <div class="section-media">
-        {section.featuredService.images && section.featuredService.images.slice(0,3).map((asset) => (
-            <div class="service-image" data-animate-viewport="true" data-animation="fade">
+        {section.featuredService.images && section.featuredService.images.slice(0,3).map((asset, i) => (
+            <div class="service-image" data-animate-viewport="true" data-animation="clip-left" data-animation-delay={i * 40}>
                 <AtomSanityImage 
                     image={asset.image}
                     sizes="30vw"
@@ -62,31 +53,31 @@ const currentSlug = brand === "studio" ? "/studio" : "/"
 import { addParallax, gsap } from "../utils/gsap"
 import { isMobileBreakpoint } from "../../global/utils/check-device"
 
-if (!isMobileBreakpoint) {
-    const sections = document.querySelectorAll('.section-service-type')
+// if (!isMobileBreakpoint) {
+//     const sections = document.querySelectorAll('.section-service-type')
 
-    const _parallaxStrength = 30
+//     const _parallaxStrength = 30
 
-    sections.forEach((section) => {
+//     sections.forEach((section) => {
 
-        const images = section.querySelectorAll('.service-image')
+//         const images = section.querySelectorAll('.service-image')
 
-        images.forEach((image) => {
+//         images.forEach((image) => {
 
-            const timeline = gsap.timeline({
-                scrollTrigger: {
-                    trigger: image,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true,
-                }
-             })
+//             const timeline = gsap.timeline({
+//                 scrollTrigger: {
+//                     trigger: image,
+//                     start: 'top bottom',
+//                     end: 'bottom top',
+//                     scrub: true,
+//                 }
+//              })
             
-            timeline.fromTo(image, { y: _parallaxStrength }, { y: -_parallaxStrength });
-        })
+//             timeline.fromTo(image, { y: _parallaxStrength }, { y: -_parallaxStrength });
+//         })
         
-    })
-}
+//     })
+// }
 </script>
 
 <style>
@@ -163,11 +154,11 @@ if (!isMobileBreakpoint) {
         aspect-ratio: 4 / 3;
     }
 
-    .service-image {
+    /* .service-image {
         position: relative;
         height: 100%;
         min-height: 0;
-    }
+    } */
 
     .section-service-type:nth-of-type(4n + 1) {
 

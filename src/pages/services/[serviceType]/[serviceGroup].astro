@@ -5,6 +5,7 @@ import GlobalProjectsGrid from "../../../components/global/projects/global-Proje
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import { allServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
+import SectionForm from "../../../components/global/sections/section-Form.astro"
 
 
 export async function getStaticPaths() {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const { content, serviceType } = Astro.props;
+console.log(serviceType)
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
@@ -61,6 +63,16 @@ const { content, serviceType } = Astro.props;
             projects={content.relatedProjects}
         />
     }
+
+    {serviceType.formHeading && serviceType.hubspotFormId &&
+        <SectionForm 
+            heading={serviceType.formHeading}
+            text={serviceType.formText}
+            hubspotFormId={serviceType.hubspotFormId}
+        />
+    }
+
+
 </LayoutDomaine>
 
 <style>

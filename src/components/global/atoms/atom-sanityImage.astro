@@ -13,9 +13,10 @@ interface Props {
   alt?: string,
   transitionName?: string,
   pagefindMeta?: string,
+  preserveAspect?: boolean,
 }
 
-const { image, sizes, eager, aspectRatio, cover, contain, alt, pagefindMeta } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, contain, alt, pagefindMeta, preserveAspect } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -34,7 +35,11 @@ const ratio = aspectRatio ? aspectRatio : width / height
 const generateSrcSets = () => {
   const sources = []
   for (let i = 1; i <=6; i+= 0.5) {
-    sources.push( `${urlFor(image).width(Math.floor(width / i)).height(Math.floor((width / i) / ratio )).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
+    if (preserveAspect) {
+      sources.push( `${urlFor(image).width(Math.floor(width / i)).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
+    } else {
+      sources.push( `${urlFor(image).width(Math.floor(width / i)).height(Math.floor((width / i) / ratio )).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
+    }
   }
   return sources.toString()
 }

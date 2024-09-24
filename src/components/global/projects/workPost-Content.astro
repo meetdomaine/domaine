@@ -20,6 +20,7 @@ const { content } = Astro.props
 
   <WorkPostAbout
       description={content.description}
+      excerpt={content.excerpt}
       industry={content.industry}
       client={content.client}
       metrics={content.metrics}
@@ -43,10 +44,12 @@ const { content } = Astro.props
   />
 </div>
 
-<SectionProjectsFeed 
-    heading="Related Projects"
-    projects={content.relatedProjects}
-/>
+    {content.relatedProject?.length > 0 &&
+        <SectionProjectsFeed 
+            heading="Related Projects"
+            projects={content.relatedProjects}
+        />
+    }
 
 <style>
 

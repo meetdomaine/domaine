@@ -2,7 +2,7 @@
 
   const settings = {
     bidirectional: false,
-    rootMargin: "0% 0% 10% 0%",
+    rootMargin: "0% 0% -10% 0%",
     threshold: 0.3,
     delay: 0
   }
@@ -11,7 +11,9 @@
     entries.forEach((entry) => {
       const delay = entry.target.dataset.animationDelay ? entry.target.dataset.animationDelay : 0
 
+      // console.log(entry)
       if (entry.isIntersecting) {
+        console.log(entry)
         setTimeout(() => {
           return entry.target.dataset.animateViewport = false
         }, delay)
@@ -74,6 +76,18 @@
 
   *[data-animation="fade"][data-animate-viewport="false"] {
     opacity: 1;
+  }
+
+  *[data-animation="clip-left"] > *{
+    transition: clip-path var(--anim-md);
+  }
+
+  *[data-animation="clip-left"][data-animate-viewport="true"] > * {
+    clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+  }
+
+  *[data-animation="clip-left"][data-animate-viewport="false"] > * {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   }
 
 

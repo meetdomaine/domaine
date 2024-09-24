@@ -43,7 +43,7 @@ const upcomingEvents = allEvents_upcoming.filter((event) => !event.isPrivate)
 // console.log(upcomingEvent)
 // console.log(latestWork)
 ---
-<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent>
+<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus>
 
   {(showPromoMessage && promoMessage) &&
     <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>

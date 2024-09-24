@@ -9,6 +9,7 @@ import SectionProjectsGrid from "../../../components/global/sections/section-Pro
 import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import { allServices_Domaine } from "../../../components/global/utils/cms-content"
+import SectionForm from "../../../components/global/sections/section-Form.astro"
 
 // export const prerender = true
 
@@ -60,14 +61,18 @@ const { content, serviceType, serviceGroup } = Astro.props;
     }
 
     {content.relatedProjects && content.relatedProjects.length > 0 &&
-        // <GlobalProjectsGrid 
-        //     heading={`${content.title} Work`}
-        //     projects={content.relatedProjects}
-        // />
         <SectionProjectsFeed 
             heading={`${content.title} Work`}
             projects={content.relatedProjects}
             sidebarTitle={content.title}
+        />
+    }
+
+    {serviceType.formHeading && serviceType.hubspotFormId &&
+        <SectionForm 
+            heading={serviceType.formHeading}
+            text={serviceType.formText}
+            hubspotFormId={serviceType.hubspotFormId}
         />
     }
 

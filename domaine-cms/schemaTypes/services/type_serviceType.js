@@ -118,6 +118,23 @@ export default defineType({
     ]
     }),
     defineField({
+      name: 'formHeading',
+      title: 'Form: Heading',
+      type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'formText',
+      title: 'Form: Text',
+      type: 'string',
+    }),
+    defineField({
+      name: 'hubspotFormId',
+      title: 'Form: Hubspot ID',
+      type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_SEO-fields',
