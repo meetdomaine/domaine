@@ -46,70 +46,96 @@ const { serviceType, brand } = Astro.props
 </section>
 
 <script>
-    import { isMobileBreakpoint } from "../utils/check-device"
+    import { getIsMobile, isMobileBreakpoint } from "../utils/check-device"
 
     const sections = document.querySelectorAll('.service-type-hero')
 
     sections.forEach((section) => {
 
-        const _delay = 50
+        const _delay = 60
 
         let timeout = null
         let isPlaying = false
         let imageIndex = 0
         let mouseX = 0
         let mouseY = 0
-        let mouseListener = null
 
         let boundingBox = section.getBoundingClientRect()
 
         window.addEventListener("DOMContentLoaded", () => {
 
+
+            let mouseListener = null
+            let scrollListener = null
+
             const images: Array<HTMLElement> = Array.from(section.querySelectorAll('.service-image'))
 
-            const animateImages = () => {
-                const currentImage = images[imageIndex]
-                currentImage.dataset.active = "true"
-                currentImage.style.left = `${mouseX}px`
-                currentImage.style.top = `${mouseY}px`
+            const animateImages = (e) => {
 
-                if (imageIndex < images.length - 1) {
-                    imageIndex++
-                } else {
-                    imageIndex = 0
+                const render = () => {
+                    
+                    const currentImage = images[imageIndex]
+                    currentImage.dataset.active = "true"
+                    currentImage.style.left = `${mouseX}px`
+                    currentImage.style.top = `${mouseY}px`
+
+                    if (imageIndex < images.length - 1) {
+                        imageIndex++
+                    } else {
+                        imageIndex = 0
+                    }
+
+                    setTimeout(() => {
+                        currentImage.dataset.active = "false"
+                        isPlaying = false
+                    }, _delay)
                 }
 
-                setTimeout(() => {
-                    currentImage.dataset.active = "false"
-                    isPlaying = false
-                }, _delay)
+                mouseX = e.clientX
+                mouseY = e.clientY - boundingBox.top
+                if (isPlaying) return
+                isPlaying = true
+                timeout = setTimeout(render, _delay)
+            }
+
+            const updateBoundingRect = () => {
+                boundingBox = section.getBoundingClientRect()
             }
 
             const initAnimation = () => {
-                mouseListener = section.addEventListener("mousemove", (e: MouseEvent) => {
-                    mouseX = e.clientX
-                    mouseY = e.clientY - boundingBox.top
-                    if (isPlaying) return
-                    isPlaying = true
-                    timeout = setTimeout(animateImages, _delay)
-                })
+                
+                if (mouseListener === null) {
+                    mouseListener = section.addEventListener("mousemove", animateImages) 
+                }
 
-                window.addEventListener("scroll", () => {
-                    boundingBox = section.getBoundingClientRect()
-                })
+                if (scrollListener === null) {
+                    scrollListener = window.addEventListener("scroll", updateBoundingRect)
+                }
+            }
+
+            const destroyAnimation = () => {
+                if (mouseListener !== null) {
+                    section.removeEventListener("mousemove", animateImages)
+                    mouseListener = null
+                }
+                if (scrollListener !== null) {
+                    window.removeEventListener("scroll", updateBoundingRect)
+                    scrollListener = null
+                }
+                clearTimeout(timeout)
             }
             
             
-            if (!isMobileBreakpoint) {
+            if (!getIsMobile()) {
                 initAnimation()
             }
 
             window.addEventListener("resize", () => {
-                if (!isMobileBreakpoint) {
+                if (!getIsMobile()) {
                     boundingBox = section.getBoundingClientRect()
                     initAnimation()
                 } else {
-                    window.removeEventListener("mousemove", mouseListener)
+                    destroyAnimation() 
                 }
             })
         })
@@ -167,22 +193,24 @@ const { serviceType, brand } = Astro.props
         left: 50%; */
         top: 0;
         left: 0;
-        translate: -50% calc(-50% + 5rem);
+        translate: -50% -50%;
+        /* translate: -50% calc(-50% + 2rem); */
         border-radius: var(--radius-sm);
         overflow: hidden;
-        width: 20vw;
+        width: 10vw;
         opacity: 0;
         z-index: 2;
         /* translate: 0 10rem; */
-        transition: opacity var(--anim-lg) 0.2s, scale var(--anim-lg), translate var(--anim-lg);
-        scale: 0.9;
+        transition: opacity 2s var(--anim-easing) 1s, translate 2s var(--anim-easing);
+        /* scale: 0.9; */
     }
 
     .service-image[data-active="true"] {
         opacity: 1;
         scale: 1;
         translate: -50% -50%;
-        transition: none;
+        /* transition: none; */
+        transition: opacity 0.1s var(--anim-easing), translate 0.1s var(--anim-easing);
     }
 
     @media screen and (width > 768px) {
