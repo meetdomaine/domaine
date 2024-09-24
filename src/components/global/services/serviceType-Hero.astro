@@ -43,6 +43,14 @@ const { serviceType, brand } = Astro.props
             />
         </div>
     ))}
+    {serviceType.images.map((image) => (
+        <div class="service-image">
+            <AtomSanityImage 
+                sizes="30vw"
+                image={image.image}
+            />
+        </div>
+    ))}
 </section>
 
 <script>
@@ -52,7 +60,7 @@ const { serviceType, brand } = Astro.props
 
     sections.forEach((section) => {
 
-        const _delay = 60
+        const _delay = 100
 
         let timeout = null
         let isPlaying = false
