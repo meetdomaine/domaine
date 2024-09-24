@@ -4,6 +4,30 @@ const { serviceType, brand } = Astro.props
 ---
 <section class="service-type-hero" data-color-scheme="brand-02">
      <div class="section-title">
+         <div class="service-images-mobile">
+            <div class="service-images-track">
+                {serviceType.images.map((image) => (
+                    <div class="service-image-mobile">
+                        <AtomSanityImage 
+                            sizes="30vw"
+                            image={image.image}
+                            aspectRatio={3 / 4}
+                            // cover={true}
+                        />
+                    </div>
+                ))}
+                {serviceType.images.map((image) => (
+                    <div class="service-image-mobile">
+                        <AtomSanityImage 
+                            sizes="30vw"
+                            image={image.image}
+                            aspectRatio={3 / 4}
+                            // cover={true}
+                        />
+                    </div>
+                ))}
+            </div>
+         </div>
          <p class="service-excerpt h5">{serviceType.excerpt}</p>
          <h1 class="service-title title-xl">{serviceType.title}</h1>
     </div>
@@ -23,10 +47,6 @@ const { serviceType, brand } = Astro.props
 
 <script>
     import { isMobileBreakpoint } from "../utils/check-device"
-    import { throttle } from "../utils/functions"
-    import { gsap } from "../utils/gsap"
-
-    // if (isMobileBreakpoint) return
 
     const sections = document.querySelectorAll('.service-type-hero')
 
@@ -39,6 +59,7 @@ const { serviceType, brand } = Astro.props
         let imageIndex = 0
         let mouseX = 0
         let mouseY = 0
+        let mouseListener = null
 
         let boundingBox = section.getBoundingClientRect()
 
@@ -65,7 +86,7 @@ const { serviceType, brand } = Astro.props
             }
 
             const initAnimation = () => {
-                section.addEventListener("mousemove", (e: MouseEvent) => {
+                mouseListener = section.addEventListener("mousemove", (e: MouseEvent) => {
                     mouseX = e.clientX
                     mouseY = e.clientY - boundingBox.top
                     if (isPlaying) return
@@ -87,6 +108,8 @@ const { serviceType, brand } = Astro.props
                 if (!isMobileBreakpoint) {
                     boundingBox = section.getBoundingClientRect()
                     initAnimation()
+                } else {
+                    window.removeEventListener("mousemove", mouseListener)
                 }
             })
         })
@@ -114,6 +137,7 @@ const { serviceType, brand } = Astro.props
         justify-content: center;
         align-items: center;
         text-align: center;
+        max-width: 100%;
     }
 
     .section-title {
@@ -137,19 +161,6 @@ const { serviceType, brand } = Astro.props
         max-width: 26em;
     }
 
-    /* .section-media {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100lvh;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        z-index: 0;
-    } */
-
     .service-image {
         position: absolute;
         /* top: 50%;
@@ -172,5 +183,61 @@ const { serviceType, brand } = Astro.props
         scale: 1;
         translate: -50% -50%;
         transition: none;
+    }
+
+    @media screen and (width > 768px) {
+        .service-images-mobile {
+            display: none;
+        }
+    }
+
+    @media screen and (width <= 768px) {
+        /* .service-type-hero {
+            overflow: hidden;
+        } */
+
+        .section-title {
+            flex-direction: column-reverse;
+        }
+
+        .service-images-mobile {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            overflow: visible;
+            /* max-width: 100%; */
+            white-space: nowrap;
+            width: 100dvw;
+            flex: 0 0 30%;
+        }
+
+        @keyframes image-ticker {
+            0% {
+                translate: 0% 0;
+            }
+            100% {
+                translate: calc(-50% - var(--page-margin) / 2) 0;
+            }
+        }
+
+        .service-images-track {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            gap: var(--space-sm);
+            min-width: max-content;
+            align-items: stretch;
+            height: 100%;
+            overflow: visible;
+            animation: image-ticker 12s linear infinite;
+        }
+
+        .service-image-mobile {
+            flex: 0 1 100%;
+            height: 100%;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
     }
 </style>
