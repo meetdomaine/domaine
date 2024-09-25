@@ -1,4 +1,6 @@
 ---
+import AtomHubspotForm from "../../atoms/atom-hubspotForm.astro";
+
 const { node } = Astro.props;
 const formId = node.hubspotFormId
 const key = node._key
@@ -15,6 +17,9 @@ const key = node._key
     id={`form-${formId}-${key}`} 
     data-hubspot-form-id={formId}
   ></div>
+  <AtomHubspotForm 
+    formId={formId}
+  />
 </aside>
 
 <script define:vars={{ formId, key }}>
@@ -42,9 +47,13 @@ const key = node._key
 <style>
   .inline-form {
     margin-inline: auto;
-    margin-block: var(--space-md);
+    margin-block: var(--space-2xl);
     max-width: var(--content-width-wide);
-    background-color: var(--color-background-secondary);
-    padding: var(--space-lg) var(--space-md);
+    border: 1px solid var(--color-border);
+    /* background-color: var(--color-background-secondary); */
+    padding: var(--space-lg) var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
   }
 </style>

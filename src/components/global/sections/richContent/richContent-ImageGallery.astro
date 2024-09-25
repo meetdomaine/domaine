@@ -5,10 +5,12 @@ import AtomSanityImage from "../../atoms/atom-sanityImage.astro"
 const { node } = Astro.props
 // console.log(node)
 ---
-<div class="image-gallery">
+<div class="image-gallery" data-color-scheme="secondary">
     <AtomCarousel 
         slides={node.images}
-        slideCount={1.5}
+        slideCount={1.4}
+        centered={true}
+        spacing="10"
     />
 </div>
 
@@ -19,5 +21,7 @@ const { node } = Astro.props
         overflow-x: clip; */
         /* max-width: var(--content-width); */
         padding-block: var(--space-lg);
+        background-color: var(--color-background);
+        margin-block: var(--space-2xl);
     }
 </style>
