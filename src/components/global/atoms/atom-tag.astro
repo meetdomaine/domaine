@@ -51,21 +51,11 @@ const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMe
         /* color: inherit; */
         transition: background-color var(--anim-sm);
         background-color: var(--color-background-secondary);
-        color: var(--color-foreground);
     }
 
     :global([data-color-scheme="glass-dark"]) .tag {
         background-color: var(--color-lighter);
         color: var(--color-darkest);
-    }
-
-    .tag:is(a):hover {
-        background-color: var(--color-darkest);
-        color: var(--color-lightest);
-    }
-
-    .tag:is(a):hover :is(.title, .text) {
-        color: var(--color-lightest);
     }
 
     .title {
