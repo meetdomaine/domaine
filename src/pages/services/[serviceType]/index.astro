@@ -52,13 +52,13 @@ const { content } = Astro.props;
         />
     }
 
-    {content.formHeading && content.hubspotFormId &&
+    <!-- {content.formHeading && content.hubspotFormId &&
         <SectionForm 
             heading={content.formHeading}
             text={content.formText}
             hubspotFormId={content.hubspotFormId}
         />
-    }
+    } -->
 
     {content.relatedProjects.length > 0 &&
         <SectionProjectsFeed 
