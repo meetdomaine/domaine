@@ -24,7 +24,12 @@ const { content } = Astro.props
     title={content.title}
     searchFilter="type:page"
 >
-    <div class="page-content">
+    <div 
+        class="page-content" 
+        data-color-scheme={content.colorScheme} 
+        data-header-padding={content.addHeaderPadding ? "true" : "false"}
+        style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
+    >
     <!-- <h1>{content.title}</h1> -->
         {content.globalSections?.sections.map((section, i) => (
         <GlobalSections brand="domaine" section={section} key={i} />
@@ -32,3 +37,8 @@ const { content } = Astro.props
     </div>
 </LayoutDomaine>
 
+<style>
+    .page-content[data-header-padding="true"] {
+        padding-top: calc(var(--headeer-height) * 2);
+    }
+</style>

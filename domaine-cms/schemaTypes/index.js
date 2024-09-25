@@ -69,6 +69,7 @@ import settings_locations from "./siteSettings/settings_locations.jsx";
 import section_quote from "./sections/section_quote.js";
 import page_studioGeneral from "./pages/page_studio-general.js";
 import section_richContent from "./sections/section_richContent.js";
+import section_textHeading from "./sections/section_textHeading.js";
 
 
 export const schemaTypes = [
@@ -143,6 +144,7 @@ export const schemaTypes = [
     section_statsCarousel,
     section_textClients,
     section_textColumns,
+    section_textHeading,
     section_textLinkCard,
     section_textMedia,
     section_textMediaTabs,

@@ -9,7 +9,7 @@ const { section, brand } = Astro.props
 
 const iconText = replaceStringIcons(section.heading)
 ---
-<section class="section-text-media" data-layout={section.layout} data-color-scheme="brand-02">
+<section class="section-text-media" data-layout={section.layout} data-color-scheme={section.colorScheme ? section.colorScheme : "brand-02"}>
 
     <div class="section-content">
         <div class="section-text">
@@ -72,6 +72,7 @@ const iconText = replaceStringIcons(section.heading)
         /* padding-inline: var(--page-margin); */
         /* padding-block: var(--space-lg); */
         gap: var(--space-xl);
+        background-color: var(--color-background);
     }
 
     .section-text-media[data-layout="mediaLeft"] {

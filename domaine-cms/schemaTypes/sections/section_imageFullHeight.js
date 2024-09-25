@@ -19,6 +19,33 @@ export default defineType({
       type: 'snippet_video',
       validation: Rule => Rule.required(),
     }),
+    defineField({
+      name: 'colorScheme',
+      title: 'Color Scheme',
+      type: 'string',
+      options: {
+        list: [
+          { 
+            value: 'default',
+            title: 'Default'
+          },
+          // { 
+          //   value: 'secondary',
+          //   title: 'Secondary'
+          // },
+          { 
+            value: 'invert',
+            title: 'Inverted'
+          },
+          // { 
+          //   value: 'brand',
+          //   title: 'Brand'
+          // }
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'default',
+    }),
   ],
   preview: {
     prepare(selection) {

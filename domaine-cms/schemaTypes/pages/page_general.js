@@ -25,6 +25,47 @@ export default defineType({
       type: 'section_globalSections',
     }),
     defineField({
+      name: 'addHeaderPadding',
+      title: 'Add Header Padding',
+      type: 'boolean',
+      description: 'Add extra padding to account for the global header.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'colorScheme',
+      title: 'Color Scheme',
+      type: 'string',
+      description: 'Avoid using this anywhere besides very specific brand pages.',
+      options: {
+        list: [
+          { 
+            value: 'default',
+            title: 'Default'
+          },
+          // { 
+          //   value: 'secondary',
+          //   title: 'Secondary'
+          // },
+          { 
+            value: 'invert',
+            title: 'Inverted'
+          },
+          // { 
+          //   value: 'brand',
+          //   title: 'Brand'
+          // }
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'default',
+    }),
+    defineField({
+      name: 'backgroundColor',
+      title: 'Background Color',
+      description: 'Avoid using this anywhere besides very specific brand pages.',
+      type: 'color',
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_SEO-fields',

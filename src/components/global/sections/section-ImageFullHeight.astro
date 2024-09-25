@@ -4,7 +4,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 const { section, brand, key } = Astro.props
 ---
 <section class="section-image-fullheight">
-    <div class="section-content">
+    <div class="section-content" data-color-scheme={section.colorScheme}>
         <AtomSanityMedia 
             image={section.media.image}
             video={section.media.video}

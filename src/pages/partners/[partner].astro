@@ -4,7 +4,7 @@ import { paths } from '../../components/global/utils/paths';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 import { imageFields, projectGridFields, richContentFields, globalSectionsFields, blogCardFields } from '../../components/global/utils/cms-queries';
 import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
-import PartnerPostHero from '../../components/global/partners/partnerPost-hero.astro';
+import TextHeading from '../../components/global/sections/section-TextHeading.astro';
 import AtomRichContent from '../../components/global/atoms/atom-richContent.astro';
 import SectionGlobalSections from '../../components/global/sections/section-GlobalSections.astro';
 import SectionBlogFeed from '../../components/global/sections/section-BlogFeed.astro';
@@ -58,7 +58,7 @@ console.log(content.metafields)
     activePath="/partners"
 >
 
-    <PartnerPostHero 
+    <TextHeading 
         tier={content.tier}
         title={content.title}
         excerpt={content.excerpt}

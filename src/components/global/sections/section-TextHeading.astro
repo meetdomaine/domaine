@@ -2,41 +2,33 @@
 import AtomCounter from "../atoms/atom-counter.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
-const { title, heading, text, partnersCount, media } = Astro.props
+const { section, brand, key, title, heading, text, count, media } = Astro.props
 ---
-<section class="partners-index-hero">
+<section class="section-text-heading">
   <div class="section-title">
     <div class="title">
-      <h1 class="h5">{title}</h1>
-      {partnersCount && 
+      <h1 class="h5">{title ? title : section.title}</h1>
+      {(section?.count || count) && 
         <AtomCounter 
-        count={partnersCount}
+          count={count ? count : section.count}
         />
       }
     </div>
-    <p class="heading h4">{heading}</p>
+    <p class={`heading ${section?.largeHeading ? "h1" : "h4"}`}>{heading ? heading : section.heading}</p>
   </div>
-  {media && 
-    <AtomSanityMedia 
-      video={media.video}
-      image={media.image}
-      autoplay={false}
-      sizes="100vw"
-    />
-  }
-  {text && 
+  {(text || section?.text) && 
     <div class="section-text">
-      <p class="text">{text}</p>
+      <p class="text h6">{text ? text : section.text}</p>
     </div>
   }
 </section>
 
 <style>
-  .partners-index-hero {
-    padding-block: calc(var(--header-height) * 2) var(--space-lg);
+  .section-text-heading {
+    padding-block: calc(var(--header-height) * 2) var(--space-4xl);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2xl);
+    gap: var(--space-sm);
   }
 
   .section-title,
@@ -54,7 +46,7 @@ const { title, heading, text, partnersCount, media } = Astro.props
   }
 
   .heading {
-    max-width: 24em;
+    max-width: 22em;
   }
 
   .text {

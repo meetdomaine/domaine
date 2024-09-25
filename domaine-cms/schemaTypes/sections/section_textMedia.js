@@ -49,6 +49,33 @@ export default defineType({
       initialValue: 'mediaRight',
     }),
     defineField({
+      name: 'colorScheme',
+      title: 'Color Scheme',
+      type: 'string',
+      options: {
+        list: [
+          { 
+            value: 'default',
+            title: 'Default'
+          },
+          { 
+            value: 'secondary',
+            title: 'Secondary'
+          },
+          { 
+            value: 'invert',
+            title: 'Inverted'
+          },
+          { 
+            value: 'brand',
+            title: 'Brand'
+          }
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'default',
+    }),
+    defineField({
       name: 'media',
       title: 'Media',
       type: 'snippet_video',

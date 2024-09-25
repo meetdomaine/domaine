@@ -5,10 +5,11 @@ import { paths } from '../../components/global/utils/paths';
 import PartnerTile from '../../components/global/partners/global-PartnerTile.astro'
 import { imageFields, partnerTileFields, videoFields } from '../../components/global/utils/cms-queries';
 import PartnerCard from '../../components/global/partners/global-PartnerCard.astro';
-import PartnersIndexHero from '../../components/global/partners/partnersIndex-hero.astro';
+import TextHeading from '../../components/global/sections/section-TextHeading.astro';
 import { allPartners_Domaine } from '../../components/global/utils/cms-content';
 import PartnersIndexTier from '../../components/global/partners/partnersIndex-tier.astro';
 import SectionForm from '../../components/global/sections/section-Form.astro';
+import MediaFullbleed from '../../components/global/sections/section-MediaFullbleed.astro';
 
 const partnerTiers =  await sanityClient.fetch(`
     *[_type == "type_partnerTier"]{ 
@@ -26,12 +27,15 @@ console.log(pageSettings)
     searchFilter="type:page"
     activePath="/partners"
 >
-    <PartnersIndexHero 
+    <TextHeading 
         title={pageSettings.title}
         heading={pageSettings.heading}
-        media={pageSettings.heroMedia}
         text={pageSettings.text}
-        partnersCount={allPartners_Domaine.length}
+        count={allPartners_Domaine.length}
+    />
+
+    <MediaFullbleed 
+        media={pageSettings.heroMedia}
     />
 
     <div class="partner-tiers">

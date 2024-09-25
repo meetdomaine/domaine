@@ -11,7 +11,7 @@ import TextLinkCard from "./section-TextLinkCard.astro"
 import ProjectsGrid from "./section-ProjectsGrid.astro"
 import PartnersFeed from "./section-PartnersFeed.astro"
 import TextClients from "./section-TextClients.astro"
-import ImageFullHeight from "../projects/workPost-ImageFullHeight.astro"
+import ImageFullHeight from "./section-ImageFullHeight.astro"
 import TextColumns from "./section-TextColumns.astro"
 import MediaCarousel from "./section-MediaCarousel.astro"
 import PracticesFeed from "./section-PracticesFeed.astro"
@@ -23,6 +23,7 @@ import ServiceCards from "./section-ServiceCards.astro"
 import LinkList from "./section-LinkList.astro"
 import Quote from "./section-Quote.astro"
 import RichContent from "./section-RichContent.astro"
+import TextHeading from "./section-TextHeading.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -45,6 +46,7 @@ const { section, brand, key } = Astro.props
 {section._type == "section_statsCarousel" && section.showSection && <StatsCarousel section={section} brand={brand} key={key} />}
 {section._type == "section_textClients" && section.showSection && <TextClients section={section} brand={brand} key={key} />}
 {section._type == "section_textColumns" && section.showSection && <TextColumns section={section} brand={brand} key={key} />}
+{section._type == "section_textHeading" && section.showSection && <TextHeading section={section} brand={brand} key={key} />}
 {section._type == "section_textLinkCard" && section.showSection &&  <TextLinkCard section={section} brand={brand} key={key} />}
 {section._type == "section_textMedia" && section.showSection && <TextMedia section={section} brand={brand} key={key} />}
 {section._type == "section_textMediaTabs" && section.showSection && <TextMediaTabs section={section} brand={brand} key={key} />}
