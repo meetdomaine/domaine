@@ -71,7 +71,7 @@ if (featuredPost) {
                         class="featured-post-heading h2" 
                         href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
                     >{featuredPost.title}</a>
-                    <p class="h6">{featuredPost.excerpt}</p>
+                    <p class="">{featuredPost.excerpt}</p>
                 </div>
             </article>
                 <aside class="sidebar" data-color-scheme="glass-dark">
@@ -147,7 +147,6 @@ if (featuredPost) {
 
     .featured-post-heading {
         text-decoration: none;
-        margin: 0;
     }
 
     .featured-post-info {

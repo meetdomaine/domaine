@@ -39,7 +39,7 @@ const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" &&
         activePath={activePath}
         searchExposed={searchExposed}
     />
-    <main data-pagefind-ignore={noIndex ? "true" : "false"}>
+    <main>
         <slot />
     </main>
     <Footer currentBrand={currentBrand} footerSettings={footerSettings}>

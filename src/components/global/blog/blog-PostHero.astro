@@ -9,34 +9,22 @@ const { post } = Astro.props
 
 
     <div class="section-media">
-        <div
-            data-animate-viewport="true"
-            data-animation="zoom"
-        >
-            <AtomSanityImage 
-                image={post.thumbnailImage.image}
-                sizes="50vw"
-                pagefindMeta="image[src], image_alt[alt]"
-                aspectRatio={3 / 4}
-                cover={true}
-            />
-        </div>
+        <AtomSanityImage 
+            image={post.thumbnailImage.image}
+            sizes="50vw"
+            pagefindMeta="image[src], image_alt[alt]"
+            aspectRatio={3 / 4}
+            cover={true}
+        />
     </div>
 
     <div class="section-content">
         <h1 
             class="post-title h2"
-            data-animate-viewport="true"
-            data-animation="fade-up"
             data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
         >{post.title}</h1>
 
-        <div 
-            class="post-info"
-            data-animate-viewport="true"
-            data-animation="fade"
-            data-animation-delay="200"
-        >
+        <div class="post-info">
             <div class="post-details">
                 
                 <AtomTag 
@@ -58,7 +46,7 @@ const { post } = Astro.props
                     ))}
                 </span>
             </div>
-            <h6 class="h6">{post.excerpt}</h6>
+            <h6>{post.excerpt}</h6>
 
         </div>
 
@@ -78,7 +66,6 @@ const { post } = Astro.props
     .section-media {
         /* aspect-ratio: 3 / 4; */
         flex: 0 0 50%;
-        overflow: hidden;
         /* max-height: 100%; */
         /* max-width: 50%; */
     }
