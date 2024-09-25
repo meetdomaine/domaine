@@ -8,6 +8,7 @@ import TextHeading from '../../components/global/sections/section-TextHeading.as
 import AtomRichContent from '../../components/global/atoms/atom-richContent.astro';
 import SectionGlobalSections from '../../components/global/sections/section-GlobalSections.astro';
 import SectionBlogFeed from '../../components/global/sections/section-BlogFeed.astro';
+import PartnerPostHero from '../../components/global/partners/partnerPost-hero.astro';
 
 export const prerender = true
 
@@ -58,7 +59,7 @@ console.log(content.metafields)
     activePath="/partners"
 >
 
-    <TextHeading 
+    <PartnerPostHero 
         tier={content.tier}
         title={content.title}
         excerpt={content.excerpt}
