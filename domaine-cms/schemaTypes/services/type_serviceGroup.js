@@ -60,6 +60,17 @@ export default defineType({
       type: 'array',
       of: [{ type: 'snippet_image' }],
     }),
+    defineField({
+      name: 'pageSectionsDomaine',
+      title: 'Page Sections: Domaine',
+      type: 'section_globalSections',
+      // of: [ {type: 'section_globalSections'} ]
+    }),
+    defineField({
+      name: 'pageSectionsStudio',
+      title: 'Page Sections: Studio',
+      type: 'section_globalSections',
+    }),
     // defineField({
     //   name: 'formHeading',
     //   title: 'Form: Heading',

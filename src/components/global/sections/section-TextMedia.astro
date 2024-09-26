@@ -12,10 +12,14 @@ const iconText = replaceStringIcons(section.heading)
 <section class="section-text-media" data-layout={section.layout} data-color-scheme={section.colorScheme ? section.colorScheme : "brand-02"}>
 
     <div class="section-content">
-        <div class="section-text">
+        <div 
+            class="section-text"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+        >
             {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
             <h2 class="heading h2"><Fragment set:html={iconText} /></h2>
-            {section.text && <p class="text">{section.text}</p>}
+            {section.text && <p class={`text ${section.largeText ? "h4" : ""}`}>{section.text}</p>}
             {section.button && section.button.text && section.button.url &&
                 <AtomButton 
                     text={section.button.text}
@@ -53,8 +57,8 @@ const iconText = replaceStringIcons(section.heading)
             const sectionMedia = section.querySelector('.section-media')
             const video = sectionMedia.querySelector('mux-player')
             const image = sectionMedia.querySelector('img')
-            if (video) addParallax(video)
-            if (image) addParallax(image)
+            // if (video) addParallax(video)
+            // if (image) addParallax(image)
         })
     }
 
@@ -103,6 +107,7 @@ const iconText = replaceStringIcons(section.heading)
 
     .text {
         margin-bottom: 1em;
+        color: var(--color-foreground-secondary);
     }
 
     .bullets {

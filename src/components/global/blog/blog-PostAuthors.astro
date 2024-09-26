@@ -1,44 +1,86 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import AtomTag from "../atoms/atom-tag.astro"
 
 const { authors } = Astro.props
 ---
 <section class="blog-post-authors">
-    {authors.map((author) => (
-        <div class="author">
-            <div class="author-media">
-                <AtomSanityImage 
-                    sizes="20vw"
-                    image={author.image}
-                />
+    <h2 class="h5">Authors</h2>
+    <div class="authors">
+        {authors.map((author) => (
+            <div class="author">
+                <div class="author-media">
+                    <AtomSanityImage 
+                        sizes="20vw"
+                        image={author.image}
+                    />
+                </div>
+                <div class="author-details">
+                    <div class="author-title">
+                        <AtomTag 
+                            text={author.department.title}
+                        />
+                        <h6 class="name h4">{author.name}</h6>
+                        <p>{author.role}</p>
+                    </div>
+                    {author.bio && <p>{author.bio}</p>}
+                </div>
             </div>
-            <div class="author-details">
-                {author.department && <p class="utility">{author.department.title}</p>}
-                <h6 class="h3">{author.name}</h6>
-                <p>{author.role}</p>
-                {author.bio && <p>{author.bio}</p>}
-            </div>
-        </div>
-    ))}
+        ))}
+    </div>
 </section>
 
 <style>
     .blog-post-authors {
-        padding-inline: var(--page-margin);
+        margin: 0 var(--page-margin);
         padding-block: var(--space-xl);
         border-top: 1px solid var(--color-border);
         border-bottom: 1px solid var(--color-border);
-        margin: 0 var(--page-margin);
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+    }
+
+    .authors {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        flex: 0 0 50rem;
     }
 
     .author {
         display: flex;
         flex-direction: row;
+        gap: var(--space-md);
+        flex-wrap: wrap;
     }
 
     .author-media {
-        max-width: 20vw;
+        flex: 0 0 25%;
+    }
+
+    .author-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+        flex: 0 1 100%;
+        /* min-width: min(20rem, 100%); */
+        /* max-width: 30rem; */
+        /* flex: 0 0 30rem; */
+    }
+
+    .author-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2xs);
+        /* flex: 1 0 auto; */
+    }
+
+    .name {
+        margin: 0;
     }
 </style>

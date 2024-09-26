@@ -100,7 +100,6 @@ const { post } = Astro.props
             gap: var(--space-lg);
             align-items: stretch;
             height: auto;
-            padding-block: var(--header-height) 0;
         }
 
         .section-media {
@@ -111,7 +110,7 @@ const { post } = Astro.props
         .section-content {
             justify-content: flex-start;
             padding-inline: var(--page-margin);
-            padding-block: 0;
+            padding-block: calc(var(--header-height) * 2) var(--space-md);
             flex: 0 0 auto;
         }
     }

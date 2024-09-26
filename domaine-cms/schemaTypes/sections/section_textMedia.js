@@ -30,6 +30,12 @@ export default defineType({
       type: 'text',
     }),
     defineField({
+      name: 'largeText',
+      title: 'Large Text',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'layout',
       title: 'Layout',
       type: 'string',
