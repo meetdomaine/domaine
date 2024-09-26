@@ -6,10 +6,16 @@ import { getRawSvg } from "../utils/raw-svg"
 
 const { section, brand, key } = Astro.props
 
+let quoteClientLogo
+
 const clients = await Promise.all(section.clients.map( async (client) => {
     const clientData = { ...client, logoSvg: await getRawSvg(client.logo)}
     return await clientData
 }))
+
+if (section.quoteClient) {
+    quoteClientLogo = await getRawSvg(section.quoteClient?.logo)
+}
 ---
 <section class="section-text-clients">
     <div 
@@ -43,14 +49,13 @@ const clients = await Promise.all(section.clients.map( async (client) => {
     <div class="section-content">
         {section.quote && section.quoteAuthor &&
             <div class="client-quote">
-                <p class="quote h6">{section.quote}</p>
-                <p class="author">{section.quoteAuthor}</p>
-                {section.quoteClient && 
+                <div class="quote-text">    
+                    <p class="quote h6">{section.quote}</p>
+                    <p class="author">{section.quoteAuthor}</p>
+                </div>
+                {quoteClientLogo && 
                     <div class="quote-logo">
-                        <AtomSanityImage 
-                            image={section.quoteClient.logoDark.image}
-                            sizes="20vw"
-                        />
+                        <Fragment set:html={quoteClientLogo} />
                     </div>
                 }
             </div>
@@ -107,13 +112,13 @@ const clients = await Promise.all(section.clients.map( async (client) => {
     }
 
     .logo-track {
-        --gap: var(--space-4xl);
+        --gap: var(--space-xl);
         display: flex;
         flex-direction: row;
         align-items: center;
         width: max-content;
         gap: var(--gap);
-        animation: ticker-scroll 40s linear infinite;
+        animation: ticker-scroll 20s linear infinite;
     }
 
     @keyframes ticker-scroll {
@@ -126,7 +131,7 @@ const clients = await Promise.all(section.clients.map( async (client) => {
     }
 
     .client-card {
-        flex: 0 0 8rem;
+        flex: 0 0 14em;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -157,15 +162,24 @@ const clients = await Promise.all(section.clients.map( async (client) => {
         border-inline-start: 1px solid var(--color-accent);
         padding-inline-start: var(--space-xl);
         padding-block: var(--space-sm);
-        gap: var(--space-xs);
+        gap: var(--space-sm);
     }
 
-    .quote {
+    .quote-text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
 
+
+    .quote {
+        margin: 0;
     }
 
     .author {
         /* margin-bottom: 0.5em; */
+        color: var(--color-foreground-secondary);
+        margin: 0;
     }
 
     .quote-logo {
