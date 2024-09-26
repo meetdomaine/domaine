@@ -3,9 +3,11 @@ import AtomButton from "../../atoms/atom-button.astro"
 
 const { node } = Astro.props
 ---
-<aside class="call-to-action">
-    <p class="h3">{node.heading}</p>
-    {node.subheading && <p>{node.subheading}</p>}
+<aside class="call-to-action" data-color-scheme="secondary">
+    <div class="section-title">
+        <p class="h3">{node.heading}</p>
+        {node.subheading && <p>{node.subheading}</p>}
+    </div>
     {node.button && node.button.text && node.button.url &&
         <AtomButton 
             text={node.button.text}
@@ -17,6 +19,7 @@ const { node } = Astro.props
 
 <style>
 .call-to-action {
+    margin-block: var(--space-xl);
     margin-inline: auto;
     max-width: var(--content-width);
     display: flex;
@@ -26,5 +29,13 @@ const { node } = Astro.props
     padding: var(--space-xl);
     margin-block: var(--space-lg);
     border-radius: var(--radius-sm);
+    text-align: center;
+    gap: var(--space-sm);
+}
+
+.section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 </style>

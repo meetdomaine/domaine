@@ -57,6 +57,14 @@ const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMe
         background-color: var(--color-lighter);
         color: var(--color-darkest);
     }
+    
+    .tag:is(a):hover {
+        background-color: var(--color-darkest);
+        color: var(--color-lightest);
+    }
+    .tag:is(a):hover :is(.title, .text) {
+        color: var(--color-lightest);
+    }
 
     .title {
         color: var(--color-foreground-secondary);

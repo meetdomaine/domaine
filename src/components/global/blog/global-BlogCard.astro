@@ -34,9 +34,7 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
         />
         {postDate && <p class="date caption">{formattedDate}</p>}
     </div>
-    <a href={postUrl} class="card-text">
-        <h3 class="h6">{title}</h3>
-    </a>
+    <a href={postUrl} class="card-title h6">{title}</a>
 
 </article>
 
@@ -57,6 +55,14 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
         overflow: hidden;
     }
 
+    .card-media :global(img) {
+        scale: 1;
+        transition: scale var(--anim-lg);
+    }
+    .card-media:hover :global(img) {
+        scale: 1.05;
+    }
+
     .card-info {
         display: flex;
         flex-direction: row;
@@ -71,7 +77,11 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
         color: var(--color-foreground-secondary);
     }
 
-    .card-text {
+    .card-title {
         text-decoration: none;
+    }
+
+    .card-title:hover {
+        color: var(--color-foreground-secondary);
     }
 </style>

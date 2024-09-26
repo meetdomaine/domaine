@@ -13,8 +13,7 @@ const { currentBrand, heading, subheading } = Astro.props
             <Icon name="pixel_x" class="close-button" />
         </button>
         <div class="title-text">
-            {heading && <h2 class="heading h5">{heading}</h2>}
-            {subheading && <p class="subheading h5">{subheading}</p>}
+            {heading && <h2 class="heading h6">{heading}</h2>}
         </div>
     </div>
     <GlobalPracticesGrid />
@@ -54,12 +53,13 @@ const { currentBrand, heading, subheading } = Astro.props
 
     .section-title {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
         gap: var(--space-md);
     }
 
-    .subheading {
-        color: var(--color-foreground-secondary);
+    .heading {
+        margin: 0;
     }
 
     .close-button {
