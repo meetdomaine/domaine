@@ -25,6 +25,15 @@ export default defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
+      name: 'clients',
+      title: 'Clients',
+      type: 'array',
+      of: [{
+        type: 'reference',
+        to: [{ type: 'type_client'}]
+      }],
+    }),
+    defineField({
       name: 'quote',
       title: 'Quote',
       type: 'string',

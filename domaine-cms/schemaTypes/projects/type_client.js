@@ -77,6 +77,15 @@ export default defineType({
       type: 'number',
       validation: Rule => Rule.integer().greaterThan(0).max(50),
     }),
+    defineField({
+      name: 'logoScale',
+      title: 'Logo: Scale Offset',
+      description: "DONT USE FOR NOW. Width offset (0-100%) for logo.",
+      initialValue: 75,
+      type: 'number',
+      deprecated: true
+      // validation: Rule => Rule.integer().greaterThan(0).max(100),
+    }),
     // defineField({
     //   name: 'agencyBrands',
     //   title: 'Agency Brands',
@@ -109,7 +118,6 @@ export default defineType({
       title: 'title',
       subtitle: 'title',
       media: 'productImage',
-      icon: 'logo'
     },
     prepare(selection) {
       const { title, subtitle, media } = selection
@@ -120,9 +128,4 @@ export default defineType({
       }
     }
   },
-  // components: {
-  //   preview: ({ icon, title, subtitle }) => {
-  //     return <InlineSvgPreviewItem icon={icon} title={title} subtitle={subtitle} />
-  //   },
-  // },
 })

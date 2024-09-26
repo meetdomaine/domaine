@@ -30,11 +30,13 @@ const { content, serviceType } = Astro.props;
 const relatedProjects = await sanityClient.fetch(`
     *[ _type == "type_project"
         && references('${content._id}')
+        && isHidden != true
     ]{${projectGridFields}} | order(orderRank)`)
 
 const relatedBlogPosts = await sanityClient.fetch(`
     *[ _type == "type_blog"
         && references('${content._id}')
+        && isHidden != true
     ]{${blogCardFields}} | order(orderRank)`)
 ---
 <LayoutDomaine

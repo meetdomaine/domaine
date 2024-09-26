@@ -1,12 +1,15 @@
 ---
-import { sanityClient } from "sanity:client"
-import { imageBaseFields, imageFields, urlFor } from "../utils/cms-queries"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomButton from "../atoms/atom-button.astro"
 import { getClients_Domaine, getClients_Studio } from "../utils/cms-content"
+import { getRawSvg } from "../utils/raw-svg"
+
 const { section, brand, key } = Astro.props
 
-const clients = brand === "studio" ? await getClients_Studio() : await getClients_Domaine()
+const clients = await Promise.all(section.clients.map( async (client) => {
+    const clientData = { ...client, logoSvg: await getRawSvg(client.logo)}
+    return await clientData
+}))
 ---
 <section class="section-text-clients">
     <div 
@@ -22,22 +25,18 @@ const clients = brand === "studio" ? await getClients_Studio() : await getClient
             class="logo-track"
         >
             {clients.map((client, i) => (
-                <div class="logo">
-                    <AtomSanityImage 
-                        image={client.logoDark} 
-                        contain={true}
-                        sizes="30vw"
-                    />
-                </div>
+                <a href="#" class="client-card">
+                    <div class="logo" style={`width: ${client.logoScale}%;`}>
+                        <Fragment set:html={client.logoSvg} />
+                    </div>
+                </a>
             ))}
             {clients.map((client, i) => (
-                <div class="logo">
-                    <AtomSanityImage 
-                        image={client.logoDark} 
-                        contain={true}
-                        sizes="30vw"
-                    />
-                </div>
+                <a href="#" class="client-card">
+                    <div class="logo" style={`width: ${client.logoScale}%;`}>
+                        <Fragment set:html={client.logoSvg} />
+                    </div>
+                </a>
             ))}
         </div>
     </div>
@@ -111,6 +110,7 @@ const clients = brand === "studio" ? await getClients_Studio() : await getClient
         --gap: var(--space-4xl);
         display: flex;
         flex-direction: row;
+        align-items: center;
         width: max-content;
         gap: var(--gap);
         animation: ticker-scroll 40s linear infinite;
@@ -125,11 +125,15 @@ const clients = brand === "studio" ? await getClients_Studio() : await getClient
         }
     }
 
+    .client-card {
+        flex: 0 0 8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .logo {
-        aspect-ratio: 1.5 / 1;
-        object-fit: contain;
-        /* flex: 0 0 8rem; */
-        width: 8rem;
+        height: auto;
     }
 
     .section-content {

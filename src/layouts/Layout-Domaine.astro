@@ -21,12 +21,6 @@ interface Props {
 
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
 
-// console.log('layout')
-let _currentBrand = undefined
-const getCurrentBrand = async () => {
-    
-}
-
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
 

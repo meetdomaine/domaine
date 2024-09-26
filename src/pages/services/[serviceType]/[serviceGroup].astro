@@ -43,11 +43,13 @@ const { content, serviceType } = Astro.props;
 const relatedProjects = await sanityClient.fetch(`
     *[ _type == "type_project"
         && '${content._id}' in services[]->serviceGroup._ref
+        && isHidden != true
     ]{${projectGridFields}} | order(orderRank)`)
 
 const relatedBlogPosts = await sanityClient.fetch(`
     *[ _type == "type_blog"
         && '${content._id}' in services[]->serviceGroup._ref
+        && isHidden != true
     ]{${blogCardFields}} | order(orderRank)`)
 
 ---

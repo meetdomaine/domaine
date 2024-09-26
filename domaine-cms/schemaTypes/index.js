@@ -6,7 +6,7 @@ import type_client from "./projects/type_client.js";
 import type_event from "./events/type_event.js";
 import type_industry from "./projects/type_industry";
 import type_partner from "./partners/type_partner";
-import type_partnerTier from "./partners/type_partnerTier.jsx";
+import type_partnerTier from "./partners/type_partnerTier.js";
 // import type_practice from "./practices/type_practice.js";
 import type_project from "./projects/type_project";
 import type_projectFeature from "./projects/type_projectFeature";

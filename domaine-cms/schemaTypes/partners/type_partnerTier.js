@@ -53,7 +53,6 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
-      icon: 'icon',
     },
   },
   // components: {
