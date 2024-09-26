@@ -63,7 +63,6 @@ export const getBrandSettings_Studio = async () => {
 export const getFooterSettings_Domaine = async () => {
   if (_footerSettings_Domaine) return _footerSettings_Domaine
   _footerSettings_Domaine = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]`)
-  console.log('footer fetch')
   return _footerSettings_Domaine
 }
 

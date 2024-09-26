@@ -2,10 +2,11 @@
 import { sanityClient } from "sanity:client"
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
 import SectionServiceTypeHero from "../../../components/global/services/serviceType-Hero.astro"
-import { serviceTypePageQuery } from "../../../components/global/utils/cms-queries"
+import { blogCardFields, projectGridFields, serviceTypePageQuery } from "../../../components/global/utils/cms-queries"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
 import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro"
+import SectionForm from "../../../components/global/sections/section-Form.astro"
 
 export const prerender = true
 
@@ -25,6 +26,17 @@ interface Props {
 
 const { content } = Astro.props;
 // console.log(content)
+
+const relatedProjects = await sanityClient.fetch(`
+    *[ _type == "type_project"
+        && '${content._id}' in services[]->serviceGroup->serviceType._ref
+    ]{${projectGridFields}} | order(orderRank)`)
+
+const relatedBlogPosts = await sanityClient.fetch(`
+    *[ _type == "type_blog"
+        && '${content._id}' in services[]->serviceGroup->serviceType._ref
+    ]{${blogCardFields}} | order(orderRank)`)
+
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
@@ -39,26 +51,26 @@ const { content } = Astro.props;
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
-    {content.relatedBlogPosts && content.relatedBlogPosts?.length > 0 &&
+    {relatedBlogPosts && relatedBlogPosts?.length > 2 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
-            posts={content.relatedBlogPosts}
+            posts={relatedBlogPosts}
             sidebarTitle={content.title}
         />
     }
 
-    <!-- {content.formHeading && content.hubspotFormId &&
+    {content.formHeading && content.hubspotFormId &&
         <SectionForm 
             heading={content.formHeading}
             text={content.formText}
             hubspotFormId={content.hubspotFormId}
         />
-    } -->
+    }
 
-    {content.relatedProjects?.length > 0 &&
+    {relatedProjects?.length > 0 &&
         <SectionProjectsFeed 
             heading={`${content.title} Work`}
-            projects={content.relatedProjects}
+            projects={relatedProjects}
         />
     }
 

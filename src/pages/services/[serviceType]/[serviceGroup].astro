@@ -5,6 +5,7 @@ import SectionBlogFeed from "../../../components/global/sections/section-BlogFee
 import { getServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
 import SectionForm from "../../../components/global/sections/section-Form.astro"
+import { blogCardFields, projectGridFields } from "../../../components/global/utils/cms-queries"
 
 
 export async function getStaticPaths() {
@@ -25,6 +26,17 @@ interface Props {
 
 const { content, serviceType } = Astro.props;
 // console.log(serviceType)
+
+const relatedProjects = await sanityClient.fetch(`
+    *[ _type == "type_project"
+        && '${content._id}' in services[]->serviceGroup._ref
+    ]{${projectGridFields}} | order(orderRank)`)
+
+const relatedBlogPosts = await sanityClient.fetch(`
+    *[ _type == "type_blog"
+        && '${content._id}' in services[]->serviceGroup._ref
+    ]{${blogCardFields}} | order(orderRank)`)
+
 ---
 <LayoutDomaine
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
@@ -48,28 +60,28 @@ const { content, serviceType } = Astro.props;
         ]}
     />
 
-    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
+    {relatedBlogPosts && relatedBlogPosts.length > 2 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
-            posts={content.relatedBlogPosts}
+            posts={relatedBlogPosts}
             sidebarTitle={content.title}
         />
     }
 
-    {content.relatedProjects && content.relatedProjects.length > 0 &&
+    {relatedProjects && relatedProjects.length > 0 &&
         <SectionProjectsFeed 
             heading={`${content.title} Work`}
-            projects={content.relatedProjects}
+            projects={relatedProjects}
         />
     }
 
-    <!-- {serviceType.formHeading && serviceType.hubspotFormId &&
+    {serviceType.formHeading && serviceType.hubspotFormId &&
         <SectionForm 
             heading={serviceType.formHeading}
             text={serviceType.formText}
             hubspotFormId={serviceType.hubspotFormId}
         />
-    } -->
+    }
 
 
 </LayoutDomaine>
