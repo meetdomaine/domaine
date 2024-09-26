@@ -1,13 +1,11 @@
 ---
-import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
-import { allProjects_Domaine, allServiceGroups_Domaine } from '../../../components/global/utils/cms-content';
+import { getProjects_Domaine, getServiceGroups_Domaine } from '../../../components/global/utils/cms-content';
 
 export const prerender = true
 
 export async function getStaticPaths() {
-    const serviceGroup = allServiceGroups_Domaine
+    const serviceGroup = await getServiceGroups_Domaine()
     return serviceGroup.map((serviceGroup) => {
         return {
             params: { serviceGroup: serviceGroup.slug.current },
@@ -21,7 +19,8 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = allProjects_Domaine.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
+const allProjects = await getProjects_Domaine()
+const projects = allProjects.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
 ---
 <LayoutDomaineProjects 
     title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}

@@ -1,13 +1,11 @@
 ---
-import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { blogCardFields, projectGridFields } from '../../../components/global/utils/cms-queries';
-import { allProjects_Domaine, allServices_Domaine } from '../../../components/global/utils/cms-content';
+import { getProjects_Domaine, getServices_Domaine } from '../../../components/global/utils/cms-content';
 
 export const prerender = true
 
 export async function getStaticPaths() {
-    const services = allServices_Domaine
+    const services = await getServices_Domaine()
     return services.map((service) => {
         return {
             params: { service: service.slug.current },
@@ -21,7 +19,8 @@ interface Props {
 }
 
 const { content } = Astro.props
-const projects = allProjects_Domaine.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
+const allProjects = await getProjects_Domaine()
+const projects = allProjects.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
 
 // console.log(content.relatedBlogPosts.length)
 // console.log(content.relatedBlogPosts)

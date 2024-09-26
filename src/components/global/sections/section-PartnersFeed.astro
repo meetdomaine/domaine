@@ -1,15 +1,14 @@
 ---
 import AtomButton from "../atoms/atom-button.astro"
-import { partnerTileFields } from "../utils/cms-queries"
 import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
-import { allPartners_Domaine, allPartners_Studio } from "../utils/cms-content"
+import { getPartners_Domaine, getPartners_Studio } from "../utils/cms-content"
 
 const { section, brand } = Astro.props
 
 
 const partnerTileCount = 4
 
-const partners = brand.toLowerCase() === "studio" ? allPartners_Studio : allPartners_Domaine
+const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() : await getPartners_Domaine()
 ---
 <section class="section-partners-feed" data-color-scheme="brand-02">
     <div 

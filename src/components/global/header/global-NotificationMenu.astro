@@ -1,12 +1,7 @@
 ---
-import AtomLinkCard from "../atoms/atom-linkCard.astro"
-import { sanityClient } from "sanity:client"
-import { blogCardFields, projectGridFields } from "../utils/cms-queries"
-import { allBlogPosts_Domaine, allBlogPosts_Studio, allProjects_Domaine, allProjects_Studio, allEvents_upcoming, allCareers } from "../utils/cms-content"
+import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../utils/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
-import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-import AtomTag from "../atoms/atom-tag.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
 import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
@@ -36,9 +31,10 @@ const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const latestProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
-const latestBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
-const upcomingEvents = allEvents_upcoming.filter((event) => !event.isPrivate)
+const latestProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
+const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
+const allEvents = await getEvents()
+const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 
 // console.log(upcomingEvent)
 // console.log(latestWork)

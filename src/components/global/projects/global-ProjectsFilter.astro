@@ -1,16 +1,15 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { sanityClient } from 'sanity:client';
 import AtomTag from '../atoms/atom-tag.astro';
-import { 
-    allProjectFeatures_Domaine, 
-    allProjectFeatures_Studio,
-    allPartners_Domaine,
-    allPartners_Studio,
-    allClientIndustries_Domaine,
-    allClientIndustries_Studio,
-    allServiceGroups_Domaine,
-    allServiceGroups_Studio,
+import {
+    getProjectFeatures_Domaine,
+    getProjectFeatures_Studio,
+    getPartners_Studio,
+    getPartners_Domaine,
+    getServiceGroups_Studio,
+    getServiceGroups_Domaine,
+    getClientsIndustries_Studio,
+    getClientsIndustries_Domaine,
 } from '../utils/cms-content';
 
 const { brand, currentPath } = Astro.props;
@@ -19,22 +18,22 @@ const allFilters = await Promise.all([
     {
         title: 'Industries',
         path: 'industries/',
-        filters: brand.toLowerCase() === "studio" ? allClientIndustries_Studio : allClientIndustries_Domaine
+        filters: brand.toLowerCase() === "studio" ? await getClientsIndustries_Studio() : await getClientsIndustries_Domaine()
     },
     {
         title: 'Features',
         path: 'features/',
-        filters: brand.toLowerCase() === "studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
+        filters: brand.toLowerCase() === "studio" ? await getProjectFeatures_Studio() : await getProjectFeatures_Domaine()
     },
     {
         title: 'Partners',
         path: 'partners/',
-        filters: brand.toLowerCase() === "studio" ? allPartners_Studio : allPartners_Domaine
+        filters: brand.toLowerCase() === "studio" ? await getPartners_Studio() : await getPartners_Domaine()
     },
     {
         title: 'Services',
         path: 'services/',
-        filters: brand.toLowerCase() === "studio" ? allServiceGroups_Studio : allServiceGroups_Domaine
+        filters: brand.toLowerCase() === "studio" ? await getServiceGroups_Studio() : await getServiceGroups_Domaine()
     },
 ])
 

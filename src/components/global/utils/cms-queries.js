@@ -44,7 +44,6 @@ export const projectFeatureQuery = `
   excerpt,
   slug, 
   orderRank,
-  "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}}
 `
 
 export const projectGridFields = `
@@ -74,8 +73,15 @@ export const serviceQuery = `
       ..., 
       serviceType->{...}
   },
-  "relatedBlogPosts": *[_type=='type_blog' && references(^._id)]{${blogCardFields}} | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && isHidden != true && references(^._id)]{${projectGridFields} } | order(orderRank),
+`
+
+export const serviceGroupQuery = `
+  ..., 
+  excerpt,
+  images[]{${imageFields}},
+  agencyBrands[]->{..., slug, name},
+  serviceType->{..., formHeading, formText, hubspotFormId },
+  "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
 `
 
 export const serviceTypeQuery = `
@@ -89,18 +95,6 @@ export const serviceTypeQuery = `
       agencyBrands[]->{..., slug, name},
       "services": *[_type == "type_service" && references(^._id)] {${serviceQuery}} | order(orderRank)
   } | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
-  "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
-`
-export const serviceGroupQuery = `
-  ..., 
-  excerpt,
-  images[]{${imageFields}},
-  agencyBrands[]->{..., slug, name},
-  serviceType->{..., formHeading, formText, hubspotFormId },
-  "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
-  "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields}},
-  "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup._ref ]{${projectGridFields}} | order(orderRank)
 `
 
 export const richContentFields = `
@@ -148,9 +142,7 @@ export const serviceTypePageQuery = `
       "services": *[_type == "type_service" && references(^._id)] {
           ...
       } | order(orderRank)
-  } | order(orderRank),
-  "relatedProjects": *[_type == "type_project" && isHidden != true && ^._id in services[]->serviceGroup->serviceType._ref]{${projectGridFields}}| order(orderRank),
-  "relatedBlogPosts": *[_type == "type_blog" && ^._id in services[]->serviceGroup->serviceType._ref]{${blogCardFields}}| order(postDate)
+  } | order(orderRank)
 `
 
 export const projectPageFields = `
@@ -210,20 +202,13 @@ export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}, logo
 
 export const blogQuery = `
   ..., 
+  _id,
   authors[]->{name, role, bio, ${imageFields}, department->{title} },
   postDate,
   thumbnailImage{${imageFields}},
   category->{..., slug{...} }, 
   body[]{${richContentFields}},
   agencyBrand->{slug},
-  "relatedPosts": *[_type == "type_blog" && references(^.category->_id)]{${blogCardFields}} | order(orderRank asc),
-  "relatedProjects": 
-      *[_type == "type_project" 
-          && isHidden != true
-          && references(^.features[]->_id)
-          // || references(^.services[]->_id)
-          || references(^.industries[]->_id)
-      ]{${projectGridFields}} | order(orderRank asc)[0...4]
 `
 
 export const eventQuery = `

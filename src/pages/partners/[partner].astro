@@ -1,10 +1,8 @@
 ---
 import { sanityClient } from 'sanity:client';
-import { paths } from '../../components/global/utils/paths';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
 import { imageFields, projectGridFields, richContentFields, globalSectionsFields, blogCardFields } from '../../components/global/utils/cms-queries';
 import SectionProjectsFeed from '../../components/global/sections/section-ProjectsFeed.astro';
-import TextHeading from '../../components/global/sections/section-TextHeading.astro';
 import AtomRichContent from '../../components/global/atoms/atom-richContent.astro';
 import SectionGlobalSections from '../../components/global/sections/section-GlobalSections.astro';
 import SectionBlogFeed from '../../components/global/sections/section-BlogFeed.astro';
@@ -50,7 +48,7 @@ interface Props {
 
 
 const { content } = Astro.props;
-console.log(content.metafields)
+// console.log(content.metafields)
 
 ---
 <LayoutDomaine

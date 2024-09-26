@@ -1,0 +1,62 @@
+---
+import { sanityClient } from "sanity:client"
+import LayoutStudio from "../../../../layouts/Layout-Studio.astro"
+import SectionServiceTypeHero from "../../../../components/global/services/serviceType-Hero.astro"
+import { serviceTypePageQuery } from "../../../../components/global/utils/cms-queries"
+import GlobalSections from "../../../../components/global/sections/section-GlobalSections.astro"
+
+export const prerender = true
+
+export async function getStaticPaths() {
+    const serviceTypes = await sanityClient.fetch(`*[_type == "type_serviceType" && '/studio' in agencyBrands[]->slug.current ]{${serviceTypePageQuery}} | order(orderRank)`)
+    return serviceTypes.map((serviceType) => {
+        return {
+            params: { serviceType: serviceType.slug.current },
+            props: { content: serviceType }
+        }
+    })
+}
+
+interface Props {
+    content: any,
+}
+
+const { content } = Astro.props;
+// console.log(content.projects.length)
+---
+<LayoutStudio
+    title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
+    searchFilter="type:service-type"
+    activePath="/studio/services"
+>
+    <SectionServiceTypeHero
+        brand="studio"
+        serviceType={content}
+    />
+
+    <!-- {content.serviceGroups.map((serviceGroup) => (
+        <SectionServiceGroupFeature 
+            brand="studio"
+            serviceGroup={serviceGroup}
+        />
+    ))} -->
+
+    {content.pageSectionsStudio && content.pageSectionsStudio.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} />
+    ))}
+
+    <!-- {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={content.relatedBlogPosts}
+        />
+    }
+
+    {content.relatedProjects.length > 0 &&
+        <GlobalProjectsGrid 
+            heading={`${content.title} Work`}
+            projects={content.relatedProjects}
+        />
+    } -->
+
+</LayoutStudio>

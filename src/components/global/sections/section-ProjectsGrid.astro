@@ -1,14 +1,13 @@
 ---
 import AtomButton from "../atoms/atom-button.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
-import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
-import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content"
+import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content"
 import { getRawSvg } from "../utils/raw-svg"
 
 const { section, brand } = Astro.props
 
-const projects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
+const projects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
 
 console.log(section.projects[0].client)
 ---

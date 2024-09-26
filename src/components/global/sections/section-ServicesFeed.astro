@@ -1,14 +1,12 @@
 ---
-import { sanityClient } from "sanity:client";
 import AtomTag from "../atoms/atom-tag.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
-import { imageFields } from "../utils/cms-queries";
-import { allServiceTypes_Domaine, allServiceTypes_Studio } from "../utils/cms-content";
+import { getServiceTypes_Studio, getServiceTypes_Domaine } from "../utils/cms-content";
 import { Icon } from "astro-icon/components";
 
 const { section, brand, key } = Astro.props
 
-const serviceTypes = brand === "studio" ? allServiceTypes_Studio : allServiceTypes_Domaine
+const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await getServiceTypes_Domaine()
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 

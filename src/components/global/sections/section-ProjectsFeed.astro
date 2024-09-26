@@ -1,6 +1,6 @@
 ---
 import ProjectCard from "../projects/global-ProjectCard.astro";
-import { allProjects_Domaine, allProjects_Studio } from "../utils/cms-content";
+import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
 
 const { section, brand, projects, heading, subheading, key } = Astro.props
 
@@ -11,7 +11,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = brand === "studio" ? allProjects_Studio : allProjects_Domaine
+    feedProjects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
 }
 
 ---

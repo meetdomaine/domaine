@@ -2,10 +2,9 @@
 import { sanityClient } from "sanity:client";
 import BlogCard from "../blog/global-BlogCard.astro";
 import { blogCardFields } from "../utils/cms-queries"
-import AtomLinkCard from "../atoms/atom-linkCard.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomTag from "../atoms/atom-tag.astro";
-import { allBlogPosts_Domaine, allBlogPosts_Studio } from "../utils/cms-content";
+import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../utils/cms-content";
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
 
 const { section, brand, heading, subheading, posts, sidebarTitle } = Astro.props
@@ -25,7 +24,7 @@ if (section?.featuredCategory) {
     blogPosts = posts
     sidebarTitleText = sidebarTitle ? sidebarTitle : "Insights"
 } else {
-    blogPosts = brand === "studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
+    blogPosts = brand === "studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
     sidebarTitleText = sidebarTitle ? sidebarTitle : "Insights"
 }
 

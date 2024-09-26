@@ -1,0 +1,39 @@
+---
+import { sanityClient } from 'sanity:client';
+import { blogCardFields, projectGridFields } from '../../../../components/global/utils/cms-queries';
+import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
+import { getProjectFeatures_Studio, getProjects_Studio } from '../../../../components/global/utils/cms-content';
+
+export const prerender = true
+
+export async function getStaticPaths() {
+    const features = await getProjectFeatures_Studio()
+    return features.map((feature) => {
+        return {
+            params: { feature: feature.slug.current },
+            props: { content: feature }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props
+const allProjects = await getProjects_Studio()
+const projects = allProjects.filter((project) => project.features && project.features.some((feature) => feature._id === content._id))
+---
+<LayoutStudioProjects 
+    title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}
+    description={content.metafields && content.metafields.description ? content.metafields.description : null}
+    searchFilter="type:project-feature"
+    heading={content.title}
+    subheading={content.excerpt}
+    projects={projects}
+    currentPath={`/features/${content.slug.current}`}
+    relatedBlogPosts={content.relatedBlogPosts}
+>
+    <!-- <p slot="before-grid">Howdy</p>
+    <p slot="after-grid">End</p> -->
+</LayoutStudioProjects>

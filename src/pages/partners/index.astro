@@ -1,12 +1,9 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { paths } from '../../components/global/utils/paths';
-import PartnerTile from '../../components/global/partners/global-PartnerTile.astro'
-import { imageFields, partnerTileFields, videoFields } from '../../components/global/utils/cms-queries';
-import PartnerCard from '../../components/global/partners/global-PartnerCard.astro';
+import { partnerTileFields, videoFields } from '../../components/global/utils/cms-queries';
 import TextHeading from '../../components/global/sections/section-TextHeading.astro';
-import { allPartners_Domaine } from '../../components/global/utils/cms-content';
+import { getPartners_Domaine } from '../../components/global/utils/cms-content';
 import PartnersIndexTier from '../../components/global/partners/partnersIndex-tier.astro';
 import SectionForm from '../../components/global/sections/section-Form.astro';
 import MediaFullbleed from '../../components/global/sections/section-MediaFullbleed.astro';
@@ -19,8 +16,9 @@ const partnerTiers =  await sanityClient.fetch(`
         } | order(orderRank)
     } | order(orderRank)`)
 
+const partners = await getPartners_Domaine()
 const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"] { title, heading, heroMedia{${videoFields}}, text, formHeading, formText, hubspotFormId }[0]`)
-console.log(pageSettings)
+// console.log(pageSettings)
 ---
 <LayoutDomaine
     title={pageSettings.title}
@@ -31,7 +29,7 @@ console.log(pageSettings)
         title={pageSettings.title}
         heading={pageSettings.heading}
         text={pageSettings.text}
-        count={allPartners_Domaine.length}
+        count={partners.length}
     />
 
     <MediaFullbleed 

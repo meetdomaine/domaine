@@ -1,13 +1,9 @@
 ---
 import { sanityClient } from "sanity:client";
 import LayoutDomaine from "../../layouts/Layout-Domaine.astro";
-import { paths } from "../../components/global/utils/paths";
 import ServicesHero from "../../components/domaine/sections/services/services-Hero.astro";
-// import SectionServiceTypeFeature from "../../components/global/sections/section-ServiceType.astro";
-import { allServiceTypes_Domaine } from "../../components/global/utils/cms-content";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
 import { globalSectionsFields } from "../../components/global/utils/cms-queries";
-import SectionForm from "../../components/global/sections/section-Form.astro";
 
 const pageSettings = await sanityClient.fetch(`
     *[_type == "page_services-index-domaine" && _id == "page_services-index-domaine"]{
@@ -37,10 +33,10 @@ const pageSettings = await sanityClient.fetch(`
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
-    <SectionForm 
+    <!-- <SectionForm 
         heading={pageSettings.formHeading}
         text={pageSettings.formText}
         hubspotFormId={pageSettings.hubspotFormId}
-    />
+    /> -->
 
 </LayoutDomaine>

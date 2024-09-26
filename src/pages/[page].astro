@@ -32,7 +32,7 @@ const { content } = Astro.props
     >
     <!-- <h1>{content.title}</h1> -->
         {content.globalSections?.sections.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} />
+            <GlobalSections brand="domaine" section={section} key={i} />
         ))}
     </div>
 </LayoutDomaine>

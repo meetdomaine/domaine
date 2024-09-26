@@ -1,0 +1,18 @@
+---
+import { sanityClient } from 'sanity:client';
+import LayoutStudioProjects from '../../../layouts/Layout-Studio-ProjectsIndex.astro';
+import { getProjects_Studio } from '../../../components/global/utils/cms-content';
+
+const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
+const projects = await getProjects_Studio()
+---
+<LayoutStudioProjects
+    title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
+    description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
+    heading={pageSettings.heading}
+    subheading={pageSettings.subheading}
+    projects={projects}
+    searchFilter="type:page"
+    brand="Studio"
+>
+</LayoutStudioProjects>

@@ -12,14 +12,14 @@ const { currentBrand, activePath, searchExposed } = Astro.props;
 
 import SearchMenu from "./searchMenu/SearchMenu"
 import { 
-    allBlogPosts_Domaine, 
-    allBlogPosts_Studio,
-    allProjects_Domaine,
-    allProjects_Studio,
-    allProjectFeatures_Domaine,
-    allProjectFeatures_Studio,
-    allPartners_Studio,
-    allPartners_Domaine,
+    getProjects_Domaine,
+    getProjectFeatures_Domaine,
+    getProjects_Studio,
+    getProjectFeatures_Studio,
+    getBlogPosts_Domaine,
+    getBlogPosts_Studio,
+    getPartners_Studio,
+    getPartners_Domaine,
 } from "../utils/cms-content"
 
 // const test = await loadQuery({
@@ -28,10 +28,10 @@ import {
 
 
 
-const defaultBlogPosts = currentBrand.slug.current === "/studio" ? allBlogPosts_Studio : allBlogPosts_Domaine
-const defaultProjects = currentBrand.slug.current === "/studio" ? allProjects_Studio : allProjects_Domaine
-const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? allProjectFeatures_Studio : allProjectFeatures_Domaine
-const defaultPartners = currentBrand.slug.current === "/studio" ? allPartners_Studio : allPartners_Domaine
+const defaultBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
+const defaultProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
+const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? await getProjectFeatures_Studio() : await getProjectFeatures_Domaine()
+const defaultPartners = currentBrand.slug.current === "/studio" ? await getPartners_Studio() : await getPartners_Domaine()
 
 const headerSettings = await sanityClient.fetch(`
     *[_type == "settings_header" 

@@ -1,10 +1,9 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineProjects from '../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { projectGridFields, projectsGridQuery, urlFor } from '../../components/global/utils/cms-queries';
-import { allProjects_Domaine } from '../../components/global/utils/cms-content';
+import { getProjects_Domaine } from '../../components/global/utils/cms-content';
 
-const projects = allProjects_Domaine
+const projects = await getProjects_Domaine()
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
 ---
 <LayoutDomaineProjects

@@ -1,16 +1,11 @@
 ---
 import { sanityClient } from "sanity:client"
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
-import { paths } from "../../../components/global/utils/paths"
 import SectionServiceTypeHero from "../../../components/global/services/serviceType-Hero.astro"
-import SectionServiceGroupFeature from "../../../components/global/services/serviceGroup-Feature.astro"
-import { blogCardFields, projectGridFields, serviceTypePageQuery } from "../../../components/global/utils/cms-queries"
+import { serviceTypePageQuery } from "../../../components/global/utils/cms-queries"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
-import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
-import { allServiceTypes_Domaine } from "../../../components/global/utils/cms-content"
 import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro"
-import SectionForm from "../../../components/global/sections/section-Form.astro"
 
 export const prerender = true
 

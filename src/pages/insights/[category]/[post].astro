@@ -1,22 +1,19 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
-import { paths } from '../../../components/global/utils/paths';
-import { blogCardFields, imageFields, projectGridFields, urlFor } from '../../../components/global/utils/cms-queries';
+import { blogCardFields } from '../../../components/global/utils/cms-queries';
 import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
-import SectionProjectsFeed from '../../../components/global/sections/section-ProjectsFeed.astro';
-import AtomRichContent from '../../../components/global/atoms/atom-richContent.astro';
 import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
-import { allBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
+import { getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
 import BlogPostSidebar from '../../../components/global/blog/blogPost-Sidebar.astro';
 
 export const prerender = true
 
 export async function getStaticPaths() {
     // console.log(posts)
-    const posts = await allBlogPosts_Domaine
+    const posts = await getBlogPosts_Domaine()
     return posts.map((post) => {
         return {
             params: { post: post.slug.current, category: post.category.slug.current },
@@ -31,7 +28,15 @@ interface Props {
 
 const { content } = Astro.props;
 
-// const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" && category->_id == '${content._id}' ] | order( postDate desc)`)
+const blogPosts = await getBlogPosts_Domaine()
+
+const relatedPosts = await sanityClient.fetch(`
+    *[_type == "type_blog" 
+        && agencyBrand->slug.current == "/" 
+        && category->_id == '${content.category._id}' 
+        && isHidden != true
+    ]{${blogCardFields}} | order(orderRank asc)`)
+
 ---
 <LayoutDomaine
     title={content.title}
@@ -45,7 +50,7 @@ const { content } = Astro.props;
     
     <BlogPostBody content={content.body}>
         <BlogPostSidebar 
-            latestPosts={allBlogPosts_Domaine.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
+            latestPosts={blogPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
         />
     </BlogPostBody>
 
@@ -55,17 +60,17 @@ const { content } = Astro.props;
         />
     }
 
-    { content.relatedPosts?.length > 1 && 
+    { relatedPosts.length > 1 && 
         <SectionBlogFeed 
             heading="Related Posts"
-            posts={content.relatedPosts.filter((post) => post.slug.current != content.slug.current)}
+            posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
         />
     }
 
-    { content.relatedProjects?.length > 0 && 
+    <!-- { relatedProjects?.length > 0 && 
         <SectionProjectsFeed
             heading="Related Projects"
-            projects={content.relatedProjects}
+            projects={relatedProjects}
         />
-    }
+    } -->
 </LayoutDomaine>

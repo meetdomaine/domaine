@@ -1,20 +1,15 @@
 ---
-import { sanityClient } from "sanity:client"
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
-import { paths } from "../../../components/global/utils/paths"
 import SectionServiceHero from "../../../components/global/services/service-Hero.astro"
-import { blogCardFields, projectGridFields } from "../../../components/global/utils/cms-queries"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
-import SectionProjectsGrid from "../../../components/global/sections/section-ProjectsGrid.astro"
-import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
-import { allServices_Domaine } from "../../../components/global/utils/cms-content"
+import { getServices_Domaine } from "../../../components/global/utils/cms-content"
 import SectionForm from "../../../components/global/sections/section-Form.astro"
 
 // export const prerender = true
 
 export async function getStaticPaths() {
-    const services = allServices_Domaine
+    const services = await getServices_Domaine()
     return services.map((service) => {
         return {
             params: { serviceType: service.serviceGroup.serviceType.slug.current, service: service.slug.current },

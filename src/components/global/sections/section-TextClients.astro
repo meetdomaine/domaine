@@ -3,10 +3,10 @@ import { sanityClient } from "sanity:client"
 import { imageBaseFields, imageFields, urlFor } from "../utils/cms-queries"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomButton from "../atoms/atom-button.astro"
-import { allClients_Domaine, allClients_Studio } from "../utils/cms-content"
+import { getClients_Domaine, getClients_Studio } from "../utils/cms-content"
 const { section, brand, key } = Astro.props
 
-const clients = brand === "studio" ? allClients_Studio : allClients_Domaine
+const clients = brand === "studio" ? await getClients_Studio() : await getClients_Domaine()
 ---
 <section class="section-text-clients">
     <div 

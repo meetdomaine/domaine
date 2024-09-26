@@ -1,0 +1,37 @@
+---
+import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
+import { getProjects_Studio, getServiceGroups_Studio } from '../../../../components/global/utils/cms-content';
+
+export const prerender = true
+
+export async function getStaticPaths() {
+    const serviceGroups = await getServiceGroups_Studio()
+    // const serviceGroup = await sanityClient.fetch(`*[_type == "type_serviceGroup" && 'studio' in agencyBrands[]->slug.current ]{..., "relatedBlogPosts": *[_type=='type_blog' && ^._id in services[]->serviceGroup._ref ]{${blogCardFields} } | order(postDate)}`)
+    return serviceGroups.map((serviceGroup) => {
+        return {
+            params: { serviceGroup: serviceGroup.slug.current },
+            props: { content: serviceGroup }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props
+const allProjects = await getProjects_Studio()
+const projects = allProjects.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
+
+---
+<LayoutStudioProjects 
+    title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}
+    description={content.metafields && content.metafields.description ? content.metafields.description : null}
+    searchFilter="type:project-service-group"
+    heading={content.title}
+    subheading={content.excerpt}
+    projects={projects}
+    currentPath={`/services/${content.slug.current}`}
+    relatedBlogPosts={content.relatedBlogPosts}
+>
+</LayoutStudioProjects>

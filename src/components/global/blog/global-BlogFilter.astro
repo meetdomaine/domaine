@@ -1,11 +1,10 @@
 ---
-import { sanityClient } from 'sanity:client';
-import { allBlogCategories_Domaine, allBlogCategories_Studio } from '../utils/cms-content';
+import { getBlogCategories_Studio, getBlogCategories_Domaine } from '../utils/cms-content';
 import AtomTag from '../atoms/atom-tag.astro';
 
 const { brand, slug } = Astro.props
 
-const blogCategories = brand === "studio" ? allBlogCategories_Studio : allBlogCategories_Domaine
+const blogCategories = brand === "studio" ? await getBlogCategories_Studio() : await getBlogCategories_Domaine()
 // const blogCategories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->slug.current == '${brand}' && references(^._id)] ) > 0]`)
 // console.log(blogCategories)
 ---

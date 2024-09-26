@@ -41,7 +41,7 @@ const currentPath = Astro.url.pathname;
 	<head>
 
 		<!-- Remove once live -->
-		{noIndex && <meta name="robots" content="noindex">}
+		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
 		<!-- Add back once live -->
 		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -117,10 +117,7 @@ const currentPath = Astro.url.pathname;
 		<GlobalPreloader currentBrand={currentBrand} />
 		<GlobalCookieNotice />
 		<slot />
-		<!-- <VisualEditing enabled={visualEditingEnabled} zIndex={1000} /> -->
-		<!-- <lenis /> -->
 		<ViewportAnimation />
-		<!-- <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script> -->
 	</body>
 </html>
 

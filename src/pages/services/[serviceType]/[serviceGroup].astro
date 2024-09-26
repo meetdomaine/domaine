@@ -1,15 +1,14 @@
 ---
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
 import SectionServiceHero from "../../../components/global/services/service-Hero.astro"
-import GlobalProjectsGrid from "../../../components/global/projects/global-ProjectsGrid.astro"
 import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
-import { allServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
+import { getServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
 import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
 import SectionForm from "../../../components/global/sections/section-Form.astro"
 
 
 export async function getStaticPaths() {
-    const serviceGroups = allServiceGroups_Domaine
+    const serviceGroups = await getServiceGroups_Domaine()
     return serviceGroups.map((serviceGroup) => {
         return {
             params: { serviceType: serviceGroup.serviceType.slug.current, serviceGroup: serviceGroup.slug.current },

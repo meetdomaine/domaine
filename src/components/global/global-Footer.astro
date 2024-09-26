@@ -1,12 +1,13 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
-import { agencyBrands, practices } from "./utils/cms-content"
+import { getAgencyBrands } from "./utils/cms-content"
 
 const { currentBrand, footerSettings } = Astro.props
 
 // const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]`)
 // console.log(footerSettings)
+const agencyBrands = await getAgencyBrands()
 ---
 <footer data-color-scheme="brand-02">
     <div class="footer-inner">

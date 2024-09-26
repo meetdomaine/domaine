@@ -1,0 +1,38 @@
+---
+import { sanityClient } from 'sanity:client';
+import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
+import { getBlogCategories_Studio, getBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
+
+export const prerender = true
+
+export async function getStaticPaths() {
+    const categories = await getBlogCategories_Studio()
+    return categories.map((category) => {
+        // console.log(category)
+        return {
+            params: { category: category.slug.current },
+            props: { content: category }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props;
+
+const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
+const allBlogPosts = await getBlogPosts_Studio()
+const blogPosts = allBlogPosts.filter((post) => post.category._id === content._id)
+---
+<LayoutStudioBlogIndex
+    pageSetting={pageSettings}
+    blogPosts={blogPosts}
+    heading={content.title}
+    subheading="Lorem ipsum dolor sit amet."
+    searchFilter="type:blog-category"
+    slug={content.slug}
+>
+
+</LayoutStudioBlogIndex>

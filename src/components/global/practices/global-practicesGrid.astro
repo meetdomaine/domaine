@@ -1,8 +1,10 @@
 ---
-import { agencyBrands, practices, allLocations } from "../utils/cms-content";
+import { getAgencyBrands, getLocations } from "../utils/cms-content";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { Icon } from "astro-icon/components";
 
+const agencyBrands = await getAgencyBrands()
+const allLocations = await getLocations()
 ---
 <div class="practices-grid">
 
