@@ -102,6 +102,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
+        gap: var(--space-xs);
     }
 
     .tags,
@@ -121,6 +122,14 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
     .partner-tile {
         border-radius: var(--radius-sm);
         overflow: hidden;
+    }
+
+    @media screen and (width <= 768px) {
+        .services,
+        .features,
+        .partners {
+            flex-direction: column;
+        }
     }
 
 </style>
