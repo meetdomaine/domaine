@@ -73,7 +73,7 @@ const relatedBlogPosts = await sanityClient.fetch(`
         ]}
     />
 
-    {content.pageSectionsDomaine.sections?.map((section, i) => (
+    {content.pageSectionsDomaine?.sections?.map((section, i) => (
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
