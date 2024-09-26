@@ -4,6 +4,7 @@ import LayoutGlobal from './Layout-Global.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
+import { getBrandSettings_Domaine, getFooterSettings_Domaine } from "../components/global/utils/cms-content"
 
 interface Props {
 	title: string;
@@ -21,8 +22,13 @@ interface Props {
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
 
 // console.log('layout')
-const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
-const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]`)
+let _currentBrand = undefined
+const getCurrentBrand = async () => {
+    
+}
+
+const currentBrand = await getBrandSettings_Domaine()
+const footerSettings = await getFooterSettings_Domaine()
 
 ---
 <LayoutGlobal

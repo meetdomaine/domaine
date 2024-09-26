@@ -39,7 +39,7 @@ const { content } = Astro.props;
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
-    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
+    {content.relatedBlogPosts && content.relatedBlogPosts?.length > 0 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
             posts={content.relatedBlogPosts}

@@ -14,6 +14,8 @@ import {
 
 // CMS Content Cache
 let _agencyBrands = undefined
+let _brandSettings_Domaine = undefined
+let _brandSettings_Studio = undefined
 let _blogPosts_Domaine = undefined
 let _blogPosts_Studio = undefined
 let _blogCategories_Domaine = undefined
@@ -36,12 +38,39 @@ let _serviceTypes_Domaine = undefined
 let _serviceTypes_Studio = undefined
 let _services_Domaine = undefined
 let _services_Studio = undefined
+let _footerSettings_Domaine = undefined
+let _footerSettings_Studio = undefined
 
 // Agency Brands
 export const getAgencyBrands = async () => {
   if (_agencyBrands) return _agencyBrands
   _agencyBrands = await sanityClient.fetch(`*[_type == 'type_agencyBrand']{${agencyBrandsQuery}} | order(orderRank)` )
   return _agencyBrands
+}
+
+export const getBrandSettings_Domaine = async () => {
+  if (_brandSettings_Domaine) return _brandSettings_Domaine
+  _brandSettings_Domaine = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
+  return _brandSettings_Domaine
+}
+
+export const getBrandSettings_Studio = async () => {
+  if (_brandSettings_Studio) return _brandSettings_Studio
+  _brandSettings_Studio = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`)
+  return _brandSettings_Studio
+}
+
+export const getFooterSettings_Domaine = async () => {
+  if (_footerSettings_Domaine) return _footerSettings_Domaine
+  _footerSettings_Domaine = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]`)
+  console.log('footer fetch')
+  return _footerSettings_Domaine
+}
+
+export const getFooterSettings_Studio = async () => {
+  if (_footerSettings_Studio) return _footerSettings_Studio
+  _footerSettings_Studio = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`)
+  return _footerSettings_Studio
 }
 
 // Blog - All

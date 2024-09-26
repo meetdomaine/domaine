@@ -6,6 +6,7 @@ import Footer from '../components/global/global-Footer.astro';
 import '../styles/studio/typography.css'
 import '../styles/studio/color.css'
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
+import { getBrandSettings_Studio, getFooterSettings_Studio } from '../components/global/utils/cms-content';
 
 interface Props {
 	title: string,
@@ -19,8 +20,8 @@ interface Props {
 
 const { title, description, image, theme, searchFilter, activePath, searchExposed } = Astro.props;
 
-const currentBrand = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`)
-const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]`)
+const currentBrand = await getBrandSettings_Studio()
+const footerSettings = await getFooterSettings_Studio()
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
