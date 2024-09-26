@@ -5,7 +5,7 @@ import { getClientsIndustries_Domaine, getProjects_Domaine } from '../../../comp
 export const prerender = true
 
 export async function getStaticPaths() {
-    const industries = getClientsIndustries_Domaine()
+    const industries = await getClientsIndustries_Domaine()
     return industries.map((industry) => {
         return {
             params: { industry: industry.slug.current },

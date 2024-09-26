@@ -55,7 +55,7 @@ const { content } = Astro.props;
         />
     } -->
 
-    {content.relatedProjects.length > 0 &&
+    {content.relatedProjects?.length > 0 &&
         <SectionProjectsFeed 
             heading={`${content.title} Work`}
             projects={content.relatedProjects}

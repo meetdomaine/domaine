@@ -1,7 +1,6 @@
 ---
 import { urlFor } from '../components/global/utils/cms-queries';
 import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
-import {VisualEditing} from '@sanity/astro/visual-editing'
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -11,7 +10,6 @@ import '../styles/global/typography.css'
 import '../styles/global/color.css'
 import '../styles/global/buttons.css'
 import '../styles/global/forms.css'
-// import l../components/global/utils/leniss/lenis'
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
@@ -27,9 +25,6 @@ interface Props {
 	currentBrand: any,
 	noIndex?: boolean,
 }
-
-// console.log('root')
-// const visualEditingEnabled = import.meta.env.SANITY_VISUAL_EDITING_ENABLED == 'true'
 
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex } = Astro.props;
 const currentPath = Astro.url.pathname;
