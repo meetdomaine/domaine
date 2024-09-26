@@ -53,7 +53,7 @@ export const projectGridFields = `
   industry->{..., _id },
   agencyBrand->{slug},
   partners[]->{..., _id}, 
-  client->{title, logoDark{${imageFields}}, logoLight{${imageFields}}, "logo": logo.asset->url, logoWidthProjectCard, productImage{${imageBaseFields}}, isEnterprise },
+  client->{title, logoDark{${imageFields}}, logoLight{${imageFields}}, "logo": logo.asset->url, logoScale, productImage{${imageBaseFields}}, isEnterprise },
   logoColor,
   features[]->{ title, slug, _id } | order(orderRank), 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
@@ -126,7 +126,7 @@ export const globalSectionsFields = `
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
     _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label }, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
-    _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, clients[]->{ title, slug, "logo": logo.asset->url, logoScale, logoWidthProjectCard }, quoteClient->{"logo": logo.asset->url}, text, button },
+    _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, clients[]->{ title, slug, "logo": logo.asset->url, logoScale }, quoteClient->{"logo": logo.asset->url}, text, button },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
 `
 

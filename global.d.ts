@@ -122,6 +122,7 @@ declare interface ClientCard {
     isEnterprise: boolean,
     logo: string,
     logoWidthProjectCard: number,
+    logoScale: number,
 }
 
 declare interface BlogCard {

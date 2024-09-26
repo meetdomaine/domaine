@@ -40,7 +40,7 @@ if (project.client?.logo) {
             <div 
                 class="client-logo" 
                 data-color-scheme={project.logoColor === "dark" ? "default" : "invert"}
-                style={`width: ${project.client.logoWidthProjectCard}%`}
+                style={`width: ${project.client.logoScale / 2}%`}
             >
                 <Fragment set:html={clientLogo} />
             </div>
@@ -141,7 +141,7 @@ if (project.client?.logo) {
         top: var(--space-sm);
         left: var(--space-sm);
         /* inset: var(--space-sm); */
-        max-width: calc(50% - var(--space-sm) * 2);
+        max-width: calc(100% - var(--space-sm) * 2);
         /* max-width: min(30%, 10em); */
         /* height: 8%; */
         background-color: transparent;

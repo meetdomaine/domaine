@@ -69,22 +69,22 @@ export default defineType({
       type: 'file',
       validation: Rule => Rule.required(),
     }),
-    defineField({
-      name: 'logoWidthProjectCard',
-      title: 'Logo Width: Project Card',
-      description: "Width (%) of logo in project card. Max 50%.",
-      initialValue: 50,
-      type: 'number',
-      validation: Rule => Rule.integer().greaterThan(0).max(50),
-    }),
+    // defineField({
+    //   name: 'logoWidthProjectCard',
+    //   title: 'Logo Width: Project Card',
+    //   description: "Width (%) of logo in project card. Max 50%.",
+    //   initialValue: 50,
+    //   type: 'number',
+    //   validation: Rule => Rule.integer().greaterThan(0).max(50),
+    // }),
     defineField({
       name: 'logoScale',
       title: 'Logo: Scale Offset',
       description: "DONT USE FOR NOW. Width offset (0-100%) for logo.",
       initialValue: 75,
       type: 'number',
-      deprecated: true
-      // validation: Rule => Rule.integer().greaterThan(0).max(100),
+      // deprecated: true,
+      validation: Rule => Rule.integer().greaterThan(0).max(100),
     }),
     // defineField({
     //   name: 'agencyBrands',
