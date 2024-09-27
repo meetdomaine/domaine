@@ -8,6 +8,7 @@ import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
 import { getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
 import BlogPostSidebar from '../../../components/global/blog/blogPost-Sidebar.astro';
+import GlobalSections from '../../../components/global/sections/section-GlobalSections.astro';
 
 export const prerender = true
 
@@ -59,6 +60,10 @@ const relatedPosts = await sanityClient.fetch(`
             authors={content.authors}
         />
     }
+
+    {content.globalSections && content.globalSections.sections.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
+    ))}
 
     { relatedPosts.length > 1 && 
         <SectionBlogFeed 

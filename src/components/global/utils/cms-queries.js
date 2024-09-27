@@ -212,6 +212,7 @@ export const blogQuery = `
   category->{..., slug{...} }, 
   body[]{${richContentFields}},
   agencyBrand->{slug},
+  globalSections{ sections[]{${globalSectionsFields}} }
 `
 
 export const eventQuery = `
