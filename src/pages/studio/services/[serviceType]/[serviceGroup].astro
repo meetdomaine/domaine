@@ -48,19 +48,19 @@ const { content, serviceType } = Astro.props;
         ]}
     />
 
-    {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
+    <!-- {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
         <SectionBlogFeed 
             heading={`${content.title} Insights`}
             posts={content.relatedBlogPosts}
         />
-    }
+    } -->
 
-    {content.relatedProjects && content.relatedProjects.length > 0 &&
+    <!-- {content.relatedProjects && content.relatedProjects.length > 0 &&
         <GlobalProjectsGrid 
             heading={`${content.title} Work`}
             projects={content.relatedProjects}
         />
-    }
+    } -->
 </LayoutStudio>
 
 <style>

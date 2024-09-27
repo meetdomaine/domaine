@@ -67,20 +67,20 @@ const relatedBlogPosts = await sanityClient.fetch(`
         />
     }
 
-    {relatedProjects.length > 1 &&
+    <!-- {relatedProjects.length > 1 &&
         <SectionProjectsFeed 
             heading={`${content.title} Work`}
             projects={relatedProjects}
             sidebarTitle={content.title}
         />
-    }
+    } -->
 
-    {serviceType.formHeading && serviceType.hubspotFormId &&
+    <!-- {serviceType.formHeading && serviceType.hubspotFormId &&
         <SectionForm 
             heading={serviceType.formHeading}
             text={serviceType.formText}
             hubspotFormId={serviceType.hubspotFormId}
         />
-    }
+    } -->
 
 </LayoutDomaine>
