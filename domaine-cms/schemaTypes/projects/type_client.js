@@ -80,7 +80,7 @@ export default defineType({
     defineField({
       name: 'logoScale',
       title: 'Logo: Scale Offset',
-      description: "DONT USE FOR NOW. Width offset (0-100%) for logo.",
+      description: "Width offset (0-100%) for logo.",
       initialValue: 75,
       type: 'number',
       // deprecated: true,

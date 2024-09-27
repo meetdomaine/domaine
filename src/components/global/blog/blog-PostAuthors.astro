@@ -3,16 +3,17 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 
 const { authors } = Astro.props
+console.log(authors)
 ---
 <section class="blog-post-authors">
-    <h2 class="h5">Authors</h2>
+    <h2 class="section-title h5">Authors</h2>
     <div class="authors">
         {authors.map((author) => (
             <div class="author">
                 <div class="author-media">
                     <AtomSanityImage 
                         sizes="20vw"
-                        image={author.image}
+                        image={author.image.image}
                     />
                 </div>
                 <div class="author-details">
@@ -46,19 +47,23 @@ const { authors } = Astro.props
     .authors {
         display: flex;
         flex-direction: column;
-        gap: var(--space-lg);
+        gap: var(--space-xl);
+        align-items: stretch;
+        /* flex: 0 1 max-content; */
         flex: 0 0 50rem;
+        /* flex: 0 0 50rem; */
     }
 
     .author {
         display: flex;
         flex-direction: row;
         gap: var(--space-md);
-        flex-wrap: wrap;
+        max-width: 100%;
     }
 
     .author-media {
         flex: 0 0 25%;
+        max-width: 12rem;
     }
 
     .author-details {
@@ -66,10 +71,8 @@ const { authors } = Astro.props
         flex-direction: column;
         align-items: flex-start;
         gap: var(--space-xs);
-        flex: 0 1 100%;
-        /* min-width: min(20rem, 100%); */
-        /* max-width: 30rem; */
-        /* flex: 0 0 30rem; */
+        flex: 0 1 calc(75% - var(--space-md));
+        /* min-width: calc(75% - var(--space-md)); */
     }
 
     .author-title {
@@ -82,5 +85,33 @@ const { authors } = Astro.props
 
     .name {
         margin: 0;
+    }
+
+    @media screen and (width <= 768px) {
+
+        .section-title {
+            align-self: flex-end;
+        }
+
+        .blog-post-authors {
+            flex-direction: column;
+        }
+
+        .authors {
+            flex: 0 0 auto;
+        }
+
+        .author {
+            /* flex-direction: column; */
+            flex-wrap: wrap;
+        }
+
+        .author-details {
+            min-width: 30rem;
+        }
+
+        .author-media {
+
+        }
     }
 </style>

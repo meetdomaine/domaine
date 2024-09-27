@@ -203,7 +203,7 @@ export const clientQuery = `title, orderRank, logoDark{${imageBaseFields}}, logo
 export const blogQuery = `
   ..., 
   _id,
-  authors[]->{name, role, bio, ${imageFields}, department->{title} },
+  authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
   postDate,
   thumbnailImage{${imageFields}},
   category->{..., slug{...} }, 
