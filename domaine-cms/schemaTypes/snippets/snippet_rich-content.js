@@ -71,7 +71,8 @@ export default defineType({
         name: 'images',
         title: 'Images',
         type: 'array',
-        of: [{ type: 'snippet_image' }]
+        of: [{ type: 'snippet_image' }],
+        validation: Rule => Rule.required()
       }],
       preview: {
         select: {
@@ -95,6 +96,7 @@ export default defineType({
             name: 'heading',
             title: 'Heading',
             type: 'string',
+            validation: Rule => Rule.required()
           },
           {
             name: 'subheading',
@@ -105,6 +107,7 @@ export default defineType({
             name: 'button',
             title: 'Button',
             type: 'snippet_button',
+            validation: Rule => Rule.required()
           },
       ],
       preview: {
@@ -193,6 +196,7 @@ export default defineType({
           name: 'markup',
           title: 'Markup',
           type: 'text',
+          validation: Rule => Rule.required(),
         }
       ],
       preview: {
