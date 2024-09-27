@@ -2,7 +2,7 @@
 import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 
 const { subservices, brand, title, description, excerpt, breadcrumbs } = Astro.props
-// console.log(service.description)
+console.log(subservices)
 ---
 <section class="service-hero">
     <div class="section=title">
@@ -26,6 +26,7 @@ const { subservices, brand, title, description, excerpt, breadcrumbs } = Astro.p
                         title={subservice.title}
                         url={`${brand === "studio" ? "/studio" : ""}/services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.slug.current}`}
                         excerpt={subservice.excerpt}
+                        isHidden={subservice.isHidden}
                     />
                 )) }
             </div>

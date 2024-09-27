@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 
@@ -8,7 +7,13 @@ const { section, brand, key } = Astro.props
 const currentSlug = brand === "studio" ? "/studio" : "/"
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
-    <h2><a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title title-xl">{section.featuredService.title}</a></h2>
+    <h2>
+        {section.featuredService.isHidden ? 
+        <div class="service-type-title title-xl">{section.featuredService.title}</div>
+        :
+        <a href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title title-xl">{section.featuredService.title}</a>
+        }
+    </h2>
     <div class="section-content">
 
         <p class="service-type-heading h4">{section.featuredService.excerpt}</p>
@@ -16,12 +21,17 @@ const currentSlug = brand === "studio" ? "/studio" : "/"
             {section.featuredService._type === "type_serviceType" ? 
                 section.featuredService.serviceGroups.filter((group) => group.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((serviceGroup) => (
                     <div class="services">
-                        <a class="service-group-title h6" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a>
+                        {serviceGroup.isHidden ? 
+                            <div class="service-group-title h6">{serviceGroup.title}</div>
+                            :
+                            <a class="service-group-title h6" href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}>{serviceGroup.title}</a>
+                        }
                         {serviceGroup.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                             <AtomServiceLink 
                                 title={service.title}
                                 url={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService.slug.current}/${service.slug.current}`}
                                 excerpt={service.excerpt}
+                                isHidden={service.isHidden}
                             />
                         ))}
                     </div>
@@ -31,6 +41,7 @@ const currentSlug = brand === "studio" ? "/studio" : "/"
                         title={service.title}
                         url={`${brand === "studio" ? "/studio" : ""}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}
                         excerpt={service.excerpt}
+                        isHidden={service.isHidden}
                     />
                 ))
             }

@@ -6,19 +6,32 @@ interface Props {
   title: string,
   url: string,
   excerpt?: string,
+  isHidden: boolean,
 }
 
-const { title, url, excerpt } = Astro.props
+const { title, url, excerpt, isHidden } = Astro.props
 ---
-<a class="service" href={url}>
-  <p class="service-title">{title}</p>
-  <Icon name="arrow-forward" />
-  { excerpt && 
-      <div class="service-detail" data-color-scheme="glass-light">
-          <p>{excerpt}</p> 
-      </div>
-  }
-</a>
+{isHidden ? 
+    <div class="service">
+        <p class="service-title">{title}</p>
+        { excerpt && 
+            <div class="service-detail" data-color-scheme="glass-light">
+                <p>{excerpt}</p> 
+            </div>
+        }
+    </div>
+:
+    <a class="service" href={url}>
+        <p class="service-title">{title}</p>
+        <Icon name="arrow-forward" />
+        { excerpt && 
+            <div class="service-detail" data-color-scheme="glass-light">
+                <p>{excerpt}</p> 
+            </div>
+        }
+    </a>
+}
+
 
 <style>
 
@@ -42,6 +55,7 @@ const { title, url, excerpt } = Astro.props
   .service::after {
       content: "";
       position: absolute;
+      /* pointer-events: none; */
       left: 0;
       bottom: 0;
       right: 0;
@@ -63,7 +77,7 @@ const { title, url, excerpt } = Astro.props
       /* color: var(--color-background); */
       /* mix-blend-mode: difference; */
       opacity: 0;
-      pointer-events: none;
+      /* pointer-events: none; */
       transition: opacity var(--anim-sm), translate var(--anim-sm);
       padding: var(--space-2xs);
       border-radius: var(--radius-sm);

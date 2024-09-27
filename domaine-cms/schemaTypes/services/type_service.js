@@ -24,6 +24,12 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'isHidden',
+      title: 'Hidden',
+      description: 'Removes internal links to the Service page, but keeps the page live.',
+      type: 'boolean',
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'string',

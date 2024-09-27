@@ -66,6 +66,7 @@ export const projectGridFields = `
 
 export const serviceQuery = `
   ...,
+  isHidden,
   excerpt,
   description,
   agencyBrands[]->{..., slug, name},
@@ -77,6 +78,7 @@ export const serviceQuery = `
 
 export const serviceGroupQuery = `
   ..., 
+  isHidden,
   excerpt,
   images[]{${imageFields}},
   agencyBrands[]->{..., slug, name},
@@ -86,6 +88,7 @@ export const serviceGroupQuery = `
 
 export const serviceTypeQuery = `
   ...,
+  isHidden,
   excerpt,
   images[]{${imageFields}},
   agencyBrands[]->{..., slug, name},
