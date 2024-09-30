@@ -12,6 +12,12 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'series',
+      title: 'Series',
+      type: 'string',
+      description: "Optional name of series this post belongs to (ex. 'Domaine Migrations')"
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',

@@ -4,6 +4,7 @@ import AtomTag from "../atoms/atom-tag.astro"
 
 interface Props {
     title: string,
+    series: string,
     slug: any,
     thumbnailImage: any,
     category: any,
@@ -11,7 +12,7 @@ interface Props {
     postDate: any,
 }
 
-const { title, thumbnailImage, slug, category, agencyBrand, postDate } = Astro.props
+const { title, series, thumbnailImage, slug, category, agencyBrand, postDate } = Astro.props
 
 const categoryUrl = `${agencyBrand.slug.current == '/studio' ? '/studio' : ""}/insights/${category.slug.current}`
 const postUrl = `${categoryUrl}/${slug.current}`
@@ -20,6 +21,7 @@ const date = new Date(postDate)
 const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
 ---
 <article class="blog-card" data-animate-viewport="true" data-animation="fade" data-pagefind-ignore>
+    
     <a href={postUrl} class="card-media">
         <AtomSanityMedia
             image={thumbnailImage.image}
@@ -27,6 +29,10 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
             sizes="30vw"
         />
     </a>
+    <div class="card-text">
+        {series && <p class="card-series caption">{series}</p>}
+        <a href={postUrl} class="card-title h6">{title}</a>
+    </div>
     <div class="card-info">
         <AtomTag
             title={category.title}
@@ -34,7 +40,6 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
         />
         {postDate && <p class="date caption">{formattedDate}</p>}
     </div>
-    <a href={postUrl} class="card-title h6">{title}</a>
 
 </article>
 
@@ -75,6 +80,13 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
     .date {
         margin: 0;
         color: var(--color-foreground-secondary);
+    }
+
+    .card-text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+        /* justify-content: space-between; */
     }
 
     .card-title {

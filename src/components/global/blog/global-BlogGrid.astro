@@ -11,6 +11,7 @@ const { blogPosts } = Astro.props
     {blogPosts.map((blogPost) => (
         <GlobalBlogCard 
             title={blogPost.title}
+            series={blogPost.series}
             postDate={blogPost.postDate}
             category={blogPost.category}
             slug={blogPost.slug}
