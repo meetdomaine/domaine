@@ -19,10 +19,13 @@ const { post } = Astro.props
     </div>
 
     <div class="section-content">
-        <h1 
-            class="post-title h2"
-            data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
-        >{post.title}</h1>
+        <div class="section-title">
+            {post.series && <p class="h6">{post.series}</p>}
+            <h1 
+                class="post-title h2"
+                data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
+            >{post.title}</h1>
+        </div>
 
         <div class="post-info">
             <div class="post-details">
@@ -68,6 +71,12 @@ const { post } = Astro.props
         flex: 0 0 50%;
         /* max-height: 100%; */
         /* max-width: 50%; */
+    }
+
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
     }
 
     .section-content {
