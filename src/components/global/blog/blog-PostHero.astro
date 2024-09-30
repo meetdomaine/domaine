@@ -63,12 +63,14 @@ const { post } = Astro.props
         display: flex;
         flex-direction: row;
         justify-content: stretch;
-        height: 90svh;
+        align-items: flex-start;
+        /* height: 90svh; */
     }
 
     .section-media {
-        /* aspect-ratio: 3 / 4; */
-        flex: 0 0 50%;
+        aspect-ratio: 3 / 4;
+        flex: 1 1 50%;
+        min-width: 0;
         /* max-height: 100%; */
         /* max-width: 50%; */
     }
@@ -83,10 +85,13 @@ const { post } = Astro.props
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        align-self: stretch;
         justify-content: space-between;
         padding-inline: var(--page-margin);
         padding-block: calc(var(--header-height) + var(--space-md)) var(--space-lg);
-        flex: 1 1 auto;
+        /* flex: 1 1 auto; */
+        flex: 1 1 50%;
+        min-width: 30rem;
         /* max-width: 40em; */
     }
 
