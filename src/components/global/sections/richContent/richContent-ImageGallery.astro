@@ -18,7 +18,32 @@ const { node } = Astro.props
 <style>
     .image-gallery {
         padding-block: var(--space-lg);
-        background-color: var(--color-background-secondary);
+        /* background-color: var(--color-background-secondary); */
         margin-block: var(--space-xl);
+        position: relative;
+        cursor: grab;
+    }
+
+
+    .image-gallery::before,
+    .image-gallery::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 2rem;
+        background-color: red;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .image-gallery::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--color-background), transparent);
+    }
+
+    .image-gallery::after {
+        right: 0;
+        background: linear-gradient(90deg, transparent, var(--color-background));
     }
 </style>

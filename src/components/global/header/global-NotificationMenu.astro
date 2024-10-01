@@ -162,6 +162,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
       pageEndOpen = true
       notificationMenu.showPopover()
+      notificationMenu.blur()
     } else if (newScroll < currentScroll && pageEndOpen) {
       pageEndOpen = false
       notificationMenu.hidePopover()

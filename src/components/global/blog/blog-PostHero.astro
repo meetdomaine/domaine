@@ -4,6 +4,9 @@ import AtomTag from "../atoms/atom-tag.astro"
 import GlobalAuthorTile from "./global-AuthorTile.astro"
 
 const { post } = Astro.props
+
+const date = new Date(post.postDate)
+const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
 ---
 <section class="blog-post-hero">
 
@@ -37,7 +40,7 @@ const { post } = Astro.props
                     url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}
                 />
 
-                <p class="caption">{post.postDate}</p>
+                <p class="caption">{formattedDate}</p>
 
                 <span class="post-authors">
                     <span class="caption">by:</span>
@@ -88,7 +91,7 @@ const { post } = Astro.props
         align-self: stretch;
         justify-content: space-between;
         padding-inline: var(--page-margin);
-        padding-block: calc(var(--header-height) + var(--space-md)) var(--space-lg);
+        padding-block: calc(var(--header-height) + var(--space-xl)) var(--space-lg);
         /* flex: 1 1 auto; */
         flex: 1 1 50%;
         min-width: 30rem;
