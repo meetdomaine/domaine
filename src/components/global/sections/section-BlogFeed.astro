@@ -39,7 +39,7 @@ if (featuredPost) {
     featuredPostDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
 }
 ---
-<section class="section-blog-feed" data-color-scheme="brand-01">
+<section class="section-blog-feed" data-color-scheme="brand-01" data-pagefind-ignore>
     <div class="section-title">
         <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
         {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}

@@ -111,16 +111,16 @@ export const getProjects_Studio = async () => {
   return _projects_Studio
 }
 
-// Project Features - All
+// Project Features - All (Only get features used on 3+ projects)
 export const getProjectFeatures_Domaine = async () => {
   if (_projectFeatures_Domaine) return _projectFeatures_Domaine
-  _projectFeatures_Domaine = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{${projectFeatureQuery} } | order( orderRank asc)`)
+  _projectFeatures_Domaine = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{${projectFeatureQuery} } | order( title asc)`)
   return _projectFeatures_Domaine
 }
 
 export const getProjectFeatures_Studio = async () => {
   if (_projectFeatures_Studio) return _projectFeatures_Studio
-  _projectFeatures_Studio = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]) > 0 ]{${projectFeatureQuery} } | order( orderRank asc)`)
+  _projectFeatures_Studio = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]) > 0 ]{${projectFeatureQuery} } | order( title asc)`)
   return _projectFeatures_Studio
 }
 

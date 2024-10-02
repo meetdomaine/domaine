@@ -26,7 +26,7 @@ if (section.quoteClient) {
         {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
         <h2 class="h3">{section.heading}</h2>
     </div>
-    <div class="client-logos">
+    <!-- <div class="client-logos"> -->
         <div 
             class="logo-track"
         >
@@ -45,7 +45,7 @@ if (section.quoteClient) {
                 </a>
             ))}
         </div>
-    </div>
+    <!-- </div> -->
     <div class="section-content">
         {section.quote && section.quoteAuthor &&
             <div class="client-quote">
@@ -118,7 +118,8 @@ if (section.quoteClient) {
         align-items: center;
         width: max-content;
         gap: var(--gap);
-        animation: ticker-scroll 20s linear infinite;
+        translate: calc(-50%) 0;
+        /* animation: ticker-scroll 20s linear infinite; */
     }
 
     @keyframes ticker-scroll {

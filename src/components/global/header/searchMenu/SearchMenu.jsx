@@ -123,7 +123,7 @@ export default function SearchMenu(props) {
             await getFilteredResults('partner', setPartnerResults, 5)
             await getFilteredResults('project-feature', setFeatureResults, 10)
 
-            console.log(partnerResults())
+            // console.log(partnerResults())
         }
     }
 

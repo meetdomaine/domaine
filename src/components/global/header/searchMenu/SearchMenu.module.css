@@ -143,8 +143,8 @@
 .projectImage {
     min-width: 0;
     max-width: 100%;
-    aspect-ratio: 1 / 1;
-    /* aspect-ratio: 3 / 4; */
+    /* aspect-ratio: 1 / 1; */
+    aspect-ratio: 3 / 4;
     object-fit: cover;
 }
 
