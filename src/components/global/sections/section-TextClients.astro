@@ -118,8 +118,8 @@ if (section.quoteClient) {
         align-items: center;
         width: max-content;
         gap: var(--gap);
-        translate: calc(-50%) 0;
-        /* animation: ticker-scroll 20s linear infinite; */
+        /* translate: calc(-50%) 0; */
+        animation: ticker-scroll 20s linear infinite;
     }
 
     @keyframes ticker-scroll {
@@ -164,6 +164,7 @@ if (section.quoteClient) {
         padding-inline-start: var(--space-xl);
         padding-block: var(--space-sm);
         gap: var(--space-sm);
+        max-width: 34rem;
     }
 
     .quote-text {
