@@ -50,6 +50,11 @@ const { title, text, url, image, newTab } = Astro.props
         flex: 0 0 20%;
     }
 
+    .card-media :global(img) {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
     .card-content {
         display: flex;
         flex-direction: row;
