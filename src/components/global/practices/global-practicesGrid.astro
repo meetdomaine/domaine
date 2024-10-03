@@ -4,7 +4,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { Icon } from "astro-icon/components";
 
 const agencyBrands = await getAgencyBrands()
-const allLocations = await getLocations()
+// const allLocations = await getLocations()
 ---
 <div class="practices-grid">
 
@@ -28,7 +28,7 @@ const allLocations = await getLocations()
 
     <div class="section-content">
 
-      <div class="locations">
+      <!-- <div class="locations">
         {allLocations.locations.filter((location) => location.isPrimary).map((location) => (
           <div class="location-card">
             <div class="card-title">
@@ -83,7 +83,7 @@ const allLocations = await getLocations()
           <p class="brand-heading h6">{agencyBrands[1].excerpt}</p>
         </div>
       </a>
-    </div>
+    </div> -->
   </div>
 
 <script>

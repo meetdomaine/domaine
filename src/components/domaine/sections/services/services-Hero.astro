@@ -13,15 +13,11 @@ const serviceCount = services.length
         <AtomCounter count={serviceCount} />
     </div>
     <div class="section-content">
-        <!-- <p class="heading">{heading}</p> -->
+        <h3 class="heading h4">{heading}</h3>
         <div class="service-buttons">
-            <span class="h6">{heading}</span>
-                {serviceTypes.map((serviceType, i) => (
-                    <span class="h6">
-                        {i === serviceTypes.length - 1 ? "and" : ""}
-                        <button class="serviceType-jumplink button-reset h6" data-slug={serviceType.slug.current}>{serviceType.title}</button>{i < serviceTypes.length - 2 ? "," : ""}{i === serviceTypes.length - 1 ? "." : ""}
-                    </span>
-                ))}
+            {serviceTypes.map((serviceType, i) => (
+                <button class="serviceType-jumplink" data-slug={serviceType.slug.current}>{serviceType.title}</button>
+            ))}
         </div>
     </div>
 </section>
@@ -53,22 +49,28 @@ const serviceCount = services.length
     .section-content {
         display: flex;
         flex-direction: column;
-        gap: var(--space-4xl);
+        gap: var(--space-sm);
     }
 
     .heading {
-        max-width: 12em;
+        max-width: 20em;
     }
 
     .service-buttons {
         max-width: 40em;
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-xs);
     }
 
-    .service-buttons button {
-        text-decoration: underline;
-        text-transform: inherit;
-        display: inline;
-        /* padding: 0.2em 0.4em; */
+    .serviceType-jumplink {
+        padding: 0.2em 0.4em;
+        transition: color var(--anim-sm), background-color var(--anim-sm);
+    }
+
+    .serviceType-jumplink:hover {
+        color: var(--color-background);
+        background-color: var(--color-foreground);
     }
 
     @media screen and ( width <= 768px) {

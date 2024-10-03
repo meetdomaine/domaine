@@ -24,6 +24,7 @@ import LinkList from "./section-LinkList.astro"
 import Quote from "./section-Quote.astro"
 import RichContent from "./section-RichContent.astro"
 import TextHeading from "./section-TextHeading.astro"
+import LocationsFeed from "./section-LocationsFeed.astro"
 
 const { section, brand, key } = Astro.props
 ---
@@ -31,6 +32,7 @@ const { section, brand, key } = Astro.props
 {section._type == "section_contentBlocks" && section.showSection && <ContentBlocks section={section} brand={brand} key={key} />}
 {section._type == "section_form" && section.showSection && <Form section={section} brand={brand} key={key} />}
 {section._type == "section_imageFullHeight" && section.showSection && <ImageFullHeight section={section} brand={brand} key={key} />}
+{section._type == "section_locationsFeed" && section.showSection && <LocationsFeed section={section} brand={brand} key={key} />}
 {section._type == "section_linkList" && section.showSection && <LinkList section={section} brand={brand} key={key} />}
 {section._type == "section_mediaCarousel" && section.showSection && <MediaCarousel section={section} brand={brand} key={key} />}
 {section._type == "section_partnersFeed" && section.showSection && <PartnersFeed section={section} brand={brand} key={key} />}

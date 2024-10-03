@@ -212,7 +212,7 @@ export const getEvents = async () => {
 // Locations
 export const getLocations = async () => {
   if (_locations) return _locations
-  _locations = await sanityClient.fetch(`*[_type == "settings_locations"]{${locationsQuery}}[0]`)
+  _locations = await sanityClient.fetch(`*[_type == "type_location"]{${locationsQuery}} | order(orderRank)`)
   return _locations
 }
 

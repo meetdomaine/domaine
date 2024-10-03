@@ -15,6 +15,7 @@ export default defineType({
         { type: 'section_contentBlocks'},
         { type: 'section_form'},
         { type: 'section_imageFullHeight'},
+        { type: 'section_locationsFeed'},
         { type: 'section_linkList'},
         { type: 'section_mediaCarousel'},
         { type: 'section_projectsFeed'},

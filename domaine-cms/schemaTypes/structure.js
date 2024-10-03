@@ -594,6 +594,13 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
+                    orderableDocumentListDeskItem({
+                        type: 'type_location',
+                        title: labelLocation,
+                        icon: iconLocation,
+                        S, 
+                        context
+                    }),
                     S.listItem()
                         .title(labelLocation)
                         .icon(iconLocation)

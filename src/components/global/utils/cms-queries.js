@@ -222,6 +222,11 @@ export const eventQuery = `
 `
 
 export const locationsQuery = `
-  ...,
-  locations[]{...}
+  city,
+  stateProvince,
+  country,
+  timezone,
+  text,
+  button,
+  orderRank
 `

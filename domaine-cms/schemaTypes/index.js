@@ -70,14 +70,16 @@ import section_quote from "./sections/section_quote.js";
 import page_studioGeneral from "./pages/page_studio-general.js";
 import section_richContent from "./sections/section_richContent.js";
 import section_textHeading from "./sections/section_textHeading.js";
+import type_location from "./siteSettings/type_location.jsx";
+import section_locationsFeed from "./sections/section_locationsFeed.js";
 
 
 export const schemaTypes = [
     type_project,
     type_client,
-    // type_clientStage,
     type_projectFeature,
     type_industry,
+    type_location,
     type_service,
     type_serviceType,
     type_serviceGroup,
@@ -88,7 +90,6 @@ export const schemaTypes = [
     type_teamMember,
     type_teamDepartment,
     type_agencyBrand,
-    // type_practice,
     type_event,
 
     page_aboutDomaine,
@@ -104,13 +105,6 @@ export const schemaTypes = [
     page_servicesIndexStudio,
     page_studioGeneral,
 
-    // page_contactDomaine,
-    // page_contactStudio,
-
-    // settings_projects,
-    // settings_services,
-    // settings_partners,
-    // settings_blog,
     settings_events,
     settings_header,
     settings_footer,
@@ -137,6 +131,7 @@ export const schemaTypes = [
     section_projectsFullBleed,
     section_projectsGrid,
     section_quote,
+    section_locationsFeed,
     section_richContent,
     section_serviceCards,
     section_servicesFeed,

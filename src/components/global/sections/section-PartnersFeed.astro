@@ -37,7 +37,6 @@ const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() :
                     class="partner-tile-wrapper color-reset"
                     data-animate-viewport="true"
                     data-animation="fade-up"
-                    data-animation-delay={150 * i}
                 >
                     <GlobalPartnerTile 
                         partner={partner}
@@ -50,7 +49,6 @@ const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() :
             class="button-wrapper-secondary"
             data-animate-viewport="true"
             data-animation="fade-up"
-            data-animation-delay={150 * partnerTileCount}
         >
         <AtomButton
             text="All Partners"
