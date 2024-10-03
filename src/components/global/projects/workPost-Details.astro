@@ -18,7 +18,6 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                 <div class="tags">
                     {services.map((service) => (
                         <AtomTag 
-                            title={service.serviceGroup.title}
                             text={service.title}
                             url={`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`}
                             theme={theme === "light" ? "glass-dark" : "glass-light"}

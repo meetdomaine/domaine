@@ -98,7 +98,7 @@
 .results {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     /* justify-content: space-between; */
     /* grid-template-columns: repeat(4, 1fr); */
     /* overflow-y: auto; */
@@ -111,7 +111,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
-    flex: 1 0 calc(25% - var(--space-xl) * 0.75);
+    flex: 0 0 calc(25% - var(--space-xl) * 0.75);
+    /* max-width: 50%; */
     /* flex: 0 1 100%; */
     /* min-width: 18rem; */
 }
@@ -134,8 +135,8 @@
     flex-direction: column;
     align-items: stretch;
     text-decoration: none;
-    flex: 1 0 calc(50% - var(--gap));
-    max-width: 50vw;
+    flex: 0 0 calc(50% - var(--gap));
+    /* max-width: 30vw; */
     border-radius: var(--radius-sm);
     overflow: hidden;
 }

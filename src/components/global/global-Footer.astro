@@ -52,7 +52,7 @@ const agencyBrands = await getAgencyBrands()
 
         </div>
 
-        <div class="footer-info__secondary">
+        <!-- <div class="footer-info__secondary">
             <div class="agency-brands">
                 {footerSettings.agencyBrandsHeading && 
                     <div class="agency-brands__title">
@@ -73,7 +73,7 @@ const agencyBrands = await getAgencyBrands()
                     ))}
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 
@@ -210,7 +210,8 @@ const agencyBrands = await getAgencyBrands()
     .footer-form {
         display: flex;
         flex-direction: column;
-        flex: 1 0 min(30rem, 100%);
+        flex: 0 0 min(30rem, 100%);
+        /* max-width: 24rem; */
     }
 
     .footer-form :global(form) {
@@ -241,7 +242,7 @@ const agencyBrands = await getAgencyBrands()
     .agency-brands {
         display: flex;
         flex-direction: column;
-        flex: 1 0 min(35rem, 100%);
+        flex: 0 0 min(40rem, 100%);
     }
 
     .agency-brands__title {
@@ -268,7 +269,7 @@ const agencyBrands = await getAgencyBrands()
 
     .brand-logo {
         aspect-ratio: 1 / 1;
-        flex: 0 0 25%;
+        flex: 0 0 20%;
         display: flex;
         justify-content: center;
         align-items: center;
