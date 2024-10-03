@@ -46,14 +46,21 @@ export default defineType({
       }]
     }),
     defineField({
+      name: 'showBrandMenu',
+      title: 'Show Brand Menu',
+      type: 'boolean',
+    }),
+    defineField({
       name: 'brandMenuHeading',
       title: 'Brand Menu: Heading',
       type: 'string',
+      hidden: ({document}) => !document?.showBrandMenu
     }),
     defineField({
       name: 'brandMenuSubheading',
       title: 'Brand Menu: Subheading',
       type: 'string',
+      hidden: ({document}) => !document?.showBrandMenu
     }),
     defineField({
       name: 'showPromoMessage',

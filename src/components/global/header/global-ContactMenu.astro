@@ -8,7 +8,7 @@ const { hubspotFormId, forms } = Astro.props
     <div class="section-title">
         <h2 class="h5">Contact</h2>
         <button popovertarget="contact-menu" class="contact-close-button button-reset">
-            <Icon name="pixel_x" class="close-button" />
+            <Icon name="icon-x" class="close-button" />
         </button>
     </div>
     {forms.length > 1 &&
@@ -67,7 +67,7 @@ const { hubspotFormId, forms } = Astro.props
         width: min(40rem, calc(100% - var(--inset) * 2));
         translate: calc(100% + var(--inset) + var(--page-margin)) 0;
         padding-inline: 0;
-        padding-block: 0;
+        padding-block: 0 var(--space-sm);
         z-index: 19;
         flex-direction: column;
         /* display: flex; */

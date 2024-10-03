@@ -63,9 +63,11 @@ const headerSettings = await sanityClient.fetch(`
             <a href={currentBrand.url} class="brand-logo">
                 <Fragment set:html={currentBrand.logo} />
             </a>
-            <button class="brand-button button-reset" popovertarget="brand-menu">
-                <Icon name="icon-menu-box" class="brand-menu-icon" />
-            </button>
+            {headerSettings.showBrandMenu &&
+                <button class="brand-button button-reset" popovertarget="brand-menu">
+                    <Icon name="icon-menu-box" class="brand-menu-icon" />
+                </button>
+            }
         </div>
         
         <NavigationMenu 
@@ -86,11 +88,13 @@ const headerSettings = await sanityClient.fetch(`
 
     </div>
 
-    <BrandMenu 
-        currentBrand={currentBrand}
-        heading={headerSettings.brandMenuHeading}
-        subheading={headerSettings.brandMenuSubheading}
-    />
+    {headerSettings.showBrandMenu &&
+        <BrandMenu 
+            currentBrand={currentBrand}
+            heading={headerSettings.brandMenuHeading}
+            subheading={headerSettings.brandMenuSubheading}
+        />
+    }
     <ContactMenu hubspotFormId={headerSettings.hubspotFormId} forms={headerSettings.contactForms} />
     <!-- <SearchMenu currentBrand={currentBrand} /> -->
 
@@ -299,7 +303,8 @@ const headerSettings = await sanityClient.fetch(`
 
         .brand {
             border-radius: var(--radius-sm);
-            padding-inline: var(--space-xs) var(--space-2xs);
+            /* padding-inline: var(--space-xs) var(--space-2xs); */
+            padding-inline: var(--space-sm);
             justify-self: flex-start;
             display: flex;
             flex-direction: row;

@@ -40,7 +40,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 // console.log(upcomingEvent)
 // console.log(latestWork)
 ---
-<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus>
+<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
   {(showPromoMessage && promoMessage) &&
     <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>
@@ -240,7 +240,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
   .notification-menu:popover-open {
     display: flex;
     translate: 0% 0;
-    filter: drop-shadow(0rem 0rem 2rem rgba(50, 50, 50, 0.9));
+    filter: drop-shadow(0rem 0rem 2rem rgba(50, 50, 50, 0.7));
     /* opacity: 1; */
   }
 
@@ -249,7 +249,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
       display: flex;
       /* opacity: 0; */
       translate: calc(100% + var(--page-margin)) 0;
-      filter: drop-shadow(0rem 0rem 2rem rgba(50, 50, 50, 0.9));
+      filter: drop-shadow(0rem 0rem 2rem rgba(50, 50, 50, 0.7));
     }
   }
 
@@ -458,6 +458,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
+    border-radius: var(--radius-sm);
   }
 
   .event-title {
@@ -514,6 +515,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     align-items: center;
     text-align: center;
     text-decoration: none;
+    border-radius: var(--radius-sm);
   }
 
   .careers-icon {
