@@ -87,44 +87,14 @@ export default defineType({
       hidden: ({document}) => !document?.showPromoMessage,
     }),
     defineField({
-      name: 'clocks',
+      name: 'locationClocks',
       title: 'Clocks',
       type: 'array',
       of: [{
-        name: 'clock',
-        title: 'Clock',
-        type: 'object',
-        fields: [
-          {
-            name: 'location',
-            title: 'Location',
-            type: 'string',
-          },
-          {
-            name: 'timezone',
-            title: 'Timezone',
-            type: 'string',
-            description: (() => (
-              <p>Identifier from the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">TZ Database</a></p>
-            ))(),
-          }
-        ],
-        preview: {
-          select: {
-            title: 'location',
-            subtitle: 'timezone'
-          },
-          prepare(selection) {
-            const { title, subtitle } = selection
-            return {
-              title: title,
-              subtitle: subtitle,
-              icon: EarthAmericasIcon
-            }
-          }
-        }
+        type: 'reference',
+        to: [{ type: 'type_location'}]
       }],
-      
+      validation: Rule => Rule.max(3)
     }),
     defineField({
       name: 'showLinkCard',

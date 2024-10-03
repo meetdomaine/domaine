@@ -4,7 +4,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { Icon } from "astro-icon/components";
 
 const agencyBrands = await getAgencyBrands()
-// const allLocations = await getLocations()
+const locations = await getLocations()
 ---
 <div class="practices-grid">
 
@@ -28,42 +28,19 @@ const agencyBrands = await getAgencyBrands()
 
     <div class="section-content">
 
-      <!-- <div class="locations">
-        {allLocations.locations.filter((location) => location.isPrimary).map((location) => (
-          <div class="location-card">
-            <div class="card-title">
-              <div class="location-name">
-                <p class="location-city h6">{location.city}</p>
-                {location.label && <p class="location-label h6">/ {location.label}</p>}
-              </div>
-              <div class="location-time">
-                <div class="location-time-icon" data-timezone={location.timezone}>
-                  <Icon class="time-icon icon-day" name="icon-day" />
-                  <Icon class="time-icon icon-night" name="icon-night" />
-                </div>
-                <p class="location-clock" data-timezone={location.timezone}>00:00</p>
-              </div>
-            </div>
-            {(location.addressLine1 || location.addressLine2) && 
-              <div class="location-address">
-                {location.addressLine1 && <p class="caption">{location.addressLine1}</p>}
-                {location.addressLine2 && <p class="caption">{location.addressLine2}</p>}
-              </div>
-            }
-          </div>
-        ))}
+      <div class="locations">
 
-        <div class="locations-secondary">
-          <Icon name="icon-globe-outline" class="locations-icon" />
-          {allLocations.locations.filter((location) => !location.isPrimary).map((location) => (
-            <div class="location-card">
-              <div class="location-name">
-                <p class="location-city caption">{location.city}</p>
-                {location.country && <p class="location-label caption">/ {location.country}</p>}
-              </div>
+        <Icon name="icon-globe-outline" class="locations-icon" />
+        <div class="locations-list">
+          {locations.map((location) => (
+            <div class="location">
+                <p class="city caption">{location.city}</p>
+                {location.country && <p class="country caption">{location.country}</p>}
+                {/* <Icon name="icon-globe-outline" class="location-time" /> */}
             </div>
           ))}
         </div>
+
       </div>
 
       <a class="brand-card brand-card-secondary" href="/studio">
@@ -83,16 +60,16 @@ const agencyBrands = await getAgencyBrands()
           <p class="brand-heading h6">{agencyBrands[1].excerpt}</p>
         </div>
       </a>
-    </div> -->
+    </div>
   </div>
 
 <script>
   import { getLocalTime, getIsDaytime } from "../utils/get-local-time"
   const clocks = Array.from(document.getElementsByClassName('location-clock') as HTMLCollectionOf<HTMLElement>)
   const icons = Array.from(document.getElementsByClassName('location-time-icon') as HTMLCollectionOf<HTMLElement>)
-  clocks.forEach(clock => {
-    getLocalTime(clock, clock.dataset.timezone, 'innerText')
-  });
+  // clocks.forEach(clock => {
+  //   getLocalTime(clock, clock.dataset.timezone, 'innerText')
+  // });
   icons.forEach((icon) => {
     getIsDaytime(icon, icon.dataset.timezone)
   })
@@ -141,11 +118,6 @@ const agencyBrands = await getAgencyBrands()
     /* align-self: stretch; */
   }
 
-  .locations {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-  }
 
   .brand-media {
     border-radius: var(--radius-sm);
@@ -181,17 +153,39 @@ const agencyBrands = await getAgencyBrands()
     margin: 0;
   }
 
-  .locations-icon {
-    grid-column: 1 / span 2;
-    margin-bottom: var(--space-xs);
-    height: var(--icon-md);
-    width: auto;
-  }
-
-  .location-card {
+  .locations {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
+  }
+
+  .locations-icon {
+    align-self: flex-start;
+  }
+
+  .locations-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .locations-icon {
+    margin-bottom: var(--space-xs);
+    height: var(--icon-md);
+    width: var(--icon-md);
+  }
+
+  .location {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-2xs);
+  }
+
+  .country {
+    color: var(--color-foreground-secondary);
   }
 
   .card-title {
@@ -241,12 +235,6 @@ const agencyBrands = await getAgencyBrands()
 
   .location-time-icon[data-is-daytime="false"] .icon-day {
     display: none;
-  }
-
-  .locations-secondary {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-2xs);
   }
 
   @media screen and (width <= 768px) {

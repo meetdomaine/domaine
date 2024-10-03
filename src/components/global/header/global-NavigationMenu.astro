@@ -30,7 +30,7 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
         {links.map((link, i) => (
             <a 
                 href={link.linkUrl} 
-                class="navigation-link" 
+                class="navigation-link caption" 
                 style={`transition-delay: ${0.1 * i}s`}
                 data-active={activePath === link.linkUrl ? "true" : "false"}
             >{link.linkText}</a>

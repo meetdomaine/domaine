@@ -21,6 +21,7 @@ import {
     getPartners_Studio,
     getPartners_Domaine,
 } from "../utils/cms-content"
+import { locationsQuery } from "../utils/cms-queries"
 
 // const test = await loadQuery({
 //     query: `*[_type == 'type_blog']`
@@ -37,6 +38,7 @@ const headerSettings = await sanityClient.fetch(`
     *[_type == "settings_header" 
     && _id == "settings_header--${currentBrand.slug.current === "/studio" ? "studio" : "domaine"}"]{ 
         ...,
+        locationClocks[]->{${locationsQuery}},
         linkCardImage{${imageFields}},
         brandMenuBrands[]{
             ..., 
@@ -107,6 +109,7 @@ const headerSettings = await sanityClient.fetch(`
         promoMessageUrl={headerSettings.promoMessageUrl}
         promoMessageIcon={headerSettings.promoMessageIcon}
         clocks={headerSettings.clocks}
+        locationClocks={headerSettings.locationClocks}
         showLinkCard={headerSettings.showLinkCard}
         linkCardTitle={headerSettings.linkCardTitle}
         linkCardText={headerSettings.linkCardText}

@@ -601,15 +601,15 @@ export const structure = (S, context) =>
                         S, 
                         context
                     }),
-                    S.listItem()
-                        .title(labelLocation)
-                        .icon(iconLocation)
-                        .child(
-                            S.document()
-                            .schemaType('settings_locations')
-                            .documentId(`settings_locations`)
-                            .title(labelLocation)
-                        ),
+                    // S.listItem()
+                    //     .title(labelLocation)
+                    //     .icon(iconLocation)
+                    //     .child(
+                    //         S.document()
+                    //         .schemaType('settings_locations')
+                    //         .documentId(`settings_locations`)
+                    //         .title(labelLocation)
+                    //     ),
                 ])
             ),
       ])

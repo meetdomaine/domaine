@@ -13,6 +13,7 @@ const {
   promoMessageUrl, 
   promoMessageIcon,
   clocks,
+  locationClocks,
   showLinkCard,
   linkCardTitle,
   linkCardText,
@@ -56,9 +57,9 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     ))}
   </div>
 
-  {clocks &&
+  {locationClocks?.length > 0 &&
     <div class="clocks" data-color-scheme="glass-dark">
-      {clocks.map((clock) => (
+      {locationClocks.map((clock) => (
         <div class="clock" data-timezone={clock.timezone} data-daytime="true">
           <div class="clock-icon">
             <span class="tick"></span>
@@ -71,7 +72,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
             <span class="center-pin"></span>
           </div>
           <div class="clock-info">
-            <p>{clock.location}</p>
+            <p>{clock.city}</p>
             <div class="time-info">
               <Icon name="icon-day" class="icon-day" />
               <Icon name="icon-night" class="icon-night" />

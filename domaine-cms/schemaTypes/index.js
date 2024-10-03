@@ -65,7 +65,7 @@ import snippet_SEOFields from "./snippets/snippet_SEO-fields";
 import snippet_video from "./snippets/snippet_video";
 import section_serviceCards from "./sections/section_serviceCards.js";
 import section_linkList from "./sections/section_linkList.js";
-import settings_locations from "./siteSettings/settings_locations.jsx";
+// import settings_locations from "./siteSettings/settings_locations.jsx";
 import section_quote from "./sections/section_quote.js";
 import page_studioGeneral from "./pages/page_studio-general.js";
 import section_richContent from "./sections/section_richContent.js";
@@ -109,7 +109,6 @@ export const schemaTypes = [
     settings_header,
     settings_footer,
     settings_preloader,
-    settings_locations,
 
     snippet_SEOFields,
     snippet_linkList,

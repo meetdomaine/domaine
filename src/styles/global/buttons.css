@@ -20,6 +20,7 @@ input[type="submit"] {
     transition: background-color var(--anim-sm), color var(--anim-sm);
     justify-content: center;
     text-align: center;
+    height: auto;
 }
 
 .button:has(svg) {
@@ -64,6 +65,7 @@ input[type="submit"] {
     color: var(--button-tertiary-foreground);
     background-color: var(--button-tertiary-background);
     padding-inline: 0.2em;
+    padding-block: 0.2em;
     margin-inline: -0.2em;
 }
 
