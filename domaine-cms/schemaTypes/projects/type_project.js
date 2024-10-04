@@ -301,6 +301,7 @@ export default defineType({
         { type: 'section_contentBlocks'},
         { type: 'section_imageFullHeight'},
         { type: 'section_textColumns'},
+        { type: 'section_textMediaBlocks'},
         { type: 'section_mediaCarousel'},
         { type: 'section_quote'},
       ],
