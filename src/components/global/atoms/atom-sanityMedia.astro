@@ -115,17 +115,13 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
       translate: -50% -50%;
       z-index: 2;
       transition: opacity var(--anim-lg);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--anim-sm);
     }
 
     :global(*:has(mux-player:hover)) .play-button[data-active="false"] {
       opacity: 1;
-    }
-
-    .play-button {
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity var(--anim-sm);
-      transition-delay: 0.6s;
     }
 
 </style>

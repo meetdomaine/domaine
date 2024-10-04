@@ -38,28 +38,12 @@ const { tier } = Astro.props
 
   .partners {
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: var(--space-md);
   }
 
   .partners[data-style="primary"] {
     grid-template-columns: repeat(6, 1fr);
-  }
-
-
-  @media screen and (width > 768px) {
-    .partners[data-style="primary"] :global(> *:nth-of-type(12n + 2)) {
-      grid-column: 3 / span 1;
-    }
-
-
-    .partners[data-style="primary"] :global(> *:nth-of-type(12n + 5)) {
-      grid-column: 2 / span 1;
-    }
-
-    .partners[data-style="primary"] :global(> *:nth-of-type(12n + 8)) {
-      grid-column: 5 / span 1;
-    }
   }
 
   @media screen and (width <= 768px) {

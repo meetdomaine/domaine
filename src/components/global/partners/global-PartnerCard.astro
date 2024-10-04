@@ -29,12 +29,10 @@ if (partner.tier.createLandingPages) {
             sizes="15vw"
         />
     </div>
-    {partner.tier.createLandingPages &&
-        <div class="card-text caption">
-            <p class="title h6">{partner.title}</p>
-            <p class="excerpt">{partner.excerpt}</p>
-        </div>
-    }
+    <div class="card-text caption">
+        <p class="title h6">{partner.title}</p>
+        {partner.tier.slug.current != "discover" && <p class="excerpt">{partner.excerpt}</p>}
+    </div>
 </a>
 
 <style>

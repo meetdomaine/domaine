@@ -35,6 +35,12 @@ const currentPath = Astro.url.pathname;
 <html lang="en">
 	<head>
 
+		<!-- <script>
+			if (sessionStorage.getItem("cachedSession")) {
+				document.write('<style>#site-preloader { display: none !important; }</style>');
+			}
+		</script> -->
+
 		<!-- Remove once live -->
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 

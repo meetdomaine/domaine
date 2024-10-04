@@ -7,6 +7,12 @@ import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 
 const { currentBrand } = Astro.props
 const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
+
+const showPreloader = !Astro.cookies.has('preloaderShown');
+// console.log(Astro.cookies)
+// if (showPreloader) {
+//   Astro.cookies.set('preloaderShown', 'true', { path: '/', maxAge: 86400 });
+// }
 ---
 <div id="site-preloader" class="preloader" data-color-scheme="brand-02">
     {content.images.slice(0, 9).map((entry, i) => (
@@ -25,7 +31,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
     <p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
 </div>
 
-<script>
+<script >
     import { isMobileBreakpoint } from "./utils/check-device";
     import { gsap, SplitText } from "./utils/gsap";
 
@@ -37,6 +43,13 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
         showPreloader = true
         sessionStorage.setItem("cachedSession", "true");
     }
+
+    // if (sessionStorage.getItem("cachedSession")) {
+    //     const preloader = document.getElementById("site-preloader")
+    //     preloader.style.display = "none" 
+    // } else {
+
+    // }
 
     const preloadComplete = new Event("preload:complete");
 

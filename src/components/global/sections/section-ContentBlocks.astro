@@ -9,6 +9,7 @@ const { section, brand, key } = Astro.props
             <div 
                 class="content-block" 
                 data-inset={contentBlock.insetMedia ? "true" : "false"}
+                data-fullwidth={section.contentBlocks.length > 1 ? "false" : "true"}
             >
                 <div 
                     class="block-media" 
@@ -21,9 +22,9 @@ const { section, brand, key } = Astro.props
                         image={contentBlock.media.image}
                         preserveAspect={contentBlock.insetMedia ? true : false}
                         cover={contentBlock.insetMedia ? false : true}
-                        // contain={contentBlock.insetMedia ? true : false}
+                        contain={contentBlock.insetMedia ? true : false}
                         // aspectRatio={!contentBlock.insetMedia ? 3/4 : null}
-                        // aspectRatio={section.contentBlocks.length > 1 ? 3/4 : null}
+                        aspectRatio={section.contentBlocks.length > 1 ? 3/4 : null}
                         sizes="100vw"
                     />
                 </div>
@@ -73,7 +74,6 @@ const { section, brand, key } = Astro.props
     }
 
     .content-block {
-        aspect-ratio: 3 / 4;
         position: relative;
         overflow: clip;
         flex: 0 1 100%;
@@ -82,9 +82,14 @@ const { section, brand, key } = Astro.props
         display: flex;
         justify-content: center;
         align-items: center;
+        /* min-height: 80svh; */
     }
 
-    .block-media {
+    .content-block[data-fullwidth="false"] {
+        aspect-ratio: 3 / 4;
+    }
+
+    .content-block[data-inset="false"] .block-media {
         display: flex;
         justify-content: center;
         align-items: center;

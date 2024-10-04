@@ -24,7 +24,7 @@ if (section.quoteClient) {
         data-animation="fade-up"
     >
         {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
-        <h2 class="h3">{section.heading}</h2>
+        <h2 class="heading h3">{section.heading}</h2>
     </div>
     <!-- <div class="client-logos"> -->
         <div 
@@ -92,7 +92,7 @@ if (section.quoteClient) {
     .section-title {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: var(--space-sm);
         max-width: 50em;
     }
@@ -101,25 +101,17 @@ if (section.quoteClient) {
         color: var(--color-accent);
     }
 
-    .client-logos {
-        /* overflow: hidden; */
-        /* overflow: visible; */
-        /* display: flex;
-        flex-direction: row;
-        justify-content: flex-start; */
-        /* max-width: 100%; */
-        /* overflow: hidden; */
-    }
-
     .logo-track {
         --gap: var(--space-xl);
-        display: flex;
+        /* display: flex;
         flex-direction: row;
-        align-items: center;
-        width: max-content;
+        align-items: center; */
+        min-width: max-content;
         gap: var(--gap);
+        white-space: nowrap;
         /* translate: calc(-50%) 0; */
-        animation: ticker-scroll 20s linear infinite;
+        /* translate: calc(-50% - var(--page-margin) * 0) 0; */
+        /* animation: ticker-scroll 4s linear infinite; */
     }
 
     @keyframes ticker-scroll {
@@ -127,19 +119,20 @@ if (section.quoteClient) {
             translate: 0 0;
         }
         to {
-            translate: calc(-50% - var(--gap) / 2) 0;
+            translate: -50% 0;
         }
     }
 
     .client-card {
-        flex: 0 0 14em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: inline-block;
+        width: 14rem;
+        vertical-align: middle;
     }
 
     .logo {
         height: auto;
+        vertical-align: middle;
+        margin: 0 auto;
     }
 
     .section-content {
