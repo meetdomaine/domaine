@@ -8,7 +8,7 @@ import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 const { currentBrand } = Astro.props
 const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
 
-const showPreloader = !Astro.cookies.has('preloaderShown');
+// const showPreloader = !Astro.cookies.has('preloaderShown');
 // console.log(Astro.cookies)
 // if (showPreloader) {
 //   Astro.cookies.set('preloaderShown', 'true', { path: '/', maxAge: 86400 });
