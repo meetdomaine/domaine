@@ -31,19 +31,22 @@ if (section.quoteClient) {
             class="logo-track"
         >
             {clients.map((client, i) => (
-                <a href="#" class="client-card">
-                    <div class="logo" style={`width: ${client.logoScale}%;`}>
-                        <Fragment set:html={client.logoSvg} />
-                    </div>
-                </a>
+                <div class="logo" style={`--width-offset: ${client.logoScale};`}>
+                    <Fragment set:html={client.logoSvg} />
+                </div>
             ))}
             {clients.map((client, i) => (
+                <div class="logo" style={`--width-offset: ${client.logoScale};`}>
+                    <Fragment set:html={client.logoSvg} />
+                </div>
+            ))}
+            <!-- {clients.map((client, i) => (
                 <a href="#" class="client-card">
                     <div class="logo" style={`width: ${client.logoScale}%;`}>
                         <Fragment set:html={client.logoSvg} />
                     </div>
                 </a>
-            ))}
+            ))} -->
         </div>
     <!-- </div> -->
     <div class="section-content">
@@ -85,7 +88,7 @@ if (section.quoteClient) {
         justify-content: flex-start;
         gap: var(--space-2xl);
         /* align-items: center; */
-        min-height: 60svh;
+        /* min-height: 60svh; */
         overflow: hidden;
     }
 
@@ -102,12 +105,13 @@ if (section.quoteClient) {
     }
 
     .logo-track {
-        --gap: var(--space-xl);
         width: max-content;
-        gap: var(--gap);
-        white-space: nowrap;
+        gap: var(--space-4xl);
         animation: client-scroll 20s linear infinite;
         will-change: translate;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     @keyframes client-scroll {
@@ -115,20 +119,19 @@ if (section.quoteClient) {
             translate: 0 0;
         }
         to {
-            translate: -50% 0;
+            translate: calc(-50% - var(--page-margin) * 2) 0;
         }
     }
 
-    .client-card {
-        display: inline-block;
-        width: 14rem;
-        vertical-align: middle;
+    .logo {
+        /* flex: 0 0 calc(16rem * (var(--width-offset) / 100)); */
+        width: calc(16rem * (var(--width-offset) / 100));
+        height: auto;
     }
 
-    .logo {
+    .logo :global(svg) {
+        width: 100%;
         height: auto;
-        vertical-align: middle;
-        margin: 0 auto;
     }
 
     .section-content {

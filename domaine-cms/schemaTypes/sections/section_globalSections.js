@@ -32,6 +32,7 @@ export default defineType({
         { type: 'section_textHeading'},
         { type: 'section_textMedia'},
         { type: 'section_textVideoPlayer'},
+        { type: 'section_textMediaBlocks'},
         { type: 'section_textMediaTabs'},
         { type: 'section_textLinkCard'},
         { type: 'section_videoPlayer'},

@@ -1,0 +1,89 @@
+---
+import AtomButton from "../atoms/atom-button.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTag from "../atoms/atom-tag.astro"
+
+const { section, brand, key } = Astro.props
+---
+<section class="section-text-media-blocks">
+  <div class="section-title">
+    {section.eyebrow &&
+      <AtomTag 
+        text={section.eyebrow}
+      />
+    }
+    <h2 class="heading h3">{section.heading}</h2>
+    {section.button?.text && section.button?.url &&
+      <AtomButton 
+        text={section.button.text}
+        url={section.button.url}
+        newTab={section.button.newTab}
+        icon="arrow-diagonal"
+      />
+    }
+  </div>
+  <div class="section-content">
+    {section.blocks.map((block) => (
+      <div class="content-block">
+        <div class="block-media">
+          <AtomSanityMedia 
+            sizes="50vw"
+            video={block.media.video}
+            image={block.media.image}
+            aspectRatio={1 / 1}
+          />
+        </div>
+        <div class="block-content">
+          <h3 class="block-heading h5">{block.heading}</h3>
+          <p class="block-text">{block.text}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .section-text-media-blocks {
+    padding-inline: var(--page-margin);
+    padding-block: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xl);
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 40rem;
+    gap: var(--space-xs);
+  }
+
+  .section-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    gap: var(--space-md);
+  }
+
+  .content-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    flex: 0 1 100%;
+  }
+
+  .block-media {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  @media screen and (width <= 768px) {
+    .section-content {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>

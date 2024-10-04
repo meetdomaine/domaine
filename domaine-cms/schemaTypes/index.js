@@ -72,6 +72,7 @@ import section_richContent from "./sections/section_richContent.js";
 import section_textHeading from "./sections/section_textHeading.js";
 import type_location from "./siteSettings/type_location.jsx";
 import section_locationsFeed from "./sections/section_locationsFeed.js";
+import section_textMediaBlocks from "./sections/section_textMediaBlocks.js";
 
 
 export const schemaTypes = [
@@ -142,6 +143,7 @@ export const schemaTypes = [
     section_textLinkCard,
     section_textMedia,
     section_textMediaTabs,
+    section_textMediaBlocks,
     section_textVideoPlayer,
     section_videoPlayer,
 ]
