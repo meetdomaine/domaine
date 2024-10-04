@@ -3,6 +3,7 @@ import AtomTag from "../atoms/atom-tag.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import { getServiceTypes_Studio, getServiceTypes_Domaine } from "../utils/cms-content";
 import { Icon } from "astro-icon/components";
+import AtomButton from "../atoms/atom-button.astro";
 
 const { section, brand, key } = Astro.props
 
@@ -76,6 +77,16 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                 </div>
             ))}
         </div>
+
+        {section.button?.text && section.button?.url && 
+            <AtomButton 
+                text={section.button.text}
+                url={section.button.url}
+                newTab={section.button.newTab}
+                style="secondary"
+                icon="arrow-diagonal"
+            />
+        }
     </div>
 
 </section>
@@ -85,6 +96,7 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        align-items: flex-start;
         gap: var(--space-2xl);
         padding-inline: var(--page-margin);
         padding-block: var(--space-xl) 20lvh;
@@ -96,6 +108,12 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
         display: grid;
         grid-column: 1 / span 2;
         grid-template-columns: 1fr 2fr;
+    }
+
+    .section-title,
+    .section-content,
+    .service-type {
+        gap: var(--space-xl);
     }
 
     .heading,
@@ -355,8 +373,16 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
             display: flex;
             flex-direction: column;
             gap: var(--space-sm);
-            max-width: 40rem;
-            align-self: flex-end;
+            max-width: unset;
+            align-self: stretch;
+        }
+
+        .service-type__description {
+            max-width: 36em;
+        }
+
+        .service-type__button {
+            padding: 0;
         }
 
         .service-type__services {

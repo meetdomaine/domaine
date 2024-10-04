@@ -55,7 +55,8 @@ export default defineType({
       title: 'Description',
       type: 'text',
       group: 'info',
-      validation: Rule => Rule.required(),
+      description: 'Required for Partners with a landing page.',
+      // validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'tier',
