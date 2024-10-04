@@ -36,7 +36,6 @@ const sidebarPosts = allPosts.slice(0, sidebarPostCount)
 const relatedPostsCount = 3
 const allRelatedPosts = await getRelatedBlogPosts(data)
 const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
-// console.log(data._id)
 ---
 
 <Layout 
@@ -45,7 +44,7 @@ const relatedPosts = allRelatedPosts.slice(0, relatedPostsCount)
     title={data.title}
     description={data.metaDescription}
     image={data.metaImage && urlFor(data.metaImage).url()}
-    noIndex={true}
+    noIndex={data.hidePost}
 >
     <BlogPostHero
       title={data.title}
