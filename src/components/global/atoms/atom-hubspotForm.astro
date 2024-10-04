@@ -191,7 +191,7 @@ const fields = await fieldGroups.flatMap((group) => {
                     <div class="inputs-list">
                         <div class="input-list-item">
                             <input type="checkbox" id={`communication-consent-${formId}`} name={`communication-consent`} value={`communication-consent-${formId}`} required />
-                            <label for={`communication-consent-${formId}`}>{checkbox.label}</label>
+                            <label for={`communication-consent-${formId}`}><Fragment set:html={checkbox.label}></Fragment></label>
                         </div>
                     </div>
                 </div>
