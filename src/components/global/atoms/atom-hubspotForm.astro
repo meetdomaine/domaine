@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components'
+
 interface Props {
     formId: any,
     buttonToggles?: boolean,
@@ -28,7 +30,6 @@ const fields = await fieldGroups.flatMap((group) => {
     })
 })
 
-if (key) console.log(key)
 // console.log(formData.fieldGroups[0].fields)
 // console.log(fields)
 // console.log(consentData)
@@ -223,18 +224,24 @@ if (key) console.log(key)
             <Fragment set:html={consentData.privacyText} />
         </div>
     }
+    
+    <div class="confirmation-message h4" data-color-scheme="brand-02">
+        <Icon name="icon-email" class="confirmation-icon" />
+        TEST
+    </div>
 
     <div class="form-field">
         <input type="submit" form={`form-${formId}${key != undefined ? `-${key}` : ''}`} value={formData.displayOptions.submitButtonText} />
     </div>
 
-
 </form>
+
 
 <script define:vars={{ portalId, formId, consentData, fields, key }}>
 
     const contactForm = document.querySelector(`#form-${formId}${key != undefined ? `-${key}` : ''}`)
     const submitButton = contactForm.querySelector('input[type="submit"]')
+    const confirmationMessage = contactForm.querySelector('.confirmation-message')
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -253,13 +260,23 @@ if (key) console.log(key)
     }
 
     const handleSuccess = (response) => {
-        console.log(response)
+        if (response.inlineMessage) {
+            // console.log(response.inlineMessage)
+            // contactForm.innerHTML = response.inlineMessage
+            // contactForm.parentElement.appendChild(response.inlineMessage)
+            // contactForm.style.display = "none"
+            confirmationMessage.innerHTML = response.inlineMessage
+            confirmationMessage.style.display = "block"
+        }
         contactForm.reset()
-        const originalButtonText = submitButton.value
-        submitButton.value = "Thank You"
-        setTimeout(() => {
-            submitButton.value = originalButtonText
-        }, 4000)
+        submitButton.parentElement.style.display = "none"
+        // submitButton.style.display = "none"
+        // contactForm.style.display = "none"
+        // const originalButtonText = submitButton.value
+        // submitButton.value = "Thank You"
+        // setTimeout(() => {
+        //     submitButton.value = originalButtonText
+        // }, 4000)
     }
 
     const hubspotCookie = getCookie('hubspotutk')
@@ -371,3 +388,17 @@ if (key) console.log(key)
     })
 
 </script>
+
+<style>
+
+    .confirmation-message {
+        display: none;
+        border-radius: var(--radius-sm);
+        padding: var(--space-sm);
+    }
+
+    .confirmation-icon {
+        width: 1em;
+        height: auto;
+    }
+</style>
