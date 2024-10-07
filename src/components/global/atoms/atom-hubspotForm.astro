@@ -260,23 +260,16 @@ const fields = await fieldGroups.flatMap((group) => {
     }
 
     const handleSuccess = (response) => {
+        console.log(response)
         if (response.inlineMessage) {
-            // console.log(response.inlineMessage)
-            // contactForm.innerHTML = response.inlineMessage
-            // contactForm.parentElement.appendChild(response.inlineMessage)
-            // contactForm.style.display = "none"
             confirmationMessage.innerHTML = response.inlineMessage
             confirmationMessage.style.display = "block"
+            submitButton.parentElement.style.display = "none"
+        }
+        if (response.redirectUri) {
+            window.open(response.redirectUri, '_blank').focus();
         }
         contactForm.reset()
-        submitButton.parentElement.style.display = "none"
-        // submitButton.style.display = "none"
-        // contactForm.style.display = "none"
-        // const originalButtonText = submitButton.value
-        // submitButton.value = "Thank You"
-        // setTimeout(() => {
-        //     submitButton.value = originalButtonText
-        // }, 4000)
     }
 
     const hubspotCookie = getCookie('hubspotutk')
