@@ -46,6 +46,15 @@ const { title, text, url, image, newTab } = Astro.props
         /* min-width: min(30em, 100%); */
     }
 
+    .notification-link-card:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    .notification-link-card:focus-visible {
+      outline-offset: -2px;
+      /* outline: 1px solid var(--color-focus); */
+    }
+
     .card-media {
         flex: 0 0 20%;
     }

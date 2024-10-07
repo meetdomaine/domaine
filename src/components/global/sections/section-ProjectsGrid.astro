@@ -129,6 +129,14 @@ console.log(section.projects[0].client)
         position: relative;
     }
 
+    .project-link-card:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    .project-link-card:focus {
+        outline-offset: -2px;
+    }
+
     .project-tile:nth-child(1),
     .project-tile:nth-child(4),
     .project-tile:nth-child(5),

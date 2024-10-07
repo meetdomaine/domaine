@@ -5,7 +5,9 @@
 </div>
 
 <script>
+  import { isMobileBreakpoint } from "../utils/check-device"
   import { gsap } from "../utils/gsap"
+
 
   const cursors = document.querySelectorAll('.cursor-follow')
 
@@ -24,19 +26,25 @@
     })
   }
 
-  cursors.forEach((cursor) => followCursor(cursor))
+  if (!isMobileBreakpoint) {
+    
+    cursors.forEach((cursor) => followCursor(cursor))
+  }
 
 </script>
 
 <style>
-  .cursor-follow {
-    --offsetX: 20px;
-    --offsetY: 0px;
-    position: fixed;
-    left: calc(100% * var(--mouseX) + var(--offsetX));
-    top: calc(100% * var(--mouseY) + var(--offsetY));
-    translate: 0 -50%;
-    z-index: 1;
-    margin: 0;
+  @media screen and (width > 768px) {
+    .cursor-follow {
+      --offsetX: 20px;
+      --offsetY: 0px;
+      position: fixed;
+      left: calc(100% * var(--mouseX) + var(--offsetX));
+      top: calc(100% * var(--mouseY) + var(--offsetY));
+      translate: 0 -50%;
+      z-index: 1;
+      margin: 0;
+    }
   }
+
 </style>

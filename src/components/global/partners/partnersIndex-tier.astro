@@ -46,9 +46,47 @@ const { tier } = Astro.props
     grid-template-columns: repeat(6, 1fr);
   }
 
+  @media screen and (width <= 1024px) {
+    .partners {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+
+    .partners[data-style="primary"] {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+  }
+
   @media screen and (width <= 768px) {
+
+
+    .partners[data-style="primary"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .partners {
       grid-template-columns: repeat(3, 1fr);
+    }
+
+    .section-title {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  @media screen and (width <= 678px) {
+    /* .partners {
+      grid-template-columns: repeat(2, 1fr);
+    } */
+
+    .partners[data-style="primary"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-title {
+      display: flex;
+      flex-direction: column;
     }
   }
 </style>

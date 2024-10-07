@@ -217,6 +217,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     align-items: stretch;
     top: calc(var(--header-height));
     right: var(--page-margin);
+    left: unset;
     max-height: calc(100dvh - var(--header-height));
     margin: 0;
     /* padding-bottom: var(--space-lg); */
@@ -516,6 +517,14 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     text-align: center;
     text-decoration: none;
     border-radius: var(--radius-sm);
+  }
+
+  .careers-card:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .careers-card:focus {
+    outline-offset: -2px;
   }
 
   .careers-icon {

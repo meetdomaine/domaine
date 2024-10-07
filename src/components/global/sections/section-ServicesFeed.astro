@@ -23,7 +23,6 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                         class="service-type__button h1" 
                         data-animate-viewport="true"
                         data-animation="fade"
-                        data-animation-delay={i * 200}
                         data-slug={serviceType.slug.current}
                         href={serviceType.isHidden ? null : `/services/${serviceType.slug.current}`}
                     >
@@ -79,13 +78,13 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
         </div>
 
         {section.button?.text && section.button?.url && 
-            <AtomButton 
-                text={section.button.text}
-                url={section.button.url}
-                newTab={section.button.newTab}
-                style="primary"
-                icon="arrow-diagonal"
-            />
+                <AtomButton 
+                    text={section.button.text}
+                    url={section.button.url}
+                    newTab={section.button.newTab}
+                    style="primary"
+                    icon="arrow-diagonal"
+                />
         }
     </div>
 
@@ -209,6 +208,8 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
         top: 0;
         left: 0;
         right: 0;
+        max-width: 100%;
+        min-height: 0;
         aspect-ratio: 16 / 9;
         justify-items: flex-end;
         justify-items: stretch;
