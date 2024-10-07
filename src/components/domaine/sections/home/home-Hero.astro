@@ -10,7 +10,7 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
         <div class="section-title">
             {eyebrow && 
                 <div class="eyebrow">
-                    <AtomTag text={eyebrow} theme={heroTextColor === "light" ? "light" : "dark"} />
+                    <AtomTag text={eyebrow} theme={heroTextColor === "light" ? "glass-dark" : "glass-light"} />
                 </div>
             }
             <h1 class="heading h2" id="heading" >{heading}</h1>

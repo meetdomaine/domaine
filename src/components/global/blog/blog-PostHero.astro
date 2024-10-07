@@ -95,6 +95,9 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
         /* flex: 1 1 auto; */
         flex: 1 1 50%;
         min-width: 30rem;
+        max-height: 100svh;
+        position: sticky;
+        top: 0;
         /* max-width: 40em; */
     }
 
@@ -129,6 +132,8 @@ const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.get
             padding-inline: var(--page-margin);
             padding-block: calc(var(--header-height) * 2) var(--space-md);
             flex: 0 0 auto;
+            position: relative;
+            top: unset;
         }
     }
 </style>

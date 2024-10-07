@@ -34,16 +34,23 @@
 </script>
 
 <style>
+
+  .cursor-follow {
+    position: fixed;
+    z-index: 1;
+    margin: 0;
+    translate: -50% -50%;
+    top: 50%;
+    left: 50%;
+  }
+
   @media screen and (width > 768px) {
     .cursor-follow {
       --offsetX: 20px;
       --offsetY: 0px;
-      position: fixed;
       left: calc(100% * var(--mouseX) + var(--offsetX));
       top: calc(100% * var(--mouseY) + var(--offsetY));
       translate: 0 -50%;
-      z-index: 1;
-      margin: 0;
     }
   }
 

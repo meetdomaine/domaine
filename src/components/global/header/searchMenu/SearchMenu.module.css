@@ -40,6 +40,14 @@
     }
 }
 
+.input:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.input:focus-visible {
+    outline-offset: 2px;
+}
+
 .menuControls {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
@@ -236,7 +244,7 @@
 }
 
 .partnerMedia {
-    flex: 0 0 4rem;
+    flex: 0 0 5rem;
     aspect-ratio: 1 / 1;
 }
 

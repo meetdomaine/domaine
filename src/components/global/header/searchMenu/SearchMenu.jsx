@@ -169,7 +169,7 @@ export default function SearchMenu(props) {
                 </div>
 
                 {/* Projects */}
-                <Show when={!query() || (query() && projectResults() && projectResults().length > 0)}>
+                <Show when={!query() || (query() && projectResults() && projectResults().length > 0)} placeholder={<p>TEST PROJ</p>}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'projects' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Projects</p>
                         <div class={styles.projectsList}>
@@ -286,11 +286,11 @@ export default function SearchMenu(props) {
                 {/* No Results */}
                 <Show when={ query() && 
                     (!projectResults() || projectResults().length <= 0) &&
-                    (!projectResults() || blogResults().length <= 0) &&
-                    (!projectResults() || featureResults().length <= 0) &&
-                    (!projectResults() || partnerResults().length <= 0)
+                    (!blogResults() || blogResults().length <= 0) &&
+                    (!featureResults() || featureResults().length <= 0) &&
+                    (!partnerResults() || partnerResults().length <= 0)
                 }>
-                    <h2>NO RESULTS</h2>
+                    <h2>No Results</h2>
                 </Show>
 
             </div>

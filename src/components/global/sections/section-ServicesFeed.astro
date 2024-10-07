@@ -28,9 +28,9 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                     >
                         {serviceType.title}
                         
-                        <span><Icon name="arrow-diagonal" class="service-type__icon" /></span>
-                        <div class="service-type__description h6">{serviceType.excerpt}</div>
+                        <Icon name="arrow-diagonal" class="service-type__icon" />
                     </a>
+                    <div class="service-type__description body">{serviceType.excerpt}</div>
 
                     <div class="services">
                         <div 
@@ -141,9 +141,10 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
     }
     
     .service-type__icon {
-        width: 0.7em;
+        width: var(--icon-md);
+        height: var(--icon-md);
         margin-left: 0.2em;
-        height: auto;
+        /* height: auto; */
     }
 
     .service-type__description {
@@ -246,7 +247,7 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
     }
 
     .section-media:nth-of-type(8n + 4) .service-image:nth-child(3n + 3) {
-        grid-column: 4 / span 1;
+        grid-column: 5 / span 1;
         grid-row: 3 / span 1;
     }
 
@@ -360,6 +361,7 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
         .service-type {
             display: flex;
             flex-direction: column;
+            gap: var(--space-3xs);
         }
 
         .service-type__groups {
@@ -384,6 +386,10 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
 
         .service-type__button {
             padding: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: var(--space-2xs);
         }
 
         .service-type__services {
