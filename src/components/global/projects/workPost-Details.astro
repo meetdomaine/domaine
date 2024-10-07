@@ -53,6 +53,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
                                 sizes="30vw"
                                 image={partner.icon.image}
                             />
+                            <p class="partner-title caption">{partner.title}</p>
                         </a>
                     ))}
                 </div>
@@ -121,6 +122,10 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
     .partner-tile {
         border-radius: var(--radius-sm);
         overflow: hidden;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3xs);
     }
 
     @media screen and (width <= 768px) {
