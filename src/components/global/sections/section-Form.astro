@@ -5,6 +5,7 @@ const { section, key, hubspotFormId, heading, text } = Astro.props;
 const formId = section?.hubspotFormId ? section.hubspotFormId : hubspotFormId
 const formHeading = section?.heading ? section.heading : heading
 const formText = section?.subheading ? section.subheading : text
+// console.log(key)
 ---
 <section class="section-form">
 
@@ -16,6 +17,7 @@ const formText = section?.subheading ? section.subheading : text
       {formText && <p class="h6">{formText}</p>}
       <AtomHubspotForm 
         formId={formId}
+        key={key}
       />
     </div>
 </section>
