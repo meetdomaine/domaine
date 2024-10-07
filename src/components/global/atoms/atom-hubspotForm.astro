@@ -29,6 +29,7 @@ const fields = await fieldGroups.flatMap((group) => {
 
 // console.log(formData.fieldGroups[0].fields)
 // console.log(fields)
+// console.log(consentData)
 ---
 <form id={`form-${formId}`} >
     {fieldGroups.map((group) => {
@@ -324,10 +325,16 @@ const fields = await fieldGroups.flatMap((group) => {
 
             // Pass user consent options
             if (consentData.communicationsCheckboxes) {
+
+                const consentField = contactForm.querySelector('.legal-consent')
+                const consentText = consentField.innerText
+                console.log(consentText)
+
                 formBody.legalConsentOptions = {
                     consent: { 
                         consentToProcess: true,
-                        text: consentData.consentToProcessText,
+                        // text: consentData.consentToProcessText,
+                        text: consentText ? consentText : null
                     },
                     communications: consentData.communicationsCheckboxes.map((checkbox) => {
                         return {
