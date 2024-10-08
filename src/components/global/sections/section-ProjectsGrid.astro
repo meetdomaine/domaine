@@ -43,7 +43,6 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
     </div>
     <div class="project-tiles">
         {section.projects.map((project, i) => {
-            console.log(project.foregroundColor)
 
             const clientLogo = getRawSvg(project.client.logo)
             return (

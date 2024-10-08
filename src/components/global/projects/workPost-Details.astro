@@ -1,16 +1,43 @@
 ---
+import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
 import { paths } from "../utils/paths"
+import { getRawSvg } from "../utils/raw-svg"
 
 const { url, client, services, partners, features, metrics, theme, agencyBrand } = Astro.props
-// console.log(partners)
+console.log(url)
+const logo = getRawSvg(client.logo)
 ---
 <section class="work-post_details">
 
     <div class="section-content">
+
+    
+        {client && 
+            <div class="client">
+                {/* <h4 class="h5">Services</h4> */}
+                <div class="client-logo" style={`--logo-scale: ${client.logoScale}`}>
+                    <Fragment set:html={logo} />
+                </div>
+                {client.description && 
+                    <div class="client-info">
+                        <p class="client-description h6">{client.description}</p>
+                        {url &&
+                            <AtomButton 
+                                text="View Live Site"
+                                url={url}
+                                icon="arrow-diagonal"
+                                style="tertiary"
+                                newTab={true}
+                            />
+                        }
+                    </div>
+                }
+            </div>
+        }
 
         {services && 
             <div class="services">
@@ -95,6 +122,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
         max-width: 60em;
     }
 
+    .client,
     .services,
     .features,
     .partners {
@@ -102,7 +130,35 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
-        gap: var(--space-xs);
+        gap: var(--space-lg);
+    }
+
+    .client {
+        margin-bottom: var(--space-2xl);
+    }
+
+    .client-logo {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .client-logo :global(svg) {
+        flex: 0 0 calc( (var(--logo-scale) / 100) * 100%);
+        height: auto;
+    }
+
+    .client-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+        flex-basis: 70%;
+    }
+
+    .client-description {
+        max-width: 40em;
     }
 
     .tags,
@@ -116,6 +172,7 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
 
     .partner-tiles {
         display: grid;
+        gap: var(--space-md) var(--space-xs);
         grid-template-columns: repeat(6, 1fr);
     }
 
@@ -129,10 +186,19 @@ const { url, client, services, partners, features, metrics, theme, agencyBrand }
     }
 
     @media screen and (width <= 768px) {
+        .client,
         .services,
         .features,
         .partners {
             flex-direction: column;
+            align-items: stretch;
+        }
+        
+
+        .client-logo :global(svg) {
+            width: calc( (var(--logo-scale) / 100) * 60%);
+            flex: 0 0 auto;
+            height: auto;
         }
     }
 

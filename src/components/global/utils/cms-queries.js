@@ -155,7 +155,7 @@ export const projectPageFields = `
   excerpt,
   industry->{...},
   url,
-  client->{..., logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise },
+  client->{..., logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise, "logo": logo.asset->url },
   foregroundColor,
   backgroundColor,
   accentColor,
