@@ -133,5 +133,17 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers'][0]`)
     align-items: center;
   }
 
+  @media screen and (width <= 768px) {
+    .section-title {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+
+    .title-icon {
+      width: auto;
+      flex: 0 0 8rem;
+      /* height: auto; */
+    }
+  }
 
 </style>

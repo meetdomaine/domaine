@@ -42,7 +42,7 @@ const { title, heroMedia, accentColor } = Astro.props
     const handleResize = () => {
         let scaleFactor
         const boundingRect = title.getBoundingClientRect()
-        const scaleFactorWidth = (window.innerWidth * 0.95) / boundingRect.width
+        const scaleFactorWidth = (window.innerWidth * 0.8) / boundingRect.width
         const scaleFactorHeight = (window.innerHeight * 0.7) / boundingRect.height
         if (scaleFactorWidth >= scaleFactorHeight) {
             scaleFactor = scaleFactorHeight

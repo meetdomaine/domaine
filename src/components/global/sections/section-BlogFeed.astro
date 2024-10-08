@@ -6,6 +6,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../utils/cms-content";
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
+import { formatDate } from "../utils/format-date";
 
 const { section, brand, heading, subheading, posts, sidebarTitle } = Astro.props
 
@@ -35,8 +36,7 @@ if (section?.featuredPost) {
 }
 
 if (featuredPost) {
-    const date = new Date(featuredPost.postDate)
-    featuredPostDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
+    featuredPostDate = formatDate(featuredPost.postDate)
 }
 ---
 <section class="section-blog-feed" data-color-scheme="brand-01" data-pagefind-ignore>
@@ -61,7 +61,6 @@ if (featuredPost) {
                 <div class="featured-post-content">
                     <div class="featured-post-info">
                         <AtomTag 
-                            title="Category"
                             text={featuredPost.category.title}
                             url={`${featuredPost.agencyBrand.slug.current}insights/${featuredPost.category.slug.current}`}
                         />

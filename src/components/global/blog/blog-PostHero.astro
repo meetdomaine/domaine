@@ -1,12 +1,15 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
+import { formatDate } from "../utils/format-date"
 import GlobalAuthorTile from "./global-AuthorTile.astro"
 
 const { post } = Astro.props
 
-const date = new Date(post.postDate)
-const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
+
+const formattedDate = formatDate(post.postDate)
+// const date = new Date(post.postDate)
+// const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
 ---
 <section class="blog-post-hero">
 
