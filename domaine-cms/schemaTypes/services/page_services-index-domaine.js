@@ -34,6 +34,7 @@ export default defineType({
         { type: 'section_textVideoPlayer'},
         { type: 'section_textClients'},
         { type: 'section_textColumns'},
+        { type: 'section_textMediaBlocks'},
         { type: 'section_textMediaTabs'},
         { type: 'section_textLinkCard'},
         { type: 'section_videoPlayer'},

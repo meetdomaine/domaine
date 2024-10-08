@@ -19,11 +19,12 @@ const { content } = Astro.props
         flex-direction: row;
         align-items: flex-start;
         justify-content: center;
-        gap: var(--space-4xl);
+        max-width: 100%;
     }
 
     .blog-post-content {
-        max-width: 46rem;
+        max-width: calc(100% - 25rem - var(--page-margin) * 2);
+        padding-right: var(--space-xl);
     }
 
     @media screen and (width <= 768px) {
@@ -31,6 +32,11 @@ const { content } = Astro.props
             flex-direction: column;
             align-items: center;
             gap: var(--space-4xl)
+        }
+
+        .blog-post-content {
+            max-width: 100%;
+            padding-right: 0;
         }
     }
 </style>
