@@ -1,6 +1,6 @@
 :root {
     --form-padding-block: 0.25rem;
-    --form-padding-inline: 0.5rem;
+    --form-padding-inline: 0.6rem;
     --form-gap-block: var(--space-xs);
     --form-gap-inline: var(--space-xs);
     --form-toggle-size: 1rem;
@@ -172,6 +172,7 @@ textarea:active {
 
 /* --- Floating Labels: Default --- */
 .form-field:has(input:is([type="text"], [type="email"], [type="number"], [type="date"], [type="tel"]):placeholder-shown) > label,
+/* .form-field:has(textarea) > label, */
 .form-field:has(input:placeholder-shown) > label {
     scale: 1;
     left: var(--form-padding-inline);
@@ -192,6 +193,10 @@ textarea:active {
     z-index: 1;
     transition: top var(--anim-sm), scale var(--anim-sm), translate var(--anim-sm);
 }
+
+/* .form-field:has(textarea) > label  {
+    scale: 1;
+} */
 
 
 /* Carat */
