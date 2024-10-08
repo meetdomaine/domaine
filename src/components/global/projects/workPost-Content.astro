@@ -9,7 +9,7 @@ import WorkPostHero from "./workPost-Hero.astro"
 const { content, brand } = Astro.props
 
 const allProjects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
-const relatedProjects = allProjects.filter((project) => project.industry.slug.current === content.industry.slug.current)
+const relatedProjects = allProjects.filter((project) => project.industry.slug.current === content.industry.slug.current && project.slug.current !== content.slug.current)
 ---
 <div 
   class="project-content"

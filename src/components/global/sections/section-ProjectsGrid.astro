@@ -9,7 +9,7 @@ const { section, brand } = Astro.props
 
 const projects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
 
-console.log(section.projects[0].client)
+// console.log(section.projects[0].client)
 ---
 <section class="section-projects-grid">
     <div class="section-text">
@@ -43,6 +43,7 @@ console.log(section.projects[0].client)
     </div>
     <div class="project-tiles">
         {section.projects.map((project, i) => {
+            console.log(project.foregroundColor)
 
             const clientLogo = getRawSvg(project.client.logo)
             return (
@@ -54,7 +55,11 @@ console.log(section.projects[0].client)
                     data-animation-delay={Math.random() * 400}
                 >
                     <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
-                        <div class="project-media">
+                        <div 
+                            class="project-media"
+                            data-light-logo={project.foregroundColor === "light" ? "true" : "false"}
+                            style={project.backgroundColor ? `--project-color: ${project.backgroundColor.hex};` : ''}
+                        >
                             <AtomSanityMedia 
                                 image={project.thumbnailMedia.image}
                                 video={project.thumbnailMedia.video}
@@ -64,7 +69,7 @@ console.log(section.projects[0].client)
                             />
                             <div 
                                 class="project-logo"
-                                style={`width: ${project.client.logoScale * 0.75}%`}
+                                style={`width: ${project.client.logoScale * 0.75}%;`}
                             >
                                 <Fragment set:html={clientLogo} />
                                 {/* <AtomSanityImage 
@@ -120,6 +125,7 @@ console.log(section.projects[0].client)
         
     }
 
+
     .project-link-card {
         height: 100%;
         max-height: 100%;
@@ -160,6 +166,24 @@ console.log(section.projects[0].client)
         height: 100%;
     }
 
+    .project-media::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: var(--project-color, var(--color-lighter, white));
+        z-index: 0;
+        opacity: 0;
+        transition: opacity var(--anim-sm);
+    }
+
+    .project-media[data-light-logo="true"]::after {
+        background-color: var(--project-color, var(--color-darkest, black));
+    }
+
+    .project-link-card:hover .project-media::after {
+        opacity: 0.9;
+    }
+
     .project-logo {
         position: absolute;
         top: 50%;
@@ -168,7 +192,12 @@ console.log(section.projects[0].client)
         width: 50%;
         opacity: 0;
         transition: opacity var(--anim-md), translate var(--anim-md);
-        color: var(--color-lightest);
+        color: var(--color-foreground);
+        z-index: 1;
+    }
+
+    .project-media[data-light-logo="true"] .project-logo {
+        color: var(--color-background);
     }
 
     .project-link-card:hover .project-media {
@@ -195,6 +224,12 @@ console.log(section.projects[0].client)
 
         .project-tile[data-hide-mobile="true"] {
             display: none;
+        }
+
+        .project-logo {
+            opacity: 1;
+            color: var(--color-lightest);
+            translate: -50% -50%;
         }
     }
 </style>

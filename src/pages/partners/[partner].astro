@@ -30,8 +30,8 @@ export async function getStaticPaths() {
             youTubeUrl,
             tikTokUrl,
             metafields,
-            "blogPosts": *[_type == "type_blog" && references(^._id)]{${blogCardFields}} | order(orderRank),
-            "projects": *[_type == "type_project" && references(^._id)]{${projectGridFields}} | order(orderRank)
+            "blogPosts": *[_type == "type_blog" && references(^._id) && isHidden != true]{${blogCardFields}} | order(orderRank),
+            "projects": *[_type == "type_project" && references(^._id) && isHidden != true]{${projectGridFields}} | order(orderRank)
         }`)
 
     return partners.map((partner) => {
