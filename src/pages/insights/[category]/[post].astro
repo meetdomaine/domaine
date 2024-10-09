@@ -14,9 +14,10 @@ export const prerender = true
 
 export async function getStaticPaths() {
     // console.log(posts)
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" ]{
+    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{
         ..., 
         _id,
+        slug,
         authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
         postDate,
         thumbnailImage{${imageFields}},
@@ -41,7 +42,7 @@ interface Props {
 const { content } = Astro.props;
 
 const blogPosts = await getBlogPosts_Domaine()
-console.log(content.metafields)
+// console.log(content.metafields)
 
 const relatedPosts = await sanityClient.fetch(`
     *[_type == "type_blog" 
@@ -79,12 +80,12 @@ const relatedPosts = await sanityClient.fetch(`
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
-    <!-- { relatedPosts.length > 1 && 
+    { relatedPosts.length > 1 && 
         <SectionBlogFeed 
             heading="Related Posts"
             posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
         />
-    } -->
+    }
 
     <!-- { relatedProjects?.length > 0 && 
         <SectionProjectsFeed
