@@ -24,9 +24,10 @@ interface Props {
 	searchFilter?: string;
 	currentBrand: any,
 	noIndex?: boolean,
+	cookieNoticeText: Array<any>
 }
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 ---
@@ -129,7 +130,9 @@ const currentPath = Astro.url.pathname;
 		<!-- End Google Tag Manager (noscript) -->
 
 		<GlobalPreloader currentBrand={currentBrand} />
-		<GlobalCookieNotice />
+		<GlobalCookieNotice 
+			content={cookieNoticeText}
+		/>
 		<slot />
 		<ViewportAnimation />
 	</body>

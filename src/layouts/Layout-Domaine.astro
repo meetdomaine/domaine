@@ -5,6 +5,7 @@ import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getBrandSettings_Domaine, getFooterSettings_Domaine } from "../components/global/utils/cms-content"
+import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 
 interface Props {
 	title: string;
@@ -23,7 +24,7 @@ const { title, description, image, searchFilter, activePath, searchExposed, noIn
 
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
-
+// console.log(currentBrand)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
@@ -33,6 +34,7 @@ const footerSettings = await getFooterSettings_Domaine()
     searchFilter={searchFilter}
     currentBrand={currentBrand}
     noIndex={noIndex}
+    cookieNoticeText={currentBrand.cookieNoticeText}
 >
     <Header
         currentBrand={currentBrand}

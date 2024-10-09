@@ -61,7 +61,7 @@ const headerSettings = await sanityClient.fetch(`
 
         <div class="brand" data-color-scheme="glass-dark">
             <a href={currentBrand.url} class="brand-logo">
-                <Fragment set:html={currentBrand.logo} />
+                <Icon name={currentBrand.slug.current === "/studio" ? "domaine-studio" : "domaine-wordmark"} />
             </a>
             {headerSettings.showBrandMenu &&
                 <button class="brand-button button-reset" popovertarget="brand-menu">

@@ -1,7 +1,14 @@
 ---
+import AtomRichContent from "./atoms/atom-richContent.astro"
+
+const { content } = Astro.props
 ---
 <div id="cookie-notice" class="cookie-notice" data-hidden="true" data-color-scheme="glass-dark">
-    <p class="notice-text caption">This website uses cookies to collect data on your interactions and remember your preferences. We use this data to enhance your experience and for analytics. For more details, see our <a>Privacy Policy</a>.</p>
+    <div class="notice-text caption"></p>
+        <AtomRichContent 
+            content={content}
+        />
+    </div>
     <div class="buttons">
         <button id="cookie-deny" class="button-reset button-deny h5">Deny</button>
         <button id="cookie-accept" class="button-reset h5">Accept</button>
@@ -102,6 +109,10 @@
 
     .notice-text {
         max-width: 40em;
+    }
+
+    .notice-text :global(p) {
+        margin: 0;
     }
 
     .buttons {

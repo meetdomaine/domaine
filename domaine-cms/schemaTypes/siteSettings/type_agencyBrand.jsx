@@ -65,6 +65,12 @@ export default defineType({
       type: 'snippet_SEO-fields',
       description: 'Default brand SEO fields.'
     }),
+    defineField({
+      name: 'cookieNoticeText',
+      title: 'Cookie Notice: Text',
+      type: 'snippet_rich-content',
+      validation: Rule => Rule.required()
+    }),
     orderRankField({ type: 'type_practice'}),
   ],
   preview: {
