@@ -109,19 +109,19 @@ export default function SearchMenu(props) {
     const handleSearch = async (query) => {
         if (pageFind()) {
 
-
             const getFilteredResults = async (queryType, setter, maxResults = 6) => {
                 const data = await pageFind().search(query, {filters: {type: queryType}})
                 if (data === null) return
                 const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
+                // console.log(filteredResults)
                 if (filteredResults) return setter(filteredResults)
                 return setter(null)
             }
 
             await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'case-study_studio' : 'case-study_domaine', setProjectResults, 4)
             await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine', setBlogResults, 3)
+            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine', setFeatureResults, 10)
             await getFilteredResults('partner', setPartnerResults, 5)
-            await getFilteredResults('project-feature', setFeatureResults, 10)
 
             // console.log(partnerResults())
         }
@@ -169,7 +169,7 @@ export default function SearchMenu(props) {
                 </div>
 
                 {/* Projects */}
-                <Show when={!query() || (query() && projectResults() && projectResults().length > 0)} placeholder={<p>TEST PROJ</p>}>
+                <Show when={!query() || (query() && projectResults()?.length > 0)} >
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'projects' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Projects</p>
                         <div class={styles.projectsList}>
@@ -198,7 +198,7 @@ export default function SearchMenu(props) {
                 </Show>
 
                 {/* Blog */}
-                <Show when={!query() || (query() && blogResults() && blogResults().length > 0)}>
+                <Show when={!query() || (query() && blogResults()?.length > 0)}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'insights' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Insights</p>
                         <div class={styles.projectsList}>
@@ -230,7 +230,7 @@ export default function SearchMenu(props) {
                 </Show>
 
                 {/* Features/ */}
-                <Show when={!query() || (query() && featureResults() && featureResults().length > 0)}>
+                <Show when={!query() || (query() && featureResults()?.length > 0)}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'features' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Features</p>
                         <div class={styles.featuresList}>
@@ -254,7 +254,7 @@ export default function SearchMenu(props) {
                 </Show>
 
                 {/* Partners */}
-                <Show when={!query() || (query() && partnerResults() && partnerResults().length > 0)}>
+                <Show when={!query() || (query() && partnerResults()?.length > 0)}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'partners' ? 'true' : 'false'}>
                         <p class={styles.columnTitle}>Partners</p>
                         <div class={styles.partnersList}>

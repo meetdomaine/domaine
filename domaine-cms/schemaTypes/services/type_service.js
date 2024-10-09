@@ -108,7 +108,12 @@ export default defineType({
         { type: 'section_videoPlayer'},
         { type: 'section_contentBlocks'},
         { type: 'section_mediaCarousel'},
-    ]
+      ]
+    }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
     }),
     // defineField({
     //   name: 'formHeading',

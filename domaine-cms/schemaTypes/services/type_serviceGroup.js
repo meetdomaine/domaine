@@ -77,6 +77,11 @@ export default defineType({
       title: 'Page Sections: Studio',
       type: 'section_globalSections',
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
     // defineField({
     //   name: 'formHeading',
     //   title: 'Form: Heading',

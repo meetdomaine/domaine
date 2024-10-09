@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
-import { blogCardFields } from '../../../components/global/utils/cms-queries';
+import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../../../components/global/utils/cms-queries';
 import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
 import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
@@ -14,7 +14,18 @@ export const prerender = true
 
 export async function getStaticPaths() {
     // console.log(posts)
-    const posts = await getBlogPosts_Domaine()
+    const posts = await sanityClient.fetch(`*[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" ]{
+        ..., 
+        _id,
+        authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+        postDate,
+        thumbnailImage{${imageFields}},
+        category->{..., slug{...} }, 
+        body[]{${richContentFields}},
+        agencyBrand->{slug},
+        globalSections{ sections[]{${globalSectionsFields}} },
+        metafields{ title, description, image{${imageBaseFields}} }
+    }`)
     return posts.map((post) => {
         return {
             params: { post: post.slug.current, category: post.category.slug.current },
@@ -30,6 +41,7 @@ interface Props {
 const { content } = Astro.props;
 
 const blogPosts = await getBlogPosts_Domaine()
+console.log(content.metafields)
 
 const relatedPosts = await sanityClient.fetch(`
     *[_type == "type_blog" 
@@ -40,8 +52,10 @@ const relatedPosts = await sanityClient.fetch(`
 
 ---
 <LayoutDomaine
-    title={content.title}
-    searchFilter="type:blog-post_domaine"
+    title={content.metafields?.title ? content.metafields.title : content.title}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    searchFilter={content.isHidden ? "" : "type:blog-post_domaine"}
     activePath="/insights"
     noIndex={content.isHidden}
 >
@@ -65,12 +79,12 @@ const relatedPosts = await sanityClient.fetch(`
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 
-    { relatedPosts.length > 1 && 
+    <!-- { relatedPosts.length > 1 && 
         <SectionBlogFeed 
             heading="Related Posts"
             posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
         />
-    }
+    } -->
 
     <!-- { relatedProjects?.length > 0 && 
         <SectionProjectsFeed

@@ -3,7 +3,7 @@ import { sanityClient } from "sanity:client";
 import LayoutDomaine from "../../layouts/Layout-Domaine.astro";
 import ServicesHero from "../../components/domaine/sections/services/services-Hero.astro";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields } from "../../components/global/utils/cms-queries";
+import { globalSectionsFields, imageBaseFields, urlFor } from "../../components/global/utils/cms-queries";
 
 const pageSettings = await sanityClient.fetch(`
     *[_type == "page_services-index-domaine" && _id == "page_services-index-domaine"]{
@@ -12,15 +12,19 @@ const pageSettings = await sanityClient.fetch(`
         formHeading,
         formText,
         hubspotFormId,
-        sections[]{${globalSectionsFields}}
+        sections[]{${globalSectionsFields}},
+        metafields{ title, description, image{${imageBaseFields}} },
     }[0]
 `)
-// const serviceTypes = allServiceTypes_Domaine
 
 // console.log(pageSettings.sections)
 ---
 <LayoutDomaine
-    title="Services"
+
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Insights`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+
     searchFilter="type:page"
     activePath="/services"
 >   

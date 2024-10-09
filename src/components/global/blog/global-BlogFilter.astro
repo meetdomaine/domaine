@@ -1,12 +1,15 @@
 ---
 import AtomTag from '../atoms/atom-tag.astro';
+import { getBlogCategories_Domaine } from '../utils/cms-content';
 
 const { brand, slug } = Astro.props
 
-const categories = await sanityClient.fetch(`
-    *[_type == "type_blogCategory" 
-        && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && isHidden != true && references(^._id)] ) > 0] | order( orderRank )`)
+// const categories = await sanityClient.fetch(`
+//     *[_type == "type_blogCategory" 
+//         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
 
+const categories = await getBlogCategories_Domaine()
+// console.log(categories)
 ---
 <div class="blog-filters">
     <a

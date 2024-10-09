@@ -151,6 +151,7 @@ export const serviceTypePageQuery = `
 
 export const projectPageFields = `
   title,
+  isHidden,
   description,
   excerpt,
   industry->{...},
@@ -169,6 +170,7 @@ export const projectPageFields = `
   heroMedia{..., ${videoFields}, ${imageFields}},
   "relatedProjects": *[_type == "type_project" && isHidden != true && agencyBrand->slug.current == ^.agencyBrand->slug.current && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
   sections[]{${globalSectionsFields}},
+  metafields{ title, description, image{${imageBaseFields}} },
 `
 
 export const projectsGridQuery = (brand) => {

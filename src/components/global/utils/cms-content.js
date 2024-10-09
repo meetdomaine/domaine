@@ -88,7 +88,7 @@ export const getBlogPosts_Studio = async () => {
 // Blog - Categories
 export const getBlogCategories_Domaine = async () => {
   if (_blogCategories_Domaine) return _blogCategories_Domaine
-  _blogCategories_Domaine = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)] ) > 0] | order( orderRank )`)
+  _blogCategories_Domaine = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" && references(^._id)] ) > 0]{ ..., slug} | order( orderRank )`)
   return _blogCategories_Domaine
 }
 

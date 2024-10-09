@@ -1,6 +1,6 @@
 ---
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields } from "../components/global/utils/cms-queries";
+import { globalSectionsFields, imageBaseFields, urlFor } from "../components/global/utils/cms-queries";
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 
 interface Props {
@@ -8,7 +8,11 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ ..., globalSections{ sections[]{${globalSectionsFields}} } }`)
+    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ 
+        ..., 
+        globalSections{ sections[]{${globalSectionsFields}} },
+        metafields{ title, description, image{${imageBaseFields}} },
+    }`)
     return pages.map((page) => {
         return {
             params: { page: page.slug.current },
@@ -23,6 +27,9 @@ const { content } = Astro.props
 <LayoutDomaine
     title={content.title}
     searchFilter="type:page"
+    title={`${content.metafields?.title ? content.metafields.title : content.title}`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
 >
     <div 
         class="page-content" 

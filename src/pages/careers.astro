@@ -6,8 +6,12 @@ import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
+import { imageBaseFields, urlFor } from '../components/global/utils/cms-queries';
 
-const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers'][0]`)
+const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
+  ...,
+  metafields{ title, description, image{${imageBaseFields}} },
+}[0]`)
 
 // console.log(pageSettings)
 // console.log(allCareers)
@@ -15,9 +19,9 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers'][0]`)
 <LayoutDomaine
     title="Careers"
     searchFilter="type:page"
-    title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Careers"}
-    description={pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
-    image={pageSettings.metafields && pageSettings.metafields.image ? pageSettings.metafields.image : null}
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : "Careers"}`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
 >
 
 

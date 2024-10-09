@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { projectPageFields } from '../../components/global/utils/cms-queries';
+import { projectPageFields, urlFor } from '../../components/global/utils/cms-queries';
 import WorkPostContent from '../../components/global/projects/workPost-Content.astro';
 
 export const prerender = true
@@ -21,10 +21,13 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
+// console.log(content)
 ---
 <LayoutDomaine
-    title={content.title}
-    searchFilter="type:case-study_domaine"
+    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    searchFilter={content.isHidden ? "" : "type:case-study_domaine"}
     activePath="/work"
 >
     <WorkPostContent 

@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { partnerTileFields, videoFields } from '../../components/global/utils/cms-queries';
+import { imageBaseFields, partnerTileFields, urlFor, videoFields } from '../../components/global/utils/cms-queries';
 import TextHeading from '../../components/global/sections/section-TextHeading.astro';
 import { getPartners_Domaine } from '../../components/global/utils/cms-content';
 import PartnersIndexTier from '../../components/global/partners/partnersIndex-tier.astro';
@@ -13,15 +13,26 @@ const partnerTiers =  await sanityClient.fetch(`
         ..., 
         "partners": *[_type == "type_partner" && references(^._id)]{
             ${partnerTileFields} 
-        } | order(orderRank)
+        } | order(orderRank),
     } | order(orderRank)`)
 
 const partners = await getPartners_Domaine()
-const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"] { title, heading, heroMedia{${videoFields}}, text, formHeading, formText, hubspotFormId }[0]`)
+const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"] { 
+    title, 
+    heading, 
+    heroMedia{${videoFields}}, 
+    text, 
+    formHeading, 
+    formText, 
+    hubspotFormId,
+    metafields{ title, description, image{${imageBaseFields}} },
+}[0]`)
 // console.log(pageSettings)
 ---
 <LayoutDomaine
-    title={pageSettings.title}
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     searchFilter="type:page"
     activePath="/partners"
 >

@@ -61,6 +61,11 @@ export default defineType({
       type: 'string',
       validation: Rule => Rule.required()
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
   ],
 
   preview: {

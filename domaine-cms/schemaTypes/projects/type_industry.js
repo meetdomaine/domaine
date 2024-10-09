@@ -25,6 +25,11 @@ export default defineType({
       title: 'Excerpt',
       type: 'string',
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
     // defineField({
     //   name: 'agencyBrands',
     //   title: 'Agency Brands',

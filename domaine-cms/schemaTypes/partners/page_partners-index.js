@@ -42,6 +42,11 @@ export default defineType({
       title: 'Form: Hubspot Form ID',
       type: 'string',
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
   ],
 
   preview: {
