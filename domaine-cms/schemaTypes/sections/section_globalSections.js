@@ -18,6 +18,7 @@ export default defineType({
         { type: 'section_locationsFeed'},
         { type: 'section_linkList'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_mediaFullbleed'},
         { type: 'section_projectsFeed'},
         { type: 'section_projectsGrid'},
         { type: 'section_projectsFullBleed'},
