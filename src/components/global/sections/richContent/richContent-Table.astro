@@ -1,0 +1,93 @@
+---
+const { node } = Astro.props;
+---
+<div class="inline-table">
+  <table>
+    <tbody>
+      {node.table.rows?.map((row, i) => (
+        <tr>
+          {row.cells?.map((cell, j) => (
+            ((node.enableHeaderRow && i === 0) || (node.enableHeaderColumn && j === 0)) ?
+              <th class="caption">{cell}</th>
+              :
+              <td class="caption">{cell}</td>
+            
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+
+  .inline-table {
+
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-block: var(--space-2xl);
+  }
+
+  tr:nth-of-type(even) {
+    /* background-color: var(--color-background-secondary); */
+  }
+
+  /* th {
+    font-weight: 500;
+    text-transform: uppercase;
+  } */
+
+  /* First row */
+  table > tbody > tr:nth-of-type(1) > th,
+  table > tbody > tr:nth-of-type(1) > th:nth-of-type(1) {
+    /* color: var(--color-foreground-secondary); */
+    border-bottom: 1px solid var(--color-foreground);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* First column */
+  table > tbody > tr:nth-of-type(1) > th,
+  table > tbody > tr > th:nth-of-type(1) {
+    color: var(--color-foreground);
+  }
+
+  th,
+  td {
+    border: 1px solid var(--color-border);
+    padding: var(--space-xs);
+    vertical-align: top;
+    text-align: left;
+    min-width: 10rem;
+    color: var(--color-foreground-secondary);
+  }
+
+  table > tbody > tr:nth-of-type(1) > :is(td, th) {
+    border-top: none;
+  }
+
+  table > tbody > tr:last-of-type > :is(td, th) {
+    border-bottom: none;
+  }
+
+  table > tbody > tr > :is(td, th):nth-of-type(1) {
+    border-left: none;
+  }
+
+  table > tbody > tr > th:nth-of-type(1) {
+    padding-inline-start: 0;
+  }
+
+  table > tbody > tr > td:last-of-type,
+  table > tbody > tr:has(th + th) > th:last-of-type {
+    border-right: none;
+  }
+
+
+
+</style>

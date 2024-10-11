@@ -5,6 +5,7 @@ import {structureTool} from 'sanity/structure'
 import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
 import {colorInput} from '@sanity/color-input'
+import { table } from '@sanity/table';
 // import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input'
 import { structure } from './domaine-cms/schemaTypes/structure'
 import { schemaTypes } from './domaine-cms/schemaTypes'
@@ -22,6 +23,9 @@ export default defineConfig({
       structure: structure
     }),
     muxInput(),
+    table({
+      rowType: 'my-custom-row-type',
+    }),
     // presentationTool({
     //   previewUrl: 'http://localhost:4322/'
     // }),
@@ -31,7 +35,7 @@ export default defineConfig({
     media(),
     webhooksTrigger({
       title: 'Deploy',
-      text: 'Custom text',
+      text: 'I am buggy, so you can ignore my error messages :)',
       // encryptionSalt: 'replace-me-with-a-strong-string',
       // /** You can customize the event type name to trigger on your Github workflows */
       // githubEventType: 'webhook-trigger',
