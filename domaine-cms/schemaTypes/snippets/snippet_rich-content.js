@@ -195,19 +195,19 @@ export default defineType({
           type: 'boolean',
         },
       ],
-      // preview: {
-      //   select: {
-      //     subtitle: 'videoId'
-      //   },
-      //   prepare(selection) {
-      //     const { subtitle } = selection
-      //     return {
-      //       title: 'YouTube Embed',
-      //       subtitle: subtitle,
-      //       icon: PlayIcon
-      //     }
-      //   }
-      // }
+      preview: {
+        select: {
+          subtitle: 'table.rows.0.cells.0'
+        },
+        prepare(selection) {
+          const { subtitle } = selection
+          return {
+            title: 'Table',
+            subtitle: subtitle,
+            icon: StackCompactIcon
+          }
+        }
+      }
     }),
     defineArrayMember({
       name: 'youTubeEmbed',
