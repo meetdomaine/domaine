@@ -36,13 +36,6 @@ const currentPath = Astro.url.pathname;
 <html lang="en">
 	<head>
 
-		<!-- <script>
-			if (sessionStorage.getItem("cachedSession")) {
-				document.write('<style>#site-preloader { display: none !important; }</style>');
-			}
-		</script> -->
-
-		<!-- Remove once live -->
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
 		<!-- Add back once live -->
@@ -70,14 +63,6 @@ const currentPath = Astro.url.pathname;
 				}
 			}
 		</script>
-
-		<!-- OLD: Google Tag Manager -->
-		<!-- <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-PG5JGM7P');</script> -->
-		<!-- End Google Tag Manager -->
 
 		<!-- Google Tag Manager -->
 		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -118,11 +103,6 @@ const currentPath = Astro.url.pathname;
 
 	</head>
 	<body data-pagefind-filter={searchFilter}>
-
-		<!-- OLD: Google Tag Manager (noscript) -->
-		<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG5JGM7P"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
-		<!-- End Google Tag Manager (noscript) -->
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"

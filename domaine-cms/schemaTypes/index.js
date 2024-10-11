@@ -73,6 +73,7 @@ import section_textHeading from "./sections/section_textHeading.js";
 import type_location from "./siteSettings/type_location.jsx";
 import section_locationsFeed from "./sections/section_locationsFeed.js";
 import section_textMediaBlocks from "./sections/section_textMediaBlocks.js";
+import section_mediaFullbleed from "./sections/section_mediaFullbleed.js";
 
 
 export const schemaTypes = [
@@ -125,6 +126,7 @@ export const schemaTypes = [
     section_imageFullHeight,
     section_linkList,
     section_mediaCarousel,
+    section_mediaFullbleed,
     section_partnersFeed,
     section_practicesFeed,
     section_projectsFeed,

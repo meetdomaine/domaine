@@ -116,6 +116,7 @@ export const globalSectionsFields = `
     _type == "section_partnersFeed" => { showSection, eyebrow, heading, button },
     _type == "section_imageFullHeight" => { showSection, media{${imageFields}, ${videoFields}} },
     _type == "section_mediaCarousel" => { showSection, heading, slides[]{${imageFields}, ${videoFields}} },
+    _type == "section_mediaFullbleed" => { showSection, media{${imageFields}, ${videoFields}} },
     _type == "section_quote" => { showSection, quote, author, authorInfo, quoteImage{${imageFields}} },
     _type == "section_richContent" => { ..., showSection, richContent[]{..., ${richContentFields}} },
     _type == "section_statsCarousel" => { showSection, heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
