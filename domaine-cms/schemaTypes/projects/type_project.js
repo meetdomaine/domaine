@@ -303,6 +303,7 @@ export default defineType({
         { type: 'section_textColumns'},
         { type: 'section_textMediaBlocks'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_mediaFullbleed'},
         { type: 'section_quote'},
       ],
       group: 'content',
