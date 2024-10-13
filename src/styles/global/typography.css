@@ -23,6 +23,28 @@
 
 @font-face {
     font-family: 'Suisse Intl';
+    src: url('/SuisseIntl-SemiBold.otf') format('otf'),
+            url('/SuisseIntl-SemiBold.woff2') format('woff2'),
+            url('/SuisseIntl-SemiBold.woff') format('woff');
+    ;
+    font-weight: 500;
+    font-style: normal;
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: 'Suisse Intl';
+    src: url('/SuisseIntl-SemiBoldItalic.otf') format('otf'),
+            url('/SuisseIntl-SemiBoldItalic.woff2') format('woff2'),
+            url('/SuisseIntl-SemiBoldItalic.woff') format('woff');
+    ;
+    font-weight: 500;
+    font-style: italic;
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: 'Suisse Intl';
     src: url('/SuisseIntl-Regular.otf') format('otf'),
             url('/SuisseIntl-Regular.woff2') format('woff2'),
             url('/SuisseIntl-Regular.woff') format('woff');
@@ -58,7 +80,7 @@
     src: url('/SuisseIntl-LightItalic.otf') format('otf'),
             url('/SuisseIntl-LightItalic.woff2') format('woff2'),
             url('/SuisseIntl-LightItalic.woff') format('woff');
-    font-weight: 00;
+    font-weight: 200;
     font-style: italic;
 }
 
@@ -93,6 +115,7 @@ html,
 body {
     --base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
     font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
+    font-weight: 400;
 }
   
 html,

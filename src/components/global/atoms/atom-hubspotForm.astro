@@ -243,7 +243,7 @@ const fields = await fieldGroups.flatMap((group) => {
     const submitButton = contactForm.querySelector('input[type="submit"]')
     const confirmationMessage = contactForm.querySelector('.confirmation-message')
 
-    function getCookie(cname) {
+    const getCookie = (cname) => {
         let name = cname + "=";
         let decodedCookie = decodeURIComponent(document.cookie);
         let ca = decodedCookie.split(';');
@@ -278,6 +278,12 @@ const fields = await fieldGroups.flatMap((group) => {
 
         const formData = new FormData(contactForm);
 
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const source = urlParams.get('utm_source')
+        const medium = urlParams.get('utm_medium')
+
         // console.log(formData)
         formData.delete("communication-consent");
         formData.delete("consent-to-process");
@@ -295,11 +301,11 @@ const fields = await fieldGroups.flatMap((group) => {
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
 
-            // console.log(fields)
-            // console.log(key)
-
             const field = fields.find((field) => field.name === key)
             let value = formObject[key]
+
+            if (key === 'utm_source' && source) value = source
+            if (key === 'utm_medium' && medium) value = medium
 
             // if (!field) return
                 
