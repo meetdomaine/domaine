@@ -144,7 +144,8 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 </dialog>
 
 <script>
-  import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
+  import { isMobileBreakpoint } from "../utils/check-device"
+import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -156,21 +157,23 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
   let pageEndOpen = false
   let currentScroll = window.scrollY
 
-  window.addEventListener("scroll", (e) => {
-    const scrolledTo = window.scrollY + window.innerHeight
-    const isAtPageEnd = document.body.scrollHeight === scrolledTo
-    const newScroll = window.scrollY
-    if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
-      pageEndOpen = true
-      notificationMenu.showPopover()
-      notificationMenu.blur()
-    } else if (newScroll < currentScroll && pageEndOpen) {
-      pageEndOpen = false
-      notificationMenu.hidePopover()
-    }
-    currentScroll = newScroll
-    
-  })
+  if (!isMobileBreakpoint) {
+    window.addEventListener("scroll", (e) => {
+      const scrolledTo = window.scrollY + window.innerHeight
+      const isAtPageEnd = document.body.scrollHeight === scrolledTo
+      const newScroll = window.scrollY
+      if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
+        pageEndOpen = true
+        notificationMenu.showPopover()
+        // notificationMenu.blur()
+      } else if (newScroll < currentScroll && pageEndOpen) {
+        pageEndOpen = false
+        notificationMenu.hidePopover()
+      }
+      currentScroll = newScroll
+      
+    })
+  }
 
   const updateTime = () => {
       
@@ -204,7 +207,9 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
       // requestAnimationFrame(updateTime)
     }
 
-    setInterval(updateTime, 1000)
+    if (!isMobileBreakpoint) {
+      setInterval(updateTime, 1000)
+    }
   
 </script>
 

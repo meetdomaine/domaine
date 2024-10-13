@@ -1,5 +1,5 @@
 import {defineType, defineArrayMember} from 'sanity'
-import {PlayIcon, ImageIcon, BellIcon, EnvelopeIcon, CodeBlockIcon} from '@sanity/icons'
+import {PlayIcon, ImageIcon, BellIcon, EnvelopeIcon, JsonIcon, ImagesIcon, ErrorOutlineIcon, StackCompactIcon } from '@sanity/icons'
 
 
 export default defineType({
@@ -54,6 +54,7 @@ export default defineType({
         name: 'inlineImage',
         title: 'Image',
         type: 'snippet_image',
+        icon: ImageIcon,
         validation: Rule => Rule.required(),
         preview: {
           select: {
@@ -67,6 +68,7 @@ export default defineType({
       name: 'imageGallery',
       title: 'Image Gallery',
       type: 'object',
+      icon: ImagesIcon,
       fields: [{
         name: 'images',
         title: 'Images',
@@ -90,6 +92,7 @@ export default defineType({
     defineArrayMember({
       name: 'callToAction',
       title: 'Call to Action',
+      icon: ErrorOutlineIcon,
       type: 'object',
       fields: [
           {
@@ -127,6 +130,7 @@ export default defineType({
     defineArrayMember({
       name: 'form',
       title: 'Form',
+      icon: EnvelopeIcon,
       type: 'object',
       fields: [
           {
@@ -162,8 +166,53 @@ export default defineType({
       }
     }),
     defineArrayMember({
+      name: 'table',
+      title: 'Table',
+      icon: StackCompactIcon,
+      type: 'object',
+      fields: [
+        {
+          // Include the table as a field
+          // Giving it a semantic title
+          name: 'table',
+          title: 'Table',
+          type: 'table',
+        },
+        {
+          // Include the table as a field
+          // Giving it a semantic title
+          name: 'enableHeaderRow',
+          title: 'Header Row',
+          description: 'Highlight the top row of the table.',
+          type: 'boolean',
+        },
+        {
+          // Include the table as a field
+          // Giving it a semantic title
+          name: 'enableHeaderColumn',
+          title: 'Header Column',
+          description: 'Highlight the first column of the table.',
+          type: 'boolean',
+        },
+      ],
+      preview: {
+        select: {
+          subtitle: 'table.rows.0.cells.0'
+        },
+        prepare(selection) {
+          const { subtitle } = selection
+          return {
+            title: 'Table',
+            subtitle: subtitle,
+            icon: StackCompactIcon
+          }
+        }
+      }
+    }),
+    defineArrayMember({
       name: 'youTubeEmbed',
       title: 'YouTube Embed',
+      icon: PlayIcon,
       type: 'object',
       fields: [
         {
@@ -191,6 +240,7 @@ export default defineType({
       name: 'schema',
       title: 'Schema',
       type: 'object',
+      icon: JsonIcon,
       fields: [
         {
           name: 'markup',
@@ -204,7 +254,7 @@ export default defineType({
           return {
             title: 'Schema Markup',
             subtitle: 'For SEO purposes',
-            icon: CodeBlockIcon
+            icon: JsonIcon
           }
         }
       }
