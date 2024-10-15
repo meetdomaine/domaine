@@ -59,7 +59,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
     : <p>NO MEDIA</p>
 }
 
-{(video && !autoplay) &&
+{video && autoplay === false &&
   <AtomCursorFollow>
     <button 
       id={`play-button_${video.asset.playbackId}`} 
