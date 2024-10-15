@@ -3,7 +3,7 @@ import { sanityClient } from 'sanity:client'
 import { paths } from '../../../components/global/utils/paths';
 import LayoutStudio from '../../../layouts/Layout-Studio.astro';
 import WorkPostHero from '../../../components/global/projects/workPost-Hero.astro';
-import { projectPageFields, projectPostQuery } from "../../../components/global/utils/cms-queries"
+import { projectPageFields, projectPostQuery, urlFor } from "../../../components/global/utils/cms-queries"
 import WorkPostContent from '../../../components/global/projects/workPost-Content.astro';
 
 export const prerender = true
@@ -25,7 +25,9 @@ export async function getStaticPaths() {
 const { content } = Astro.props
 ---
 <LayoutStudio
-    title={content.title}
+    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter="type:case-study_studio"
     activePath="/studio/work"
 >
