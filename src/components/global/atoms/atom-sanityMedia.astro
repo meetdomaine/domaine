@@ -127,10 +127,14 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
 
     @media screen and (width <= 768px) {
       .play-button {
-        /* position: absolute;
+        position: absolute;
         top: 50%;
-        left: 50%; */
+        left: 50%;
         opacity: 1;
+      }
+
+      .play-button[data-active="true"] {
+         opacity: 0;
       }
     }
 
