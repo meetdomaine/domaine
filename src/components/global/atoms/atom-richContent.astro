@@ -78,4 +78,10 @@ import Table from "../sections/richContent/richContent-Table.astro";
   .rich-content > ol li {
     margin-block-end: 1em;
   }
+
+  .rich-content > :is(ul, ol) > li > :is(ul, ol) {
+    margin-block: 1.5em;
+    list-style-type: upper-roman;
+    padding-inline-start: 1em;
+  }
 </style>

@@ -236,7 +236,8 @@ import { isMobileBreakpoint } from "../../global/utils/check-device"
         .section-media {
             position: relative;
             grid-template-columns: var(--grid-template-extreme-1);
-            grid-template-rows: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            /* grid-template-rows: repeat(3, 1fr); */
             height: 50svh;
             width: 100%;
         }

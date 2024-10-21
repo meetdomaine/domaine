@@ -239,6 +239,12 @@ const fields = await fieldGroups.flatMap((group) => {
 
 <script define:vars={{ portalId, formId, consentData, fields, key }}>
 
+    // const portalIdTest = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID
+    // const accessTokenTest = import.meta.env.PUBLIC_HUBSPOT_ACCESS_TOKEN
+    // console.log(portalIdTest)
+    // console.log(accessTokenTest)
+
+
     const contactForm = document.querySelector(`#form-${formId}${key != undefined ? `-${key}` : ''}`)
     const submitButton = contactForm.querySelector('input[type="submit"]')
     const confirmationMessage = contactForm.querySelector('.confirmation-message')
