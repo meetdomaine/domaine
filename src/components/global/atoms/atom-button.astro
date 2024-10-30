@@ -38,6 +38,25 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
     </a>
 }
 
+<script>
+import { lenis } from "../utils/lenis"
+
+    const buttons = Array.from(document.querySelectorAll('.button') as HTMLCollectionOf<HTMLAnchorElement>)
+    buttons.forEach((button) => {
+        const path = button.getAttribute("href")
+        if (path[0] === "#") {
+            console.log("Jumplink")
+            const target = document.querySelector(path)
+            button.addEventListener("click", (e) => {
+                e.preventDefault()
+                console.log(path)
+                lenis.scrollTo(target, {
+                    offset: -200,
+                })
+            })
+        }
+    })
+</script>
     
 
 <style>

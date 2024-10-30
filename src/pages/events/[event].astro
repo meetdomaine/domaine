@@ -170,6 +170,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
 ))}
 </LayoutDomaine>
 
+
 <style>
   .event-main {
     display: flex;
@@ -278,13 +279,16 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
   .partner-logos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xs);
   }
 
   .partner-logo {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    /* padding: var(--space-md); */
   }
 
   .speaker-cards {
@@ -310,7 +314,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
   }
 
   .speaker-image {
-    flex: 0 0 10rem;
+    flex: 0 0 8rem;
     border-radius: var(--radius-sm);
     overflow: hidden;
   }
