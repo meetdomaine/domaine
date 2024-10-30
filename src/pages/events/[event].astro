@@ -79,7 +79,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
         <div class="event-hero-content">
           <div class="event-title">
             {content.eyebrow && <p class="eyebrow h5">{content.eyebrow}</p>}
-            <h1 class="title">{content.title}</h1>
+            <h1 class="title h2">{content.title}</h1>
           </div>
           <div class="event-details">
             <div class="date">
@@ -93,8 +93,8 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
             <div class="location">
               <Icon name="icon-pin" />
               <div class="location-info">
-                <a class="venue h6" href={content.venueUrl}>{content.venue}</a>
-                <span class="location-name">{content.location}</span>
+                <a class="venue" href={content.venueUrl}>{content.venue}</a>
+                <span class="location-name caption">{content.location}</span>
               </div>
             </div>
           </div>
@@ -229,6 +229,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
+    margin-block: var(--space-md);
   }
 
   .date,
@@ -310,6 +311,8 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
 
   .speaker-image {
     flex: 0 0 10rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
   }
 
   .speaker-logo :global(img) {
