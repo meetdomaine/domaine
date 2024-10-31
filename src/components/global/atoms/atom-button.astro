@@ -41,11 +41,10 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
 <script>
 import { lenis } from "../utils/lenis"
 
-    const buttons = Array.from(document.querySelectorAll('.button') as HTMLCollectionOf<HTMLAnchorElement>)
+    const buttons = Array.from(document.querySelectorAll('.button'))
     buttons.forEach((button) => {
         const path = button.getAttribute("href")
-        if (path[0] === "#") {
-            console.log("Jumplink")
+        if (path && path[0] === "#") {
             const target = document.querySelector(path)
             button.addEventListener("click", (e) => {
                 e.preventDefault()
@@ -62,5 +61,9 @@ import { lenis } from "../utils/lenis"
 <style>
     .button[data-fill="true"] {
         width: 100%;
+    }
+
+    .button:hover {
+        cursor: pointer;
     }
 </style>
