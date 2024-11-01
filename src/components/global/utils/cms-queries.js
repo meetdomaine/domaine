@@ -108,6 +108,7 @@ export const richContentFields = `
 
 export const globalSectionsFields = `
     ...,
+    _type == "section_agenda" => { ... },
     _type == "section_projectsFeed" => { showSection, heading, subheading, projects[]->{ ${projectGridFields} } },
     _type == "section_projectsFullBleed" => { showSection, projects[]{ project->{title, slug, backgroundColor, accentColor, agencyBrand->{slug}, thumbnailImageSecondary{${imageFields}} }, media{${imageFields}} } },
     _type == "section_projectsGrid" => { showSection, title, heading, button{...}, projects[]->{title, slug, backgroundColor, accentColor, foregroundColor, agencyBrand->{slug}, thumbnailMedia{${imageFields}, ${videoFields}}, client->{..., "logo": logo.asset->url } } },

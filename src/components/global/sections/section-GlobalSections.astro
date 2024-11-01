@@ -27,9 +27,11 @@ import TextHeading from "./section-TextHeading.astro"
 import LocationsFeed from "./section-LocationsFeed.astro"
 import TextMediaBlocks from "./section-TextMediaBlocks.astro"
 import SectionMediaFullbleed from "./section-MediaFullbleed.astro"
+import Agenda from "./section-Agenda.astro"
 
 const { section, brand, key } = Astro.props
 ---
+{section._type == "section_agenda" && section.showSection && <Agenda section={section} brand={brand} key={key} />}
 {section._type == "section_blogFeed" && section.showSection && <BlogFeed section={section} brand={brand} key={key} />}
 {section._type == "section_contentBlocks" && section.showSection && <ContentBlocks section={section} brand={brand} key={key} />}
 {section._type == "section_form" && section.showSection && <Form section={section} brand={brand} key={key} />}

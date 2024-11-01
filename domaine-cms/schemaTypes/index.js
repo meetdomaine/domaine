@@ -74,6 +74,7 @@ import type_location from "./siteSettings/type_location.jsx";
 import section_locationsFeed from "./sections/section_locationsFeed.js";
 import section_textMediaBlocks from "./sections/section_textMediaBlocks.js";
 import section_mediaFullbleed from "./sections/section_mediaFullbleed.js";
+import section_agenda from "./sections/section_agenda.js";
 
 
 export const schemaTypes = [
@@ -120,6 +121,7 @@ export const schemaTypes = [
     snippet_richContent,
 
     section_globalSections,
+    section_agenda,
     section_blogFeed,
     section_contentBlocks,
     section_form,

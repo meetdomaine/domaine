@@ -11,6 +11,7 @@ export default defineType({
       title: 'Sections',
       type: 'array',
       of: [
+        { type: 'section_agenda'},
         { type: 'section_blogFeed'},
         { type: 'section_contentBlocks'},
         { type: 'section_form'},
