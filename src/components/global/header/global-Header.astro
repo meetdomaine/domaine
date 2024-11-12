@@ -193,11 +193,12 @@ const headerSettings = await sanityClient.fetch(`
         align-items: center;
         height: calc(100% - var(--space-2xs) * 2);
         width: auto;
+        width: 1.5rem;
     }
 
     .brand-menu-icon {
         opacity: 0.5;
-        width: 60%;
+        width: 100%;
         height: auto;
         transition: opacity var(--anim-sm);
     }
@@ -311,7 +312,7 @@ const headerSettings = await sanityClient.fetch(`
             flex-direction: row;
             align-items: center;
             height: var(--header-element-height);
-            gap: var(--space-sm);
+            gap: var(--space-xs);
         }
 
         .utility-button {

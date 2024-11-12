@@ -30,7 +30,7 @@ const { section, brand } = Astro.props
     {section.linkCardHeading && section.linkCardURL &&
         <a 
             class="link-card" 
-            style={`background-color: ${section.linkCardColor.hex}`} 
+            style={`background-color: ${section.linkCardColor?.hex}`} 
             data-color-scheme={section.linkCardTextColor === "light" ? "invert" : "default"}
             href={section.linkCardURL}
             data-animate-viewport="true" 
