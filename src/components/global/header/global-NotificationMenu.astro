@@ -524,9 +524,15 @@ import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
     border-radius: var(--radius-sm);
   }
 
-  .careers-card:focus:not(:focus-visible) {
+  .careers-card:focus,
+  .careers-card:focus-visible {
     outline: none;
+    border: none;
   }
+
+  /* .careers-card:focus:not(:focus-visible) {
+    outline: none;
+  } */
 
   .careers-card:focus {
     outline-offset: -2px;

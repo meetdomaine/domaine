@@ -46,11 +46,12 @@ export default defineType({
       description: 'Used in Brand menu & practices section.',
       validation: Rule => Rule.required(),
     }),
-    // defineField({
-    //   name: 'logo',
-    //   title: 'Logo',
-    //   type: 'inlineSvg',
-    // }),
+    defineField({
+      name: 'logo',
+      title: 'Logo',
+      description: 'Must be SVG using viewbox for sizing (no width/height) and fill set to currentColor.',
+      type: 'file',
+    }),
     defineField({
       name: 'url',
       title: 'Root URL',

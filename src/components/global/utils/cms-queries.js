@@ -25,7 +25,7 @@ export const partnerTileFields = `
   orderRank
 `
 
-export const agencyBrandsQuery = `..., thumbnailMedia{${videoFields}, ${imageFields}}`
+export const agencyBrandsQuery = `..., "logo": logo.asset->url, thumbnailMedia{${videoFields}, ${imageFields}}`
 export const practicesQuery = `..., thumbnailMedia{${videoFields}, ${imageFields}}`
 
 export const blogCardFields = `

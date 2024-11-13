@@ -62,13 +62,13 @@ export const getBrandSettings_Studio = async () => {
 
 export const getFooterSettings_Domaine = async () => {
   if (_footerSettings_Domaine) return _footerSettings_Domaine
-  _footerSettings_Domaine = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]`)
+  _footerSettings_Domaine = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--domaine"]`)
   return _footerSettings_Domaine
 }
 
 export const getFooterSettings_Studio = async () => {
   if (_footerSettings_Studio) return _footerSettings_Studio
-  _footerSettings_Studio = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`)
+  _footerSettings_Studio = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"]`)
   return _footerSettings_Studio
 }
 
