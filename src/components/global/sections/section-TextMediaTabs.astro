@@ -40,7 +40,7 @@ const { section, brand, key } = Astro.props
         >
           <p class="content-title h6">{currentTab.title}</p>
           <p>{currentTab.text}</p>
-          {currentTab.button.text && currentTab.button.url &&
+          {currentTab.button?.text && currentTab.button?.url &&
             <AtomButton 
               text={currentTab.button.text}
               url={currentTab.button.url}

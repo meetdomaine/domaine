@@ -14,7 +14,7 @@ const iconText = replaceStringIcons(heading)
         <div class="section-text h1">
             {eyebrow && <p class="utility">{eyebrow}</p>}
             {heading && <h1 class=""><Fragment set:html={iconText}/></h1>}
-            {subheading && <p class="caption">{subheading}</p>}
+            {subheading && <p class="subheading h6">{subheading}</p>}
         </div>
         {button.text && button.url &&
             <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}<Icon name="arrow-diagonal" /></a>
@@ -327,6 +327,10 @@ const iconText = replaceStringIcons(heading)
         text-align: center;
         /* max-width: 60em; */
         gap: var(--space-sm);
+    }
+
+    .subheading {
+        max-width: 30em;
     }
 
     .section-media {
