@@ -8,6 +8,7 @@ const { section, brand } = Astro.props
 <section class="section-text-feed">
     <div class="section-content">
         <h1 class="heading h2" data-animate-viewport="true" data-animation="fade-up">{section.heading}</h1>
+        {section.text && <p class="text caption">{section.text}</p>}
         {section.stats &&
             <div class="tags">
                 {section.stats.map((stat, i) => (
@@ -30,7 +31,7 @@ const { section, brand } = Astro.props
     {section.linkCardHeading && section.linkCardURL &&
         <a 
             class="link-card" 
-            style={`background-color: ${section.linkCardColor.hex}`} 
+            style={`background-color: ${section.linkCardColor?.hex}`} 
             data-color-scheme={section.linkCardTextColor === "light" ? "invert" : "default"}
             href={section.linkCardURL}
             data-animate-viewport="true" 
@@ -75,6 +76,11 @@ const { section, brand } = Astro.props
         flex-direction: row;
         gap: var(--space-2xs);
         flex-wrap: wrap;
+    }
+
+    .text {
+        max-width: 46em;
+        margin-block-end: 1em;
     }
 
     .link-card {

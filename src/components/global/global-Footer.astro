@@ -2,12 +2,17 @@
 import { Icon } from "astro-icon/components"
 import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
 import { getAgencyBrands } from "./utils/cms-content"
+import { getRawSvg } from "./utils/raw-svg"
 
 const { currentBrand, footerSettings } = Astro.props
 
-// const footerSettings = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]`)
-// console.log(footerSettings)
 const agencyBrands = await getAgencyBrands()
+
+const logos = await agencyBrands.map( async (brand) => {
+    return await getRawSvg(brand.logo)
+})
+
+
 ---
 <footer data-color-scheme="brand-02">
     <div class="footer-inner">
@@ -45,14 +50,11 @@ const agencyBrands = await getAgencyBrands()
              <div class="footer-form">
                 <p class="footer-form__title">{footerSettings.newsletterHeading}</p>
                 <slot />
-                <!-- <AtomHubspotForm 
-                    formId={footerSettings.newsletterHubspotFormId}
-                /> -->
             </div>
 
         </div>
 
-        <!-- <div class="footer-info__secondary">
+        <div class="footer-info__secondary">
             <div class="agency-brands">
                 {footerSettings.agencyBrandsHeading && 
                     <div class="agency-brands__title">
@@ -60,10 +62,10 @@ const agencyBrands = await getAgencyBrands()
                     </div>
                 }
                 <div class="agency-brands__content">
-                    {agencyBrands.map((brand) => (
+                    {agencyBrands.map((brand, i) => (
                         <a class="brand-card" href={brand.url}>
                             <div class="brand-logo">
-                                <Fragment set:html={brand.logo} />
+                                <Fragment set:html={logos[i]} />
                             </div>
                             <div class="brand-info">
                                 <p class="brand-info__title h6">{brand.name}</p>
@@ -73,7 +75,7 @@ const agencyBrands = await getAgencyBrands()
                     ))}
                 </div>
             </div>
-        </div> -->
+        </div>
 
     </div>
 
@@ -169,6 +171,7 @@ const agencyBrands = await getAgencyBrands()
         justify-content: flex-start;
         flex-wrap: wrap;
         gap: var(--space-2xl);
+        flex-grow: 1;
         /* border-top: 1px solid var(--color-border); */
         /* padding-top: var(--space-2xl); */
     }
@@ -222,11 +225,6 @@ const agencyBrands = await getAgencyBrands()
         color: var(--color-brand-contrast-subdued);
     }
 
-    /* .footer-form :global(input:not([type="submit"])) {
-        background-color: var(--color-background-secondary);
-        color: var(--color-brand-contrast);
-    } */
-
     .footer-form :global(.legal-consent > p)  {
         color: var(--color-brand-contrast-subdued);
     }
@@ -242,7 +240,7 @@ const agencyBrands = await getAgencyBrands()
     .agency-brands {
         display: flex;
         flex-direction: column;
-        flex: 0 0 min(40rem, 100%);
+        /* flex: 0 0 min(40rem, 100%); */
     }
 
     .agency-brands__title {
@@ -264,12 +262,12 @@ const agencyBrands = await getAgencyBrands()
         align-items: center;
         gap: var(--space-xs);
         text-decoration: none;
-        flex: 1 0 16rem;
+        flex: 1 0 18rem;
     }
 
     .brand-logo {
-        aspect-ratio: 1 / 1;
-        flex: 0 0 20%;
+        aspect-ratio: 3 / 2;
+        flex: 0 0 30%;
         display: flex;
         justify-content: center;
         align-items: center;

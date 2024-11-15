@@ -57,7 +57,10 @@ if (section.quoteClient) {
                     <p class="author">{section.quoteAuthor}</p>
                 </div>
                 {quoteClientLogo && 
-                    <div class="quote-logo">
+                    <div 
+                        class="quote-logo"
+                        style={`--logo-scale: ${section.quoteClient?.logoScale}`}
+                    >
                         <Fragment set:html={quoteClientLogo} />
                     </div>
                 }
@@ -177,7 +180,12 @@ if (section.quoteClient) {
     }
 
     .quote-logo {
-        max-width: 5rem;
+        /* max-width: 5rem; */
+        /* width: calc(1rem * var(--logo-scale)); */
+    }
+
+    .quote-logo :global(svg) {
+        width: calc(var(--logo-scale) * 0.6%);
     }
 
     @media screen and (width < 768px) {
