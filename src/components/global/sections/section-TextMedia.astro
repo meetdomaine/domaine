@@ -20,7 +20,7 @@ const iconText = replaceStringIcons(section.heading)
             {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
             <h2 class="heading h2"><Fragment set:html={iconText} /></h2>
             {section.text && <p class={`text ${section.largeText ? "h4" : ""}`}>{section.text}</p>}
-            {section.button && section.button.text && section.button.url &&
+            {section.button?.text && section.button?.url &&
                 <AtomButton 
                     text={section.button.text}
                     url={section.button.url}

@@ -24,7 +24,7 @@ const { title, description, image, searchFilter, activePath, searchExposed, noIn
 
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
-// console.log(currentBrand)
+// console.log(footerSettings)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
