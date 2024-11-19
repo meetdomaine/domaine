@@ -29,6 +29,18 @@ export default defineType({
             validation: Rule => Rule.required()
           },
           {
+            name: 'showButton',
+            title: 'Show Button',
+            type: 'boolean',
+            description: 'When enabled, button to navigate to individual landing page will show.'
+          },
+          {
+            name: 'enableServiceLinks',
+            title: 'Enable Service Links',
+            type: 'boolean',
+            description: 'When enabled, sub-services will link to their landing pages.'
+          },
+          {
             name: 'thumbnailImage',
             title: 'Thumbnail Image',
             type: 'snippet_image',
