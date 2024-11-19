@@ -21,7 +21,7 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
         <div class="card-title">
           <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`}><h2 class="h1">{serviceEntry.service.title}</h2></a>
           <div class="card-details">
-            <p>{serviceEntry.service.description}</p>
+            <p>{brand === "studio" ? serviceEntry.service.descriptionStudio : serviceEntry.service.description}</p>
             {serviceEntry.showButton &&
               <AtomButton 
                 text="Learn More"
