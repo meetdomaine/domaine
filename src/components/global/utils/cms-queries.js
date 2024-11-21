@@ -16,7 +16,7 @@ export const videoFields = 'video{ asset->{playbackId, assetId, filename} }'
 
 export const partnerTileFields = `
   _id,
-  title, 
+  title,
   excerpt, 
   slug, 
   icon{${imageFields}}, 
@@ -121,7 +121,7 @@ export const globalSectionsFields = `
     _type == "section_quote" => { showSection, quote, author, authorInfo, quoteImage{${imageFields}} },
     _type == "section_richContent" => { ..., showSection, richContent[]{..., ${richContentFields}} },
     _type == "section_statsCarousel" => { showSection, heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
-    _type == "section_serviceCards" => { showSection, services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}} } },
+    _type == "section_serviceCards" => { showSection, services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}}, showButton, enableServiceLinks } },
     _type == "section_serviceFeature" => { showSection, heading, button, featuredService->{ 
       _type == "type_serviceType" => { showSection, ${serviceTypeQuery}},
       _type == "type_serviceGroup" => { showSection, ${serviceGroupQuery}}
