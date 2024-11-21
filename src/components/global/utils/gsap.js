@@ -8,8 +8,8 @@ gsap.registerPlugin(TextPlugin, SplitText, ScrollTrigger, ScrollToPlugin, Custom
 
 export { gsap, TextPlugin, SplitText, ScrollTrigger }
 
-export const addParallax = (element, distance = "30%") => {
-    gsap.to(element, {scale: 1.1, duration: 0})
+export const addParallax = (element, distance = "30%", scale = 1.1) => {
+    gsap.to(element, {scale: scale, duration: 0})
     gsap.to(element, {
         scrollTrigger: {
             trigger: element,

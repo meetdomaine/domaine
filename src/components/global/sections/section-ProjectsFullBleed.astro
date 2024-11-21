@@ -25,7 +25,7 @@ const id = Math.random().toString(16).slice(2)
                         image={entry.media.image}
                         sizes="110vw"
                         cover={true}
-                        aspectRatio={1 / 2}
+                        aspectRatio={1 / 1}
                     />
                 </div>
                 <div class="project-preview" data-color-scheme="glass-dark">
@@ -51,7 +51,7 @@ const id = Math.random().toString(16).slice(2)
 
     sections.forEach((section) => {
         const projectImages = section.querySelectorAll('.project-image')
-        projectImages.forEach((image) => addParallax(image))
+        projectImages.forEach((image) => addParallax(image, "20%", 1.02))
 
         const followCursor = (e) => {
 
@@ -132,7 +132,7 @@ const id = Math.random().toString(16).slice(2)
         position: absolute;
         inset: 0;
         width: 100%;
-        /* height: 100%; */
+        /* height: 100lvh; */
         opacity: 0;
         transition: opacity var(--anim-lg);
         z-index: 0;
