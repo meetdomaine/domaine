@@ -51,6 +51,13 @@ export default defineType({
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
+      name: 'buttonText',
+      title: 'Button Text',
+      type: 'string',
+      description: 'If added, will show a sticky button linking to the Hubspot form.',
+      hidden: ({document}) => !document?.isMarketingPage,
+    }),
+    defineField({
       name: 'button',
       title: 'Button',
       type: 'snippet_button',
