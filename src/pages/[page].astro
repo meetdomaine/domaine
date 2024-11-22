@@ -8,7 +8,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ 
+    const pages = await sanityClient.fetch(`*[_type == 'page_general' && !isMarketingPage]{ 
         ..., 
         globalSections{ sections[]{${globalSectionsFields}} },
         metafields{ title, description, image{${imageBaseFields}} },
@@ -46,6 +46,6 @@ const { content } = Astro.props
 
 <style>
     .page-content[data-header-padding="true"] {
-        padding-top: calc(var(--headeer-height) * 2);
+        padding-top: calc(var(--header-height) * 2);
     }
 </style>
