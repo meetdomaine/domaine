@@ -1,0 +1,47 @@
+---
+import { Icon } from "astro-icon/components"
+import AtomButton from "../atoms/atom-button.astro"
+
+const {buttonText, colorScheme, currentBrand } = Astro.props
+---
+<header
+  data-color-scheme={colorScheme} 
+>
+  <a href={currentBrand === "domaine" ? "/" : "/studio"}>
+    <Icon name={currentBrand === "domaine" ? "domaine-wordmark" : "domaine-studio"} />
+  </a>
+  {buttonText && 
+  <div class="sticky-button">
+
+      <AtomButton 
+        url="#contact"
+        text={buttonText}
+        style="primary"
+      />
+    </div>
+  }
+</header>
+
+<style>
+  header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: var(--page-margin);
+    z-index: 999;
+    background-color: transparent;
+  }
+
+  header :global(svg) {
+    flex: 0 0 80%;
+  }
+
+  .sticky-button :global(.button) {
+    /* min-width: 30rem; */
+  }
+</style>
