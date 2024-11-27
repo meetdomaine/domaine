@@ -82,6 +82,9 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
             }, {
                 clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
             })
+            preloaderTimeline.to("#preloader-heading", {
+                visibility: "visible"
+            })
             preloaderTimeline.to("#header", {
                 y: "0%"
             }, "<+=0.6")
@@ -104,6 +107,9 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
             })
             preloaderTimeline.to(".preloader-image[data-logo='false']", {
                 clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+            })
+            preloaderTimeline.to("#preloader-heading", {
+                visibility: "visible"
             })
             preloaderTimeline.from(heading.lines, {
                 // visibility: "visible",
@@ -212,6 +218,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
     }
 
     .preloader-heading {
+        visibility: hidden;
         position: absolute;
         width: 55%;
         top: 50%;
