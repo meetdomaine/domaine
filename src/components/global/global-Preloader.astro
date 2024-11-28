@@ -29,7 +29,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 			/>
 		</div>
 	))}
-	<p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
+	<p id="preloader_heading" class="preloader-heading h1">{content.heading}</p>
 </div>
 
 <script >
@@ -59,7 +59,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 
 	if (showPreloader) {
 
-		const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
+		const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
 		const preloader = document.getElementById("site-preloader")
 
 		gsap.set(preloader, {
@@ -81,7 +81,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 			}, {
 				clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
 			})
-			preloaderTimeline.to("#preloader-heading", {
+			preloaderTimeline.to("#preloader_heading", {
 				visibility: "visible"
 			})
 			preloaderTimeline.to("#header", {
@@ -106,7 +106,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 			preloaderTimeline.to(".preloader-image[data-logo='false']", {
 				clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
 			})
-			preloaderTimeline.to("#preloader-heading", {
+			preloaderTimeline.to("#preloader_heading", {
 				visibility: "visible"
 			})
 			preloaderTimeline.from(heading.lines, {
