@@ -14,235 +14,227 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 //   Astro.cookies.set('preloaderShown', 'true', { path: '/', maxAge: 86400 });
 // }
 ---
+
 <div id="site-preloader" class="preloader" data-color-scheme="brand-02">
-    {content.images.slice(0, 9).map((entry, i) => (
-        <div 
-            class="preloader-image"
-            data-logo={[0, 3, 6].includes(i) ? "true": "false"}
-        >
-            <AtomSanityImage 
-                image={entry.image}
-                sizes="25vw"
-                cover={true}
-                eager={true}
-            />
-        </div>
-    ))}
-    <p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
+	{content.images.slice(0, 9).map((entry, i) => (
+		<div
+			class="preloader-image"
+			data-logo={[0, 3, 6].includes(i) ? "true": "false"}
+		>
+			<AtomSanityImage 
+				image={entry.image}
+				sizes="25vw"
+				cover={true}
+				eager={true}
+			/>
+		</div>
+	))}
+	<p id="preloader-heading" class="preloader-heading h1">{content.heading}</p>
 </div>
 
 <script >
-    import { isMobileBreakpoint } from "./utils/check-device";
-    import { gsap, SplitText } from "./utils/gsap";
+	import { isMobileBreakpoint } from "./utils/check-device";
+	import { gsap, SplitText } from "./utils/gsap";
 
+	let showPreloader = false
+	let sessionCached = sessionStorage.getItem("cachedSession");
 
-    let showPreloader = false
-    let sessionCached = sessionStorage.getItem("cachedSession");
+	if (!sessionCached) {
+		showPreloader = true
+		sessionStorage.setItem("cachedSession", "true");
+	}
 
-    if (!sessionCached) {
-        showPreloader = true
-        sessionStorage.setItem("cachedSession", "true");
-    }
+	// if (sessionStorage.getItem("cachedSession")) {
+	//     const preloader = document.getElementById("site-preloader")
+	//     preloader.style.display = "none" 
+	// } else {
 
-    // if (sessionStorage.getItem("cachedSession")) {
-    //     const preloader = document.getElementById("site-preloader")
-    //     preloader.style.display = "none" 
-    // } else {
+	// }
 
-    // }
+	const preloadComplete = new Event("preload:complete");
 
-    const preloadComplete = new Event("preload:complete");
+	const handlePreloadComplete = () => {
+		window.dispatchEvent(preloadComplete)
+	}
 
-    const handlePreloadComplete = () => {
-        window.dispatchEvent(preloadComplete)
-    }
+	if (showPreloader) {
 
-    if (showPreloader) {
+		const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
+		const preloader = document.getElementById("site-preloader")
 
-        const heading = new SplitText("#preloader-heading", {type: "lines", linesClass: "preloader-text-line"});
-        const preloader = document.getElementById("site-preloader")
+		gsap.set(preloader, {
+			opacity: 1,
+			visibility: "visible",
+			y: 0,
+			autoAlpha: 1,
+		})
 
-        gsap.set(preloader, {
-            opacity: 1,
-            visibility: "visible",
-            y: 0,
-            autoAlpha: 1,
-        })
+		gsap.set("#header", {
+			y: "-150%"
+		})
 
-        gsap.set("#header", {
-            y: "-150%"
-        })
+		const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
 
-        const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
+		if (isMobileBreakpoint) {
+			preloaderTimeline.fromTo(".preloader-image", {
+				clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+			}, {
+				clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+			})
+			preloaderTimeline.to("#preloader-heading", {
+				visibility: "visible"
+			})
+			preloaderTimeline.to("#header", {
+				y: "0%"
+			}, "<+=0.6")
+			preloaderTimeline.to(preloader, {
+				y: "-100%",
+				duration: 0.6,
+				onStart: handlePreloadComplete
+			}, "+=0.4")
+			preloaderTimeline.to(preloader, {
+				opacity: 0,
+				autoAlpha: 1,
+				visibility: 'hidden'
+			}, ">")
+		} else {
+			preloaderTimeline.fromTo(".preloader-image", {
+				clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+			}, {
+				clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+			})
+			preloaderTimeline.to(".preloader-image[data-logo='false']", {
+				clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+			})
+			preloaderTimeline.to("#preloader-heading", {
+				visibility: "visible"
+			})
+			preloaderTimeline.from(heading.lines, {
+				y: "100%",
+				clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
+				stagger: 0.2,
+			})
+			preloaderTimeline.to("#header", {
+				y: "0%"
+			}, "<+=0.2")
+			preloaderTimeline.to(preloader, {
+				y: "-100%",
+				duration: 0.6,
+				onStart: handlePreloadComplete
+			}, "+=0.6")
+			preloaderTimeline.to(preloader, {
+				visibility: "hidden",
+				opacity: 0,
+				autoAlpha: 1,
+			}, ">")
+		}
 
-        if (isMobileBreakpoint) {
-
-            preloaderTimeline.fromTo(".preloader-image", {
-                clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
-            }, {
-                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-            })
-            preloaderTimeline.to("#preloader-heading", {
-                visibility: "visible"
-            })
-            preloaderTimeline.to("#header", {
-                y: "0%"
-            }, "<+=0.6")
-            preloaderTimeline.to(preloader, {
-                y: "-100%",
-                duration: 0.6,
-                onStart: handlePreloadComplete
-            }, "+=0.4")
-            preloaderTimeline.to(preloader, {
-                opacity: 0,
-                autoAlpha: 1,
-                visibility: 'hidden'
-            }, ">")
-
-        } else {
-            preloaderTimeline.fromTo(".preloader-image", {
-                clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
-            }, {
-                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-            })
-            preloaderTimeline.to(".preloader-image[data-logo='false']", {
-                clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
-            })
-            preloaderTimeline.to("#preloader-heading", {
-                visibility: "visible"
-            })
-            preloaderTimeline.from(heading.lines, {
-                // visibility: "visible",
-                y: "100%",
-                clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
-                stagger: 0.2,
-            })
-            preloaderTimeline.to("#header", {
-                y: "0%"
-            }, "<+=0.2")
-            preloaderTimeline.to(preloader, {
-                y: "-100%",
-                duration: 0.6,
-                onStart: handlePreloadComplete
-            }, "+=0.6")
-            preloaderTimeline.to(preloader, {
-                visibility: "hidden",
-                opacity: 0,
-                autoAlpha: 1,
-            }, ">")
-        }
-
-    } else {
-        window.addEventListener("DOMContentLoaded", handlePreloadComplete)
-    }
-
+	} else {
+		window.addEventListener("DOMContentLoaded", handlePreloadComplete)
+	}
 </script>
 
 <style is:global>
-    .preloader-text-line {
-        translate: 0 0%;
-        clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
-    }
+	.preloader-text-line {
+		translate: 0 0%;
+		clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
+	}
 </style>
 
 <style>
-    .preloader {
-        opacity: 0;
-        visibility: hidden;
-        translate: 0 -100%;
-        --load-duration: 0.8s;
-        --load-background-delay: 0.1s;
-        --load-out-delay: 0.1s;
-        position: fixed;
-        width: 100%;
-        height: 100dvh;
-        z-index: 9;
-        display: grid;
-        grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
-        background-color: var(--color-background);
-        color: var(--color-foreground);
-        pointer-events: none;
-    }
+	.preloader {
+		opacity: 0;
+		visibility: hidden;
+		translate: 0 -100%;
+		--load-duration: 0.8s;
+		--load-background-delay: 0.1s;
+		--load-out-delay: 0.1s;
+		position: fixed;
+		width: 100%;
+		height: 100dvh;
+		z-index: 9;
+		display: grid;
+		grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+		background-color: var(--color-background);
+		color: var(--color-foreground);
+		pointer-events: none;
+	}
 
-    .preloader-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        min-width: 0px;
-        min-height: 0px;
+	.preloader-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		min-width: 0px;
+		min-height: 0px;
+		grid-column: 1 / span 1;
+		grid-row: 1 / span 1;
+		/* clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%); */
+		clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+	}
 
-        grid-column: 1 / span 1;
-        grid-row: 1 / span 1;
-        /* clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%); */
-        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-    }
+	.preloader-image:nth-child(1),
+	.preloader-image:nth-child(7) {
+		grid-column: 1 / span 1;
+	}
 
-    .preloader-image:nth-child(1),
-    .preloader-image:nth-child(7) {
-        grid-column: 1 / span 1;
-    }
+	.preloader-image:nth-child(2),
+	.preloader-image:nth-child(8) {
+		grid-column: 3 / span 1;
+	}
 
-    .preloader-image:nth-child(2),
-    .preloader-image:nth-child(8) {
-        grid-column: 3 / span 1;
-    }
+	.preloader-image:nth-child(3),
+	.preloader-image:nth-child(9) {
+		grid-column: 5 / span 1;
+	}
 
-    .preloader-image:nth-child(3),
-    .preloader-image:nth-child(9) {
-        grid-column: 5 / span 1;
-    }
+	.preloader-image:nth-child(4) {
+		grid-column: 2 / span 1;
+	}
 
-    .preloader-image:nth-child(4) {
-        grid-column: 2 / span 1;
-    }
+	.preloader-image:nth-child(5) {
+		grid-column: 4 / span 1;
+	}
 
-    .preloader-image:nth-child(5) {
-        grid-column: 4 / span 1;
-    }
+	.preloader-image:nth-child(6) {
+		grid-column: 6 / span 1;
+	}
 
-    .preloader-image:nth-child(6) {
-        grid-column: 6 / span 1;
-    }
+	.preloader-image:nth-child(4),
+	.preloader-image:nth-child(5),
+	.preloader-image:nth-child(6) {
+		grid-row: 2 / span 1;
+	}
 
-    .preloader-image:nth-child(4),
-    .preloader-image:nth-child(5),
-    .preloader-image:nth-child(6) {
-        grid-row: 2 / span 1;
-    }
+	.preloader-image:nth-child(7),
+	.preloader-image:nth-child(8),
+	.preloader-image:nth-child(9) {
+		grid-row: 3 / span 1;
+	}
 
-    .preloader-image:nth-child(7),
-    .preloader-image:nth-child(8),
-    .preloader-image:nth-child(9) {
-        grid-row: 3 / span 1;
-    }
+	.preloader-heading {
+		visibility: hidden;
+		position: absolute;
+		width: 55%;
+		top: 50%;
+		left: 45%;
+		translate: 0 -50%;
+		z-index: 2;
+		text-transform: uppercase;
+	}
 
-    .preloader-heading {
-        visibility: hidden;
-        position: absolute;
-        width: 55%;
-        top: 50%;
-        left: 45%;
-        translate: 0 -50%;
-        z-index: 2;
-        text-transform: uppercase;
-    }
+	@media screen and (max-width: 768px) {
+		.preloader {
+			padding-block: 30dvh;
+		}
 
-
-    @media screen and (max-width: 768px) {
-
-        .preloader {
-            padding-block: 30dvh;
-        }
-
-        .preloader-heading {
-            width: 55%;
-            top: unset;
-            bottom: var(--space-sm);
-            left: var(--space-sm);
-            translate: 0% 0%;
-            display: none;
-        }
-    }
-
+		.preloader-heading {
+			width: 55%;
+			top: unset;
+			bottom: var(--space-sm);
+			left: var(--space-sm);
+			translate: 0% 0%;
+			display: none;
+		}
+	}
 </style>
