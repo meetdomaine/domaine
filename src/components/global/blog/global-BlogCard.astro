@@ -1,99 +1,104 @@
 ---
-import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
-import AtomTag from "../atoms/atom-tag.astro"
-import { formatDate } from "../utils/format-date"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
+import AtomTag from "../atoms/atom-tag.astro";
+import { formatDate } from "../utils/format-date";
 
 interface Props {
-    title: string,
-    series: string,
-    slug: any,
-    thumbnailImage: any,
-    category: any,
-    agencyBrand: any,
-    postDate: any,
+  title: string;
+  series: string;
+  slug: any;
+  thumbnailImage: any;
+  category: any;
+  agencyBrand: any;
+  postDate: any;
 }
 
-const { title, series, thumbnailImage, slug, category, agencyBrand, postDate } = Astro.props
+const { title, series, thumbnailImage, slug, category, agencyBrand, postDate } = Astro.props;
 
-const categoryUrl = `${agencyBrand.slug.current == '/studio' ? '/studio' : ""}/insights/${category.slug.current}`
-const postUrl = `${categoryUrl}/${slug.current}`
+const categoryUrl = `${agencyBrand.slug.current == "/studio" ? "/studio" : ""}/insights/${category.slug.current}`;
+const postUrl = `${categoryUrl}/${slug.current}`;
 
-const formattedDate = formatDate(postDate)
+const formattedDate = formatDate(postDate);
 ---
-<article class="blog-card" data-animate-viewport="true" data-animation="fade" data-pagefind-ignore>
-    
-    <a href={postUrl} class="card-media">
-        <AtomSanityMedia
-            image={thumbnailImage.image}
-            aspectRatio={3 / 4}
-            sizes="30vw"
-        />
-    </a>
-    <div class="card-text">
-        {series && <p class="card-series caption">{series}</p>}
-        <a href={postUrl} class="card-title h6">{title}</a>
-    </div>
-    <div class="card-info">
-        <AtomTag
-            title={category.title}
-            url={categoryUrl}
-        />
-        {postDate && <p class="date caption">{formattedDate}</p>}
-    </div>
 
+<article
+  class="blog-card"
+  data-animate-viewport="true"
+  data-animation="fade"
+  data-pagefind-ignore
+>
+  <a href={postUrl} class="card-media">
+    <AtomSanityMedia
+      image={thumbnailImage.image}
+      aspectRatio={3 / 4}
+      sizes="30vw"
+    />
+  </a>
+  <div class="card-text">
+    {series && <p class="card-series caption">{series}</p>}
+    <a href={postUrl} class="card-title h6">{title}</a>
+  </div>
+  <div class="card-info">
+    <AtomTag title={category.title} url={categoryUrl} />
+    {postDate && <p class="date caption">{formattedDate}</p>}
+  </div>
+  <link
+    rel="preload"
+    href={postUrl}
+    as="fetch"
+    crossorigin="anonymous"
+    type=""
+  />
 </article>
 
 <style>
-    .blog-card {
-        flex: 0 1 100%;
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        /* align-items: flex-start; */
-        gap: var(--space-xs);
-    }
+  .blog-card {
+    flex: 0 1 100%;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+  }
 
-    .card-media {
-        align-self: stretch;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-    }
+  .card-media {
+    align-self: stretch;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
 
-    .card-media :global(img) {
-        scale: 1;
-        transition: scale var(--anim-lg);
-    }
-    .card-media:hover :global(img) {
-        scale: 1.05;
-    }
+  .card-media :global(img) {
+    scale: 1;
+    transition: scale var(--anim-lg);
+  }
+  .card-media:hover :global(img) {
+    scale: 1.05;
+  }
 
-    .card-info {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        gap: var(--space-xs);
-        /* justify-content: space-between; */
-    }
+  .card-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-xs);
+  }
 
-    .date {
-        margin: 0;
-        color: var(--color-foreground-secondary);
-    }
+  .date {
+    margin: 0;
+    color: var(--color-foreground-secondary);
+  }
 
-    .card-text {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-2xs);
-        /* justify-content: space-between; */
-    }
+  .card-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
 
-    .card-title {
-        text-decoration: none;
-    }
+  .card-title {
+    text-decoration: none;
+  }
 
-    .card-title:hover {
-        color: var(--color-foreground-secondary);
-    }
+  .card-title:hover {
+    color: var(--color-foreground-secondary);
+  }
 </style>
