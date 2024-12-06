@@ -28,6 +28,8 @@ export default defineConfig({
     clientPrerender: true
   },
   output: 'hybrid',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'cloudflare',
+  }),
   site: 'https://meetdomaine.com/'
 });

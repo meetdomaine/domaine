@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "astro dev --host",
     "start": "astro dev",
-    "build": "astro build && pagefind --site dist  && cp -r dist/pagefind public/",
+    "build": "astro build && pagefind --site dist  && cp -r dist/pagefind public/ ",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "echo $GREENSOCK_AUTH_TOKEN"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.3",
