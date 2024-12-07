@@ -19,9 +19,9 @@ interface Props {
     searchExposed?: boolean,
     noIndex?: boolean, 
 }
-
+    
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
-
+        
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
 // console.log(footerSettings)
