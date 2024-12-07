@@ -22,7 +22,10 @@ const locations = await getLocations()
         <div class="brand-logo" data-color-scheme="invert">
           <Icon name="domaine-icon" />
         </div>
-        <p class="brand-heading h5">{agencyBrands[0].excerpt}</p>
+        <div class="brand-text">
+          <p class="brand-name caption">Domaine</p>
+          <p class="brand-heading h5">{agencyBrands[0].excerpt}</p>
+        </div>
       </div>
     </a>
 
@@ -57,7 +60,10 @@ const locations = await getLocations()
           <div class="brand-logo" data-color-scheme="brand-01">
             <Icon name="domaine-studio" />
           </div>
-          <p class="brand-heading h6">{agencyBrands[1].excerpt}</p>
+          <div class="brand-text">
+            <p class="brand-name caption">Domaine Studio</p>
+            <p class="brand-heading h6">{agencyBrands[1].excerpt}</p>
+          </div>
         </div>
       </a>
     </div>
@@ -147,6 +153,12 @@ const locations = await getLocations()
   .brand-logo :global(svg) {
     width: 100%;
     height: auto;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
   }
 
   .brand-heading {
