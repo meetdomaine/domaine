@@ -1,0 +1,165 @@
+---
+import { Icon } from "astro-icon/components";
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import { globalSectionsFields, imageBaseFields, urlFor, imageFields, videoFields } from "../components/global/utils/cms-queries";
+import LayoutDomaineMarketing from "../layouts/Layout-Domaine-Marketing.astro";
+import LayoutDomaine from "../layouts/Layout-Domaine.astro";
+import MarketingHeader from "../components/global/marketingHeader/global-MarketingHeader.astro";
+import AtomHubspotForm from "../components/global/atoms/atom-hubspotForm.astro";
+import AtomButton from "../components/global/atoms/atom-button.astro";
+import AtomSanityMedia from "../components/global/atoms/atom-sanityMedia.astro";
+interface Props {
+  content: any
+}
+export async function getStaticPaths() {
+    const pages = await sanityClient.fetch(`*[_type == 'page_general' && isMarketingPage ]{ 
+        ...,
+        media{${imageFields}, ${videoFields}},
+        globalSections{ sections[]{${globalSectionsFields}} },
+        metafields{ title, description, image{${imageBaseFields}} },
+    }`)
+    return pages.map((page) => {
+        return {
+            params: { marketingPage: page.slug.current },
+            props: { content: page }
+        }
+    })
+}
+const { content } = Astro.props
+// console.log(content)
+---
+<LayoutDomaineMarketing
+    title={content.title}
+    searchFilter="type:page"
+    title={`${content.metafields?.title ? content.metafields.title : content.title}`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+>
+    <MarketingHeader 
+        colorScheme={content.colorScheme} 
+        currentBrand="domaine"
+        buttonText={content.buttonText}
+    />
+    <div 
+        class="page-content" 
+        data-color-scheme={content.colorScheme} 
+        style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
+    >
+        <section class="marketing-page-hero" id="contact">
+            <div class="hero-content">
+                <div class="hero-title">
+                    {content.eyebrow && <p class="h6">{content.eyebrow}</p>}
+                    <h1 class="h2">{content.heading}</h1>
+                </div>
+                <div class="hero-text">
+                    {content.text && <p class="h6">{content.text}</p>}
+                    {content.button?.text && content.button?.url &&
+                        <AtomButton 
+                        text={content.button.text}
+                        url={content.button.url}
+                        style="primary"
+                        />
+                    }
+                </div>
+            </div>
+            <div 
+                class="hero-form"
+                data-color-scheme="default"
+            >
+                {content.formTitle && <p class="h6">{content.formTitle}</p>}
+                <AtomHubspotForm 
+                    formId={content.hubspotFormId}
+                />
+            </div>
+            {content.media &&
+            <div class="hero-media">
+                <AtomSanityMedia
+                    video={content.media.video}
+                    image={content.media.image}
+                    sizes="100vw"
+                    cover={true}
+                />
+            </div>
+            }
+        </section>
+        {content.globalSections?.sections.map((section, i) => (
+            <GlobalSections brand="domaine" section={section} key={i} />
+        ))}
+    </div>
+</LayoutDomaine>
+
+<style>
+
+    .marketing-page-hero {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-top: calc(var(--header-height) * 1);
+        padding-inline: var(--page-margin);
+        padding-bottom: var(--space-2xl);
+        max-width: 100%;
+        gap: var(--space-lg);
+        overflow: hidden;
+        min-height: 95svh;
+    }
+
+    .hero-content,
+    .hero-title,
+    .hero-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-content {
+        flex: 0 1 50%;
+        z-index: 1;
+        gap: var(--space-md);
+        padding-block: var(--space-md);
+    }
+
+    .hero-title {
+        gap: var(--space-xs);
+    }
+
+    .hero-text {
+        gap: var(--space-md);
+    }
+
+    .hero-form {
+        z-index: 1;
+        padding: var(--space-md);
+        border-radius: var(--radius-sm);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-xs);
+        flex: 0 0 40rem;
+        min-width: 0;
+        filter: drop-shadow(0.2rem 0.2rem 2rem rgba(0, 0, 0, 0.1))
+    }
+
+    .hero-media {
+        position: absolute;
+        height: 100%;
+        inset: 0;
+        z-index: 0;
+    }
+
+    @media screen and (width <= 860px) {
+        .marketing-page-hero {
+            flex-direction: column;
+        }
+
+        .hero-content,
+        .hero-form {
+            flex: 0 0 auto;
+            max-width: 100%;
+        }
+
+        /* .hero-form {
+            align-items: center;
+        } */
+    }
+</style>
