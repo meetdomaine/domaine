@@ -6,6 +6,7 @@ import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getBrandSettings_Domaine, getFooterSettings_Domaine } from "../components/global/utils/cms-content"
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
+
 interface Props {
 	title: string;
 	description?: string;
@@ -18,7 +19,9 @@ interface Props {
     searchExposed?: boolean,
     noIndex?: boolean, 
 }
+    
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
+        
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
 // console.log(footerSettings)
