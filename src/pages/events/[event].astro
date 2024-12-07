@@ -68,7 +68,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     <div class="event-info">
 
       <div class="event-hero">
-        <div class="event-image event-image-small">
+        <div class="event-image event-image-hero-top event-image-small">
           <AtomSanityImage 
             sizes="50vw"
             image={content.thumbnailImage.image}
@@ -76,11 +76,13 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
             cover={true}
           />
         </div>
+
         <div class="event-hero-content">
           <div class="event-title">
             {content.eyebrow && <p class="eyebrow h5">{content.eyebrow}</p>}
             <h1 class="title h2">{content.title}</h1>
           </div>
+
           <div class="event-details">
             <div class="date">
               <Icon name="icon-calendar" />
@@ -98,18 +100,29 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
               </div>
             </div>
           </div>
-        {content.button?.url && content.button?.text && 
-          <AtomButton 
-            text={content.button.text}
-            url={content.button.url}
-            newTab={content.button.newTab}
-            icon="arrow-diagonal"
+
+          {content.button?.url && content.button?.text && 
+            <AtomButton 
+              text={content.button.text}
+              url={content.button.url}
+              newTab={content.button.newTab}
+              icon="arrow-diagonal"
+            />
+          }
+
+          <div class="event-image event-image-hero-content event-image-small">
+            <AtomSanityImage 
+              sizes="50vw"
+              image={content.thumbnailImage.image}
+              aspectRatio={3 / 4}
+              cover={true}
+            />
+          </div>
+
+          <AtomRichContent 
+            content={content.description}
           />
-        }
-        <AtomRichContent 
-          content={content.description}
-        />
-      </div>
+        </div>
       </div>
       {content.partnerLogos &&
         <div class="partners-section">
@@ -167,7 +180,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
 
   {content.globalSections && content.globalSections.sections.map((section, i) => (
     <GlobalSections brand="domaine" section={section} key={i} />
-))}
+  ))}
 </LayoutDomaine>
 
 
@@ -192,9 +205,9 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     gap: var(--space-sm);
   }
 
-  .event-image {
-    /* aspect-ratio: 3 / 4; */
-  }
+  /* .event-image {
+    aspect-ratio: 3 / 4;
+  } */
 
   .event-image-large {
     position: sticky;
@@ -242,9 +255,9 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     gap: var(--space-xs);
   }
 
-  .location {
-    /* align-items: flex-start; */
-  }
+  /* .location {
+    align-items: flex-start;
+  } */
 
   .location-name,
   .venue {
@@ -287,7 +300,6 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
     justify-content: center;
     align-items: center;
     border-radius: var(--radius-sm);
-    overflow: hidden;
   }
 
   .speaker-cards {
@@ -333,7 +345,7 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
       display: none;
     }
 
-    .event-image-small {
+    .event-image-small.event-image-hero-top {
       display: flex;
       flex: 0 0 40%;
       border-radius: var(--radius-sm);
@@ -342,14 +354,19 @@ const time = new Intl.DateTimeFormat('en-US', timeOptions).format(dateTime);
   }
 
   @media screen and (width <= 768px) {
-
     .event-hero {
       flex-direction: column-reverse;
       align-items: stretch;
     }
 
-    .event-image-small {
+    .event-image-small.event-image-hero-content {
+      display: flex;
       flex: 0 0 auto;
+      width: 100%;
+    }
+
+    .event-image-small.event-image-hero-top {
+      display: none;
     }
   }
 
