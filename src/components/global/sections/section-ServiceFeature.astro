@@ -4,12 +4,11 @@ import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 import AtomButton from "../atoms/atom-button.astro"
 
 const { section, brand, key } = Astro.props
-console.log(section)
 
 const currentSlug = brand === "studio" ? "/studio" : "/"
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
-    <h2 aria-label='section.featuredService.title'>
+    <h2 aria-label={section.featuredService?.title}>
         {section.featuredService.isHidden ?
             <div aria-hidden='true' class="service-type-title title-xl">{section.featuredService.title}</div>
             :
@@ -138,8 +137,8 @@ import { isMobileBreakpoint } from "../../global/utils/check-device"
         max-width: 24em;
     }
 
-    :global(.service-feature-btn) {
-        max-width: 200px;
+    .section-content :global(.service-feature-btn) {
+        max-width: 14rem;
     }
 
     .service-groups {
