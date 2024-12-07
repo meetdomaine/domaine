@@ -27,6 +27,7 @@ export default defineType({
         { type: 'section_practicesFeed'},
         { type: 'section_quote'},
         { type: 'section_richContent'},
+        { type: 'section_serviceFeature'},
         { type: 'section_servicesFeed'},
         { type: 'section_statsCarousel'},
         { type: 'section_textClients'},

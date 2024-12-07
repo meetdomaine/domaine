@@ -311,6 +311,7 @@ textarea:active {
     flex: 0 1 100%;
     max-width: 100%;
     display: flex;
+    max-width: 100%;
     flex-direction: column;
     gap: var(--space-2xs);
     position: relative;

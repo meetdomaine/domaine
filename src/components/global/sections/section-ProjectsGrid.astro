@@ -1,234 +1,240 @@
 ---
-import AtomButton from "../atoms/atom-button.astro"
-import AtomCounter from "../atoms/atom-counter.astro"
-import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
-import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content"
-import { getRawSvg } from "../utils/raw-svg"
+import AtomButton from "../atoms/atom-button.astro";
+import AtomCounter from "../atoms/atom-counter.astro";
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
+import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
+import { getRawSvg } from "../utils/raw-svg";
 
-const { section, brand } = Astro.props
+const { section, brand } = Astro.props;
 
-const projects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
+const projects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine();
 
 // console.log(section.projects[0].client)
 ---
+
 <section class="section-projects-grid">
-    <div class="section-text">
-        <div 
-            class="section-title"
+  <div class="section-text">
+    <div
+      class="section-title"
+      data-animate-viewport="true"
+      data-animation="fade"
+    >
+      <h2 class="h5">{section.title}</h2>
+      <AtomCounter count={projects.length} />
+    </div>
+    <div
+      class="section-heading"
+      data-animate-viewport="true"
+      data-animation="fade-up"
+      data-animation-delay="150"
+    >
+      <h3>{section.heading}</h3>
+      {section.button && section.button.text && section.button.url &&
+				(
+          <AtomButton
+            text={section.button.text}
+            url={section.button.url}
+            newTab={section.button.newTab}
+            style="primary"
+            icon="arrow-diagonal"
+          />
+        )
+      }
+    </div>
+  </div>
+  <div class="project-tiles">
+    {
+      section.projects.map((project, i) => {
+        const clientLogo = getRawSvg(project.client.logo);
+        return (
+          <div
+            class="project-tile"
+            data-hide-mobile={i >= 8 ? "true" : "false"}
             data-animate-viewport="true"
             data-animation="fade"
-        >
-            <h2 class="h5">{section.title}</h2>
-            <AtomCounter 
-                count={projects.length}
-            />
-        </div>
-        <div 
-            class="section-heading"
-            data-animate-viewport="true"
-            data-animation="fade-up"
-            data-animation-delay="150"
-        >
-            <h3>{section.heading}</h3>
-            {section.button && section.button.text && section.button.url && 
-                <AtomButton 
-                    text={section.button.text}
-                    url={section.button.url}
-                    newTab={section.button.newTab}
-                    style="primary"
-                    icon="arrow-diagonal"
+            data-animation-delay={Math.random() * 400}
+          >
+            <a
+              class="project-link-card"
+              href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
+            >
+              <div
+                class="project-media"
+                data-light-logo={project.foregroundColor === "light" ? "true" : "false"}
+                style={project.backgroundColor ? `--project-color: ${project.backgroundColor.hex};` : ""}
+              >
+                <AtomSanityMedia
+                  image={project.thumbnailMedia.image}
+                  video={project.thumbnailMedia.video}
+                  aspectRatio={3 / 4}
+                  sizes="15vw"
+                  cover={true}
                 />
-            }
-        </div>
-    </div>
-    <div class="project-tiles">
-        {section.projects.map((project, i) => {
-
-            const clientLogo = getRawSvg(project.client.logo)
-            return (
-                <div 
-                    class="project-tile"
-                    data-hide-mobile={ i >= 8 ? "true" : "false"}
-                    data-animate-viewport="true"
-                    data-animation="fade"
-                    data-animation-delay={Math.random() * 400}
+                <div
+                  class="project-logo"
+                  style={`width: ${project.client.logoScale * 0.75}%;`}
                 >
-                    <a class="project-link-card" href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}>
-                        <div 
-                            class="project-media"
-                            data-light-logo={project.foregroundColor === "light" ? "true" : "false"}
-                            style={project.backgroundColor ? `--project-color: ${project.backgroundColor.hex};` : ''}
-                        >
-                            <AtomSanityMedia 
-                                image={project.thumbnailMedia.image}
-                                video={project.thumbnailMedia.video}
-                                aspectRatio={3 / 4}
-                                sizes="15vw"
-                                cover={true}
-                            />
-                            <div 
-                                class="project-logo"
-                                style={`width: ${project.client.logoScale * 0.75}%;`}
-                            >
-                                <Fragment set:html={clientLogo} />
-                                {/* <AtomSanityImage 
-                                    image={project.client.logoLight.image}
-                                    sizes="30vw"
-                                /> */}
-                            </div>
-                        </div>
-                    </a>
+                  <Fragment set:html={clientLogo} />
+                  {/* <AtomSanityImage 
+											image={project.client.logoLight.image}
+											sizes="30vw"
+									/> */}
                 </div>
-            )
-        })}
-    </div>
+              </div>
+            </a>
+						<link
+							rel="preload"
+							href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
+							as="fetch"
+							crossorigin="anonymous"
+							type=""
+						/>
+          </div>
+        );
+      })
+    }
+  </div>
 </section>
 
 <style>
-    .section-projects-grid {
-        padding-inline: var(--page-margin);
-        padding-block: var(--space-3xl);
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--space-3xl);
+  .section-projects-grid {
+    padding-inline: var(--page-margin);
+    padding-block: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3xl);
+  }
+
+  .section-title {
+    grid-column: 1 / span 2;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .section-heading {
+    grid-column: 3 / span 3;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .section-text,
+  .project-tiles {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(n, 1fr);
+    gap: var(--space-2xs);
+  }
+
+  .project-tile {
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+  }
+
+  .project-link-card {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    grid-area: pr;
+    position: relative;
+  }
+
+  .project-link-card:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .project-link-card:focus {
+    outline-offset: -2px;
+  }
+
+  .project-tile:nth-child(1),
+  .project-tile:nth-child(4),
+  .project-tile:nth-child(5),
+  .project-tile:nth-child(7),
+  .project-tile:nth-child(10) {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2xs);
+    grid-template-areas: "pr .";
+  }
+
+  .project-tile:nth-child(5) {
+    grid-template-areas: ". pr";
+  }
+
+  .project-media {
+    transition: scale var(--anim-lg);
+    height: 100%;
+  }
+
+  .project-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--project-color, var(--color-lighter, white));
+    z-index: 0;
+    opacity: 0;
+    transition: opacity var(--anim-sm);
+  }
+
+  .project-media[data-light-logo="true"]::after {
+    background-color: var(--project-color, var(--color-darkest, black));
+  }
+
+  .project-link-card:hover .project-media::after {
+    opacity: 0.9;
+  }
+
+  .project-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% calc(-50% + var(--space-sm));
+    width: 50%;
+    opacity: 0;
+    transition: opacity var(--anim-md), translate var(--anim-md);
+    color: var(--color-foreground);
+    z-index: 1;
+  }
+
+  .project-media[data-light-logo="true"] .project-logo {
+    color: var(--color-background);
+  }
+
+  .project-link-card:hover .project-media {
+    scale: 1.1;
+  }
+
+  .project-link-card:hover .project-logo {
+    opacity: 1;
+    translate: -50% -50%;
+  }
+
+  @media screen and (width < 768px) {
+    .section-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
     }
 
-    .section-title {
-        grid-column: 1 / span 2;
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        gap: var(--space-xs);
-    }
-
-    .section-heading {
-        grid-column: 3 / span 3;
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-xs);
-    }
-
-    .section-text,
     .project-tiles {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: repeat(n, 1fr);
-        gap: var(--space-2xs);
-        /* justify-content: stretch; */
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(n, 1fr);
     }
 
-    .project-tile {
-        overflow: hidden;
-        border-radius: var(--radius-sm);
-        
-    }
-
-
-    .project-link-card {
-        height: 100%;
-        max-height: 100%;
-        overflow: hidden;
-        border-radius: var(--radius-sm);
-        grid-area: pr;
-        position: relative;
-    }
-
-    .project-link-card:focus:not(:focus-visible) {
-        outline: none;
-    }
-
-    .project-link-card:focus {
-        outline-offset: -2px;
-    }
-
-    .project-tile:nth-child(1),
-    .project-tile:nth-child(4),
-    .project-tile:nth-child(5),
-    .project-tile:nth-child(7),
-    .project-tile:nth-child(10) {
-        grid-column: span 2;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-2xs);
-        grid-template-areas: 
-            "pr .";
-    }
-
-    .project-tile:nth-child(5) {
-        grid-template-areas: 
-            ". pr";
-    }
-
-    .project-media {
-        transition: scale var(--anim-lg);
-        height: 100%;
-    }
-
-    .project-media::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-color: var(--project-color, var(--color-lighter, white));
-        z-index: 0;
-        opacity: 0;
-        transition: opacity var(--anim-sm);
-    }
-
-    .project-media[data-light-logo="true"]::after {
-        background-color: var(--project-color, var(--color-darkest, black));
-    }
-
-    .project-link-card:hover .project-media::after {
-        opacity: 0.9;
+    .project-tile[data-hide-mobile="true"] {
+      display: none;
     }
 
     .project-logo {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        translate: -50% calc(-50% + var(--space-sm));
-        width: 50%;
-        opacity: 0;
-        transition: opacity var(--anim-md), translate var(--anim-md);
-        color: var(--color-foreground);
-        z-index: 1;
+      opacity: 1;
+      color: var(--color-lightest);
+      translate: -50% -50%;
     }
-
-    .project-media[data-light-logo="true"] .project-logo {
-        color: var(--color-background);
-    }
-
-    .project-link-card:hover .project-media {
-        scale: 1.1;
-    }
-
-    .project-link-card:hover .project-logo {
-        opacity: 1;
-        translate: -50% -50%;
-    }
-
-    @media screen and (width < 768px) {
-        .section-text {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
-        }
-
-
-        .project-tiles {
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(n, 1fr);
-        }
-
-        .project-tile[data-hide-mobile="true"] {
-            display: none;
-        }
-
-        .project-logo {
-            opacity: 1;
-            color: var(--color-lightest);
-            translate: -50% -50%;
-        }
-    }
+  }
 </style>
