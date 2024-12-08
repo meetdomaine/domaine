@@ -7,7 +7,7 @@ const { section } = Astro.props
 
 const id = Math.random().toString(16).slice(2)
 
-// console.log(section.projects[3])
+console.log(section.projects[2])
 ---
 <section class="section-projects-fullbleed" id={`media-fullbleed-${id}`}>
     <div class="section-content" data-color-scheme="brand-02">
@@ -15,7 +15,7 @@ const id = Math.random().toString(16).slice(2)
             <div class='project-item'>
                 <a
                     class="project-link"
-                    href={`${entry.project.agencyBrand.slug.current === 'studio' ? '/studio' : null}/work/${entry.project.slug.current}`} 
+                    href={`${entry.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${entry.project.slug.current}`} 
                     style={entry.project.backgroundColor && `--project-color: ${entry.project.backgroundColor.hex}`}
                 >
                     <Icon name={`character-${entry.project.title[0].toUpperCase()}`} class="project-icon" />
