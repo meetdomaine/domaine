@@ -2,7 +2,7 @@
 import { sanityClient } from "sanity:client";
 import LayoutStudio from "../../../layouts/Layout-Studio.astro";
 import SectionServiceLandingHero from "../../../components/studio/sections/services/services-Hero.astro";
-import { globalSectionsFields, imageFields } from "../../../components/global/utils/cms-queries";
+import { globalSectionsFields, imageFields, urlFor } from "../../../components/global/utils/cms-queries";
 import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
 
 const pageSettings = await sanityClient.fetch(`
@@ -10,7 +10,8 @@ const pageSettings = await sanityClient.fetch(`
         title,
         heading,
         images[]{${imageFields}},
-        sections[]{${globalSectionsFields}}
+        sections[]{${globalSectionsFields}},
+        metafields
     }[0]
 `)
 
@@ -18,7 +19,12 @@ console.log(pageSettings)
 
 ---
 <LayoutStudio
-    title="Services"
+
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Services`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+
+
     searchFilter="type:page"
     activePath="/studio/services"
 >   

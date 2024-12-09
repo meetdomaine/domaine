@@ -21,7 +21,7 @@ const pageSettings = await sanityClient.fetch(`
 ---
 <LayoutDomaine
 
-    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Insights`}
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Services`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
 
