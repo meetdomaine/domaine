@@ -15,14 +15,14 @@ const pageSettings = await sanityClient.fetch(`
     }[0]
 `)
 
-console.log(pageSettings)
+// console.log(pageSettings)
 
 ---
 <LayoutStudio
 
-    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Services`}
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
-    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    image={pageSettings.metafields?.image ? pageSettings.metafields.image : null}
 
 
     searchFilter="type:page"
