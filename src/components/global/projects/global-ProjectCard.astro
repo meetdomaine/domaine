@@ -1,333 +1,312 @@
 ---
-import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
-import AtomTag from "../atoms/atom-tag.astro"
-import { urlFor } from "../utils/cms-queries"
-import { getRawSvg } from "../utils/raw-svg"
-
+import AtomSanityImage from "../atoms/atom-sanityImage.astro";
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
+import AtomTag from "../atoms/atom-tag.astro";
+import { urlFor } from "../utils/cms-queries";
+import { getRawSvg } from "../utils/raw-svg";
 
 interface Props {
-    project: ProjectCard
+  project: ProjectCard;
 }
 
-const { project } = Astro.props
+const { project } = Astro.props;
 
-let clientLogo
+let clientLogo;
 
 if (project.client?.logo) {
-    clientLogo = await getRawSvg(project.client.logo)
+  clientLogo = await getRawSvg(project.client.logo);
 }
 // console.log(project.client.logo)
 // console.log(project.thumbnailMedia)
 ---
-<a 
-    href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`} 
-    class={`project-card`} 
-    data-pagefind-ignore
-    data-animate-viewport="true"
-    data-animation="fade"
+
+<a
+  href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
+  class={`project-card`}
+  data-pagefind-ignore
+  data-animate-viewport="true"
+  data-animation="fade"
 >
-    <div class="card-media">
-        <div class="card-thumbnail">
-            <AtomSanityMedia 
-                video={ project.thumbnailMedia.video ? project.thumbnailMedia.video : null }
-                image={ project.thumbnailMedia.image }
-                aspectRatio={3 / 4}
-                sizes="30vw"
-            />
-        </div>
-        {project.client?.logo &&
-            <div 
-                class="client-logo" 
-                data-color-scheme={project.logoColor === "dark" ? "default" : "invert"}
-                style={`width: ${project.client.logoScale / 2}%`}
-            >
-                <Fragment set:html={clientLogo} />
-            </div>
-        }
-        {project.thumbnailImageSecondary && 
-            <div class="card-overlay glass-ink">
-                <div class="hover-image">
-                    <AtomSanityImage 
-                        image={project.thumbnailImageSecondary.image}
-                        sizes="40vw"
-                    />
-                </div>
-            </div>
-        }
-        {project.features &&
-            <div class="features">
-                <div class="feature-tags">
-                    {project.features.map((feature) => (
-                        <AtomTag 
-                            text={feature.title}
-                        />
-                    ))}
-                </div>
-                <div class="elipses-tag">
-                    <AtomTag 
-                        text="..."
-                    />
-                </div>
-            </div>
-        }
+  <div class="card-media">
+    <div class="card-thumbnail">
+      <AtomSanityMedia
+        video={project.thumbnailMedia.video ? project.thumbnailMedia.video : null}
+        image={project.thumbnailMedia.image}
+        aspectRatio={3 / 4}
+        sizes="30vw"
+      />
     </div>
-    <div class="card-content">
-        {project.client && 
-            <div class="product-media">
-                <img 
-                    src={urlFor(project.client.productImage).auto('format').url() }
-                    class="product-image"
-                />
-            </div>
-        }
-        <div class="card-details">
-            <h6 class="title body">{project.title}</h6>
-            <div class="card-description">
-                <p class="description-text caption">{project.excerpt}</p>
-                <div class="description-tags">
-                    {project.industry && 
-                        <AtomTag 
-                            title="Industry"
-                            text={project.industry.title}
-                        />
-                    }
-                    {project.client && project.client.isEnterprise &&
-                        <AtomTag
-                            text="Enterprise"
-                            theme="brand-01"
-                        />
-                    }
-                </div>
-            </div>
+    {project.client?.logo && (
+			<div
+				class="client-logo"
+				data-color-scheme={
+					project.logoColor === "dark" ? "default" : "invert"
+				}
+				style={`width: ${project.client.logoScale / 2}%`}
+			>
+				<Fragment set:html={clientLogo} />
+			</div>
+		)}
+    {project.thumbnailImageSecondary && (
+			<div class="card-overlay glass-ink">
+				<div class="hover-image">
+					<AtomSanityImage
+						image={project.thumbnailImageSecondary.image}
+						sizes="40vw"
+					/>
+				</div>
+			</div>
+		)}
+    {project.features && (
+			<div class="features">
+				<div class="feature-tags">
+					{project.features.map((feature) => (
+						<AtomTag text={feature.title} />
+					))}
+				</div>
+				<div class="elipses-tag">
+					<AtomTag text="..." />
+				</div>
+			</div>
+		)}
+  </div>
+  <div class="card-content">
+    {project.client && (
+			<div class="product-media">
+				<img
+					src={urlFor(project.client.productImage).auto("format").url()}
+					class="product-image"
+				/>
+			</div>
+		)}
+    <div class="card-details">
+      <h6 class="title body">{project.title}</h6>
+      <div class="card-description">
+        <p class="description-text caption">{project.excerpt}</p>
+        <div class="description-tags">
+          {project.industry && (
+						<AtomTag title="Industry" text={project.industry.title} />
+					)}
+          {project.client && project.client.isEnterprise && (
+						<AtomTag text="Enterprise" theme="brand-01" />
+					)}
         </div>
+      </div>
     </div>
+  </div>
 </a>
 
+<link
+	rel="preload"
+	href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
+	as="fetch"
+	crossorigin="anonymous"
+	type=""
+/>
+
 <style>
-    
+  .project-card {
+    flex: 0 1 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+    text-decoration: none;
+  }
 
-    .project-card {
-        flex: 0 1 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--space-xs);
-        text-decoration: none;
-        /* flex-shrink: 0; */
-    }
+  .card-media {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
 
-    .card-media {
-        position: relative;
-        width: 100%;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-    }
+  .card-thumbnail {
+    scale: 1;
+    transition: scale var(--anim-lg);
+  }
 
-    .card-thumbnail {
-        scale: 1;
-        transition: scale var(--anim-lg);
-        /* transition: scale var(--anim-easing) 5s; */
-    }
+  .project-card:hover .card-thumbnail {
+    scale: 1.05;
+    transition: scale var(--anim-easing) 5s;
+  }
 
-    .project-card:hover .card-thumbnail {
-        scale: 1.05;
-        /* transition: scale var(--anim-lg); */
-        transition: scale var(--anim-easing) 5s;
-    }
+  .client-logo {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    max-width: calc(100% - var(--space-sm) * 2);
+    background-color: transparent;
+  }
 
-    .client-logo {
-        position: absolute;
-        top: var(--space-sm);
-        left: var(--space-sm);
-        /* inset: var(--space-sm); */
-        max-width: calc(100% - var(--space-sm) * 2);
-        /* max-width: min(30%, 10em); */
-        /* height: 8%; */
-        background-color: transparent;
-        /* object-fit: cover; */
-    }
+  .client-logo :global(svg) {
+    width: 100%;
+    height: auto;
+  }
 
-    .client-logo :global(svg) {
-        width: 100%;
-        height: auto;
-    }
+  .card-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
 
-    .card-content {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: flex-start;
-        gap: var(--space-sm);
-    }
+  .product-media {
+    position: relative;
+    flex: 0 0 max(60px, 10%);
+    background-color: var(--color-background-secondary);
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
 
-    .product-media {
-        position: relative;
-        flex: 0 0 max(60px, 10%);
-        background-color: var(--color-background-secondary);
-        aspect-ratio: 1 / 1;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-    }
+  .product-image {
+    width: 100%;
+    min-width: 0;
+    translate: 0 0;
+    transition: translate var(--anim-sm);
+  }
 
-    .product-image {
-        width: 100%;
-        min-width: 0;
-        translate: 0 0;
-        transition: translate var(--anim-sm);
-    }
+  .title {
+    margin: 0;
+  }
 
-    /* .project-card:hover .product-image {
-        translate: 0 -5%;
-    } */
+  .features {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 var(--space-xs) var(--space-xs);
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: var(--space-2xs);
+    opacity: 0;
+    translate: 0 1em;
+    transition: opacity var(--anim-sm), translate var(--anim-sm);
+  }
 
-    .title {
-        margin: 0;
-    }
+  .project-card:hover .features {
+    opacity: 1;
+    translate: 0 0;
+  }
 
-    .features {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        /* max-width: calc(100% - var(--space-xs) * 2); */
-        padding: 0 var(--space-xs) var(--space-xs);
-        display: flex;
-        justify-content: flex-start;
-        flex-direction: row;
-        gap: var(--space-2xs);
-        opacity: 0;
-        translate: 0 1em;
-        transition: opacity var(--anim-sm), translate var(--anim-sm);
-    }
+  .feature-tags {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2xs);
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+  }
 
-    .project-card:hover .features {
-        opacity: 1;
-        translate: 0 0;
-    }
+  .feature-tags::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2em;
+    background: linear-gradient(90deg, transparent, var(--color-background-secondary));
+  }
 
-    .feature-tags {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        gap: var(--space-2xs);
-        overflow: hidden;
-        border-radius: var(--radius-sm);
-        /* flex: 1 0 auto; */
-    }
+  .elipses-tag {
+    flex: 0 0 auto;
+  }
 
-    .feature-tags::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 2em;
-        background: linear-gradient(90deg, transparent, var(--color-background-secondary));
-    }
+  .card-details {
+    --inset: -0.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-self: stretch;
+  }
 
-    .elipses-tag {
-        flex: 0 0 auto;
-    }
+  .title {
+    color: var(--color-foreground);
+    transition: color var(--anim-sm);
+    position: relative;
+  }
 
-    .card-details {
-        --inset: -0.1em;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        align-self: stretch;
-    }
+  .title::after {
+    content: "";
+    position: absolute;
+    inset: var(--inset);
+    width: 0%;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-foreground);
+    z-index: -1;
+    transition: width var(--anim-sm);
+  }
 
-    .title {
-        color: var(--color-foreground);
-        transition: color var(--anim-sm);
-        position: relative;
-    }
+  .project-card:hover .title {
+    color: var(--color-background);
+  }
 
-    .title::after {
-        content: "";
-        position: absolute;
-        inset: var(--inset);
-        width: 0%;
-        border-radius: var(--radius-sm);
-        background-color: var(--color-foreground);
-        z-index: -1;
-        transition: width var(--anim-sm);
-    }
+  .project-card:hover .title::after {
+    width: calc(100% - var(--inset) * 2);
+  }
 
-    .project-card:hover .title {
-        color: var(--color-background);
-    }
+  .card-description {
+    position: relative;
+  }
 
-    .project-card:hover .title::after {
-        width: calc(100% - var(--inset) * 2);
-    }
+  .description-tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    position: absolute;
+    top: var(--space-2xs);
+    left: var(--inset);
+    opacity: 0;
+    translate: 0 1em;
+    transition: opacity var(--anim-sm), translate var(--anim-sm);
+  }
 
-    .card-description {
-        position: relative;
-    }
+  .description-text {
+    color: var(--color-foreground-secondary);
+    opacity: 1;
+    translate: 0 0em;
+    transition: opacity var(--anim-sm), translate var(--anim-sm);
+  }
 
-    .description-tags {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: var(--space-2xs);
-        position: absolute;
-        top: var(--space-2xs);
-        left: var(--inset);
-        opacity: 0;
-        translate: 0 1em;
-        transition: opacity var(--anim-sm), translate var(--anim-sm);
-    }
+  .project-card:hover .description-text {
+    opacity: 0;
+    translate: 0 -1em;
+  }
 
-    .description-text {
-        color: var(--color-foreground-secondary);
-        opacity: 1;
-        translate: 0 0em;
-        transition: opacity var(--anim-sm), translate var(--anim-sm);
-    }
+  .project-card:hover .description-tags {
+    opacity: 1;
+    translate: 0 0;
+  }
 
-    .project-card:hover .description-text {
-        opacity: 0;
-        translate: 0 -1em;
-    }
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity var(--anim-md);
+  }
 
-    .project-card:hover .description-tags {
-        opacity: 1;
-        translate: 0 0;
-    }
+  .project-card:hover .card-overlay {
+    opacity: 1;
+  }
 
-    .card-overlay {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        transition: opacity var(--anim-md);
-    }
+  .hover-image {
+    max-width: 60%;
+    border-radius: var(--radius-sm);
+    transition: translate var(--anim-md), clip-path var(--anim-md);
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+    overflow: hidden;
+  }
 
-    .project-card:hover .card-overlay {
-        opacity: 1;
-    }
-
-    .hover-image {
-        max-width: 60%;
-        border-radius: var(--radius-sm);
-        /* translate: 0 20px; */
-        transition: translate var(--anim-md), clip-path var(--anim-md);
-        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-        overflow: hidden;
-    }
-
-    .project-card:hover .card-overlay .hover-image {
-        translate: 0 0px;
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        /* clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0%, 100%); */
-    }
-
-
-
-
+  .project-card:hover .card-overlay .hover-image {
+    translate: 0 0px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
 </style>
