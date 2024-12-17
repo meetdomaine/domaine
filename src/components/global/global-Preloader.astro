@@ -15,7 +15,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 // }
 ---
 
-<div id="site-preloader" class="preloader" data-color-scheme="brand-02">
+<div id="site_preloader" class="preloader" data-color-scheme="brand-02">
 	{content.images.slice(0, 9).map((entry, i) => (
 		<div
 			class="preloader-image"
@@ -45,7 +45,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 	}
 
 	// if (sessionStorage.getItem("cachedSession")) {
-	//     const preloader = document.getElementById("site-preloader")
+	//     const preloader = document.getElementById("site_preloader")
 	//     preloader.style.display = "none" 
 	// } else {
 
@@ -60,11 +60,9 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 	if (showPreloader) {
 
 		const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
-		const preloader = document.getElementById("site-preloader")
+		const preloader = document.getElementById("site_preloader")
 
 		gsap.set(preloader, {
-			opacity: 1,
-			visibility: "visible",
 			y: 0,
 			autoAlpha: 1,
 		})
@@ -122,11 +120,6 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 				duration: 0.6,
 				onStart: handlePreloadComplete
 			}, "+=0.6")
-			preloaderTimeline.to(preloader, {
-				visibility: "hidden",
-				opacity: 0,
-				autoAlpha: 1,
-			}, ">")
 		}
 
 	} else {
@@ -143,12 +136,6 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 
 <style>
 	.preloader {
-		opacity: 0;
-		visibility: hidden;
-		translate: 0 -100%;
-		--load-duration: 0.8s;
-		--load-background-delay: 0.1s;
-		--load-out-delay: 0.1s;
 		position: fixed;
 		width: 100%;
 		height: 100dvh;
