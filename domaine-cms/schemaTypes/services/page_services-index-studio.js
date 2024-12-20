@@ -49,6 +49,11 @@ export default defineType({
         { type: 'section_linkList'},
     ]
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_SEO-fields',
+    }),
   ],
 
   preview: {
