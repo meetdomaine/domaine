@@ -92,6 +92,12 @@ const logos = await agencyBrands.map( async (brand) => {
             {footerSettings.linkedInUrl &&
                 <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
             }
+            {footerSettings.emailAddress &&
+                <a 
+                  href={`mailto:${footerSettings.emailAddress}?subject=Domaine | Agency Website Contact`} 
+                  class="email-button"
+                ><Icon name="icon-email" class="social-icon" />{footerSettings.emailAddress}</a>
+            }
         </div>
 
         <div class="subfooter-links">
@@ -329,6 +335,14 @@ const logos = await agencyBrands.map( async (brand) => {
     .social-icon {
         width: var(--icon-md);
         height: var(--icon-md);
+    }
+
+    .email-button {
+      text-decoration: none;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-2xs);
     }
 
     .subfooter-links {
