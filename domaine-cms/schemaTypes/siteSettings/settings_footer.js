@@ -91,6 +91,11 @@ export default defineType({
       }),
     }),
     defineField({
+      name: 'emailAddress',
+      title: 'Contact Email',
+      type: 'email',
+    }),
+    defineField({
       name: 'legalLinks',
       title: 'Legal Links',
       type: 'snippet_link-list',
