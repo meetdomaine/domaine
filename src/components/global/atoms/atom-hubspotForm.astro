@@ -25,14 +25,24 @@ const formData = await hubspotResponse.json()
 const fieldGroups = await formData.fieldGroups
 const consentData = await formData.legalConsentOptions
 
+// console.log(fieldGroups)
+
 const fields = await fieldGroups.flatMap((group) => {
+  // console.log(group)
+  if (group.fields) {
     return group.fields.map((field) => {
+      // console.log(field)
         return field
     })
+  }
+  console.log(group)
+  return null
 })
 ---
 <form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
     {fieldGroups.map((group) => {
+      if (group.fields) {
+        
         return (
             <div class="form-field-group">
         
@@ -177,10 +187,21 @@ const fields = await fieldGroups.flatMap((group) => {
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
                         )
+                    case('heading'):
+                      return (
+                          <p>Heading</p>
+                      )
                     default: null
                 }
             })}
             </div>
+        )
+      }
+
+      if (group.richText) return (
+        <div class="rich-text-block">
+          <Fragment set:html={group.richText} />
+        </div>
         )
     })}
 
@@ -396,5 +417,9 @@ const fields = await fieldGroups.flatMap((group) => {
     .confirmation-icon {
         width: 1em;
         height: auto;
+    }
+
+    .rich-text-block {
+      padding-top: var(--space-2xs);
     }
 </style>
