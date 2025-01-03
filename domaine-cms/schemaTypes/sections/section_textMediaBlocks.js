@@ -29,6 +29,12 @@ export default defineType({
       type: 'snippet_button',
     }),
     defineField({
+      name: 'columnCount',
+      title: 'Columns',
+      type: 'number',
+      validation: Rule => Rule.required().min(2).max(6),
+    }),
+    defineField({
       name: 'blocks',
       title: 'Text + Media Blocks',
       type: 'array',
@@ -67,7 +73,7 @@ export default defineType({
           }
         },
       }],
-      validation: Rule => Rule.max(3).required()
+      validation: Rule => Rule.required()
     }),
   ],
   preview: {
