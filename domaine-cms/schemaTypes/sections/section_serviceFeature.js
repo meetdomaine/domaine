@@ -23,11 +23,32 @@ export default defineType({
         { type: 'type_serviceGroup'}
       ]
     }),
-    // defineField({
-    //   name: 'heading',
-    //   title: 'Heading',
-    //   type: 'string',
-    // }),
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+      description: 'If added, will override the Sevice title.'
+    }),
+    defineField({
+      name: 'headingSize',
+      title: 'Heading Size',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Small", value: "small" },
+          { title: "Large", value: "large" },
+        ],
+        layout: "radio",
+        direction: "horizontal"
+      },
+      initialValue: "large"
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'text',
+      description: 'If added, will override the Sevice excerpt.'
+    }),
     defineField({
       name: 'button',
       title: 'Button',

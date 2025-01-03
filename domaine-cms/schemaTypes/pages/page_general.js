@@ -27,6 +27,21 @@ export default defineType({
       description: 'Removes navigation and adds form section.',
     }),
     defineField({
+      name: 'heroColorScheme',
+      title: 'Hero Color Scheme',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Default", value: "default" },
+          { title: "Invert", value: "invert" },
+        ],
+        layout: "radio",
+        direction: "horizontal"
+      },
+      initialValue: "default",
+      hidden: ({document}) => !document?.isMarketingPage,
+    }),
+    defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
       type: 'string',
