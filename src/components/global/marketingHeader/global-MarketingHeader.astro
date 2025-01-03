@@ -5,7 +5,7 @@ import AtomButton from "../atoms/atom-button.astro"
 const {buttonText, colorScheme, currentBrand } = Astro.props
 ---
 <header
-  data-color-scheme={colorScheme} 
+  data-color-scheme="secondary"
 >
   <a href={currentBrand === "domaine" ? "/" : "/studio"}>
     <Icon name={currentBrand === "domaine" ? "domaine-wordmark" : "domaine-studio"} />

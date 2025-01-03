@@ -48,7 +48,7 @@ const { content } = Astro.props
         data-color-scheme={content.colorScheme} 
         style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
     >
-        <section class="marketing-page-hero" id="contact">
+        <section class="marketing-page-hero" id="contact" data-color-scheme={content.heroColorScheme === "invert" ? "invert" : content.colorScheme} >
             <div class="hero-content">
                 <div class="hero-title">
                     {content.eyebrow && <p class="h6">{content.eyebrow}</p>}
