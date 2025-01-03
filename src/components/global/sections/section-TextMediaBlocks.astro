@@ -4,6 +4,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 
 const { section, brand, key } = Astro.props
+// console.log(section.columnCount)
 ---
 <section class="section-text-media-blocks">
   <div class="section-title">
@@ -22,7 +23,7 @@ const { section, brand, key } = Astro.props
       />
     }
   </div>
-  <div class="section-content">
+  <div class="section-content" style={`--column-count: ${section.columnCount ? section.columnCount : section.blocks.length}`}>
     {section.blocks.map((block) => (
       <div class="content-block">
         <div class="block-media">
@@ -62,11 +63,13 @@ const { section, brand, key } = Astro.props
 
   .section-content {
     padding-inline: var(--page-margin);
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
     /* flex-wrap: wrap; */
     gap: var(--space-md);
+    /* display: grid; */
+    /* grid-template-rows: auto; */
+    /* grid-auto-rows: 1fr 1fr; */
+    display: grid;
+    grid-template-columns: repeat(var(--column-count), 1fr);
   }
 
   .content-block {
@@ -74,6 +77,9 @@ const { section, brand, key } = Astro.props
     flex-direction: column;
     gap: var(--space-sm);
     flex: 0 1 100%;
+    /* flex: 1 0 calc(25% - var(--space-sm) ); */
+    /* min-width: 20%; */
+    /* flex: 0 0 calc(25% - var(--space-sm)); */
   }
 
   .block-media {
@@ -84,6 +90,9 @@ const { section, brand, key } = Astro.props
 
   @media screen and (width <= 768px) {
     .section-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
       overflow-x: auto;
     }
 
