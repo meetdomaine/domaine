@@ -29,6 +29,7 @@ if (section.quoteClient) {
     <!-- <div class="client-logos"> -->
         <div 
             class="logo-track"
+            style={`--logo-count: ${clients.length};`}
         >
             {clients.map((client, i) => (
                 <div class="logo" style={`--width-offset: ${client.logoScale};`}>
@@ -40,13 +41,6 @@ if (section.quoteClient) {
                     <Fragment set:html={client.logoSvg} />
                 </div>
             ))}
-            <!-- {clients.map((client, i) => (
-                <a href="#" class="client-card">
-                    <div class="logo" style={`width: ${client.logoScale}%;`}>
-                        <Fragment set:html={client.logoSvg} />
-                    </div>
-                </a>
-            ))} -->
         </div>
     <!-- </div> -->
     <div class="section-content">
@@ -110,7 +104,7 @@ if (section.quoteClient) {
     .logo-track {
         width: max-content;
         gap: var(--space-4xl);
-        animation: client-scroll 20s linear infinite;
+        animation: client-scroll calc( var(--logo-count) * 4s) linear infinite;
         will-change: translate;
         display: flex;
         flex-direction: row;
