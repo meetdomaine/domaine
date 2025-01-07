@@ -187,10 +187,6 @@ const fields = await fieldGroups.flatMap((group) => {
                                 {field.description && <p class="field-description caption">{field.description}</p>}
                             </div>
                         )
-                    case('heading'):
-                      return (
-                          <p>Heading</p>
-                      )
                     default: null
                 }
             })}
@@ -319,7 +315,9 @@ const fields = await fieldGroups.flatMap((group) => {
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
 
-            const field = fields.find((field) => field.name === key)
+            console.log(key)
+
+            const field = fields.find((field) => field?.name === key)
             let value = formObject[key]
 
             if (key === 'utm_source' && source) value = source
