@@ -12,12 +12,13 @@ interface Props {
 	description?: string;
 	image?: string;
 	theme?: string;
-    backgroundColor?: string;
-    foregroundColor?: string;
-    searchFilter?: string;
-    activePath?: string;
-    searchExposed?: boolean,
-    noIndex?: boolean, 
+  backgroundColor?: string;
+  foregroundColor?: string;
+  searchFilter?: string;
+  activePath?: string;
+  searchExposed?: boolean,
+  noIndex?: boolean, 
+  showPreloader?: boolean, 
 }
     
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;

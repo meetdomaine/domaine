@@ -13,12 +13,13 @@ interface Props {
 	description?: string,
 	image?: string,
 	theme?: string,
-    searchFilter?: string,
-    activePath?: string,
-    searchExposed?: boolean,
+  searchFilter?: string,
+  activePath?: string,
+  searchExposed?: boolean,
+  showPreloader?: boolean,
 }
 
-const { title, description, image, theme, searchFilter, activePath, searchExposed } = Astro.props;
+const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader } = Astro.props;
 
 const currentBrand = await getBrandSettings_Studio()
 const footerSettings = await getFooterSettings_Studio()
@@ -31,6 +32,7 @@ const footerSettings = await getFooterSettings_Studio()
     searchFilter={searchFilter}
     currentBrand={currentBrand}
     cookieNoticeText={currentBrand.cookieNoticeText}
+    showPreloader={showPreloader}
 >
     <Header
         currentBrand={currentBrand}
