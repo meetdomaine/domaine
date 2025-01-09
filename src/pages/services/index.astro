@@ -20,13 +20,12 @@ const pageSettings = await sanityClient.fetch(`
 // console.log(pageSettings.sections)
 ---
 <LayoutDomaine
-
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
-
     searchFilter="type:page"
     activePath="/services"
+    showPreloader={true}
 >   
     <ServicesHero
         title={pageSettings.title}

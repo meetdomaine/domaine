@@ -24,10 +24,11 @@ interface Props {
 	searchFilter?: string;
 	currentBrand: any,
 	noIndex?: boolean,
+	showPreloader?: boolean,
 	cookieNoticeText: Array<any>
 }
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const isStaging = import.meta.env.STAGING == "true"
@@ -110,7 +111,11 @@ const isStaging = import.meta.env.STAGING == "true"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<GlobalPreloader currentBrand={currentBrand} />
+    {showPreloader && 
+      <GlobalPreloader 
+        currentBrand={currentBrand} 
+      />
+    }
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
 		/>
