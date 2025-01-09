@@ -25,14 +25,24 @@ const formData = await hubspotResponse.json()
 const fieldGroups = await formData.fieldGroups
 const consentData = await formData.legalConsentOptions
 
+// console.log(fieldGroups)
+
 const fields = await fieldGroups.flatMap((group) => {
+  // console.log(group)
+  if (group.fields) {
     return group.fields.map((field) => {
+      // console.log(field)
         return field
     })
+  }
+  // console.log(group)
+  return null
 })
 ---
 <form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
     {fieldGroups.map((group) => {
+      if (group.fields) {
+        
         return (
             <div class="form-field-group">
         
@@ -182,6 +192,13 @@ const fields = await fieldGroups.flatMap((group) => {
             })}
             </div>
         )
+      }
+
+      if (group.richText) return (
+        <div class="rich-text-block">
+          <Fragment set:html={group.richText} />
+        </div>
+        )
     })}
 
     {consentData && consentData.communicationsCheckboxes && 
@@ -298,7 +315,9 @@ const fields = await fieldGroups.flatMap((group) => {
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
 
-            const field = fields.find((field) => field.name === key)
+            console.log(key)
+
+            const field = fields.find((field) => field?.name === key)
             let value = formObject[key]
 
             if (key === 'utm_source' && source) value = source
@@ -396,5 +415,9 @@ const fields = await fieldGroups.flatMap((group) => {
     .confirmation-icon {
         width: 1em;
         height: auto;
+    }
+
+    .rich-text-block {
+      padding-top: var(--space-2xs);
     }
 </style>
