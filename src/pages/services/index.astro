@@ -25,7 +25,7 @@ const pageSettings = await sanityClient.fetch(`
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     searchFilter="type:page"
     activePath="/services"
-    showPreloader={true}
+    showPreloader={false}
 >   
     <ServicesHero
         title={pageSettings.title}

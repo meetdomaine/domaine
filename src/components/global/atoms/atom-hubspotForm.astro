@@ -12,7 +12,6 @@ const { formId, buttonToggles, key } = Astro.props
 
 const portalId = env.HUBSPOT_PORTAL_ID
 const accessToken = env.HUBSPOT_ACCESS_TOKEN
-console.log(accessToken)
 
 const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
     method: "GET",

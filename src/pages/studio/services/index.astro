@@ -22,7 +22,7 @@ const pageSettings = await sanityClient.fetch(`
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? pageSettings.metafields.image : null}
-    showPreloader={true}
+    showPreloader={false}
     searchFilter="type:page"
     activePath="/studio/services"
 >   
