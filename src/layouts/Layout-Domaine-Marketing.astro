@@ -21,7 +21,7 @@ interface Props {
   showPreloader?: boolean, 
 }
     
-const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader } = Astro.props;
         
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
@@ -36,6 +36,7 @@ const footerSettings = await getFooterSettings_Domaine()
     currentBrand={currentBrand}
     noIndex={noIndex}
     cookieNoticeText={currentBrand.cookieNoticeText}
+    showPreloader={showPreloader}
 >
     <main>
         <slot />
