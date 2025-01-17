@@ -59,6 +59,7 @@ const relatedPosts = await sanityClient.fetch(`
     searchFilter={content.isHidden ? "" : "type:blog-post_domaine"}
     activePath="/insights"
     noIndex={content.isHidden}
+    showPreloader={false}
 >
     <BlogPostHero
         post={content}

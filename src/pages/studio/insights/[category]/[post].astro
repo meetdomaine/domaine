@@ -28,6 +28,7 @@ const { content } = Astro.props;
     title={content.title}
     searchFilter="type:blog-post_studio"
     activePath="/studio/insights"
+    showPreloader={false}
 >
     <BlogPostHero
         post={content}

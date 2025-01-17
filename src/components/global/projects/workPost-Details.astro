@@ -1,14 +1,9 @@
 ---
 import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
-import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
-import { paths } from "../utils/paths"
 import { getRawSvg } from "../utils/raw-svg"
-
 const { url, client, services, partners, features, metrics, theme, agencyBrand } = Astro.props
-console.log(url)
 const logo = getRawSvg(client.logo)
 ---
 <section class="work-post_details">
@@ -18,7 +13,6 @@ const logo = getRawSvg(client.logo)
     
         {client && 
             <div class="client">
-                {/* <h4 class="h5">Services</h4> */}
                 <div class="client-logo" style={`--logo-scale: ${client.logoScale}`}>
                     <Fragment set:html={logo} />
                 </div>
