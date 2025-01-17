@@ -1,6 +1,6 @@
 ---
 import AtomTag from '../atoms/atom-tag.astro';
-import { getBlogCategories_Domaine } from '../utils/cms-content';
+import { getBlogCategories_Domaine, getBlogCategories_Studio } from '../utils/cms-content';
 
 const { brand, slug } = Astro.props
 
@@ -8,7 +8,7 @@ const { brand, slug } = Astro.props
 //     *[_type == "type_blogCategory" 
 //         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
 
-const categories = await getBlogCategories_Domaine()
+const categories = brand === "domaine" ? await getBlogCategories_Domaine() : await getBlogCategories_Studio()
 // console.log(categories)
 ---
 <div class="blog-filters">

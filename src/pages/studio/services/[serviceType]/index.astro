@@ -28,6 +28,7 @@ const { content } = Astro.props;
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service-type"
     activePath="/studio/services"
+    showPreloader={true}
 >
     <SectionServiceTypeHero
         brand="studio"

@@ -24,13 +24,12 @@ interface Props {
 	searchFilter?: string;
 	currentBrand: any,
 	noIndex?: boolean,
+	showPreloader?: boolean,
 	cookieNoticeText: Array<any>
 }
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader } = Astro.props;
 const currentPath = Astro.url.pathname;
-
-const isStaging = import.meta.env.STAGING == "true"
 ---
 
 <!doctype html>
@@ -110,7 +109,11 @@ const isStaging = import.meta.env.STAGING == "true"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<GlobalPreloader currentBrand={currentBrand} />
+    <GlobalPreloader 
+      currentBrand={currentBrand}
+      showPreloader={showPreloader}
+    />
+    
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
 		/>
@@ -135,6 +138,16 @@ const isStaging = import.meta.env.STAGING == "true"
     initLenis()
   })
 </script>
+
+<!-- <script define:vars={{ showPreloader }}>
+  if (!showPreloader) {
+    const preloadComplete = new Event("preload:complete");
+    // window.dispatchEvent(preloadComplete)
+    window.addEventListener("DOMContentLoaded", () => {
+      window.dispatchEvent(preloadComplete)
+    })
+  }
+</script> -->
 
 <style>
   @media screen and (max-width: 860px) {

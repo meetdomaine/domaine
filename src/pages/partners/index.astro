@@ -35,6 +35,7 @@ const pageSettings = await sanityClient.fetch(` *[_type == "page_partners-index"
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     searchFilter="type:page"
     activePath="/partners"
+    showPreloader={false}
 >
     <TextHeading 
         title={pageSettings.title}
