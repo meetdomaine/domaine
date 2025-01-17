@@ -22,6 +22,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : "Careers"}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    showPreloader={false}
 >
 
 

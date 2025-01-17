@@ -2,6 +2,12 @@
 import LayoutStudio from '../../../../layouts/Layout-Studio.astro';
 import { getBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
 import BlogPostHero from '../../../../components/global/blog/blog-PostHero.astro';
+import BlogPostBody from '../../../../components/global/blog/blog-PostBody.astro';
+import BlogPostSidebar from '../../../../components/global/blog/blogPost-Sidebar.astro';
+import BlogPostAuthors from '../../../../components/global/blog/blog-PostAuthors.astro';
+import GlobalSections from '../../../../components/global/sections/section-GlobalSections.astro';
+import { blogCardFields } from '../../../../components/global/utils/cms-queries';
+import SectionBlogFeed from '../../../../components/global/sections/section-BlogFeed.astro';
 
 export const prerender = true
 
@@ -20,9 +26,16 @@ interface Props {
     content: any
 }
 
-// console.log(Astro.props)
-
 const { content } = Astro.props;
+const blogPosts = await getBlogPosts_Studio()
+
+// Need to validate this once more posts are added
+const relatedPosts = await sanityClient.fetch(`
+    *[_type == "type_blog" 
+        && agencyBrand->name == "studio" 
+        && category->_id == '${content.category._id}' 
+        && isHidden != true
+    ]{${blogCardFields}} | order(orderRank asc)`)
 ---
 <LayoutStudio
     title={content.title}
@@ -33,5 +46,30 @@ const { content } = Astro.props;
     <BlogPostHero
         post={content}
     />
+
+    <BlogPostBody content={content.body}>
+      {blogPosts.length > 2 &&
+        <BlogPostSidebar
+          latestPosts={blogPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
+        />
+      }
+    </BlogPostBody>
+
+    {content.authors && 
+      <BlogPostAuthors 
+          authors={content.authors}
+      />
+    }
+
+    {content.globalSections && content.globalSections.sections.map((section, i) => (
+      <GlobalSections brand="studio" section={section} key={i} />
+    ))}
+
+    { relatedPosts.length > 1 && 
+      <SectionBlogFeed 
+          heading="Related Posts"
+          posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
+      />
+    }
     
 </LayoutStudio>
