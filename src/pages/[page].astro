@@ -30,6 +30,7 @@ const { content } = Astro.props
     title={`${content.metafields?.title ? content.metafields.title : content.title}`}
     description={content.metafields?.description ? content.metafields.description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    showPreloader={content.showPreloader}
 >
     <div 
         class="page-content" 

@@ -3,19 +3,11 @@ import { sanityClient } from "sanity:client"
 import { imageFields } from "./utils/cms-queries"
 import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 
-// sessionStorage.removeItem("key");
-
-const { currentBrand } = Astro.props
+const { currentBrand, showPreloader } = Astro.props
 const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
-
-// const showPreloader = !Astro.cookies.has('preloaderShown');
-// console.log(Astro.cookies)
-// if (showPreloader) {
-//   Astro.cookies.set('preloaderShown', 'true', { path: '/', maxAge: 86400 });
-// }
 ---
 
-<div id="site-preloader" class="preloader" data-color-scheme="brand-02">
+<div id="site-preloader" class="preloader" data-color-scheme="brand-02" data-show-preloader={showPreloader ? "true" : "false"}>
 	{content.images.slice(0, 9).map((entry, i) => (
 		<div
 			class="preloader-image"
@@ -32,106 +24,95 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 	<p id="preloader_heading" class="preloader-heading h1">{content.heading}</p>
 </div>
 
-<script >
+<script>
 	import { isMobileBreakpoint } from "./utils/check-device";
 	import { gsap, SplitText } from "./utils/gsap";
 
-	let showPreloader = false
+  const preloader = document.getElementById("site-preloader")
+  let showPreloader = preloader.dataset.showPreloader
 	let sessionCached = sessionStorage.getItem("cachedSession");
 
-	if (!sessionCached) {
-		showPreloader = true
-		sessionStorage.setItem("cachedSession", "true");
-	}
-
-	// if (sessionStorage.getItem("cachedSession")) {
-	//     const preloader = document.getElementById("site-preloader")
-	//     preloader.style.display = "none" 
-	// } else {
-
-	// }
-
 	const preloadComplete = new Event("preload:complete");
-
-	const handlePreloadComplete = () => {
+  const handlePreloadComplete = () => {
 		window.dispatchEvent(preloadComplete)
 	}
 
-	if (showPreloader) {
+  // Do nothing if preloader is disabled on this page or has shown already
+  if (sessionCached || showPreloader != "true") {
+    window.addEventListener("DOMContentLoaded", handlePreloadComplete)
+  } else {
 
-		const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
-		const preloader = document.getElementById("site-preloader")
+    sessionStorage.setItem("cachedSession", "true");
 
-		gsap.set(preloader, {
-			opacity: 1,
-			visibility: "visible",
-			y: 0,
-			autoAlpha: 1,
-		})
+    const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
 
-		gsap.set("#header", {
-			y: "-150%"
-		})
+    gsap.set(preloader, {
+      opacity: 1,
+      visibility: "visible",
+      y: 0,
+      autoAlpha: 1,
+    })
 
-		const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
+    gsap.set("#header", {
+      y: "-150%"
+    })
 
-		if (isMobileBreakpoint) {
-			preloaderTimeline.fromTo(".preloader-image", {
-				clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
-			}, {
-				clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-			})
-			preloaderTimeline.to("#preloader_heading", {
-				visibility: "visible"
-			})
-			preloaderTimeline.to("#header", {
-				y: "0%"
-			}, "<+=0.6")
-			preloaderTimeline.to(preloader, {
-				y: "-100%",
-				duration: 0.6,
-				onStart: handlePreloadComplete
-			}, "+=0.4")
-			preloaderTimeline.to(preloader, {
-				opacity: 0,
-				autoAlpha: 1,
-				visibility: 'hidden'
-			}, ">")
-		} else {
-			preloaderTimeline.fromTo(".preloader-image", {
-				clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
-			}, {
-				clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
-			})
-			preloaderTimeline.to(".preloader-image[data-logo='false']", {
-				clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
-			})
-			preloaderTimeline.to("#preloader_heading", {
-				visibility: "visible"
-			})
-			preloaderTimeline.from(heading.lines, {
-				y: "100%",
-				clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
-				stagger: 0.2,
-			})
-			preloaderTimeline.to("#header", {
-				y: "0%"
-			}, "<+=0.2")
-			preloaderTimeline.to(preloader, {
-				y: "-100%",
-				duration: 0.6,
-				onStart: handlePreloadComplete
-			}, "+=0.6")
-			preloaderTimeline.to(preloader, {
-				visibility: "hidden",
-				opacity: 0,
-				autoAlpha: 1,
-			}, ">")
-		}
+    const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
 
-	} else {
-		window.addEventListener("DOMContentLoaded", handlePreloadComplete)
-	}
+    if (isMobileBreakpoint) {
+      preloaderTimeline.fromTo(".preloader-image", {
+        clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+      }, {
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+      })
+      preloaderTimeline.to("#preloader_heading", {
+        visibility: "visible"
+      })
+      preloaderTimeline.to("#header", {
+        y: "0%"
+      }, "<+=0.6")
+      preloaderTimeline.to(preloader, {
+        y: "-100%",
+        duration: 0.6,
+        onStart: handlePreloadComplete
+      }, "+=0.4")
+      preloaderTimeline.to(preloader, {
+        opacity: 0,
+        autoAlpha: 1,
+        visibility: 'hidden'
+      }, ">")
+    } else {
+      preloaderTimeline.fromTo(".preloader-image", {
+        clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+      }, {
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+      })
+      preloaderTimeline.to(".preloader-image[data-logo='false']", {
+        clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+      })
+      preloaderTimeline.to("#preloader_heading", {
+        visibility: "visible"
+      })
+      preloaderTimeline.from(heading.lines, {
+        y: "100%",
+        clipPath: "polygon(0% 0%, 0% 0%, 100% 0%, 100% 0%)",
+        stagger: 0.2,
+      })
+      preloaderTimeline.to("#header", {
+        y: "0%"
+      }, "<+=0.2")
+      preloaderTimeline.to(preloader, {
+        y: "-100%",
+        duration: 0.6,
+        onStart: handlePreloadComplete
+      }, "+=0.6")
+      preloaderTimeline.to(preloader, {
+        visibility: "hidden",
+        opacity: 0,
+        autoAlpha: 1,
+      }, ">")
+    }
+  }
 </script>
 
 <style is:global>
@@ -160,6 +141,10 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 		color: var(--color-foreground);
 		pointer-events: none;
 	}
+
+  .preloader[data-show-preloader="false"] {
+    display: none;
+  }
 
 	.preloader-image {
 		width: 100%;
