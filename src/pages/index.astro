@@ -18,7 +18,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0
 <LayoutDomaine
     searchFilter="type:page"
     searchExposed={true}
-
+    showPreloader={pageSettings.showPreloader}
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : "Home"}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
