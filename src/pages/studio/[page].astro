@@ -1,31 +1,40 @@
 ---
 import LayoutStudio from "../../layouts/Layout-Studio.astro";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields } from "../../components/global/utils/cms-queries";
+import { isStaging } from "../../components/global/utils/is-staging";
+import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 
-interface Props {
-  content: any
-}
+let pageContent
 
+// Handle SSG Routing
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_studio-general']{ ..., globalSections{ sections[]{${globalSectionsFields}} } }`)
-    return pages.map((page) => {
-        return {
-            params: { page: page.slug.current },
-            props: { content: page }
-        }
-    })
+  const pages = await getCollection('pagesStudio');
+  return pages.map((page) => {
+      return {
+          params: { page: page.data.slug.current },
+          props: { content: page }
+      }
+  })
 }
 
-const { content } = Astro.props
-// console.log(content)
+// Handle SSR Routing
+if (isStaging) {
+  const { page } = Astro.params
+  const matchedRoute = await getEntry("pagesStudio", page);
+  if (matchedRoute === undefined) return Astro.redirect("/404");
+  pageContent = matchedRoute.data
+} else {
+  const { content } = Astro.props
+  pageContent = content.data
+}
 ---
 <LayoutStudio
-    title={content.title}
+    title={pageContent.title}
     searchFilter="type:page"
-    showPreloader={content.showPreloader}
+    showPreloader={pageContent.showPreloader}
 >
-    {content.globalSections?.sections.map((section, i) => (
+    {pageContent.globalSections?.sections.map((section, i) => (
       <GlobalSections brand="studio" section={section} key={i} />
     ))}
 </LayoutStudio>

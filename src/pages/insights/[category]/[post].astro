@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
-import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../../../components/global/utils/cms-queries';
+import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields } from '../../../content/queries/query-helpers';
 import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
 import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
@@ -9,6 +9,7 @@ import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.as
 import { getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
 import BlogPostSidebar from '../../../components/global/blog/blogPost-Sidebar.astro';
 import GlobalSections from '../../../components/global/sections/section-GlobalSections.astro';
+import { urlFor } from '../../../content/queries/sanity-client';
 
 export const prerender = true
 

@@ -28,11 +28,11 @@ const { description, excerpt, agencyBrand, client, industry, theme, metrics } = 
         >
             <AtomTag 
                 title="Industry"
-                text={industry.title}
-                url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
+                text={industry?.title}
+                url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry?.slug.current}`}
                 theme={theme}
             />
-            {client.isEnterprise && 
+            {client?.isEnterprise && 
                 <AtomTag 
                     title="Enterprise"
                     theme={theme}

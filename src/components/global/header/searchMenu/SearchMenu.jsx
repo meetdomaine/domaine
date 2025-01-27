@@ -1,6 +1,6 @@
 import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
-import { urlFor } from '../../utils/cms-queries';
+import { urlFor } from '../../../../content/queries/sanity-client';
 
 function ProjectCard(props) {
     return (
@@ -64,11 +64,11 @@ function PartnerCard(props) {
 }
 
 function SearchIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-4.5-4.5m1.5-3.75a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"/>
-        </svg>
-    )
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-4.5-4.5m1.5-3.75a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"/>
+    </svg>
+  )
 }
 
 function CloseIcon() {

@@ -15,7 +15,7 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
             }
             <h1 class="heading h2" id="heading" >{heading}</h1>
         </div>
-        {button.text && button.url &&
+        {button?.text && button?.url &&
             <AtomButton 
                 text={button.text}
                 url={button.url}

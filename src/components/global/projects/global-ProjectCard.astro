@@ -2,7 +2,7 @@
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
-import { urlFor } from "../utils/cms-queries";
+import { urlFor } from "../../../content/queries/sanity-client";
 import { getRawSvg } from "../utils/raw-svg";
 
 interface Props {
@@ -96,13 +96,13 @@ if (project.client?.logo) {
   </div>
 </a>
 
-<link
+<!-- <link
 	rel="preload"
 	href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
 	as="fetch"
 	crossorigin="anonymous"
 	type=""
-/>
+/> -->
 
 <style>
   .project-card {

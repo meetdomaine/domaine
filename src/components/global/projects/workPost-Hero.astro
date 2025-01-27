@@ -14,8 +14,8 @@ const { title, heroMedia, accentColor } = Astro.props
     >{title}</h1>
     <div id="hero-media" class="section-media">
         <AtomSanityMedia 
-            image={heroMedia.image}
-            video={heroMedia.video}
+            image={heroMedia?.image}
+            video={heroMedia?.video}
             cover={true}
             sizes="100vw"
             pagefindMeta="image[src]"

@@ -1,7 +1,4 @@
 ---
-import { urlFor } from '../components/global/utils/cms-queries';
-import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
-
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
 import '../styles/global/animation.css'
@@ -10,9 +7,11 @@ import '../styles/global/typography.css'
 import '../styles/global/color.css'
 import '../styles/global/buttons.css'
 import '../styles/global/forms.css'
-import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
+import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
+import { urlFor } from '../content/queries/sanity-client';
+import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
 
 interface Props {
 	title: string;

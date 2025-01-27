@@ -2,7 +2,8 @@
 import { sanityClient } from 'sanity:client';
 import LayoutDomaineBlogIndex from '../../../layouts/Layout-Domaine-BlogIndex.astro';
 import { getBlogCategories_Domaine, getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
+import { imageBaseFields } from '../../../content/queries/query-helpers';
+import { urlFor } from '../../../content/queries/sanity-client';
 
 export const prerender = true
 

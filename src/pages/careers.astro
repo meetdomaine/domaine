@@ -6,7 +6,8 @@ import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
-import { imageBaseFields, urlFor } from '../components/global/utils/cms-queries';
+import { imageBaseFields } from '../content/queries/query-helpers';
+import { urlFor } from '../content/queries/sanity-client';
 
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,

@@ -2,8 +2,9 @@
 import { sanityClient } from "sanity:client";
 import LayoutStudio from "../../../layouts/Layout-Studio.astro";
 import SectionServiceLandingHero from "../../../components/studio/sections/services/services-Hero.astro";
-import { globalSectionsFields, imageFields, urlFor } from "../../../components/global/utils/cms-queries";
+import { globalSectionsFields, imageFields } from "../../../content/queries/query-helpers";
 import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
+import { urlFor } from "../../../content/queries/sanity-client";
 
 const pageSettings = await sanityClient.fetch(`
     *[_type == "page_services-index-studio" && _id == "page_services-index-studio"]{

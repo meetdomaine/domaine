@@ -3,7 +3,8 @@ import { sanityClient } from "sanity:client";
 import LayoutDomaine from "../../layouts/Layout-Domaine.astro";
 import ServicesHero from "../../components/domaine/sections/services/services-Hero.astro";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields, imageBaseFields, urlFor } from "../../components/global/utils/cms-queries";
+import { globalSectionsFields, imageBaseFields } from "../../content/queries/query-helpers";
+import { urlFor } from "../../content/queries/sanity-client";
 
 const pageSettings = await sanityClient.fetch(`
     *[_type == "page_services-index-domaine" && _id == "page_services-index-domaine"]{
