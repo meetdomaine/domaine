@@ -57,6 +57,7 @@ const relatedBlogPosts = await sanityClient.fetch(`
     title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     searchFilter="type:service-group"
     activePath="/services"
+    showPreloader={true}
 >
     <SectionServiceHero
         subservices={content.services}

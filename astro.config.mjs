@@ -29,5 +29,12 @@ export default defineConfig({
   },
   output: 'hybrid',
   adapter: cloudflare(),
-  site: 'https://meetdomaine.com/'
+  site: 'https://meetdomaine.com/',
+  vite: {
+    define: {
+      "import.meta.env.HUBSPOT_PORTAL_ID": JSON.stringify(process.env.HUBSPOT_PORTAL_ID),
+      "import.meta.env.HUBSPOT_ACCESS_TOKEN": JSON.stringify(process.env.HUBSPOT_ACCESS_TOKEN),
+      "import.meta.env.GREENSOCK_AUTH_TOKEN": JSON.stringify(process.env.GREENSOCK_AUTH_TOKEN),
+    },
+  },
 });

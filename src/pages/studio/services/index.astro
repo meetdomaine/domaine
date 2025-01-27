@@ -19,12 +19,10 @@ const pageSettings = await sanityClient.fetch(`
 
 ---
 <LayoutStudio
-
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? pageSettings.metafields.image : null}
-
-
+    showPreloader={false}
     searchFilter="type:page"
     activePath="/studio/services"
 >   
