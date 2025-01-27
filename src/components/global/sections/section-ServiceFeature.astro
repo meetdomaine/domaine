@@ -6,6 +6,7 @@ import AtomButton from "../atoms/atom-button.astro"
 const { section, brand, key } = Astro.props
 
 const currentSlug = brand === "studio" ? "/studio" : "/"
+console.log(section.headingSize)
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
     <h2 aria-label={section.featuredService?.title}>
@@ -17,7 +18,7 @@ const currentSlug = brand === "studio" ? "/studio" : "/"
               {section.heading ? section.heading : section.featuredService.title}
             </div>
             :
-            <a aria-hidden='true' href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class="service-type-title title-xl">
+            <a aria-hidden='true' href={`${brand === "studio" ? "/studio" : ""}/services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : '' }${section.featuredService.slug.current}/`} class={`service-type-title ${section.headingSize === "small" ? 'h1' : 'title-xl'}`}>
                 {section.featuredService.title}
             </a>
         }

@@ -30,6 +30,7 @@ const { content } = Astro.props
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter="type:case-study_studio"
     activePath="/studio/work"
+    showPreloader={false}
 >
     <WorkPostContent 
         content={content} 

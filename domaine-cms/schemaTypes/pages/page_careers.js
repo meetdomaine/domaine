@@ -21,6 +21,12 @@ export default defineType({
       type: 'section_globalSections',
     }),
     defineField({
+      name: 'showPreloader',
+      title: 'Show Preloader',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_SEO-fields',

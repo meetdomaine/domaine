@@ -57,6 +57,7 @@ const { content } = Astro.props;
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter="type:partner"
     activePath="/partners"
+    showPreloader={false}
 >
 
     <PartnerPostHero 

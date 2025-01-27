@@ -23,6 +23,7 @@ const { content } = Astro.props
 <LayoutStudio
     title={content.title}
     searchFilter="type:page"
+    showPreloader={content.showPreloader}
 >
     {content.globalSections?.sections.map((section, i) => (
       <GlobalSections brand="studio" section={section} key={i} />
