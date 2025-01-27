@@ -10,7 +10,7 @@ import {
   serviceGroupQuery, 
   serviceQuery, 
   serviceTypeQuery 
-} from "./cms-queries"
+} from "../../../content/queries/query-helpers"
 
 // CMS Content Cache
 let _agencyBrands = undefined

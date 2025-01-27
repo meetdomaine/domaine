@@ -4,14 +4,13 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { getRawSvg } from "../utils/raw-svg"
 const { url, client, services, partners, features, metrics, theme, agencyBrand } = Astro.props
-const logo = getRawSvg(client.logo)
+const logo = await getRawSvg(client?.logo)
 ---
 <section class="work-post_details">
 
     <div class="section-content">
-
     
-        {client && 
+        <!-- {client && 
             <div class="client">
                 <div class="client-logo" style={`--logo-scale: ${client.logoScale}`}>
                     <Fragment set:html={logo} />
@@ -31,9 +30,9 @@ const logo = getRawSvg(client.logo)
                     </div>
                 }
             </div>
-        }
+        } -->
 
-        {services && 
+        <!-- {services && 
             <div class="services">
                 <h4 class="h5">Services</h4>
                 <div class="tags">
@@ -46,9 +45,9 @@ const logo = getRawSvg(client.logo)
                     ))}
                 </div>
             </div>
-        }
+        } -->
 
-        {features && 
+        <!-- {features && 
             <div class="features">
                 <h4 class="h5">Features</h4>
                 <div class="tags">
@@ -61,10 +60,10 @@ const logo = getRawSvg(client.logo)
                     ))}
                 </div>
             </div>
-        }
+        } -->
 
 
-        {partners && 
+        <!-- {partners && 
             <div class="partners">
                 <h4 class="h5">Partners</h4>
                 <div class="partner-tiles">
@@ -79,7 +78,7 @@ const logo = getRawSvg(client.logo)
                     ))}
                 </div>
             </div>
-        }
+        } -->
 
     </div>
     <!-- {awards && 

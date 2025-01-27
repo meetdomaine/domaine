@@ -1,38 +1,57 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { projectPageFields, urlFor } from '../../components/global/utils/cms-queries';
+import { projectPageFields } from '../../content/queries/query-helpers';
 import WorkPostContent from '../../components/global/projects/workPost-Content.astro';
+import { isStaging } from '../../components/global/utils/is-staging'
+import { urlFor } from '../../content/queries/sanity-client';
 
-// export const prerender = true
 
 interface Props {
     content: any
 }
 
+let projectContent = null
+
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectPageFields}} | order( orderRank asc)`)
-    return projects.map((project) => {
-        return {
-            params: { project: project.slug.current },
-            props: { content: project }
-        }
-    })
+  if (isStaging) return // getStaticPaths() only applies to static rendering mode
+  const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectPageFields}} | order( orderRank asc)`)
+  return projects.map((project) => {
+      return {
+          params: { project: project.slug.current },
+          props: { content: project }
+      }
+  })
 }
 
-const { content } = Astro.props
+const { content } = Astro.props // Only works in static mode
+const { project } = Astro.params
+
+if (isStaging) {
+  console.log(project)
+  projectContent = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine" && slug.current == '${project}']{${projectPageFields} }`) 
+  console.log(projectContent)
+} else {
+  projectContent = await content
+}
+
+// console.log(projectContent)
+
+if (!content) {
+  throw new Error("Content not found");
+}
 // console.log(content)
 ---
 <LayoutDomaine
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter={content.isHidden ? "" : "type:case-study_domaine"}
+    title={`${projectContent?.metafields?.title || projectContent?.title} | Insights`}
+    description={projectContent?.metafields?.description ? projectContent?.metafields?.description : null}
+    image={projectContent?.metafields?.image ? urlFor(projectContent?.metafields?.image).url() : null}
+    searchFilter={projectContent?.isHidden ? "" : "type:case-study_domaine"}
     activePath="/work"
     showPreloader={false}
 >
-    <WorkPostContent 
+    <!-- <WorkPostContent 
         content={content}
         brand="domaine"
-    />
+    /> -->
 </LayoutDomaine>

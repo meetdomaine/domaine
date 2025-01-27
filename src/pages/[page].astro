@@ -1,52 +1,197 @@
 ---
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields, imageBaseFields, urlFor } from "../components/global/utils/cms-queries";
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
+import { isStaging } from "../components/global/utils/is-staging";
+import { getEntry, getCollection, render } from "astro:content";
+import { urlFor } from "../content/queries/sanity-client";
+import LayoutDomaineMarketing from "../layouts/Layout-Domaine-Marketing.astro";
+import MarketingHeader from "../components/global/marketingHeader/global-MarketingHeader.astro";
+import AtomButton from "../components/global/atoms/atom-button.astro";
+import AtomHubspotForm from "../components/global/atoms/atom-hubspotForm.astro";
+import AtomSanityMedia from "../components/global/atoms/atom-sanityMedia.astro";
 
-interface Props {
-  content: any
-}
+let pageContent
 
+// Handle SSG Routing
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_general' && !isMarketingPage]{ 
-        ..., 
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
-    return pages.map((page) => {
-        return {
-            params: { page: page.slug.current },
-            props: { content: page }
-        }
-    })
+  const pages = await getCollection('pages');
+  return pages.map((page) => {
+      return {
+          params: { page: page.data.slug.current },
+          props: { content: page }
+      }
+  })
 }
 
-const { content } = Astro.props
-// console.log(content)
+// Handle SSR Routing
+if (isStaging) {
+  const { page } = Astro.params
+  const matchedRoute = await getEntry("pages", page);
+  if (matchedRoute === undefined) return Astro.redirect("/404");
+  pageContent = matchedRoute.data
+} else {
+  const { content } = Astro.props
+  pageContent = content.data
+}
 ---
-<LayoutDomaine
-    title={content.title}
-    searchFilter="type:page"
-    title={`${content.metafields?.title ? content.metafields.title : content.title}`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    showPreloader={content.showPreloader}
->
-    <div 
-        class="page-content" 
-        data-color-scheme={content.colorScheme} 
-        data-header-padding={content.addHeaderPadding ? "true" : "false"}
-        style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
-    >
-    <!-- <h1>{content.title}</h1> -->
-        {content.globalSections?.sections.map((section, i) => (
+{pageContent.isMarketingPage ? 
+  <LayoutDomaineMarketing
+      title={pageContent.title}
+      searchFilter="type:page"
+      title={`${pageContent.metafields?.title ? pageContent.metafields.title : pageContent.title}`}
+      description={pageContent.metafields?.description ? pageContent.metafields.description : null}
+      image={pageContent.metafields?.image ? urlFor(pageContent.metafields.image).url() : null}
+      showPreloader={pageContent.showPreloader}
+  >
+      <MarketingHeader 
+          colorScheme={pageContent.colorScheme} 
+          currentBrand="domaine"
+          buttonText={pageContent.buttonText}
+      />
+      <div 
+          class="page-content" 
+          data-color-scheme={pageContent.colorScheme} 
+          style={`${pageContent.backgroundColor ? `--color-background: ${pageContent.backgroundColor.hex};` : null}`}
+      >
+          <section class="marketing-page-hero" id="contact" data-color-scheme={pageContent.heroColorScheme === "invert" ? "invert" : pageContent.colorScheme} >
+              <div class="hero-content">
+                  <div class="hero-title">
+                      {pageContent.eyebrow && <p class="h6">{pageContent.eyebrow}</p>}
+                      <h1 class="h2">{pageContent.heading}</h1>
+                  </div>
+                  <div class="hero-text">
+                      {pageContent.text && <p class="h6">{pageContent.text}</p>}
+                      {pageContent.button?.text && pageContent.button?.url &&
+                          <AtomButton 
+                          text={pageContent.button.text}
+                          url={pageContent.button.url}
+                          style="primary"
+                          />
+                      }
+                  </div>
+              </div>
+              <div 
+                  class="hero-form"
+                  data-color-scheme="default"
+              >
+                  {pageContent.formTitle && <p class="h6">{pageContent.formTitle}</p>}
+                  <AtomHubspotForm 
+                      formId={pageContent.hubspotFormId}
+                  />
+              </div>
+              {pageContent.media &&
+              <div class="hero-media">
+                  <AtomSanityMedia
+                      video={pageContent.media.video}
+                      image={pageContent.media.image}
+                      sizes="100vw"
+                      cover={true}
+                  />
+              </div>
+              }
+          </section>
+          {pageContent.globalSections?.sections.map((section, i) => (
+              <GlobalSections brand="domaine" section={section} key={i} />
+          ))}
+      </div>
+  </LayoutDomaine>
+:
+  <LayoutDomaine
+      searchFilter="type:page"
+      title={`${pageContent.metafields?.title ? pageContent.metafields.title : pageContent.title}`}
+      description={pageContent.metafields?.description ? pageContent.metafields.description : null}
+      image={pageContent.metafields?.image ? urlFor(pageContent.metafields.image).url() : null}
+      showPreloader={pageContent.showPreloader}
+  >
+      <div 
+          class="page-content" 
+          data-color-scheme={pageContent.colorScheme} 
+          data-header-padding={pageContent.addHeaderPadding ? "true" : "false"}
+          style={`${pageContent.backgroundColor ? `--color-background: ${pageContent.backgroundColor.hex};` : null}`}
+      >
+        {pageContent.globalSections?.sections.map((section, i) => (
             <GlobalSections brand="domaine" section={section} key={i} />
         ))}
-    </div>
-</LayoutDomaine>
+      </div>
+  </LayoutDomaine>
+}
 
 <style>
-    .page-content[data-header-padding="true"] {
-        padding-top: calc(var(--header-height) * 2);
-    }
+  .page-content[data-header-padding="true"] {
+      padding-top: calc(var(--header-height) * 2);
+  }
+
+  .marketing-page-hero {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-top: calc(var(--header-height) * 1);
+      padding-inline: var(--page-margin);
+      padding-bottom: var(--space-2xl);
+      max-width: 100%;
+      gap: var(--space-lg);
+      overflow: hidden;
+      min-height: 95svh;
+      position: relative;
+  }
+
+  .hero-content,
+  .hero-title,
+  .hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .hero-content {
+      flex: 0 1 50%;
+      z-index: 1;
+      gap: var(--space-md);
+      padding-block: var(--space-md);
+  }
+
+  .hero-title {
+      gap: var(--space-xs);
+  }
+
+  .hero-text {
+      gap: var(--space-md);
+  }
+
+  .hero-form {
+      z-index: 1;
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-xs);
+      flex: 0 0 40rem;
+      min-width: 0;
+      filter: drop-shadow(0.2rem 0.2rem 2rem rgba(0, 0, 0, 0.1))
+  }
+
+  .hero-media {
+      position: absolute;
+      height: 100%;
+      inset: 0;
+      z-index: 0;
+  }
+
+  @media screen and (width <= 860px) {
+      .marketing-page-hero {
+          flex-direction: column;
+      }
+
+      .hero-content,
+      .hero-form {
+          flex: 0 0 auto;
+          max-width: 100%;
+      }
+
+      /* .hero-form {
+          align-items: center;
+      } */
+  }
 </style>

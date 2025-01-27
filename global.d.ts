@@ -1,4 +1,4 @@
-declare module 'sanity:client';
+// declare module 'sanity:client';
 
 declare global {
     interface Window { preloaderActive: boolean; }

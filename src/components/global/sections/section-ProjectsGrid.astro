@@ -82,13 +82,13 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
                 </div>
               </div>
             </a>
-						<link
+						{/* <link
 							rel="preload"
 							href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
 							as="fetch"
 							crossorigin="anonymous"
 							type=""
-						/>
+						/> */}
           </div>
         );
       })

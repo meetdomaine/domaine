@@ -1,7 +1,9 @@
 ---
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
 import { getProjectFeatures_Domaine, getProjects_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
+import { imageBaseFields } from '../../../content/queries/query-helpers';
+import { urlFor } from '../../../content/queries/sanity-client';
+import { sanityClient } from 'sanity:client';
 
 export const prerender = true
 

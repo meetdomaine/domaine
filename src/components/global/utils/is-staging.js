@@ -1,0 +1,1 @@
+export const isStaging = import.meta.env.MODE === "development"

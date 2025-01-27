@@ -3,8 +3,9 @@ import { sanityClient } from 'sanity:client'
 import { paths } from '../../../components/global/utils/paths';
 import LayoutStudio from '../../../layouts/Layout-Studio.astro';
 import WorkPostHero from '../../../components/global/projects/workPost-Hero.astro';
-import { projectPageFields, projectPostQuery, urlFor } from "../../../components/global/utils/cms-queries"
+import { projectPageFields, projectPostQuery } from "../../../content/queries/query-helpers"
 import WorkPostContent from '../../../components/global/projects/workPost-Content.astro';
+import { urlFor } from '../../../content/queries/sanity-client';
 
 export const prerender = true
 
