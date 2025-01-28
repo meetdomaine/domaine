@@ -31,12 +31,16 @@ const { section, brand } = Astro.props
     {section.linkCardHeading && section.linkCardURL &&
         <a 
             class="link-card" 
-            style={`background-color: ${section.linkCardColor?.hex}`} 
+            style={`
+              background-color: ${section.linkCardColor?.hex};
+              --image-width: ${section.imageWidth};
+            `} 
             data-color-scheme={section.linkCardTextColor === "light" ? "invert" : "default"}
             href={section.linkCardURL}
             data-animate-viewport="true" 
             data-animation="fade"
             data-jumplink={section.linkCardIsJumplink ? `${section.linkCardURL}` : "false"}
+            data-orientation={section.orientation}
         >
             {section.linkCardImage && 
                 <AtomSanityImage 
@@ -96,8 +100,18 @@ const { section, brand } = Astro.props
         text-decoration: none;
     }
 
+    .link-card[data-orientation="vertical"] {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .link-card[data-orientation="vertical"] :global(img) {
+      flex: 0 0 auto;
+      max-width: calc(var(--image-width) * 1%);
+    }
+
     .link-card :global(img) {
-        flex: 0 0 15%;
+        flex: 0 0 calc(var(--image-width) * 1%);
         height: auto;
         min-width: 0;
     }
