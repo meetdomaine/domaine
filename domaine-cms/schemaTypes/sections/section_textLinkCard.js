@@ -106,6 +106,26 @@ export default defineType({
       },
       initialValue: "light",
     }),
+    defineField({
+      name: 'orientation',
+      title: 'Orientation',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Horizontal", value: "horizontal" },
+          { title: "Vertical", value: "vertical" },
+        ],
+        layout: 'radio'
+      },
+      initialValue: "horizontal",
+    }),
+    defineField({
+      name: 'imageWidth',
+      title: 'Image Width',
+      description: 'Width of image in container (%).',
+      type: 'number',
+      initialValue: 25,
+    }),
   ],
 
   preview: {

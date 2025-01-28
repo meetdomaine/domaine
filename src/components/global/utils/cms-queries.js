@@ -131,7 +131,7 @@ export const globalSectionsFields = `
     _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
     _type == "section_textMediaBlocks" => { showSection, eyebrow, heading, button, columnCount, blocks[]{ media{${imageFields}, ${videoFields}}, heading, text } },
     _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
-    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label }, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor },
+    _type == "section_textLinkCard" => { showSection, heading, stats[]{ number, label }, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor, orientation, imageWidth },
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, clients[]->{ title, slug, "logo": logo.asset->url, logoScale }, quoteClient->{"logo": logo.asset->url, logoScale}, text, button },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
 `
