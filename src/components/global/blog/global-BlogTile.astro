@@ -23,11 +23,11 @@ const formattedDate = formatDate(post.postDate)
     <div class="blog-post-info">
       <AtomTag
         title={post.category.title}
-        url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}insights/${post.category.slug.current}`} 
+        url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}/insights/${post.category.slug.current}`} 
       />
       <p class="blog-post-date">{formattedDate}</p>
     </div>
-    <a class="blog-post-title" href={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}insights/${post.category.slug.current}/${post.slug.current}`} >{post.title}</a>
+    <a class="blog-post-title" href={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}/insights/${post.category.slug.current}/${post.slug.current}`} >{post.title}</a>
   </div>
 </div>
 
