@@ -2,8 +2,13 @@ import { globalSectionsFields, imageBaseFields, imageFields, videoFields } from 
 
 const buttonQuery = `text, url, newTab`
 
-export const sanityQueryHomepage = ` 
-  "id": "homepage",
+// export const sanityQueryHomepage = `
+//   "id": _id,
+//   eyebrow
+// `
+
+export const sanityQueryHomepage = `
+  "id": _id,
   eyebrow,
   heading,
   button{${buttonQuery}},
@@ -12,7 +17,7 @@ export const sanityQueryHomepage = `
   globalSections{ sections[]{${globalSectionsFields}} }, 
   showPreloader,
   metafields,
-  metafields{ title, description, image{${imageBaseFields}} },
+  metafields{ title, description, image{${imageBaseFields}} }
 `
 
 export const sanityQueryPages = `

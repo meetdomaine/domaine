@@ -1,40 +1,44 @@
 ---
-import { sanityClient } from "sanity:client";
 import HomeHero from "../components/domaine/sections/home/home-Hero.astro";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
-import { globalSectionsFields, imageBaseFields, imageFields, videoFields } from "../content/queries/query-helpers"
 import { urlFor } from "../content/queries/sanity-client";
-import { getCollection } from "astro:content";
 import { getEntry } from "astro:content";
+import { loadQuery } from "../sanity/lib/load-query";
+import { globalSectionsFields, imageBaseFields, imageFields, videoFields } from "../content/queries/query-helpers";
 
-// const pageSettings = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ 
-//     ...,  
-//     globalSections{ sections[]{${globalSectionsFields}} }, 
-//     media{ ..., ${imageFields}, ${videoFields} },
-//     metafields{ title, description, image{${imageBaseFields}} },
-// }`)
+const pageSettings = await loadQuery({ query: `*[_type == "page_home-domaine"][0]{ 
+    ...,  
+    globalSections{ sections[]{${globalSectionsFields}} }, 
+    media{ ..., ${imageFields}, ${videoFields} },
+    metafields{ title, description, image{${imageBaseFields}} },
+}`})
 
-// const content = await getEntry("homepage", "homepage")
-const pageContent: any = await getCollection("homepage")
-console.log(pageContent)
+const { data }: any = await getEntry("homepage", "page_home-domaine")
 ---
 <LayoutDomaine
     searchFilter="type:page"
     searchExposed={true}
-    showPreloader={pageContent?.showPreloader}
-    title={`${pageContent?.metafields?.title ? pageContent?.metafields?.title : "Home"}`}
-    description={pageContent?.metafields?.description ? pageContent?.metafields?.description : null}
-    image={pageContent?.metafields?.image ? urlFor(pageContent?.metafields?.image).url() : null}
+    showPreloader={data.showPreloader}
+    title={`${data.metafields?.title ? data.metafields?.title : "Home"}`}
+    description={data.metafields?.description ? data.metafields?.description : null}
+    image={data.metafields?.image ? urlFor(data.metafields?.image).url() : null}
 >
     <HomeHero
-        eyebrow={pageContent?.eyebrow}
-        heading={pageContent?.heading}
-        button={pageContent?.button}
-        media={pageContent?.media}
-        heroTextColor = {pageContent?.heroTextColor}
+        eyebrow={pageSettings.data.eyebrow}
+        heading={pageSettings.data.heading}
+        button={pageSettings.data.button}
+        media={pageSettings.data.media}
+        heroTextColor = {data.heroTextColor}
     />
-    {pageContent?.globalSections && pageContent?.globalSections?.sections.map((section, i) => (
+    <!-- <HomeHero
+        eyebrow={data.eyebrow}
+        heading={data.heading}
+        button={data.button}
+        media={data.media}
+        heroTextColor = {data.heroTextColor}
+    /> -->
+    {data.globalSections && data.globalSections?.sections.map((section, i) => (
         <GlobalSections brand="domaine" section={section} key={i} />
     ))}
 </LayoutDomaine>
