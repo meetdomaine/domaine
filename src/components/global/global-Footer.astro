@@ -82,22 +82,33 @@ const logos = await agencyBrands.map( async (brand) => {
 
     <div class="subfooter">
 
-        <div class="social-links">
-            {footerSettings.instagramUrl &&
-                <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" /></a>
-            }
-            {footerSettings.twitterUrl &&
-                <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" /></a>
-            }
-            {footerSettings.linkedInUrl &&
-                <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
-            }
-            {footerSettings.emailAddress &&
+        <div class="brand-links">
+
+          <div class="social-links">
+              {footerSettings.instagramUrl &&
+                  <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" /></a>
+              }
+              {footerSettings.twitterUrl &&
+                  <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" /></a>
+              }
+              {footerSettings.linkedInUrl &&
+                  <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
+              }
+            </div>
+            <div class="contact-links">
+              {footerSettings.emailAddress &&
+                  <a 
+                    href={`mailto:${footerSettings.emailAddress}?subject=Domaine | Agency Website Contact`} 
+                    class="contact-button caption"
+                  ><Icon name="icon-email" class="social-icon" />{footerSettings.emailLabel ? footerSettings.emailLabel : footerSettings.emailAddress}</a>
+              }
+              {footerSettings.phoneNumber &&
                 <a 
-                  href={`mailto:${footerSettings.emailAddress}?subject=Domaine | Agency Website Contact`} 
-                  class="email-button"
-                ><Icon name="icon-email" class="social-icon" />{footerSettings.emailAddress}</a>
-            }
+                  href={`tel:+1-929-930-5341`} 
+                  class="contact-button caption"
+                ><Icon name="icon-phone" class="social-icon" />{footerSettings.phoneNumberLabel ? footerSettings.phoneNumberLabel : footerSettings.phoneNumber}</a>
+              }
+            </div>
         </div>
 
         <div class="subfooter-links">
@@ -319,17 +330,24 @@ const logos = await agencyBrands.map( async (brand) => {
 
     .subfooter {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         flex-direction: row;
         gap: var(--space-md);
         justify-content: space-between;
         flex-wrap: wrap;
     }
 
-    .social-links {
-        display: flex;
-        flex-direction: row;
-        gap: var(--space-md);
+    .brand-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .social-links,
+    .contact-links {
+      display: flex;
+      flex-direction: row;
+      gap: var(--space-md);
     }
 
     .social-icon {
@@ -337,7 +355,7 @@ const logos = await agencyBrands.map( async (brand) => {
         height: var(--icon-md);
     }
 
-    .email-button {
+    .contact-button {
       text-decoration: none;
       display: flex;
       flex-direction: row;
