@@ -23,13 +23,12 @@
       if (jumplinkValue === "false") return
       link.addEventListener("click", () => {
         lenis.scrollTo(jumplinkValue, {
-        easing: (t) => {
-          1 - Math.pow(1 - t, 5);
-        },
-        offset: -200,
+          easing: (t) => {
+            1 - Math.pow(1 - t, 5);
+          },
+          offset: -200,
+        })
       })
-    }
-    )
     })
     // console.log(jumplinks)
 
