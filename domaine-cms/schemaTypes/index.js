@@ -3,7 +3,7 @@ import type_blog from "./blog/type_blog";
 import type_blogCategory from "./blog/type_blogCategory";
 import type_client from "./projects/type_client.js";
 // import type_clientStage from "./projects/type_clientStage.js";
-import type_event from "./events/type_event.js";
+import type_event from "./events/type_event.jsx";
 import type_industry from "./projects/type_industry";
 import type_partner from "./partners/type_partner";
 import type_partnerTier from "./partners/type_partnerTier.js";
