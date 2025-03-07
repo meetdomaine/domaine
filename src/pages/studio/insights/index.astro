@@ -2,15 +2,19 @@
 import { sanityClient } from 'sanity:client';
 import LayoutStudioBlogIndex from '../../../layouts/Layout-Studio-BlogIndex.astro';
 import { getBlogPosts_Studio } from '../../../components/global/utils/cms-content';
+import { urlFor } from '../../../components/global/utils/cms-queries';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
 const blogPosts = await getBlogPosts_Studio()
 ---
 <LayoutStudioBlogIndex
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Insights`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     pageSettings={pageSettings}
     blogPosts={blogPosts}
-    heading="Domaine Studio Insights"
-    subheading="Lorem ipsum dolor sit amet."
+    heading={pageSettings.title}
+    subheading={pageSettings.heading}
     searchFilter="type:page"
     showPreloader={false}
 >

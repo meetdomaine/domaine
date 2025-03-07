@@ -2,6 +2,7 @@
 import { sanityClient } from 'sanity:client';
 import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
 import { getBlogCategories_Studio, getBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
+import { urlFor } from '../../../../components/global/utils/cms-queries';
 
 export const prerender = true
 
@@ -27,10 +28,13 @@ const allBlogPosts = await getBlogPosts_Studio()
 const blogPosts = allBlogPosts.filter((post) => post.category._id === content._id)
 ---
 <LayoutStudioBlogIndex
+    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     pageSetting={pageSettings}
     blogPosts={blogPosts}
     heading={content.title}
-    subheading="Lorem ipsum dolor sit amet."
+    subheading={content.heading}
     searchFilter="type:blog-category"
     slug={content.slug}
     showPreloader={false}

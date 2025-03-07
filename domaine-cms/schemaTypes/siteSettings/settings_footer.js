@@ -96,6 +96,24 @@ export default defineType({
       type: 'email',
     }),
     defineField({
+      name: 'emailLabel',
+      title: 'Email Label',
+      description: 'If none added, will use the email address.',
+      type: 'string',
+    }),
+    defineField({
+      name: 'phoneNumber',
+      title: 'Phone Number',
+      description: 'No country code needed.',
+      type: 'number',
+    }),
+    defineField({
+      name: 'phoneNumberLabel',
+      title: 'Phone Number Label',
+      description: 'If none added, will use the phone number.',
+      type: 'string',
+    }),
+    defineField({
       name: 'legalLinks',
       title: 'Legal Links',
       type: 'snippet_link-list',

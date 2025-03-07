@@ -29,7 +29,7 @@ export default defineType({
       title: 'Timezone',
       type: 'string',
       description: (() => (
-        <p>Identifier from the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">TZ Database</a></p>
+        <p>Identifier from the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">TZ Database</a></p>
       ))(),
       validation: Rule => Rule.required()
     }),

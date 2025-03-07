@@ -38,6 +38,7 @@ const { content } = Astro.props
     description={content.metafields?.description ? content.metafields.description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     showPreloader={content.showPreloader}
+    noIndex={true}
 >
     <MarketingHeader 
         colorScheme={content.colorScheme} 
@@ -90,7 +91,7 @@ const { content } = Astro.props
             <GlobalSections brand="domaine" section={section} key={i} />
         ))}
     </div>
-</LayoutDomaine>
+</LayoutDomaineMarketing>
 
 <style>
 
