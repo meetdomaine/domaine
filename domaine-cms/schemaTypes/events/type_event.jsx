@@ -64,6 +64,22 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'timezone',
+      title: 'Timezone',
+      type: 'string',
+      group: 'info',
+      description: (() => (
+        <p>Identifier from the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">TZ Database</a>. If none added, will assume <em>America/New_York</em></p>
+      ))(),
+      // validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'use24hourFormat',
+      title: '24 Hour Format',
+      type: 'boolean',
+      group: 'info',
+    }),
+    defineField({
       name: 'button',
       title: 'Button',
       type: 'snippet_button',

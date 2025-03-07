@@ -41,8 +41,8 @@ const dateOptions: UseDateTimeFormatOptions = {
 const timeOptions: UseDateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
-  hour12: true,
-  timeZone: 'America/New_York',
+  hour12: content.use24hourFormat ? false : true,
+  timeZone: content.timezone ? content.timezone : 'America/New_York',
   timeZoneName: 'short'
 };
 
