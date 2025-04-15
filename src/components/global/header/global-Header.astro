@@ -60,11 +60,11 @@ const headerSettings = await sanityClient.fetch(`
         </button>
 
         <div class="brand" data-color-scheme="glass-dark">
-            <a href={currentBrand.url} class="brand-logo">
+            <a href={currentBrand.url} class="brand-logo" aria-label="Go to homepage">
                 <Icon name={currentBrand.slug.current === "/studio" ? "domaine-studio" : "domaine-wordmark"} />
             </a>
             {headerSettings.showBrandMenu &&
-                <button class="brand-button button-reset" popovertarget="brand-menu">
+                <button class="brand-button button-reset" popovertarget="brand-menu" aria-label="Open brand menu">
                     <Icon name="icon-menu-box" class="brand-menu-icon" />
                 </button>
             }
@@ -77,11 +77,11 @@ const headerSettings = await sanityClient.fetch(`
         />
 
         <div id="utility-menu" class="utility-menu">
-            <button id="notification-toggle" class="utility-button notification-button" data-color-scheme="glass-dark" popovertarget="notification-menu" data-active="false">
+            <button id="notification-toggle" class="utility-button notification-button" data-color-scheme="glass-dark" popovertarget="notification-menu" data-active="false" aria-label="Toggle notification menu">
                 <Icon name="icon-bell" class="utility-icon icon-open" />
                 <Icon name="icon-x" class="utility-icon icon-close" />
             </button>
-            <button class="utility-button contact-button" data-color-scheme="glass-dark" popovertarget="contact-menu">
+            <button class="utility-button contact-button" data-color-scheme="glass-dark" popovertarget="contact-menu" aria-label="Open contact menu">
                 <Icon name="icon-email" class="utility-icon" />
             </button>
         </div>
