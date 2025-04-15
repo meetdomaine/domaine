@@ -1,5 +1,5 @@
 ---
-import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../utils/cms-content"
+import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getUpcomingEvents } from "../utils/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
@@ -34,8 +34,7 @@ const monthOptions: UseDateTimeFormatOptions = {
 
 const latestProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
 const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
-const allEvents = await getEvents()
-const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
+const upcomingEvents = await getUpcomingEvents()
 
 // console.log(upcomingEvent)
 // console.log(latestWork)
