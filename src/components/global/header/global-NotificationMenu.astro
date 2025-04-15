@@ -148,7 +148,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
-  const clocks = notificationMenu?.querySelectorAll('.clock')
+  const clocks = notificationMenu.querySelectorAll('.clock')
 
   notificationMenu.addEventListener("toggle", (e: ToggleEvent) => {
     notificationToggle.dataset.active = e.newState === "open" ? "true" : "false"
