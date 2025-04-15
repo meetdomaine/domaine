@@ -9,7 +9,7 @@ function ProjectCard(props) {
                 src={props.image} 
                 alt={props.alt}
                 class={styles.projectImage}
-                loading='eager'
+                loading="lazy"
             />
             <p class={`${styles.projectInfo} caption`}>
                 {props.title}

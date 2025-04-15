@@ -45,7 +45,7 @@
 }
 
 .input:focus-visible {
-    outline-offset: 2px;
+    outline: none;
 }
 
 .menuControls {
@@ -84,7 +84,7 @@
 .searchInput input {
     border: none;
     padding-block: 0.3em;
-    padding-inline-end: calc(var(--icon-md) + var(--space-sm));
+    padding-inline-start: calc(var(--icon-md) + var(--space-sm));
     height: var(--header-element-height);
     max-width: 30rem;
 }
@@ -150,6 +150,7 @@
 }
 
 .projectImage {
+    display: block;
     min-width: 0;
     max-width: 100%;
     /* aspect-ratio: 1 / 1; */
