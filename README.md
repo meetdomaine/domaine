@@ -41,5 +41,5 @@ Reach out to [trey@meetdomaine.com](trey@meetdomaine.com)!
 
 ## Set up
 
-1. ensure you're using a recent node version
+1. Ensure you're using a recent Node.js version
 2. fill in .env variables
