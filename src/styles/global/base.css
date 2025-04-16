@@ -1,5 +1,5 @@
 * {
-    /* Browser Resets */
+  /* Browser Resets */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,6 +29,10 @@ body {
 
 main {
   flex-grow: 1;
+}
+
+.parallax-container + section {
+  margin-top: 95svh;
 }
 
 @view-transition {

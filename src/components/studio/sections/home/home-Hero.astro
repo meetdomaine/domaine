@@ -9,64 +9,67 @@ const { heading, subheading, eyebrow, button, projects } = Astro.props
 const iconText = replaceStringIcons(heading)
 
 ---
-<section id="home-hero" class="home-hero" data-color-scheme="brand-02" data-link-hover="false">
-    <div class="section-content">
-        <div class="section-text h1">
-            {eyebrow && <p class="utility">{eyebrow}</p>}
-            {heading && <h1 class=""><Fragment set:html={iconText}/></h1>}
-            {subheading && <p class="subheading h6">{subheading}</p>}
+<div class="parallax-container">
+    <section id="home-hero" class="home-hero" data-color-scheme="brand-02" data-link-hover="false">
+        <div class="section-content">
+            <div class="section-text h1">
+                {eyebrow && <p class="utility">{eyebrow}</p>}
+                {heading && <h1 class=""><Fragment set:html={iconText}/></h1>}
+                {subheading && <p class="subheading h6">{subheading}</p>}
+            </div>
+            {button.text && button.url &&
+                <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}<Icon name="arrow-diagonal" /></a>
+            }
         </div>
-        {button.text && button.url &&
-            <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}<Icon name="arrow-diagonal" /></a>
-        }
-    </div>
-    <div class="section-media">
-        {projects.map((projectCard, i) => {
-
-            const angle = (i / projects.length) * 360 * (Math.PI / 180)
-            const radiusMin = 20;
-            const radiusMax = 80;
-            const radius = radiusMin + (radiusMax - radiusMin);
-            const spreadZ = 20
-
-            const posX = Math.cos(angle) * radius / 2 + 50;
-            const posY = Math.sin(angle) * radius / 2 + 50;
-            const posZ = Math.random() * spreadZ - spreadZ / 2
-
-            return (
-                <a 
-                    class="project-card" 
-                    data-index={i} 
-                    href={`${projectCard.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${projectCard.project.slug.current}`}
-                    data-project-title={projectCard.project.title} 
-                    style={`
-                        --index: ${i}; 
-                        --total: ${projects.length}; 
-                        --random-float: ${Math.random()};
-
-                        --angle: ${angle};
-                        --x: ${posX};
-                        --y: ${posY};
-                        --z: ${posZ};
-                    `}
-                >
-                    <AtomSanityImage 
-                        sizes="50vw"
-                        image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
-                    />
-                </a>
-            )})}
-    </div>
-    <AtomCursorFollow>
-        <div 
-            class="project-label" 
-            data-color-scheme="glass-dark"
-        >
-            <Icon name="arrow-diagonal" />
-            <p class="project-title">Project Title</p>
+        <div class="section-media">
+            {projects.map((projectCard, i) => {
+    
+                const angle = (i / projects.length) * 360 * (Math.PI / 180)
+                const radiusMin = 20;
+                const radiusMax = 80;
+                const radius = radiusMin + (radiusMax - radiusMin);
+                const spreadZ = 20
+    
+                const posX = Math.cos(angle) * radius / 2 + 50;
+                const posY = Math.sin(angle) * radius / 2 + 50;
+                const posZ = Math.random() * spreadZ - spreadZ / 2
+    
+                return (
+                    <a 
+                        class="project-card" 
+                        data-index={i} 
+                        href={`${projectCard.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${projectCard.project.slug.current}`}
+                        data-project-title={projectCard.project.title} 
+                        style={`
+                            --index: ${i}; 
+                            --total: ${projects.length}; 
+                            --random-float: ${Math.random()};
+    
+                            --angle: ${angle};
+                            --x: ${posX};
+                            --y: ${posY};
+                            --z: ${posZ};
+                        `}
+                    >
+                        <AtomSanityImage 
+                            sizes="50vw"
+                            image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
+                        />
+                    </a>
+                )})}
         </div>
-    </AtomCursorFollow>
-</section>
+        <AtomCursorFollow>
+            <div 
+                class="project-label" 
+                data-color-scheme="glass-dark"
+            >
+                <Icon name="arrow-diagonal" />
+                <p class="project-title">Project Title</p>
+            </div>
+        </AtomCursorFollow>
+    </section>
+</div>
+
 
 <script>
     const section: any = document.getElementById('home-hero')
@@ -311,10 +314,23 @@ const iconText = replaceStringIcons(heading)
 </script> -->
 
 <style>
-
-
-
     @media screen and (width >= 768px) {
+        .parallax-container {
+            animation-name: p-1;
+            animation-timeline: view();
+            animation-timing-function: linear;
+            animation-range: entry 105% cover;
+            position: fixed;
+            width: 100%;
+            transform: translate3d(0, 0, 0);
+            transition-behavior: allow-discrete;
+            opacity: 0;
+        }
+
+        @keyframes p-1 {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
 
         .home-hero[data-link-hover="true"] {
             cursor: pointer;
