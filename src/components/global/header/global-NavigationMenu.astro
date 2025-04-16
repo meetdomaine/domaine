@@ -26,15 +26,18 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
         })}
     </div> -->
 
-    <nav class="navigation-links color-reset" data-color-scheme="secondary">
-        {links.map((link, i) => (
-            <a 
-                href={link.linkUrl} 
-                class="navigation-link caption" 
-                style={`transition-delay: ${0.1 * i}s`}
-                data-active={activePath === link.linkUrl ? "true" : "false"}
-            >{link.linkText}</a>
-        ))}
+    <nav class="abacus">
+        <div class="bead"></div>
+        <div class="navigation-links color-reset" data-color-scheme="secondary">
+            {links.map((link, i) => (
+                <a 
+                    href={link.linkUrl} 
+                    class="navigation-link caption" 
+                    style={`transition-delay: ${0.1 * i}s`}
+                    data-active={activePath === link.linkUrl ? "true" : "false"}
+                ><span class="navigation-link__text">{link.linkText}</span></a>
+            ))}
+        </div>
     </nav>
 
     <div class="search-wrapper">
@@ -71,6 +74,41 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
         previousScroll = document.documentElement.scrollTop
     })
 
+    document.querySelector('.abacus').addEventListener('mouseover', (e) => {
+        const bead = document.querySelector('.bead') as HTMLElement
+        const hoveredLink = (e.target as HTMLElement).closest('.navigation-link')
+        if (hoveredLink) {
+            const hoveredLinkRect = hoveredLink.getBoundingClientRect()
+            const beadWidth = hoveredLinkRect.width
+            const beadLeft = hoveredLinkRect.left - menu.getBoundingClientRect().left
+            bead.style.width = `${beadWidth}px`
+            bead.style.transform = `translateX(${beadLeft}px)`
+            bead.style.opacity = '1'
+        }
+    })
+
+    document.querySelectorAll('.abacus .navigation-link').forEach(el => {
+        el.addEventListener('mouseleave', (e) => {
+            const bead = document.querySelector('.bead') as HTMLElement
+            bead.style.opacity = '0'
+        })
+    })
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const footerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelector(".bead").classList.add("bead--hidden")
+                } else {
+                    document.querySelector(".bead").classList.remove("bead--hidden")
+                }
+            })
+        }, { threshold: 0.9 })
+        const footer = document.querySelector('footer')
+        if (footer) {
+            footerObserver.observe(footer)
+        }
+    })
 </script>
 
 <style>
@@ -108,17 +146,6 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
         display: flex;
         flex-direction: row;
         gap: var(--space-2xs);
-    }
-
-    .utility-button {
-        min-width: 0;
-        aspect-ratio: 1 / 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        flex: 0 0 auto;
-        color: var(--color-foreground);
     }
 
     .utility-icon {
@@ -173,14 +200,17 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
             padding-inline: 1em;
         }
 
-        .navigation[data-visible="false"] .navigation-link:hover {
-            background-color: var(--color-darkest);
+        .navigation[data-visible="false"] .navigation-link:hover .navigation-link__text {
             color: var(--color-lighter);
         }
 
-        .navigation-link:hover {
-            background-color: var(--color-lightest);
+        .navigation-link__text {
+            transition: color var(--anim-sm);
+        }
+
+        .navigation-link:hover .navigation-link__text {
             color: var(--color-dark);
+            z-index: 3;
         }
 
         .navigation-link[data-active="true"] {
@@ -191,6 +221,34 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
         .navigation[data-visible="false"] .navigation-link[data-active="true"] {
             background-color: var(--color-darkest);
             color: var(--color-lightest);
+        }
+
+        .abacus {
+            position: relative;
+        }
+
+        .bead {
+            background-color: white;
+            border-radius: var(--radius-sm);
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            margin: var(--space-2xs) 0;
+            max-height: 100%;
+            pointer-events: none;
+            position: absolute;
+            transition: transform var(--anim-sm), width var(--anim-sm), opacity var(--anim-sm);
+            top: 0;
+            width: 0;
+            z-index: 2;
+        }
+
+        .bead--hidden {
+            opacity: 0 !important;
+        }
+
+        .navigation[data-visible="false"] .bead {
+            background-color: var(--color-darkest);
         }
 
         .search-button {

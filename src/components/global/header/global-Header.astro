@@ -245,6 +245,13 @@ const headerSettings = await sanityClient.fetch(`
         position: relative;
         flex: 0 0 auto;
         color: var(--color-foreground);
+        transition: background-color var(--anim-sm), backdrop-filter var(--anim-sm), -webkit-backdrop-filter var(--anim-sm);
+    }
+
+    .utility-button:hover {
+        background-color: var(--color-background);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
 
     .notification-button .icon-open,
