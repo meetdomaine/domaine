@@ -320,16 +320,12 @@ const iconText = replaceStringIcons(heading)
             animation-timeline: view();
             animation-timing-function: linear;
             animation-range: entry 105% cover;
-            position: fixed;
-            width: 100%;
-            transform: translate3d(0, 0, 0);
             transition-behavior: allow-discrete;
-            opacity: 0;
         }
 
         @keyframes p-1 {
-            from { opacity: 1; }
-            to { opacity: 0; }
+            from { transform: scale(1); }
+            to { transform: scale(0); }
         }
 
         .home-hero[data-link-hover="true"] {

@@ -31,10 +31,6 @@ main {
   flex-grow: 1;
 }
 
-.parallax-container + section {
-  margin-top: 95svh;
-}
-
 @view-transition {
   navigation: auto;
 }
