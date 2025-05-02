@@ -98,7 +98,7 @@ const { section, brand, key } = Astro.props
     }
 
     .content-block[data-inset="true"] .block-media {
-        padding: var(--space-3xl);
+        padding: 0;
         border-radius: var(--radius-sm);
         overflow: hidden;
     }
@@ -113,6 +113,10 @@ const { section, brand, key } = Astro.props
         .content-block {
             flex: 0 0 auto;
             max-height: unset;
+        }
+
+        .content-block[data-inset="true"] .block-media {
+            padding: var(--space-3xl);
         }
     }
 </style>
