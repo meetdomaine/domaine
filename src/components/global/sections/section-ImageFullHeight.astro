@@ -21,8 +21,15 @@ const { section, brand, key } = Astro.props
 
     .section-content {
         background-color: var(--color-accent-shade, var(--color-background-secondary));
-        padding-inline: var(--space-3xl);
-        padding-block: var(--space-3xl) 0;
+        padding-inline: var(--space-lg);
+        padding-block: var(--space-lg) 0;
+    }
+
+    @media screen and (min-width: 768px) {
+        .section-content {
+            padding-inline: var(--space-3xl);
+            padding-block: var(--space-3xl) 0;
+        }
     }
 
 </style>
