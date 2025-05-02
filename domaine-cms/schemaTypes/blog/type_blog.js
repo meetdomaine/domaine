@@ -9,13 +9,13 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'series',
       title: 'Series',
       type: 'string',
-      description: "Optional name of series this post belongs to (ex. 'Domaine Migrations')"
+      description: "Optional name of series this post belongs to (ex. 'Domaine Migrations')",
     }),
     defineField({
       name: 'slug',
@@ -25,13 +25,13 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'isHidden',
       title: 'Hidden',
       type: 'boolean',
-      description: 'Hidden posts are not shown on site and are not crawled by search engines.'
+      description: 'Hidden posts are not shown on site and are not crawled by search engines.',
     }),
     defineField({
       name: 'postDate',
@@ -40,94 +40,105 @@ export default defineType({
       options: {
         dateFormat: 'MM-DD-YYYY',
       },
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'thumbnailImage',
       title: 'Thumbnail Image',
       type: 'snippet_image',
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
-      to: [{ type: 'type_blogCategory' }]
+      to: [{type: 'type_blogCategory'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'body',
       title: 'Body',
       type: 'snippet_rich-content',
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'authors',
       title: 'Authors',
       type: 'array',
-      of: [{
-        name: 'author',
-        title: 'Author',
-        type: 'reference',
-        to: [{ type: 'type_teamMember'}],
-      }],
-      validation: Rule => Rule.required(),
+      of: [
+        {
+          name: 'author',
+          title: 'Author',
+          type: 'reference',
+          to: [{type: 'type_teamMember'}],
+        },
+      ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'agencyBrand',
       title: 'Agency Brand',
       type: 'reference',
-      to: [{ type: 'type_agencyBrand'}],
-      validation: Rule => Rule.required(),
+      to: [{type: 'type_agencyBrand'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'partners',
       title: 'Related Partners',
       type: 'array',
-      of: [{
-        name: 'partner',
-        title: 'Partner',
-        type: 'reference',
-        to: [{ type: 'type_partner'}],
-      }],
+      of: [
+        {
+          name: 'partner',
+          title: 'Partner',
+          type: 'reference',
+          to: [{type: 'type_partner'}],
+        },
+      ],
     }),
     defineField({
       name: 'services',
       title: 'Related Services',
       type: 'array',
-      of: [{
-        name: 'service',
-        title: 'Service',
-        type: 'reference',
-        to: [{ type: 'type_service'}],
-      }],
+      of: [
+        {
+          name: 'service',
+          title: 'Service',
+          type: 'reference',
+          to: [{type: 'type_service'}],
+        },
+      ],
     }),
     defineField({
       name: 'industries',
       title: 'Related Industries',
       type: 'array',
-      of: [{
-        name: 'industry',
-        title: 'Industry',
-        type: 'reference',
-        to: [{ type: 'type_industry'}],
-      }],
+      of: [
+        {
+          name: 'industry',
+          title: 'Industry',
+          type: 'reference',
+          to: [{type: 'type_industry'}],
+        },
+      ],
     }),
     defineField({
       name: 'features',
       title: 'Related Features',
       type: 'array',
-      of: [{
-        name: 'feature',
-        title: 'Feature',
-        type: 'reference',
-        to: [{ type: 'type_projectFeature'}],
-      }],
+      of: [
+        {
+          name: 'feature',
+          title: 'Feature',
+          type: 'reference',
+          to: [{type: 'type_projectFeature'}],
+        },
+      ],
     }),
     defineField({
       name: 'globalSections',
@@ -143,9 +154,9 @@ export default defineType({
 
   preview: {
     select: {
-      title: 'title', 
+      title: 'title',
       subtitle: 'agencyBrand.name',
-      media: 'thumbnailImage.image'
+      media: 'thumbnailImage.image',
     },
   },
 })
