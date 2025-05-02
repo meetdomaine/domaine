@@ -12,5 +12,12 @@ const { section, brand, key } = Astro.props
 <style>
   .section-rich-content {
     padding-block-end: var(--space-3xl);
+    padding-inline: var(--page-margin);
+  }
+
+  @media screen and (min-width: 768px) {
+    .section-rich-content {
+      padding-inline: 0;
+    }
   }
 </style>
