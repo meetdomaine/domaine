@@ -86,13 +86,13 @@ const logos = await agencyBrands.map( async (brand) => {
 
           <div class="social-links">
               {footerSettings.instagramUrl &&
-                  <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" /></a>
+                  <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" aria-label="Instagram" /></a>
               }
               {footerSettings.twitterUrl &&
-                  <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" /></a>
+                  <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" aria-label="Twitter" /></a>
               }
               {footerSettings.linkedInUrl &&
-                  <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
+                  <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" aria-label="LinkedIn" /></a>
               }
             </div>
             <div class="contact-links">
