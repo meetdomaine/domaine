@@ -9,7 +9,7 @@ function ProjectCard(props) {
                 src={props.image} 
                 alt={props.alt}
                 class={styles.projectImage}
-                loading='eager'
+                loading="lazy"
             />
             <p class={`${styles.projectInfo} caption`}>
                 {props.title}
@@ -52,7 +52,7 @@ function PartnerCard(props) {
                 <img 
                     src={props.icon} 
                     alt={props.alt}
-                    loading='eager'
+                    loading='lazy'
                 />
             </div>
             <div class={styles.partnerText}>
@@ -144,6 +144,7 @@ export default function SearchMenu(props) {
             <div class={styles.menuControls} data-color-scheme="glass-light">
                 
                 <div class={styles.searchInput}>  
+                    <span class={styles.searchIcon}><SearchIcon /></span>
                     <input 
                         autofocus 
                         type="search" 
@@ -151,7 +152,6 @@ export default function SearchMenu(props) {
                         placeholder="Search"
                         oninput={handleInput}
                     />
-                    <span class={styles.searchIcon}><SearchIcon /></span>
                 </div>
 
                 <button class={`${styles.closeIcon}`} popoverTarget='search-menu'>
