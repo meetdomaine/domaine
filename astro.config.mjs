@@ -31,6 +31,14 @@ export default defineConfig({
   i18n: {
     locales: ["en", Locales.DE, Locales.NL],
     defaultLocale: "en",
+    fallback: {
+      de: "en",
+      nl: "en"
+    },
+    // TODO: Figure out why rewrite messes up HP routing
+    // routing: {
+    //   fallbackType: "rewrite"
+    // }
   },
   prefetch: true,
   experimental: {

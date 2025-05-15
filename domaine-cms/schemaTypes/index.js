@@ -77,6 +77,7 @@ import section_mediaFullbleed from "./sections/section_mediaFullbleed.js";
 import section_agenda from "./sections/section_agenda.js";
 import snippet_localeString from "./snippets/snippet_localeString.js";
 import snippet_localeButton from "./snippets/snippet_localeButton.js";
+import snippet_localeText from "./snippets/snippet_localeText.js";
 
 
 export const schemaTypes = [
@@ -122,6 +123,7 @@ export const schemaTypes = [
     snippet_button, // Deprecated
     snippet_richContent,
     snippet_localeString,
+    snippet_localeText,
     snippet_localeButton,
 
     section_globalSections,

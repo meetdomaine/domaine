@@ -33,6 +33,11 @@ const { locale } = Astro.props;
         heroTextColor = {pageSettings.heroTextColor}
     />
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} />
+        <GlobalSections 
+          brand="domaine" 
+          locale={locale}
+          section={section}
+          key={i} 
+        />
     ))}
 </LayoutDomaine>
