@@ -5,21 +5,27 @@ export default defineType({
   title: 'Domaine Home',
   type: 'document',
   fields: [
+    // defineField({
+    //   name: 'eyebrow',
+    //   title: 'Eyebrow',
+    //   type: 'string',
+    // }),
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string'
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      // type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
     defineField({
       name: 'media',

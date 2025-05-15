@@ -75,6 +75,8 @@ import section_locationsFeed from "./sections/section_locationsFeed.js";
 import section_textMediaBlocks from "./sections/section_textMediaBlocks.js";
 import section_mediaFullbleed from "./sections/section_mediaFullbleed.js";
 import section_agenda from "./sections/section_agenda.js";
+import snippet_localeString from "./snippets/snippet_localeString.js";
+import snippet_localeButton from "./snippets/snippet_localeButton.js";
 
 
 export const schemaTypes = [
@@ -117,8 +119,10 @@ export const schemaTypes = [
     snippet_linkList,
     snippet_image,
     snippet_video,
-    snippet_button,
+    snippet_button, // Deprecated
     snippet_richContent,
+    snippet_localeString,
+    snippet_localeButton,
 
     section_globalSections,
     section_agenda,

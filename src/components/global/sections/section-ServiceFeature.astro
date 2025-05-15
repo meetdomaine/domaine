@@ -6,7 +6,7 @@ import AtomButton from "../atoms/atom-button.astro"
 const { section, brand, key } = Astro.props
 
 const currentSlug = brand === "studio" ? "/studio" : "/"
-console.log(section.headingSize)
+// console.log(section.headingSize)
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
     <h2 aria-label={section.featuredService?.title}>

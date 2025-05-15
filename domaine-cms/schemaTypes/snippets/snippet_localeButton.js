@@ -2,15 +2,14 @@ import {defineField, defineType} from 'sanity'
 import { iconLink } from '../variables'
 
 export default defineType({
-  name: 'snippet_button',
+  name: 'snippet_locale-button',
   title: 'Button',
   type: 'document',
-  deprecated: true,
   fields: [
     defineField({
-        name: 'text',
-        title: 'Text',
-        type: 'string',
+        name: 'label',
+        title: 'Label',
+        type: 'snippet_locale-string',
     }),
     defineField({
         name: 'url',

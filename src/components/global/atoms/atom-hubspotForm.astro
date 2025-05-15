@@ -315,7 +315,7 @@ const fields = await fieldGroups.flatMap((group) => {
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
 
-            console.log(key)
+            // console.log(key)
 
             const field = fields.find((field) => field?.name === key)
             let value = formObject[key]

@@ -5,24 +5,33 @@ import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
+import { Locales } from './src/components/global/utils/locales';
 const isProd = import.meta.env.PROD;
 const isDev = import.meta.env.DEV;
 const renderMode = import.meta.env.RENDER_MODE;
 
 export default defineConfig({
-  integrations: [sitemap(), icon(), sanity({
-    projectId: 'cxeknc6v',
-    dataset: 'production',
-    useCdn: false,
-    studioBasePath: '/admin'
-  }), solid({
-    devtools: true,
-    include: 'src/**/*'
-  }),
-  react({
-    include: 'domaine-cms/**/*'
-  })
+  integrations: [
+    sitemap(), 
+    icon(), 
+    sanity({
+      projectId: 'cxeknc6v',
+      dataset: 'production',
+      useCdn: false,
+      studioBasePath: '/admin'
+    }), 
+    solid({
+      devtools: true,
+      include: 'src/**/*'
+    }),
+    react({
+      include: 'domaine-cms/**/*'
+    })
   ],
+  i18n: {
+    locales: ["en", Locales.DE, Locales.NL],
+    defaultLocale: "en",
+  },
   prefetch: true,
   experimental: {
     clientPrerender: true

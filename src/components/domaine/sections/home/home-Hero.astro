@@ -1,9 +1,10 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomButton from "../../../global/atoms/atom-button.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 import AtomTag from "../../../global/atoms/atom-tag.astro"
 
-const { heading, eyebrow, button, media, heroTextColor } = Astro.props
+const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
 ---
 <section id="domaine-home-hero" class="section-home-hero" data-color-scheme={heroTextColor === "light" ? "invert" : ""}>
     <div class="section-content">
@@ -15,10 +16,10 @@ const { heading, eyebrow, button, media, heroTextColor } = Astro.props
             }
             <h1 class="heading h2" id="heading" >{heading}</h1>
         </div>
-        {button.text && button.url &&
+        {button.label && button.url &&
             <AtomButton 
-                text={button.text}
-                url={button.url}
+                text={locale && button.label.translations[locale] ? button.label.translations[locale] : button.label.text}
+                url={locale ? getRelativeLocaleUrl(locale, button.url) : button.url}
                 newTab={button.newTab}
                 style="primary"
                 icon="arrow-diagonal"

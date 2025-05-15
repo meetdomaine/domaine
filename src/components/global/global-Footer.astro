@@ -11,8 +11,6 @@ const agencyBrands = await getAgencyBrands()
 const logos = await agencyBrands.map( async (brand) => {
     return await getRawSvg(brand.logo)
 })
-
-
 ---
 <footer data-color-scheme="brand-02">
     <div class="footer-inner">
