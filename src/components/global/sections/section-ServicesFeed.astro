@@ -83,7 +83,7 @@ console.log(serviceTypes[0])
         {section.button?.label && section.button?.url && 
                 <AtomButton 
                     text={locale && section.button.label.translations?.[locale] ? section.button.label.translations[locale] : section.button.label.text}
-                    url={getRelativeLocaleUrl(locale, section.button.url)}
+                    url={locale ? getRelativeLocaleUrl(locale, section.button.url) : section.button.url}
                     newTab={section.button.newTab}
                     style="primary"
                     icon="arrow-diagonal"

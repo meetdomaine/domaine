@@ -4,7 +4,7 @@ import AtomButton from "../atoms/atom-button.astro"
 import { getClients_Domaine, getClients_Studio } from "../utils/cms-content"
 import { getRawSvg } from "../utils/raw-svg"
 
-const { section, brand, key } = Astro.props
+const { section, brand, key, locale } = Astro.props
 
 let quoteClientLogo
 
@@ -23,8 +23,8 @@ if (section.quoteClient) {
         data-animate-viewport="true"
         data-animation="fade-up"
     >
-        {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
-        <h2 class="heading h3">{section.heading}</h2>
+        {section.eyebrow && <p class="eyebrow utility">{locale && section.eyebrow.translations?.[locale] ? section.eyebrow.translations[locale] : section.eyebrow.text}</p>}
+        {section.heading && <h2 class="heading h3">{locale && section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text}</h2>}
     </div>
     <!-- <div class="client-logos"> -->
         <div 
@@ -47,8 +47,8 @@ if (section.quoteClient) {
         {section.quote && section.quoteAuthor &&
             <div class="client-quote">
                 <div class="quote-text">    
-                    <p class="quote h6">{section.quote}</p>
-                    <p class="author">{section.quoteAuthor}</p>
+                    <p class="quote h6">{locale && section.quote.translations?.[locale] ? section.quote.translations[locale] : section.quote.text}</p>
+                    <p class="author">{locale && section.quoteAuthor.translations?.[locale] ? section.quoteAuthor.translations[locale] : section.quoteAuthor.text}</p>
                 </div>
                 {quoteClientLogo && 
                     <div 
@@ -61,9 +61,9 @@ if (section.quoteClient) {
             </div>
         }
 
-        {section.text &&
+        {section.subheading &&
             <div class="section-text">
-                <p>{section.text}</p>
+                <p>{locale && section.subheading.translations?.[locale] ? section.subheading.translations[locale] : section.subheading.text}</p>
                 {section.button.text && section.button.url && 
                     <AtomButton 
                         text={section.button.text}
@@ -72,6 +72,12 @@ if (section.quoteClient) {
                     />
                 }
             </div>
+            // TODO: Add button from Sanity
+            // {section.button?.label && section.button?.url &&
+            //     <AtomButton 
+            //         url={}
+            //     />
+            // }
         }
     </div>
 </section>
