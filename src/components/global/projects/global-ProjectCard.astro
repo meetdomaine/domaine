@@ -7,9 +7,10 @@ import { getRawSvg } from "../utils/raw-svg";
 
 interface Props {
   project: ProjectCard;
+  locale?: string;
 }
 
-const { project } = Astro.props;
+const { project, locale } = Astro.props;
 
 let clientLogo;
 
@@ -21,7 +22,7 @@ if (project.client?.logo) {
 ---
 
 <a
-  href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
+  href={`${locale ? `/${locale}` : ""}${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
   class={`project-card`}
   data-pagefind-ignore
   data-animate-viewport="true"
@@ -82,7 +83,7 @@ if (project.client?.logo) {
     <div class="card-details">
       <h6 class="title body">{project.title}</h6>
       <div class="card-description">
-        <p class="description-text caption">{project.excerpt}</p>
+        <p class="description-text caption">{locale && project.excerpt.translations?.[locale] ? project.excerpt.translations?.[locale] : project.excerpt.text}</p>
         <div class="description-tags">
           {project.industry && (
 						<AtomTag title="Industry" text={project.industry.title} />

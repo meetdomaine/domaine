@@ -2,7 +2,7 @@
 import ProjectCard from "../projects/global-ProjectCard.astro";
 import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
 
-const { section, brand, projects, heading, subheading, key } = Astro.props
+const { section, brand, projects, heading, subheading, locale, key } = Astro.props
 
 let feedProjects
 
@@ -14,6 +14,26 @@ if (section && section.projects) {
     feedProjects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
 }
 
+
+let localeHeading
+
+if (locale && section?.heading?.translations?.[locale]) {
+    localeHeading = section.heading.translations[locale]
+} else if (section?.heading?.text) {
+    localeHeading = section?.heading.text
+} else {
+    localeHeading = heading
+}
+
+let localeSubheading
+
+if (locale && section?.subheading?.translations?.[locale]) {
+    localeSubheading = section?.subheading.translations?.[locale]
+} else if (section?.subheading?.text) {
+    localeSubheading = section?.subheading.text
+} else {
+    localeSubheading = subheading
+}
 ---
 <section class="section-projects-feed" data-pagefind-ignore>
     <div 
@@ -21,8 +41,8 @@ if (section && section.projects) {
         data-animate-viewport="true"
         data-animation="fade"
     >
-        {(heading || section && section.heading) && <h2 class="h5">{heading ? heading : section.heading}</h2>}
-        {(subheading || section && section.subheading) && <p class="caption">{subheading ? subheading : section.subheading}</p>}
+        {localeHeading && <h2 class="h5">{localeHeading}</h2>}
+        {localeSubheading && <p class="caption">{localeSubheading}</p>}
     </div>
     <div class="section-content">
         {feedProjects.slice(0, 3).map((project, i) => (
@@ -34,6 +54,7 @@ if (section && section.projects) {
             >
                 <ProjectCard
                     project={project}
+                    locale={locale}
                 />
             </div>
         ))}

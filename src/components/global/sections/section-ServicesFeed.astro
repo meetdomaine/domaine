@@ -4,17 +4,20 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import { getServiceTypes_Studio, getServiceTypes_Domaine } from "../utils/cms-content";
 import { Icon } from "astro-icon/components";
 import AtomButton from "../atoms/atom-button.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
-const { section, brand, key } = Astro.props
+const { section, brand, locale, key } = Astro.props
 
 const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await getServiceTypes_Domaine()
+
+console.log(serviceTypes[0])
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 
     <div class="section-content">
         <div class="section-title">
-            <h2 class="heading h5">{section.heading}</h2>
-            {section.subheading && <p class="subheading">{section.subheading}</p>}
+            {section.heading && <h2 class="heading h5">{locale && section.heading.translations?.[locale] ? section.heading.translations?.[locale] : section.heading.text}</h2>}
+            {section.subheading && <p class="subheading">{locale && section.subheading.translations?.[locale] ? section.subheading.translations?.[locale] : section.subheading.text}</p>}
         </div>
         <div class="service-types">
             {serviceTypes.map((serviceType, i) => (
@@ -26,7 +29,7 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                         data-slug={serviceType.slug.current}
                         href={serviceType.isHidden ? null : `/services/${serviceType.slug.current}`}
                     >
-                        {serviceType.title}
+                        {locale && serviceType.title?.translations?.[locale] ? serviceType.title?.translations?.[locale] : serviceType.title.text}
                         
                         {/* <Icon name="arrow-diagonal" class="service-type__icon" /> */}
                     </a>
@@ -43,11 +46,11 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                                         <a 
                                             class="service-type__group-title h6" 
                                             href={serviceGroup.isHidden ? null : `${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
-                                        >{serviceGroup.title}</a>
+                                        >{locale && serviceGroup.title?.translations?.[locale] ? serviceGroup.title.translations[locale] : serviceGroup.title.text}</a>
                                         {serviceGroup.services.map((service, i) => (
                                             <AtomTag 
-                                                text={service.title}
-                                                url={service.isHidden ? null : `${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
+                                                text={locale && service.title?.translations?.[locale] ? service.title.translations[locale] : service.title.text}
+                                                url={service.isHidden ? null : `${locale ? `/${locale}` : ""}${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
                                             />
                                         ))}
                                     </div>
@@ -55,7 +58,7 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                             ))}
                         </div>
                     </div>
-                    <div class="service-type__description body">{serviceType.excerpt}</div>
+                    <div class="service-type__description body">{locale && serviceType.excerpt?.translations?.[locale] ? serviceType.excerpt.translations[locale] : serviceType.excerpt.text}</div>
                 </div>
                 <div class="section-media"
                     data-animate-viewport="true"
@@ -77,10 +80,10 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
             ))}
         </div>
 
-        {section.button?.text && section.button?.url && 
+        {section.button?.label && section.button?.url && 
                 <AtomButton 
-                    text={section.button.text}
-                    url={section.button.url}
+                    text={locale && section.button.label.translations?.[locale] ? section.button.label.translations[locale] : section.button.label.text}
+                    url={getRelativeLocaleUrl(locale, section.button.url)}
                     newTab={section.button.newTab}
                     style="primary"
                     icon="arrow-diagonal"

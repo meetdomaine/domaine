@@ -10,7 +10,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -104,8 +104,8 @@ export default defineType({
 
   preview: {
     select: {
-      title: 'title',
-      type: 'serviceType.title'
+      title: 'title.text',
+      type: 'serviceType.title.text'
     },
     prepare(selection) {
       return {

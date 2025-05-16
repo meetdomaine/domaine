@@ -10,7 +10,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -32,7 +32,7 @@ export default defineType({
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
-      type: 'string',
+      type: 'snippet_locale-text',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -164,7 +164,7 @@ export default defineType({
 
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
       brands: 'agencyBrands'
     },
     prepare(selection) {
