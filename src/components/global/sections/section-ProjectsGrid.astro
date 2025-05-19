@@ -1,11 +1,12 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomButton from "../atoms/atom-button.astro";
 import AtomCounter from "../atoms/atom-counter.astro";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
 import { getRawSvg } from "../utils/raw-svg";
 
-const { section, brand } = Astro.props;
+const { section, brand, locale } = Astro.props;
 
 const projects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine();
 
@@ -19,7 +20,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
       data-animate-viewport="true"
       data-animation="fade"
     >
-      <h2 class="h5">{section.title}</h2>
+      {section.title && <h2 class="h5">{locale && section.title.translations?.[locale] ? section.title.translations[locale] : section.title.text}</h2>}
       <AtomCounter count={projects.length} />
     </div>
     <div
@@ -28,12 +29,12 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
       data-animation="fade-up"
       data-animation-delay="150"
     >
-      <h3>{section.heading}</h3>
-      {section.button && section.button.text && section.button.url &&
+      {section.heading && <h3>{locale && section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text}</h3>}
+      {section.button?.text && section.button?.url &&
 				(
           <AtomButton
-            text={section.button.text}
-            url={section.button.url}
+            text={locale && section.button.label.translations?.[locale] ? section.button.label.translations[locale] : section.button.label.text}
+            url={locale ? getRelativeLocaleUrl(locale, section.button.url) : section.button.url}
             newTab={section.button.newTab}
             style="primary"
             icon="arrow-diagonal"
@@ -56,7 +57,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
           >
             <a
               class="project-link-card"
-              href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
+              href={locale ? getRelativeLocaleUrl(locale, `${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`) : `${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
             >
               <div
                 class="project-media"
@@ -84,7 +85,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
             </a>
 						<link
 							rel="preload"
-							href={`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
+							href={locale ? getRelativeLocaleUrl(locale, `${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`) : `${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
 							as="fetch"
 							crossorigin="anonymous"
 							type=""
@@ -140,7 +141,6 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
     overflow: hidden;
     border-radius: var(--radius-sm);
     grid-area: pr;
-    position: relative;
   }
 
   .project-link-card:focus:not(:focus-visible) {
