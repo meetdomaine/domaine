@@ -9,8 +9,6 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 const { section, brand, locale, key } = Astro.props
 
 const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await getServiceTypes_Domaine()
-
-console.log(serviceTypes[0])
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 
