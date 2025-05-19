@@ -36,7 +36,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'info',
       validation: Rule => Rule.required(),
     }),
@@ -228,7 +228,7 @@ export default defineType({
 
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
       subtitle: 'venue',
       media: 'thumbnailImage.image'
     },

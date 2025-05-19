@@ -5,7 +5,8 @@ import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
 import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
-
+import { checkDateIsPast } from "../../../components/global/utils/check-date-is-past"
+import { Translations } from "../../../lib/locales"
 const { 
   currentBrand, 
   showPromoMessage, 
@@ -13,6 +14,8 @@ const {
   promoMessageUrl, 
   promoMessageIcon,
   clocks,
+  eventsTitle,
+  locale,
   locationClocks,
   showLinkCard,
   linkCardTitle,
@@ -35,7 +38,7 @@ const monthOptions: UseDateTimeFormatOptions = {
 const latestProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
 const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
 const allEvents = await getEvents()
-const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
+const upcomingEvents = allEvents.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
 
 // console.log(upcomingEvent)
 // console.log(latestWork)
@@ -43,14 +46,20 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
   {(showPromoMessage && promoMessage) &&
-    <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>
+    <a 
+      class="promo-message caption" 
+      href={promoMessageUrl} 
+      data-color-scheme="brand-02"
+    >
+      {promoMessageIcon && 
+        <Icon name={promoMessageIcon} />}{locale && promoMessage.translations?.[locale] ? promoMessage.translations[locale] : promoMessage.text}
+    </a>
   }
 
   <div class="latest-projects">
     {latestProjects.slice(0,2).map((project) => (
       <AtomNotificationLink 
-        title="Latest Work"
-        text={project.title}
+        title={project.title}
         url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
         image={project.thumbnailMedia.image ? project.thumbnailMedia.image : project.thumbnailImageSecondary.image}
       />
@@ -86,15 +95,15 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 
   {upcomingEvents?.length > 0 && 
     <div class="event-card" data-color-scheme="glass-dark">
-      <p class="caption">Upcoming Events</p>
+      {eventsTitle && <p class="caption">{locale && eventsTitle.translations?.[locale] ? eventsTitle.translations[locale] : eventsTitle.text}</p>}
       {upcomingEvents.map((event) => (
         <a class="event-info color-reset" href={`/events/${event.slug.current}`} data-color-scheme="default">
           <div class="event-date">
-            <p class="event-month caption">{new Intl.DateTimeFormat("en-us", monthOptions).format(new Date(event.dateTime))}</p>
+            <p class="event-month caption">{new Intl.DateTimeFormat(locale ? locale : "en-us", monthOptions).format(new Date(event.dateTime))}</p>
             <p class="event-day h4">{new Date(event.dateTime).getDate()}</p>
           </div>
           <div class="event-details">
-            <p class="event-title">{event.title}</p>
+            <p class="event-title">{locale && event.title.translations?.[locale] ? event.title.translations[locale] : event.title.text}</p>
             <p class="event-location caption">{event.location}</p>
           </div>
         </a>
@@ -107,22 +116,23 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     {showLinkCard && linkCardTitle &&
       <AtomNotificationLink 
         title={linkCardTitle}
-        text={linkCardText}
+        subtitle={linkCardText}
         url={linkCardUrl}
         newTab={linkCardNewTab}
         image={linkCardImage.image}
+        locale={locale}
       />
     }
     {showCareers && careersHeading && careersUrl &&
       <a href={careersUrl} class="careers-card" data-color-scheme="glass-dark" target={careersNewTab ? "_blank" : ""}>
         <Icon name="dot-laptop" class="careers-icon" />
         <div class="careers-heading">
-          <p class="h6">{careersHeading}</p>
+          {careersHeading && <p class="h6">{locale && careersHeading.translations?.[locale] ? careersHeading.translations[locale] : careersHeading.text}</p>}
           <AtomCounter 
             count={allCareers.length}
           />
         </div>
-        {careersSubheading && <p class="careers-subheading">{careersSubheading}</p>}
+        {careersSubheading && <p class="careers-subheading">{locale && careersSubheading.translations?.[locale] ? careersSubheading.translations[locale] : careersSubheading.text}</p>}
       </a>
     }
   </div>
@@ -130,11 +140,12 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
   
 {showBlog && latestBlogPosts.length > 1 &&
   <div class="blog-posts" data-color-scheme="glass-dark">
-    <p class="blog-posts-heading caption">Insights</p>
+    <p class="blog-posts-heading caption">{locale && Translations.INSIGHTS.locales[locale] ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name}</p>
     {latestBlogPosts.slice(0,2).map((blogPost) => (
       <GlobalBlogTile 
         post={blogPost}
         currentBrand={currentBrand}
+        locale={locale}
       />
     ))}
   </div>

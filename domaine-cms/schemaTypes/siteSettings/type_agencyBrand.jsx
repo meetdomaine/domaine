@@ -35,7 +35,7 @@ export default defineType({
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: 'Used in Brand menu & practices section.',
       validation: Rule => Rule.required(),
     }),

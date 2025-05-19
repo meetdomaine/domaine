@@ -23,6 +23,7 @@ const { locale } = Astro.props;
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : "Home"}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    locale={locale}
 >
     <HomeHero
         locale={locale}

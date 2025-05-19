@@ -8,7 +8,7 @@ import NavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
 import NotificationMenu from "./global-NotificationMenu.astro";
 
-const { currentBrand, activePath, searchExposed } = Astro.props;
+const { currentBrand, activePath, searchExposed, locale } = Astro.props;
 
 import SearchMenu from "./searchMenu/SearchMenu"
 import { 
@@ -22,6 +22,7 @@ import {
     getPartners_Domaine,
 } from "../utils/cms-content"
 import { locationsQuery } from "../utils/cms-queries"
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 // const test = await loadQuery({
 //     query: `*[_type == 'type_blog']`
@@ -49,6 +50,8 @@ const headerSettings = await sanityClient.fetch(`
 
 // console.log(await blogPosts_Domaine.data)
 // console.log(currentBrand)
+// console.log(headerSettings)
+
 ---
 <header id="header" data-color-scheme="glass-dark">
 
@@ -60,7 +63,7 @@ const headerSettings = await sanityClient.fetch(`
         </button>
 
         <div class="brand" data-color-scheme="glass-dark">
-            <a href={currentBrand.url} class="brand-logo">
+            <a href={locale ? getRelativeLocaleUrl(locale, currentBrand.url) : currentBrand.url} class="brand-logo">
                 <Icon name={currentBrand.slug.current === "/studio" ? "domaine-studio" : "domaine-wordmark"} />
             </a>
             {headerSettings.showBrandMenu &&
@@ -74,6 +77,9 @@ const headerSettings = await sanityClient.fetch(`
             links={headerSettings.navigationLinks.links}
             activePath={activePath}
             searchExposed={searchExposed}
+            locale={locale}
+            searchPlaceholderTitle={headerSettings.searchPlaceholderTitle}
+            searchPlaceholderText={headerSettings.searchPlaceholderText}
         />
 
         <div id="utility-menu" class="utility-menu">
@@ -93,9 +99,14 @@ const headerSettings = await sanityClient.fetch(`
             currentBrand={currentBrand}
             heading={headerSettings.brandMenuHeading}
             subheading={headerSettings.brandMenuSubheading}
+            locale={locale}
         />
     }
-    <ContactMenu hubspotFormId={headerSettings.hubspotFormId} forms={headerSettings.contactForms} />
+    <ContactMenu 
+        hubspotFormId={headerSettings.hubspotFormId} 
+        forms={headerSettings.contactForms} 
+        locale={locale}
+    />
     <!-- <SearchMenu currentBrand={currentBrand} /> -->
 
     <SearchMenu 
@@ -105,6 +116,7 @@ const headerSettings = await sanityClient.fetch(`
         defaultFeatures={defaultProjectFeatures.slice(0, 8)}
         defaultPartners={defaultPartners.slice(0, 5)}
         currentBrand={currentBrand}
+        locale={locale}
     />
 
     <NotificationMenu 
@@ -113,6 +125,7 @@ const headerSettings = await sanityClient.fetch(`
         promoMessageUrl={headerSettings.promoMessageUrl}
         promoMessageIcon={headerSettings.promoMessageIcon}
         clocks={headerSettings.clocks}
+        eventsTitle={headerSettings.eventsTitle}
         locationClocks={headerSettings.locationClocks}
         showLinkCard={headerSettings.showLinkCard}
         linkCardTitle={headerSettings.linkCardTitle}
@@ -127,6 +140,7 @@ const headerSettings = await sanityClient.fetch(`
         careersNewTab={headerSettings.careersNewTab}
         showBlog={headerSettings.showBlog}
         currentBrand={currentBrand} 
+        locale={locale}
     />
 </header>
 

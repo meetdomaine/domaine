@@ -45,7 +45,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
   </div>
   <div class="project-tiles">
     {
-      section.projects.map((project, i) => {
+      section.projects?.map((project, i) => {
         const clientLogo = getRawSvg(project.client.logo);
         return (
           <div
@@ -170,6 +170,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
   .project-media {
     transition: scale var(--anim-lg);
     height: 100%;
+    position: relative;
   }
 
   .project-media::after {
@@ -230,6 +231,10 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
     .project-tile[data-hide-mobile="true"] {
       display: none;
     }
+
+    /* .project-media {
+      position: relative;
+    } */
 
     .project-logo {
       opacity: 1;

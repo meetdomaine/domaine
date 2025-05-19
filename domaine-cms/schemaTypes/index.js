@@ -78,6 +78,7 @@ import section_agenda from "./sections/section_agenda.js";
 import snippet_localeString from "./snippets/snippet_locale-string.js";
 import snippet_localeButton from "./snippets/snippet_locale-button.js";
 import snippet_localeText from "./snippets/snippet_locale-text.js";
+import snippet_localeLinkList from "./snippets/snippet_locale-link-list.js";
 
 
 export const schemaTypes = [
@@ -125,6 +126,7 @@ export const schemaTypes = [
     snippet_localeString,
     snippet_localeText,
     snippet_localeButton,
+    snippet_localeLinkList,
 
     section_globalSections,
     section_agenda,

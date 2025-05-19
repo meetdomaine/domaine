@@ -2,13 +2,16 @@
 import { getAgencyBrands, getLocations } from "../utils/cms-content";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { Icon } from "astro-icon/components";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 const agencyBrands = await getAgencyBrands()
 const locations = await getLocations()
+
+const { locale } = Astro.props
 ---
 <div class="practices-grid">
 
-    <a class="brand-card brand-primary" href="/">
+    <a class="brand-card brand-primary" href={locale ? getRelativeLocaleUrl(locale, "/") : "/"}>
       <div class="brand-media">
         <AtomSanityMedia 
           sizes="50vw"
@@ -24,7 +27,7 @@ const locations = await getLocations()
         </div>
         <div class="brand-text">
           <p class="brand-name caption">Domaine</p>
-          <p class="brand-heading h5">{agencyBrands[0].excerpt}</p>
+          <p class="brand-heading h5">{locale && agencyBrands[0].excerpt.translations?.[locale] ? agencyBrands[0].excerpt.translations[locale] : agencyBrands[0].excerpt.text}</p>
         </div>
       </div>
     </a>
@@ -62,7 +65,7 @@ const locations = await getLocations()
           </div>
           <div class="brand-text">
             <p class="brand-name caption">Domaine Studio</p>
-            <p class="brand-heading h6">{agencyBrands[1].excerpt}</p>
+            <p class="brand-heading h6">{locale && agencyBrands[1].excerpt.translations?.[locale] ? agencyBrands[1].excerpt.translations[locale] : agencyBrands[1].excerpt.text}</p>
           </div>
         </div>
       </a>
