@@ -46,7 +46,7 @@ export default defineType({
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'info',
       validation: Rule => Rule.required(),
     }),

@@ -1,9 +1,7 @@
 ---
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
-const { partner, collapsed, theme } = Astro.props
-
-// console.log(icon)
+const { partner, collapsed, theme, locale } = Astro.props
 
 ---
 <a 
@@ -19,7 +17,7 @@ const { partner, collapsed, theme } = Astro.props
     </div>
     <div class="card-text caption">
         <p class="title caption">{partner.title}</p>
-        <p class="excerpt caption">{partner.excerpt}</p>
+        <p class="excerpt caption">{locale && partner.excerpt.translations?.[locale] ? partner.excerpt.translations[locale] : partner.excerpt.text }</p>
     </div>
 </a>
 

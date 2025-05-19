@@ -1,9 +1,10 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomButton from "../atoms/atom-button.astro"
 import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
 import { getPartners_Domaine, getPartners_Studio } from "../utils/cms-content"
 
-const { section, brand } = Astro.props
+const { section, brand, locale } = Astro.props
 
 
 const partnerTileCount = 4
@@ -16,13 +17,13 @@ const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() :
         data-animate-viewport="true"
         data-animation="fade"
     >
-        {section.eyebrow && <p class="eyebrow h5">{section.eyebrow}</p>}
-        <h2 class="heading">{section.heading}</h2>
-        { section.button && section.button.text && section.button.url &&
+        {section.eyebrow && <p class="eyebrow h5">{locale && section.eyebrow.translations?.[locale] ? section.eyebrow.translations[locale] : section.eyebrow.text }</p>}
+        <h2 class="heading">{locale && section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text }</h2>
+        { section.button?.label.text && section.button?.url &&
             <div class="button-wrapper-primary">
                 <AtomButton
-                    text={section.button.text}
-                    url={section.button.url}
+                    text={locale && section.button.label.translations?.[locale] ? section.button.label.translations[locale] : section.button.label.text }
+                    url={locale ? getRelativeLocaleUrl(locale, section.button.url) : section.button.url}
                     newTab={false}
                     icon="arrow-diagonal"
                     fill={true}
@@ -39,6 +40,7 @@ const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() :
                     data-animation="fade-up"
                 >
                     <GlobalPartnerTile 
+                        locale={locale}
                         partner={partner}
                         theme="light"
                     />
@@ -50,14 +52,16 @@ const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() :
             data-animate-viewport="true"
             data-animation="fade-up"
         >
-        <AtomButton
-            text="All Partners"
-            url="/partners"
-            newTab={false}
-            style="secondary"
-            icon="arrow-diagonal"
-            invert={true}
-        />
+        { section.linkText &&
+            <AtomButton
+                text={locale && section.linkText.translations?.[locale] ? section.linkText.translations[locale] : section.linkText.text }
+                url={locale ? getRelativeLocaleUrl(locale, "/partners") : "/partners"}
+                newTab={false}
+                style="secondary"
+                icon="arrow-diagonal"
+                invert={true}
+            />
+        }
         </div>
     </div>
 </section>
