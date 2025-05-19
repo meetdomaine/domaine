@@ -48,7 +48,11 @@ const footerSettings = await getFooterSettings_Domaine()
     <main>
         <slot />
     </main>
-    <Footer currentBrand={currentBrand} footerSettings={footerSettings}>
+    <Footer 
+        currentBrand={currentBrand} 
+        footerSettings={footerSettings}
+        locale={locale}
+    >
         <AtomHubspotForm 
             formId={footerSettings.newsletterHubspotFormId}
         />
