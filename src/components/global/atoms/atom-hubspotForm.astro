@@ -27,7 +27,7 @@ const consentData = await formData.legalConsentOptions
 
 // console.log(fieldGroups)
 
-const fields = await fieldGroups.flatMap((group) => {
+const fields = await fieldGroups?.flatMap((group) => {
   // console.log(group)
   if (group.fields) {
     return group.fields.map((field) => {

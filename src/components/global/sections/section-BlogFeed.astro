@@ -7,8 +7,9 @@ import AtomTag from "../atoms/atom-tag.astro";
 import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../utils/cms-content";
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
 import { formatDate } from "../utils/format-date";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
-const { section, brand, heading, subheading, posts, sidebarTitle } = Astro.props
+const { section, brand, heading, subheading, posts, sidebarTitle, locale } = Astro.props
 
 let blogPosts
 let featuredPost
@@ -38,11 +39,13 @@ if (section?.featuredPost) {
 if (featuredPost) {
     featuredPostDate = formatDate(featuredPost.postDate)
 }
+// console.log(featuredPost)
 ---
 <section class="section-blog-feed" data-color-scheme="brand-01" data-pagefind-ignore>
     <div class="section-title">
-        <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
-        {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}
+        {(section?.heading || heading) && 
+            <h2 class="h5">{section?.heading ? section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text : heading ? heading : "Insights"}</h2>
+        }
     </div>
 
     {featuredPost && 
@@ -50,7 +53,7 @@ if (featuredPost) {
             <article class="featured-post">
                 <a 
                     class="featured-post-image" 
-                    href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
+                    href={locale ? getRelativeLocaleUrl(locale, `${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`) : `${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
                 >
                     <AtomSanityImage 
                         image={featuredPost.thumbnailImage.image}
@@ -61,16 +64,16 @@ if (featuredPost) {
                 <div class="featured-post-content">
                     <div class="featured-post-info">
                         <AtomTag 
-                            text={featuredPost.category.title}
-                            url={`${featuredPost.agencyBrand.slug.current}insights/${featuredPost.category.slug.current}`}
+                            text={locale && featuredPost.category.title.translations?.[locale] ? featuredPost.category.title.translations[locale] : featuredPost.category.title.text}
+                            url={locale ? getRelativeLocaleUrl(locale, `${featuredPost.agencyBrand.slug.current}insights/${featuredPost.category.slug.current}`) : `${featuredPost.agencyBrand.slug.current}insights/${featuredPost.category.slug.current}`}
                         />
                         {featuredPostDate && <p class="featured-post-date">{featuredPostDate}</p>}
                     </div>
                     <a 
                         class="featured-post-heading h2" 
-                        href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
-                    >{featuredPost.title}</a>
-                    <p class="">{featuredPost.excerpt}</p>
+                        href={locale ? getRelativeLocaleUrl(locale, `${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`) : `${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
+                    >{locale && featuredPost.title.translations?.[locale] ? featuredPost.title.translations[locale] : featuredPost.title.text}</a>
+                    <p class="">{locale && featuredPost.excerpt.translations?.[locale] ? featuredPost.excerpt.translations[locale] : featuredPost.excerpt.text}</p>
                 </div>
             </article>
                 <aside class="sidebar" data-color-scheme="glass-dark">
@@ -80,6 +83,7 @@ if (featuredPost) {
                             <GlobalBlogTile 
                                 post={post}
                                 currentBrand={brand}
+                                locale={locale}
                             />
                         ))}
                     </div>
@@ -98,6 +102,7 @@ if (featuredPost) {
                         slug={post.slug}
                         category={post.category}
                         agencyBrand={post.agencyBrand}
+                        locale={locale}
                     />
                 </div>
             ))}

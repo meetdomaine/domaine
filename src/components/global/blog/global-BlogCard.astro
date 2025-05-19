@@ -1,19 +1,21 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { formatDate } from "../utils/format-date";
 
 interface Props {
-  title: string;
+  title: any;
   series: string;
   slug: any;
   thumbnailImage: any;
   category: any;
   agencyBrand: any;
   postDate: any;
+  locale: string;
 }
 
-const { title, series, thumbnailImage, slug, category, agencyBrand, postDate } = Astro.props;
+const { title, series, thumbnailImage, slug, category, agencyBrand, postDate, locale } = Astro.props;
 
 const categoryUrl = `${agencyBrand.slug.current == "/studio" ? "/studio" : ""}/insights/${category.slug.current}`;
 const postUrl = `${categoryUrl}/${slug.current}`;
@@ -27,7 +29,10 @@ const formattedDate = formatDate(postDate);
   data-animation="fade"
   data-pagefind-ignore
 >
-  <a href={postUrl} class="card-media">
+  <a 
+    href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl } 
+    class="card-media"
+  >
     <AtomSanityMedia
       image={thumbnailImage.image}
       aspectRatio={3 / 4}
@@ -36,15 +41,21 @@ const formattedDate = formatDate(postDate);
   </a>
   <div class="card-text">
     {series && <p class="card-series caption">{series}</p>}
-    <a href={postUrl} class="card-title h6">{title}</a>
+    <a 
+      href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl} 
+      class="card-title h6"
+    >{locale && title.translations?.[locale] ? title.translations[locale] : title.text}</a>
   </div>
   <div class="card-info">
-    <AtomTag title={category.title} url={categoryUrl} />
+    <AtomTag 
+      title={locale && category.title.translations?.[locale] ? category.title.translations[locale] : category.title.text} 
+      url={locale ? getRelativeLocaleUrl(locale, categoryUrl) : categoryUrl} 
+    />
     {postDate && <p class="date caption">{formattedDate}</p>}
   </div>
   <link
     rel="preload"
-    href={postUrl}
+    href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl}
     as="fetch"
     crossorigin="anonymous"
     type=""
