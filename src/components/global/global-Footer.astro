@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
+// import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
 import { getAgencyBrands } from "./utils/cms-content"
 import { getRawSvg } from "./utils/raw-svg"
 import { getRelativeLocaleUrl } from "astro:i18n"
@@ -45,7 +45,7 @@ const logos = await agencyBrands.map( async (brand) => {
                     <div class="link-column">
                         <p class="link-column___title">{locale && column.title.translations?.[locale] ? column.title.translations[locale] : column.title.text}</p>
                         <div class="link-column__links">
-                            {column.links.links.map((link) => (
+                            {column.links.links?.map((link) => (
                                 <a 
                                     class="link-column__link" 
                                     href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 
@@ -73,7 +73,7 @@ const logos = await agencyBrands.map( async (brand) => {
                     </div>
                 }
                 <div class="agency-brands__content">
-                    {agencyBrands.map((brand, i) => (
+                    {agencyBrands?.map((brand, i) => (
                         <a class="brand-card" href={brand.url}>
                             <div class="brand-logo">
                                 <Fragment set:html={logos[i]} />
@@ -123,7 +123,7 @@ const logos = await agencyBrands.map( async (brand) => {
         </div>
 
         <div class="subfooter-links">
-            {footerSettings.legalLinks.links.map((link) => (
+            {footerSettings.legalLinks?.links?.map((link) => (
                 <a 
                     class="subfooter-link caption" 
                     href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 

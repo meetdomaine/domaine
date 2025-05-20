@@ -1,16 +1,7 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
-import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../../../components/global/utils/cms-queries';
-import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
-import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
-import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
-import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
-import { getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
-import BlogPostSidebar from '../../../components/global/blog/blogPost-Sidebar.astro';
-import GlobalSections from '../../../components/global/sections/section-GlobalSections.astro';
-
-export const prerender = true
+import { globalSectionsFields, imageBaseFields, imageFields, richContentFields } from '../../../components/global/utils/cms-queries';
+import { Locales } from '../../../components/global/utils/locales';
+import LayoutDomaineBlogPost from '../../../layouts/Layout-Domaine_BlogPost.astro';
 
 export async function getStaticPaths() {
     // console.log(posts)
@@ -35,63 +26,8 @@ export async function getStaticPaths() {
     })
 }
 
-interface Props {
-    content: any
-}
-
-const { content } = Astro.props;
-
-const blogPosts = await getBlogPosts_Domaine()
-// console.log(content.metafields)
-
-const relatedPosts = await sanityClient.fetch(`
-    *[_type == "type_blog" 
-        && agencyBrand->slug.current == "/" 
-        && category->_id == '${content.category._id}' 
-        && isHidden != true
-    ]{${blogCardFields}} | order(orderRank asc)`)
-
+const { content } = Astro.props
 ---
-<LayoutDomaine
-    title={content.metafields?.title ? content.metafields.title : content.title}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter={content.isHidden ? "" : "type:blog-post_domaine"}
-    activePath="/insights"
-    noIndex={content.isHidden}
-    showPreloader={false}
->
-    <BlogPostHero
-        post={content}
-    />
-    
-    <BlogPostBody content={content.body}>
-        <BlogPostSidebar 
-            latestPosts={blogPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
-        />
-    </BlogPostBody>
-
-    { content.authors && 
-        <BlogPostAuthors 
-            authors={content.authors}
-        />
-    }
-
-    {content.globalSections && content.globalSections.sections.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} />
-    ))}
-
-    { relatedPosts.length > 1 && 
-        <SectionBlogFeed 
-            heading="Related Posts"
-            posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
-        />
-    }
-
-    <!-- { relatedProjects?.length > 0 && 
-        <SectionProjectsFeed
-            heading="Related Projects"
-            projects={relatedProjects}
-        />
-    } -->
-</LayoutDomaine>
+<LayoutDomaineBlogPost
+  content={content}
+/>

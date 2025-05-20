@@ -1,22 +1,26 @@
 ---
+import { Translations } from "../../../../lib/locales";
+import { getTranslationString } from "../../../../lib/translations";
 import AtomButton from "../../../global/atoms/atom-button.astro";
 import AtomCounter from "../../../global/atoms/atom-counter.astro";
 
-const { heading, subheading, projectCount, isTopLevel } = Astro.props;
+const { heading, subheading, projectCount, isTopLevel, locale } = Astro.props;
 ---
 <section class="work-index_hero">
     <div class="section-title">
-        {!isTopLevel && <a class="backlink h5" href="/work/">All Projects /</a>}
+        {!isTopLevel && 
+            <a class="backlink h5" href="/work/">{locale ? Translations["ALL-PROJECTS"].locales[locale] : Translations["ALL-PROJECTS"].name} /</a>
+        }
         <div class="title">
-            <h1 class="h5">{heading}</h1>
+            <h1 class="h5">{getTranslationString(heading, locale)}</h1>
             <AtomCounter count={projectCount} />
         </div>
     </div>
     <div class="section-content"  data-animate-viewport="true" data-animation="fade-up">
-        {subheading && <h2 class="h2">{subheading}</h2>}
+        {subheading && <h2 class="h2">{getTranslationString(subheading, locale)}</h2>}
         <div class="filter-toggle">
             <AtomButton 
-                text="Filter Projects"
+                text={locale ? Translations['FILTER-PROJECTS'].locales[locale] : Translations['FILTER-PROJECTS'].name}
                 icon="filter"
                 style="primary"
                 fill={true}

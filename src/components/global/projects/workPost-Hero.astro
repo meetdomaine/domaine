@@ -1,9 +1,10 @@
 ---
+import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import { paths } from "../utils/paths"
 
-const { title, heroMedia, accentColor } = Astro.props
+const { title, heroMedia, accentColor, locale } = Astro.props
 ---
 <section class="work-post_hero">
     <h1 

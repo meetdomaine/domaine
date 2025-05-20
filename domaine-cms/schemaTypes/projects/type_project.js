@@ -63,14 +63,14 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'info',
       description: 'Project page heading.'
     }),
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
       group: 'info',
       description: 'Project page main description.'
     }),
@@ -235,18 +235,18 @@ export default defineType({
           {
             name: 'number',
             title: 'Number',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
           {
             name: 'label',
             title: 'Label',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
         ],
         preview: {
           select: {
-            title: 'number',
-            subtitle: 'label',
+            title: 'number.text',
+            subtitle: 'label.text',
           },
           prepare(selection) {
             return {
@@ -270,18 +270,18 @@ export default defineType({
           {
             name: 'awardTitle',
             title: 'Award Title',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
           {
             name: 'publication',
             title: 'Publication',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
         ],
         preview: {
           select: {
-            title: 'awardTitle',
-            subtitle: 'publication',
+            title: 'awardTitle.text',
+            subtitle: 'publication.text',
           },
           prepare(selection) {
             return {

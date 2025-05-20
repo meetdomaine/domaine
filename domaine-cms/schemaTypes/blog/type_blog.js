@@ -14,7 +14,7 @@ export default defineType({
     defineField({
       name: 'series',
       title: 'Series',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: "Optional name of series this post belongs to (ex. 'Domaine Migrations')"
     }),
     defineField({
@@ -22,7 +22,7 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
       validation: Rule => Rule.required(),

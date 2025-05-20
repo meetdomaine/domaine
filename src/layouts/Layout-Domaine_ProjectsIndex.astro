@@ -7,7 +7,7 @@ import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGri
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`)
-const { projects, heading, subheading, title, description, image, searchFilter, currentPath, relatedBlogPosts, isTopLevel } = Astro.props;
+const { projects, heading, subheading, title, description, image, searchFilter, currentPath, relatedBlogPosts, isTopLevel, locale } = Astro.props;
 ---
 <LayoutDomaine
     title={ title ? title : pageSettings?.metafields?.title ? pageSettings.metafields.title : "Work"}
@@ -16,20 +16,24 @@ const { projects, heading, subheading, title, description, image, searchFilter, 
     searchFilter={searchFilter}
     activePath="/work"
     showPreloader={true}
+    locale={locale}
 >
     <Hero
         heading={heading ? heading : pageSettings.heading}
         subheading={subheading ? subheading : pageSettings.subheading}
         projectCount={projects.length}
         isTopLevel={isTopLevel}
+        locale={locale}
     />
     <ProjectsFilter 
         brand="Domaine"
         currentPath={currentPath}
+        locale={locale}
     />
     <slot name="before-grid" /> 
     <GlobalProjectsGrid 
         projects={projects}
+        locale={locale}
     />
     <slot name="after-grid" /> 
     {relatedBlogPosts && relatedBlogPosts.length > 2 &&
@@ -37,6 +41,7 @@ const { projects, heading, subheading, title, description, image, searchFilter, 
             posts={relatedBlogPosts}
             heading="Related Posts"
             brand="domaine"
+            locale={locale}
         />
     }
 </LayoutDomaine>

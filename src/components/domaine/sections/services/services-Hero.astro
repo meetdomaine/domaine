@@ -2,21 +2,26 @@
 import AtomCounter from "../../../global/atoms/atom-counter.astro"
 import { getServices_Domaine, getServiceTypes_Domaine } from "../../../global/utils/cms-content"
 
-const { title, heading } = Astro.props
+const { title, heading, locale } = Astro.props
 const serviceTypes = await getServiceTypes_Domaine()
 const services = await getServices_Domaine()
 const serviceCount = services.length
 ---
 <section class="services-hero">
     <div class="section-title">
-        <h1 class="h5">{title}</h1>
+        {title && <h1 class="h5">{locale && title.translations?.[locale] ? title.translations[locale] : title.text}</h1>}
         <AtomCounter count={serviceCount} />
     </div>
     <div class="section-content">
-        <h3 class="heading h4">{heading}</h3>
+        {heading && <h3 class="heading h4">{locale && heading.translations?.[locale] ? heading.translations[locale] : heading.text}</h3>}
         <div class="service-buttons">
             {serviceTypes.map((serviceType, i) => (
-                <button class="serviceType-jumplink" data-slug={serviceType.slug.current}>{serviceType.title}</button>
+                <button 
+                    class="serviceType-jumplink" 
+                    data-slug={serviceType.slug.current}
+                >
+                    {locale && serviceType.title.translations?.[locale] ? serviceType.title.translations[locale] : serviceType.title.text}
+                </button>
             ))}
         </div>
     </div>

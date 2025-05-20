@@ -1,0 +1,26 @@
+---
+import { sanityClient } from 'sanity:client';
+import { blogCardFields, imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
+import LayoutDomaineBlogIndex from '../../../layouts/Layout-Domaine_BlogIndex.astro';
+import { getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
+import { Locales } from '../../../components/global/utils/locales';
+
+const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]{
+    ...,
+    metafields{ title, description, image{${imageBaseFields}} }
+}`)
+const blogPosts = await getBlogPosts_Domaine()
+---
+<LayoutDomaineBlogIndex
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Insights`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    pageSettings={pageSettings}
+    blogPosts={blogPosts}
+    heading={pageSettings.title}
+    subheading={pageSettings.heading}
+    searchFilter="type:page"
+    showPreloader={false}
+    locale={Locales.DE}
+>
+</LayoutDomaineBlogIndex>

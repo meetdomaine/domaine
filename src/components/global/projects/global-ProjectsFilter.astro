@@ -2,27 +2,30 @@
 import { Icon } from 'astro-icon/components';
 import AtomTag from '../atoms/atom-tag.astro';
 import { partnerTileFields, projectFeatureQuery, serviceGroupQuery } from '../utils/cms-queries';
+import { getLocaleUrl } from '../../../lib/translations';
+import { getTranslationString } from '../../../lib/translations';
+import { Translations } from '../../../lib/locales';
 
-const { brand, currentPath } = Astro.props;
+const { brand, currentPath, locale } = Astro.props;
 
 const allFilters = await Promise.all([
     {
-        title: 'Industries',
+        title: locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name,
         path: 'industries/',
         filters:  await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->slug.current == '${brand.toLowerCase() === "studio" ? "/studio" : "/"}']) > 0 ]{ ..., excerpt } | order(title asc)`)
     },
     {
-        title: 'Features',
+        title: locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name,
         path: 'features/',
         filters:  await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->slug.current == '${brand.toLowerCase() === "studio" ? "/studio" : "/"}' && references(^._id)]) > 2 ]{${projectFeatureQuery} } | order( title asc)`)
     },
     {
-        title: 'Partners',
+        title: locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name,
         path: 'partners/',
         filters:  await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->slug.current == '${brand.toLowerCase() === "studio" ? "/studio" : "/"}' ]) > 2]{${partnerTileFields}} | order(orderRank)`)
     },
     {
-        title: 'Services',
+        title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
         path: 'services/',
         filters: await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${brand.toLowerCase() === "studio" ? "/studio" : "/"}' in agencyBrands[]->slug.current]{${serviceGroupQuery}} | order(orderRank asc)`)
     },
@@ -33,7 +36,7 @@ const allFilters = await Promise.all([
 ---
 <dialog popover id="projects-filter" class="projects-filter" data-lenis-prevent>
     <div class="section-title">
-        <h2 class="h5">Filter Projects</h2>
+        <h2 class="h5">{locale ? Translations['FILTER-PROJECTS'].locales[locale] : Translations['FILTER-PROJECTS'].name}</h2>
         <button class="close-button button-reset" popovertarget="projects-filter">
             <Icon class="close-icon" name="icon-x" />
         </button>
@@ -46,8 +49,8 @@ const allFilters = await Promise.all([
                     {filterGroup.filters.map((filter) => {
                         return (
                             <AtomTag 
-                                text={filter.title}
-                                url={`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${filter.slug.current}`}
+                                text={filter.title.translations ? getTranslationString(filter.title, locale) : filter.title}
+                                url={getLocaleUrl(`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${filter.slug.current}`, locale)}
                                 theme={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "dark" : "light"}
                             />
                         )

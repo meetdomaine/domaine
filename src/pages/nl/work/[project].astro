@@ -1,0 +1,22 @@
+---
+import { projectPageFields } from "../../../components/global/utils/cms-queries";
+import { Locales } from "../../../components/global/utils/locales";
+import LayoutDomaineProject from "../../../layouts/Layout-Domaine_Project.astro";
+import { sanityClient } from "sanity:client"
+
+export async function getStaticPaths() {
+    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectPageFields}} | order( orderRank asc)`)
+    return projects.map((project) => {
+        return {
+            params: { project: project.slug.current },
+            props: { content: project }
+        }
+    })
+}
+
+const { content } = Astro.props
+---
+<LayoutDomaineProject
+  content={content}
+  locale={Locales.NL}
+/>

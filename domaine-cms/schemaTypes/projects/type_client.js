@@ -102,7 +102,7 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
     }),
     defineField({
       name: 'isEnterprise',
@@ -123,7 +123,7 @@ export default defineType({
       const { title, subtitle, media } = selection
       return {
         title: title,
-        subtitle: subtitle,
+        subtitle: "Client",
         media: media ? media : iconClients,
       }
     }

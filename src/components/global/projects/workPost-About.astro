@@ -1,10 +1,12 @@
 ---
+import { Translations } from "../../../lib/locales"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { paths } from "../utils/paths"
 
-const { description, excerpt, agencyBrand, client, industry, theme, metrics } = Astro.props
+const { description, excerpt, agencyBrand, client, industry, theme, metrics, locale } = Astro.props
 ---
 <section class="work-post_about">
 
@@ -14,27 +16,27 @@ const { description, excerpt, agencyBrand, client, industry, theme, metrics } = 
                 class="h6"
                 data-animate-viewport="true"
                 data-animation="fade"
-            >{excerpt}</p>
+            >{getTranslationString(excerpt, locale)}</p>
         }
         <p 
             class="h3"
             data-animate-viewport="true"
             data-animation="fade-up"
-        >{description}</p>
+        >{getTranslationString(description, locale)}</p>
         <div 
             class="tags"
             data-animate-viewport="true"
             data-animation="fade"
         >
             <AtomTag 
-                title="Industry"
-                text={industry.title}
-                url={`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`}
+                title={locale ? Translations.INDUSTRY.locales[locale] : Translations.INDUSTRY.name}
+                text={getTranslationString(industry.title, locale)}
+                url={getLocaleUrl(`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`, locale)}
                 theme={theme}
             />
             {client.isEnterprise && 
                 <AtomTag 
-                    title="Enterprise"
+                    title={locale ? Translations.ENTERPRISE.locales[locale] : Translations.ENTERPRISE.name}
                     theme={theme}
                 />
             }

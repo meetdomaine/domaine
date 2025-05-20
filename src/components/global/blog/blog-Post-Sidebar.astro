@@ -1,15 +1,17 @@
 ---
+import { Translations } from "../../../lib/locales"
 import GlobalBlogTile from "./global-BlogTile.astro"
 
-const { latestPosts } = Astro.props
+const { latestPosts, locale } = Astro.props
 ---
 <aside class="blog-post-sidebar">
-  <p class="h5">Latest Insights</p>
+  <p class="h5">{locale ? Translations["LATEST-INSIGHTS"].locales[locale] : Translations["LATEST-INSIGHTS"].name}</p>
   <div class="blog-posts">
     {latestPosts.map((post) => (
       <GlobalBlogTile
         post={post}
         currentBrand={post.agencyBrand}
+        locale={locale}
       />
     ))}
   </div>

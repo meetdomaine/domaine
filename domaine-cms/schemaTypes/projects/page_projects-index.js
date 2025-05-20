@@ -8,12 +8,12 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'subheading',
       title: 'Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     // defineField({
     //   name: 'slug',
@@ -33,7 +33,7 @@ export default defineType({
 
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
     },
     prepare(selection) {
       // const {author} = selection

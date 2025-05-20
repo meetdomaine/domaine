@@ -30,3 +30,7 @@ export const throttle = (callback, delay = 1000) => {
     setTimeout(timeout, delay);
   }
 }
+
+export const checkIsJumplink = (url) => {
+  return url[0] === "#"
+}

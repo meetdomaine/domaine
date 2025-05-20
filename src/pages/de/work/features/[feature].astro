@@ -1,0 +1,49 @@
+---
+import LayoutDomaineProjects from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
+import { getProjectFeatures_Domaine, getProjects_Domaine } from '../../../../components/global/utils/cms-content';
+import { imageBaseFields, urlFor } from '../../../../components/global/utils/cms-queries';
+import { Locales } from '../../../../components/global/utils/locales';
+import {sanityClient} from "sanity:client"
+
+export const prerender = true
+
+export async function getStaticPaths() {
+    const features = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{
+        _id,
+        title,
+        excerpt,
+        slug, 
+        orderRank,
+        metafields{ title, description, image{${imageBaseFields}} },
+    }`)
+    return features.map((feature) => {
+        return {
+            params: { feature: feature.slug.current },
+            props: { content: feature }
+        }
+    })
+}
+
+interface Props {
+    content: any;
+    locale?: string;
+}
+
+const { content, locale } = Astro.props
+const allProjects = await getProjects_Domaine()
+const projects = await allProjects.filter((project) => project.features && project.features.some((feature) => feature._id === content._id))
+---
+<LayoutDomaineProjects 
+    title={`${content.metafields?.title ? content.metafields.title : content.title} | Work`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    searchFilter="type:project-feature_domaine"
+    heading={content.title}
+    subheading={content.excerpt}
+    projects={projects}
+    currentPath={`/features/${content.slug.current}`}
+    locale={Locales.DE}
+>
+    <!-- <p slot="before-grid">Howdy</p>
+    <p slot="after-grid">End</p> -->
+</LayoutDomaineProjects>

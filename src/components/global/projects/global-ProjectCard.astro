@@ -4,6 +4,9 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { urlFor } from "../utils/cms-queries";
 import { getRawSvg } from "../utils/raw-svg";
+import { isDev } from "../../../lib/modes"
+import { getTranslationString } from "../../../lib/translations";
+import { Translations } from '../../../lib/locales';
 
 interface Props {
   project: ProjectCard;
@@ -19,6 +22,7 @@ if (project.client?.logo) {
 }
 // console.log(project.client.logo)
 // console.log(project.thumbnailMedia)
+// console.log(project.features)
 ---
 
 <a
@@ -62,7 +66,7 @@ if (project.client?.logo) {
 			<div class="features">
 				<div class="feature-tags">
 					{project.features.map((feature) => (
-						<AtomTag text={feature.title} />
+						<AtomTag text={getTranslationString(feature.title, locale)} />
 					))}
 				</div>
 				<div class="elipses-tag">
@@ -86,10 +90,10 @@ if (project.client?.logo) {
         <p class="description-text caption">{locale && project.excerpt.translations?.[locale] ? project.excerpt.translations?.[locale] : project.excerpt.text}</p>
         <div class="description-tags">
           {project.industry && (
-						<AtomTag title="Industry" text={project.industry.title} />
+						<AtomTag title={locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name} text={getTranslationString(project.industry.title, locale)} />
 					)}
           {project.client && project.client.isEnterprise && (
-						<AtomTag text="Enterprise" theme="brand-01" />
+						<AtomTag text={locale ? Translations.ENTERPRISE.locales[locale] : Translations.ENTERPRISE.name } theme="brand-01" />
 					)}
         </div>
       </div>
@@ -97,13 +101,15 @@ if (project.client?.logo) {
   </div>
 </a>
 
-<link
-	rel="preload"
-	href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
-	as="fetch"
-	crossorigin="anonymous"
-	type=""
-/>
+{!isDev && 
+  <link
+    rel="preload"
+    href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
+    as="fetch"
+    crossorigin="anonymous"
+    type=""
+  />
+}
 
 <style>
   .project-card {

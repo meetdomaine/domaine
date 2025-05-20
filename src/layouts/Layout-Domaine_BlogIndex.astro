@@ -4,13 +4,14 @@ import GlobalBlogFilter from '../components/global/blog/global-BlogFilter.astro'
 import GlobalBlogGrid from '../components/global/blog/global-BlogGrid.astro';
 import SectionTextHeading from '../components/global/sections/section-TextHeading.astro';
 
-const { title, description, image, heading, subheading, searchFilter, blogPosts, pageSettings, brand, slug } = Astro.props;
+const { title, description, image, heading, subheading, searchFilter, blogPosts, pageSettings, brand, slug, locale } = Astro.props;
 ---
 <LayoutDomaine
     title={ title ? title : pageSettings?.metafields?.title ? pageSettings.metafields.title : "Insights"}
     description={description ? description : pageSettings?.metafields?.description ? pageSettings.metafields.description : null}
     image={image ? image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
     searchFilter={searchFilter}
+    locale={locale}
     activePath="/insights"
 >
     <SectionTextHeading 
@@ -18,12 +19,15 @@ const { title, description, image, heading, subheading, searchFilter, blogPosts,
         heading={subheading}
         largeHeading={true}
         count={blogPosts.length}
+        locale={locale}
     />
     <GlobalBlogFilter 
         brand="domaine"
         slug={slug}
+        locale={locale}
     />
     <GlobalBlogGrid 
         blogPosts={blogPosts}
+        locale={locale}
     />
 </LayoutDomaine>

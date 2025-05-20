@@ -26,7 +26,7 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: 'If added, will override the Sevice title.'
     }),
     defineField({
@@ -46,19 +46,19 @@ export default defineType({
     defineField({
       name: 'subheading',
       title: 'Subheading',
-      type: 'text',
+      type: 'snippet_locale-text',
       description: 'If added, will override the Sevice excerpt.'
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
   ],
   preview: {
     select: {
-      title: 'featuredService.title',
-      subtitle: 'heading' 
+      title: 'featuredService.title.text',
+      subtitle: 'heading.text' 
     },
     prepare(selection) {
       const { title, subtitle } = selection

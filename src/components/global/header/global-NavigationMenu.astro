@@ -29,7 +29,7 @@ const { brands, brandIndex, links, activePath, searchExposed, locale, searchPlac
     </div> -->
 
     <nav class="navigation-links color-reset" data-color-scheme="secondary">
-        {links.map((link, i) => (
+        {links?.map((link, i) => (
             <a 
                 href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 
                 class="navigation-link caption" 

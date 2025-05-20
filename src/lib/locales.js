@@ -15,6 +15,27 @@ export const Translations = {
       [Locales.NL]: "Inzichten"
     }
   },
+  "ALL-INSIGHTS": {
+    name: 'All Insights',
+    locales: {
+      [Locales.DE]: "Alle Einblicke",
+      [Locales.NL]: "Alle inzichten"
+    }
+  },
+  "LATEST-INSIGHTS": {
+    name: 'Latest Insights',
+    locales: {
+      [Locales.DE]: "Neueste Erkenntnisse",
+      [Locales.NL]: "Laatste inzichten"
+    }
+  },
+  "RELATED-POSTS": {
+    name: 'Related Posts',
+    locales: {
+      [Locales.DE]: "Verwandte Beiträge",
+      [Locales.NL]: "Gerelateerde berichten"
+    }
+  },
   "PARTNERS": {
     name: 'Partners',
     locales: {
@@ -28,5 +49,75 @@ export const Translations = {
       [Locales.DE]: "Merkmale",
       [Locales.NL]: "Functies"
     }
-  }
+  },
+  "INDUSTRY": {
+    name: 'Industry',
+    locales: {
+      [Locales.DE]: "Industrie",
+      [Locales.NL]: "Industrie"
+    }
+  },
+  "INDUSTRIES": {
+    name: 'Industries',
+    locales: {
+      [Locales.DE]: "Branchen",
+      [Locales.NL]: "Industrieën"
+    }
+  },
+  "SERVICES": {
+    name: 'Services',
+    locales: {
+      [Locales.DE]: "Dienstleistungen",
+      [Locales.NL]: "Diensten"
+    }
+  },
+  "FILTER-PROJECTS": {
+    name: 'Filter Projects',
+    locales: {
+      [Locales.DE]: "Projekte filtern",
+      [Locales.NL]: "Projecten filteren"
+    }
+  },
+  "ENTERPRISE": {
+    name: 'Enterprise',
+    locales: {
+      [Locales.DE]: "Unternehmen",
+      [Locales.NL]: "Onderneming"
+    }
+  },
+  "ALL-PROJECTS": {
+    name: 'All Projects',
+    locales: {
+      [Locales.DE]: "Alle Projekte",
+      [Locales.NL]: "Alle projecten"
+    }
+  },
+  "VIEW-LIVE-SITE": {
+    name: 'View Live Site',
+    locales: {
+      [Locales.DE]: "Live-Site anzeigen",
+      [Locales.NL]: "Bekijk livesite"
+    }
+  },
+  "RELATED-PROJECTS": {
+    name: 'Related Projects',
+    locales: {
+      [Locales.DE]: "Verwandte Projekte",
+      [Locales.NL]: "Gerelateerde projecten"
+    }
+  },
+  "BY": { // Used in blog post attribution
+    name: 'by',
+    locales: {
+      [Locales.DE]: "von",
+      [Locales.NL]: "door"
+    }
+  },
+  "AUTHORS": {
+    name: 'Authors',
+    locales: {
+      [Locales.DE]: "Autoren",
+      [Locales.NL]: "Auteurs"
+    }
+  },
 }

@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client';
 import { blogCardFields, imageBaseFields, urlFor } from '../../components/global/utils/cms-queries';
-import LayoutDomaineBlogIndex from '../../layouts/Layout-Domaine-BlogIndex.astro';
+import LayoutDomaineBlogIndex from '../../layouts/Layout-Domaine_BlogIndex.astro';
 import { getBlogPosts_Domaine } from '../../components/global/utils/cms-content';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]{

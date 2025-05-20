@@ -13,6 +13,9 @@ const { formId, buttonToggles, key } = Astro.props
 const portalId = env.HUBSPOT_PORTAL_ID
 const accessToken = env.HUBSPOT_ACCESS_TOKEN
 
+console.log(portalId)
+console.log(accessToken)
+
 const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
     method: "GET",
     headers: {
@@ -30,7 +33,7 @@ const consentData = await formData.legalConsentOptions
 const fields = await fieldGroups?.flatMap((group) => {
   // console.log(group)
   if (group.fields) {
-    return group.fields.map((field) => {
+    return group.fields?.map((field) => {
       // console.log(field)
         return field
     })
@@ -38,9 +41,11 @@ const fields = await fieldGroups?.flatMap((group) => {
   // console.log(group)
   return null
 })
+
+console.log(formData)
 ---
 <form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
-    {fieldGroups.map((group) => {
+    {fieldGroups?.map((group) => {
       if (group.fields) {
         
         return (

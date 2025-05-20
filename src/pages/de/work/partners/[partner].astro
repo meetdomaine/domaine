@@ -1,0 +1,50 @@
+---
+import LayoutDomaineProjectsIndex from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
+import { getPartners_Domaine, getProjects_Domaine } from '../../../../components/global/utils/cms-content';
+import { imageBaseFields, imageFields, urlFor } from '../../../../components/global/utils/cms-queries';
+import { Locales } from '../../../../components/global/utils/locales';
+
+export const prerender = true
+
+export async function getStaticPaths() {
+    const partners = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0]{
+        _id,
+        title, 
+        excerpt, 
+        slug, 
+        icon{${imageFields}}, 
+        tier->{slug, title, createLandingPages}, 
+        websiteUrl, 
+        orderRank,
+        metafields{ title, description, image{${imageBaseFields}} },
+    }`)
+    return partners.map((partner) => {
+        return {
+            params: { partner: partner.slug.current },
+            props: { content: partner }
+        }
+    })
+}
+
+interface Props {
+    content: any
+}
+
+const { content } = Astro.props
+const allProjects = await getProjects_Domaine()
+const projects = await allProjects.filter((project) => project.partners && project.partners.some((partner) => partner._id === content._id))
+
+---
+<LayoutDomaineProjectsIndex 
+    title={`${content.title} x Domaine | Work`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    searchFilter="type:project-service"
+    heading={content.title}
+    subheading={content.excerpt}
+    projects={projects}
+    currentPath={`/partners/${content.slug.current}`}
+    relatedBlogPosts={content.relatedBlogPosts}
+    locale={Locales.DE}
+>
+</LayoutDomaineProjectsIndex>

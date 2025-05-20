@@ -1,10 +1,12 @@
 ---
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
+import { Translations } from "../../../lib/locales"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { formatDate } from "../utils/format-date"
 import GlobalAuthorTile from "./global-AuthorTile.astro"
 
-const { post } = Astro.props
+const { post, locale } = Astro.props
 
 
 const formattedDate = formatDate(post.postDate)
@@ -12,8 +14,6 @@ const formattedDate = formatDate(post.postDate)
 // const formattedDate = `${date.getMonth().toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear().toString().padStart(2, "0")}`
 ---
 <section class="blog-post-hero">
-
-
     <div class="section-media">
         <AtomSanityImage 
             image={post.thumbnailImage.image}
@@ -23,30 +23,27 @@ const formattedDate = formatDate(post.postDate)
             cover={true}
         />
     </div>
-
     <div class="section-content">
         <div class="section-title">
-            {post.series && <p class="h6">{post.series}</p>}
-            <h1 
-                class="post-title h2"
-                data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
-            >{post.title}</h1>
+            {post.series && <p class="h6">{getTranslationString(post.series, locale)}</p>}
+            {post.title &&
+                <h1 
+                    class="post-title h2"
+                    data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
+                >{getTranslationString(post.title, locale)}</h1>
+            }
         </div>
-
         <div class="post-info">
             <div class="post-details">
-                
                 <AtomTag 
-                    text={post.category.title}
+                    text={getTranslationString(post.category.title, locale)}
                     pagefindMetaText="categoryTitle"
                     pagefindMetaUrl="categoryUrl[href]"
-                    url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}
+                    url={getLocaleUrl(`${post.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}`, locale)}
                 />
-
                 <p class="caption">{formattedDate}</p>
-
                 <span class="post-authors">
-                    <span class="caption">by:</span>
+                    <span class="caption">{locale ? Translations.BY.locales[locale] : Translations.BY.name}:</span>
                     {post.authors.map((author, i) => (
                         <span class="caption">{author.name}{i < post.authors.length - 1 ? ", " : ""}</span>
                         // <GlobalAuthorTile 
@@ -55,13 +52,9 @@ const formattedDate = formatDate(post.postDate)
                     ))}
                 </span>
             </div>
-            <h6>{post.excerpt}</h6>
-
+            {post.excerpt && <h6>{getTranslationString(post.excerpt, locale)}</h6>}
         </div>
-
     </div>
-
-
 </section>
 
 <style>

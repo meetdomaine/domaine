@@ -18,6 +18,7 @@ pnpm-debug.log*
 .env.archive
 .env.production
 wrangler.toml
+wrangler.json
 # .npmrc
 
 # macOS-specific files

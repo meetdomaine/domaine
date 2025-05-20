@@ -1,0 +1,45 @@
+---
+import { sanityClient } from "sanity:client";
+import LayoutDomaine from "../../layouts/Layout-Domaine.astro";
+import ServicesHero from "../../components/domaine/sections/services/services-Hero.astro";
+import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
+import { globalSectionsFields, imageBaseFields, urlFor } from "../../components/global/utils/cms-queries";
+
+const pageSettings = await sanityClient.fetch(`
+    *[_type == "page_services-index-domaine" && _id == "page_services-index-domaine"]{
+        title,
+        heading,
+        formHeading,
+        formText,
+        hubspotFormId,
+        sections[]{${globalSectionsFields}},
+        metafields{ title, description, image{${imageBaseFields}} },
+    }[0]
+`)
+
+// console.log(pageSettings.sections)
+---
+<LayoutDomaine
+    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}`}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    searchFilter="type:page"
+    activePath="/services"
+    showPreloader={false}
+>   
+    <ServicesHero
+        title={pageSettings.title}
+        heading={pageSettings.heading}
+    />
+
+    {pageSettings.sections && pageSettings.sections.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} />
+    ))}
+
+    <!-- <SectionForm 
+        heading={pageSettings.formHeading}
+        text={pageSettings.formText}
+        hubspotFormId={pageSettings.hubspotFormId}
+    /> -->
+
+</LayoutDomaine>

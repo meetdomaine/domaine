@@ -1,0 +1,46 @@
+---
+import { sanityClient } from 'sanity:client';
+import LayoutDomaineBlogIndex from '../../../../layouts/Layout-Domaine_BlogIndex.astro';
+import { getBlogPosts_Domaine } from '../../../../components/global/utils/cms-content';
+import { imageBaseFields, urlFor } from '../../../../components/global/utils/cms-queries';
+import { Locales } from '../../../../components/global/utils/locales';
+
+export async function getStaticPaths() {
+    const categories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" && references(^._id)] ) > 0]{
+        ...,
+        metafields{ title, description, image{${imageBaseFields}} }
+    }`)
+    return categories.map((category) => {
+        return {
+            params: { category: category.slug.current },
+            props: { content: category }
+        }
+    })
+}
+
+interface Props {
+    content: any;
+    locale?: string;
+}
+
+const { content } = Astro.props;
+
+const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
+const allBlogPosts = await getBlogPosts_Domaine()
+const blogPosts = allBlogPosts.filter((post) => post.category._id === content._id)
+---
+<LayoutDomaineBlogIndex
+    pageSetting={pageSettings}
+    blogPosts={blogPosts}
+    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    heading={content.title}
+    subheading={content.heading}
+    searchFilter="type:blog-category"
+    slug={content.slug}
+    showPreloader={false}
+    locale={Locales.NL}
+>
+
+</LayoutDomaineBlogIndex>

@@ -3,6 +3,8 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { formatDate } from "../utils/format-date";
+import { isDev } from "../../../lib/modes";
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
 
 interface Props {
   title: any;
@@ -40,11 +42,13 @@ const formattedDate = formatDate(postDate);
     />
   </a>
   <div class="card-text">
-    {series && <p class="card-series caption">{series}</p>}
-    <a 
-      href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl} 
-      class="card-title h6"
-    >{locale && title.translations?.[locale] ? title.translations[locale] : title.text}</a>
+    {series && <p class="card-series caption">{getTranslationString(series, locale)}</p>}
+    {title &&
+      <a 
+        href={getLocaleUrl(postUrl, locale)} 
+        class="card-title h6"
+      >{getTranslationString(title, locale)}</a>
+    }
   </div>
   <div class="card-info">
     <AtomTag 
@@ -53,13 +57,15 @@ const formattedDate = formatDate(postDate);
     />
     {postDate && <p class="date caption">{formattedDate}</p>}
   </div>
-  <link
-    rel="preload"
-    href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl}
-    as="fetch"
-    crossorigin="anonymous"
-    type=""
-  />
+  {!isDev &&
+    <link
+      rel="preload"
+      href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl}
+      as="fetch"
+      crossorigin="anonymous"
+      type=""
+    />
+  }
 </article>
 
 <style>
