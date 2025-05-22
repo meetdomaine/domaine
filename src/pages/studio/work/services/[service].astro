@@ -16,6 +16,9 @@ interface Props {
     content: any
 }
 
+const serviceGroups = await getCollection('serviceGroups_Studio')
+console.log(serviceGroups.map((group) => group.id))
+
 const { content } = Astro.props
 const allProjects = await getCollection('projects_Studio')
 const projects = allProjects.filter((project) => project.data.services && project.data.services.some((service) => service._id === content._id ))

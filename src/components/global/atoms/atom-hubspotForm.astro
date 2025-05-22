@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
 const { env } = Astro.locals.runtime;
+import cachedFetch from '../../../lib/cachedFetch';
 
 interface Props {
     formId: any,
@@ -15,7 +16,7 @@ const { formId, buttonToggles, key } = Astro.props
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 const accessToken = import.meta.env.HUBSPOT_ACCESS_TOKEN
 
-const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
+const formData = await cachedFetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
     method: "GET",
     headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -23,7 +24,7 @@ const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/$
     }
 })
 
-const formData = await hubspotResponse.json()
+// const formData = await hubspotResponse.json()
 const fieldGroups = await formData.fieldGroups
 const consentData = await formData.legalConsentOptions
 

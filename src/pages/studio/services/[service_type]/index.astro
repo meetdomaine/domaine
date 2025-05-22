@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content"
+import LayoutStudioServiceType from "../../../../layouts/Layout-Studio_ServiceType.astro"
+
+export async function getStaticPaths() {
+    const serviceTypes = await getCollection('serviceTypes_Studio')
+    return serviceTypes.map((serviceType) => {
+        return {
+            params: { service_type: serviceType.id },
+            props: { content: {...serviceType.data} }
+        }
+    })
+}
+
+const { content } = Astro.props;
+---
+<LayoutStudioServiceType 
+    content={content}
+/>

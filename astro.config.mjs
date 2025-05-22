@@ -17,7 +17,7 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: false,
+      useCdn: true,
       studioBasePath: '/admin'
     }), 
     solid({

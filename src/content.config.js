@@ -52,15 +52,14 @@ const services_Studio = defineCollection({
 
 const serviceGroups_Studio = defineCollection({
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/studio" in agencyBrands[]->slug.current]{
+    const data = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/studio" in agencyBrands[]->slug.current ]{
       ${serviceGroupQuery}
       pageSectionsStudio[]{ sections[]{${globalSectionsFields}}},
-  }`)
+    }`)
     return data.map((entry) => ({
-      // id: entry._id,
       id: entry.slug.current,
       ...entry
-  }))
+    }))
   }
 })
 
@@ -343,6 +342,8 @@ const pageSettings_Domaine = defineCollection({
     ]
   }
 });
+
+
 
 
 export const collections = { 
