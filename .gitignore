@@ -24,3 +24,4 @@ wrangler.json
 # macOS-specific files
 .DS_Store
 .vercel
+_wrangler.toml

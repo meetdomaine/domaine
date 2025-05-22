@@ -1,0 +1,31 @@
+---
+import LayoutDomaineProjects from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
+import { urlFor } from '../../../../components/global/utils/cms-queries';
+import { getCollection } from 'astro:content';
+import LayoutStudioProjectsIndex from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
+
+export async function getStaticPaths() {
+    const partners = await getCollection('partners_Studio')
+    return partners.map((partner) => {
+        return {
+            params: { partner: partner.id },
+            props: { content: {...partner.data} }
+        }
+    })
+}
+
+const { content } = Astro.props
+const allProjects = await getCollection('projects_Studio')
+const projects = allProjects.filter((project) => project.data.partners && project.data.partners.some((partner) => partner._id === content._id))
+---
+<LayoutStudioProjectsIndex 
+    title={`${content.title} x Domaine | Work`}
+    description={content.metafields?.description ? content.metafields.description : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    searchFilter="type:project-service"
+    heading={content.title}
+    subheading={content.excerpt}
+    projects={projects}
+    currentPath={`/partners/${content.slug.current}`}
+    relatedBlogPosts={content.relatedBlogPosts}
+/>

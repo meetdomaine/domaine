@@ -1,114 +1,28 @@
 ---
-import LayoutDomaine from "../../../layouts/Layout-Domaine.astro"
-import SectionServiceHero from "../../../components/global/services/service-Hero.astro"
-import SectionBlogFeed from "../../../components/global/sections/section-BlogFeed.astro"
-import { getServiceGroups_Domaine } from "../../../components/global/utils/cms-content"
-import SectionProjectsFeed from "../../../components/global/sections/section-ProjectsFeed.astro"
-import SectionForm from "../../../components/global/sections/section-Form.astro"
-import { blogCardFields, globalSectionsFields, imageFields, projectGridFields, serviceQuery } from "../../../components/global/utils/cms-queries"
-import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro"
-
+import { getCollection } from "astro:content";
+import LayoutDomaineServiceGroup from "../../../layouts/Layout-Domaine_ServiceGroup.astro";
 
 export async function getStaticPaths() {
-    const serviceGroups = await sanityClient.fetch(`
-        *[_type == "type_serviceGroup" 
-            && "/" in agencyBrands[]->slug.current
-        ]{
-            ..., 
-            excerpt,
-            images[]{${imageFields}},
-            agencyBrands[]->{..., slug, name},
-            serviceType->{..., formHeading, formText, hubspotFormId },
-            "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
-            pageSectionsDomaine{ sections[]{${globalSectionsFields}} },
-            pageSectionsStudio{ sections[]{${globalSectionsFields}} },
-            } | order(orderRank asc)`)
+    const serviceGroups = await getCollection('serviceGroups_Domaine')
     return serviceGroups.map((serviceGroup) => {
         return {
-            params: { serviceType: serviceGroup.serviceType.slug.current, serviceGroup: serviceGroup.slug.current },
-            props: { content: serviceGroup, serviceType: serviceGroup.serviceType }
+            params: { 
+              serviceType: serviceGroup.data.serviceType.slug.current, 
+              serviceGroup: serviceGroup.id
+            },
+            props: { 
+              content: {...serviceGroup.data},
+              serviceType: serviceGroup.data.serviceType 
+            }
         }
     })
 }
 
-
-interface Props {
-    content: any,
-    serviceType: any,
-}
-
+const { serviceGroup } = Astro.params
 const { content, serviceType } = Astro.props;
-// console.log(serviceType)
-
-const relatedProjects = await sanityClient.fetch(`
-    *[ _type == "type_project"
-        && '${content._id}' in services[]->serviceGroup._ref
-        && isHidden != true
-    ]{${projectGridFields}} | order(orderRank)`)
-
-const relatedBlogPosts = await sanityClient.fetch(`
-    *[ _type == "type_blog"
-        && '${content._id}' in services[]->serviceGroup._ref
-        && isHidden != true
-    ]{${blogCardFields}} | order(orderRank)`)
-
 ---
-<LayoutDomaine
-    title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
-    searchFilter="type:service-group"
-    activePath="/services"
-    showPreloader={true}
->
-    <SectionServiceHero
-        subservices={content.services}
-        title={content.title}
-        excerpt={content.excerpt}
-        description={content.description}
-        breadcrumbs={[
-            {
-                title: 'Services /',
-                url: '/services/'
-            },
-            {
-                title: serviceType.title,
-                url: `/services/${serviceType.slug.current}`
-            },
-        ]}
-    />
-
-    {content.pageSectionsDomaine?.sections?.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} />
-    ))}
-
-    {relatedBlogPosts && relatedBlogPosts.length > 2 &&
-        <SectionBlogFeed 
-            heading={`${content.title} Insights`}
-            posts={relatedBlogPosts}
-            sidebarTitle={content.title}
-        />
-    }
-
-    {relatedProjects && relatedProjects.length > 0 &&
-        <SectionProjectsFeed 
-            heading={`${content.title} Work`}
-            projects={relatedProjects}
-        />
-    }
-
-    {serviceType.formHeading && serviceType.hubspotFormId &&
-        <SectionForm 
-            heading={serviceType.formHeading}
-            text={serviceType.formText}
-            hubspotFormId={serviceType.hubspotFormId}
-        />
-    }
-
-
-</LayoutDomaine>
-
-<style>
-    .services {
-        padding-inline: var(--page-margin);
-        padding-block: var(--space-lg);
-    }
-</style>
+<LayoutDomaineServiceGroup
+    content={content}
+    serviceType={serviceType}
+    serviceGroup={serviceGroup}
+/>

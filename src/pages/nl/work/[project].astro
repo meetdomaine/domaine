@@ -1,22 +1,21 @@
 ---
-import { projectPageFields } from "../../../components/global/utils/cms-queries";
-import { Locales } from "../../../components/global/utils/locales";
-import LayoutDomaineProject from "../../../layouts/Layout-Domaine_Project.astro";
-import { sanityClient } from "sanity:client"
+import { getCollection } from 'astro:content';
+import LayoutDomaineProject from '../../../layouts/Layout-Domaine_Project.astro';
+import { Locales } from '../../../components/global/utils/locales';
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectPageFields}} | order( orderRank asc)`)
+    const projects = await getCollection('projects_Domaine')
     return projects.map((project) => {
         return {
-            params: { project: project.slug.current },
-            props: { content: project }
+            params: { project: project.id },
+            props: { content: {...project.data} }
         }
     })
 }
 
 const { content } = Astro.props
 ---
-<LayoutDomaineProject
-  content={content}
-  locale={Locales.NL}
+<LayoutDomaineProject 
+    content={content}
+    locale={Locales.NL}
 />

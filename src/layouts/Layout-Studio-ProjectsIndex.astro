@@ -5,12 +5,13 @@ import Hero from '../components/domaine/sections/work/workIndex-Hero.astro'
 import ProjectsFilter from '../components/global/projects/global-ProjectsFilter.astro'
 import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGrid.astro'
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
+import { getTranslationString } from '../lib/translations';
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
-const { projects, heading, subheading, title, description, searchFilter, currentPath, relatedBlogPosts } = Astro.props;
+const { projects, heading, subheading, title, description, searchFilter, currentPath, relatedBlogPosts, locale } = Astro.props;
 ---
 <LayoutStudio
-    title={ title ? title : pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
+    title={ title ? getTranslationString(title, locale) : pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}
     description={description ? description : pageSettings.metafields && pageSettings.metafields.description ? pageSettings.metafields.description : null}
     searchFilter={searchFilter}
     activePath="/studio/work"

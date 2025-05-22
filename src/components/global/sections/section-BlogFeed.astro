@@ -8,6 +8,7 @@ import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../utils/cms-content"
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
 import { formatDate } from "../utils/format-date";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { getTranslationString } from "../../../lib/translations";
 
 const { section, brand, heading, subheading, posts, sidebarTitle, locale } = Astro.props
 
@@ -33,7 +34,7 @@ if (section?.featuredCategory) {
 if (section?.featuredPost) {
     featuredPost = section.featuredPost
 } else {
-    featuredPost = blogPosts.shift()
+    featuredPost = blogPosts.shift().data
 }
 
 if (featuredPost) {
@@ -44,7 +45,7 @@ if (featuredPost) {
 <section class="section-blog-feed" data-color-scheme="brand-01" data-pagefind-ignore>
     <div class="section-title">
         {(section?.heading || heading) && 
-            <h2 class="h5">{section?.heading ? section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text : heading ? heading : "Insights"}</h2>
+            <h2 class="h5">{section?.heading ? getTranslationString(section.heading, locale) : heading ? getTranslationString(heading, locale) : "Insights"}</h2>
         }
     </div>
 
@@ -81,7 +82,7 @@ if (featuredPost) {
                     <div class="sidebar-posts">
                         {blogPosts.slice(0, 3)?.map((post) => (
                             <GlobalBlogTile 
-                                post={post}
+                                post={post.data ? post.data : post}
                                 currentBrand={brand}
                                 locale={locale}
                             />
@@ -95,13 +96,13 @@ if (featuredPost) {
             {blogPosts.slice(3, 6)?.map((post) => (
                 <div class="blog-card-wrapper">
                     <BlogCard 
-                        title={post.title}
-                        series={post.series}
-                        postDate={post.postDate}
-                        thumbnailImage={post.thumbnailImage}
-                        slug={post.slug}
-                        category={post.category}
-                        agencyBrand={post.agencyBrand}
+                        title={post.data ? post.data.title : post.title}
+                        series={post.data ? post.data.series : post.series}
+                        postDate={post.data ? post.data.postDate : post.postDate}
+                        thumbnailImage={post.data ? post.data.thumbnailImage : post.thumbnailImage}
+                        slug={post.data ? post.data.slug : post.slug}
+                        category={post.data ? post.data.category: post.category}
+                        agencyBrand={post.data ? post.data.agencyBrand : post.agencyBrand}
                         locale={locale}
                     />
                 </div>

@@ -5,12 +5,12 @@ import AtomCounter from "../atoms/atom-counter.astro";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
 import { getRawSvg } from "../utils/raw-svg";
+import { getCollection } from "astro:content";
+import { getLocaleUrl } from "../../../lib/translations";
 
 const { section, brand, locale } = Astro.props;
 
-const projects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine();
-
-// console.log(section.projects[0].client)
+const projects = brand === "studio" ? await getCollection('projects_Domaine') : await getCollection('projects_Domaine');
 ---
 
 <section class="section-projects-grid">
@@ -30,7 +30,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
       data-animation-delay="150"
     >
       {section.heading && <h3>{locale && section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text}</h3>}
-      {section.button?.text && section.button?.url &&
+      {section.button?.label && section.button?.url &&
 				(
           <AtomButton
             text={locale && section.button.label.translations?.[locale] ? section.button.label.translations[locale] : section.button.label.text}
@@ -44,8 +44,7 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
     </div>
   </div>
   <div class="project-tiles">
-    {
-      section.projects?.map((project, i) => {
+    { section.projects?.map((project, i) => {
         const clientLogo = getRawSvg(project.client.logo);
         return (
           <div
@@ -76,20 +75,16 @@ const projects = brand === "studio" ? await getProjects_Studio() : await getProj
                   style={`width: ${project.client.logoScale * 0.75}%;`}
                 >
                   <Fragment set:html={clientLogo} />
-                  {/* <AtomSanityImage 
-											image={project.client.logoLight.image}
-											sizes="30vw"
-									/> */}
                 </div>
               </div>
             </a>
-						<link
+						{/* <link
 							rel="preload"
-							href={locale ? getRelativeLocaleUrl(locale, `${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`) : `${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`}
+							href={getLocaleUrl(`${project.agencyBrand.slug.current === "studio" ? "/studio" : ""}/work/${project.slug.current}`, locale)}
 							as="fetch"
 							crossorigin="anonymous"
 							type=""
-						/>
+						/> */}
           </div>
         );
       })

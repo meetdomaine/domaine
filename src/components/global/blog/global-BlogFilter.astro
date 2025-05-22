@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import { Translations } from '../../../lib/locales';
 import { getLocaleUrl, getTranslationString } from '../../../lib/translations';
 import AtomTag from '../atoms/atom-tag.astro';
@@ -10,7 +11,7 @@ const { brand, slug, locale } = Astro.props
 //     *[_type == "type_blogCategory" 
 //         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
 
-const categories = brand === "domaine" ? await getBlogCategories_Domaine() : await getBlogCategories_Studio()
+const categories = brand === "domaine" ? await getCollection('blogCategories_Domaine') : await getCollection('blogCategories_Studio')
 // console.log(categories)
 ---
 <div class="blog-filters">
@@ -22,9 +23,9 @@ const categories = brand === "domaine" ? await getBlogCategories_Domaine() : awa
     <div class="filter-tags">
         {categories.map((category) => (
             <AtomTag 
-                title={getTranslationString(category.title, locale)}
-                url={getLocaleUrl(`${brand == "studio" ? '/studio' : ''}/insights/${category.slug.current}`, locale)}
-                theme={slug && slug.current == category.slug.current ? "glass-dark" : "default"}
+                title={getTranslationString(category.data.title, locale)}
+                url={getLocaleUrl(`${brand == "studio" ? '/studio' : ''}/insights/${category.data.slug.current}`, locale)}
+                theme={slug?.current == category.data.slug.current ? "glass-dark" : "default"}
             />
         ))}
     </div>

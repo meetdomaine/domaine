@@ -1,14 +1,19 @@
 ---
+import { getTranslationString } from "../../../../lib/translations"
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
-const { title, heading, images } = Astro.props
+
+const { title, excerpt, description, heading, images, locale } = Astro.props
 ---
 <section class="services-hero" data-color-scheme="secondary">
-    <div class="section-title">
-        <h1 class="utility">{title}</h1>
-        <p class="heading h1">{heading}</p>
-    </div>
+    {(title || heading) && 
+      <div class="section-title">
+          {title && <h1 class="utility">{getTranslationString(title, locale)}</h1>}
+          {excerpt && <p class="heading h1">{getTranslationString(excerpt, locale)}</p>}
+          {description && <p class="">{getTranslationString(description, locale)}</p>}
+      </div>
+    }
     <div class="section-media">
-        {images.map((asset, i) => (
+        {images?.map((asset, i) => (
           <div 
             class="hero-image" 
             style={`--index: ${i};`}
@@ -27,6 +32,9 @@ const { title, heading, images } = Astro.props
       position: relative;
       overflow: hidden;
       background-color: var(--color-background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .section-title {
@@ -41,10 +49,11 @@ const { title, heading, images } = Astro.props
       text-align: center;
       gap: var(--space-xs);
       z-index: 1;
+      max-width: 50rem;
     }
 
     .heading {
-      max-width: 14em;
+      /* max-width: 14em; */
     }
 
     .section-media {

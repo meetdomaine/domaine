@@ -4,6 +4,7 @@ import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 import AtomButton from "../atoms/atom-button.astro"
 import { getRelativeLocaleUrl } from "astro:i18n"
 import { checkIsJumplink } from "../../global/utils/functions"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
 
 const { section, brand, key, locale } = Astro.props
@@ -59,20 +60,20 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
                 section.featuredService.serviceGroups.filter((group) => group.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((serviceGroup) => (
                     <div class="services">
                         {serviceGroup.isHidden ? 
-                            <div class="service-group-title h6">{locale && serviceGroup.title.translations?.[locale] ? serviceGroup.title.translations[locale] : serviceGroup.title}</div>
+                            <div class="service-group-title h6">{getTranslationString(serviceGroup.title, locale)}</div>
                             :
                             <a 
                                 class="service-group-title h6" 
-                                href={`${currentSlug}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`}
+                                href={getLocaleUrl(`${currentSlug}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`, locale)}
                             >
-                                {locale && serviceGroup.title.translations?.[locale] ? serviceGroup.title.translations[locale] : serviceGroup.title}
+                                {getTranslationString(serviceGroup.title, locale)}
                             </a>
                         }
                         {serviceGroup.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                             <AtomServiceLink 
-                                title={locale && service.title.translations?.[locale] ? service.title.translations[locale] : service.title.text}
+                                title={getTranslationString(service.title, locale)}
                                 url={locale ? getRelativeLocaleUrl(locale, `${currentSlug}/services/${section.featuredService.slug.current}/${service.slug.current}`) : `${currentSlug}/services/${section.featuredService.slug.current}/${service.slug.current}`}
-                                excerpt={locale && service.excerpt.translations?.[locale] ? service.excerpt.translations[locale] : service.excerpt.text}
+                                excerpt={getTranslationString(service.excerpt, locale)}
                                 isHidden={service.isHidden}
                             />
                         ))}
@@ -80,9 +81,9 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
                 )) : 
                 section.featuredService.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                     <AtomServiceLink 
-                        title={locale && service.title.translations?.[locale] ? service.title.translations[locale] : service.title.text}
+                        title={getTranslationString(service.title, locale)}
                         url={locale ? getRelativeLocaleUrl(locale, `${currentSlug}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`) : `${currentSlug}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}
-                        excerpt={locale && service.excerpt.translations?.[locale] ? service.excerpt.translations[locale] : service.excerpt.text}
+                        excerpt={getTranslationString(service.excerpt, locale)}
                         isHidden={service.isHidden}
                     />
                 ))

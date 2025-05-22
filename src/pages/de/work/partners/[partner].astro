@@ -1,41 +1,24 @@
 ---
-import LayoutDomaineProjectsIndex from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
-import { getPartners_Domaine, getProjects_Domaine } from '../../../../components/global/utils/cms-content';
-import { imageBaseFields, imageFields, urlFor } from '../../../../components/global/utils/cms-queries';
+import LayoutDomaineProjects from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
+import { urlFor } from '../../../../components/global/utils/cms-queries';
+import { getCollection } from 'astro:content';
 import { Locales } from '../../../../components/global/utils/locales';
 
-export const prerender = true
-
 export async function getStaticPaths() {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0]{
-        _id,
-        title, 
-        excerpt, 
-        slug, 
-        icon{${imageFields}}, 
-        tier->{slug, title, createLandingPages}, 
-        websiteUrl, 
-        orderRank,
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
+    const partners = await getCollection('partners_Domaine')
     return partners.map((partner) => {
         return {
-            params: { partner: partner.slug.current },
-            props: { content: partner }
+            params: { partner: partner.id },
+            props: { content: {...partner.data} }
         }
     })
 }
 
-interface Props {
-    content: any
-}
-
 const { content } = Astro.props
-const allProjects = await getProjects_Domaine()
-const projects = await allProjects.filter((project) => project.partners && project.partners.some((partner) => partner._id === content._id))
-
+const allProjects = await getCollection('projects_Domaine')
+const projects = allProjects.filter((project) => project.data.partners && project.data.partners.some((partner) => partner._id === content._id))
 ---
-<LayoutDomaineProjectsIndex 
+<LayoutDomaineProjects 
     title={`${content.title} x Domaine | Work`}
     description={content.metafields?.description ? content.metafields.description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
@@ -46,5 +29,4 @@ const projects = await allProjects.filter((project) => project.partners && proje
     currentPath={`/partners/${content.slug.current}`}
     relatedBlogPosts={content.relatedBlogPosts}
     locale={Locales.DE}
->
-</LayoutDomaineProjectsIndex>
+/>

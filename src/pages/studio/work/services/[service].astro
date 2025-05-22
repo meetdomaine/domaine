@@ -1,15 +1,13 @@
 ---
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { getProjects_Studio, getServices_Studio } from '../../../../components/global/utils/cms-content';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-    const services = await getServices_Studio()
+    const services = await getCollection('services_Studio')
     return services.map((service) => {
         return {
-            params: { service: service.slug.current },
-            props: { content: service }
+            params: { service: service.id },
+            props: { content: {...service.data} }
         }
     })
 }
@@ -19,8 +17,8 @@ interface Props {
 }
 
 const { content } = Astro.props
-const allProjects = await getProjects_Studio()
-const projects = allProjects.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
+const allProjects = await getCollection('projects_Studio')
+const projects = allProjects.filter((project) => project.data.services && project.data.services.some((service) => service._id === content._id ))
 
 ---
 <LayoutStudioProjects 

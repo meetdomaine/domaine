@@ -44,13 +44,13 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'descriptionStudio',
       title: 'Description: Studio',
-      type: 'text',
+      type: 'snippet_locale-text',
       description: 'Optional override for Studio.',
     }),
     defineField({

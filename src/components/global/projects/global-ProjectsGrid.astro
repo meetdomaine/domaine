@@ -1,11 +1,6 @@
 ---
 import GlobalProjectCard from './global-ProjectCard.astro'
 
-interface Props {
-    projects: Array<ProjectCard>;
-    heading?: string;
-    locale?: string;
-}
 
 const { projects, heading, locale } = Astro.props
 ---
@@ -13,7 +8,7 @@ const { projects, heading, locale } = Astro.props
     {heading && <h2>{heading}</h2>}
     {projects.map((project) => (
         <GlobalProjectCard
-            project={project}
+            project={project.data}
             locale={locale}
         />
     ))}

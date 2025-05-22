@@ -10,6 +10,7 @@ import { getBlogPosts_Domaine } from '../components/global/utils/cms-content';
 import BlogPostSidebar from '../components/global/blog/blog-Post-Sidebar.astro';
 import GlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { Translations } from '../lib/locales';
+import { getCollection } from 'astro:content';
 
 
 interface Props {
@@ -19,7 +20,7 @@ interface Props {
 
 const { content, locale } = Astro.props;
 
-const blogPosts = await getBlogPosts_Domaine()
+const blogPosts = await getCollection('blogPosts_Domaine')
 // console.log(content.metafields)
 
 const relatedPosts = await sanityClient.fetch(`
@@ -47,7 +48,7 @@ const relatedPosts = await sanityClient.fetch(`
     
     <BlogPostBody content={content.body} locale={locale}>
         <BlogPostSidebar 
-            latestPosts={blogPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
+            latestPosts={blogPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
             locale={locale}
         />
     </BlogPostBody>
@@ -63,13 +64,13 @@ const relatedPosts = await sanityClient.fetch(`
         <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
     ))}
 
-    { relatedPosts.length > 1 && 
+    <!-- { relatedPosts.length > 1 && 
         <SectionBlogFeed 
             heading={locale ? Translations['RELATED-POSTS'].locales[locale] : Translations['RELATED-POSTS'].name}
             posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
             locale={locale}
         />
-    }
+    } -->
 
     <!-- { relatedProjects?.length > 0 && 
         <SectionProjectsFeed

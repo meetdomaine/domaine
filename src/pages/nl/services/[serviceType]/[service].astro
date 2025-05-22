@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutDomaineService from '../../../../layouts/Layout-Domaine_Service.astro';
+import { Locales } from '../../../../components/global/utils/locales';
+
+export async function getStaticPaths() {
+    const services = await getCollection('services_Domaine')
+    return services.map((service) => {
+        return {
+            params: { 
+                serviceType: service.data.serviceGroup.serviceType.slug.current, 
+                service: service.id
+            },
+            props: { 
+                content: {...service.data}, 
+                serviceGroup: service.data.serviceGroup, 
+                serviceType: service.data.serviceGroup.serviceType 
+            }
+        }
+    })
+}
+const { content, serviceGroup, serviceType } = Astro.props
+---
+<LayoutDomaineService 
+    content={content}
+    serviceType={serviceType}
+    serviceGroup={serviceGroup}
+    locale={Locales.NL}
+/>

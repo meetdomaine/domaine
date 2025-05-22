@@ -44,7 +44,7 @@ export default defineConfig({
   experimental: {
     clientPrerender: true
   },
-  output: 'hybrid',
+  output: 'static',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {

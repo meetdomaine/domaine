@@ -1,40 +1,25 @@
 ---
 import LayoutDomaineProjects from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
-import { getProjects_Domaine, getServiceGroups_Domaine } from '../../../../components/global/utils/cms-content';
-import { imageBaseFields, imageFields, serviceQuery, urlFor } from '../../../../components/global/utils/cms-queries';
+import { urlFor } from '../../../../components/global/utils/cms-queries';
 import { Locales } from '../../../../components/global/utils/locales';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-    const serviceGroup = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/" in agencyBrands[]->slug.current]{
-        ..., 
-        isHidden,
-        excerpt,
-        images[]{${imageFields}},
-        agencyBrands[]->{..., slug, name},
-        serviceType->{..., formHeading, formText, hubspotFormId },
-        "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
-    return serviceGroup.map((serviceGroup) => {
+    const serviceGroups = await getCollection('serviceGroups_Domaine')
+    return serviceGroups.map((serviceGroup) => {
         return {
-            params: { serviceGroup: serviceGroup.slug.current },
-            props: { content: serviceGroup }
+            params: { serviceGroup: serviceGroup.id },
+            props: { content: {...serviceGroup.data} }
         }
     })
 }
 
-interface Props {
-    content: any
-}
-
 const { content } = Astro.props
-const allProjects = await getProjects_Domaine()
-const projects = allProjects.filter((project) => project.services && project.services.some((service) => service.serviceGroup._id === content._id ))
+const allProjects = await getCollection('projects_Domaine')
+const projects = allProjects.filter((project) => project.data.services?.some((service) => service.serviceGroup.slug.current === content.id ))
 ---
 <LayoutDomaineProjects 
-    title={ `${content.metafields && content.metafields.title ? content.metafields.title : content.title} | Work`}
+    title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     description={content.metafields?.description ? content.metafields.description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter="type:project-service-group"
@@ -44,5 +29,4 @@ const projects = allProjects.filter((project) => project.services && project.ser
     currentPath={`/services/${content.slug.current}`}
     relatedBlogPosts={content.relatedBlogPosts}
     locale={Locales.NL}
->
-</LayoutDomaineProjects>
+/>

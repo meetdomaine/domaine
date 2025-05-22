@@ -1,0 +1,83 @@
+---
+import LayoutDomaine from "../layouts/Layout-Domaine.astro"
+import SectionServiceHero from "../components/global/services/service-Hero.astro"
+import { getCollection } from "astro:content"
+import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astro"
+import SectionProjectsFeed from "../components/global/sections/section-ProjectsFeed.astro"
+import { getTranslationString } from "../lib/translations"
+
+export async function getStaticPaths() {
+    const services = await getCollection('services_Domaine')
+    return services.map((service) => {
+        return {
+            params: { 
+              serviceType: service.data.serviceGroup.serviceType.slug.current, 
+              service: service.id
+            },
+            props: { 
+              content: {...service.data}, 
+              serviceGroup: service.data.serviceGroup, 
+              serviceType: service.data.serviceGroup.serviceType 
+            }
+        }
+    })
+}
+
+interface Props {
+  content: any;
+  serviceGroup?: any;
+  serviceType: any;
+  locale?: string;
+}
+
+const { service } = Astro.params
+const { content, serviceGroup, serviceType, locale } = Astro.props;
+
+const allProjects = await getCollection('projects_Domaine')
+// console.log(allProjects[0])
+const relatedProjects = allProjects.filter((project) => project.data.services?.some((projectService) => projectService.slug.current === service ))
+
+const allBlogPosts = await getCollection('blogPosts_Domaine')
+const relatedBlogPosts = allBlogPosts.filter((post) => post.data.services?.some((postService) => postService.slug.current === service ))
+---
+<LayoutDomaine
+    title={content.metafields && content.metafields.title ? content.metafields.title : getTranslationString(content.title, locale)}
+    searchFilter="type:service"
+    activePath="/services"
+    showPreloader={true}
+>
+    <SectionServiceHero
+        title={content.title}
+        excerpt={content.excerpt}
+        description={content.description}
+        breadcrumbs={[
+            {
+                title: 'Services /',
+                url: '/services/'
+            },
+            {
+                title: serviceType?.title,
+                url: `/services/${serviceType?.slug.current}`
+            },
+        ]}
+        locale={locale}
+    />
+
+    {relatedBlogPosts && relatedBlogPosts.length > 2 &&
+        <SectionBlogFeed 
+            heading={content.title}
+            posts={relatedBlogPosts}
+            locale={locale}
+        />
+    }
+
+    {relatedProjects.length > 1 &&
+        <SectionProjectsFeed 
+            heading={content.title}
+            projects={relatedProjects}
+            sidebarTitle={content.title}
+            locale={locale}
+        />
+    }
+
+</LayoutDomaine>

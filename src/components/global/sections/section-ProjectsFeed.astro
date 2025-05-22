@@ -1,6 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import ProjectCard from "../projects/global-ProjectCard.astro";
 import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
+import { getTranslationString } from "../../../lib/translations";
 
 const { section, brand, projects, heading, subheading, locale, key } = Astro.props
 
@@ -11,7 +13,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = brand === "studio" ? await getProjects_Studio() : await getProjects_Domaine()
+    feedProjects = brand === "studio" ? await getProjects_Studio() : await getCollection('projects_Domaine')
 }
 
 
@@ -41,8 +43,8 @@ if (locale && section?.subheading?.translations?.[locale]) {
         data-animate-viewport="true"
         data-animation="fade"
     >
-        {localeHeading && <h2 class="h5">{localeHeading}</h2>}
-        {localeSubheading && <p class="caption">{localeSubheading}</p>}
+        {localeHeading && <h2 class="h5">{getTranslationString(localeHeading, locale)}</h2>}
+        {localeSubheading && <p class="caption">{getTranslationString(localeSubheading, locale)}</p>}
     </div>
     <div class="section-content">
         {feedProjects.slice(0, 3).map((project, i) => (
@@ -53,7 +55,7 @@ if (locale && section?.subheading?.translations?.[locale]) {
                 data-animation-delay={150 * i}
             >
                 <ProjectCard
-                    project={project}
+                    project={project.data ? project.data : project}
                     locale={locale}
                 />
             </div>

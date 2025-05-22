@@ -72,18 +72,22 @@ export const serviceQuery = `
   agencyBrands[]->{..., slug, name},
   serviceGroup->{
       ..., 
-      serviceType->{...}
+      serviceType->{...},
+      _id
   },
+  metafields{ title, description, image{${imageBaseFields}} },
 `
 
 export const serviceGroupQuery = `
   ..., 
   isHidden,
   excerpt,
+  description,
   images[]{${imageFields}},
   agencyBrands[]->{..., slug, name},
   serviceType->{..., formHeading, formText, hubspotFormId },
   "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
+  metafields{ title, description, image{${imageBaseFields}} },
 `
 
 export const serviceTypeQuery = `
@@ -121,14 +125,14 @@ export const globalSectionsFields = `
     _type == "section_quote" => { showSection, quote, author, authorInfo, quoteImage{${imageFields}} },
     _type == "section_richContent" => { ..., showSection, richContent[]{..., ${richContentFields}} },
     _type == "section_statsCarousel" => { showSection, heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
-    _type == "section_serviceCards" => { showSection, services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}}, showButton, enableServiceLinks } },
+    _type == "section_serviceCards" => { showSection, services[]{ service->{${serviceTypeQuery}}, thumbnailImage{${imageFields}}, showButton, buttonText, enableServiceLinks } },
     _type == "section_serviceFeature" => { showSection, heading, headingSize, subheading, button, featuredService->{ 
       _type == "type_serviceType" => { showSection, ${serviceTypeQuery}},
       _type == "type_serviceGroup" => { showSection, ${serviceGroupQuery}}
       } 
     },
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
-    _type == "section_textMedia" => { ..., media{ ..., ${imageFields}, ${videoFields} } },
+    _type == "section_textMedia" => { ..., media{${imageFields}, ${videoFields} } },
     _type == "section_textMediaBlocks" => { showSection, eyebrow, heading, button, columnCount, blocks[]{ media{${imageFields}, ${videoFields}}, heading, subheading } },
     _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
     _type == "section_textLinkCard" => { showSection, heading, subheading, stats[]{ number, label }, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor, orientation, imageWidth },
@@ -151,6 +155,7 @@ export const serviceTypePageQuery = `
   } | order(orderRank)
 `
 
+
 export const projectPageFields = `
   title,
   isHidden,
@@ -168,6 +173,8 @@ export const projectPageFields = `
   metrics[]{...},
   awards[]{...},
   agencyBrand->{slug},
+  thumbnailMedia{${videoFields}, ${imageFields}},
+  thumbnailImageSecondary{${imageFields}},
   slug{...},
   heroMedia{..., ${videoFields}, ${imageFields}},
   "relatedProjects": *[_type == "type_project" && isHidden != true && agencyBrand->slug.current == ^.agencyBrand->slug.current && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],

@@ -1,31 +1,21 @@
 ---
-import { globalSectionsFields, imageBaseFields, imageFields, richContentFields } from '../../../components/global/utils/cms-queries';
-import { Locales } from '../../../components/global/utils/locales';
+import { getCollection } from 'astro:content';
 import LayoutDomaineBlogPost from '../../../layouts/Layout-Domaine_BlogPost.astro';
 
 export async function getStaticPaths() {
-    // console.log(posts)
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{
-        ..., 
-        _id,
-        slug,
-        authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-        postDate,
-        thumbnailImage{${imageFields}},
-        category->{..., slug{...} }, 
-        body[]{${richContentFields}},
-        agencyBrand->{slug},
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} }
-    }`)
-    return posts.map((post) => {
+    const blogPosts = await getCollection('blogPosts_Domaine')
+    return blogPosts.map((post) => {
         return {
-            params: { post: post.slug.current, category: post.category.slug.current },
-            props: { content: post }
+            params: { 
+                post: post.id, 
+                category: post.data.category.slug.current 
+            },
+            props: { 
+                content: {...post.data} 
+            }
         }
     })
 }
-
 const { content } = Astro.props
 ---
 <LayoutDomaineBlogPost

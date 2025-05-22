@@ -38,15 +38,17 @@ const iconText = replaceStringIcons(section.heading)
             </div>
         }
     </div>
-    <div class="section-media">
-        <SanityMedia 
-            video={section.media.video}
-            aspectRatio={3 / 4}
-            image={section.media.image}
-            sizes="50vw"
-            cover={true}
-        />
-    </div>
+    {section.media &&
+        <div class="section-media">
+            <SanityMedia 
+                video={section.media.video}
+                aspectRatio={3 / 4}
+                image={section.media.image}
+                sizes="50vw"
+                cover={true}
+            />
+        </div>
+    }
 </section>
 
 <script>

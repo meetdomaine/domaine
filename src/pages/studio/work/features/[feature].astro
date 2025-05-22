@@ -1,17 +1,16 @@
 ---
-import { sanityClient } from 'sanity:client';
-import { blogCardFields, projectGridFields } from '../../../../components/global/utils/cms-queries';
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
 import { getProjectFeatures_Studio, getProjects_Studio } from '../../../../components/global/utils/cms-content';
+import { getCollection } from 'astro:content';
 
 export const prerender = true
 
 export async function getStaticPaths() {
-    const features = await getProjectFeatures_Studio()
+    const features = await getCollection('features_Studio')
     return features.map((feature) => {
         return {
-            params: { feature: feature.slug.current },
-            props: { content: feature }
+            params: { feature: feature.id },
+            props: { content: {...feature.data} }
         }
     })
 }
@@ -21,8 +20,8 @@ interface Props {
 }
 
 const { content } = Astro.props
-const allProjects = await getProjects_Studio()
-const projects = allProjects.filter((project) => project.features && project.features.some((feature) => feature._id === content._id))
+const allProjects = await getCollection('projects_Studio')
+const projects = allProjects.filter((project) => project.data.features && project.data.features.some((feature) => feature._id === content._id))
 ---
 <LayoutStudioProjects 
     title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}

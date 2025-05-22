@@ -1,6 +1,8 @@
 ---
+import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-const { serviceType, brand } = Astro.props
+
+const { serviceType, brand, locale } = Astro.props
 ---
 <section class="service-type-hero" data-color-scheme="brand-02">
      <div class="section-title">
@@ -28,12 +30,12 @@ const { serviceType, brand } = Astro.props
                 ))}
             </div>
          </div>
-         <p class="service-excerpt h5">{serviceType.excerpt}</p>
-         <h1 class="service-title title-xl">{serviceType.title}</h1>
+         <p class="service-excerpt h5">{getTranslationString(serviceType.excerpt, locale)}</p>
+         <h1 class="service-title title-xl">{getTranslationString(serviceType.title, locale)}</h1>
     </div>
     <div class="section-content">
-        <p class="service-eyebrow utility">Our {serviceType.title} Practice</p>
-        <p class="service-description h4">{serviceType.description}</p>
+        <p class="service-eyebrow utility">Our {getTranslationString(serviceType.title, locale)} Practice</p>
+        <p class="service-description h4">{getTranslationString(serviceType.description, locale)}</p>
     </div>
     {serviceType.images.map((image) => (
         <div class="service-image">

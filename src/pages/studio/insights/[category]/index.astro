@@ -1,43 +1,37 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
-import { getBlogCategories_Studio, getBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
+import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio_BlogIndex.astro';
 import { urlFor } from '../../../../components/global/utils/cms-queries';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-    const categories = await getBlogCategories_Studio()
+    const categories = await getCollection('blogCategories_Studio')
     return categories.map((category) => {
         // console.log(category)
         return {
-            params: { category: category.slug.current },
-            props: { content: category }
+            params: { 
+                category: category.id
+            },
+            props: { content: {...category.data} }
         }
     })
 }
 
-interface Props {
-    content: any
-}
+const { content } = Astro.props
+const pageSettings = await getEntry('pageSettings_Domaine', 'page_blog-index-studio')
 
-const { content } = Astro.props;
-
-const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const allBlogPosts = await getBlogPosts_Studio()
-const blogPosts = allBlogPosts.filter((post) => post.category._id === content._id)
+const allBlogPosts = await getCollection('blogPosts_Studio')
+const blogPosts = allBlogPosts.filter((post) => post.data.category._id === content._id)
 ---
 <LayoutStudioBlogIndex
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    pageSetting={pageSettings}
+    title={`${pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title} | Insights`}
+    description={pageSettings.data.metafields?.description ? pageSettings.data.metafields.description : null}
+    image={pageSettings.data.metafields?.image ? urlFor(pageSettings.data.metafields.image).url() : null}
+    pageSettings={pageSettings.data}
     blogPosts={blogPosts}
-    heading={content.title}
-    subheading={content.heading}
-    searchFilter="type:blog-category"
-    slug={content.slug}
+    heading={pageSettings.data.title}
+    subheading={pageSettings.data.heading}
+    searchFilter="type:page"
     showPreloader={false}
->
-
-</LayoutStudioBlogIndex>
+    slug={content.slug}
+/>

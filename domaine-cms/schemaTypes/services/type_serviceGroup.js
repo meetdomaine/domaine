@@ -18,7 +18,7 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
       validation: Rule => Rule.required(),
@@ -32,13 +32,13 @@ export default defineType({
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
 
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
     }),
     defineField({
       name: 'serviceType',

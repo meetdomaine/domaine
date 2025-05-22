@@ -1,20 +1,20 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutStudioBlogIndex from '../../../layouts/Layout-Studio-BlogIndex.astro';
-import { getBlogPosts_Studio } from '../../../components/global/utils/cms-content';
+import LayoutStudioBlogIndex from '../../../layouts/Layout-Studio_BlogIndex.astro';
 import { urlFor } from '../../../components/global/utils/cms-queries';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
-const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const blogPosts = await getBlogPosts_Studio()
+const pageSettings = await getEntry('pageSettings_Domaine', 'page_blog-index-studio')
+const blogPosts = await getCollection('blogPosts_Studio')
 ---
 <LayoutStudioBlogIndex
-    title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title} | Insights`}
-    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
-    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
-    pageSettings={pageSettings}
+    title={`${pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title} | Insights`}
+    description={pageSettings.data.metafields?.description ? pageSettings.data.metafields.description : null}
+    image={pageSettings.data.metafields?.image ? urlFor(pageSettings.data.metafields.image).url() : null}
+    pageSettings={pageSettings.data}
     blogPosts={blogPosts}
-    heading={pageSettings.title}
-    subheading={pageSettings.heading}
+    heading={pageSettings.data.title}
+    subheading={pageSettings.data.heading}
     searchFilter="type:page"
     showPreloader={false}
 >
