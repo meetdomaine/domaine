@@ -1,8 +1,8 @@
 ---
-import LayoutDomaineProjects from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
 import { urlFor } from '../../../../components/global/utils/cms-queries';
 import { getCollection } from 'astro:content';
 import LayoutStudioProjectsIndex from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
     const partners = await getCollection('partners_Studio')
@@ -15,8 +15,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-const allProjects = await getCollection('projects_Studio')
-const projects = allProjects.filter((project) => project.data.partners && project.data.partners.some((partner) => partner._id === content._id))
+const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
 <LayoutStudioProjectsIndex 
     title={`${content.title} x Domaine | Work`}

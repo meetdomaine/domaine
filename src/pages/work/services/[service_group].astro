@@ -15,6 +15,9 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
+
+
+
 const allProjects = await getCollection('projects_Domaine')
 const projects = allProjects.filter((project) => project.data.services?.some((service) => service.serviceGroup.slug.current === content.id ))
 ---

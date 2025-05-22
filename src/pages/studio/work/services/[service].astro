@@ -1,4 +1,5 @@
 ---
+import { getEntry } from 'astro:content';
 import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
 import { getCollection } from 'astro:content';
 
@@ -16,16 +17,11 @@ interface Props {
     content: any
 }
 
-const serviceGroups = await getCollection('serviceGroups_Studio')
-console.log(serviceGroups.map((group) => group.id))
-
 const { content } = Astro.props
-const allProjects = await getCollection('projects_Studio')
-const projects = allProjects.filter((project) => project.data.services && project.data.services.some((service) => service._id === content._id ))
-
+const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
 <LayoutStudioProjects 
-    title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}
+    title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
     description={content.metafields && content.metafields.description ? content.metafields.description : null}
     searchFilter="type:project-service"
     heading={content.title}
