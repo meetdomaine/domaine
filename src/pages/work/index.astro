@@ -1,7 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
 import LayoutDomaineProjects from '../../layouts/Layout-Domaine_ProjectsIndex.astro';
+const projects = await getCollection('projects_Domaine')
 ---
 <LayoutDomaineProjects
+    projects={projects}
     searchFilter="type:page"
     isTopLevel={true}
 />

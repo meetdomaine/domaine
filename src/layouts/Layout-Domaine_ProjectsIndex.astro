@@ -6,12 +6,10 @@ import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGri
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 import { Translations } from '../lib/locales';
 import { getEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
 import { getTranslationString } from '../lib/translations';
 
 const { projects, heading, subheading, title, description, image, searchFilter, currentPath, relatedBlogPosts, isTopLevel, locale } = Astro.props;
 const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_projects-index-domaine')
-const allProjects = await getCollection('projects_Domaine')
 ---
 <LayoutDomaine
     title={ title ? getTranslationString(title, locale) : pageSettings?.metafields?.title ? pageSettings.metafields.title : locale ? Translations.PROJECTS.locales[locale] : Translations.PROJECTS.name }
@@ -25,7 +23,7 @@ const allProjects = await getCollection('projects_Domaine')
     <Hero
         heading={heading ? heading : pageSettings.heading}
         subheading={subheading ? subheading : pageSettings.subheading}
-        projectCount={projects ? projects.length : allProjects.length}
+        projectCount={projects.length}
         isTopLevel={isTopLevel}
         locale={locale}
     />
@@ -36,7 +34,7 @@ const allProjects = await getCollection('projects_Domaine')
     />
     <slot name="before-grid" /> 
     <GlobalProjectsGrid 
-        projects={projects ? projects : allProjects}
+        projects={projects}
         locale={locale}
     />
     <slot name="after-grid" /> 
