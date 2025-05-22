@@ -18,11 +18,11 @@ export async function getStaticPaths() {
     })
 }
 
-const { serviceGroup } = Astro.params
+const { service_group } = Astro.params
 const { content, serviceType } = Astro.props;
 ---
 <LayoutDomaineServiceGroup
     content={content}
     serviceType={serviceType}
-    serviceGroup={serviceGroup}
+    serviceGroup={service_group}
 />
