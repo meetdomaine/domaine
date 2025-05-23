@@ -30,7 +30,7 @@ export default defineType({
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'info',
     }),
     defineField({
@@ -46,7 +46,7 @@ export default defineType({
       type: 'slug',
       group: 'info',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
       validation: Rule => Rule.required(),
@@ -82,7 +82,7 @@ export default defineType({
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
       group: 'info',
     }),
     defineField({
@@ -96,7 +96,7 @@ export default defineType({
       name: 'venue',
       title: 'Venue',
       description: 'Ex. Domaine Office',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'info',
       hidden: ({document}) => document?.isVirtual
     }),
@@ -104,7 +104,7 @@ export default defineType({
       name: 'location',
       title: 'Location',
       description: 'Ex. New York City',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'info',
       hidden: ({document}) => document?.isVirtual,
     }),
@@ -129,9 +129,8 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'snippet_rich-content',
+      type: 'snippet_locale-rich-content',
       group: 'info',
-      // validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'thumbnailImage',
@@ -143,13 +142,13 @@ export default defineType({
     defineField({
       name: 'partnersHeading',
       title: 'Partners: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'partners',
     }),
     defineField({
       name: 'partnersSubheading',
       title: 'Partners: Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'partners',
     }),
     defineField({
@@ -162,13 +161,13 @@ export default defineType({
     defineField({
       name: 'speakersHeading',
       title: 'Speakers: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'speakers',
     }),
     defineField({
       name: 'speakersSubheading',
       title: 'Speakers: Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
       group: 'speakers',
     }),
     defineField({
@@ -188,13 +187,13 @@ export default defineType({
           {
             name: 'speakerName',
             title: 'Name',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required()
           },
           {
             name: 'speakerRole',
             title: 'Role',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required()
           },
           {
@@ -205,8 +204,8 @@ export default defineType({
         ],
         preview: {
           select: {
-            title: 'speakerName',
-            subtitle: 'speakerRole',
+            title: 'speakerName.text',
+            subtitle: 'speakerRole.text',
             media: 'speakerImage.image'
           }
         }
@@ -221,7 +220,7 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
       group: 'seo',
     }),
   ],
@@ -229,7 +228,7 @@ export default defineType({
   preview: {
     select: {
       title: 'title.text',
-      subtitle: 'venue',
+      subtitle: 'venue.text',
       media: 'thumbnailImage.image'
     },
     prepare(selection) {

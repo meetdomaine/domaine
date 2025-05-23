@@ -18,20 +18,20 @@ export default defineType({
     defineField({
       name: 'quote',
       title: 'Quote',
-      type: 'text',
+      type: 'snippet_locale-text',
       description: "Don't include the quotation marks.",
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'author',
       title: 'Author',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'authorInfo',
       title: 'Author Info',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'quoteImage',
@@ -42,8 +42,8 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'quote',
-      subtitle: 'author',
+      title: 'quote.text',
+      subtitle: 'author.text',
       media: 'quoteImage.image'
     },
     prepare(selection) {

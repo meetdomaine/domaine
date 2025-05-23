@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 
+// DEPRECATED
 export default defineType({
   name: 'settings_projects',
   title: 'Project Settings',

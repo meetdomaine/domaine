@@ -8,6 +8,7 @@ import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astr
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro"
 import SectionForm from "../components/global/sections/section-Form.astro"
 import { getTranslationString } from "../lib/translations"
+import { Translations } from "../lib/locales"
 
 const { content, locale } = Astro.props;
 // console.log(content)
@@ -23,7 +24,8 @@ const relatedBlogPosts = await sanityClient.fetch(`
     ]{${blogCardFields}} | order(orderRank)`)
 ---
 <LayoutDomaine
-    title={content.metafields && content.metafields.title ? content.metafields.title : getTranslationString(content.title, locale)}
+    title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : getTranslationString(content.description, locale)}
     searchFilter="type:service-type"
     activePath="/services"
     showPreloader={true}

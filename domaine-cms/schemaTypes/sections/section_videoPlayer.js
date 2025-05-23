@@ -16,12 +16,12 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'subheading',
       title: 'Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'video',
@@ -51,7 +51,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading.text', 
     },
     prepare(selection) {
       return {

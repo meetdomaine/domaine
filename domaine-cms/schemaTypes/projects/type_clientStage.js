@@ -2,6 +2,7 @@ import {defineField, defineType} from 'sanity'
 import { iconAward, iconClientStages, iconProjects, iconStat } from '../variables'
 import { orderRankField } from '@sanity/orderable-document-list'
 
+// DEPRECATED
 export default defineType({
   name: 'type_clientStage',
   title: 'Stage',

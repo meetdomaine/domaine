@@ -53,7 +53,7 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
       group: 'info',
       description: 'Required for Partners with a landing page.',
       // validation: Rule => Rule.required(),
@@ -163,7 +163,7 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
       group: 'seo',
     }),
     orderRankField({ type: 'type_partner'}),

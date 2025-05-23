@@ -8,14 +8,14 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
     }),
@@ -74,13 +74,13 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
   ],
 
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
     },
     prepare(selection) {
       // const {author} = selection

@@ -7,6 +7,8 @@ import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
 import { checkDateIsPast } from "../../../lib/check-date-is-past"
 import { Translations } from "../../../lib/locales"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
+import { getCollection } from "astro:content"
 const { 
   currentBrand, 
   showPromoMessage, 
@@ -35,13 +37,17 @@ const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const latestProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
-const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
+const latestProjects = currentBrand.slug.current === "/studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
 const allEvents = await getEvents()
-const upcomingEvents = allEvents.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
 
-// console.log(upcomingEvent)
-// console.log(latestWork)
+const events = await getCollection('events')
+// console.log(events)
+
+const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )
+
+console.log(upcomingEvents)
+// console.log(latestProjects[0].data.title)
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
@@ -59,9 +65,9 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate && !checkDat
   <div class="latest-projects">
     {latestProjects.slice(0,2).map((project) => (
       <AtomNotificationLink 
-        title={project.title}
-        url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
-        image={project.thumbnailMedia.image ? project.thumbnailMedia.image : project.thumbnailImageSecondary.image}
+        title={project.data.title}
+        url={getLocaleUrl(`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.data.slug.current}`, locale)}
+        image={project.data.thumbnailMedia.image ? project.data.thumbnailMedia.image : project.data.thumbnailImageSecondary.image}
       />
     ))}
   </div>
@@ -95,16 +101,20 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate && !checkDat
 
   {upcomingEvents?.length > 0 && 
     <div class="event-card" data-color-scheme="glass-dark">
-      {eventsTitle && <p class="caption">{locale && eventsTitle.translations?.[locale] ? eventsTitle.translations[locale] : eventsTitle.text}</p>}
+      {eventsTitle && <p class="caption">{getTranslationString(eventsTitle, locale)}</p>}
       {upcomingEvents.map((event) => (
-        <a class="event-info color-reset" href={`/events/${event.slug.current}`} data-color-scheme="default">
+        <a 
+          class="event-info color-reset" 
+          href={getLocaleUrl(`/events/${event.id}`, locale)} 
+          data-color-scheme="default"
+        >
           <div class="event-date">
-            <p class="event-month caption">{new Intl.DateTimeFormat(locale ? locale : "en-us", monthOptions).format(new Date(event.dateTime))}</p>
-            <p class="event-day h4">{new Date(event.dateTime).getDate()}</p>
+            <p class="event-month caption">{new Intl.DateTimeFormat(locale ? locale : "en-us", monthOptions).format(new Date(event.data.dateTime))}</p>
+            <p class="event-day h4">{new Date(event.data.dateTime).getDate()}</p>
           </div>
           <div class="event-details">
-            <p class="event-title">{locale && event.title.translations?.[locale] ? event.title.translations[locale] : event.title.text}</p>
-            <p class="event-location caption">{event.location}</p>
+            <p class="event-title">{getTranslationString(event.data.title)}</p>
+            <p class="event-location caption">{getTranslationString(event.data.location, locale)}</p>
           </div>
         </a>
       ))}
@@ -143,7 +153,7 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate && !checkDat
     <p class="blog-posts-heading caption">{locale && Translations.INSIGHTS.locales[locale] ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name}</p>
     {latestBlogPosts.slice(0,2).map((blogPost) => (
       <GlobalBlogTile 
-        post={blogPost}
+        post={blogPost.data}
         currentBrand={currentBrand}
         locale={locale}
       />

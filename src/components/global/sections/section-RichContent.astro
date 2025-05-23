@@ -2,10 +2,11 @@
 import AtomRichContent from "../atoms/atom-richContent.astro"
 const { section, brand, key } = Astro.props
 // console.log(section)
+if (!section.content) console.warn('Missing field for Rich Content!')
 ---
 <section class="section-rich-content">
   <AtomRichContent 
-    content={section.richContent}
+    content={section.content}
   />
 </section>
 

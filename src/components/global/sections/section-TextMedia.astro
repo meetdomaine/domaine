@@ -3,11 +3,12 @@ import { Icon } from "astro-icon/components"
 import AtomButton from "../atoms/atom-button.astro"
 import SanityMedia from "../atoms/atom-sanityMedia.astro"
 import { replaceStringIcons } from "../../../lib/inline-icon-text"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
-const { section, brand } = Astro.props
+const { section, brand, locale } = Astro.props
 // console.log(section.media)
 
-const iconText = replaceStringIcons(section.heading)
+const iconText = replaceStringIcons(getTranslationString(section.heading, locale))
 ---
 <section class="section-text-media" data-layout={section.layout} data-color-scheme={section.colorScheme ? section.colorScheme : "brand-02"}>
 
@@ -17,13 +18,13 @@ const iconText = replaceStringIcons(section.heading)
             data-animate-viewport="true"
             data-animation="fade-up"
         >
-            {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
+            {section.eyebrow && <p class="eyebrow utility">{getTranslationString(section.eyebrow, locale)}</p>}
             <h2 class="heading h2"><Fragment set:html={iconText} /></h2>
-            {section.text && <p class={`text ${section.largeText ? "h4" : ""}`}>{section.text}</p>}
-            {section.button?.text && section.button?.url &&
+            {section.text && <p class={`text ${section.largeText ? "h4" : ""}`}>{getTranslationString(section.text, locale)}</p>}
+            {section.button?.label && section.button?.url &&
                 <AtomButton 
-                    text={section.button.text}
-                    url={section.button.url}
+                    text={getTranslationString(section.button.label, locale)}
+                    url={getLocaleUrl(section.button.url, locale)}
                     newTab={section.button.newTab}
                     style="primary"
                     icon="arrow-diagonal"
@@ -33,7 +34,7 @@ const iconText = replaceStringIcons(section.heading)
         {section.bulletPoints &&
             <div class="bullets">
                 {section.bulletPoints.map((bulletPoint) => (
-                    <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(bulletPoint)} /></p>
+                    <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(getTranslationString(bulletPoint, locale))} /></p>
                 ))}
             </div>
         }

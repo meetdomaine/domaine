@@ -3,21 +3,22 @@ import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import { replaceStringIcons } from "../../../../lib/inline-icon-text"
 import AtomCursorFollow from "../../../global/atoms/atom-cursorFollow.astro"
+import { getLocaleUrl, getTranslationString } from "../../../../lib/translations"
 
-const { heading, subheading, eyebrow, button, projects } = Astro.props
+const { heading, subheading, eyebrow, button, projects, locale } = Astro.props
 
-const iconText = replaceStringIcons(heading)
+const iconText = replaceStringIcons(getTranslationString(heading, locale))
 
 ---
 <section id="home-hero" class="home-hero" data-color-scheme="brand-02" data-link-hover="false">
     <div class="section-content">
         <div class="section-text h1">
-            {eyebrow && <p class="utility">{eyebrow}</p>}
+            {eyebrow && <p class="utility">{getTranslationString(eyebrow, locale)}</p>}
             {heading && <h1 class=""><Fragment set:html={iconText}/></h1>}
-            {subheading && <p class="subheading h6">{subheading}</p>}
+            {subheading && <p class="subheading h6">{getTranslationString(subheading, locale)}</p>}
         </div>
-        {button.text && button.url &&
-            <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}<Icon name="arrow-diagonal" /></a>
+        {button.label && button.url &&
+            <a class={`button color-invert`} data-style="tertiary" href={getLocaleUrl(button.url, locale)}>{getTranslationString(button.label, locale)}<Icon name="arrow-diagonal" /></a>
         }
     </div>
     <div class="section-media">

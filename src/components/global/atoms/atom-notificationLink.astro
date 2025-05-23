@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "./atom-sanityImage.astro"
+import { getTranslationString } from "../../../lib/translations";
 
 interface Props {
     title?: any;
@@ -30,10 +31,10 @@ const { title, subtitle, url, image, newTab, locale } = Astro.props
   }
   <div class="card-content">
     {title && 
-      <p class="title">{locale && title.translations?.[locale] ? title.translations[locale] : title.text}</p>
+      <p class="title">{getTranslationString(title, locale)}</p>
     }
     {subtitle && 
-      <p class="text">{locale && subtitle.translations?.[locale] ? subtitle.translations[locale] : subtitle.text}</p>
+      <p class="text">{getTranslationString(subtitle, locale)}</p>
     }
   </div>
 </a>

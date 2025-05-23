@@ -8,7 +8,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'slug',
@@ -44,13 +44,13 @@ export default defineType({
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => 
         Rule.custom((string, context) => {
           if (context.document.isMarketingPage && !string) return 'Marketing pages must have a form id.'
@@ -60,22 +60,22 @@ export default defineType({
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'text',
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'snippet_locale-text',
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
       name: 'buttonText',
       title: 'Button Text',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: 'If added, will show a sticky button linking to the Hubspot form.',
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
@@ -87,7 +87,7 @@ export default defineType({
     defineField({
       name: 'formTitle',
       title: 'Form Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.isMarketingPage,
     }),
     defineField({
@@ -157,13 +157,13 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
   ],
 
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
     },
     prepare(selection) {
       // const {author} = selection

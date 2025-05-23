@@ -104,7 +104,7 @@ export default defineType({
       name: 'emailLabel',
       title: 'Email Label',
       description: 'If none added, will use the email address.',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'phoneNumber',
@@ -116,7 +116,7 @@ export default defineType({
       name: 'phoneNumberLabel',
       title: 'Phone Number Label',
       description: 'If none added, will use the phone number.',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'legalLinks',
@@ -126,12 +126,7 @@ export default defineType({
     defineField({
       name: 'copyrightText',
       title: 'Copyright Text',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
-    // defineField({
-    //     name: 'seoDescription',
-    //     title: 'SEO Description',
-    //     type: 'text',
-    // }),
   ],
 })

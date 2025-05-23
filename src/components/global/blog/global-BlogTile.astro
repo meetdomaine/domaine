@@ -3,6 +3,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { formatDate } from "../../../lib/format-date"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
 
 interface Props {
   post: any;
@@ -31,15 +32,15 @@ const categoryUrl = `${post.agencyBrand.slug.current === "/studio" ? "/studio/" 
   <div class="blog-post-content">
     <div class="blog-post-info">
       <AtomTag
-        title={locale ? post.category.title.translations?.[locale] : post.category.title.text}
-        url={locale ? getRelativeLocaleUrl(locale, categoryUrl) : categoryUrl }
+        title={getTranslationString(post.category.title, locale)}
+        url={getLocaleUrl(categoryUrl, locale) }
       />
       <p class="blog-post-date">{formattedDate}</p>
     </div>
     <a 
       class="blog-post-title" 
-      href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl } 
-    >{locale && post.title.translations?.[locale] ? post.title.translations[locale] : post.title.text}</a>
+      href={getLocaleUrl(postUrl, locale) } 
+    >{getTranslationString(post.title, locale)}</a>
   </div>
 </div>
 

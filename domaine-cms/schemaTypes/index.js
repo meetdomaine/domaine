@@ -79,6 +79,8 @@ import snippet_localeString from "./snippets/snippet_locale-string.js";
 import snippet_localeButton from "./snippets/snippet_locale-button.js";
 import snippet_localeText from "./snippets/snippet_locale-text.js";
 import snippet_localeLinkList from "./snippets/snippet_locale-link-list.js";
+import snippet_localeSEOFields from "./snippets/snippet_locale-SEO-fields.js";
+import snippet_localeRichContent from "./snippets/snippet_locale-rich-content.js";
 
 
 export const schemaTypes = [
@@ -127,6 +129,8 @@ export const schemaTypes = [
     snippet_localeText,
     snippet_localeButton,
     snippet_localeLinkList,
+    snippet_localeSEOFields,
+    snippet_localeRichContent,
 
     section_globalSections,
     section_agenda,

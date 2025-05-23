@@ -27,7 +27,7 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
       validation: Rule => Rule.required(),
     }),
     // defineField({

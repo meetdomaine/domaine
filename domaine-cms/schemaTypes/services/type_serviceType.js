@@ -18,7 +18,7 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
       validation: Rule => Rule.required(),
@@ -38,7 +38,7 @@ export default defineType({
     defineField({
       name: 'excerptStudio',
       title: 'Excerpt: Studio',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: 'Optional override for Studio.',
     }),
     defineField({
@@ -134,13 +134,13 @@ export default defineType({
     defineField({
       name: 'formHeading',
       title: 'Form: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'formText',
       title: 'Form: Text',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'hubspotFormId',
@@ -151,13 +151,13 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
     defineField({
       name: 'metafieldsStudio',
       title: 'Metafields: Studio',
       description: 'Used in Services section.',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
     orderRankField({ type: 'type_serviceType'}),
   ],

@@ -8,6 +8,13 @@ export const Translations = {
       [Locales.NL]: "Projecten"
     }
   },
+  "WORK": {
+    name: 'Work',
+    locales: {
+      [Locales.DE]: "Arbeiten",
+      [Locales.NL]: "Werk"
+    }
+  },
   "INSIGHTS": {
     name: 'Insights',
     locales: {
@@ -118,6 +125,13 @@ export const Translations = {
     locales: {
       [Locales.DE]: "Autoren",
       [Locales.NL]: "Auteurs"
+    }
+  },
+  "EVENTS": {
+    name: 'Events',
+    locales: {
+      [Locales.DE]: "Veranstaltungen",
+      [Locales.NL]: "Evenementen"
     }
   },
 }

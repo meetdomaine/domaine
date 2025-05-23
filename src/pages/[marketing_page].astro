@@ -1,42 +1,31 @@
 ---
-import { Icon } from "astro-icon/components";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields, imageBaseFields, urlFor, imageFields, videoFields } from "../lib/cms-queries";
 import LayoutDomaineMarketing from "../layouts/Layout-Domaine-Marketing.astro";
-import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 import MarketingHeader from "../components/global/marketingHeader/global-MarketingHeader.astro";
 import AtomHubspotForm from "../components/global/atoms/atom-hubspotForm.astro";
 import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomSanityMedia from "../components/global/atoms/atom-sanityMedia.astro";
-import { sanityClient } from "sanity:client"
-
-interface Props {
-  content: any
-}
+import { getCollection } from "astro:content";
+import { getLocaleUrl, getTranslationString } from "../lib/translations";
+import { urlFor } from "../lib/cms-queries";
 
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_general' && isMarketingPage ]{ 
-        ...,
-        media{${imageFields}, ${videoFields}},
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
-    return pages.map((page) => {
+    const marketingPages = await getCollection("marketingPages_Domaine")
+    return marketingPages.map((marketingPage) => {
         return {
-            params: { marketing_page: page.slug.current },
-            props: { content: page }
+            params: { marketing_page: marketingPage.data.slug.current },
+            props: { content: {...marketingPage.data} }
         }
     })
 }
 
-const { content } = Astro.props
-// console.log(content)
+const { content, locale } = Astro.props
 ---
 <LayoutDomaineMarketing
-    title={content.title}
+    title={getTranslationString(content.title, locale)}
     searchFilter="type:page"
-    title={`${content.metafields?.title ? content.metafields.title : content.title}`}
-    description={content.metafields?.description ? content.metafields.description : null}
+    title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)}`}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     showPreloader={content.showPreloader}
     noIndex={true}
@@ -54,16 +43,16 @@ const { content } = Astro.props
         <section class="marketing-page-hero" id="contact" data-color-scheme={content.heroColorScheme === "invert" ? "invert" : content.colorScheme} >
             <div class="hero-content">
                 <div class="hero-title">
-                    {content.eyebrow && <p class="h6">{content.eyebrow}</p>}
-                    <h1 class="h2">{content.heading}</h1>
+                    {content.eyebrow && <p class="h6">{getTranslationString(content.eyebrow, locale)}</p>}
+                    <h1 class="h2">{getTranslationString(content.heading, locale)}</h1>
                 </div>
                 <div class="hero-text">
-                    {content.text && <p class="h6">{content.text}</p>}
-                    {content.button?.text && content.button?.url &&
+                    {content.text && <p class="h6">{getTranslationString(content.text, locale)}</p>}
+                    {content.button?.label && content.button?.url &&
                         <AtomButton 
-                        text={content.button.text}
-                        url={content.button.url}
-                        style="primary"
+                            text={getTranslationString(content.button.label, locale)}
+                            url={getLocaleUrl(content.button.url, locale)}
+                            style="primary"
                         />
                     }
                 </div>
@@ -72,7 +61,7 @@ const { content } = Astro.props
                 class="hero-form"
                 data-color-scheme="default"
             >
-                {content.formTitle && <p class="h6">{content.formTitle}</p>}
+                {content.formTitle && <p class="h6">{getTranslationString(content.formTitle, locale)}</p>}
                 <AtomHubspotForm 
                     formId={content.hubspotFormId}
                 />
@@ -89,7 +78,7 @@ const { content } = Astro.props
             }
         </section>
         {content.globalSections?.sections.map((section, i) => (
-            <GlobalSections brand="domaine" section={section} key={i} />
+            <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
         ))}
     </div>
 </LayoutDomaineMarketing>

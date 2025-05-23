@@ -2,8 +2,9 @@
 import { sanityClient } from "sanity:client"
 import { imageFields } from "../../lib/cms-queries"
 import AtomSanityImage from "./atoms/atom-sanityImage.astro"
+import { getTranslationString } from "../../lib/translations"
 
-const { currentBrand, showPreloader } = Astro.props
+const { currentBrand, showPreloader, locale } = Astro.props
 const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
 ---
 
@@ -21,7 +22,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 			/>
 		</div>
 	))}
-	<p id="preloader_heading" class="preloader-heading h1">{content.heading}</p>
+	<p id="preloader_heading" class="preloader-heading h1">{getTranslationString(content.heading, locale)}</p>
 </div>
 
 <script>

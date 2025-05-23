@@ -50,7 +50,7 @@ const allFilters = await Promise.all([
                     {filterGroup.filters.map((filter) => {
                         return (
                             <AtomTag 
-                                text={filter.title.translations ? getTranslationString(filter.title, locale) : filter.title}
+                                text={getTranslationString(filter.title, locale)}
                                 url={getLocaleUrl(`/${brand === "Studio" ? "studio/" : ""}work/${filterGroup.path}${filter.slug.current}`, locale)}
                                 theme={currentPath == `/${filterGroup.path}${filter.slug.current}` ? "dark" : "light"}
                             />

@@ -25,12 +25,12 @@ export default defineType({
           {
             name: 'heading',
             title: 'Heading',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
           {
             name: 'subheading',
             title: 'Subheading',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
           {
             name: 'times',
@@ -42,12 +42,12 @@ export default defineType({
                 {
                   name: 'heading',
                   title: 'Heading',
-                  type: 'string'
+                  type: 'snippet_locale-string',
                 },
                 {
                   name: 'description',
                   title: 'Description',
-                  type: 'string'
+                  type: 'snippet_locale-string',
                 },
                 {
                   name: 'time',
@@ -57,12 +57,12 @@ export default defineType({
                 {
                   name: 'date',
                   title: 'Date',
-                  type: 'string'
+                  type: 'snippet_locale-string',
                 },
               ],
               preview: {
                 select: {
-                  title: 'heading',
+                  title: 'heading.text',
                   subtitle: 'time'
                 },
                 prepare(selection) {
@@ -77,8 +77,8 @@ export default defineType({
         ],
         preview: {
           select: {
-            title: 'heading',
-            subtitle: 'subheading'
+            title: 'heading.text',
+            subtitle: 'subheading.text'
           },
           prepare(selection) {
             return {
@@ -93,7 +93,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading.text', 
     },
     prepare(selection) {
       return {

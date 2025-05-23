@@ -47,8 +47,8 @@ export default defineConfig({
   experimental: {
     clientPrerender: true
   },
-  output: 'server',
-  // output: 'static',
+  // output: 'server',
+  output: 'static',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {

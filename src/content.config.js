@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { globalSectionsFields, imageBaseFields, imageFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery } from './lib/cms-queries';
+import { eventQuery, globalSectionsFields, imageBaseFields, imageFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
 import {sanityClient} from "sanity:client"
 
 
@@ -322,11 +322,92 @@ const partners_Studio = defineCollection({
   }
 })
 
+// General Pages
+
+const generalPages_Domaine = defineCollection({
+  loader: async () => {
+    const data = await sanityClient.fetch(`*[_type == "page_general" && !isMarketingPage]{
+      ..., 
+      globalSections{ sections[]{${globalSectionsFields}} },
+      metafields{ title, description, image{${imageBaseFields}} },
+    } | order(_createdAt desc)`)
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
+const generalPages_Studio = defineCollection({
+  loader: async () => {
+    const data = await sanityClient.fetch(`*[_type == "page_studio_general" && !isMarketingPage]{
+      ..., 
+      globalSections{ sections[]{${globalSectionsFields}} },
+      metafields{ title, description, image{${imageBaseFields}} },
+    } | order(_createdAt desc)`)
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
+// Marketing Pages
+
+const marketingPages_Domaine = defineCollection({
+  loader: async () => {
+    const data = await sanityClient.fetch(`*[_type == "page_general" && isMarketingPage == true]{
+      ..., 
+      media{${imageFields}, ${videoFields}},
+      globalSections{ sections[]{${globalSectionsFields}} },
+      metafields{ title, description, image{${imageBaseFields}} },
+    } | order(_createdAt desc)`)
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
+const marketingPages_Studio = defineCollection({
+  loader: async () => {
+    const data = await sanityClient.fetch(`*[_type == "page_studio_general" && isMarketingPage == true]{
+      ..., 
+      media{${imageFields}, ${videoFields}},
+      globalSections{ sections[]{${globalSectionsFields}} },
+      metafields{ title, description, image{${imageBaseFields}} },
+    } | order(_createdAt desc)`)
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
+// Events
+
+const events = defineCollection({
+  loader: async () => {
+    const data = await sanityClient.fetch(`*[_type == "type_event"]{${eventQuery}} | order(dateTime)`)
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
 // Page Settings
 
 const pageSettings_Domaine = defineCollection({
   // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
   loader: async () => {
+
+    const pageHome_Domaine = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ 
+      ...,  
+      globalSections{ sections[]{${globalSectionsFields}} }, 
+      media{ ..., ${imageFields}, ${videoFields} },
+      metafields{ title, description, image{${imageBaseFields}} },
+  }`)
 
     const blogIndex_Domaine = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
     const blogIndex_Studio = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
@@ -353,6 +434,10 @@ const pageSettings_Domaine = defineCollection({
     `)
 
     return [
+      {
+        id: pageHome_Domaine._id,
+        ...pageHome_Domaine
+      },
       {
         id: blogIndex_Domaine._id,
         ...blogIndex_Domaine
@@ -400,5 +485,10 @@ export const collections = {
   features_Studio,
   partners_Domaine,
   partners_Studio,
-  pageSettings_Domaine
+  events,
+  pageSettings_Domaine,
+  generalPages_Domaine,
+  generalPages_Studio,
+  marketingPages_Domaine,
+  marketingPages_Studio
 };

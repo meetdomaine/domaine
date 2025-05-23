@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {EnvelopeIcon} from '@sanity/icons'
 
-
+// DEPRECATED
 export default defineType({
   name: 'settings_cookieNotice',
   title: 'Cookie Notice',

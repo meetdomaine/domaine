@@ -134,7 +134,7 @@ export const globalSectionsFields = `
     _type == "section_textVideoPlayer" => { showSection, eyebrow, heading, subheading, text, button, media{${imageFields}, ${videoFields}}, mediaTitle, mediaSubtitle },
     _type == "section_textMedia" => { ..., media{${imageFields}, ${videoFields} } },
     _type == "section_textMediaBlocks" => { showSection, eyebrow, heading, button, columnCount, blocks[]{ media{${imageFields}, ${videoFields}}, heading, subheading } },
-    _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, text, media{${imageFields}, ${videoFields}}, insetMedia, button } },
+    _type == "section_textMediaTabs" => { showSection, eyebrow, heading, button, tabs[]{ title, subtitle, media{${imageFields}, ${videoFields}}, insetMedia, button } },
     _type == "section_textLinkCard" => { showSection, heading, subheading, stats[]{ number, label }, linkCardHeading, linkCardImage{${imageFields}}, linkCardURL, linkCardColor, linkCardTextColor, orientation, imageWidth },
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, clients[]->{ title, slug, "logo": logo.asset->url, logoScale }, quoteClient->{"logo": logo.asset->url, logoScale}, text, button },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
@@ -231,7 +231,11 @@ export const blogQuery = `
 export const eventQuery = `
   ...,
   dateTime,
-  thumbnailImage{${imageFields}}
+  partnerLogos[]{${imageFields}},
+  speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
+  thumbnailImage{${imageFields}},
+  globalSections{ sections[]{${globalSectionsFields}}},
+  thumbnailImage{${imageFields}},
 `
 
 export const locationsQuery = `

@@ -3,11 +3,13 @@ import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import { urlFor } from "../../../lib/cms-queries"
 import AtomTextLabel from "../atoms/atom-textLabel.astro"
-const { section } = Astro.props
+import { getLocaleUrl } from "../../../lib/translations"
+const { section, locale } = Astro.props
 
 const id = Math.random().toString(16).slice(2)
 
 // console.log(section.projects[2])
+
 ---
 <section class="section-projects-fullbleed" id={`media-fullbleed-${id}`}>
     <div class="section-content" data-color-scheme="brand-02">
@@ -15,7 +17,7 @@ const id = Math.random().toString(16).slice(2)
             <div class='project-item'>
                 <a
                     class="project-link"
-                    href={`${entry.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${entry.project.slug.current}`} 
+                    href={getLocaleUrl(`${entry.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${entry.project.slug.current}`, locale)} 
                     style={entry.project.backgroundColor && `--project-color: ${entry.project.backgroundColor.hex}`}
                 >
                     <Icon name={`character-${entry.project.title[0].toUpperCase()}`} class="project-icon" />

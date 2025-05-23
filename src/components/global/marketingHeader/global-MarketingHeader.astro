@@ -1,8 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomButton from "../atoms/atom-button.astro"
+import { getTranslationString } from "../../../lib/translations"
 
-const {buttonText, colorScheme, currentBrand } = Astro.props
+const {buttonText, colorScheme, currentBrand, locale } = Astro.props
 ---
 <header
   data-color-scheme="secondary"
@@ -15,7 +16,7 @@ const {buttonText, colorScheme, currentBrand } = Astro.props
 
       <AtomButton 
         url="#contact"
-        text={buttonText}
+        text={getTranslationString(buttonText, locale)}
         style="primary"
       />
     </div>

@@ -18,7 +18,7 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
@@ -31,7 +31,7 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
     orderRankField({ type: 'type_projectFeature'})
     // defineField({
