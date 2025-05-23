@@ -5,7 +5,7 @@ import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
-import { Locales } from './src/components/global/utils/locales';
+import { Locales } from './src/enums/locales';
 const isProd = import.meta.env.PROD;
 const isDev = import.meta.env.DEV;
 const renderMode = import.meta.env.RENDER_MODE;

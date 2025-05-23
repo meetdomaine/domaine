@@ -1,6 +1,6 @@
 ---
 import AtomCounter from "../../../global/atoms/atom-counter.astro"
-import { getServices_Domaine, getServiceTypes_Domaine } from "../../../global/utils/cms-content"
+import { getServices_Domaine, getServiceTypes_Domaine } from "../../../../lib/cms-content"
 
 const { title, heading, locale } = Astro.props
 const serviceTypes = await getServiceTypes_Domaine()
@@ -28,7 +28,7 @@ const serviceCount = services.length
 </section>
 
 <script>
-    import { gsap } from "../../../global/utils/gsap"
+    import { gsap } from "../../../../lib/gsap"
     const jumplinks = document.querySelectorAll('.serviceType-jumplink')
 
     jumplinks.forEach((button: HTMLButtonElement) => {

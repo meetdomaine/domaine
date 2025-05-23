@@ -1,11 +1,11 @@
 ---
-import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../utils/cms-content"
+import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../../../lib/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
 import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
-import { checkDateIsPast } from "../../../components/global/utils/check-date-is-past"
+import { checkDateIsPast } from "../../../lib/check-date-is-past"
 import { Translations } from "../../../lib/locales"
 const { 
   currentBrand, 
@@ -155,8 +155,8 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate && !checkDat
 </dialog>
 
 <script>
-  import { isMobileBreakpoint } from "../utils/check-device"
-import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
+  import { isMobileBreakpoint } from "../../../lib/check-device"
+import { getIsDaytime, getLocalTime } from "../../../lib/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')

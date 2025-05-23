@@ -1,4 +1,4 @@
-import { Locales } from "../components/global/utils/locales";
+import { Locales } from "../enums/locales";
 
 export const Translations = {
   "PROJECTS": {

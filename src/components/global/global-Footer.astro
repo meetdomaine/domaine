@@ -1,8 +1,8 @@
 ---
 import { Icon } from "astro-icon/components"
 // import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
-import { getAgencyBrands } from "./utils/cms-content"
-import { getRawSvg } from "./utils/raw-svg"
+import { getAgencyBrands } from "../../lib/cms-content"
+import { getRawSvg } from "../../lib/raw-svg"
 import { getRelativeLocaleUrl } from "astro:i18n"
 
 const { currentBrand, footerSettings, locale } = Astro.props

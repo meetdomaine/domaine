@@ -1,8 +1,11 @@
 ---
 import LayoutDomaineProjects from '../../../layouts/Layout-Domaine_ProjectsIndex.astro';
-import { Locales } from '../../../components/global/utils/locales';
+import { Locales } from '../../../enums/locales';
+import { getCollection } from 'astro:content';
+const projects = await getCollection('projects_Domaine')
 ---
 <LayoutDomaineProjects
+    projects={projects}
     searchFilter="type:page"
     isTopLevel={true}
     locale={Locales.NL}

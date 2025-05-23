@@ -1,6 +1,6 @@
 ---
-import { urlFor } from '../components/global/utils/cms-queries';
-import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
+import { urlFor } from '../lib/cms-queries';
+import ViewportAnimation from '../animation/ViewportAnimation.astro';
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -132,7 +132,7 @@ const currentPath = Astro.url.pathname;
 <script>
 	import '@mux/mux-player';
 	import "@mux/mux-player/themes/minimal";
-	import { initLenis } from '../components/global/utils/lenis';
+	import { initLenis } from '../lib/lenis';
 
 	document.addEventListener("DOMContentLoaded", () => {
     initLenis()

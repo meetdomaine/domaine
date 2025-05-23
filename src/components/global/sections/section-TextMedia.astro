@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 import AtomButton from "../atoms/atom-button.astro"
 import SanityMedia from "../atoms/atom-sanityMedia.astro"
-import { replaceStringIcons } from "../../global/utils/inline-icon-text"
+import { replaceStringIcons } from "../../../lib/inline-icon-text"
 
 const { section, brand } = Astro.props
 // console.log(section.media)
@@ -52,7 +52,7 @@ const iconText = replaceStringIcons(section.heading)
 </section>
 
 <script>
-    import { addParallax, fadeUp, gsap } from "../../global/utils/gsap"
+    import { addParallax, fadeUp, gsap } from "../../../lib/gsap"
 
     const animateSection = () => {
         const sections = document.querySelectorAll('.section-text-media')

@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { Translations } from '../../../lib/locales';
 import { getLocaleUrl, getTranslationString } from '../../../lib/translations';
 import AtomTag from '../atoms/atom-tag.astro';
-import { getBlogCategories_Domaine, getBlogCategories_Studio } from '../utils/cms-content';
+import { getBlogCategories_Domaine, getBlogCategories_Studio } from '../../../lib/cms-content';
 
 const { brand, slug, locale } = Astro.props
 

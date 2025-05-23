@@ -1,6 +1,6 @@
 import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
-import { urlFor } from '../../utils/cms-queries';
+import { urlFor } from '../../../../lib/cms-queries';
 import { Translations } from '../../../../lib/locales';
 
 function ProjectCard(props) {

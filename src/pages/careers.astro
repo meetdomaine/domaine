@@ -1,12 +1,12 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
-import { allCareers } from "../components/global/utils/cms-content";
+import { allCareers } from "../lib/cms-content";
 import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
-import { imageBaseFields, urlFor } from '../components/global/utils/cms-queries';
+import { imageBaseFields, urlFor } from '../lib/cms-queries';
 
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,

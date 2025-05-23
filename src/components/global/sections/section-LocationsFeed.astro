@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import { getLocations } from "../utils/cms-content"
+import { getLocations } from "../../../lib/cms-content"
 import AtomButton from "../atoms/atom-button.astro"
 import { getRelativeLocaleUrl } from "astro:i18n"
 
@@ -38,7 +38,7 @@ const locations = await getLocations()
 </section>
 
 <script>
-import { getLocalTime } from "../utils/get-local-time"
+import { getLocalTime } from "../../../lib/get-local-time"
   window.addEventListener("DOMContentLoaded", () => {
     const sections = Array.from(document.getElementsByClassName('section-locations-feed') as HTMLCollectionOf<HTMLElement>) 
     sections.forEach((section) => {

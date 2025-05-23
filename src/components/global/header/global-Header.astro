@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import { sanityClient } from "sanity:client";
-import { imageFields, videoFields } from "../utils/cms-queries";
+import { imageFields, videoFields } from "../../../lib/cms-queries";
 import ContactMenu from "./global-ContactMenu.astro";
 // import SearchMenu from "./searchMenu/global-SearchMenu.astro";
 import NavigationMenu from "./global-NavigationMenu.astro";
@@ -20,8 +20,8 @@ import {
     getBlogPosts_Studio,
     getPartners_Studio,
     getPartners_Domaine,
-} from "../utils/cms-content"
-import { locationsQuery } from "../utils/cms-queries"
+} from "../../../lib/cms-content"
+import { locationsQuery } from "../../../lib/cms-queries"
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 // const test = await loadQuery({

@@ -3,7 +3,7 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 import AtomButton from "../atoms/atom-button.astro"
 import { getRelativeLocaleUrl } from "astro:i18n"
-import { checkIsJumplink } from "../../global/utils/functions"
+import { checkIsJumplink } from "../../../lib/functions"
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
 
@@ -104,8 +104,8 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
 </section>
 
 <script>
-import { addParallax, gsap } from "../utils/gsap"
-import { isMobileBreakpoint } from "../../global/utils/check-device"
+// import { addParallax, gsap } from "../../../lib/gsap"
+// import { isMobileBreakpoint } from "../../../lib/check-device"
 
 // if (!isMobileBreakpoint) {
 //     const sections = document.querySelectorAll('.section-service-type')

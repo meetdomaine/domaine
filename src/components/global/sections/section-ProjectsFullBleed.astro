@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-import { urlFor } from "../utils/cms-queries"
+import { urlFor } from "../../../lib/cms-queries"
 import AtomTextLabel from "../atoms/atom-textLabel.astro"
 const { section } = Astro.props
 
@@ -46,7 +46,7 @@ const id = Math.random().toString(16).slice(2)
 </section>
 
 <script>
-    import { gsap, addParallax } from "../utils/gsap"
+    import { gsap, addParallax } from "../../../lib/gsap"
     const sections = document.querySelectorAll('.section-projects-fullbleed')
 
     sections.forEach((section) => {

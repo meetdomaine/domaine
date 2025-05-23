@@ -1,8 +1,8 @@
 ---
 import LayoutDomaineProjects from '../../../../layouts/Layout-Domaine_ProjectsIndex.astro';
-import { urlFor } from '../../../../components/global/utils/cms-queries';
+import { urlFor } from '../../../../lib/cms-queries';
 import { getCollection } from 'astro:content';
-import { Locales } from '../../../../components/global/utils/locales';
+import { Locales } from '../../../../enums/locales';
 import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {

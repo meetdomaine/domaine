@@ -1,11 +1,11 @@
 ---
 import { sanityClient } from 'sanity:client';
-import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../components/global/utils/cms-queries';
+import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../lib/cms-queries';
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 import BlogPostBody from '../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../components/global/blog/blog-PostAuthors.astro';
-import { getBlogPosts_Domaine } from '../components/global/utils/cms-content';
+import { getBlogPosts_Domaine } from '../lib/cms-content';
 import BlogPostSidebar from '../components/global/blog/blog-Post-Sidebar.astro';
 import GlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { Translations } from '../lib/locales';

@@ -1,8 +1,8 @@
 ---
 import LayoutDomaineBlogIndex from '../../../../layouts/Layout-Domaine_BlogIndex.astro';
 import { getCollection } from 'astro:content';
-import { urlFor } from '../../../../components/global/utils/cms-queries';
-import { Locales } from '../../../../components/global/utils/locales';
+import { urlFor } from '../../../../lib/cms-queries';
+import { Locales } from '../../../../enums/locales';
 import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {

@@ -2,7 +2,7 @@
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 import ServicesHero from "../components/domaine/sections/services/services-Hero.astro";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { urlFor } from "../components/global/utils/cms-queries";
+import { urlFor } from "../lib/cms-queries";
 import { getEntry } from "astro:content";
 
 const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_services-index-domaine')

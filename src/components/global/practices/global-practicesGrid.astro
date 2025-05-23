@@ -1,5 +1,5 @@
 ---
-import { getAgencyBrands, getLocations } from "../utils/cms-content";
+import { getAgencyBrands, getLocations } from "../../../lib/cms-content";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { Icon } from "astro-icon/components";
 import { getRelativeLocaleUrl } from "astro:i18n";
@@ -73,7 +73,7 @@ const { locale } = Astro.props
   </div>
 
 <script>
-  import { getLocalTime, getIsDaytime } from "../utils/get-local-time"
+  import { getLocalTime, getIsDaytime } from "../../../lib/get-local-time"
   const clocks = Array.from(document.getElementsByClassName('location-clock') as HTMLCollectionOf<HTMLElement>)
   const icons = Array.from(document.getElementsByClassName('location-time-icon') as HTMLCollectionOf<HTMLElement>)
   // clocks.forEach(clock => {

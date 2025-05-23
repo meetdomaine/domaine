@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { globalSectionsFields, imageBaseFields, imageFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery } from './components/global/utils/cms-queries';
+import { globalSectionsFields, imageBaseFields, imageFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery } from './lib/cms-queries';
 import {sanityClient} from "sanity:client"
 
 

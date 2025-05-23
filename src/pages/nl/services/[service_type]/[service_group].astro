@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import LayoutDomaineServiceGroup from "../../../../layouts/Layout-Domaine_ServiceGroup.astro";
-import { Locales } from "../../../../components/global/utils/locales";
+import { Locales } from "../../../../enums/locales";
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Domaine')

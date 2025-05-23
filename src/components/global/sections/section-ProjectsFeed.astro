@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ProjectCard from "../projects/global-ProjectCard.astro";
-import { getProjects_Domaine, getProjects_Studio } from "../utils/cms-content";
+import { getProjects_Domaine, getProjects_Studio } from "../../../lib/cms-content";
 import { getTranslationString } from "../../../lib/translations";
 
 const { section, brand, projects, heading, subheading, locale, key } = Astro.props

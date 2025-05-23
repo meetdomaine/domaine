@@ -1,6 +1,6 @@
 ---
 import { sanityClient } from "sanity:client"
-import { imageFields } from "./utils/cms-queries"
+import { imageFields } from "../../lib/cms-queries"
 import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 
 const { currentBrand, showPreloader } = Astro.props
@@ -25,8 +25,8 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 </div>
 
 <script>
-	import { isMobileBreakpoint } from "./utils/check-device";
-	import { gsap, SplitText } from "./utils/gsap";
+	import { isMobileBreakpoint } from "../../lib/check-device";
+	import { gsap, SplitText } from "../../lib/gsap";
 
   const preloader = document.getElementById("site-preloader")
   let showPreloader = preloader.dataset.showPreloader

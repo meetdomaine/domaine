@@ -4,7 +4,7 @@ import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
-import { getRawSvg } from "../utils/raw-svg"
+import { getRawSvg } from "../../../lib/raw-svg"
 
 const { url, client, services, partners, features, metrics, theme, agencyBrand, locale } = Astro.props
 const logo = getRawSvg(client.logo)
