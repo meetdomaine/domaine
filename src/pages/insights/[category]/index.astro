@@ -2,6 +2,7 @@
 import LayoutDomaineBlogIndex from '../../../layouts/Layout-Domaine_BlogIndex.astro';
 import { getCollection } from 'astro:content';
 import { urlFor } from '../../../components/global/utils/cms-queries';
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
     const categories = await getCollection('blogCategories_Domaine')
@@ -14,8 +15,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props;
-const allBlogPosts = await getCollection('blogPosts_Domaine')
-const blogPosts = allBlogPosts.filter((post) => post.data.category._id === content._id)
+const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await getEntry('blogPosts_Domaine', blogPost.slug.current)))
 ---
 <LayoutDomaineBlogIndex
     blogPosts={blogPosts}

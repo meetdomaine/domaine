@@ -7,7 +7,6 @@ import { getEntry } from 'astro:content';
 export async function getStaticPaths() {
     const categories = await getCollection('blogCategories_Studio')
     return categories.map((category) => {
-        // console.log(category)
         return {
             params: { 
                 category: category.id
@@ -19,9 +18,7 @@ export async function getStaticPaths() {
 
 const { content } = Astro.props
 const pageSettings = await getEntry('pageSettings_Domaine', 'page_blog-index-studio')
-
-const allBlogPosts = await getCollection('blogPosts_Studio')
-const blogPosts = allBlogPosts.filter((post) => post.data.category._id === content._id)
+const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
 ---
 <LayoutStudioBlogIndex
     title={`${pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title} | Insights`}

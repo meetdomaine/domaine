@@ -9,7 +9,7 @@ const services_Domaine = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_service" && "Domaine" in agencyBrands[]->name ]{
       ${serviceQuery}
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug }
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug }
     } | order(postDate desc)`)
     return data.map((entry) => ({
         id: entry.slug.current,
@@ -22,7 +22,7 @@ const services_Studio = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_service" && "Studio" in agencyBrands[]->name ]{
       ${serviceQuery}
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug }
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug }
     } | order(postDate desc)`)
     return data.map((entry) => ({
         id: entry.slug.current,
@@ -37,7 +37,7 @@ const serviceGroups_Domaine = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/" in agencyBrands[]->slug.current]{
       ${serviceGroupQuery}
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(*[_type == "type_service" && serviceGroup._ref == ^.^._id ]._id) ]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(*[_type == "type_service" && serviceGroup._ref == ^.^._id ]._id) && isHidden != true ]{ _id, slug },
       pageSectionsDomaine{ sections[]{${globalSectionsFields}}}
   }`)
     return data.map((entry) => ({
@@ -52,7 +52,7 @@ const serviceGroups_Studio = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_serviceGroup" && "/studio" in agencyBrands[]->slug.current ]{
       ${serviceGroupQuery}
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(*[_type == "type_service" && serviceGroup._ref == ^.^._id ]._id) ]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(*[_type == "type_service" && serviceGroup._ref == ^.^._id ]._id) && isHidden != true ]{ _id, slug },
       pageSectionsStudio[]{ sections[]{${globalSectionsFields}}},
     }`)
     return data.map((entry) => ({
@@ -67,7 +67,7 @@ const serviceGroups_Studio = defineCollection({
 const serviceTypes_Domaine = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name ]{
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
       ..., 
       ${serviceTypePageQuery}
     } | order(orderRank)`)
@@ -82,7 +82,7 @@ const serviceTypes_Domaine = defineCollection({
 const serviceTypes_Studio = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_serviceType" && '/studio' in agencyBrands[]->slug.current ]{
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
       ${serviceTypePageQuery}
     } | order(orderRank)`)
     return data.map((entry) => ({
@@ -152,6 +152,7 @@ const blogCategories_Domaine = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" && references(^._id)] ) > 0]{
         ...,
+        "posts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug, postDate } | order(postDate asc),
         metafields{ title, description, image{${imageBaseFields}} }
     }`)
     return data.map((entry) => ({
@@ -166,6 +167,7 @@ const blogCategories_Studio = defineCollection({
   loader: async () => {
     const data = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Studio" && references(^._id)] ) > 0]{
         ...,
+        "posts": *[_type == "type_blog" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug, postDate } | order(postDate asc),
         metafields{ title, description, image{${imageBaseFields}} }
     }`)
     return data.map((entry) => ({
@@ -181,9 +183,8 @@ const blogCategories_Studio = defineCollection({
 const projects_Domaine = defineCollection({
   // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectPageFields}} | order( orderRank asc)`)
+    const data = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine" && isHidden != true ]{${projectPageFields}} | order( orderRank asc)`)
     return data.map((entry) => ({
-        // id: entry._id,
         id: entry.slug.current,
         ...entry
     }))
@@ -193,9 +194,8 @@ const projects_Domaine = defineCollection({
 const projects_Studio = defineCollection({
   // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio"]{${projectPageFields}} | order( orderRank asc)`)
+    const data = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio" && isHidden != true ]{${projectPageFields}} | order( orderRank asc)`)
     return data.map((entry) => ({
-        // id: entry._id,
         id: entry.slug.current,
         ...entry
     }))
@@ -210,7 +210,7 @@ const industries_Domaine = defineCollection({
       ..., 
       excerpt,
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
     }`)
     return data.map((entry) => ({
       // id: entry._id,
@@ -226,7 +226,7 @@ const industries_Studio = defineCollection({
       ..., 
       excerpt,
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
     }`)
     return data.map((entry) => ({
       // id: entry._id,
@@ -247,7 +247,7 @@ const features_Domaine = defineCollection({
       slug, 
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
     }`)
     return data.map((entry) => ({
       // id: entry._id,
@@ -266,7 +266,7 @@ const features_Studio = defineCollection({
       slug, 
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
     }`)
     return data.map((entry) => ({
       // id: entry._id,
@@ -289,7 +289,7 @@ const partners_Domaine = defineCollection({
       tier->{slug, title, createLandingPages}, 
       websiteUrl, 
       orderRank,
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
       metafields{ title, description, image{${imageBaseFields}} },
     }`)
     return data.map((entry) => ({
@@ -311,7 +311,7 @@ const partners_Studio = defineCollection({
       tier->{slug, title, createLandingPages}, 
       websiteUrl, 
       orderRank,
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug },
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
       metafields{ title, description, image{${imageBaseFields}} },
     }`)
     return data.map((entry) => ({
