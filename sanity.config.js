@@ -1,6 +1,6 @@
 // sanity.config.ts
 import {defineConfig} from 'sanity'
-// import {presentationTool} from 'sanity/presentation'
+import {presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
@@ -39,7 +39,10 @@ export default defineConfig({
       // encryptionSalt: 'replace-me-with-a-strong-string',
       // /** You can customize the event type name to trigger on your Github workflows */
       // githubEventType: 'webhook-trigger',
-    })
+    }),
+    presentationTool({
+      previewUrl: location.origin
+    }),
   ],
   schema: {
     types: schemaTypes,

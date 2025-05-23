@@ -1,6 +1,7 @@
 ---
 import { urlFor } from '../lib/cms-queries';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
+import {VisualEditing} from '@sanity/astro/visual-editing'
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -13,6 +14,7 @@ import '../styles/global/forms.css'
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
+
 
 interface Props {
 	title: string;
@@ -30,6 +32,8 @@ interface Props {
 
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+const visualEditingEnabled = import.meta.env.DEV == true
 ---
 
 <!doctype html>

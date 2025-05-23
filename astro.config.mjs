@@ -17,8 +17,11 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: true,
-      studioBasePath: '/admin'
+      useCdn: false,
+      studioBasePath: '/admin',
+      stega: {
+        studioUrl: '/admin',
+      },
     }), 
     solid({
       devtools: true,
@@ -44,7 +47,8 @@ export default defineConfig({
   experimental: {
     clientPrerender: true
   },
-  output: 'static',
+  output: 'server',
+  // output: 'static',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {
