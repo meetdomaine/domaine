@@ -1,16 +1,18 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "./atom-sanityImage.astro"
+import { getTranslationString } from "../../../lib/translations";
 
 interface Props {
-    title?: string,
-    text: string,
-    url: string,
-    image: SanityImage,
-    newTab?: boolean
+    title?: any;
+    subtitle?: any;
+    url: string;
+    image: SanityImage;
+    newTab?: boolean;
+    locale?: string;
 }
 
-const { title, text, url, image, newTab } = Astro.props
+const { title, subtitle, url, image, newTab, locale } = Astro.props
 ---
 <a 
     class="notification-link-card" 
@@ -28,8 +30,12 @@ const { title, text, url, image, newTab } = Astro.props
     </div>
   }
   <div class="card-content">
-    <p class="title">{title}</p>
-    <p class="text">{text}</p>
+    {title && 
+      <p class="title">{getTranslationString(title, locale)}</p>
+    }
+    {subtitle && 
+      <p class="text">{getTranslationString(subtitle, locale)}</p>
+    }
   </div>
 </a>
 

@@ -16,13 +16,13 @@ export default defineType({
     defineField({
       name: 'role',
       title: 'Role',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'bio',
       title: 'Bio',
-      type: 'text',
+      type: 'snippet_locale-text',
     }),
     defineField({
       name: 'image',
@@ -51,7 +51,7 @@ export default defineType({
   preview: {
     select: {
       title: 'name',
-      subtitle: 'role',
+      subtitle: 'role.text',
       image: 'image.image'
     },
     prepare(selection) {

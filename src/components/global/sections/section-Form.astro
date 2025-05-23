@@ -1,7 +1,8 @@
 ---
+import { getTranslationString } from "../../../lib/translations";
 import AtomHubspotForm from "../atoms/atom-hubspotForm.astro";
 
-const { section, key, hubspotFormId, heading, text } = Astro.props;
+const { section, key, hubspotFormId, heading, text, locale } = Astro.props;
 const formId = section?.hubspotFormId ? section.hubspotFormId : hubspotFormId
 const formHeading = section?.heading ? section.heading : heading
 const formText = section?.subheading ? section.subheading : text
@@ -10,11 +11,11 @@ const formText = section?.subheading ? section.subheading : text
 <section class="section-form">
 
     {formHeading && 
-      <h2 class="section-title h5">{formHeading}</h2>
+      <h2 class="section-title h5">{getTranslationString(formHeading, locale)}</h2>
     }
 
     <div class="section-content">
-      {formText && <p class="h6">{formText}</p>}
+      {formText && <p class="h6">{getTranslationString(formText, locale)}</p>}
       <AtomHubspotForm 
         formId={formId}
         key={key}

@@ -8,12 +8,12 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'images',
@@ -49,12 +49,17 @@ export default defineType({
         { type: 'section_linkList'},
     ]
     }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_locale-SEO-fields',
+    }),
   ],
 
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'heading'
+      title: 'title.text',
+      subtitle: 'heading.text'
     },
   },
 })

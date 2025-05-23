@@ -16,12 +16,12 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'text',
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'snippet_locale-text',
       validation: Rule => Rule.required()
     }),
     defineField({
@@ -40,7 +40,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'title', 
+      title: 'title.text', 
     },
     prepare(selection) {
       return {

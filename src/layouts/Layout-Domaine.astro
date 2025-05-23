@@ -4,7 +4,7 @@ import LayoutGlobal from './Layout-Global.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
-import { getBrandSettings_Domaine, getFooterSettings_Domaine } from "../components/global/utils/cms-content"
+import { getBrandSettings_Domaine, getFooterSettings_Domaine } from "../lib/cms-content"
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 
 interface Props {
@@ -18,9 +18,11 @@ interface Props {
     activePath?: string;
     searchExposed?: boolean,
     noIndex?: boolean, 
+    showPreloader?: boolean;
+    locale?: string;
 }
 
-const { title, description, image, searchFilter, activePath, searchExposed, noIndex } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale } = Astro.props;
 
 const currentBrand = await getBrandSettings_Domaine()
 const footerSettings = await getFooterSettings_Domaine()
@@ -35,16 +37,23 @@ const footerSettings = await getFooterSettings_Domaine()
     currentBrand={currentBrand}
     noIndex={noIndex}
     cookieNoticeText={currentBrand.cookieNoticeText}
+    showPreloader={showPreloader}
+    locale={locale}
 >
     <Header
         currentBrand={currentBrand}
         activePath={activePath}
         searchExposed={searchExposed}
+        locale={locale}
     />
     <main>
         <slot />
     </main>
-    <Footer currentBrand={currentBrand} footerSettings={footerSettings}>
+    <Footer 
+        currentBrand={currentBrand} 
+        footerSettings={footerSettings}
+        locale={locale}
+    >
         <AtomHubspotForm 
             formId={footerSettings.newsletterHubspotFormId}
         />

@@ -1,0 +1,41 @@
+---
+import LayoutDomaine from './Layout-Domaine.astro';
+import GlobalBlogFilter from '../components/global/blog/global-BlogFilter.astro';
+import GlobalBlogGrid from '../components/global/blog/global-BlogGrid.astro';
+import SectionTextHeading from '../components/global/sections/section-TextHeading.astro';
+import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import LayoutStudio from './Layout-Studio.astro';
+
+const { title, description, image, heading, subheading, searchFilter, blogPosts, brand, slug, locale } = Astro.props;
+
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_blog-index-studio')
+const allBlogPosts = await getCollection('blogPosts_Studio')
+---
+<LayoutStudio
+    title={ title ? title : pageSettings?.metafields?.title ? pageSettings.metafields.title : "Insights"}
+    description={description ? description : pageSettings?.metafields?.description ? pageSettings.metafields.description : null}
+    image={image ? image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
+    searchFilter={searchFilter}
+    locale={locale}
+    searchFilter="type:blog-category"
+    activePath="/insights"
+    showPreloader={false}
+>
+    <SectionTextHeading 
+        title={heading ? heading : pageSettings.title}
+        heading={subheading ? subheading : pageSettings.heading}
+        largeHeading={true}
+        count={blogPosts ? blogPosts.length : allBlogPosts.length}
+        locale={locale}
+    />
+    <GlobalBlogFilter 
+        brand="studio"
+        slug={slug}
+        locale={locale}
+    />
+    <GlobalBlogGrid 
+        blogPosts={blogPosts ? blogPosts : allBlogPosts}
+        locale={locale}
+    />
+</LayoutStudio>

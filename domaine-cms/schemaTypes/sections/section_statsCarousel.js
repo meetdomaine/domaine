@@ -18,13 +18,13 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'subheading',
       title: 'Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'stats',
@@ -37,13 +37,13 @@ export default defineType({
           {
             name: 'number',
             title: 'Number',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required(),
           },
           {
             name: 'label',
             title: 'Label',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required(),
           },
           {
@@ -56,8 +56,8 @@ export default defineType({
         validation: Rule => Rule.required(),
         preview: {
           select: {
-            title: 'number',
-            subtitle: 'label',
+            title: 'number.text',
+            subtitle: 'label.text',
             media: 'thumbnailImage.image'
           }
         }
@@ -67,7 +67,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading.text', 
     },
     prepare(selection) {
       return {

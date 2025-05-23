@@ -17,6 +17,13 @@ export default defineType({
       name: 'richContent',
       title: 'Content',
       type: 'snippet_rich-content',
+      deprecated: true,
+      // validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'content',
+      title: 'Content',
+      type: 'snippet_locale-rich-content',
       validation: Rule => Rule.required()
     }),
   ],

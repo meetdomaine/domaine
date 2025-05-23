@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import LayoutDomaineEvent from "../../../layouts/Layout-Domaine_Event.astro";
+import { Locales } from "../../../enums/locales";
+
+export async function getStaticPaths() {
+    const events = await getCollection('events')
+    return events.map((event) => {
+        return {
+            params: { event: event.id },
+            props: { content: {...event.data} }
+        }
+    })
+}
+
+const { content } = Astro.props
+---
+<LayoutDomaineEvent 
+  content={content}
+  locale={Locales.DE}
+/>

@@ -1,0 +1,49 @@
+---
+import LayoutDomaine from './Layout-Domaine.astro';
+import Hero from '../components/domaine/sections/work/workIndex-Hero.astro'
+import ProjectsFilter from '../components/global/projects/global-ProjectsFilter.astro'
+import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGrid.astro'
+import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
+import { Translations } from '../lib/locales';
+import { getEntry } from 'astro:content';
+import { getTranslationString } from '../lib/translations';
+
+const { projects, heading, subheading, title, description, image, searchFilter, currentPath, relatedBlogPosts, isTopLevel, locale } = Astro.props;
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_projects-index-domaine')
+---
+<LayoutDomaine
+    title={ `${title ? getTranslationString(title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} | ${locale ? Translations.WORK.locales[locale] : Translations.WORK.name}`}
+    description={description ? getTranslationString(description, locale) : pageSettings?.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
+    image={image ? image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
+    searchFilter={searchFilter}
+    activePath="/work"
+    showPreloader={true}
+    locale={locale}
+>
+    <Hero
+        heading={heading ? heading : pageSettings.heading}
+        subheading={subheading ? subheading : pageSettings.subheading}
+        projectCount={projects.length}
+        isTopLevel={isTopLevel}
+        locale={locale}
+    />
+    <ProjectsFilter 
+        brand="Domaine"
+        currentPath={currentPath}
+        locale={locale}
+    />
+    <slot name="before-grid" /> 
+    <GlobalProjectsGrid 
+        projects={projects}
+        locale={locale}
+    />
+    <slot name="after-grid" /> 
+    {relatedBlogPosts && relatedBlogPosts.length > 2 &&
+        <SectionBlogFeed 
+            posts={relatedBlogPosts}
+            heading="Related Posts"
+            brand="domaine"
+            locale={locale}
+        />
+    }
+</LayoutDomaine>

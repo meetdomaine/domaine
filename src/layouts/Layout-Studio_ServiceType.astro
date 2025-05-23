@@ -1,0 +1,68 @@
+---
+import { sanityClient } from "sanity:client"
+import LayoutDomaine from "../layouts/Layout-Domaine.astro"
+import SectionServiceTypeHero from "../components/global/services/serviceType-Hero.astro"
+import { blogCardFields, projectGridFields, serviceTypePageQuery } from "../lib/cms-queries"
+import SectionProjectsFeed from "../components/global/sections/section-ProjectsFeed.astro"
+import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astro"
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro"
+import SectionForm from "../components/global/sections/section-Form.astro"
+import { getTranslationString } from "../lib/translations"
+import LayoutStudio from "./Layout-Studio.astro"
+
+const { content, locale } = Astro.props;
+// console.log(content)
+
+const relatedProjects = await sanityClient.fetch(`
+    *[ _type == "type_project"
+        && '${content._id}' in services[]->serviceGroup->serviceType._ref
+    ]{${projectGridFields}} | order(orderRank)`)
+
+const relatedBlogPosts = await sanityClient.fetch(`
+    *[ _type == "type_blog"
+        && '${content._id}' in services[]->serviceGroup->serviceType._ref
+    ]{${blogCardFields}} | order(orderRank)`)
+
+// console.log(content.pageSectionsDomaine)
+---
+<LayoutStudio
+    title={content.metafields && content.metafields.title ? content.metafields.title : getTranslationString(content.title, locale)}
+    searchFilter="type:service-type"
+    activePath="/studio/services"
+    showPreloader={true}
+    locale={locale}
+>
+    <SectionServiceTypeHero
+        serviceType={content}
+        brand="studio"
+        locale={locale}
+    />
+    
+    {content.pageSectionsStudio?.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} locale={locale} />
+    ))}
+
+    <!-- {relatedBlogPosts && relatedBlogPosts?.length > 2 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={relatedBlogPosts}
+            sidebarTitle={content.title}
+        />
+    }
+
+    {content.formHeading && content.hubspotFormId &&
+        <SectionForm 
+            heading={content.formHeading}
+            text={content.formText}
+            hubspotFormId={content.hubspotFormId}
+        />
+    }
+
+    {relatedProjects?.length > 0 &&
+        <SectionProjectsFeed 
+            heading={`${content.title} Work`}
+            projects={relatedProjects}
+        />
+    } -->
+
+</LayoutStudio>

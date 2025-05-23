@@ -1,34 +1,10 @@
 ---
-import { sanityClient } from "sanity:client";
-import LayoutStudio from "../../../layouts/Layout-Studio.astro";
-import SectionServiceLandingHero from "../../../components/studio/sections/services/services-Hero.astro";
-import { globalSectionsFields, imageFields } from "../../../components/global/utils/cms-queries";
-import GlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
+import { getCollection } from "astro:content";
+import LayoutStudioServicesIndex from "../../../layouts/Layout-Studio_ServicesIndex.astro";
 
-const pageSettings = await sanityClient.fetch(`
-    *[_type == "page_services-index-studio" && _id == "page_services-index-studio"]{
-        title,
-        heading,
-        images[]{${imageFields}},
-        sections[]{${globalSectionsFields}}
-    }[0]
-`)
 
-console.log(pageSettings)
-
+// const serviceGroups = await getCollection('serviceGroups_Studio')
+// console.log(serviceGroups)
 ---
-<LayoutStudio
-    title="Services"
-    searchFilter="type:page"
-    activePath="/studio/services"
->   
-    <SectionServiceLandingHero 
-        title={pageSettings.title}
-        heading={pageSettings.heading}
-        images={pageSettings.images}
-    />
-
-    {pageSettings.sections && pageSettings.sections.map((section, i) => (
-        <GlobalSections brand="studio" section={section} key={i} />
-    ))}
-</LayoutStudio>
+<LayoutStudioServicesIndex 
+/>

@@ -1,0 +1,53 @@
+---
+import ServicesHero from "../components/studio/sections/services/services-Hero.astro"
+import { getTranslationString } from "../lib/translations"
+import LayoutStudio from "./Layout-Studio.astro"
+
+const { content, locale } = Astro.props
+---
+<LayoutStudio
+    title={content.data.metafields && content.data.metafields.title ? content.data.metafields.title : getTranslationString(content.data.title, locale)}
+    searchFilter="type:service-group"
+    activePath="/studio/services"
+    showPreloader={true}
+>
+    <ServicesHero
+        subservices={content.data.services}
+        brand="studio"
+        title={content.data.title}
+        excerpt={content.data.excerpt}
+        description={content.data.description}
+        images={content.data.images}
+        breadcrumbs={[
+            {
+                title: 'Services /',
+                url: '/studio/services/'
+            },
+            {
+                title: content.data.serviceType.title,
+                url: `/studio/services/${content.data.serviceType.slug.current}`
+            },
+        ]}
+    />
+
+    <!-- {content.relatedBlogPosts && content.relatedBlogPosts.length > 0 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={content.relatedBlogPosts}
+        />
+    } -->
+
+    <!-- {content.relatedProjects && content.relatedProjects.length > 0 &&
+        <GlobalProjectsGrid 
+            heading={`${content.title} Work`}
+            projects={content.relatedProjects}
+        />
+    } -->
+</LayoutStudio>
+
+<style>
+    .services {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+</style>

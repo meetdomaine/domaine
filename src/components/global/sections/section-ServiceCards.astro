@@ -1,8 +1,9 @@
 ---
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
 import AtomButton from "../atoms/atom-button.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 
-const { section, brand, key } = Astro.props
+const { section, brand, key, locale } = Astro.props
 const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
 ---
 <section class="section-service-cards">
@@ -14,25 +15,40 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
             useGrouping: false
           })}
         </p>
-        <p class="utility">{serviceEntry.service.title}</p>
+        <p class="utility">{getTranslationString(serviceEntry.service.title, locale)}</p>
       </div>
       <div class="card-content">
         <div class="card-text">
         <div class="card-title">
-          <a class="service-title" href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`}><h2 class="h1">{serviceEntry.service.title}</h2></a>
+          <a 
+            class="service-title" 
+            href={getLocaleUrl(`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`, locale)}
+          >
+            <h2 class="h1">{getTranslationString(serviceEntry.service.title, locale)}</h2>
+          </a>
           <div class="card-details">
-            <p>{serviceEntry.service.description}</p>
-            <AtomButton 
-              text="Learn More"
-              url={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`}
-              style="primary"
-            />
+            <p>{brand === "studio" ? getTranslationString(serviceEntry.service.descriptionStudio, locale) : getTranslationString(serviceEntry.service.description, locale)}</p>
+            {(serviceEntry.showButton && serviceEntry.buttonText) &&
+              <AtomButton 
+                text={getTranslationString(serviceEntry.buttonText, locale)}
+                url={getLocaleUrl(`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}`, locale)}
+                style="primary"
+              />
+            }
           </div>
         </div>
         <div class="service-groups">
-          {serviceEntry.service.serviceGroups.map((serviceGroup) => (
-            <a href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}/${serviceGroup.slug.current}`} class="service-group h5">{serviceGroup.title}</a>
-          ))}
+          {serviceEntry.service.serviceGroups.map((serviceGroup) => {
+            if (serviceEntry.enableServiceLinks) return (
+              <a 
+                href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}/${serviceGroup.slug.current}`} 
+                class="service-group h5"
+              >{getTranslationString(serviceGroup.title, locale)}</a>
+            )
+            return (
+              <p class="service-group h5">{getTranslationString(serviceGroup.title, locale)}</p>
+            )
+          })}
         </div>
       </div>
       

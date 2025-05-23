@@ -17,7 +17,7 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
 ---
 {popoverTarget ? 
     <button 
-        class={`button ${classList} ${style === "tertiary" ? "h5" : "caption"} ${invert ? "color-invert" : ""}`} 
+        class={`button ${classList ? classList : ""} ${style === "tertiary" ? "h5" : "caption"} ${invert ? "color-invert" : ""}`} 
         data-style={style}
         data-fill={fill ? "true" : "false"}
         popovertarget={popoverTarget}
@@ -27,7 +27,7 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
     </button>
 :
     <a 
-        class={`button ${classList} ${style === "text-link" ? "utility" : style === "tertiary" ? "h5" : "caption"} ${invert ? "color-invert" : ""}`} 
+        class={`button ${classList ? classList : ""} ${style === "text-link" ? "utility" : style === "tertiary" ? "h5" : "caption"} ${invert ? "color-invert" : ""}`} 
         href={url} 
         target={newTab ? "_blank" : ""} 
         data-style={style}
@@ -39,7 +39,7 @@ const { text, url, icon, newTab, style, invert, classList, fill, popoverTarget} 
 }
 
 <script>
-import { lenis } from "../utils/lenis"
+import { lenis } from "../../../lib/lenis"
 
     const buttons = Array.from(document.querySelectorAll('.button'))
     buttons.forEach((button) => {
@@ -48,7 +48,7 @@ import { lenis } from "../utils/lenis"
             const target = document.querySelector(path)
             button.addEventListener("click", (e) => {
                 e.preventDefault()
-                console.log(path)
+                // console.log(path)
                 lenis.scrollTo(target, {
                     offset: -200,
                 })

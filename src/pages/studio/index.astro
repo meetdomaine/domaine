@@ -1,10 +1,11 @@
 ---
 import { sanityClient } from "sanity:client";
-import { globalSectionsFields, imageFields, videoFields, projectGridFields } from "../../components/global/utils/cms-queries";
+import { globalSectionsFields, imageFields, videoFields, projectGridFields } from "../../lib/cms-queries";
 import LayoutStudio from "../../layouts/Layout-Studio.astro";
 import HomeHero from "../../components/studio/sections/home/home-Hero.astro";
 import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
 import AtomSanityMedia from "../../components/global/atoms/atom-sanityMedia.astro";
+import LayoutStudioHome from "../../layouts/Layout-Studio_Home.astro";
 
 const pageSettings = await sanityClient.fetch(`
     *[_type == "page_home-studio"][0]{ 
@@ -22,27 +23,10 @@ const pageSettings = await sanityClient.fetch(`
             ${videoFields} 
         } 
     }
-    `)
+`)
 
 // console.log(pageSettings)
 ---
-<LayoutStudio
-    theme="dark"
-    title="Home"
-    searchFilter="type:page"
-    searchExposed={true}
->
-    <HomeHero 
-        eyebrow={pageSettings.eyebrow}
-        heading={pageSettings.heading}
-        subheading={pageSettings.subheading}
-        button={pageSettings.button}
-        textColor={pageSettings.heroTextColor}
-        projects={pageSettings.projects}
-    />
-
-    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
-        <GlobalSections brand="studio" section={section} key={i} />
-    ))}
-
-</LayoutStudio>
+<LayoutStudioHome 
+    content={pageSettings}
+/>

@@ -1,5 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
+const { env } = Astro.locals.runtime;
+import cachedFetch from '../../../lib/cachedFetch';
 
 interface Props {
     formId: any,
@@ -9,33 +11,43 @@ interface Props {
 
 const { formId, buttonToggles, key } = Astro.props
 
+// const portalId = env.HUBSPOT_PORTAL_ID
+// const accessToken = env.HUBSPOT_ACCESS_TOKEN
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 const accessToken = import.meta.env.HUBSPOT_ACCESS_TOKEN
 
-const hubspotResponse = await fetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
+const formData = await cachedFetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
     method: "GET",
     headers: {
         'Authorization': `Bearer ${accessToken}`,
         "Content-type": "application/json; charset=UTF-8"
     }
 })
-// console.log(formId)
-const formData = await hubspotResponse.json()
+
+// const formData = await hubspotResponse.json()
 const fieldGroups = await formData.fieldGroups
 const consentData = await formData.legalConsentOptions
 
-const fields = await fieldGroups.flatMap((group) => {
-    return group.fields.map((field) => {
+// console.log(fieldGroups)
+
+const fields = await fieldGroups?.flatMap((group) => {
+  // console.log(group)
+  if (group.fields) {
+    return group.fields?.map((field) => {
+      // console.log(field)
         return field
     })
+  }
+  // console.log(group)
+  return null
 })
 
-// console.log(formData.fieldGroups[0].fields)
-// console.log(fields)
-// console.log(consentData)
+// console.log(formData)
 ---
 <form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
-    {fieldGroups.map((group) => {
+    {fieldGroups?.map((group) => {
+      if (group.fields) {
+        
         return (
             <div class="form-field-group">
         
@@ -185,6 +197,13 @@ const fields = await fieldGroups.flatMap((group) => {
             })}
             </div>
         )
+      }
+
+      if (group.richText) return (
+        <div class="rich-text-block">
+          <Fragment set:html={group.richText} />
+        </div>
+        )
     })}
 
     {consentData && consentData.communicationsCheckboxes && 
@@ -238,12 +257,6 @@ const fields = await fieldGroups.flatMap((group) => {
 
 
 <script define:vars={{ portalId, formId, consentData, fields, key }}>
-
-    // const portalIdTest = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID
-    // const accessTokenTest = import.meta.env.PUBLIC_HUBSPOT_ACCESS_TOKEN
-    // console.log(portalIdTest)
-    // console.log(accessTokenTest)
-
 
     const contactForm = document.querySelector(`#form-${formId}${key != undefined ? `-${key}` : ''}`)
     const submitButton = contactForm.querySelector('input[type="submit"]')
@@ -307,7 +320,9 @@ const fields = await fieldGroups.flatMap((group) => {
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
 
-            const field = fields.find((field) => field.name === key)
+            // console.log(key)
+
+            const field = fields.find((field) => field?.name === key)
             let value = formObject[key]
 
             if (key === 'utm_source' && source) value = source
@@ -405,5 +420,9 @@ const fields = await fieldGroups.flatMap((group) => {
     .confirmation-icon {
         width: 1em;
         height: auto;
+    }
+
+    .rich-text-block {
+      padding-top: var(--space-2xs);
     }
 </style>

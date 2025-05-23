@@ -9,12 +9,12 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
     defineField({
       name: 'showIcon',
@@ -32,31 +32,36 @@ export default defineType({
                 {
                     name: 'title',
                     title: 'Title',
-                    type: 'string',
+                    type: 'snippet_locale-string',
                 },
                 {
                     name: 'links',
                     title: 'Links',
-                    type: 'snippet_link-list',
+                    type: 'snippet_locale-link-list',
                 }
-            ]
+            ],
+            preview: {
+              select: {
+                title: 'title.text'
+              }
+            }
         }],
         validation: Rule => Rule.max(3),
     }),
     defineField({
       name: 'agencyBrandsHeading',
       title: 'Agency Brands: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'practicesHeading',
       title: 'Practices: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'newsletterHeading',
       title: 'Newsletter: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'newsletterHubspotFormId',
@@ -91,19 +96,37 @@ export default defineType({
       }),
     }),
     defineField({
+      name: 'emailAddress',
+      title: 'Contact Email',
+      type: 'email',
+    }),
+    defineField({
+      name: 'emailLabel',
+      title: 'Email Label',
+      description: 'If none added, will use the email address.',
+      type: 'snippet_locale-string',
+    }),
+    defineField({
+      name: 'phoneNumber',
+      title: 'Phone Number',
+      description: 'No country code needed.',
+      type: 'number',
+    }),
+    defineField({
+      name: 'phoneNumberLabel',
+      title: 'Phone Number Label',
+      description: 'If none added, will use the phone number.',
+      type: 'snippet_locale-string',
+    }),
+    defineField({
       name: 'legalLinks',
       title: 'Legal Links',
-      type: 'snippet_link-list',
+      type: 'snippet_locale-link-list',
     }),
     defineField({
       name: 'copyrightText',
       title: 'Copyright Text',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
-    // defineField({
-    //     name: 'seoDescription',
-    //     title: 'SEO Description',
-    //     type: 'text',
-    // }),
   ],
 })

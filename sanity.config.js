@@ -1,6 +1,6 @@
 // sanity.config.ts
 import {defineConfig} from 'sanity'
-// import {presentationTool} from 'sanity/presentation'
+import {presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import {media} from 'sanity-plugin-media'
 import {muxInput} from 'sanity-plugin-mux-input'
@@ -11,6 +11,7 @@ import { structure } from './domaine-cms/schemaTypes/structure'
 import { schemaTypes } from './domaine-cms/schemaTypes'
 // import { vercelDeployTool } from 'sanity-plugin-vercel-deploy'
 import { webhooksTrigger } from 'sanity-plugin-webhooks-trigger'
+import { resolve } from './src/lib/sanity-resolver'
 
 
 export default defineConfig({
@@ -36,10 +37,11 @@ export default defineConfig({
     webhooksTrigger({
       title: 'Deploy',
       text: 'I am buggy, so you can ignore my error messages :)',
-      // encryptionSalt: 'replace-me-with-a-strong-string',
-      // /** You can customize the event type name to trigger on your Github workflows */
-      // githubEventType: 'webhook-trigger',
-    })
+    }),
+    presentationTool({
+      resolve: resolve,
+      previewUrl: location.origin
+    }),
   ],
   schema: {
     types: schemaTypes,

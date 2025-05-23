@@ -1,14 +1,19 @@
 ---
 import AtomTag from "../atoms/atom-tag.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
+import { getRelativeLocaleUrl } from "astro:i18n"
 
-const { section, brand } = Astro.props
+const { section, locale } = Astro.props
 // console.log(section.linkCardImage)
+// console.log(section.stats)
+
 ---
 <section class="section-text-feed">
     <div class="section-content">
-        <h1 class="heading h2" data-animate-viewport="true" data-animation="fade-up">{section.heading}</h1>
-        {section.text && <p class="text caption">{section.text}</p>}
+        <h1 class="heading h2" data-animate-viewport="true" data-animation="fade-up">
+            {locale && section.heading.translations[locale] ? section.heading.translations[locale] : section.heading.text}
+        </h1>
+        {section.subheading && <p class="text caption">{locale && section.subheading.translations[locale] ? section.subheading.translations[locale] : section.subheading.text}</p>}
         {section.stats &&
             <div class="tags">
                 {section.stats.map((stat, i) => (
@@ -19,8 +24,8 @@ const { section, brand } = Astro.props
                         data-animation-delay={150 * i}
                     >
                         <AtomTag 
-                            title={stat.number}
-                            text={stat.label}
+                            title={locale && stat.number.translations?.[locale] ? stat.number.translations[locale] : stat.number.text}
+                            text={locale && stat.label.translations?.[locale] ? stat.label.translations[locale] : stat.label.text}
                         />
                     </div>
                 ))}
@@ -31,12 +36,16 @@ const { section, brand } = Astro.props
     {section.linkCardHeading && section.linkCardURL &&
         <a 
             class="link-card" 
-            style={`background-color: ${section.linkCardColor?.hex}`} 
+            style={`
+              background-color: ${section.linkCardColor?.hex};
+              --image-width: ${section.imageWidth};
+            `} 
             data-color-scheme={section.linkCardTextColor === "light" ? "invert" : "default"}
-            href={section.linkCardURL}
+            href={locale ? getRelativeLocaleUrl(locale, section.linkCardURL): section.linkCardURL}
             data-animate-viewport="true" 
             data-animation="fade"
             data-jumplink={section.linkCardIsJumplink ? `${section.linkCardURL}` : "false"}
+            data-orientation={section.orientation}
         >
             {section.linkCardImage && 
                 <AtomSanityImage 
@@ -44,7 +53,7 @@ const { section, brand } = Astro.props
                     image={section.linkCardImage.image}
                 />
             }
-            <p class="link-card-text">{section.linkCardHeading}</p>
+            <p class="link-card-text">{locale && section.linkCardHeading.translations?.[locale] ? section.linkCardHeading.translations[locale] : section.linkCardHeading.text}</p>
         </a>
     }
 </section>
@@ -96,8 +105,18 @@ const { section, brand } = Astro.props
         text-decoration: none;
     }
 
+    .link-card[data-orientation="vertical"] {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .link-card[data-orientation="vertical"] :global(img) {
+      flex: 0 0 auto;
+      max-width: calc(var(--image-width) * 1%);
+    }
+
     .link-card :global(img) {
-        flex: 0 0 15%;
+        flex: 0 0 calc(var(--image-width) * 1%);
         height: auto;
         min-width: 0;
     }

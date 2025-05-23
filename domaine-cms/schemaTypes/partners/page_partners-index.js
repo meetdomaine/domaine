@@ -8,13 +8,13 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -23,19 +23,20 @@ export default defineType({
       type: 'snippet_video',
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'string',
+      name: 'subheading',
+      title: 'Subheading',
+      description: 'Formerly called Text',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'formHeading',
       title: 'Form: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'formText',
       title: 'Form: Text',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'hubspotFormId',
@@ -45,13 +46,13 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
   ],
 
   preview: {
     select: {
-      title: 'title', 
+      title: 'title.text', 
     },
   },
 })

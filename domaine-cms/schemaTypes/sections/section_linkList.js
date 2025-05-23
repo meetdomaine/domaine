@@ -18,13 +18,13 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'text',
+      type: 'snippet_locale-text',
     }),
     defineField({
       name: 'links',
@@ -36,13 +36,13 @@ export default defineType({
           {
             name: 'title',
             title: 'Title',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required()
           },
           {
             name: 'subtitle',
             title: 'Subtitle',
-            type: 'string',
+            type: 'snippet_locale-string',
           },
           {
             name: 'url',
@@ -62,8 +62,8 @@ export default defineType({
         ],
         preview: {
           select: {
-            title: 'title',
-            subtitle: 'subtitle'
+            title: 'title.text',
+            subtitle: 'subtitle.text'
           },
           prepare(selection) {
             const { title, subtitle } = selection
@@ -80,7 +80,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
     },
     prepare(selection) {
       const { title } = selection

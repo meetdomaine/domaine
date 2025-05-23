@@ -1,32 +1,37 @@
 ---
 import { Icon } from "astro-icon/components"
-import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
-import { getAgencyBrands } from "./utils/cms-content"
-import { getRawSvg } from "./utils/raw-svg"
+// import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
+import { getAgencyBrands } from "../../lib/cms-content"
+import { getRawSvg } from "../../lib/raw-svg"
+import { getRelativeLocaleUrl } from "astro:i18n"
 
-const { currentBrand, footerSettings } = Astro.props
+const { currentBrand, footerSettings, locale } = Astro.props
 
 const agencyBrands = await getAgencyBrands()
 
 const logos = await agencyBrands.map( async (brand) => {
     return await getRawSvg(brand.logo)
 })
-
-
 ---
 <footer data-color-scheme="brand-02">
     <div class="footer-inner">
 
         <div class="footer-cta">
             <div class="cta-text">
-                <h2 class="heading">{footerSettings.heading}</h2>
-                <a 
-                    href={footerSettings.button.url} 
-                    class="button" data-style="primary"
-                >
-                    {footerSettings.button.text}
-                    <Icon name="arrow-diagonal" />
-                </a>
+                {footerSettings.heading &&
+                    <h2 class="heading">
+                        {locale && footerSettings.heading.translations?.[locale] ? footerSettings.heading.translations[locale] : footerSettings.heading.text}
+                    </h2>
+                }
+                {footerSettings.button.label && footerSettings.button.url &&
+                    <a 
+                        href={locale ? getRelativeLocaleUrl(locale, footerSettings.button.url) : footerSettings.button.url} 
+                        class="button" data-style="primary"
+                    >
+                        {locale && footerSettings.button.label.translations?.[locale] ? footerSettings.button.label.translations[locale] : footerSettings.button.label.text}
+                        <Icon name="arrow-diagonal" />
+                    </a>
+                }
             </div>
             {footerSettings.showIcon && 
                 <Icon name="dot-peace" class="cta-icon" />
@@ -38,17 +43,23 @@ const logos = await agencyBrands.map( async (brand) => {
             <div class="link-columns">
                 {footerSettings.linkColumns.map((column) => (
                     <div class="link-column">
-                        <p class="link-column___title">{column.title}</p>
+                        <p class="link-column___title">{locale && column.title.translations?.[locale] ? column.title.translations[locale] : column.title.text}</p>
                         <div class="link-column__links">
-                            {column.links.links.map((link) => (
-                                <a class="link-column__link" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+                            {column.links.links?.map((link) => (
+                                <a 
+                                    class="link-column__link" 
+                                    href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 
+                                    target={link.newTab ? "_blank" : "_self"}
+                                >
+                                    {locale && link.linkText.translations?.[locale] ? link.linkText.translations[locale] : link.linkText.text}
+                                </a>
                             ))}
                         </div>
                     </div>
                 ))}
             </div>
              <div class="footer-form">
-                <p class="footer-form__title">{footerSettings.newsletterHeading}</p>
+                <p class="footer-form__title">{locale && footerSettings.newsletterHeading.translations?.[locale] ? footerSettings.newsletterHeading.translations[locale] : footerSettings.newsletterHeading.text}</p>
                 <slot />
             </div>
 
@@ -58,18 +69,18 @@ const logos = await agencyBrands.map( async (brand) => {
             <div class="agency-brands">
                 {footerSettings.agencyBrandsHeading && 
                     <div class="agency-brands__title">
-                        {footerSettings.agencyBrandsHeading}
+                        {locale && footerSettings.agencyBrandsHeading.translations?.[locale] ? footerSettings.agencyBrandsHeading.translations[locale] : footerSettings.agencyBrandsHeading.text}
                     </div>
                 }
                 <div class="agency-brands__content">
-                    {agencyBrands.map((brand, i) => (
+                    {agencyBrands?.map((brand, i) => (
                         <a class="brand-card" href={brand.url}>
                             <div class="brand-logo">
                                 <Fragment set:html={logos[i]} />
                             </div>
                             <div class="brand-info">
                                 <p class="brand-info__title h6">{brand.name}</p>
-                                <p class="brand-info__excerpt caption">{brand.excerpt}</p>
+                                <p class="brand-info__excerpt caption">{locale && brand.excerpt.translations?.[locale] ? brand.excerpt.translations[locale] : brand.excerpt.text}</p>
                             </div>
                         </a>
                     ))}
@@ -82,21 +93,44 @@ const logos = await agencyBrands.map( async (brand) => {
 
     <div class="subfooter">
 
-        <div class="social-links">
-            {footerSettings.instagramUrl &&
-                <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" /></a>
-            }
-            {footerSettings.twitterUrl &&
-                <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" /></a>
-            }
-            {footerSettings.linkedInUrl &&
-                <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
-            }
+        <div class="brand-links">
+
+          <div class="social-links">
+              {footerSettings.instagramUrl &&
+                  <a href={footerSettings.instagramUrl} target="_blank"><Icon name="social-instagram" class="social-icon" /></a>
+              }
+              {footerSettings.twitterUrl &&
+                  <a href={footerSettings.twitterUrl} target="_blank"><Icon name="social-twitter" class="social-icon" /></a>
+              }
+              {footerSettings.linkedInUrl &&
+                  <a href={footerSettings.linkedInUrl} target="_blank"><Icon name="social-linkedin" class="social-icon" /></a>
+              }
+            </div>
+            <div class="contact-links">
+              {footerSettings.emailAddress &&
+                  <a 
+                    href={`mailto:${footerSettings.emailAddress}?subject=Domaine | Agency Website Contact`} 
+                    class="contact-button caption"
+                  ><Icon name="icon-email" class="social-icon" />{footerSettings.emailLabel ? footerSettings.emailLabel : footerSettings.emailAddress}</a>
+              }
+              {footerSettings.phoneNumber &&
+                <a 
+                  href={`tel:+1-929-930-5341`} 
+                  class="contact-button caption"
+                ><Icon name="icon-phone" class="social-icon" />{footerSettings.phoneNumberLabel ? footerSettings.phoneNumberLabel : footerSettings.phoneNumber}</a>
+              }
+            </div>
         </div>
 
         <div class="subfooter-links">
-            {footerSettings.legalLinks.links.map((link) => (
-                <a class="subfooter-link caption" href={link.linkUrl} target={link.newTab ? "_blank" : "_self"}>{link.linkText} </a>
+            {footerSettings.legalLinks?.links?.map((link) => (
+                <a 
+                    class="subfooter-link caption" 
+                    href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 
+                    target={link.newTab ? "_blank" : "_self"}
+                >
+                    {locale && link.linkText.translations?.[locale] ? link.linkText.translations[locale] : link.linkText.text}
+                </a>
             ))}
             {footerSettings.copyrightText && <p class="subfooter-link caption">{footerSettings.copyrightText} </p>}
         </div>
@@ -313,22 +347,37 @@ const logos = await agencyBrands.map( async (brand) => {
 
     .subfooter {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         flex-direction: row;
         gap: var(--space-md);
         justify-content: space-between;
         flex-wrap: wrap;
     }
 
-    .social-links {
-        display: flex;
-        flex-direction: row;
-        gap: var(--space-md);
+    .brand-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .social-links,
+    .contact-links {
+      display: flex;
+      flex-direction: row;
+      gap: var(--space-md);
     }
 
     .social-icon {
         width: var(--icon-md);
         height: var(--icon-md);
+    }
+
+    .contact-button {
+      text-decoration: none;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-2xs);
     }
 
     .subfooter-links {

@@ -1,28 +1,31 @@
 ---
+import { getCollection } from 'astro:content';
+import { Translations } from '../../../lib/locales';
+import { getLocaleUrl, getTranslationString } from '../../../lib/translations';
 import AtomTag from '../atoms/atom-tag.astro';
-import { getBlogCategories_Domaine } from '../utils/cms-content';
+import { getBlogCategories_Domaine, getBlogCategories_Studio } from '../../../lib/cms-content';
 
-const { brand, slug } = Astro.props
+const { brand, slug, locale } = Astro.props
 
 // const categories = await sanityClient.fetch(`
 //     *[_type == "type_blogCategory" 
 //         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
 
-const categories = await getBlogCategories_Domaine()
+const categories = brand === "domaine" ? await getCollection('blogCategories_Domaine') : await getCollection('blogCategories_Studio')
 // console.log(categories)
 ---
 <div class="blog-filters">
     <a
         class="filter-all filter caption" 
-        href={`${brand == "studio" ? '/studio' : ''}/insights/`}
+        href={getLocaleUrl(`${brand == "studio" ? '/studio' : ''}/insights/`, locale)}
         data-active={!slug ? "true" : "false"}
-    >All Insights</a>
+    >{locale ? Translations['ALL-INSIGHTS'].locales[locale] : Translations['ALL-INSIGHTS'].name}</a>
     <div class="filter-tags">
         {categories.map((category) => (
             <AtomTag 
-                title={category.title}
-                url={`${brand == "studio" ? '/studio' : ''}/insights/${category.slug.current}`}
-                theme={slug && slug.current == category.slug.current ? "glass-dark" : "default"}
+                title={getTranslationString(category.data.title, locale)}
+                url={getLocaleUrl(`${brand == "studio" ? '/studio' : ''}/insights/${category.data.slug.current}`, locale)}
+                theme={slug?.current == category.data.slug.current ? "glass-dark" : "default"}
             />
         ))}
     </div>

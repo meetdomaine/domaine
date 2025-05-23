@@ -1,14 +1,19 @@
 ---
 import { sanityClient } from "sanity:client";
 import BlogCard from "../blog/global-BlogCard.astro";
-import { blogCardFields } from "../utils/cms-queries"
+import { blogCardFields } from "../../../lib/cms-queries"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomTag from "../atoms/atom-tag.astro";
-import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../utils/cms-content";
+import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../../../lib/cms-content";
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
-import { formatDate } from "../utils/format-date";
+import { formatDate } from "../../../lib/format-date";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
+import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
+import { Translations } from "../../../lib/locales";
 
-const { section, brand, heading, subheading, posts, sidebarTitle } = Astro.props
+const { section, brand, heading, subheading, posts, sidebarTitle, locale } = Astro.props
 
 let blogPosts
 let featuredPost
@@ -16,33 +21,34 @@ let featuredPostDate
 let sidebarTitleText
 
 if (section?.featuredCategory) {
-    blogPosts = await sanityClient.fetch(`
-        *[_type == "type_blog" 
-            && agencyBrand->slug.current == "${brand === 'studio' ? '/studio' : '/'}" 
-                && references('${section.featuredCategory._id}')]{ ${blogCardFields} } | order( postDate desc)`)
-    sidebarTitleText = section.featuredCategory.title
+    const category = await getEntry(brand === 'studio' ? 'blogCategories_Studio' : 'blogCategories_Domaine', section.featuredCategory.slug.current)
+    blogPosts = category.data.posts
+    sidebarTitleText = sidebarTitle ? sidebarTitle : section.featuredCategory.title
 } else if (posts) {
     blogPosts = posts
-    sidebarTitleText = sidebarTitle ? sidebarTitle : "Insights"
+    sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 } else {
-    blogPosts = brand === "studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
-    sidebarTitleText = sidebarTitle ? sidebarTitle : "Insights"
+    blogPosts = brand === "studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
+    sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 }
 
 if (section?.featuredPost) {
-    featuredPost = section.featuredPost
+    featuredPost = await getEntry(brand === "studio" ? 'blogPosts_Studio' : 'blogPosts_Domaine', section.featuredPost.slug.current)
 } else {
     featuredPost = blogPosts.shift()
 }
 
 if (featuredPost) {
-    featuredPostDate = formatDate(featuredPost.postDate)
+    featuredPostDate = formatDate(featuredPost.data.postDate)
 }
+// console.log(featuredPost)
+
 ---
 <section class="section-blog-feed" data-color-scheme="brand-01" data-pagefind-ignore>
     <div class="section-title">
-        <h2 class="h5">{(section && section.heading) ? section.heading : heading ? heading : "Insights"}</h2>
-        {((section && section.subheading) || subheading ) && <p>{(section && section.subheading) ? section.subheading : subheading}</p>}
+        {(section?.heading || heading) && 
+            <h2 class="h5">{section?.heading ? getTranslationString(section.heading, locale) : heading ? getTranslationString(heading, locale) : "Insights"}</h2>
+        }
     </div>
 
     {featuredPost && 
@@ -50,10 +56,10 @@ if (featuredPost) {
             <article class="featured-post">
                 <a 
                     class="featured-post-image" 
-                    href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
+                    href={getLocaleUrl(`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.data.category.slug.current}/${featuredPost.data.slug.current}`, locale)}
                 >
                     <AtomSanityImage 
-                        image={featuredPost.thumbnailImage.image}
+                        image={featuredPost.data.thumbnailImage.image}
                         sizes="50vw"
                         aspectRatio={3 / 4}
                     />
@@ -61,43 +67,47 @@ if (featuredPost) {
                 <div class="featured-post-content">
                     <div class="featured-post-info">
                         <AtomTag 
-                            text={featuredPost.category.title}
-                            url={`${featuredPost.agencyBrand.slug.current}insights/${featuredPost.category.slug.current}`}
+                            text={getTranslationString(featuredPost.data.category.title, locale)}
+                            url={getLocaleUrl(`${featuredPost.data.agencyBrand.slug.current}insights/${featuredPost.data.category.slug.current}`, locale)}
                         />
                         {featuredPostDate && <p class="featured-post-date">{featuredPostDate}</p>}
                     </div>
                     <a 
                         class="featured-post-heading h2" 
-                        href={`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`}
-                    >{featuredPost.title}</a>
-                    <p class="">{featuredPost.excerpt}</p>
+                        href={getLocaleUrl(`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.data.category.slug.current}/${featuredPost.id}`, locale)}
+                    >
+                        {getTranslationString(featuredPost.data.title.text, locale)}
+                    </a>
+                    <p class="">{getTranslationString(featuredPost.data.excerpt.text, locale)}</p>
                 </div>
             </article>
-                <aside class="sidebar" data-color-scheme="glass-dark">
-                    <p class="sidebar-heading">{sidebarTitleText}</p>
-                    <div class="sidebar-posts">
-                        {blogPosts.slice(0, 3).map((post) => (
-                            <GlobalBlogTile 
-                                post={post}
-                                currentBrand={brand}
-                            />
-                        ))}
-                    </div>
-                </aside>
+            <aside class="sidebar" data-color-scheme="glass-dark">
+                <p class="sidebar-heading">{sidebarTitleText}</p>
+                <div class="sidebar-posts">
+                    {blogPosts.slice(0, 3)?.map((post) => (
+                        <GlobalBlogTile 
+                            post={post.data}
+                            currentBrand={brand}
+                            locale={locale}
+                        />
+                    ))}
+                </div>
+            </aside>
         </div>
     }
     {blogPosts.length >= 6 &&
         <div class="section-posts">
-            {blogPosts.slice(3, 6).map((post) => (
+            {blogPosts.slice(3, 6)?.map((post) => (
                 <div class="blog-card-wrapper">
                     <BlogCard 
-                        title={post.title}
-                        series={post.series}
-                        postDate={post.postDate}
-                        thumbnailImage={post.thumbnailImage}
-                        slug={post.slug}
-                        category={post.category}
-                        agencyBrand={post.agencyBrand}
+                        title={post.data.title}
+                        series={post.data.series}
+                        postDate={post.data.postDate}
+                        thumbnailImage={post.data.thumbnailImage}
+                        slug={post.data.slug}
+                        category={post.data.category}
+                        agencyBrand={post.data.agencyBrand}
+                        locale={locale}
                     />
                 </div>
             ))}

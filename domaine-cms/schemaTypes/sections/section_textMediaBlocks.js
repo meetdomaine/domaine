@@ -16,17 +16,23 @@ export default defineType({
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
+    }),
+    defineField({
+      name: 'columnCount',
+      title: 'Columns',
+      type: 'number',
+      validation: Rule => Rule.required().min(2).max(6),
     }),
     defineField({
       name: 'blocks',
@@ -44,18 +50,18 @@ export default defineType({
           {
             name: 'heading',
             title: 'Heading',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required(),
           },
           {
-            name: 'text',
-            title: 'Text',
-            type: 'text',
+            name: 'subheading',
+            title: 'Subheading',
+            type: 'snippet_locale-text',
           },
         ],
         preview: {
           select: {
-            title: 'heading'
+            title: 'heading.text'
           },
           prepare(selection) {
             const { title } = selection
@@ -67,12 +73,12 @@ export default defineType({
           }
         },
       }],
-      validation: Rule => Rule.max(3).required()
+      validation: Rule => Rule.required()
     }),
   ],
   preview: {
     select: {
-      title: 'heading'
+      title: 'heading.text'
     },
     prepare(selection) {
       const { title, blockTitle1, blockTitle2, blockTitle3 } = selection

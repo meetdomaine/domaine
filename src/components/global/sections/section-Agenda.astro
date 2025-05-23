@@ -1,15 +1,16 @@
 ---
+import { getTranslationString } from "../../../lib/translations"
 import AtomTag from "../atoms/atom-tag.astro"
 
-const { section, brand, key } = Astro.props
+const { section, brand, key, locale } = Astro.props
 // console.log(section)
 ---
 <section class="section-agenda">
   {section.dates.map((date) => (
     <div class="date-entry">
       <div class="section-title">
-        {date.heading && <h2>{date.heading}</h2>}
-        {date.subheading && <p class="h6">{date.subheading}</p>}
+        {date.heading && <h2>{getTranslationString(date.heading, locale)}</h2>}
+        {date.subheading && <p class="h6">{getTranslationString(date.subheading, locale)}</p>}
       </div>
       <div class="time-entries">
         {date.times && date.times.map((timeEntry) => (
@@ -17,14 +18,14 @@ const { section, brand, key } = Astro.props
             <div class="date-time">
               {timeEntry.time && 
                 <AtomTag 
-                  text={timeEntry.time}
+                  text={getTranslationString(timeEntry.time)}
                 />
               }
-              {timeEntry.date && <p class="caption">{timeEntry.date}</p>}
+              {timeEntry.date && <p class="caption">{getTranslationString(timeEntry.date, locale)}</p>}
             </div>
             <div class="time-entry__content">
-              {timeEntry.heading && <h3 class="h6">{timeEntry.heading}</h3>}
-              {timeEntry.description && <p class="time-entry__description">{timeEntry.description}</p>}
+              {timeEntry.heading && <h3 class="h6">{getTranslationString(timeEntry.heading, locale)}</h3>}
+              {timeEntry.description && <p class="time-entry__description">{getTranslationString(timeEntry.description, locale)}</p>}
             </div>
           </div>
         ))}

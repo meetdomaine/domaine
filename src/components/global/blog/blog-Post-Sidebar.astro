@@ -1,0 +1,45 @@
+---
+import { Translations } from "../../../lib/locales"
+import GlobalBlogTile from "./global-BlogTile.astro"
+
+const { latestPosts, locale } = Astro.props
+---
+<aside class="blog-post-sidebar">
+  <p class="h5">{locale ? Translations["LATEST-INSIGHTS"].locales[locale] : Translations["LATEST-INSIGHTS"].name}</p>
+  <div class="blog-posts">
+    {latestPosts.map((post) => (
+      <GlobalBlogTile
+        post={post.data}
+        currentBrand={post.data.agencyBrand}
+        locale={locale}
+      />
+    ))}
+  </div>
+</aside>
+
+<style>
+  .blog-post-sidebar {
+    flex: 0 0 25rem;
+    position: sticky;
+    top: calc(var(--header-height) * 2);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-lg);
+  }
+
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  @media screen and (width <= 768px) {
+    .blog-post-sidebar {
+      /* flex: 0 0 100%; */
+      /* flex-grow: 1; */
+      min-width: 100%;
+    }
+    
+  }
+</style>

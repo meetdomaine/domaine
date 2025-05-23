@@ -1,10 +1,12 @@
 ---
 import { sanityClient } from 'sanity:client';
 import LayoutStudioProjects from '../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { getProjects_Studio } from '../../../components/global/utils/cms-content';
+import { getProjects_Studio } from '../../../lib/cms-content';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
-const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`)
-const projects = await getProjects_Studio()
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_projects-index-studio')
+const projects = await getCollection('projects_Studio')
 ---
 <LayoutStudioProjects
     title={pageSettings.metafields && pageSettings.metafields.title ? pageSettings.metafields.title : "Work"}

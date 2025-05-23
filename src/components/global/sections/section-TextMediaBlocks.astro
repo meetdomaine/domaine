@@ -1,28 +1,30 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 
-const { section, brand, key } = Astro.props
+const { section, brand, key, locale } = Astro.props
+// console.log(section.columnCount)
 ---
 <section class="section-text-media-blocks">
   <div class="section-title">
     {section.eyebrow &&
       <AtomTag 
-        text={section.eyebrow}
+        text={locale && section.eyebrow.translations?.[locale] ? section.eyebrow.translations[locale] : section.eyebrow.text}
       />
     }
-    <h2 class="heading h3">{section.heading}</h2>
-    {section.button?.text && section.button?.url &&
+    {section.heading && <h2 class="heading h3">{locale && section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text}</h2>}
+    {section.button?.label && section.button?.url &&
       <AtomButton 
-        text={section.button.text}
-        url={section.button.url}
+        text={locale && section.button.label.translations?.[locale] ? section.button.label.translations?.[locale] : section.button.label.text}
+        url={locale ? getRelativeLocaleUrl(locale, section.button.url) : section.button.url}
         newTab={section.button.newTab}
         icon="arrow-diagonal"
       />
     }
   </div>
-  <div class="section-content">
+  <div class="section-content" style={`--column-count: ${section.columnCount ? section.columnCount : section.blocks.length}`}>
     {section.blocks.map((block) => (
       <div class="content-block">
         <div class="block-media">
@@ -34,8 +36,8 @@ const { section, brand, key } = Astro.props
           />
         </div>
         <div class="block-content">
-          <h3 class="block-heading h5">{block.heading}</h3>
-          <p class="block-text">{block.text}</p>
+          {block.heading && <h3 class="block-heading h5">{locale && block.heading.translations?.[locale] ? block.heading.translations[locale] : block.heading.text}</h3>}
+          {block.subheading && <p class="block-text">{locale && block.subheading.translations?.[locale] ? block.subheading.translations[locale] : block.subheading.text}</p>}
         </div>
       </div>
     ))}
@@ -62,10 +64,13 @@ const { section, brand, key } = Astro.props
 
   .section-content {
     padding-inline: var(--page-margin);
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
+    /* flex-wrap: wrap; */
     gap: var(--space-md);
+    /* display: grid; */
+    /* grid-template-rows: auto; */
+    /* grid-auto-rows: 1fr 1fr; */
+    display: grid;
+    grid-template-columns: repeat(var(--column-count), 1fr);
   }
 
   .content-block {
@@ -73,6 +78,9 @@ const { section, brand, key } = Astro.props
     flex-direction: column;
     gap: var(--space-sm);
     flex: 0 1 100%;
+    /* flex: 1 0 calc(25% - var(--space-sm) ); */
+    /* min-width: 20%; */
+    /* flex: 0 0 calc(25% - var(--space-sm)); */
   }
 
   .block-media {
@@ -83,6 +91,9 @@ const { section, brand, key } = Astro.props
 
   @media screen and (width <= 768px) {
     .section-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
       overflow-x: auto;
     }
 

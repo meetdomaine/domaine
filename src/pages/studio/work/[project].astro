@@ -1,9 +1,9 @@
 ---
 import { sanityClient } from 'sanity:client'
-import { paths } from '../../../components/global/utils/paths';
+import { paths } from '../../../lib/paths';
 import LayoutStudio from '../../../layouts/Layout-Studio.astro';
 import WorkPostHero from '../../../components/global/projects/workPost-Hero.astro';
-import { projectPageFields, projectPostQuery, urlFor } from "../../../components/global/utils/cms-queries"
+import { projectPageFields, projectPostQuery, urlFor } from "../../../lib/cms-queries"
 import WorkPostContent from '../../../components/global/projects/workPost-Content.astro';
 
 export const prerender = true
@@ -30,6 +30,7 @@ const { content } = Astro.props
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter="type:case-study_studio"
     activePath="/studio/work"
+    showPreloader={false}
 >
     <WorkPostContent 
         content={content} 

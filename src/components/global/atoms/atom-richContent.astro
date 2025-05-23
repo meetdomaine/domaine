@@ -1,6 +1,6 @@
 ---
 import { PortableText } from "astro-portabletext";
-const { content } = Astro.props
+const { content, locale } = Astro.props
 
 import InlineImage from "../sections/richContent/richContent-InlineImage.astro"
 import YouTubeEmbed from "../sections/richContent/richContent-YouTubeEmbed.astro"
@@ -10,10 +10,11 @@ import ImageGallery from "../sections/richContent/richContent-ImageGallery.astro
 import Schema from "../sections/richContent/richContent-Schema.astro"
 import Table from "../sections/richContent/richContent-Table.astro";
 
+// console.log(content)
 ---
 <div class="rich-content">
   <PortableText
-    value={content}
+    value={locale && content.translations?.[locale] ? content.translations[locale] : content.richContent }
     components={{
       type: {
           inlineImage: InlineImage,

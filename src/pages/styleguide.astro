@@ -1,10 +1,11 @@
 ---
-import Layout from '../layouts/Layout-Domaine.astro';
-import StyleguideContent from '../components/global/utils/Styleguide-Content.astro';
+import StyleguideContent from '../components/global/styleguide/Styleguide-Content.astro';
+import LayoutDomaine from '../layouts/Layout-Domaine.astro';
 ---
-<Layout 
+<LayoutDomaine 
   theme="dark"
   title="StyleguideContent"
+  showPreloader={false}
 >
   <StyleguideContent />
-</Layout>
+</LayoutDomaine>

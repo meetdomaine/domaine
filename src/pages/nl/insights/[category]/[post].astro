@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutDomaineBlogPost from '../../../../layouts/Layout-Domaine_BlogPost.astro';
+import { Locales } from '../../../../enums/locales';
+
+export async function getStaticPaths() {
+    const blogPosts = await getCollection('blogPosts_Domaine')
+    return blogPosts.map((post) => {
+        return {
+            params: { 
+                post: post.id, 
+                category: post.data.category.slug.current 
+            },
+            props: { 
+                content: {...post.data} 
+            }
+        }
+    })
+}
+const { content } = Astro.props
+---
+<LayoutDomaineBlogPost
+  content={content}
+  locale={Locales.NL}
+/>

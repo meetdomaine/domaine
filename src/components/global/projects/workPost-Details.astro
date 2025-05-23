@@ -1,33 +1,29 @@
 ---
+import { Translations } from "../../../lib/locales"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
-import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
-import { paths } from "../utils/paths"
-import { getRawSvg } from "../utils/raw-svg"
+import { getRawSvg } from "../../../lib/raw-svg"
 
-const { url, client, services, partners, features, metrics, theme, agencyBrand } = Astro.props
-console.log(url)
+const { url, client, services, partners, features, metrics, theme, agencyBrand, locale } = Astro.props
 const logo = getRawSvg(client.logo)
 ---
 <section class="work-post_details">
 
     <div class="section-content">
-
     
         {client && 
             <div class="client">
-                {/* <h4 class="h5">Services</h4> */}
                 <div class="client-logo" style={`--logo-scale: ${client.logoScale}`}>
                     <Fragment set:html={logo} />
                 </div>
                 {client.description && 
                     <div class="client-info">
-                        <p class="client-description h6">{client.description}</p>
+                        <p class="client-description h6">{getTranslationString(client.description, locale)}</p>
                         {url &&
                             <AtomButton 
-                                text="View Live Site"
+                                text={locale ? Translations["VIEW-LIVE-SITE"].locales[locale] : Translations["VIEW-LIVE-SITE"].name}
                                 url={url}
                                 icon="arrow-diagonal"
                                 style="tertiary"
@@ -41,12 +37,12 @@ const logo = getRawSvg(client.logo)
 
         {services && 
             <div class="services">
-                <h4 class="h5">Services</h4>
+                <h4 class="h5">{locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}</h4>
                 <div class="tags">
                     {services.map((service) => (
                         <AtomTag 
-                            text={service.title}
-                            url={`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`}
+                            text={getTranslationString(service.title, locale)}
+                            url={getLocaleUrl(`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`, locale)}
                             theme={theme === "light" ? "glass-dark" : "glass-light"}
                         />
                     ))}
@@ -56,12 +52,12 @@ const logo = getRawSvg(client.logo)
 
         {features && 
             <div class="features">
-                <h4 class="h5">Features</h4>
+                <h4 class="h5">{locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name}</h4>
                 <div class="tags">
                     {features.map((feature) => (
                         <AtomTag 
-                            text={feature.title}
-                            url={`${agencyBrand === "studio" ? "/studio" : ""}/work/features/${feature.slug.current}`}
+                            text={getTranslationString(feature.title, locale)}
+                            url={getLocaleUrl(`${agencyBrand === "studio" ? "/studio" : ""}/work/features/${feature.slug.current}`, locale)}
                             theme={theme === "light" ? "glass-dark" : "glass-light"}
                         />
                     ))}
@@ -72,10 +68,14 @@ const logo = getRawSvg(client.logo)
 
         {partners && 
             <div class="partners">
-                <h4 class="h5">Partners</h4>
+                <h4 class="h5">{locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name}</h4>
                 <div class="partner-tiles">
                     {partners.map((partner) => (
-                        <a class="partner-tile" href={`${partner.tier?.createLandingPages ? `/partners/${partner.slug.current}` : `${partner.websiteUrl}` }`} target={partner.tier?.createLandingPages ? "_self" : "_blank"}>
+                        <a 
+                            class="partner-tile" 
+                            href={partner.tier?.createLandingPages ? getLocaleUrl(`/partners/${partner.slug.current}`, locale) : partner.websiteUrl} 
+                            target={partner.tier?.createLandingPages ? "_self" : "_blank"}
+                        >
                             <AtomSanityImage 
                                 sizes="30vw"
                                 image={partner.icon.image}

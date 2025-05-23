@@ -1,33 +1,46 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
-import { formatDate } from "../utils/format-date"
+import { formatDate } from "../../../lib/format-date"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
 
 interface Props {
-  post: any,
-  currentBrand: any,
+  post: any;
+  currentBrand: any;
+  locale?: string;
 }
 
-const { post } = Astro.props
+const { post, locale } = Astro.props
 const formattedDate = formatDate(post.postDate)
+
+// console.log(post.agencyBrand)
+const postUrl = `${post.agencyBrand.slug.current === "/studio" ? "/studio/" : "/"}insights/${post.category.slug.current}/${post.slug.current}`
+const categoryUrl = `${post.agencyBrand.slug.current === "/studio" ? "/studio/" : "/"}insights/${post.category.slug.current}`
 ---
 <div class="blog-post">
-  <div class="blog-post-media">
+  <a 
+    class="blog-post-media"
+    href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl } 
+  >
     <AtomSanityImage 
       sizes="20vw"
       image={post.thumbnailImage.image}
       aspectRatio={3 / 4}
     />
-  </div>
+  </a>
   <div class="blog-post-content">
     <div class="blog-post-info">
       <AtomTag
-        title={post.category.title}
-        url={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}insights/${post.category.slug.current}`} 
+        title={getTranslationString(post.category.title, locale)}
+        url={getLocaleUrl(categoryUrl, locale) }
       />
       <p class="blog-post-date">{formattedDate}</p>
     </div>
-    <a class="blog-post-title" href={`${post.agencyBrand.slug.current === "/studio" ? "/studio" : "/"}insights/${post.category.slug.current}/${post.slug.current}`} >{post.title}</a>
+    <a 
+      class="blog-post-title" 
+      href={getLocaleUrl(postUrl, locale) } 
+    >{getTranslationString(post.title, locale)}</a>
   </div>
 </div>
 

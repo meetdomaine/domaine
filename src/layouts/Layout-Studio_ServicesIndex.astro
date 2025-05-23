@@ -1,0 +1,30 @@
+---
+import LayoutStudio from "../layouts/Layout-Studio.astro";
+import SectionServiceLandingHero from "../components/studio/sections/services/services-Hero.astro";
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import { getEntry } from "astro:content";
+import { getTranslationString } from "../lib/translations";
+
+const { data: pageSettings} = await getEntry('pageSettings_Domaine', 'page_services-index-studio')
+const { locale } = Astro.props
+---
+<LayoutStudio
+    title={pageSettings.metafields?.title ? pageSettings.metafields.title : getTranslationString(pageSettings.title, locale)}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? pageSettings.metafields.image : null}
+    showPreloader={false}
+    searchFilter="type:page"
+    activePath="/studio/services"
+    locale={locale}
+>   
+    <SectionServiceLandingHero 
+        title={pageSettings.title}
+        excerpt={pageSettings.heading}
+        images={pageSettings.images}
+        locale={locale}
+    />
+
+    {pageSettings.sections && pageSettings.sections.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} locale={locale} />
+    ))}
+</LayoutStudio>

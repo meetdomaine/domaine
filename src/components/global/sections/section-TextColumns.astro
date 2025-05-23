@@ -1,5 +1,7 @@
 ---
-const { section, brand, key } = Astro.props
+import { getTranslationString } from "../../../lib/translations"
+
+const { section, brand, key, locale } = Astro.props
 ---
 <section class="section-text-columns" data-layout={section.layout}>
     {section.title && 
@@ -7,15 +9,17 @@ const { section, brand, key } = Astro.props
             class="title h5"
             data-animate-viewport="true"
             data-animation="fade-up"
-        >{section.title}</h3>
+        >{getTranslationString(section.title, locale)}</h3>
     }
-    <p 
-        class={`text ${section.layout === "large" ? 'h3' : 'h6'}`}
-        class="title h5"
-        data-animate-viewport="true"
-        data-animation="fade-up"
-        data-animation-delay={200}
-    >{section.text}</p>
+    {section.subtitle &&
+        <p 
+            class={`text ${section.layout === "large" ? 'h3' : 'h6'}`}
+            class="title h5"
+            data-animate-viewport="true"
+            data-animation="fade-up"
+            data-animation-delay={200}
+        >{getTranslationString(section.subtitle, locale)}</p>
+    }
 </section>
 
 <style>

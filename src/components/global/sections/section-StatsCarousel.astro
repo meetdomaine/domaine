@@ -1,12 +1,13 @@
 ---
+import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
-const { brand, section, key } = Astro.props
+const { brand, section, key, locale } = Astro.props
 ---
 <section class="section-stats-carousel">
   <div class="section-title">
-    {section.heading && <h2 class="heading h4">{section.heading}</h2>}
-    {section.subheading && <h3 class="subheading body">{section.subheading}</h3>}
+    {section.heading && <h2 class="heading h4">{getTranslationString(section.heading, locale)}</h2>}
+    {section.subheading && <h3 class="subheading body">{getTranslationString(section.subheading, locale)}</h3>}
   </div>
   <div class="section-content">
     {section.stats.map((stat) => (
@@ -18,9 +19,9 @@ const { brand, section, key } = Astro.props
             aspectRatio={1 / 1}
             cover={true}
           />
-          <p class="stat-number h1">{stat.number}</p>
+          <p class="stat-number h1">{getTranslationString(stat.number, locale)}</p>
         </div>
-        <p class="stat-label h6">{stat.label}</p>
+        <p class="stat-label h6">{getTranslationString(stat.label, locale)}</p>
       </div>
     ))}
     {section.stats.map((stat) => (
@@ -32,9 +33,9 @@ const { brand, section, key } = Astro.props
             aspectRatio={1 / 1}
             cover={true}
           />
-          <p class="stat-number h1">{stat.number}</p>
+          <p class="stat-number h1">{getTranslationString(stat.number, locale)}</p>
         </div>
-        <p class="stat-label h6">{stat.label}</p>
+        <p class="stat-label h6">{getTranslationString(stat.label, locale)}</p>
       </div>
     ))}
   </div>

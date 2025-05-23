@@ -1,0 +1,368 @@
+---
+import { Icon } from "astro-icon/components"
+import AtomButton from "../components/global/atoms/atom-button.astro"
+import AtomRichContent from "../components/global/atoms/atom-richContent.astro"
+import AtomSanityImage from "../components/global/atoms/atom-sanityImage.astro"
+import LayoutDomaine from "./Layout-Domaine.astro"
+import { getTranslationString, getLocaleString } from "../lib/translations"
+import { urlFor } from "../lib/cms-queries"
+import type { UseDateTimeFormatOptions } from "sanity"
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro"
+
+
+const { content, locale } = Astro.props
+
+const dateOptions: UseDateTimeFormatOptions = {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  timeZone: content.timezone ? content.timezone : 'America/New_York',
+  timeZoneName: 'short'
+};
+
+const timeOptions: UseDateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: content.use24hourFormat ? false : true,
+  timeZone: content.timezone ? content.timezone : 'America/New_York',
+  timeZoneName: 'short'
+};
+
+const dateTime = new Date(content.dateTime)
+const date = new Intl.DateTimeFormat(locale ? locale : 'en-US', dateOptions).format(dateTime);
+const time = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptions).format(dateTime);
+---
+
+
+<LayoutDomaine
+  title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : content.title.text} | ${getLocaleString("EVENTS", locale)}`}
+  description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+  image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+  searchFilter="type:event"
+  searchExposed={false}
+  showPreloader={false}
+  locale={locale}
+>
+  <section class="event-main">
+    <div class="event-image event-image-large">
+      <AtomSanityImage 
+        sizes="50vw"
+        image={content.thumbnailImage.image}
+        aspectRatio={3 / 4}
+        cover={true}
+      />
+    </div>
+
+    <div class="event-info">
+
+      <div class="event-hero">
+        <div class="event-image event-image-hero-top event-image-small">
+          <AtomSanityImage 
+            sizes="50vw"
+            image={content.thumbnailImage.image}
+            aspectRatio={3 / 4}
+            cover={true}
+          />
+        </div>
+
+        <div class="event-hero-content">
+          <div class="event-title">
+            {content.eyebrow && <p class="eyebrow h5">{getTranslationString(content.eyebrow, locale)}</p>}
+            <h1 class="title h2">{getTranslationString(content.title, locale)}</h1>
+          </div>
+
+          <div class="event-details">
+            <div class="date">
+              <Icon name="icon-calendar" />
+              <span>{date}</span>
+            </div>
+            <div class="time">
+              <Icon name="icon-clock" />
+              <span>{time}</span>
+            </div>
+            <div class="location">
+              <Icon name="icon-pin" />
+              {(content.venueUrl || content.location) &&
+                <div class="location-info">
+                  { content.venue && 
+                     content.venueUrl ? (
+                      <a class="venue" href={content.venueUrl} target="_blank">{getTranslationString(content.venue, locale)}</a>
+                     ) : <p class="venue">{getTranslationString(content.venue, locale)}</p>
+                  }
+                  {content.location &&<span class="location-name caption">{getTranslationString(content.location, locale)}</span>}
+                </div>
+              }
+            </div>
+          </div>
+
+          {content.button?.url && content.button?.text && 
+            <AtomButton 
+              text={content.button.text}
+              url={content.button.url}
+              newTab={content.button.newTab}
+              icon="arrow-diagonal"
+            />
+          }
+
+          <div class="event-image event-image-hero-content event-image-small">
+            <AtomSanityImage 
+              sizes="50vw"
+              image={content.thumbnailImage.image}
+              aspectRatio={3 / 4}
+              cover={true}
+            />
+          </div>
+
+          <AtomRichContent 
+            content={content.description}
+            locale={locale}
+          />
+        </div>
+      </div>
+      {content.partnerLogos &&
+        <div class="partners-section">
+          <div class="partners-title">
+            {content.partnersHeading && <h2 class="h5">{getTranslationString(content.partnersHeading, locale)}</h2>}
+            {content.partnersSubheading && <p class="">{getTranslationString(content.partnersSubheading, locale)}</p>}
+          </div>
+          <div class="partner-logos">
+            {content.partnerLogos.map((partner) => (
+              <div class="partner-logo">
+                <AtomSanityImage 
+                  sizes="30vw"
+                  image={partner.image}
+                />
+              </div> 
+            ))}
+          </div>
+        </div>
+      }
+      {content.speakers &&
+        <div class="speakers-section">
+          <div class="speakers-title">
+            {content.speakersHeading && <h2 class="h5">{getTranslationString(content.speakersHeading, locale)}</h2>}
+            {content.speakersSubheading && <p class="">{getTranslationString(content.speakersSubheading, locale)}</p>}
+          </div>
+          <div class="speaker-cards">
+            {content.speakers.map((speaker) => (
+              <div class="speaker-card">
+                <div class="speaker-image">
+                  <AtomSanityImage 
+                    sizes="30vw"
+                    image={speaker.speakerImage.image}
+                  />
+                </div>
+                <div class="speaker-info">
+                  <div class="speaker-title">
+                    {speaker.speakerName && <p class="speaker-name h4">{getTranslationString(speaker.speakerName, locale)}</p>}
+                    {speaker.speakerRole && <p>{getTranslationString(speaker.speakerRole, locale)}</p>}
+                  </div>
+                  <div class="speaker-logo">
+                    <AtomSanityImage 
+                      sizes="30vw"
+                      image={speaker.speakerLogo.image}
+                    />
+                  </div>
+                </div>
+              </div> 
+            ))}
+          </div>
+        </div>
+      }
+    </div>
+
+  </section>
+
+  {content.globalSections && content.globalSections.sections.map((section, i) => (
+    <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
+  ))}
+</LayoutDomaine>
+
+
+<style>
+  .event-main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .event-hero {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .event-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  /* .event-image {
+    aspect-ratio: 3 / 4;
+  } */
+
+  .event-image-large {
+    position: sticky;
+    top: 0;
+    flex: 0 0 50%;
+    height: 100lvh;
+  }
+
+  .event-image-small {
+    display: none;
+  }
+
+  .event-info {
+    padding-block: calc(var(--header-height) * 1.5) var(--space-lg);
+    padding-inline: var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xl);
+  }
+
+  .event-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .title {
+    margin: 0;
+  }
+
+  .event-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-block: var(--space-md);
+  }
+
+  .date,
+  .time,
+  .location {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  /* .location {
+    align-items: flex-start;
+  } */
+
+  .location-name,
+  .venue {
+    margin: 0;
+  }
+
+  .venue {
+    text-decoration: none;
+  }
+
+  .location-info {
+    display: flex;
+    flex-direction: column;
+    /* gap: var(--space-xs); */
+  }
+
+  .partners-section,
+  .speakers-section {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-self: stretch;
+  }
+
+  .partners-title,
+  .speakers-title {
+    max-width: 36rem;
+  }
+
+  .partner-logos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xs);
+  }
+
+  .partner-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-sm);
+  }
+
+  .speaker-cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .speaker-card {
+    flex: 0 1 30rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .speaker-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .speaker-image {
+    flex: 0 0 8rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .speaker-logo :global(img) {
+    max-width: 6rem;
+    max-height: 1.5rem;
+    width: auto;
+  }
+
+  .speaker-name {
+    margin: 0;
+  }
+
+  @media screen and (width <= 1024px) {
+    .event-image-large {
+      display: none;
+    }
+
+    .event-image-small.event-image-hero-top {
+      display: flex;
+      flex: 0 0 40%;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+  }
+
+  @media screen and (width <= 768px) {
+    .event-hero {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .event-image-small.event-image-hero-content {
+      display: flex;
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
+    .event-image-small.event-image-hero-top {
+      display: none;
+    }
+  }
+
+</style>

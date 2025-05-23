@@ -1,24 +1,10 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutDomaineProjects from '../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { getProjects_Domaine } from '../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../components/global/utils/cms-queries';
-
-const projects = await getProjects_Domaine()
-const pageSettings = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == "page_projects-index-domaine"]{
-    ...,
-    metafields{ title, description, image{${imageBaseFields}} },
-}[0]`)
+import { getCollection } from 'astro:content';
+import LayoutDomaineProjects from '../../layouts/Layout-Domaine_ProjectsIndex.astro';
+const projects = await getCollection('projects_Domaine')
 ---
 <LayoutDomaineProjects
-    brand="Domaine"
-    title={pageSettings?.metafields?.title ? pageSettings.metafields.title : "Work"}
-    description={pageSettings?.metafields?.description ? pageSettings.metafields.description : null}
-    image={pageSettings?.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
-    heading={pageSettings.heading}
-    subheading={pageSettings.subheading}
     projects={projects}
     searchFilter="type:page"
     isTopLevel={true}
->
-</LayoutDomaineProjects>
+/>

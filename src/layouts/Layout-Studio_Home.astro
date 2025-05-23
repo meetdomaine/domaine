@@ -1,0 +1,29 @@
+---
+import LayoutStudio from "../layouts/Layout-Studio.astro";
+import HomeHero from "../components/studio/sections/home/home-Hero.astro";
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+
+const { content, locale } = Astro.props
+---
+<LayoutStudio
+    theme="dark"
+    title="Home"
+    searchFilter="type:page"
+    searchExposed={true}
+    showPreloader={content.showPreloader}
+>
+    <HomeHero 
+        eyebrow={content.eyebrow}
+        heading={content.heading}
+        subheading={content.subheading}
+        button={content.button}
+        textColor={content.heroTextColor}
+        projects={content.projects}
+        locale={locale}
+    />
+
+    {content.globalSections && content.globalSections.sections.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} locale={locale} />
+    ))}
+
+</LayoutStudio>
