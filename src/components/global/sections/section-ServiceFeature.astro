@@ -5,17 +5,15 @@ import AtomButton from "../atoms/atom-button.astro"
 import { getRelativeLocaleUrl } from "astro:i18n"
 import { checkIsJumplink } from "../../../lib/functions"
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
+import { Brands } from "../../../enums/brands"
 
 
 const { section, brand, key, locale } = Astro.props
 
-const currentSlug = brand === "studio" ? "/studio" : "/"
-const parentSlug = section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : ''
+const currentSlug = brand === "studio" ? "/studio/" : "/"
 
 const heading = section.heading ? section.heading : section.featuredService.title
 const subheading = section.subheading ? section.subheading : section.featuredService.excerpt
-
-const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredService.slug.current}/`
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
     <h2 aria-label={section.featuredService?.title}>
@@ -29,7 +27,7 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
             :
             <a 
                 aria-hidden="true"
-                href={locale ? getRelativeLocaleUrl(locale, serviceUrl) : serviceUrl} 
+                href={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${section.featuredService._type === "type_serviceGroup" ? `${section.featuredService.serviceType.slug.current}/` : ""}${section.featuredService.slug.current}/`, locale)} 
                 class={`service-type-title ${section.headingSize === "small" ? 'h1' : 'title-xl'}`}
             >
                 {locale && heading.translations?.[locale] ? heading.translations[locale] : heading.text}
@@ -64,7 +62,7 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
                             :
                             <a 
                                 class="service-group-title h6" 
-                                href={getLocaleUrl(`${currentSlug}/services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`, locale)}
+                                href={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${section.featuredService.slug.current}/${serviceGroup.slug.current}`, locale)}
                             >
                                 {getTranslationString(serviceGroup.title, locale)}
                             </a>
@@ -72,7 +70,7 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
                         {serviceGroup.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                             <AtomServiceLink 
                                 title={getTranslationString(service.title, locale)}
-                                url={locale ? getRelativeLocaleUrl(locale, `${currentSlug}/services/${section.featuredService.slug.current}/${service.slug.current}`) : `${currentSlug}/services/${section.featuredService.slug.current}/${service.slug.current}`}
+                                url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${section.featuredService.slug.current}/${service.slug.current}`, locale)}
                                 excerpt={getTranslationString(service.excerpt, locale)}
                                 isHidden={service.isHidden}
                             />
@@ -82,7 +80,7 @@ const serviceUrl = `${currentSlug}services/${parentSlug}${section.featuredServic
                 section.featuredService.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                     <AtomServiceLink 
                         title={getTranslationString(service.title, locale)}
-                        url={locale ? getRelativeLocaleUrl(locale, `${currentSlug}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`) : `${currentSlug}/services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`}
+                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`)}
                         excerpt={getTranslationString(service.excerpt, locale)}
                         isHidden={service.isHidden}
                     />

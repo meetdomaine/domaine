@@ -38,17 +38,13 @@ const colorSchemes = ['brand-03', 'default', 'brand-02', 'secondary']
           </div>
         </div>
         <div class="service-groups">
-          {serviceEntry.service.serviceGroups.map((serviceGroup) => {
-            if (serviceEntry.enableServiceLinks) return (
+          {serviceEntry.service.serviceGroups.map((serviceGroup) => (
               <a 
                 href={`${brand === "studio" ? "/studio" : ""}/services/${serviceEntry.service.slug.current}/${serviceGroup.slug.current}`} 
                 class="service-group h5"
               >{getTranslationString(serviceGroup.title, locale)}</a>
             )
-            return (
-              <p class="service-group h5">{getTranslationString(serviceGroup.title, locale)}</p>
-            )
-          })}
+          )}
         </div>
       </div>
       

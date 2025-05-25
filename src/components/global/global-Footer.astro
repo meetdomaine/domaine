@@ -4,8 +4,9 @@ import { Icon } from "astro-icon/components"
 import { getAgencyBrands } from "../../lib/cms-content"
 import { getRawSvg } from "../../lib/raw-svg"
 import { getRelativeLocaleUrl } from "astro:i18n"
+import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
 
-const { currentBrand, footerSettings, locale } = Astro.props
+const { footerSettings, locale } = Astro.props
 
 const agencyBrands = await getAgencyBrands()
 
@@ -60,7 +61,7 @@ const logos = await agencyBrands.map( async (brand) => {
             </div>
              <div class="footer-form">
                 <p class="footer-form__title">{locale && footerSettings.newsletterHeading.translations?.[locale] ? footerSettings.newsletterHeading.translations[locale] : footerSettings.newsletterHeading.text}</p>
-                <slot />
+                <AtomHubspotForm formId={footerSettings.newsletterHubspotFormId} />
             </div>
 
         </div>

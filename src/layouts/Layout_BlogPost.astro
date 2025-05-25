@@ -11,17 +11,12 @@ import BlogPostSidebar from '../components/global/blog/blog-Post-Sidebar.astro';
 import GlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { Translations } from '../lib/locales';
 import { getCollection } from 'astro:content';
+import { Brands } from '../enums/brands';
+import LayoutStudio from './Layout-Studio.astro';
 
+const { content, locale , brand} = Astro.props;
 
-interface Props {
-    content: any;
-    locale?: string;
-}
-
-const { content, locale } = Astro.props;
-
-const blogPosts = await getCollection('blogPosts_Domaine')
-// console.log(content.metafields)
+const blogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
 
 const relatedPosts = await sanityClient.fetch(`
     *[_type == "type_blog" 
@@ -30,8 +25,9 @@ const relatedPosts = await sanityClient.fetch(`
         && isHidden != true
     ]{${blogCardFields}} | order(orderRank asc)`)
 
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
-<LayoutDomaine
+<BrandLayout
     title={content.metafields?.title ? content.metafields.title : content.title}
     description={content.metafields?.description ? content.metafields.description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
@@ -78,4 +74,4 @@ const relatedPosts = await sanityClient.fetch(`
             projects={relatedProjects}
         />
     } -->
-</LayoutDomaine>
+</BrandLayout>

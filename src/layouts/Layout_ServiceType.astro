@@ -1,0 +1,62 @@
+---
+import LayoutDomaine from "../layouts/Layout-Domaine.astro"
+import SectionServiceTypeHero from "../components/global/services/serviceType-Hero.astro"
+import SectionProjectsFeed from "../components/global/sections/section-ProjectsFeed.astro"
+import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astro"
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro"
+import { getLocaleString, getTranslationString } from "../lib/translations"
+import { Translations } from "../lib/locales"
+import { Brands } from "../enums/brands"
+import LayoutStudio from "./Layout-Studio.astro"
+import { getEntry } from "astro:content"
+import SectionForm from "../components/global/sections/section-Form.astro"
+
+const { content, locale, brand, activePath } = Astro.props;
+
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+const relatedProjects = await Promise.all(content.relatedProjects?.map( async (project) => await getEntry(brand === Brands.STUDIO ? 'projects_Studio' : 'projects_Domaine', project.slug.current) ))
+const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => await getEntry(brand === Brands.STUDIO ? 'blogPosts_Studio' : 'blogPosts_Domaine', post.slug.current) ))
+---
+<BrandLayout
+    title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : getTranslationString(content.description, locale)}
+    searchFilter="type:service-type"
+    activePath={activePath}
+    showPreloader={true}
+    locale={locale}
+>
+    <SectionServiceTypeHero
+        serviceType={content}
+        locale={locale}
+        brand={brand}
+    />
+    
+    {content.pageSectionsDomaine?.map((section, i) => (
+        <GlobalSections brand="domaine" section={section} key={i} locale={locale} brand={brand} />
+    ))}
+
+    {relatedProjects?.length > 0 &&
+        <SectionProjectsFeed 
+            heading={`${getTranslationString(content.title, locale)} ${getLocaleString("WORK")}`}
+            projects={relatedProjects}
+        />
+    }
+
+    {content.hubspotFormId &&
+      <SectionForm 
+        key="serviceType_form"
+        hubspotFormId={content.hubspotFormId}
+        heading={content.formHeading}
+        text={content.formText}
+      />
+    }
+
+    {relatedPosts?.length > 2 &&
+        <SectionBlogFeed 
+            heading={`${content.title} ${getLocaleString("INSIGHTS")}`}
+            posts={relatedPosts}
+            sidebarTitle={content.title}
+        />
+    }
+
+</BrandLayout>

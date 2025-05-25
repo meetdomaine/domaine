@@ -3,6 +3,9 @@
   color: var(--color-lightest);
 } */
 
+
+/* DEPRECATED */
+
 html,
 html [data-color-scheme="glass-light"],
 [data-color-scheme="default"] {

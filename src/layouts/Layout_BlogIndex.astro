@@ -1,19 +1,22 @@
 ---
 import LayoutDomaine from './Layout-Domaine.astro';
+import LayoutStudio from './Layout-Studio.astro';
 import GlobalBlogFilter from '../components/global/blog/global-BlogFilter.astro';
 import GlobalBlogGrid from '../components/global/blog/global-BlogGrid.astro';
 import SectionTextHeading from '../components/global/sections/section-TextHeading.astro';
 import { getEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
+import { getLocaleString, getTranslationString } from '../lib/translations';
+import { Brands } from '../enums/brands';
 
 const { title, description, image, heading, subheading, searchFilter, blogPosts, brand, slug, locale } = Astro.props;
 
-
-const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_blog-index-domaine')
-const allBlogPosts = await getCollection('blogPosts_Domaine')
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine')
+const allBlogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
-<LayoutDomaine
-    title={ title ? title : pageSettings?.metafields?.title ? pageSettings.metafields.title : "Insights"}
+<BrandLayout
+    title={ `${title ? getTranslationString(title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} ${title || pageSettings.metafields.title ? "|" : ""} ${getLocaleString("INSIGHTS")} `}}
     description={description ? description : pageSettings?.metafields?.description ? pageSettings.metafields.description : null}
     image={image ? image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
     searchFilter={searchFilter}
@@ -30,7 +33,7 @@ const allBlogPosts = await getCollection('blogPosts_Domaine')
         locale={locale}
     />
     <GlobalBlogFilter 
-        brand="domaine"
+        brand={brand}
         slug={slug}
         locale={locale}
     />
@@ -38,4 +41,4 @@ const allBlogPosts = await getCollection('blogPosts_Domaine')
         blogPosts={blogPosts ? blogPosts : allBlogPosts}
         locale={locale}
     />
-</LayoutDomaine>
+</BrandLayout>

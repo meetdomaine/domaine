@@ -38,8 +38,8 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
+      name: 'subheading',
+      title: 'Subheading',
       type: 'snippet_locale-text',
     }),
   ],

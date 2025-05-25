@@ -39,15 +39,9 @@ const monthOptions: UseDateTimeFormatOptions = {
 
 const latestProjects = currentBrand.slug.current === "/studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
 const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
-const allEvents = await getEvents()
 
 const events = await getCollection('events')
-// console.log(events)
-
 const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )
-
-console.log(upcomingEvents)
-// console.log(latestProjects[0].data.title)
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 

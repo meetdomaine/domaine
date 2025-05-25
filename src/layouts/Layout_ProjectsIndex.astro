@@ -1,0 +1,56 @@
+---
+import LayoutDomaine from './Layout-Domaine.astro';
+import LayoutStudio from './Layout-Studio.astro';
+import Hero from '../components/domaine/sections/work/workIndex-Hero.astro'
+import ProjectsFilter from '../components/global/projects/global-ProjectsFilter.astro'
+import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGrid.astro'
+import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
+import { Translations } from '../lib/locales';
+import { getEntry } from 'astro:content';
+import { getTranslationString } from '../lib/translations';
+import { Brands } from '../enums/brands';
+import { getCollection } from 'astro:content';
+
+const { content, currentPath, isTopLevel, locale, brand, projects } = Astro.props;
+
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine')
+const allProjects = brand === Brands.STUDIO ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+console.log(content)
+---
+<BrandLayout
+    title={ `${content?.title ? getTranslationString(content.title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} | ${locale ? Translations.WORK.locales[locale] : Translations.WORK.name}`}
+    description={content?.description ? getTranslationString(content.description, locale) : pageSettings?.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
+    image={content?.image ? content.image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
+    activePath="/work"
+    searchFilter="type:page"
+    showPreloader={true}
+    locale={locale}
+>
+    <Hero
+        heading={content?.title ? content.title : pageSettings.heading}
+        subheading={content?.excerpt ? content.excerpt : pageSettings.subheading}
+        projectCount={projects ? projects.length : allProjects.length}
+        isTopLevel={isTopLevel}
+        locale={locale}
+    />
+    <ProjectsFilter 
+        brand={brand}
+        currentPath={currentPath}
+        locale={locale}
+    />
+    <slot name="before-grid" /> 
+    <GlobalProjectsGrid 
+        projects={projects ? projects : allProjects}
+        locale={locale}
+    />
+    <slot name="after-grid" /> 
+    <!-- {relatedBlogPosts && relatedBlogPosts.length > 2 &&
+        <SectionBlogFeed 
+            posts={relatedBlogPosts}
+            heading="Related Posts"
+            brand="domaine"
+            locale={locale}
+        />
+    } -->
+</BrandLayout>

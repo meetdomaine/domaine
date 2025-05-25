@@ -20,7 +20,7 @@ const iconText = replaceStringIcons(getTranslationString(section.heading, locale
         >
             {section.eyebrow && <p class="eyebrow utility">{getTranslationString(section.eyebrow, locale)}</p>}
             <h2 class="heading h2"><Fragment set:html={iconText} /></h2>
-            {section.text && <p class={`text ${section.largeText ? "h4" : ""}`}>{getTranslationString(section.text, locale)}</p>}
+            {section.subheading && <p class={`text ${section.largeText ? "h4" : ""}`}>{getTranslationString(section.subheading, locale)}</p>}
             {section.button?.label && section.button?.url &&
                 <AtomButton 
                     text={getTranslationString(section.button.label, locale)}

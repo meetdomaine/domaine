@@ -1,6 +1,5 @@
 ---
-import LayoutDomaineProjects from '../../../layouts/Layout-Domaine_ProjectsIndex.astro';
-import { urlFor } from '../../../lib/cms-queries';
+import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 
@@ -15,18 +14,10 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-// const allProjects = await getCollection('projects_Domaine')
-// const projects = allProjects.filter((project) => project.data.partners && project.data.partners.some((partner) => partner._id === content._id))
 const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
-<LayoutDomaineProjects 
-    title={`${content.title} x Domaine | Work`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter="type:project-service"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+content={content}
     projects={projects}
     currentPath={`/partners/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
 />

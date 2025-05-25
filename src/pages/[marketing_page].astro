@@ -47,7 +47,7 @@ const { content, locale } = Astro.props
                     <h1 class="h2">{getTranslationString(content.heading, locale)}</h1>
                 </div>
                 <div class="hero-text">
-                    {content.text && <p class="h6">{getTranslationString(content.text, locale)}</p>}
+                    {content.subheading && <p class="h6">{getTranslationString(content.subheading, locale)}</p>}
                     {content.button?.label && content.button?.url &&
                         <AtomButton 
                             text={getTranslationString(content.button.label, locale)}

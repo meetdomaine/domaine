@@ -1,8 +1,8 @@
 ---
-import { getEntries } from 'astro:content';
-import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
+import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
+import { Brands } from '../../../../enums/brands';
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Studio')
@@ -17,13 +17,9 @@ export async function getStaticPaths() {
 const { content } = Astro.props
 const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
-<LayoutStudioProjects 
-    title={content.metafields && content.metafields.title ? content.metafields.title : content.title}
-    description={content.metafields && content.metafields.description ? content.metafields.description : null}
-    searchFilter="type:project-service-group"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+    content={content}
     projects={projects}
     currentPath={`/services/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
+    brand={Brands.STUDIO}
 />

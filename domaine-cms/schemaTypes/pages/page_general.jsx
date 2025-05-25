@@ -4,11 +4,26 @@ export default defineType({
   name: 'page_general',
   title: 'Domaine Pages',
   type: 'document',
+  groups: [
+    {
+      name: 'info',
+      title: 'Info',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'snippet_locale-string',
+      group: 'info'
     }),
     defineField({
       name: 'slug',
@@ -18,6 +33,7 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
+      group: 'info'
     }),
     defineField({
       name: 'isMarketingPage',
@@ -25,6 +41,7 @@ export default defineType({
       type: 'boolean',
       initialValue: false,
       description: 'Removes navigation and adds form section.',
+      group: 'info'
     }),
     defineField({
       name: 'heroColorScheme',
@@ -40,12 +57,14 @@ export default defineType({
       },
       initialValue: "default",
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
       type: 'snippet_locale-string',
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'heading',
@@ -58,12 +77,14 @@ export default defineType({
         }
       ),
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'subheading',
       title: 'Subheading',
       type: 'snippet_locale-text',
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'buttonText',
@@ -71,24 +92,28 @@ export default defineType({
       type: 'snippet_locale-string',
       description: 'If added, will show a sticky button linking to the Hubspot form.',
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'button',
       title: 'Button',
       type: 'snippet_locale-button',
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'media',
       title: 'Media',
       type: 'snippet_video',
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'formTitle',
       title: 'Form Title',
       type: 'snippet_locale-string',
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'hubspotFormId',
@@ -101,11 +126,13 @@ export default defineType({
         }
       ),
       hidden: ({document}) => !document?.isMarketingPage,
+      group: 'info'
     }),
     defineField({
       name: 'globalSections',
       title: 'Sections',
       type: 'section_globalSections',
+      group: 'content'
     }),
     defineField({
       name: 'addHeaderPadding',
@@ -113,6 +140,7 @@ export default defineType({
       type: 'boolean',
       description: 'Add extra padding to account for the global header.',
       initialValue: false,
+      group: 'content'
     }),
     defineField({
       name: 'colorScheme',
@@ -141,29 +169,34 @@ export default defineType({
         layout: 'radio',
       },
       initialValue: 'default',
+      group: 'content'
     }),
     defineField({
       name: 'backgroundColor',
       title: 'Background Color',
       description: 'Avoid using this anywhere besides very specific brand pages.',
       type: 'color',
+      group: 'content'
     }),
     defineField({
       name: 'showPreloader',
       title: 'Show Preloader',
       type: 'boolean',
       initialValue: false,
+      group: 'content'
     }),
     defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_locale-SEO-fields',
+      group: 'seo'
     }),
   ],
 
   preview: {
     select: {
       title: 'title.text',
+      subtitle: 'slug.current'
     },
     prepare(selection) {
       // const {author} = selection

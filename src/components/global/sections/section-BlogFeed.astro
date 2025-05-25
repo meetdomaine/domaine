@@ -22,7 +22,7 @@ let sidebarTitleText
 
 if (section?.featuredCategory) {
     const category = await getEntry(brand === 'studio' ? 'blogCategories_Studio' : 'blogCategories_Domaine', section.featuredCategory.slug.current)
-    blogPosts = category.data.posts
+    blogPosts = await Promise.all(category.data.posts.map(async (post) => await getEntry(brand === "studio" ? 'blogPosts_Studio' : 'blogPosts_Domaine', post.slug.current)))
     sidebarTitleText = sidebarTitle ? sidebarTitle : section.featuredCategory.title
 } else if (posts) {
     blogPosts = posts
@@ -82,7 +82,7 @@ if (featuredPost) {
                 </div>
             </article>
             <aside class="sidebar" data-color-scheme="glass-dark">
-                <p class="sidebar-heading">{sidebarTitleText}</p>
+                <p class="sidebar-heading">{getTranslationString(sidebarTitleText, locale)}</p>
                 <div class="sidebar-posts">
                     {blogPosts.slice(0, 3)?.map((post) => (
                         <GlobalBlogTile 

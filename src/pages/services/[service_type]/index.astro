@@ -1,6 +1,6 @@
 ---
-import LayoutDomaineServiceType from "../../../layouts/Layout-Domaine_ServiceType.astro"
 import { getCollection } from "astro:content"
+import LayoutServiceType from "../../../layouts/Layout_ServiceType.astro"
 
 export async function getStaticPaths() {
     const serviceTypes = await getCollection('serviceTypes_Domaine')
@@ -15,6 +15,7 @@ export async function getStaticPaths() {
 const { content } = Astro.props;
 
 ---
-<LayoutDomaineServiceType 
+<LayoutServiceType 
     content={content}
+    activePath="/services"
 />

@@ -7,8 +7,8 @@ import { globalSectionsFields, imageBaseFields, imageFields, urlFor, videoFields
 import { getEntry } from "astro:content";
 import { getTranslationString } from "../lib/translations";
 
-const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_home-domaine')
 const { locale } = Astro.props;
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'page_home-domaine')
 ---
 <LayoutDomaine
     title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}

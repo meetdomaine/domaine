@@ -20,12 +20,12 @@ const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await 
 ---
 <LayoutDomaineBlogIndex
     blogPosts={blogPosts}
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
+    title={content.metafields?.title ? content.metafields.title : content.title}
     description={content.metafields?.description ? content.metafields.description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     heading={content.title}
     subheading={content.heading}
     slug={content.slug}
-    locale={Locales.DE}
+    locale={Locales.NL}
 />
 

@@ -4,6 +4,7 @@ import { Translations } from '../../../lib/locales';
 import { getLocaleUrl, getTranslationString } from '../../../lib/translations';
 import AtomTag from '../atoms/atom-tag.astro';
 import { getBlogCategories_Domaine, getBlogCategories_Studio } from '../../../lib/cms-content';
+import { Brands } from '../../../enums/brands';
 
 const { brand, slug, locale } = Astro.props
 
@@ -11,20 +12,19 @@ const { brand, slug, locale } = Astro.props
 //     *[_type == "type_blogCategory" 
 //         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
 
-const categories = brand === "domaine" ? await getCollection('blogCategories_Domaine') : await getCollection('blogCategories_Studio')
-// console.log(categories)
+const categories = brand === Brands.STUDIO ? await getCollection('blogCategories_Studio') : await getCollection('blogCategories_Domaine')
 ---
 <div class="blog-filters">
     <a
         class="filter-all filter caption" 
-        href={getLocaleUrl(`${brand == "studio" ? '/studio' : ''}/insights/`, locale)}
+        href={getLocaleUrl(`${brand == Brands.STUDIO ? '/studio' : ''}/insights/`, locale)}
         data-active={!slug ? "true" : "false"}
     >{locale ? Translations['ALL-INSIGHTS'].locales[locale] : Translations['ALL-INSIGHTS'].name}</a>
     <div class="filter-tags">
         {categories.map((category) => (
             <AtomTag 
                 title={getTranslationString(category.data.title, locale)}
-                url={getLocaleUrl(`${brand == "studio" ? '/studio' : ''}/insights/${category.data.slug.current}`, locale)}
+                url={getLocaleUrl(`${brand == Brands.STUDIO ? '/studio' : ''}/insights/${category.data.slug.current}`, locale)}
                 theme={slug?.current == category.data.slug.current ? "glass-dark" : "default"}
             />
         ))}
