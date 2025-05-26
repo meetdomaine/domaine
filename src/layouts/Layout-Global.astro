@@ -29,9 +29,10 @@ interface Props {
 	cookieNoticeText: Array<any>;
 	brand?: string;
 	locale?: string;
+	indexSearch?: boolean;
 }
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
@@ -106,7 +107,10 @@ const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLE
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 
 	</head>
-	<body data-pagefind-filter={searchFilter}>
+	<body {...{
+		...(indexSearch ? { "data-pagefind-body": "" } : { "data-pagefind-ignore": "true"}),
+		...(searchFilter ? { "data-pagefind-filter": searchFilter } : {})
+	}}>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"

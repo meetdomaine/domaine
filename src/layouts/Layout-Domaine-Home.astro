@@ -14,7 +14,6 @@ const { data: pageSettings } = await getEntry('pageSettings', 'page_home-domaine
     title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}
     description={pageSettings.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
-    searchFilter="type:page"
     searchExposed={true}
     showPreloader={pageSettings.showPreloader}
     locale={locale}

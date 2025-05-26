@@ -24,9 +24,10 @@ interface Props {
     brand?: string;
     marketingHeader?: boolean;
     marketingHeaderButtonLabel?: string;
+    indexSearch?: boolean;
 }
 
-const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 const { data: brandSettings } = await getEntry('pageSettings', 'brandSettings_Domaine')
 const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer--domaine')
 ---
@@ -41,6 +42,7 @@ const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer
     cookieNoticeText={brandSettings.cookieNoticeText}
     showPreloader={showPreloader}
     locale={locale}
+    indexSearch={indexSearch}
 >
     {marketingHeader ?
         <GlobalMarketingHeader
