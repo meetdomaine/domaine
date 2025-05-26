@@ -24,25 +24,17 @@ const formData = await cachedFetch(`https://api.hubapi.com/marketing/v3/forms/${
     }
 })
 
-// const formData = await hubspotResponse.json()
 const fieldGroups = await formData.fieldGroups
 const consentData = await formData.legalConsentOptions
 
-// console.log(fieldGroups)
-
 const fields = await fieldGroups?.flatMap((group) => {
-  // console.log(group)
   if (group.fields) {
     return group.fields?.map((field) => {
-      // console.log(field)
         return field
     })
   }
-  // console.log(group)
   return null
 })
-
-// console.log(formData)
 ---
 <form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
     {fieldGroups?.map((group) => {
@@ -303,7 +295,6 @@ const fields = await fieldGroups?.flatMap((group) => {
         const source = urlParams.get('utm_source')
         const medium = urlParams.get('utm_medium')
 
-        // console.log(formData)
         formData.delete("communication-consent");
         formData.delete("consent-to-process");
         const formObject = Object.fromEntries(formData)
@@ -319,8 +310,6 @@ const fields = await fieldGroups?.flatMap((group) => {
         
         // Map each field to Hubspot-friendly format
         Promise.all(Object.keys(formObject).map( async (key) => {
-
-            // console.log(key)
 
             const field = fields.find((field) => field?.name === key)
             let value = formObject[key]
@@ -385,8 +374,6 @@ const fields = await fieldGroups?.flatMap((group) => {
                 }
             }
 
-            // console.log(formBody)
-
             // Finally send the form info
             const response = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
                 method: "POST",
@@ -395,7 +382,6 @@ const fields = await fieldGroups?.flatMap((group) => {
                     "Content-type": "application/json; charset=UTF-8"
                 }
             })
-            // console.log(await response.json())
             if (response.ok) {
                 handleSuccess(await response.json())
             }

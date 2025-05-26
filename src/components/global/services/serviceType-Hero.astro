@@ -4,7 +4,6 @@ import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
 const { serviceType, brand, locale } = Astro.props
-console.log(serviceType)
 ---
 <section class="service-type-hero" data-color-scheme="brand-02">
      <div class="section-title">
@@ -80,8 +79,6 @@ console.log(serviceType)
             const images: Array<HTMLElement> = Array.from(section.querySelectorAll('.service-image'))
 
             const animateImages = (e) => {
-
-                console.log("ANIMATE IMAGES")
 
                 const render = () => {
                     

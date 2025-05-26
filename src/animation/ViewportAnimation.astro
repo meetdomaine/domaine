@@ -11,9 +11,7 @@
     entries.forEach((entry) => {
       const delay = entry.target.dataset.animationDelay ? entry.target.dataset.animationDelay : 0
 
-      // console.log(entry)
       if (entry.isIntersecting) {
-        // console.log(entry)
         setTimeout(() => {
           return entry.target.dataset.animateViewport = false
         }, delay)

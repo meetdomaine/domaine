@@ -16,7 +16,6 @@ const { content, currentPath, isTopLevel, locale, brand, projects } = Astro.prop
 const { data: pageSettings } = await getEntry('pageSettings_Domaine', brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine')
 const allProjects = brand === Brands.STUDIO ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
-console.log(content)
 ---
 <BrandLayout
     title={ `${content?.title ? getTranslationString(content.title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} | ${locale ? Translations.WORK.locales[locale] : Translations.WORK.name}`}

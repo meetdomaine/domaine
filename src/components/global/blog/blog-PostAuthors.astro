@@ -5,7 +5,6 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 
 const { authors, locale } = Astro.props
-// console.log(authors)
 ---
 <section class="blog-post-authors">
     <h2 class="section-title h5">{locale ? Translations.AUTHORS.locales[locale] : Translations.AUTHORS.name}</h2>

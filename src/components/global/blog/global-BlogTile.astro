@@ -14,7 +14,6 @@ interface Props {
 const { post, locale } = Astro.props
 const formattedDate = formatDate(post.postDate)
 
-// console.log(post.agencyBrand)
 const postUrl = `${post.agencyBrand.slug.current === "/studio" ? "/studio/" : "/"}insights/${post.category.slug.current}/${post.slug.current}`
 const categoryUrl = `${post.agencyBrand.slug.current === "/studio" ? "/studio/" : "/"}insights/${post.category.slug.current}`
 ---

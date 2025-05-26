@@ -1,5 +1,5 @@
 ---
-import LayoutDomaineBlogIndex from '../../../../layouts/Layout-Domaine_BlogIndex.astro';
+import LayoutBlogIndex from '../../../../layouts/Layout_BlogIndex.astro';
 import { getCollection } from 'astro:content';
 import { urlFor } from '../../../../lib/cms-queries';
 import { Locales } from '../../../../enums/locales';
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 const { content } = Astro.props;
 const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await getEntry('blogPosts_Domaine', blogPost.slug.current)))
 ---
-<LayoutDomaineBlogIndex
+<LayoutBlogIndex
     blogPosts={blogPosts}
     title={content.metafields?.title ? content.metafields.title : content.title}
     description={content.metafields?.description ? content.metafields.description : null}

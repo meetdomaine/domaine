@@ -6,7 +6,6 @@ import { replaceStringIcons } from "../../../lib/inline-icon-text"
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
 const { section, brand, locale } = Astro.props
-// console.log(section.media)
 
 const iconText = replaceStringIcons(getTranslationString(section.heading, locale))
 ---

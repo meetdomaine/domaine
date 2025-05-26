@@ -1,10 +1,6 @@
 ---
 import { sanityClient } from "sanity:client";
 import { globalSectionsFields, imageFields, videoFields, projectGridFields } from "../../lib/cms-queries";
-import LayoutStudio from "../../layouts/Layout-Studio.astro";
-import HomeHero from "../../components/studio/sections/home/home-Hero.astro";
-import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
-import AtomSanityMedia from "../../components/global/atoms/atom-sanityMedia.astro";
 import LayoutStudioHome from "../../layouts/Layout-Studio_Home.astro";
 
 const pageSettings = await sanityClient.fetch(`
@@ -25,7 +21,7 @@ const pageSettings = await sanityClient.fetch(`
     }
 `)
 
-// console.log(pageSettings)
+// TODO: Migrate to content collections
 ---
 <LayoutStudioHome 
     content={pageSettings}
