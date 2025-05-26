@@ -23,6 +23,7 @@ import {
 } from "../../../lib/cms-content"
 import { locationsQuery } from "../../../lib/cms-queries"
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { getEntry } from "astro:content";
 
 // const test = await loadQuery({
 //     query: `*[_type == 'type_blog']`
@@ -47,6 +48,9 @@ const headerSettings = await sanityClient.fetch(`
         }
     }[0]`
 )
+
+const test = await getEntry('pageSettings_Domaine', 'headerSettings_Domaine')
+console.log(test)
 ---
 <header id="header" data-color-scheme="glass-dark">
 

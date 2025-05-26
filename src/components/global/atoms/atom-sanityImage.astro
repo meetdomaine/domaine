@@ -34,7 +34,7 @@ const ratio = aspectRatio ? aspectRatio : width / height
 
 const generateSrcSets = () => {
   const sources = []
-  for (let i = 1; i <=6; i+= 0.5) {
+  for (let i = 1; i <=2.5; i+= 0.5) {
     if (preserveAspect) {
       sources.push( `${urlFor(image).width(Math.floor(width / i)).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
     } else {

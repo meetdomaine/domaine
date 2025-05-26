@@ -1,17 +1,18 @@
 import { defineCollection } from 'astro:content';
-import { blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
+import { blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, locationsQuery, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
 import {sanityClient} from "sanity:client"
+import { loadQuery } from './lib/sanity-load-query';
 
 
 // Services
 
 const services_Domaine = defineCollection({
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_service" && "Domaine" in agencyBrands[]->name ]{
+    const { data } = await loadQuery({ query: `*[_type == "type_service" && "Domaine" in agencyBrands[]->name ]{
       ${serviceQuery}
       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank asc),
       "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc)
-    } | order(postDate desc)`)
+    } | order(postDate desc)`})
     return data.map((entry) => ({
         id: entry.slug.current,
         ...entry
@@ -419,16 +420,29 @@ const events = defineCollection({
 
 // Page Settings
 
+const query_HeaderSettings = `
+  ...,
+  locationClocks[]->{${locationsQuery}},
+  linkCardImage{${imageFields}},
+  brandMenuBrands[]{
+      ..., 
+      media{${videoFields}, ${imageFields}} 
+  }
+`
+
 const pageSettings_Domaine = defineCollection({
   // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
   loader: async () => {
 
-    const pageHome_Domaine = await sanityClient.fetch(`*[_type == "page_home-domaine"][0]{ 
+    const { data: headerSettings_Domaine } = await loadQuery({ query: `*[_type == "settings_header" && _id == "settings_header--domaine"]{${query_HeaderSettings}}[0]`})
+    const { data: headerSettings_Studio } = await loadQuery({ query: `*[_type == "settings_header" && _id == "settings_header--studio"]{${query_HeaderSettings}}[0]`})
+
+    const { data: pageHome_Domaine } = await loadQuery({ query: `*[_type == "page_home-domaine"][0]{ 
       ...,  
       globalSections{ sections[]{${globalSectionsFields}} }, 
       media{ ..., ${imageFields}, ${videoFields} },
       metafields{ title, description, image{${imageBaseFields}} },
-  }`)
+    }`})
 
     const blogIndex_Domaine = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
     const blogIndex_Studio = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
@@ -454,7 +468,7 @@ const pageSettings_Domaine = defineCollection({
       }[0]
     `)
 
-    const footerSettings_Domaine = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`)
+    const { data: footerSettings_Domaine } = await loadQuery({ query: `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]` })
     const footerSettings_Studio = await sanityClient.fetch(`*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]`)
 
     const brandSettings_Domaine = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
@@ -499,6 +513,14 @@ const pageSettings_Domaine = defineCollection({
       {
         id: servicesIndex_Studio._id,
         ...servicesIndex_Studio
+      },
+      {
+        id: "headerSettings_Domaine",
+        ...headerSettings_Domaine
+      },
+      {
+        id: "headerSettings_Studio",
+        ...headerSettings_Studio
       },
       {
         id: footerSettings_Domaine._id,
