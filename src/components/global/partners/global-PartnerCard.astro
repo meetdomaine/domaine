@@ -1,7 +1,8 @@
 ---
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
-const { partner } = Astro.props
+const { partner, locale } = Astro.props
 
 let url, newTab
 
@@ -12,12 +13,9 @@ if (partner.tier.createLandingPages) {
     newTab = true
     url = partner.websiteUrl
 }
-
-// console.log(partner)
-
 ---
 <a 
-    href={url ? url : null} 
+    href={url ? getLocaleUrl(url, locale) : null} 
     class="partner-card" 
     target={newTab ? "_blank" : ""}
     data-animate-viewport="true"
@@ -32,7 +30,7 @@ if (partner.tier.createLandingPages) {
     </div>
     <div class="card-text caption">
         <p class="title h6">{partner.title}</p>
-        {partner.tier.slug.current != "discover" && <p class="excerpt">{partner.excerpt}</p>}
+        {partner.tier.slug.current != "discover" && <p class="excerpt">{getTranslationString(partner.excerpt, locale)}</p>}
     </div>
 </a>
 

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content"
 import LayoutServiceType from "../../../layouts/Layout_ServiceType.astro"
+import { Brands } from "../../../enums/brands"
 
 export async function getStaticPaths() {
     const serviceTypes = await getCollection('serviceTypes_Domaine')
@@ -18,4 +19,5 @@ const { content } = Astro.props;
 <LayoutServiceType 
     content={content}
     activePath="/services"
+    brand={Brands.DOMAINE}
 />

@@ -5,6 +5,7 @@ import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getTranslationString } from '../lib/translations';
 import { getEntry } from 'astro:content';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 
 interface Props {
 	title: string;
@@ -20,9 +21,11 @@ interface Props {
     showPreloader?: boolean;
     locale?: string;
     brand?: string;
+    marketingHeader?: boolean;
+    marketingHeaderButtonLabel?: string;
 }
 
-const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, brand } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel } = Astro.props;
 const { data: brandSettings } = await getEntry('pageSettings_Domaine', 'brandSettings_Domaine')
 const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'settings_footer--domaine')
 ---
@@ -36,16 +39,21 @@ const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'setting
     noIndex={noIndex}
     cookieNoticeText={brandSettings.cookieNoticeText}
     showPreloader={showPreloader}
-    brand={brand}
     locale={locale}
 >
-    <Header
-        currentBrand={brandSettings}
-        activePath={activePath}
-        searchExposed={searchExposed}
-        brand={brand}
-        locale={locale}
-    />
+    {marketingHeader ?
+        <GlobalMarketingHeader
+            locale={locale}
+            buttonLabel={marketingHeaderButtonLabel}
+        />
+    :
+        <Header
+            currentBrand={brandSettings}
+            activePath={activePath}
+            searchExposed={searchExposed}
+            locale={locale}
+        />
+    }
     <main>
         <slot />
     </main>

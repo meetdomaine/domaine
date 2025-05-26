@@ -1,10 +1,12 @@
 ---
 import { Icon } from "astro-icon/components"
+import { getTranslationString } from "../../../lib/translations"
 
-const { section, brand } = Astro.props
+const { section, brand, locale } = Astro.props
 
 const playbackId = section.video.asset.playbackId
 const sectionKey = section._key
+console.log(section)
 ---
 <section 
     id={`video-player__${sectionKey}`} 
@@ -15,8 +17,8 @@ const sectionKey = section._key
 >
     <div class="section-content">
         <div class="section-text">
-            <h2>Heading</h2>
-            <p>Subheading</p>
+            <h2>{getTranslationString(section.heading, locale)}</h2>
+            <p>{getTranslationString(section.subheading, locale)}</p>
         </div>
         <div class="video-controls">
             <button class="play-toggle" >

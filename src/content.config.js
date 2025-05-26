@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { eventQuery, globalSectionsFields, imageBaseFields, imageFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
+import { blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
 import {sanityClient} from "sanity:client"
 
 
@@ -101,25 +101,26 @@ const serviceTypes_Studio = defineCollection({
 
 // Blog Posts
 
+const query_BlogPost = `
+  ..., 
+  _id,
+  slug,
+  authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+  postDate,
+  thumbnailImage{${imageFields}},
+  category->{..., slug{...} }, 
+  body{..., richContent[]{${richContentFields}} },
+  services[]->{...},
+  agencyBrand->{slug},
+  globalSections{ sections[]{${globalSectionsFields}} },
+  metafields{ title, description, image{${imageBaseFields}} },
+  "relatedPosts": *[_type == "type_blog" && agencyBrand->name == ^.agencyBrand->name && category._ref == ^.category->._id && isHidden != true && _id != ^._id ]{ _id, slug, postDate } | order(postDate desc)
+`
+
 const blogPosts_Domaine = defineCollection({
-  // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{
-        ..., 
-        _id,
-        slug,
-        authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-        postDate,
-        thumbnailImage{${imageFields}},
-        category->{..., slug{...} }, 
-        body[]{${richContentFields}},
-        services[]->{...},
-        agencyBrand->{slug},
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} }
-    } | order(postDate desc)`)
+    const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{${query_BlogPost}} | order(postDate desc)`)
     return data.map((entry) => ({
-        // id: entry._id,
         id: entry.slug.current,
         ...entry
     }))
@@ -127,24 +128,9 @@ const blogPosts_Domaine = defineCollection({
 });
 
 const blogPosts_Studio = defineCollection({
-  // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" ]{
-        ..., 
-        _id,
-        slug,
-        authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-        postDate,
-        thumbnailImage{${imageFields}},
-        category->{..., slug{...} }, 
-        body[]{${richContentFields}},
-        services[]->{...},
-        agencyBrand->{slug},
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} }
-    } | order(postDate desc)`)
+    const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == "Studio" ]{${query_BlogPost}} | order(postDate desc)`)
     return data.map((entry) => ({
-        // id: entry._id,
         id: entry.slug.current,
         ...entry
     }))
@@ -160,7 +146,7 @@ const blogCategories_Domaine = defineCollection({
         ...,
         "posts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug, postDate } | order(postDate desc),
         metafields{ title, description, image{${imageBaseFields}} }
-    }`)
+    } | order(title.text asc)`)
     return data.map((entry) => ({
         // id: entry._id,
         id: entry.slug.current,
@@ -175,7 +161,7 @@ const blogCategories_Studio = defineCollection({
         ...,
         "posts": *[_type == "type_blog" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug, postDate } | order(postDate desc),
         metafields{ title, description, image{${imageBaseFields}} }
-    }`)
+    } | order(title.text asc)`)
     return data.map((entry) => ({
         // id: entry._id,
         id: entry.slug.current,
@@ -284,22 +270,33 @@ const features_Studio = defineCollection({
 
 // Partners
 
+const query_Partner = `
+  _id,
+  title, 
+  slug, 
+  excerpt,
+  description,
+  richContent{ translations{ ...}, richContent[]{${richContentFields}} },
+  globalSections{ sections[]{${globalSectionsFields}} },
+  icon{${imageFields}}, 
+  tier->{slug, title, createLandingPages}, 
+  websiteUrl, 
+  websiteText,
+  instagramUrl,
+  twitterUrl,
+  linkedInUrl,
+  youTubeUrl,
+  tikTokUrl,
+  "relatedBlogPosts": *[_type == "type_blog" && references(^._id) && isHidden != true]{ _id, slug, postDate} | order(postDate desc),
+  "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank),
+  metafields{ title, description, image{${imageBaseFields}} },
+  orderRank,
+`
+
 const partners_Domaine = defineCollection({
   loader: async () => {
-    const data = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0]{
-      _id,
-      title, 
-      excerpt, 
-      slug, 
-      icon{${imageFields}}, 
-      tier->{slug, title, createLandingPages}, 
-      websiteUrl, 
-      orderRank,
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
-      metafields{ title, description, image{${imageBaseFields}} },
-    }`)
+    const data = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && agencyBrand->name == "Domaine"]) > 0]{${query_Partner}}`)
     return data.map((entry) => ({
-      // id: entry._id,
       id: entry.slug.current,
       ...entry
   }))
@@ -327,6 +324,24 @@ const partners_Studio = defineCollection({
   }))
   }
 })
+
+// Partner Tiers
+const partnerTiers_Domaine = defineCollection({
+  loader: async () => {
+    const data = await sanityClient.fetch(`*[_type == "type_partnerTier"]{ 
+      ...,
+      "partners": *[_type == "type_partner" && references(^._id)]{
+        ${partnerTileFields} 
+      } | order(orderRank),
+    } | order(orderRank)`)
+    return data.map((entry) => ({
+      // id: entry._id,
+      id: entry.slug.current,
+      ...entry
+  }))
+  }
+})
+
 
 // General Pages
 
@@ -445,6 +460,17 @@ const pageSettings_Domaine = defineCollection({
     const brandSettings_Domaine = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/"][0]`)
     const brandSettings_Studio = await sanityClient.fetch(`*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`)
 
+    const partnersIndex_Domaine = await sanityClient.fetch(` *[_type == "page_partners-index"] { 
+      title, 
+      heading, 
+      heroMedia{${videoFields}}, 
+      text, 
+      formHeading, 
+      formText, 
+      hubspotFormId,
+      metafields{ title, description, image{${imageBaseFields}} },
+    }[0]`)
+
     return [
       {
         id: pageHome_Domaine._id,
@@ -489,6 +515,10 @@ const pageSettings_Domaine = defineCollection({
       {
         id: "brandSettings_Studio",
         ...brandSettings_Studio
+      },
+      {
+        id: "partnersIndex_Domaine",
+        ...partnersIndex_Domaine
       }
     ]
   }
@@ -513,6 +543,7 @@ export const collections = {
   features_Studio,
   partners_Domaine,
   partners_Studio,
+  partnerTiers_Domaine,
   events,
   pageSettings_Domaine,
   generalPages_Domaine,

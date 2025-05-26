@@ -46,9 +46,6 @@ const formattedDate = formatDate(post.postDate)
                     <span class="caption">{locale ? Translations.BY.locales[locale] : Translations.BY.name}:</span>
                     {post.authors.map((author, i) => (
                         <span class="caption">{author.name}{i < post.authors.length - 1 ? ", " : ""}</span>
-                        // <GlobalAuthorTile 
-                        //     author={author}
-                        // />
                     ))}
                 </span>
             </div>

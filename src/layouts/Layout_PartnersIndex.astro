@@ -1,0 +1,92 @@
+---
+import LayoutDomaine from '../layouts/Layout-Domaine.astro';
+import { imageBaseFields, partnerTileFields, urlFor, videoFields } from '../lib/cms-queries';
+import TextHeading from '../components/global/sections/section-TextHeading.astro';
+import PartnersIndexTier from '../components/global/partners/partnersIndex-tier.astro';
+import SectionForm from '../components/global/sections/section-Form.astro';
+import MediaFullbleed from '../components/global/sections/section-MediaFullbleed.astro';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { getTranslationString } from '../lib/translations';
+
+const partnerTiers =  await getCollection('partnerTiers_Domaine')
+const partners = await getCollection('partners_Domaine')
+
+const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'partnersIndex_Domaine')
+const { locale } = Astro.props
+---
+<LayoutDomaine
+    title={`${pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : getTranslationString(pageSettings.title, locale)}`}
+    description={pageSettings.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    searchFilter="type:page"
+    activePath="/partners"
+    showPreloader={false}
+    locale={locale}
+>
+    <TextHeading 
+        title={pageSettings.title}
+        heading={pageSettings.heading}
+        text={pageSettings.text}
+        count={partners.length}
+        locale={locale}
+    />
+
+    <MediaFullbleed 
+        media={pageSettings.heroMedia}
+        locale={locale}
+    />
+
+    <div class="partner-tiers">
+        {partnerTiers.map((tier) => (
+            <PartnersIndexTier 
+                tier={tier.data}
+                locale={locale}
+            />
+        ))}
+    </div>
+
+    {pageSettings.hubspotFormId && 
+        <SectionForm 
+            hubspotFormId={pageSettings.hubspotFormId}
+            heading={pageSettings.formHeading}
+            text={pageSettings.formText}
+            locale={locale}
+        />
+    }
+
+</LayoutDomaine>
+
+<style>
+
+    .partner-tiers {
+        padding-inline: var(--page-margin);
+        padding-block: var(--header-height) var(--space-xl);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xl);
+    }
+
+    .partner-tier {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .partner-tier-header {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-sm);
+        /* align-items: center; */
+    }
+
+    .partners {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-xs);
+    }
+
+    .icon {
+        width: 30px;
+    }
+</style>

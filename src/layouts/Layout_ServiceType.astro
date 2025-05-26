@@ -31,8 +31,15 @@ const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) =
         brand={brand}
     />
     
-    {content.pageSectionsDomaine?.map((section, i) => (
+    <!-- {content.pageSectionsDomaine?.map((section, i) => (
         <GlobalSections brand="domaine" section={section} key={i} locale={locale} brand={brand} />
+    ))} -->
+    {brand === Brands.DOMAINE && content.pageSectionsDomaine?.map((section, i) => (
+        <GlobalSections brand={brand} section={section} key={i} locale={locale} />
+      ))}
+    
+    {brand === Brands.STUDIO && content.pageSectionsStudio?.map((section, i) => (
+        <GlobalSections brand={brand} section={section} key={i} locale={locale} />
     ))}
 
     {relatedProjects?.length > 0 &&
@@ -53,7 +60,7 @@ const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) =
 
     {relatedPosts?.length > 2 &&
         <SectionBlogFeed 
-            heading={`${content.title} ${getLocaleString("INSIGHTS")}`}
+            heading={`${getTranslationString(content.title, locale)} ${getLocaleString("INSIGHTS")}`}
             posts={relatedPosts}
             sidebarTitle={content.title}
         />

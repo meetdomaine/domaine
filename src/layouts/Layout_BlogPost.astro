@@ -1,35 +1,29 @@
 ---
-import { sanityClient } from 'sanity:client';
 import LayoutDomaine from '../layouts/Layout-Domaine.astro';
-import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../lib/cms-queries';
+import LayoutStudio from './Layout-Studio.astro';
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 import BlogPostBody from '../components/global/blog/blog-PostBody.astro';
 import BlogPostHero from '../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../components/global/blog/blog-PostAuthors.astro';
-import { getBlogPosts_Domaine } from '../lib/cms-content';
 import BlogPostSidebar from '../components/global/blog/blog-Post-Sidebar.astro';
 import GlobalSections from '../components/global/sections/section-GlobalSections.astro';
+import { urlFor } from '../lib/cms-queries';
 import { Translations } from '../lib/locales';
 import { getCollection } from 'astro:content';
 import { Brands } from '../enums/brands';
-import LayoutStudio from './Layout-Studio.astro';
+import { getLocaleString, getTranslationString } from '../lib/translations';
+import { getEntry } from 'astro:content';
 
 const { content, locale , brand} = Astro.props;
 
 const blogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
-
-const relatedPosts = await sanityClient.fetch(`
-    *[_type == "type_blog" 
-        && agencyBrand->slug.current == "/" 
-        && category->_id == '${content.category._id}' 
-        && isHidden != true
-    ]{${blogCardFields}} | order(orderRank asc)`)
+const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => brand === Brands.STUDIO ? await getEntry('blogPosts_Studio', post.slug.current) : await getEntry('blogPosts_Domaine', post.slug.current)  ))
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
-    title={content.metafields?.title ? content.metafields.title : content.title}
-    description={content.metafields?.description ? content.metafields.description : null}
+    title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getLocaleString("INSIGHTS")}`}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter={content.isHidden ? "" : "type:blog-post_domaine"}
     activePath="/insights"
@@ -60,18 +54,11 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
     ))}
 
-    <!-- { relatedPosts.length > 1 && 
+    { relatedPosts.length > 1 && 
         <SectionBlogFeed 
             heading={locale ? Translations['RELATED-POSTS'].locales[locale] : Translations['RELATED-POSTS'].name}
-            posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
+            posts={relatedPosts}
             locale={locale}
         />
-    } -->
-
-    <!-- { relatedProjects?.length > 0 && 
-        <SectionProjectsFeed
-            heading="Related Projects"
-            projects={relatedProjects}
-        />
-    } -->
+    }
 </BrandLayout>

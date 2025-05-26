@@ -1,0 +1,57 @@
+---
+import LayoutDomaine from '../layouts/Layout-Domaine.astro';
+import { urlFor } from '../lib/cms-queries';
+import SectionProjectsFeed from '../components/global/sections/section-ProjectsFeed.astro';
+import AtomRichContent from '../components/global/atoms/atom-richContent.astro';
+import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
+import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
+import PartnerPostHero from '../components/global/partners/partnerPost-hero.astro';
+import { getLocaleString, getTranslationString } from '../lib/translations';
+import { Brands } from '../enums/brands';
+import { getEntry } from 'astro:content';
+
+const { content, locale, brand } = Astro.props;
+
+const blogPosts = await Promise.all(content.relatedBlogPosts?.map(async (post) => await getEntry(brand === Brands.STUDIO ? 'blogPosts_Studio' : 'blogPosts_Domaine', post.slug.current) ))
+const projects = await Promise.all(content.relatedProjects?.map(async (project) => await getEntry(brand === Brands.STUDIO ? 'projects_Studio' : 'projects_Domaine', project.slug.current) ))
+---
+<LayoutDomaine
+    title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : content.title} | ${getLocaleString("PARTNER")}`}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    searchFilter="type:partner"
+    activePath="/partners"
+    showPreloader={false}
+    locale={locale}
+>
+
+    <PartnerPostHero 
+        content={content}
+        locale={locale}
+    />
+
+    <AtomRichContent 
+        content={content.richContent}
+        locale={locale}
+    />
+
+    {content.globalSections?.sections.map((section, i) => (
+        <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+
+    {blogPosts?.length > 2 &&
+        <SectionBlogFeed 
+            heading={`${content.title} Insights`}
+            posts={blogPosts.slice(0, 5)}
+            locale={locale}
+        />
+    }
+
+    {projects?.length > 2 &&
+        <SectionProjectsFeed 
+            heading={`Our work with ${content.title}`}
+            projects={projects.slice(0, 4)}
+            locale={locale}
+        />
+    }
+</LayoutDomaine>

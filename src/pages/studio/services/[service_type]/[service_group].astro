@@ -3,8 +3,6 @@ import { getCollection } from "astro:content"
 import LayoutServiceGroup from "../../../../layouts/Layout_ServiceGroup.astro"
 import { Brands } from "../../../../enums/brands"
 
-export const prerender = true
-
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Studio')
     return serviceGroups.map((serviceGroup) => {

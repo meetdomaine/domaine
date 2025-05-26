@@ -9,6 +9,7 @@ import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 
 interface Props {
 	title: string,
@@ -22,9 +23,11 @@ interface Props {
     locale?: string;
     noIndex?: boolean;
     brand?: string;
+    marketingHeader?: boolean;
+    marketingHeaderButtonLabel?: string;
 }
 
-const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, brand } = Astro.props;
+const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel } = Astro.props;
 
 const { data: brandSettings } = await getEntry('pageSettings_Domaine', 'brandSettings_Studio')
 const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'settings_footer--studio')
@@ -40,11 +43,19 @@ const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'setting
     showPreloader={showPreloader}
     brand={Brands.STUDIO}
 >
-    <Header
-        currentBrand={brandSettings}
-        activePath={activePath}
-        searchExposed={searchExposed}
-    />
+    {marketingHeader ? 
+        <GlobalMarketingHeader 
+            brand={Brands.STUDIO}
+            locale={locale}
+            buttonLabel={marketingHeaderButtonLabel}
+        />
+    :
+        <Header
+            currentBrand={brandSettings}
+            activePath={activePath}
+            searchExposed={searchExposed}
+        />
+    }
 
     <main>
         <slot />

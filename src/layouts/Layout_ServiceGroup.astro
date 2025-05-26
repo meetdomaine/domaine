@@ -1,7 +1,6 @@
 ---
 import LayoutDomaine from "../layouts/Layout-Domaine.astro"
 import SectionServiceHero from "../components/global/services/service-Hero.astro"
-import { getCollection } from "astro:content"
 import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astro"
 import SectionProjectsFeed from "../components/global/sections/section-ProjectsFeed.astro"
 import { getLocaleString, getTranslationString } from "../lib/translations"
@@ -44,8 +43,12 @@ const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) =
         brand={brand}
     />
 
-    {content.pageSectionsDomaine?.sections?.map((section, i) => (
-      <SectionGlobalSections brand="domaine" section={section} key={i} locale={locale} />
+    {brand === Brands.DOMAINE && content.pageSectionsDomaine?.sections?.map((section, i) => (
+      <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+  
+    {brand === Brands.STUDIO && content.pageSectionsStudio?.sections?.map((section, i) => (
+      <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
     ))}
 
     {relatedProjects?.length > 0 &&
