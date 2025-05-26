@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-const pageSettings = await getEntry('pageSettings_Domaine', 'page_blog-index-studio')
+const pageSettings = await getEntry('pageSettings', 'page_blog-index-studio')
 const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
 ---
 <LayoutBlogIndex

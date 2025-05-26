@@ -12,7 +12,7 @@ import { getTranslationString } from '../lib/translations';
 const partnerTiers =  await getCollection('partnerTiers_Domaine')
 const partners = await getCollection('partners_Domaine')
 
-const { data: pageSettings } = await getEntry('pageSettings_Domaine', 'partnersIndex_Domaine')
+const { data: pageSettings } = await getEntry('pageSettings', 'partnersIndex_Domaine')
 const { locale } = Astro.props
 ---
 <LayoutDomaine

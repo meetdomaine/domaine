@@ -86,13 +86,13 @@ export default defineType({
       }),
       hidden: ({document}) => !document?.showPromoMessage
     }),
-    defineField({
-      name: 'promoMessageIcon',
-      title: 'Promo Message: Icon',
-      type: 'string',
-      description: 'Optional icon for promo message.',
-      hidden: ({document}) => !document?.showPromoMessage,
-    }),
+    // defineField({
+    //   name: 'promoMessageIcon',
+    //   title: 'Promo Message: Icon',
+    //   type: 'string',
+    //   description: 'Optional icon for promo message.',
+    //   hidden: ({document}) => !document?.showPromoMessage,
+    // }),
     defineField({
       name: 'eventsTitle',
       title: 'Events: Title',

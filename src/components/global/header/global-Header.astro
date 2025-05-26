@@ -1,16 +1,20 @@
 ---
-import { Icon } from "astro-icon/components";
-import { sanityClient } from "sanity:client";
-import { imageFields, videoFields } from "../../../lib/cms-queries";
+// import { Icon } from "astro-icon/components";
 import ContactMenu from "./global-ContactMenu.astro";
 // import SearchMenu from "./searchMenu/global-SearchMenu.astro";
 import NavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
 import NotificationMenu from "./global-NotificationMenu.astro";
 
-import BellIcon from '../../../icons/icon-bell.svg'
+import IconBell from '../../../icons/icon-bell.svg'
+import IconX from '../../../icons/icon-x.svg'
+import IconEmail from '../../../icons/icon-email.svg'
+import IconMenuBox from '../../../icons/icon-menu-box.svg'
 
-const { currentBrand, activePath, searchExposed, locale } = Astro.props;
+import LogoDomaine from '../../../icons/domaine-wordmark.svg'
+import LogoStudio from '../../../icons/domaine-studio.svg'
+
+const { currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
 
 import SearchMenu from "./searchMenu/SearchMenu"
 import { 
@@ -23,35 +27,17 @@ import {
     getPartners_Studio,
     getPartners_Domaine,
 } from "../../../lib/cms-content"
-import { locationsQuery } from "../../../lib/cms-queries"
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getEntry } from "astro:content";
+import { Brands } from "../../../enums/brands";
 
-// const test = await loadQuery({
-//     query: `*[_type == 'type_blog']`
-// })
-
-
-
+// TODO: Move to content collection
 const defaultBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
 const defaultProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
 const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? await getProjectFeatures_Studio() : await getProjectFeatures_Domaine()
 const defaultPartners = currentBrand.slug.current === "/studio" ? await getPartners_Studio() : await getPartners_Domaine()
 
-const headerSettings = await sanityClient.fetch(`
-    *[_type == "settings_header" 
-    && _id == "settings_header--${currentBrand.slug.current === "/studio" ? "studio" : "domaine"}"]{ 
-        ...,
-        locationClocks[]->{${locationsQuery}},
-        linkCardImage{${imageFields}},
-        brandMenuBrands[]{
-            ..., 
-            media{${videoFields}, ${imageFields}} 
-        }
-    }[0]`
-)
-
-// const { data: headerSettings } = await getEntry('pageSettings_Domaine', 'headerSettings_Domaine')
+const { data: headerSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'headerSettings_Studio' : 'headerSettings_Domaine')
 // console.log(headerSettings)
 ---
 <header id="header" data-color-scheme="glass-dark">
@@ -65,11 +51,13 @@ const headerSettings = await sanityClient.fetch(`
 
         <div class="brand" data-color-scheme="glass-dark">
             <a href={locale ? getRelativeLocaleUrl(locale, currentBrand.url) : currentBrand.url} class="brand-logo">
-                <Icon name={currentBrand.slug.current === "/studio" ? "domaine-studio" : "domaine-wordmark"} />
+                {brand === Brands.STUDIO ? <LogoStudio /> : <LogoDomaine /> }
+                <!-- <Icon name={currentBrand.slug.current === "/studio" ? "domaine-studio" : "domaine-wordmark"} /> -->
             </a>
             {headerSettings.showBrandMenu &&
                 <button class="brand-button button-reset" popovertarget="brand-menu">
-                    <Icon name="icon-menu-box" class="brand-menu-icon" />
+                    {/* <Icon name="icon-menu-box" class="brand-menu-icon" /> */}
+                    <IconMenuBox class="brand-menu-icon" />
                 </button>
             }
         </div>
@@ -85,12 +73,15 @@ const headerSettings = await sanityClient.fetch(`
 
         <div id="utility-menu" class="utility-menu">
             <button id="notification-toggle" class="utility-button notification-button" data-color-scheme="glass-dark" popovertarget="notification-menu" data-active="false">
-                <Icon name="icon-bell" class="utility-icon icon-open" />
+                <!-- <Icon name="icon-bell" class="utility-icon icon-open" /> -->
                 <!-- <BellIcon class="utility-icon icon-open" /> -->
-                <Icon name="icon-x" class="utility-icon icon-close" />
+                 <IconBell class="utility-icon icon-open" />
+                 <IconX class="utility-icon icon-close" />
+                <!-- <Icon name="icon-x" class="utility-icon icon-close" /> -->
             </button>
             <button class="utility-button contact-button" data-color-scheme="glass-dark" popovertarget="contact-menu">
-                <Icon name="icon-email" class="utility-icon" />
+                <!-- <Icon name="icon-email" class="utility-icon" /> -->
+                <IconEmail class="utility-icon" />
             </button>
         </div>
 
@@ -121,28 +112,11 @@ const headerSettings = await sanityClient.fetch(`
         locale={locale}
     />
 
-    <NotificationMenu 
-        showPromoMessage={headerSettings.showPromoMessage}
-        promoMessage={headerSettings.promoMessage}
-        promoMessageUrl={headerSettings.promoMessageUrl}
-        promoMessageIcon={headerSettings.promoMessageIcon}
-        clocks={headerSettings.clocks}
-        eventsTitle={headerSettings.eventsTitle}
-        locationClocks={headerSettings.locationClocks}
-        showLinkCard={headerSettings.showLinkCard}
-        linkCardTitle={headerSettings.linkCardTitle}
-        linkCardText={headerSettings.linkCardText}
-        linkCardImage={headerSettings.linkCardImage}
-        linkCardUrl={headerSettings.linkCardUrl}
-        linkCardNewTab={headerSettings.linkCardNewTab}
-        showCareers={headerSettings.showCareers}
-        careersHeading={headerSettings.careersHeading}
-        careersSubheading={headerSettings.careersSubheading}
-        careersUrl={headerSettings.careersUrl}
-        careersNewTab={headerSettings.careersNewTab}
-        showBlog={headerSettings.showBlog}
+    <NotificationMenu
+        content={headerSettings}
         currentBrand={currentBrand} 
         locale={locale}
+        brand={brand}
     />
 </header>
 
@@ -289,7 +263,7 @@ const headerSettings = await sanityClient.fetch(`
     }
 
     .utility-icon {
-        height: 50%;
+        height: 40%;
         position: absolute;
         top: 50%;
         left: 50%;

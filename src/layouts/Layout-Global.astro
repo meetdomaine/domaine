@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../lib/cms-queries';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
-import {VisualEditing} from '@sanity/astro/visual-editing'
+import { VisualEditing } from '@sanity/astro/visual-editing'
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -34,7 +34,7 @@ interface Props {
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const visualEditingEnabled = import.meta.env.DEV == true
+const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 ---
 
 <!doctype html>
@@ -113,7 +113,7 @@ const visualEditingEnabled = import.meta.env.DEV == true
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<VisualEditing enabled={true} />
+		<VisualEditing enabled={visualEditingEnabled} />
 
     <GlobalPreloader 
       currentBrand={currentBrand}

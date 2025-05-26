@@ -7,30 +7,13 @@ import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
 import { checkDateIsPast } from "../../../lib/check-date-is-past"
 import { Translations } from "../../../lib/locales"
-import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
+import { getLocaleString, getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import { getCollection } from "astro:content"
-const { 
+const {
+  content,
   currentBrand, 
-  showPromoMessage, 
-  promoMessage, 
-  promoMessageUrl, 
-  promoMessageIcon,
-  clocks,
-  eventsTitle,
   locale,
-  locationClocks,
-  showLinkCard,
-  linkCardTitle,
-  linkCardText,
-  linkCardImage,
-  linkCardNewTab,
-  linkCardUrl,
-  showCareers,
-  careersHeading,
-  careersSubheading,
-  careersUrl,
-  careersNewTab,
-  showBlog,
+  brand
 } = Astro.props
 
 const monthOptions: UseDateTimeFormatOptions = {
@@ -45,14 +28,16 @@ const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkD
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
-  {(showPromoMessage && promoMessage) &&
+  {(content.showPromoMessage && content.promoMessage) &&
     <a 
       class="promo-message caption" 
-      href={promoMessageUrl} 
+      href={content.promoMessageUrl} 
       data-color-scheme="brand-02"
     >
-      {promoMessageIcon && 
-        <Icon name={promoMessageIcon} />}{locale && promoMessage.translations?.[locale] ? promoMessage.translations[locale] : promoMessage.text}
+      {/* {content.promoMessageIcon && 
+        <Icon name={content.promoMessageIcon} />
+      } */}
+      {getTranslationString(content.promoMessage, locale)}
     </a>
   }
 
@@ -66,9 +51,9 @@ const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkD
     ))}
   </div>
 
-  {locationClocks?.length > 0 &&
+  {content.locationClocks?.length > 0 &&
     <div class="clocks" data-color-scheme="glass-dark">
-      {locationClocks.map((clock) => (
+      {content.locationClocks.map((clock) => (
         <div class="clock" data-timezone={clock.timezone} data-daytime="true">
           <div class="clock-icon">
             <span class="tick"></span>
@@ -95,7 +80,7 @@ const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkD
 
   {upcomingEvents?.length > 0 && 
     <div class="event-card" data-color-scheme="glass-dark">
-      {eventsTitle && <p class="caption">{getTranslationString(eventsTitle, locale)}</p>}
+      {content.eventsTitle && <p class="caption">{getTranslationString(content.eventsTitle, locale)}</p>}
       {upcomingEvents.map((event) => (
         <a 
           class="event-info color-reset" 
@@ -115,36 +100,36 @@ const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkD
     </div>
   }
 
-{showLinkCard && showCareers &&
+{content.showLinkCard && content.showCareers &&
   <div class="brand-cards">
-    {showLinkCard && linkCardTitle &&
+    {content.showLinkCard && content.linkCardTitle &&
       <AtomNotificationLink 
-        title={linkCardTitle}
-        subtitle={linkCardText}
-        url={linkCardUrl}
-        newTab={linkCardNewTab}
-        image={linkCardImage.image}
+        title={content.linkCardTitle}
+        subtitle={content.linkCardText}
+        url={content.linkCardUrl}
+        newTab={content.linkCardNewTab}
+        image={content.linkCardImage.image}
         locale={locale}
       />
     }
-    {showCareers && careersHeading && careersUrl &&
-      <a href={careersUrl} class="careers-card" data-color-scheme="glass-dark" target={careersNewTab ? "_blank" : ""}>
+    {content.showCareers && content.careersHeading && content.careersUrl &&
+      <a href={content.careersUrl} class="careers-card" data-color-scheme="glass-dark" target={content.careersNewTab ? "_blank" : ""}>
         <Icon name="dot-laptop" class="careers-icon" />
         <div class="careers-heading">
-          {careersHeading && <p class="h6">{locale && careersHeading.translations?.[locale] ? careersHeading.translations[locale] : careersHeading.text}</p>}
+          {content.careersHeading && <p class="h6">{getTranslationString(content.careersHeading.text, locale)}</p>}
           <AtomCounter 
             count={allCareers.length}
           />
         </div>
-        {careersSubheading && <p class="careers-subheading">{locale && careersSubheading.translations?.[locale] ? careersSubheading.translations[locale] : careersSubheading.text}</p>}
+        {content.careersSubheading && <p class="careers-subheading">{getTranslationString(content.careersSubheading, locale)}</p>}
       </a>
     }
   </div>
 }
   
-{showBlog && latestBlogPosts.length > 1 &&
+{content.showBlog && latestBlogPosts.length > 1 &&
   <div class="blog-posts" data-color-scheme="glass-dark">
-    <p class="blog-posts-heading caption">{locale && Translations.INSIGHTS.locales[locale] ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name}</p>
+    <p class="blog-posts-heading caption">{getLocaleString("INSIGHTS")}</p>
     {latestBlogPosts.slice(0,2).map((blogPost) => (
       <GlobalBlogTile 
         post={blogPost.data}
@@ -160,7 +145,7 @@ const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkD
 
 <script>
   import { isMobileBreakpoint } from "../../../lib/check-device"
-import { getIsDaytime, getLocalTime } from "../../../lib/get-local-time"
+  import { getIsDaytime, getLocalTime } from "../../../lib/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -191,34 +176,27 @@ import { getIsDaytime, getLocalTime } from "../../../lib/get-local-time"
   }
 
   const updateTime = () => {
+
+    console.log("TIME")
       
       clocks.forEach((clock: HTMLElement) => {
         let time, hours, minutes, seconds
         
         const timezoneId = clock.dataset.timezone
+        const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
+        console.log(cleanedTimezoneId)
         const timeElement: HTMLElement = clock.querySelector('.time')
 
-        time = new Date(new Date().toLocaleString("en-US", {timeZone: timezoneId } ));
+        time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId} ));
         hours = time.getHours()
         minutes = time.getMinutes()
         seconds = time.getSeconds()
 
-        getLocalTime(timeElement, timezoneId, 'innerText')
-        getLocalTime(clock, timezoneId, 'customProps')
-        getIsDaytime(clock, timezoneId)
-        // timeElement.getLocal
-
-        // TODO: Make clocks work
-
-        // timeElement.innerText = `${hours}:${minutes}`
-        // if (hours >= 19) clock.dataset.daytime = "false"
-
-        // clock.style.setProperty('--hours', hours)
-        // clock.style.setProperty('--minutes', minutes)
-        // clock.style.setProperty('--seconds', seconds)
+        getLocalTime(timeElement, cleanedTimezoneId, 'innerText')
+        getLocalTime(clock, cleanedTimezoneId, 'customProps')
+        getIsDaytime(clock, cleanedTimezoneId)
         
       })
-      // requestAnimationFrame(updateTime)
     }
 
     if (!isMobileBreakpoint) {

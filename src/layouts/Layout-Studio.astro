@@ -29,8 +29,8 @@ interface Props {
 
 const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel } = Astro.props;
 
-const { data: brandSettings } = await getEntry('pageSettings_Domaine', 'brandSettings_Studio')
-const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'settings_footer--studio')
+const { data: brandSettings } = await getEntry('pageSettings', 'brandSettings_Studio')
+const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer--studio')
 ---
 <LayoutGlobal
     title={`${title ? title : "Domaine Studio"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -54,6 +54,7 @@ const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'setting
             currentBrand={brandSettings}
             activePath={activePath}
             searchExposed={searchExposed}
+            brand={Brands.STUDIO}
         />
     }
 

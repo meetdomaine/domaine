@@ -6,6 +6,7 @@ import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getTranslationString } from '../lib/translations';
 import { getEntry } from 'astro:content';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
+import { Brands } from '../enums/brands';
 
 interface Props {
 	title: string;
@@ -26,8 +27,8 @@ interface Props {
 }
 
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel } = Astro.props;
-const { data: brandSettings } = await getEntry('pageSettings_Domaine', 'brandSettings_Domaine')
-const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'settings_footer--domaine')
+const { data: brandSettings } = await getEntry('pageSettings', 'brandSettings_Domaine')
+const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer--domaine')
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -51,6 +52,7 @@ const { data: footerSettings } = await getEntry('pageSettings_Domaine', 'setting
             currentBrand={brandSettings}
             activePath={activePath}
             searchExposed={searchExposed}
+            brand={Brands.DOMAINE}
             locale={locale}
         />
     }
