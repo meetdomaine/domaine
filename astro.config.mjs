@@ -10,6 +10,9 @@ import { loadEnv } from "vite";
 
 const { SERVER_RENDERING_ENABLED } = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
+const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static'
+console.log(`RENDER MODE: ${renderMode}`)
+
 export default defineConfig({
   integrations: [
     sitemap(), 
@@ -48,7 +51,7 @@ export default defineConfig({
     clientPrerender: true
   },
   // output: 'server',
-  output: SERVER_RENDERING_ENABLED ? 'server' : 'static',
+  output: renderMode,
   // output: 'static',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
