@@ -6,7 +6,7 @@
     "directory": "./dist"
   },
   "build": {
-    "command": "npm run build",
+    "command": "SERVER_RENDERING_ENABLED=true npm run build-ssr",
     "node_version": "20"
   },
   "vars": {
