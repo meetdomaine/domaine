@@ -8,10 +8,10 @@ import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
 
-const { SERVER_RENDERING_ENABLED } = loadEnv(process.env.NODE_ENV, process.cwd(), "");
-
-const renderMode = SERVER_RENDERING_ENABLED == "true" ? 'server' : 'static'
-console.log(`RENDER MODE: ${renderMode}`)
+// Try to get the variable from Cloudflare first, then fall back to local env
+const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || loadEnv(process.env.NODE_ENV, process.cwd(), "").SERVER_RENDERING_ENABLED;
+const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
+console.log(`RENDER MODE: ${renderMode}`);
 
 export default defineConfig({
   integrations: [
