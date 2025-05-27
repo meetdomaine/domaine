@@ -57,7 +57,7 @@ const generateSrcSets = () => {
   alt={alt ? alt : image.alt}
   data-cover={cover ? "true" : "false"}
   data-contain={contain ? "true" : "false"}
-  data-pagefind-meta={pagefindMeta}
+  {...(pagefindMeta ? {"data-pagefind-meta": pagefindMeta} : {}) }
 />
 
 <!-- <img

@@ -19,9 +19,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     title={ `${title ? getTranslationString(title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} ${title || pageSettings.metafields.title ? "|" : ""} ${getLocaleString("INSIGHTS")} `}}
     description={description ? description : pageSettings?.metafields?.description ? pageSettings.metafields.description : null}
     image={image ? image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
-    searchFilter={searchFilter}
     locale={locale}
-    searchFilter="type:blog-category"
     activePath="/insights"
     showPreloader={false}
 >

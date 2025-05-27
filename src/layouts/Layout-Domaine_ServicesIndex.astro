@@ -13,7 +13,6 @@ const { locale } = Astro.props
     title={`${pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : pageSettings.title.text}`}
     description={pageSettings.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
-    searchFilter="type:page"
     activePath="/services"
     showPreloader={false}
     locale={locale}
