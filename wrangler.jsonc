@@ -2,9 +2,6 @@
   "name": "domaine-content",
   "compatibility_date": "2024-03-27",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": "./dist"
-  },
   "build": {
     "command": "SERVER_RENDERING_ENABLED=true npm run build-ssr",
     "node_version": "20"
@@ -23,5 +20,9 @@
         "SERVER_RENDERING_ENABLED": "false"
       }
     }
+  },
+  "site": {
+    "bucket": "./dist",
+    "exclude": ["_worker.js", "_worker.js/*"]
   }
 } 
