@@ -49,6 +49,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "pagefind": "^1.1.0"
+    "pagefind": "^1.1.0",
+    "wrangler": "^4.17.0"
   }
 }
