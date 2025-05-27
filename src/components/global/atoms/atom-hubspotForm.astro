@@ -11,30 +11,41 @@ interface Props {
 
 const { formId, buttonToggles, key } = Astro.props
 
-// const portalId = env.HUBSPOT_PORTAL_ID
-// const accessToken = env.HUBSPOT_ACCESS_TOKEN
 const portalId = import.meta.env.HUBSPOT_PORTAL_ID
 const accessToken = import.meta.env.HUBSPOT_ACCESS_TOKEN
 
-const formData = await cachedFetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
-    method: "GET",
-    headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        "Content-type": "application/json; charset=UTF-8"
-    }
-})
+let formData;
+try {
+    const response = await cachedFetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    });
+    formData = await response;
+} catch (error) {
+    console.error('Error fetching Hubspot form:', error);
+    formData = {
+        fieldGroups: [],
+        legalConsentOptions: {},
+        displayOptions: {
+            submitButtonText: 'Submit'
+        }
+    };
+}
 
-const fieldGroups = await formData.fieldGroups
-const consentData = await formData.legalConsentOptions
+const fieldGroups = formData.fieldGroups || [];
+const consentData = formData.legalConsentOptions || {};
 
-const fields = await fieldGroups?.flatMap((group) => {
+const fields = fieldGroups?.flatMap((group) => {
   if (group.fields) {
     return group.fields?.map((field) => {
         return field
     })
   }
   return null
-})
+}) || [];
 ---
 <form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
     {fieldGroups?.map((group) => {
@@ -242,7 +253,7 @@ const fields = await fieldGroups?.flatMap((group) => {
     </div>
 
     <div class="form-field">
-        <input type="submit" form={`form-${formId}${key != undefined ? `-${key}` : ''}`} value={formData.displayOptions.submitButtonText} />
+        <input type="submit" form={`form-${formId}${key != undefined ? `-${key}` : ''}`} value={formData.displayOptions?.submitButtonText || 'Submit'} />
     </div>
 
 </form>
