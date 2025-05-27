@@ -69,7 +69,13 @@ export default defineType({
     defineField({
       name: 'cookieNoticeText',
       title: 'Cookie Notice: Text',
-      type: 'snippet_rich-content',
+      type: 'snippet_locale-rich-content',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'migrate',
+      title: 'Cookie Notice: Text',
+      type: 'snippet_locale-rich-content',
       validation: Rule => Rule.required()
     }),
     orderRankField({ type: 'type_agencyBrand'}),
