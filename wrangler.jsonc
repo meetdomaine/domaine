@@ -8,8 +8,5 @@
   "build": {
     "command": "npm run build",
     "node_version": "20"
-  },
-  "vars": {
-    "SERVER_RENDERING_ENABLED": "true"
   }
 } 
