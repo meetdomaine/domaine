@@ -32,7 +32,7 @@
     "astro-icon": "^1.1.0",
     "astro-portabletext": "^0.9.9",
     "astro-sanity-picture": "^0.2.0",
-    "gsap": "npm:@gsap/shockingly@^3.12.5",
+    "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-is": "^19.1.0",
