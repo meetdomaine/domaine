@@ -11,7 +11,8 @@ const services_Domaine = defineCollection({
     const { data } = await loadQuery({ query: `*[_type == "type_service" && "Domaine" in agencyBrands[]->name ]{
       ${serviceQuery}
       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank asc),
-      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc)
+      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc),
+      "pageSections": pageSectionsDomaine[]{${globalSectionsFields}},
     } | order(postDate desc)`})
     return data.map((entry) => ({
         id: entry.slug.current,
@@ -25,7 +26,8 @@ const services_Studio = defineCollection({
     const { data } = await loadQuery({ query: `*[_type == "type_service" && "Studio" in agencyBrands[]->name ]{
       ${serviceQuery}
       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank asc),
-      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Studio" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc)
+      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Studio" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc),
+      "pageSections": pageSectionsStudio[]{${globalSectionsFields}},
     } | order(postDate desc)`})
     return data.map((entry) => ({
         id: entry.slug.current,
