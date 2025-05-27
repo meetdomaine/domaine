@@ -1,0 +1,15 @@
+{
+  "name": "domaine",
+  "compatibility_date": "2024-03-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist"
+  },
+  "build": {
+    "command": "npm run build",
+    "node_version": "20"
+  },
+  "vars": {
+    "SERVER_RENDERING_ENABLED": "true"
+  }
+} 
