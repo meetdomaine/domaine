@@ -176,15 +176,12 @@ const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkD
   }
 
   const updateTime = () => {
-
-    console.log("TIME")
       
       clocks.forEach((clock: HTMLElement) => {
         let time, hours, minutes, seconds
         
         const timezoneId = clock.dataset.timezone
         const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
-        console.log(cleanedTimezoneId)
         const timeElement: HTMLElement = clock.querySelector('.time')
 
         time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId} ));

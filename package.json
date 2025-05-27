@@ -2,10 +2,13 @@
   "name": "domaine",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=18.20.8"
+  },
   "scripts": {
     "dev": "astro dev --host",
     "start": "astro dev",
-    "build": "astro build && pagefind --site dist  && cp -r dist/pagefind public/",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "astro": "astro"
@@ -15,7 +18,7 @@
     "@astrojs/cloudflare": "^12.5.3",
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.0",
-    "@astrojs/solid-js": "^5.0.10",
+    "@astrojs/solid-js": "^5.1.0",
     "@mux/mux-player": "^2.7.0",
     "@sanity/astro": "^3.2.6",
     "@sanity/client": "^6.29.1",
@@ -28,11 +31,11 @@
     "@types/lodash": "^4.17.14",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
-    "astro": "^5.7.13",
+    "astro": "^5.8.0",
     "astro-icon": "^1.1.0",
     "astro-portabletext": "^0.9.9",
     "astro-sanity-picture": "^0.2.0",
-    "gsap": "npm:@gsap/shockingly@^3.12.5",
+    "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-is": "^19.1.0",

@@ -6,9 +6,12 @@ import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
-const isProd = import.meta.env.PROD;
-const isDev = import.meta.env.DEV;
-const renderMode = import.meta.env.RENDER_MODE;
+import { loadEnv } from "vite";
+
+// Try to get the variable from Cloudflare first, then fall back to local env
+const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || loadEnv(process.env.NODE_ENV, process.cwd(), "").SERVER_RENDERING_ENABLED;
+const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
+console.log(`RENDER MODE: ${renderMode}`);
 
 export default defineConfig({
   integrations: [
@@ -48,7 +51,8 @@ export default defineConfig({
     clientPrerender: true
   },
   // output: 'server',
-  output: 'static',
+  output: renderMode,
+  // output: 'static',
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {
@@ -61,7 +65,7 @@ export default defineConfig({
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
       // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
       alias: import.meta.env.PROD && {
-        "react-dom/server": "react-dom/server.edge",
+        "react-dom/server": "react-dom/server.edge", // Hacky fix for Astro bug
       },
     },
   },
