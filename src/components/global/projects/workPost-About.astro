@@ -47,8 +47,8 @@ const { description, excerpt, agencyBrand, client, industry, theme, metrics, loc
         <aside class="metrics">
             {metrics.map((metric) => (
                 <div class="metric">
-                    <p class="h5">{metric.number}</p>
-                    <p>{metric.label}</p>
+                    <p class="h5">{getTranslationString(metric.number, locale)}</p>
+                    <p>{getTranslationString(metric.label, locale)}</p>
                 </div>
             ))}
         </aside>

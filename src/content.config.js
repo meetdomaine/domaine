@@ -466,7 +466,7 @@ const pageSettings = defineCollection({
     const { data: footerSettings_Domaine } = await loadQuery({ query: `*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]` })
     const { data: footerSettings_Studio } = await loadQuery({ query: `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]` })
 
-    const { data: brandSettings_Domaine } = await loadQuery({ query: `*[_type == "type_agencyBrand" && slug.current == "/"][0]`})
+    const { data: brandSettings_Domaine } = await loadQuery({ query: `*[_type == "type_agencyBrand" && slug.current == "/"][0]{ ..., cookieNoticeText{ ..., richContent[]{${richContentFields}} }}`})
     const { data: brandSettings_Studio } = await loadQuery({ query: `*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`})
 
     const { data: partnersIndex_Domaine } = await loadQuery({ query: ` *[_type == "page_partners-index"] { 

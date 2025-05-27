@@ -9,9 +9,8 @@ import { table } from '@sanity/table';
 // import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input'
 import { structure } from './domaine-cms/schemaTypes/structure'
 import { schemaTypes } from './domaine-cms/schemaTypes'
-// import { vercelDeployTool } from 'sanity-plugin-vercel-deploy'
 import { webhooksTrigger } from 'sanity-plugin-webhooks-trigger'
-import { resolve } from './src/lib/sanity-resolver'
+// import { resolve } from './src/lib/sanity-resolver'
 
 
 export default defineConfig({
@@ -27,9 +26,9 @@ export default defineConfig({
     table({
       rowType: 'my-custom-row-type',
     }),
-    // presentationTool({
-    //   previewUrl: 'http://localhost:4322/'
-    // }),
+    presentationTool({
+      previewUrl: 'http://localhost:4322/'
+    }),
     // vercelDeployTool(),
     // inlineSvgInput(),
     colorInput(),
@@ -38,9 +37,9 @@ export default defineConfig({
       title: 'Deploy',
       text: 'I am buggy, so you can ignore my error messages :)',
     }),
-    presentationTool({
-      previewUrl: location.origin
-    }),
+    // presentationTool({
+    //   previewUrl: location.origin
+    // }),
   ],
   schema: {
     types: schemaTypes,

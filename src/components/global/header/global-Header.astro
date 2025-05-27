@@ -30,12 +30,13 @@ import {
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getEntry } from "astro:content";
 import { Brands } from "../../../enums/brands";
+import { getCollection } from "astro:content";
 
 // TODO: Move to content collection
-const defaultBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
-const defaultProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
-const defaultProjectFeatures = currentBrand.slug.current === "/studio" ? await getProjectFeatures_Studio() : await getProjectFeatures_Domaine()
-const defaultPartners = currentBrand.slug.current === "/studio" ? await getPartners_Studio() : await getPartners_Domaine()
+const defaultBlogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine') 
+const defaultProjects = brand === Brands.STUDIO ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+const defaultProjectFeatures = brand === Brands.STUDIO ? await getCollection('features_Studio') : await getCollection('features_Domaine')
+const defaultPartners = brand === Brands.STUDIO ? await getCollection('partners_Studio') : await getCollection('partners_Domaine')
 
 const { data: headerSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'headerSettings_Studio' : 'headerSettings_Domaine')
 // console.log(headerSettings)
