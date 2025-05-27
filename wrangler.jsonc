@@ -1,5 +1,5 @@
 {
-  "name": "domaine",
+  "name": "domaine-content",
   "compatibility_date": "2024-03-27",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
