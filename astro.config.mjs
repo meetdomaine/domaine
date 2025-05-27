@@ -10,7 +10,7 @@ import { loadEnv } from "vite";
 
 const { SERVER_RENDERING_ENABLED } = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
-const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static'
+const renderMode = SERVER_RENDERING_ENABLED == "true" ? 'server' : 'static'
 console.log(`RENDER MODE: ${renderMode}`)
 
 export default defineConfig({
