@@ -134,3 +134,86 @@ html,
     background-color: var(--color-glass-light);
 }
 
+/* Studio Styles */
+
+html[data-brand="Studio"] {
+    [data-color-scheme="glass-light"],
+    [data-color-scheme="default"] {
+        
+        --color-accent: var(--color-blue);
+
+        --button-primary-foreground: var(--color-lightest);
+        --button-primary-background: var(--color-blue);
+        --button-primary-foreground-hover: var(--color-lightest);
+        --button-primary-background-hover: var(--color-darkest);
+
+        --button-secondary-foreground: var(--color-darkest);
+        --button-secondary-foreground-hover: var(--color-darkest);
+        --button-secondary-background-hover: var(--color-lighter);
+    }
+    
+    .color-invert,
+    [data-color-scheme="invert"],
+    [data-color-scheme="glass-dark"] {
+    
+      --color-foreground: var(--color-lightest);
+      --color-foreground-secondary: var(--color-light);
+      --color-background: var(--color-darkest);
+      --color-background-secondary: var(--color-dark);
+      --color-border: var(--color-dark);
+    
+      --color-accent: var(--color-blue-lightest);
+    
+      --button-primary-foreground-hover: var(--color-lightest);
+      --button-primary-background-hover: var(--color-blue);
+    
+      --button-secondary-foreground: var(--color-lightest);
+      --button-secondary-foreground-hover: var(--color-darkest);
+      --button-secondary-background-hover: var(--color-light);
+    }
+    
+    [data-color-scheme="brand-01"],
+    [data-color-scheme="brand-02"] {
+    
+      --color-foreground: var(--color-lightest);
+      --color-foreground-secondary: var(--color-blue-contrast-subdued);
+      --color-background: var(--color-blue);
+      --color-background-secondary: var(--color-blue-light);
+    
+      --color-border: var(--color-blue-lighter);
+    
+      --color-accent: var(--color-blue-contrast-subdued);
+    
+      /* Buttons */
+      --button-primary-foreground: var(--color-darkest);
+      --button-primary-background: var(--color-lightest);
+      --button-primary-foreground-hover: var(--color-lightest);
+      --button-primary-background-hover: var(--color-darkest);
+    
+      --button-secondary-foreground: var(--color-lightest);
+      --button-secondary-foreground-hover: var(--color-lightest);
+      --button-secondary-background-hover: var(--color-blue-lighter);
+    }
+    
+    [data-color-scheme="brand-03"] {
+    
+      --color-foreground: var(--color-darkest);
+      --color-foreground-secondary: var(--color-blue-contrast-dark);
+      --color-background: var(--color-orange-light);
+      --color-background-secondary: var(--color-blue-light);
+    
+      --color-border: var(--color-orange);
+    
+      --color-accent: var(--color-blue);
+    
+      /* Buttons */
+      --button-primary-foreground: var(--color-lightest);
+      --button-primary-background: var(--color-blue);
+      --button-primary-foreground-hover: var(--color-lightest);
+      --button-primary-background-hover: var(--color-darkest);
+    
+      --button-secondary-foreground: var(--color-darkest);
+      --button-secondary-foreground-hover: var(--color-lightest);
+      --button-secondary-background-hover: var(--color-orange);
+    }
+}

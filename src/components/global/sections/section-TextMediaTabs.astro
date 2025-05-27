@@ -4,7 +4,6 @@ import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
 const { section, brand, key, locale } = Astro.props
-console.log(section.tabs)
 ---
 <section class="section-text-media-tabs" data-key={key}>
 
@@ -221,6 +220,10 @@ console.log(section.tabs)
 
     .section-content {
       gap: var(--space-xl);
+    }
+
+    .section-media {
+      flex: 0 0 auto;
     }
 
     .content-title {

@@ -77,10 +77,6 @@ const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
         }
 
         const animateSection = () => {
-
-            // console.log(section)
-
-            // console.log(text)
             if (backgroundMedia) { addParallax(backgroundMedia) }
 
             gsap.to(text, {

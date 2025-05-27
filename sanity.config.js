@@ -39,7 +39,6 @@ export default defineConfig({
       text: 'I am buggy, so you can ignore my error messages :)',
     }),
     presentationTool({
-      resolve: resolve,
       previewUrl: location.origin
     }),
   ],

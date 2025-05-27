@@ -2,27 +2,29 @@
 import { Icon } from "astro-icon/components"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomButton from "../atoms/atom-button.astro"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
-const { section, brand, key } = Astro.props
-// console.log(section)
+const { section, brand, key, locale } = Astro.props
 ---
 <section class="section-text-video-player">
    <div class="section-content">
     <div class="section-title">
-      {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
-      <h2 class="h3">{section.heading}</h2>
+      {section.eyebrow && <p class="eyebrow utility">{getTranslationString(section.eyebrow, locale)}</p>}
+      {section.heading && <h2 class="h3">{getTranslationString(section.heading, locale)}</h2>}
     </div>
     {(section.subheading || section.text) &&
       <div class="section-text">
-        {section.subheading && <h3 class="subheading h6">{section.subheading}</h3>}
+        {section.subheading && <h3 class="subheading h6">{getTranslationString(section.subheading, locale)}</h3>}
         <div class="text">
-          {section.text && <p class="description">{section.text}</p>}
-          <AtomButton 
-            text={section.button.text}
-            url={section.button.url}
-            style="primary"
-            icon="arrow-diagonal"
-          />
+          {section.text && <p class="description">{getTranslationString(section.text, locale)}</p>}
+          {section.button.label && section.button.url &&
+            <AtomButton 
+              text={getTranslationString(section.button.label, locale)}
+              url={getLocaleUrl(section.button.url, locale)}
+              style="primary"
+              icon="arrow-diagonal"
+            />
+          }
         </div>
       </div>
     }
@@ -40,8 +42,8 @@ const { section, brand, key } = Astro.props
       <div class="media-info">
         <Icon name="icon-arrow-angle-up" class="media-icon" />
         <div class="media-text">
-          <p class="media-title">{section.mediaTitle}</p>
-          <p class="media-subtitle">{section.mediaSubtitle}</p>
+          <p class="media-title">{getTranslationString(section.mediaTitle, locale)}</p>
+          <p class="media-subtitle">{getTranslationString(section.mediaSubtitle, locale)}</p>
         </div>
       </div>
     }

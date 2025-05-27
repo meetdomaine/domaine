@@ -13,8 +13,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   metafields{ title, description, image{${imageBaseFields}} },
 }[0]`)
 
-// console.log(pageSettings)
-// console.log(allCareers)
+// TODO: Migrate to content collections
 ---
 <LayoutDomaine
     title="Careers"

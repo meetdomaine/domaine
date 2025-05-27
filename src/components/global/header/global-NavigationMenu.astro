@@ -283,13 +283,20 @@ const { brands, brandIndex, links, activePath, searchExposed, locale, searchPlac
             display: none;
         }
 
-        .navigation-link {
+        .navigation-link,
+        html[data-brand="Studio"] .navigation-link {
             --base-size: 32;
             --min-size: 28;
             letter-spacing: -0.03em;
             translate: 0 0.5em;
             opacity: 0;
             transition: translate var(--anim-md), opacity var(--anim-md);
+            /* font-weight: inherit; */
+        }
+
+
+        html[data-brand="Studio"] .navigation-link {
+            font-weight: 200;
         }
 
         :global(header.navigation-open) .navigation-link {

@@ -3,9 +3,9 @@ import { sanityClient } from "sanity:client"
 import { practicesQuery, agencyBrandsQuery } from "../../../lib/cms-queries"
 import GlobalPracticeCard from "../practices/global-practiceCard.astro"
 import GlobalPracticesGrid from "../practices/global-practicesGrid.astro"
+import { getTranslationString } from "../../../lib/translations"
 
-const { section, brand, key } = Astro.props
-// console.log(agencyBrands)
+const { section, brand, key, locale } = Astro.props
 ---
 <section class="section-practices">
     <div class="section-title">
@@ -13,16 +13,16 @@ const { section, brand, key } = Astro.props
             class="h5"
             data-animate-viewport="true"
             data-animation="fade"
-        >{section.title}</h2>
+        >{getTranslationString(section.title, locale)}</h2>
         <div 
             class="subheading h3"
             data-animate-viewport="true"
             data-animation="fade-up"
             data-animation-delay={200}
-        >{section.heading}</div>
+        >{getTranslationString(section.heading, locale)}</div>
     </div>
 
-    <GlobalPracticesGrid />
+    <GlobalPracticesGrid locale={locale} />
     
 </section>
 

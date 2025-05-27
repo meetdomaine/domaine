@@ -3,18 +3,19 @@ import { Icon } from "astro-icon/components"
 import { getLocations } from "../../../lib/cms-content"
 import AtomButton from "../atoms/atom-button.astro"
 import { getRelativeLocaleUrl } from "astro:i18n"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
 const { section, brand, key, locale } = Astro.props
 const locations = await getLocations()
 ---
 <section class="section-locations-feed">
   <div class="section-title">
-    {section.heading && <h2 class="heading h2">{locale && section.heading.translations?.[locale] ? section.heading.translations[locale] : section.heading.text}</h2>}
-    {section.subheading && <p>{locale && section.subheading.translations?.[locale] ? section.subheading.translations[locale] : section.subheading.text}</p>}
+    {section.heading && <h2 class="heading h2">{getTranslationString(section.heading, locale)}</h2>}
+    {section.subheading && <p>{getTranslationString(section.subheading.text, locale)}</p>}
     {section.button?.label && section.button?.url && 
       <AtomButton 
-       text={locale && section.button.label.translations?.[locale] ? section.button.label.translations[locale] : section.button.label.text}
-       url={locale ? getRelativeLocaleUrl(locale, section.button.url) : section.button.url}
+       text={getTranslationString(section.button.label.text, locale)}
+       url={getLocaleUrl(section.button.url, locale)}
        newTab={section.button.newTab}
        style="secondary"
       />

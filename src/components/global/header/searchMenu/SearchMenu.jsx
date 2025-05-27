@@ -82,8 +82,6 @@ function CloseIcon() {
 
 export default function SearchMenu(props) {
 
-    // console.log(props.locale)
-
     const [ pageFind, setPageFind ] = createSignal(null)
     const [ query, setQuery ] = createSignal(null)
     const [ projectResults, setProjectResults ] = createSignal(null)
@@ -116,7 +114,6 @@ export default function SearchMenu(props) {
                 const data = await pageFind().search(query, {filters: {type: queryType}})
                 if (data === null) return
                 const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
-                // console.log(filteredResults)
                 if (filteredResults) return setter(filteredResults)
                 return setter(null)
             }
@@ -125,8 +122,6 @@ export default function SearchMenu(props) {
             await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine', setBlogResults, 3)
             await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine', setFeatureResults, 10)
             await getFilteredResults('partner', setPartnerResults, 5)
-
-            // console.log(partnerResults())
         }
     }
 

@@ -3,7 +3,7 @@ import { getTranslationString } from "../../../lib/translations"
 import AtomCounter from "../atoms/atom-counter.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
-const { section, brand, key, title, heading, text, count, media, largeHeading, locale } = Astro.props
+const { section, brand, key, title, heading, subheading, count, media, largeHeading, locale } = Astro.props
 
 ---
 <section class="section-text-heading">
@@ -18,9 +18,9 @@ const { section, brand, key, title, heading, text, count, media, largeHeading, l
     </div>
     <p class={`heading ${largeHeading || section?.largeHeading ? "h2" : "h4"}`}>{heading ? getTranslationString(heading, locale) : getTranslationString(section.heading, locale)}</p>
   </div>
-  {(text || section?.text) && 
+  {(subheading || section?.subheading) && 
     <div class="section-text">
-      <p class="text h6">{text ? getTranslationString(text, locale) : getTranslationString(section.text, locale)}</p>
+      <p class="text h6">{subheading ? getTranslationString(subheading, locale) : getTranslationString(section.subheading, locale)}</p>
     </div>
   }
 </section>

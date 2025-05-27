@@ -1,8 +1,7 @@
 ---
 import { getCollection } from "astro:content"
-import LayoutStudioServiceGroup from "../../../../layouts/Layout-Studio_ServiceGroup.astro"
-
-export const prerender = true
+import LayoutServiceGroup from "../../../../layouts/Layout_ServiceGroup.astro"
+import { Brands } from "../../../../enums/brands"
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Studio')
@@ -13,8 +12,7 @@ export async function getStaticPaths() {
                 service_type: serviceGroup.data.serviceType.slug.current
             },
             props: { 
-                content: serviceGroup, 
-                serviceType: serviceGroup.data.serviceType 
+                content: {...serviceGroup.data}
             }
         }
     })
@@ -22,6 +20,8 @@ export async function getStaticPaths() {
 
 const { content } = Astro.props;
 ---
-<LayoutStudioServiceGroup 
+<LayoutServiceGroup 
     content={content}
+    brand={Brands.STUDIO}
+    activePath="/studio/services"
 />

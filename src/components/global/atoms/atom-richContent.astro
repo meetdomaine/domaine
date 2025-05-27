@@ -9,8 +9,6 @@ import Form from "../sections/richContent/richContent-Form.astro"
 import ImageGallery from "../sections/richContent/richContent-ImageGallery.astro"
 import Schema from "../sections/richContent/richContent-Schema.astro"
 import Table from "../sections/richContent/richContent-Table.astro";
-
-// console.log(content)
 ---
 <div class="rich-content">
   <PortableText
@@ -31,58 +29,65 @@ import Table from "../sections/richContent/richContent-Table.astro";
 
 <style is:global>
 
-  .rich-content {
-    /* --content-width: min(calc(100% - var(--page-margin) * 2), 45rem); */
-    --content-width: min(calc(100%), 60rem);
-    --content-width-wide: min(calc(100%), 60rem);
-    /* flex: 0 1 auto; */
-  }
+  html,
+  html[data-brand="Studio"] {
+
+    .rich-content {
+      /* --content-width: min(calc(100% - var(--page-margin) * 2), 45rem); */
+      --content-width: min(calc(100% - var(--page-margin) * 2), 60rem);
+      --content-width-wide: min(calc(100%), 60rem);
+      /* flex: 0 1 auto; */
+    }
 
 
-  .rich-content > h1,
-  .rich-content > h2,
-  .rich-content > h3,
-  .rich-content > h4,
-  .rich-content > h5,
-  .rich-content > h6 {
-    margin-block-start: 1em;
-    margin-block-end: 0.4em;
-    text-wrap: balance;
-  }
+    .rich-content > h1,
+    .rich-content > h2,
+    .rich-content > h3,
+    .rich-content > h4,
+    .rich-content > h5,
+    .rich-content > h6 {
+      margin-block-start: 1em;
+      margin-block-end: 0.4em;
+      text-wrap: balance;
+    }
 
-  .rich-content > h1,
-  .rich-content > h2,
-  .rich-content > h3,
-  .rich-content > h4,
-  .rich-content > h5,
-  .rich-content > h6,
-  .rich-content > p,
-  .rich-content > ul,
-  .rich-content > ol {
-    margin-inline: auto;
-    max-width: var(--content-width);
-  }
+    .rich-content > h1,
+    .rich-content > h2,
+    .rich-content > h3,
+    .rich-content > h4,
+    .rich-content > h5,
+    .rich-content > h6,
+    .rich-content > p,
+    .rich-content > ul,
+    .rich-content > ol {
+      margin-inline: auto;
+      max-width: var(--content-width);
+    }
 
-  .rich-content > blockquote {
-    margin-block: 1em 2em;
-    margin-inline: auto;
-    max-width: var(--content-width-wide);
-  }
+    .rich-content > blockquote {
+      margin-block: 1em 2em;
+      margin-inline: auto;
+      max-width: var(--content-width-wide);
+    }
 
-  .rich-content > ul,
-  .rich-content > ol {
-    margin-block: 1.5em;
-    padding-inline-start: 2em;
-  }
+    .rich-content > ul,
+    .rich-content > ol {
+      margin-block: 1.5em;
+      padding-inline-start: 2em;
+    }
 
-  .rich-content > ul li,
-  .rich-content > ol li {
-    margin-block-end: 1em;
-  }
+    .rich-content > ul li,
+    .rich-content > ol li {
+      margin-block-end: 1em;
+    }
 
-  .rich-content > :is(ul, ol) > li > :is(ul, ol) {
-    margin-block: 1.5em;
-    list-style-type: upper-roman;
-    padding-inline-start: 1em;
+    .rich-content > :is(ul, ol) > li > :is(ul, ol) {
+      margin-block: 1.5em;
+      list-style-type: upper-roman;
+      padding-inline-start: 1em;
+    }
+
+
+
   }
 </style>

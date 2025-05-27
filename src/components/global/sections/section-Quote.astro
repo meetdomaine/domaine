@@ -1,11 +1,12 @@
 ---
+import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
-const { section, brand, key } = Astro.props
+const { section, brand, key, locale } = Astro.props
 ---
 <section class="section-quote">
   <div class="section-content">
-    <h2 class="quote h4">"{section.quote}"</h2>
+    <h2 class="quote h4">"{getTranslationString(section.quote, locale)}"</h2>
     <div class="attribution">
       {section.quoteImage && section.quoteImage.image && 
         <div class="quote-image">
@@ -17,8 +18,8 @@ const { section, brand, key } = Astro.props
         </div>
       }
       <div class="attribution-info">
-        <p class="author-name">{section.author}</p>
-        {section.authorInfo && <p class="author-info">{section.authorInfo}</p>}
+        <p class="author-name">{getTranslationString(section.author, locale)}</p>
+        {section.authorInfo && <p class="author-info">{getTranslationString(section.authorInfo, locale)}</p>}
       </div>
     </div>
   </div>

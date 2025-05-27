@@ -1,5 +1,6 @@
 ---
-import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio_BlogIndex.astro';
+import { Brands } from '../../../../enums/brands';
+import LayoutBlogIndex from '../../../../layouts/Layout_BlogIndex.astro';
 import { urlFor } from '../../../../lib/cms-queries';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
@@ -17,11 +18,11 @@ export async function getStaticPaths() {
 }
 
 const { content } = Astro.props
-const pageSettings = await getEntry('pageSettings_Domaine', 'page_blog-index-studio')
+const pageSettings = await getEntry('pageSettings', 'page_blog-index-studio')
 const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
 ---
-<LayoutStudioBlogIndex
-    title={`${pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title} | Insights`}
+<LayoutBlogIndex
+    title={pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title}
     description={pageSettings.data.metafields?.description ? pageSettings.data.metafields.description : null}
     image={pageSettings.data.metafields?.image ? urlFor(pageSettings.data.metafields.image).url() : null}
     pageSettings={pageSettings.data}
@@ -30,5 +31,6 @@ const blogPosts = await Promise.all(content.posts.map(async (blogPost) => await 
     subheading={pageSettings.data.heading}
     searchFilter="type:page"
     showPreloader={false}
+    brand={Brands.STUDIO}
     slug={content.slug}
 />

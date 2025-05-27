@@ -138,7 +138,6 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
                         'bluecloud_ft.jpg',
                         'bluecloud_bk.jpg'
                     ], () =>{
-                        // console.log('loaded')
                         initGeometry()
                     });
         scene.environmentIntensity = 2
@@ -235,7 +234,6 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         const posX = (e.clientX / window.innerWidth - 0.5) * 2
         const posY = - (e.clientY / window.innerHeight - 0.5) * 2
         mousePosition = new Vector2(posX, posY)
-        // console.log(mousePosition)
     })
 
     window.addEventListener("resize", handleResize)

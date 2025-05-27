@@ -1,4 +1,5 @@
 ---
+import { Brands } from "../../../enums/brands"
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 
@@ -10,7 +11,10 @@ const { subservices, brand, title, description, excerpt, breadcrumbs, locale } =
             {breadcrumbs?.map((breadcrumb) => (
                 <a 
                     class="breadcrumb-link" 
-                    href={breadcrumb.url}>{breadcrumb.title.translations ? getTranslationString(breadcrumb.title, locale) : breadcrumb.title}</a>
+                    href={getLocaleUrl(breadcrumb.url, locale)}
+                >
+                    {breadcrumb.title.translations ? getTranslationString(breadcrumb.title, locale) : breadcrumb.title}
+                </a>
 
             ))}
         </div>
@@ -24,7 +28,7 @@ const { subservices, brand, title, description, excerpt, breadcrumbs, locale } =
                 { subservices.map((subservice) => (
                     <AtomServiceLink 
                         title={getTranslationString(subservice.title, locale)}
-                        url={getLocaleUrl(`${brand === "studio" ? "/studio" : ""}/services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.slug.current}`, locale)}
+                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.slug.current}`, locale)}
                         excerpt={getTranslationString(subservice.excerpt, locale)}
                         isHidden={subservice.isHidden}
                     />

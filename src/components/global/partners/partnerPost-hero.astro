@@ -2,9 +2,10 @@
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
+import { getTranslationString } from "../../../lib/translations"
 
 
-const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instagramUrl, twitterUrl, linkedInUrl, youTubeUrl, tikTokUrl } = Astro.props
+const { content, locale } = Astro.props
 ---
 <section class="partner-hero">
 
@@ -12,60 +13,60 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
     <div class="section-title">
       <div class="partner-icon">
         <AtomSanityImage 
-          image={icon.image}
+          image={content.icon.image}
           sizes="30vw"
           pagefindMeta="image[src], image_alt[alt]"
         />
       </div>
       <div class="title">
-        <h1 data-pagefind-meta="title" class="partner-title h4">{title}</h1>
-        <p class="partner-description caption">{description}</p>
+        <h1 data-pagefind-meta="title" class="partner-title h4">{content.title}</h1>
+        <p class="partner-description caption">{getTranslationString(content.description, locale)}</p>
       </div>
     </div>
 
     <div class="partner-tags">
       <AtomTag 
-        text={`${tier.title} Partner`}
+        text={`${content.tier.title} Partner`}
         theme="glass-dark"
       />
-      {websiteUrl && 
+      {content.websiteUrl && 
         <AtomTag 
-          text={websiteText ? websiteText : websiteUrl}
-          url={websiteUrl} 
+          text={content.websiteText ? content.websiteText : content.websiteUrl}
+          url={content.websiteUrl} 
           newTab={true}
         />
       }
     </div>
     <div class="social-links">
-      {instagramUrl &&
-        <a href={instagramUrl} class="social-link" target="_blank">
+      {content.instagramUrl &&
+        <a href={content.instagramUrl} class="social-link" target="_blank">
           <Icon name="social-instagram" />
         </a>
       }
-      {twitterUrl &&
-        <a href={twitterUrl} class="social-link" target="_blank">
+      {content.twitterUrl &&
+        <a href={content.twitterUrl} class="social-link" target="_blank">
           <Icon name="social-twitter" />
         </a>
       }
-      {linkedInUrl &&
-        <a href={linkedInUrl} class="social-link" target="_blank">
+      {content.linkedInUrl &&
+        <a href={content.linkedInUrl} class="social-link" target="_blank">
           <Icon name="social-linkedin" />
         </a>
       }
-      {youTubeUrl &&
-        <a href={youTubeUrl} class="social-link" target="_blank">
+      {content.youTubeUrl &&
+        <a href={content.youTubeUrl} class="social-link" target="_blank">
           <Icon name="social-youtube" />
         </a>
       }
-      {tikTokUrl &&
-        <a href={tikTokUrl} class="social-link" target="_blank">
+      {content.tikTokUrl &&
+        <a href={content.tikTokUrl} class="social-link" target="_blank">
           <Icon name="social-tiktok" />
         </a>
       }
     </div>
   </div>
   
-  {excerpt && <h2 class="excerpt h1" data-pagefind-meta="excerpt">{excerpt}</h2>}
+  {content.excerpt && <h2 class="excerpt h1" data-pagefind-meta="excerpt">{getTranslationString(content.excerpt, locale)}</h2>}
 
 </section>
 
@@ -74,9 +75,13 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
   .partner-hero {
     padding-top: calc(var(--header-height) * 2);
     padding-inline: var(--page-margin);
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* display: grid;
+    grid-template-columns: 1fr 2fr; */
     gap: var(--space-lg);
+    padding-block-end: var(--space-xl);
   }
 
   .section-content {
@@ -84,6 +89,8 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
+    max-width: 30rem;
+    /* flex: 0 1 30rem; */
   }
 
   .section-title {
@@ -132,6 +139,8 @@ const { title, excerpt, description, tier, icon, websiteUrl, websiteText, instag
 
   .excerpt {
     max-width: 18em;
+    flex-grow: 0;
+    /* flex: 0 0 auto; */
   }
 
   @media screen and (width <= 768px) {

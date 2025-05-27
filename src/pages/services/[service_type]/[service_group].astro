@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import LayoutDomaineServiceGroup from "../../../layouts/Layout-Domaine_ServiceGroup.astro";
+import LayoutServiceGroup from "../../../layouts/Layout_ServiceGroup.astro";
+import { Brands } from "../../../enums/brands";
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Domaine')
@@ -11,18 +12,16 @@ export async function getStaticPaths() {
               service_group: serviceGroup.id
             },
             props: { 
-              content: {...serviceGroup.data},
-              serviceType: serviceGroup.data.serviceType 
+              content: {...serviceGroup.data}
             }
         }
     })
 }
 
-const { service_group } = Astro.params
-const { content, serviceType } = Astro.props;
+const { content } = Astro.props;
 ---
-<LayoutDomaineServiceGroup
+<LayoutServiceGroup
     content={content}
-    serviceType={serviceType}
-    serviceGroup={service_group}
+    activePath="/services"
+  brand={Brands.DOMAINE}
 />

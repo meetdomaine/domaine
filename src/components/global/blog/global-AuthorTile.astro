@@ -2,14 +2,13 @@
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 
 const { author } = Astro.props
-// console.log(author)
 ---
 <div class="author-tile">
     <div class="tile-media">
         {author.image && 
             <AtomSanityImage 
                 sizes="15vw"
-                image={author.image}
+                image={author.image.image}
             />
         }
     </div>

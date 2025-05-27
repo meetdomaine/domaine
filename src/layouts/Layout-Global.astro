@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../lib/cms-queries';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
-import {VisualEditing} from '@sanity/astro/visual-editing'
+import { VisualEditing } from '@sanity/astro/visual-editing'
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -15,7 +15,6 @@ import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 
-
 interface Props {
 	title: string;
 	description: string;
@@ -28,17 +27,19 @@ interface Props {
 	noIndex?: boolean;
 	showPreloader?: boolean;
 	cookieNoticeText: Array<any>;
+	brand?: string;
 	locale?: string;
+	indexSearch?: boolean;
 }
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale } = Astro.props;
-const currentPath = Astro.url.pathname;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
-const visualEditingEnabled = import.meta.env.DEV == true
+const currentPath = Astro.url.pathname;
+const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
 	<head>
 
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
@@ -79,7 +80,6 @@ const visualEditingEnabled = import.meta.env.DEV == true
 
 		<!-- HTML Meta Tags -->
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" href={urlFor(favicon).url()}>
 		<link rel="sitemap" href="/sitemap-index.xml" />
@@ -107,21 +107,28 @@ const visualEditingEnabled = import.meta.env.DEV == true
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 
 	</head>
-	<body data-pagefind-filter={searchFilter}>
+	<body {...{
+		...(indexSearch ? { "data-pagefind-body": "" } : { "data-pagefind-ignore": "true"}),
+		...(searchFilter ? { "data-pagefind-filter": searchFilter } : {})
+	}}>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
+		<VisualEditing enabled={visualEditingEnabled} />
+
     <GlobalPreloader 
       currentBrand={currentBrand}
       showPreloader={showPreloader}
+			brand={brand}
 			locale={locale}
     />
     
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
+			brand={brand}
 			locale={locale}
 		/>
 		<slot />

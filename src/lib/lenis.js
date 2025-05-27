@@ -30,7 +30,6 @@
         })
       })
     })
-    // console.log(jumplinks)
 
     requestAnimationFrame(raf)
   }

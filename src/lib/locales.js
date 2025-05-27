@@ -43,6 +43,13 @@ export const Translations = {
       [Locales.NL]: "Gerelateerde berichten"
     }
   },
+  "PARTNER": {
+    name: 'Partner',
+    locales: {
+      [Locales.DE]: "Partner",
+      [Locales.NL]: "Partner"
+    }
+  },
   "PARTNERS": {
     name: 'Partners',
     locales: {

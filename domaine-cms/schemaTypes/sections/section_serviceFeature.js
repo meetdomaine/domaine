@@ -21,7 +21,8 @@ export default defineType({
       to: [
         { type: 'type_serviceType'},
         { type: 'type_serviceGroup'}
-      ]
+      ],
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'heading',

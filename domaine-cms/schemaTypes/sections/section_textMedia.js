@@ -25,8 +25,8 @@ export default defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
+      name: 'subheading',
+      title: 'Subheading',
       type: 'snippet_locale-text',
     }),
     defineField({

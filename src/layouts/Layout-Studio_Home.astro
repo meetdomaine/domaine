@@ -2,13 +2,17 @@
 import LayoutStudio from "../layouts/Layout-Studio.astro";
 import HomeHero from "../components/studio/sections/home/home-Hero.astro";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import { getTranslationString } from "../lib/translations";
+import { urlFor } from "../lib/cms-queries";
 
 const { content, locale } = Astro.props
 ---
 <LayoutStudio
+    title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    locale={locale}
     theme="dark"
-    title="Home"
-    searchFilter="type:page"
     searchExposed={true}
     showPreloader={content.showPreloader}
 >

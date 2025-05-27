@@ -63,7 +63,13 @@ export default defineType({
     defineField({
       name: 'body',
       title: 'Body',
-      type: 'snippet_rich-content',
+      type: 'snippet_locale-rich-content',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'migrate',
+      title: 'Body (MIGRATE)',
+      type: 'snippet_locale-rich-content',
       validation: Rule => Rule.required(),
     }),
     defineField({

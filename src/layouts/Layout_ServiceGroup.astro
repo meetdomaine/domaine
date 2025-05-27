@@ -1,0 +1,84 @@
+---
+import LayoutDomaine from "../layouts/Layout-Domaine.astro"
+import SectionServiceHero from "../components/global/services/service-Hero.astro"
+import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astro"
+import SectionProjectsFeed from "../components/global/sections/section-ProjectsFeed.astro"
+import { getLocaleString, getTranslationString } from "../lib/translations"
+import SectionGlobalSections from "../components/global/sections/section-GlobalSections.astro"
+import { Brands } from "../enums/brands"
+import LayoutStudio from "./Layout-Studio.astro"
+import { getEntry } from "astro:content"
+import SectionForm from "../components/global/sections/section-Form.astro"
+import { Translations } from "../lib/locales"
+
+
+const { content, locale, brand, activePath } = Astro.props;
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+const relatedProjects = await Promise.all(content.relatedProjects?.map( async (project) => await getEntry(brand === Brands.STUDIO ? 'projects_Studio' : 'projects_Domaine', project.slug.current) ))
+const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => await getEntry(brand === Brands.STUDIO ? 'blogPosts_Studio' : 'blogPosts_Domaine', post.slug.current) ))
+---
+<BrandLayout
+    title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getTranslationString(content.serviceType.title, locale)} ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : getTranslationString(content.description, locale)}
+    activePath={activePath}
+    showPreloader={true}
+>
+    <SectionServiceHero
+        title={content.title}
+        excerpt={content.excerpt}
+        description={content.description}
+        subservices={content.services}
+        breadcrumbs={[
+          {
+              title: 'Services /',
+              url: `${Astro.url.origin}${brand === Brands.STUDIO ? '/studio/' : '/'}services/`
+          },
+          {
+              title: content.serviceType.title,
+              url: `${Astro.url.origin}${brand === Brands.STUDIO ? '/studio/' : '/'}services/${content.serviceType.slug.current}`
+          },
+        ]}
+        locale={locale}
+        brand={brand}
+    />
+
+    {brand === Brands.DOMAINE && content.pageSectionsDomaine?.sections?.map((section, i) => (
+      <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+  
+    {brand === Brands.STUDIO && content.pageSectionsStudio?.sections?.map((section, i) => (
+      <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+
+    {relatedProjects?.length > 0 &&
+      <SectionProjectsFeed 
+          heading={`${getTranslationString(content.title, locale)} ${getLocaleString("WORK")}`}
+          projects={relatedProjects}
+      />
+    }
+
+    {content.serviceType.hubspotFormId &&
+      <SectionForm 
+        key="serviceType_form"
+        hubspotFormId={content.serviceType.hubspotFormId}
+        heading={content.serviceType.formHeading}
+        text={content.serviceType.formText}
+      />
+    }
+
+    {relatedPosts?.length > 2 &&
+      <SectionBlogFeed 
+          heading={`${getTranslationString(content.title, locale)} ${getLocaleString("INSIGHTS")}`}
+          posts={relatedPosts}
+          sidebarTitle={content.title}
+      />
+    }
+
+</BrandLayout>
+
+<style>
+    .services {
+        padding-inline: var(--page-margin);
+        padding-block: var(--space-lg);
+    }
+</style>

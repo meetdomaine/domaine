@@ -1,32 +1,21 @@
 ---
-import LayoutStudio from "../../layouts/Layout-Studio.astro";
-import GlobalSections from "../../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields } from "../../lib/cms-queries";
-
-interface Props {
-  content: any
-}
+import { getCollection } from "astro:content";
+import LayoutPage from "../../layouts/Layout-Page.astro";
+import { Brands } from "../../enums/brands";
 
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_studio-general']{ ..., globalSections{ sections[]{${globalSectionsFields}} } }`)
+    const pages = await getCollection('generalPages_Studio')
     return pages.map((page) => {
         return {
-            params: { page: page.slug.current },
-            props: { content: page }
+            params: { page: page.id },
+            props: { content: {...page.data} }
         }
     })
 }
 
 const { content } = Astro.props
-// console.log(content)
 ---
-<LayoutStudio
-    title={content.title}
-    searchFilter="type:page"
-    showPreloader={content.showPreloader}
->
-    {content.globalSections?.sections.map((section, i) => (
-      <GlobalSections brand="studio" section={section} key={i} />
-    ))}
-</LayoutStudio>
-
+<LayoutPage 
+    content={content}
+    brand={Brands.STUDIO}
+/>

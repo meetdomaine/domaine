@@ -30,8 +30,8 @@ export default defineType({
       type: 'snippet_locale-string',
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
+      name: 'description',
+      title: 'Description',
       type: 'snippet_locale-text',
     }),
     defineField({

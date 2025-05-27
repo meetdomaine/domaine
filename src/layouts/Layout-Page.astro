@@ -1,0 +1,35 @@
+---
+import SectionGlobalSections from "../components/global/sections/section-GlobalSections.astro"
+import { Brands } from "../enums/brands"
+import { urlFor } from "../lib/cms-queries"
+import { getTranslationString } from "../lib/translations"
+import LayoutDomaine from "./Layout-Domaine.astro"
+import LayoutStudio from "./Layout-Studio.astro"
+
+const { content, locale, brand } = Astro.props
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+---
+<BrandLayout
+    title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    showPreloader={content.showPreloader}
+    locale={locale}
+>
+    <div 
+        class="page-content" 
+        data-color-scheme={content.colorScheme} 
+        data-header-padding={content.addHeaderPadding ? "true" : "false"}
+        style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
+    >
+      {content.globalSections?.sections.map((section, i) => (
+          <SectionGlobalSections brand="domaine" section={section} key={i} locale={locale} />
+      ))}
+    </div>
+</BrandLayout>
+
+<style>
+    .page-content[data-header-padding="true"] {
+        padding-top: calc(var(--header-height) * 2);
+    }
+</style>

@@ -1,0 +1,157 @@
+---
+import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
+import { getLocaleUrl, getTranslationString } from '../lib/translations';
+import { Brands } from '../enums/brands';
+import LayoutStudio from './Layout-Studio.astro';
+import LayoutDomaine from './Layout-Domaine.astro';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
+import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
+import { urlFor } from '../lib/cms-queries';
+import AtomSanityMedia from '../components/global/atoms/atom-sanityMedia.astro';
+import AtomButton from '../components/global/atoms/atom-button.astro';
+    
+const { content, locale, brand } = Astro.props;
+        
+const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+---
+<BrandLayout
+    title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)}
+    description={ content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null }
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    noIndex={content.noIndex}
+    showPreloader={content.showPreloader}
+    marketingHeader={true}
+    marketingHeaderButtonLabel={content.buttonText}
+>
+
+  <GlobalMarketingHeader 
+    colorScheme={content.colorScheme} 
+    currentBrand="domaine"
+    buttonText={content.buttonText}
+  />
+  <div 
+    class="page-content" 
+    data-color-scheme={content.colorScheme} 
+    style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
+  >
+    <section class="marketing-page-hero" id="contact" data-color-scheme={content.heroColorScheme === "invert" ? "invert" : content.colorScheme} >
+        <div class="hero-content">
+            <div class="hero-title">
+                {content.eyebrow && <p class="h6">{getTranslationString(content.eyebrow, locale)}</p>}
+                <h1 class="h2">{getTranslationString(content.heading, locale)}</h1>
+            </div>
+            <div class="hero-text">
+                {content.subheading && <p class="h6">{getTranslationString(content.subheading, locale)}</p>}
+                {content.button?.label && content.button?.url &&
+                    <AtomButton 
+                        text={getTranslationString(content.button.label, locale)}
+                        url={getLocaleUrl(content.button.url, locale)}
+                        style="primary"
+                    />
+                }
+            </div>
+        </div>
+        <div 
+            class="hero-form"
+            data-color-scheme="default"
+        >
+            {content.formTitle && <p class="h6">{getTranslationString(content.formTitle, locale)}</p>}
+            <AtomHubspotForm 
+                formId={content.hubspotFormId}
+            />
+        </div>
+        {content.media &&
+        <div class="hero-media">
+            <AtomSanityMedia
+                video={content.media.video}
+                image={content.media.image}
+                sizes="100vw"
+                cover={true}
+            />
+        </div>
+        }
+    </section>
+    {content.globalSections?.sections.map((section, i) => (
+        <SectionGlobalSections brand="domaine" section={section} key={i} locale={locale} brand={brand} />
+    ))}
+  </div>
+
+</BrandLayout>
+
+
+<style>
+
+  .marketing-page-hero {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-top: calc(var(--header-height) * 1);
+      padding-inline: var(--page-margin);
+      padding-bottom: var(--space-2xl);
+      max-width: 100%;
+      gap: var(--space-lg);
+      overflow: hidden;
+      min-height: 95svh;
+      position: relative;
+  }
+
+  .hero-content,
+  .hero-title,
+  .hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .hero-content {
+      flex: 0 1 50%;
+      z-index: 1;
+      gap: var(--space-md);
+      padding-block: var(--space-md);
+  }
+
+  .hero-title {
+      gap: var(--space-xs);
+  }
+
+  .hero-text {
+      gap: var(--space-md);
+  }
+
+  .hero-form {
+      z-index: 1;
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-xs);
+      flex: 0 0 40rem;
+      min-width: 0;
+      filter: drop-shadow(0.2rem 0.2rem 2rem rgba(0, 0, 0, 0.1))
+  }
+
+  .hero-media {
+      position: absolute;
+      height: 100%;
+      inset: 0;
+      z-index: 0;
+  }
+
+  @media screen and (width <= 860px) {
+      .marketing-page-hero {
+          flex-direction: column;
+      }
+
+      .hero-content,
+      .hero-form {
+          flex: 0 0 auto;
+          max-width: 100%;
+      }
+
+      /* .hero-form {
+          align-items: center;
+      } */
+  }
+</style>
