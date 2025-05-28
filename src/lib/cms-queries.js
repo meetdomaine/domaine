@@ -57,11 +57,11 @@ export const projectGridFields = `
   logoColor,
   features[]->{ title, slug, _id } | order(orderRank), 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
-  orderRank,
   thumbnailMedia{${videoFields}, ${imageFields}},
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
   isHidden,
+  orderRank,
 `
 
 export const serviceQuery = `
