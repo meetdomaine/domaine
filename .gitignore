@@ -25,3 +25,6 @@ wrangler.json
 .DS_Store
 .vercel
 _wrangler.toml
+
+# Cloudflare Wrangler
+.wrangler/
