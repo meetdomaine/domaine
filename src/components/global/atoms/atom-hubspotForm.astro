@@ -116,6 +116,21 @@ const fields = fieldGroups?.flatMap((group) => {
                                 </select>
                             </div>
                         )
+                    // case('dropdown'):
+                    //     return (
+                    //         <div class="form-field">
+                    //             <p class="h6">{field.label}</p>
+                    //             {field.description && <p class="field-description caption">{field.description}</p>}
+                    //             <fieldset class="inputs-list toggle-button-list">
+                    //                 {field.options.map((option) => (
+                    //                     <div class="input-list-item toggle-button">
+                    //                         <input type="radio" id={option.value} name={field.name} value={option.value} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                    //                         <label for={option.value} hidden={field.hidden}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                    //                     </div>
+                    //                 ))}
+                    //             </fieldset>
+                    //         </div>
+                    //     )
                     case('single_checkbox'):
                         return (
                             <div class="form-field">
@@ -167,21 +182,6 @@ const fields = fieldGroups?.flatMap((group) => {
                                                 hidden={field.hidden}
                                             />
                                             <label for={option.value} hidden={field.hidden}>{option.label}</label>
-                                        </div>
-                                    ))}
-                                </fieldset>
-                            </div>
-                        )
-                    case('dropdown'):
-                        return (
-                            <div class="form-field">
-                                <p class="h6">{field.label}</p>
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                                <fieldset class="inputs-list toggle-button-list">
-                                    {field.options.map((option) => (
-                                        <div class="input-list-item toggle-button">
-                                            <input type="radio" id={option.value} name={field.name} value={option.value} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                            <label for={option.value} hidden={field.hidden}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
                                         </div>
                                     ))}
                                 </fieldset>

@@ -21,7 +21,7 @@ const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) =
 ---
 <BrandLayout
   title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getTranslationString(content.serviceGroup.title, locale)} | ${getTranslationString(content.serviceGroup.serviceType.title, locale)} ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
-  description={content.metafields?.description ? content.metafields?.description : null}
+  description={content.metafields?.description ? getTranslationString(content.metafields?.description, locale) : null}
   searchFilter="type:service"
   activePath={activePath}
   showPreloader={true}
