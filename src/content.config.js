@@ -73,18 +73,16 @@ const serviceGroups_Studio = defineCollection({
 
 const serviceTypes_Domaine = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]
+    const { data } = await loadQuery({ query: `*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name]{
       ..., 
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(*[_type 
-== "type_service" && serviceGroup->serviceType._ref == ^.^._id ]._id) && isHidden != true ]{ _id, slug, orderRank } | order( orderRank asc),
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(*[_type == "type_service" && serviceGroup->serviceType._ref == ^.^._id ]._id) && isHidden != true ]{ _id, slug, orderRank } | order( orderRank asc),
       "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && ^._id in services[]->serviceGroup->serviceType._ref ]{ _id, slug, postDate } | order(postDate desc),
       ${serviceTypePageQuery}
     } | order(orderRank)`})
     return data.map((entry) => ({
-      // id: entry._id,
       id: entry.slug.current,
       ...entry
-  }))
+    }))
   }
 })
 
