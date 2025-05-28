@@ -72,8 +72,12 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ['detect-libc']
     },
+    build: {
+      minify: false,
+    },
     ssr: {
       noExternal: ['detect-libc'],
+      external: ['node:buffer'],
       target: 'node',
       format: 'esm'
     }
