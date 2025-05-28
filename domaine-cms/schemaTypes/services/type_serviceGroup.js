@@ -78,6 +78,24 @@ export default defineType({
       type: 'section_globalSections',
     }),
     defineField({
+      name: 'formHeading',
+      title: 'Form: Heading',
+      type: 'snippet_locale-string',
+      description: 'If none is added, will pull from Service Group/Type.'
+    }),
+    defineField({
+      name: 'formText',
+      title: 'Form: Text',
+      type: 'snippet_locale-string',
+      description: 'If none is added, will pull from Service Group/Type.'
+    }),
+    defineField({
+      name: 'hubspotFormId',
+      title: 'Form: Hubspot ID',
+      type: 'string',
+      description: 'If none is added, will pull from Service Group/Type.'
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_locale-SEO-fields',

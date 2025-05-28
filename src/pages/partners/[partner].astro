@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import LayoutPartner from '../../layouts/Layout_Partner.astro';
+import { isSSR } from '../../lib/get-is-ssr';
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
     const partners = await getCollection('partners_Domaine')
@@ -12,8 +14,17 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props;
+let partnerContent
+
+if (isSSR()) {
+    const { partner } = Astro.params
+    const { data } = await getEntry('partners_Domaine', partner)
+    partnerContent = data
+} else {
+    const { content } = Astro.props
+    partnerContent = content
+}
 ---
 <LayoutPartner
-    content={content}
+    content={partnerContent}
 />

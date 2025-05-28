@@ -60,9 +60,9 @@ const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) =
     {content.serviceType.hubspotFormId &&
       <SectionForm 
         key="serviceType_form"
-        hubspotFormId={content.serviceType.hubspotFormId}
-        heading={content.serviceType.formHeading}
-        text={content.serviceType.formText}
+        hubspotFormId={content.hubspotFormId ? content.hubspotFormId : content.serviceType.hubspotFormId}
+        heading={content.formHeading ? content.formHeading : content.serviceType.formHeading}
+        text={content.formText ? content.formText : content.serviceType.formText}
       />
     }
 

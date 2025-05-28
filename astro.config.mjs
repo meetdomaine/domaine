@@ -60,6 +60,7 @@ export default defineConfig({
       "import.meta.env.HUBSPOT_PORTAL_ID": JSON.stringify(process.env.HUBSPOT_PORTAL_ID),
       "import.meta.env.HUBSPOT_ACCESS_TOKEN": JSON.stringify(process.env.HUBSPOT_ACCESS_TOKEN),
       "import.meta.env.GREENSOCK_AUTH_TOKEN": JSON.stringify(process.env.GREENSOCK_AUTH_TOKEN),
+      "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
@@ -68,5 +69,13 @@ export default defineConfig({
         "react-dom/server": "react-dom/server.edge", // Hacky fix for Astro bug
       },
     },
+    optimizeDeps: {
+      exclude: ['detect-libc']
+    },
+    ssr: {
+      noExternal: ['detect-libc'],
+      target: 'node',
+      format: 'esm'
+    }
   },
 });

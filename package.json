@@ -3,12 +3,13 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=18.20.8"
+    "node": ">=22.13.1"
   },
   "scripts": {
     "dev": "astro dev --host",
     "start": "astro dev",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/",
+    "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "astro": "astro"

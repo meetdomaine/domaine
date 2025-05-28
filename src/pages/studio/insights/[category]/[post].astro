@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import LayoutBlogPost from '../../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../../enums/brands';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
     const blogPosts = await getCollection('blogPosts_Studio')
@@ -17,9 +19,19 @@ export async function getStaticPaths() {
         }
     })
 }
-const { content } = Astro.props
+
+let blogPostContent
+
+if (isSSR()) {
+    const { post } = Astro.params
+    const { data } = await getEntry('blogPosts_Studio', post)
+    blogPostContent = data
+} else {
+    const { content } = Astro.props
+    blogPostContent = content
+}
 ---
 <LayoutBlogPost
-  content={content}
+  content={blogPostContent}
   brand={Brands.STUDIO}
 />

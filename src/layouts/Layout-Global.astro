@@ -35,7 +35,8 @@ interface Props {
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
+const visualEditingEnabled = true
+// const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 ---
 
 <!doctype html>

@@ -16,7 +16,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
 // TODO: Migrate to content collections
 ---
 <LayoutDomaine
-    title="Careers"
     searchFilter="type:page"
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : "Careers"}`}
     description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}

@@ -2,6 +2,8 @@
 import LayoutProject from '../../../layouts/Layout_Project.astro';
 import { Brands } from '../../../enums/brands';
 import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
     const projects = await getCollection('projects_Studio')
@@ -13,10 +15,19 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
+let projectContent
+
+if (isSSR()) {
+    const { project } = Astro.params
+    const { data } = await getEntry('projects_Studio', project)
+    projectContent = data
+} else {
+    const { content } = Astro.props
+    projectContent = content
+}
 ---
 <LayoutProject
-    content={content}
+    content={projectContent}
     searchFilter="type:case-study_studio"
     activePath="/studio/work"
     brand={Brands.STUDIO}

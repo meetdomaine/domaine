@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import LayoutEvent from "../../layouts/Layout_Event.astro";
+import { getEntry } from "astro:content";
+import { isSSR } from "../../lib/get-is-ssr";
 
 export async function getStaticPaths() {
     const events = await getCollection('events')
@@ -12,8 +14,17 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
+let eventContent
+
+if (isSSR()) {
+    const { event } = Astro.params
+    const { data } = await getEntry('events', event)
+    eventContent = data
+} else {
+    const { content } = Astro.props
+    eventContent = content
+}
 ---
 <LayoutEvent 
-  content={content}
+  content={eventContent}
 />
