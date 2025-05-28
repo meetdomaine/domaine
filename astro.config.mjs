@@ -69,5 +69,13 @@ export default defineConfig({
         "react-dom/server": "react-dom/server.edge", // Hacky fix for Astro bug
       },
     },
+    optimizeDeps: {
+      exclude: ['detect-libc']
+    },
+    ssr: {
+      noExternal: ['detect-libc'],
+      target: 'node',
+      format: 'esm'
+    }
   },
 });
