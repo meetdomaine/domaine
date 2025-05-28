@@ -10,9 +10,9 @@
   "observability": {
     "enabled": true
   },
-  "build": {
-    "command": "npm install --legacy-peer-deps && SERVER_RENDERING_ENABLED='true' npm run build-ssr"
-  },
+  // "build": {
+  //   "command": "npm install --legacy-peer-deps && SERVER_RENDERING_ENABLED='true' npm run build-ssr"
+  // },
   "vars": {
     "SERVER_RENDERING_ENABLED": "true"
   },
@@ -22,13 +22,13 @@
       "route": "meetdomaine.com/*",
       "vars": {
         "SERVER_RENDERING_ENABLED": "true",
-        "VISUAL_EDITING_ENABLED": "true"
+        "VISUAL_EDITING_ENABLED": "false"
       }
     },
     "preview": {
       "vars": {
         "SERVER_RENDERING_ENABLED": "true",
-        "VISUAL_EDITING_ENABLED": "true"
+        "VISUAL_EDITING_ENABLED": "false"
       }
     }
   }

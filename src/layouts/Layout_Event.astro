@@ -34,7 +34,6 @@ const dateTime = new Date(content.dateTime)
 const date = new Intl.DateTimeFormat(locale ? locale : 'en-US', dateOptions).format(dateTime);
 const time = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptions).format(dateTime);
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
-console.log(content)
 ---
 
 
