@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "astro dev --host",
     "start": "astro dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/ && cp .assetsignore dist/",
-    "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build && cp .assetsignore dist/",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/ && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
+    "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "astro": "astro",
