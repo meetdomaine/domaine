@@ -38,7 +38,7 @@ try {
 const fieldGroups = formData.fieldGroups || [];
 const consentData = formData.legalConsentOptions || {};
 
-const fields = fieldGroups?.flatMap((group) => {
+const fields = fieldGroups.flatMap((group) => {
   if (group.fields) {
     return group.fields?.map((field) => {
         return field
