@@ -52,7 +52,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     }
 
     {content.globalSections && content.globalSections.sections.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
+        <GlobalSections section={section} key={i} locale={locale} brand={brand} />
     ))}
 
     { relatedPosts.length > 1 && 

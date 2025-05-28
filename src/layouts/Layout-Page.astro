@@ -24,7 +24,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
     >
       {content.globalSections?.sections.map((section, i) => (
-          <SectionGlobalSections brand="domaine" section={section} key={i} locale={locale} />
+          <SectionGlobalSections section={section} key={i} locale={locale} brand={brand} />
       ))}
     </div>
 </BrandLayout>
