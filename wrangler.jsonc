@@ -21,7 +21,8 @@
       "name": "domaine",
       "route": "meetdomaine.com/*",
       "vars": {
-        "SERVER_RENDERING_ENABLED": "true"
+        "SERVER_RENDERING_ENABLED": "true",
+        "VISUAL_EDITING_ENABLED": "true"
       }
     },
     "preview": {
