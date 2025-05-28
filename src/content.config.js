@@ -100,9 +100,13 @@ const serviceGroups_Studio = defineCollection({
 const serviceTypes_Domaine = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name]{
-      ..., 
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(*[_type == "type_service" && serviceGroup->serviceType._ref == ^.^._id ]._id) && isHidden != true ]{ _id, slug, orderRank } | order( orderRank asc),
-      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && ^._id in services[]->serviceGroup->serviceType._ref ]{ _id, slug, postDate } | order(postDate desc),
+      _id,
+      title,
+      slug,
+      orderRank,
+      // Only include essential fields
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(*[_type == "type_service" && serviceGroup->serviceType._ref == ^.^._id ]._id) && isHidden != true ]{ _id, slug } | order( orderRank asc)[0...5],
+      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && ^._id in services[]->serviceGroup->serviceType._ref ]{ _id, slug } | order(postDate desc)[0...5],
       ${serviceTypePageQuery}
     } | order(orderRank)`})
     return data.map((entry) => ({
@@ -568,6 +572,20 @@ const pageSettings = defineCollection({
     ]
   }
 });
+
+// Add a function to fetch full service details on-demand
+export async function getServiceDetails(slug) {
+  const { data } = await loadQuery({ 
+    query: `*[_type == "type_service" && slug.current == $slug][0]{
+      ${serviceQuery}
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank asc),
+      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc),
+      "pageSections": pageSectionsDomaine[]{${globalSectionsFields}},
+    }`,
+    params: { slug }
+  });
+  return data;
+}
 
 export const collections = { 
   services_Domaine,

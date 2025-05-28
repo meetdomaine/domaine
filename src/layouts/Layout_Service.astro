@@ -15,8 +15,6 @@ import { blogCardFields, projectGridFields } from "../lib/cms-queries"
 
 const { content, locale, brand, activePath } = Astro.props;
 
-console.log(content.formHeading)
-
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 
 const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${brand}' && !isHidden]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})

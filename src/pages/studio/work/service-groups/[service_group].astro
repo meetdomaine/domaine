@@ -26,7 +26,7 @@ if (isSSR()) {
     serviceGroupContent = content
 }
 
-const projects = await Promise.all(serviceGroupContent.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
+const projects = await Promise.all(serviceGroupContent.relatedProjects?.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}
