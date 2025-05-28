@@ -1,0 +1,85 @@
+---
+import { getTranslationString } from "../../../lib/translations"
+import AtomTag from "../atoms/atom-tag.astro"
+
+const { section, brand, key, locale } = Astro.props
+---
+<section class="section-agenda">
+  {section.dates.map((date) => (
+    <div class="date-entry">
+      <div class="section-title">
+        {date.heading && <h2>{getTranslationString(date.heading, locale)}</h2>}
+        {date.subheading && <p class="h6">{getTranslationString(date.subheading, locale)}</p>}
+      </div>
+      <div class="time-entries">
+        {date.times && date.times.map((timeEntry) => (
+          <div class="time-entry">
+            <div class="date-time">
+              {timeEntry.time && 
+                <AtomTag 
+                  text={getTranslationString(timeEntry.time)}
+                />
+              }
+              {timeEntry.date && <p class="caption">{getTranslationString(timeEntry.date, locale)}</p>}
+            </div>
+            <div class="time-entry__content">
+              {timeEntry.heading && <h3 class="h6">{getTranslationString(timeEntry.heading, locale)}</h3>}
+              {timeEntry.description && <p class="time-entry__description">{getTranslationString(timeEntry.description, locale)}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</section>
+
+<style>
+  .section-agenda {
+    padding-inline: var(--page-margin);
+    padding-block: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    margin: 0 auto;
+    max-width: 50rem;
+  }
+
+  .date-entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg)
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    /* gap: var(--space-2xs); */
+  }
+
+  .date-time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .time-entries {
+    display: flex;
+    flex-direction: column;
+    /* gap: var(--space-md); */
+  }
+
+  .time-entry {
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding-block: var(--space-lg);
+  }
+
+  .time-entry__description {
+    margin: 0;
+    color: var(--color-foreground-secondary);
+  }
+</style>

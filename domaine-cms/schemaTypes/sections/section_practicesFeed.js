@@ -16,19 +16,19 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
   ],
   preview: {
     select: {
-      title: 'title',
+      title: 'title.text',
     },
     prepare(selection) {
       const { title } = selection

@@ -29,6 +29,25 @@ export default defineType({
             validation: Rule => Rule.required()
           },
           {
+            name: 'showButton',
+            title: 'Show Button',
+            type: 'boolean',
+            description: 'When enabled, button to navigate to individual landing page will show.'
+          },
+          {
+            name: 'buttonText',
+            title: 'Button Text',
+            type: 'snippet_locale-string',
+            hidden: ({parent, value}) => !parent?.showButton,
+            required: ({parent, value}) => parent?.showButton
+          },
+          {
+            name: 'enableServiceLinks',
+            title: 'Enable Service Links',
+            type: 'boolean',
+            description: 'When enabled, sub-services will link to their landing pages.'
+          },
+          {
             name: 'thumbnailImage',
             title: 'Thumbnail Image',
             type: 'snippet_image',
@@ -38,7 +57,7 @@ export default defineType({
         validation: Rule => Rule.required(),
         preview: {
           select: {
-            title: 'service.title',
+            title: 'service.title.text',
             image: 'thumbnailImage.image'
           },
           prepare(selection) {

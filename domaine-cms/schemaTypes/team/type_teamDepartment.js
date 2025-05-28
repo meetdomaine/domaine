@@ -10,14 +10,14 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     orderRankField({ type: 'type_teamDepartment'})
   ],
 
   preview: {
     select: {
-      title: 'title', 
+      title: 'title.text', 
     },
     prepare(selection) {
         return {

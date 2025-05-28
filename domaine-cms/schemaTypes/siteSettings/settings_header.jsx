@@ -9,7 +9,7 @@ export default defineType({
     defineField({
       name: 'navigationLinks',
       title: 'Navigation Links',
-      type: 'snippet_link-list',
+      type: 'snippet_locale-link-list',
     }),
     defineField({
       name: 'contactForms',
@@ -22,7 +22,7 @@ export default defineType({
           {
             name: 'title',
             title: 'Title',
-            type: 'string'
+            type: 'snippet_locale-string'
           },
           {
             name: 'hubspotFormId',
@@ -33,7 +33,7 @@ export default defineType({
         ],
         preview: {
           select: {
-            title: 'title'
+            title: 'title.text'
           },
           prepare(selection) {
             const { title } = selection
@@ -53,13 +53,13 @@ export default defineType({
     defineField({
       name: 'brandMenuHeading',
       title: 'Brand Menu: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.showBrandMenu
     }),
     defineField({
       name: 'brandMenuSubheading',
       title: 'Brand Menu: Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.showBrandMenu
     }),
     defineField({
@@ -71,7 +71,7 @@ export default defineType({
     defineField({
       name: 'promoMessage',
       title: 'Promo Message: Text',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: 'Optional promo message bar in Notification menu.',
       hidden: ({document}) => !document?.showPromoMessage
     }),
@@ -86,12 +86,17 @@ export default defineType({
       }),
       hidden: ({document}) => !document?.showPromoMessage
     }),
+    // defineField({
+    //   name: 'promoMessageIcon',
+    //   title: 'Promo Message: Icon',
+    //   type: 'string',
+    //   description: 'Optional icon for promo message.',
+    //   hidden: ({document}) => !document?.showPromoMessage,
+    // }),
     defineField({
-      name: 'promoMessageIcon',
-      title: 'Promo Message: Icon',
-      type: 'string',
-      description: 'Optional icon for promo message.',
-      hidden: ({document}) => !document?.showPromoMessage,
+      name: 'eventsTitle',
+      title: 'Events: Title',
+      type: 'snippet_locale-string'
     }),
     defineField({
       name: 'locationClocks',
@@ -111,13 +116,13 @@ export default defineType({
     defineField({
       name: 'linkCardTitle',
       title: 'Link Card: Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.showLinkCard,
     }),
     defineField({
       name: 'linkCardText',
       title: 'Link Card: Text',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.showLinkCard,
     }),
     defineField({
@@ -150,13 +155,13 @@ export default defineType({
     defineField({
       name: 'careersHeading',
       title: 'Careers: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.showCareers,
     }),
     defineField({
       name: 'careersSubheading',
       title: 'Careers: Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
       hidden: ({document}) => !document?.showCareers,
     }),
     defineField({
@@ -179,6 +184,18 @@ export default defineType({
       name: 'showBlog',
       title: 'Show Blog',
       type: 'boolean',
+    }),
+    defineField({
+      name: 'searchPlaceholderTitle',
+      title: 'Search: Placeholder Title',
+      type: 'snippet_locale-string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'searchPlaceholderText',
+      title: 'Search: Placeholder Text',
+      type: 'snippet_locale-string',
+      validation: Rule => Rule.required()
     }),
   ],
 })

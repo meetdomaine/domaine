@@ -1,6 +1,9 @@
 ---
+import { Brands } from "../../../enums/brands"
+import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
-const { serviceType, brand } = Astro.props
+
+const { serviceType, brand, locale } = Astro.props
 ---
 <section class="service-type-hero" data-color-scheme="brand-02">
      <div class="section-title">
@@ -28,12 +31,12 @@ const { serviceType, brand } = Astro.props
                 ))}
             </div>
          </div>
-         <p class="service-excerpt h5">{serviceType.excerpt}</p>
-         <h1 class="service-title title-xl">{serviceType.title}</h1>
+         <p class="service-excerpt h5">{getTranslationString(brand === Brands.STUDIO && serviceType.excerptStudio ? serviceType.excerptStudio : serviceType.excerpt, locale)}</p>
+         <h1 class="service-title title-xl">{getTranslationString(serviceType.title, locale)}</h1>
     </div>
     <div class="section-content">
-        <p class="service-eyebrow utility">Our {serviceType.title} Practice</p>
-        <p class="service-description h4">{serviceType.description}</p>
+        <p class="service-eyebrow utility">Our {getTranslationString(serviceType.title, locale)} Practice</p>
+        <p class="service-description h4">{getTranslationString(brand === Brands.STUDIO && serviceType.descriptionStudio ? serviceType.descriptionStudio : serviceType.description, locale)}</p>
     </div>
     {serviceType.images.map((image) => (
         <div class="service-image">
@@ -54,25 +57,22 @@ const { serviceType, brand } = Astro.props
 </section>
 
 <script>
-    import { getIsMobile, isMobileBreakpoint } from "../utils/check-device"
+    import { getIsMobile, isMobileBreakpoint } from "../../../lib/check-device"
 
-    const sections = document.querySelectorAll('.service-type-hero')
+    document.addEventListener("DOMContentLoaded", () => {
 
-    sections.forEach((section) => {
+        const sections = document.querySelectorAll('.service-type-hero')
+        sections.forEach((section) => {
 
-        const _delay = 100
+            const _delay = 100
 
-        let timeout = null
-        let isPlaying = false
-        let imageIndex = 0
-        let mouseX = 0
-        let mouseY = 0
+            let timeout = null
+            let isPlaying = false
+            let imageIndex = 0
+            let mouseX = 0
+            let mouseY = 0
 
-        let boundingBox = section.getBoundingClientRect()
-
-        window.addEventListener("DOMContentLoaded", () => {
-
-
+            let boundingBox = section.getBoundingClientRect()
             let mouseListener = null
             let scrollListener = null
 
@@ -146,8 +146,8 @@ const { serviceType, brand } = Astro.props
                     destroyAnimation() 
                 }
             })
-        })
 
+        })
     })
 </script>
 

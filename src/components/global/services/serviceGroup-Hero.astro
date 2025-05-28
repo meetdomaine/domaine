@@ -15,6 +15,7 @@ const { serviceGroup, brand } = Astro.props
             title={service.title}
             url={`${brand === "studio" ? "/studio" : ""}/services/${serviceGroup.serviceType.slug.current}/${service.slug.current}`}
             excerpt={service.excerpt}
+            isHidden={service.isHidden}
         />
     ))}
 </section>

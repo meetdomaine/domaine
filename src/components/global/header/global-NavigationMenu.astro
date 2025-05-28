@@ -1,6 +1,8 @@
 ---
 import { Icon } from "astro-icon/components"
-const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
+import { getRelativeLocaleUrl } from "astro:i18n"
+const { brands, brandIndex, links, activePath, searchExposed, locale, searchPlaceholderTitle, searchPlaceholderText } = Astro.props
+
 ---
 <div 
     id="navigation-menu" 
@@ -27,20 +29,20 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
     </div> -->
 
     <nav class="navigation-links color-reset" data-color-scheme="secondary">
-        {links.map((link, i) => (
+        {links?.map((link, i) => (
             <a 
-                href={link.linkUrl} 
+                href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 
                 class="navigation-link caption" 
                 style={`transition-delay: ${0.1 * i}s`}
                 data-active={activePath === link.linkUrl ? "true" : "false"}
-            >{link.linkText}</a>
+            >{locale && link.linkText.translations?.[locale] ? link.linkText.translations[locale] : link.linkText.text}</a>
         ))}
     </nav>
 
     <div class="search-wrapper">
         <button class="search-button" popovertarget="search-menu">
             <Icon class="icon" name="icon-search" />
-            <span>Search <em>projects, insights, and more...</em></span>
+            <span>{locale && searchPlaceholderTitle.translations?.[locale] ? searchPlaceholderTitle.translations[locale] : searchPlaceholderTitle.text} <em>{locale && searchPlaceholderText.translations?.[locale] ? searchPlaceholderText.translations[locale] : searchPlaceholderText.text}</em></span>
         </button>
     </div>
 
@@ -281,13 +283,20 @@ const { brands, brandIndex, links, activePath, searchExposed } = Astro.props
             display: none;
         }
 
-        .navigation-link {
+        .navigation-link,
+        html[data-brand="Studio"] .navigation-link {
             --base-size: 32;
             --min-size: 28;
             letter-spacing: -0.03em;
             translate: 0 0.5em;
             opacity: 0;
             transition: translate var(--anim-md), opacity var(--anim-md);
+            /* font-weight: inherit; */
+        }
+
+
+        html[data-brand="Studio"] .navigation-link {
+            font-weight: 200;
         }
 
         :global(header.navigation-open) .navigation-link {

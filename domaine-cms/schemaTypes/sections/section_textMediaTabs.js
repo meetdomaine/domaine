@@ -16,18 +16,18 @@ export default defineType({
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
     defineField({
       name: 'insetMedia',
@@ -47,13 +47,14 @@ export default defineType({
           defineField({
             name: 'title',
             title: 'Title',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required()
           }),
           defineField({
-            name: 'text',
-            title: 'Text',
-            type: 'text',
+            name: 'subtitle',
+            title: 'Subtitle',
+            description: 'Formerly called Text',
+            type: 'snippet_locale-text',
           }),
           defineField({
             name: 'media',
@@ -64,13 +65,13 @@ export default defineType({
           defineField({
             name: 'button',
             title: 'Button',
-            type: 'snippet_button',
+            type: 'snippet_locale-button',
           }),
         ],
         preview: {
           select: {
-            title: 'title',
-            subtitle: 'text'
+            title: 'title.text',
+            subtitle: 'subheading.text'
           },
           prepare(selection) {
             const { title, subtitle} = selection
@@ -87,7 +88,7 @@ export default defineType({
   
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading.text', 
     },
     prepare(selection) {
       return {

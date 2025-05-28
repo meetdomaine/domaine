@@ -10,7 +10,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'slug',
@@ -25,19 +25,19 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
     orderRankField({ type: 'type_blogCategory'}),
   ],
 
   preview: {
     select: {
-      title: 'title', 
+      title: 'title.text', 
     },
     prepare(selection) {
       return {

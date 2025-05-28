@@ -35,7 +35,7 @@ export default defineType({
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
-      type: 'string',
+      type: 'snippet_locale-string',
       description: 'Used in Brand menu & practices section.',
       validation: Rule => Rule.required(),
     }),
@@ -46,11 +46,12 @@ export default defineType({
       description: 'Used in Brand menu & practices section.',
       validation: Rule => Rule.required(),
     }),
-    // defineField({
-    //   name: 'logo',
-    //   title: 'Logo',
-    //   type: 'inlineSvg',
-    // }),
+    defineField({
+      name: 'logo',
+      title: 'Logo',
+      description: 'Must be SVG using viewbox for sizing (no width/height) and fill set to currentColor.',
+      type: 'file',
+    }),
     defineField({
       name: 'url',
       title: 'Root URL',
@@ -62,16 +63,22 @@ export default defineType({
     defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
       description: 'Default brand SEO fields.'
     }),
     defineField({
       name: 'cookieNoticeText',
       title: 'Cookie Notice: Text',
-      type: 'snippet_rich-content',
+      type: 'snippet_locale-rich-content',
       validation: Rule => Rule.required()
     }),
-    orderRankField({ type: 'type_practice'}),
+    defineField({
+      name: 'migrate',
+      title: 'Cookie Notice: Text',
+      type: 'snippet_locale-rich-content',
+      validation: Rule => Rule.required()
+    }),
+    orderRankField({ type: 'type_agencyBrand'}),
   ],
   preview: {
     select: {

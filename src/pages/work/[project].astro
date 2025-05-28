@@ -1,37 +1,30 @@
 ---
-import { sanityClient } from 'sanity:client'
-import LayoutDomaine from '../../layouts/Layout-Domaine.astro';
-import { projectPageFields, urlFor } from '../../components/global/utils/cms-queries';
-import WorkPostContent from '../../components/global/projects/workPost-Content.astro';
-
-export const prerender = true
-
-interface Props {
-    content: any
-}
+import { getCollection } from 'astro:content';
+import LayoutProject from '../../layouts/Layout_Project.astro';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Domaine"]{${projectPageFields}} | order( orderRank asc)`)
+    const projects = await getCollection('projects_Domaine')
     return projects.map((project) => {
         return {
-            params: { project: project.slug.current },
-            props: { content: project }
+            params: { project: project.id },
+            props: { content: {...project.data} }
         }
     })
 }
 
-const { content } = Astro.props
-// console.log(content)
+let projectContent
+
+if (isSSR()) {
+    const { project } = Astro.params
+    const { data } = await getEntry('projects_Domaine', project)
+    projectContent = data
+} else {
+    const { content } = Astro.props
+    projectContent = content
+}
 ---
-<LayoutDomaine
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter={content.isHidden ? "" : "type:case-study_domaine"}
-    activePath="/work"
->
-    <WorkPostContent 
-        content={content}
-        brand="domaine"
-    />
-</LayoutDomaine>
+<LayoutProject 
+    content={projectContent}
+/>

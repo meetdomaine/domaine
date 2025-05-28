@@ -16,7 +16,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -28,7 +28,7 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
@@ -38,14 +38,14 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'text',
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'snippet_locale-text',
     }),
   ],
   preview: {
     select: {
-      title: 'title', 
+      title: 'title.text', 
     },
     prepare(selection) {
       return {

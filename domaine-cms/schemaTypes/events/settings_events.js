@@ -8,14 +8,14 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
     }),

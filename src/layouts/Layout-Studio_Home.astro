@@ -1,0 +1,33 @@
+---
+import LayoutStudio from "../layouts/Layout-Studio.astro";
+import HomeHero from "../components/studio/sections/home/home-Hero.astro";
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import { getTranslationString } from "../lib/translations";
+import { urlFor } from "../lib/cms-queries";
+
+const { content, locale } = Astro.props
+---
+<LayoutStudio
+    title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    locale={locale}
+    theme="dark"
+    searchExposed={true}
+    showPreloader={content.showPreloader}
+>
+    <HomeHero 
+        eyebrow={content.eyebrow}
+        heading={content.heading}
+        subheading={content.subheading}
+        button={content.button}
+        textColor={content.heroTextColor}
+        projects={content.projects}
+        locale={locale}
+    />
+
+    {content.globalSections && content.globalSections.sections.map((section, i) => (
+        <GlobalSections brand="studio" section={section} key={i} locale={locale} />
+    ))}
+
+</LayoutStudio>

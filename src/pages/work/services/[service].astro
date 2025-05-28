@@ -1,51 +1,34 @@
 ---
-import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { getProjects_Domaine, getServices_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const services = await sanityClient.fetch(`*[_type == "type_service" && "Domaine" in agencyBrands[]->name ]{
-        ...,
-        isHidden,
-        excerpt,
-        description,
-        agencyBrands[]->{..., slug, name},
-        serviceGroup->{
-            ..., 
-            serviceType->{...}
-        },
-        metafields{ title, description, image{${imageBaseFields}} },
-    } | order(postDate desc)`)
+    const services = await getCollection('services_Domaine')
     return services.map((service) => {
         return {
-            params: { service: service.slug.current },
-            props: { content: service }
+            params: { service: service.id },
+            props: { content: {...service.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let serviceContent
+
+if (isSSR()) {
+    const { service } = Astro.params
+    const { data } = await getEntry('services_Domaine', service)
+    serviceContent = data
+} else {
+    const { content } = Astro.props
+    serviceContent = content
 }
 
-const { content } = Astro.props
-const allProjects = await getProjects_Domaine()
-const projects = allProjects.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
-
-// console.log(content.relatedBlogPosts.length)
-// console.log(content.relatedBlogPosts)
+const projects = await Promise.all(serviceContent.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
-<LayoutDomaineProjects 
-    title={ `${content.metafields && content.metafields.title ? content.metafields.title : content.title} | Work`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter="type:project-service"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+    content={serviceContent}
     projects={projects}
-    currentPath={`/services/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
->
-</LayoutDomaineProjects>
+    currentPath={`/services/${serviceContent.id}`}
+/>

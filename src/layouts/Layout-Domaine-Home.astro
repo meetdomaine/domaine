@@ -1,0 +1,37 @@
+---
+import { sanityClient } from "sanity:client";
+import HomeHero from "../components/domaine/sections/home/home-Hero.astro";
+import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import LayoutDomaine from "../layouts/Layout-Domaine.astro";
+import { globalSectionsFields, imageBaseFields, imageFields, urlFor, videoFields } from "../lib/cms-queries"
+import { getEntry } from "astro:content";
+import { getTranslationString } from "../lib/translations";
+
+const { locale } = Astro.props;
+const { data: pageSettings } = await getEntry('pageSettings', 'page_home-domaine')
+---
+<LayoutDomaine
+    title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}
+    description={pageSettings.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    searchExposed={true}
+    showPreloader={pageSettings.showPreloader}
+    locale={locale}
+>
+    <HomeHero
+        locale={locale}
+        eyebrow={locale && pageSettings.eyebrow.translations[locale] ? pageSettings.eyebrow.translations[locale] : pageSettings.eyebrow.text}
+        heading={locale && pageSettings.heading.translations[locale] ? pageSettings.heading.translations[locale] : pageSettings.heading.text}
+        button={pageSettings.button}
+        media={pageSettings.media}
+        heroTextColor = {pageSettings.heroTextColor}
+    />
+    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
+        <GlobalSections 
+          brand="domaine" 
+          locale={locale}
+          section={section}
+          key={i} 
+        />
+    ))}
+</LayoutDomaine>

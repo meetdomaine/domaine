@@ -11,6 +11,7 @@ export default defineType({
       title: 'Sections',
       type: 'array',
       of: [
+        { type: 'section_agenda'},
         { type: 'section_blogFeed'},
         { type: 'section_contentBlocks'},
         { type: 'section_form'},
@@ -18,6 +19,7 @@ export default defineType({
         { type: 'section_locationsFeed'},
         { type: 'section_linkList'},
         { type: 'section_mediaCarousel'},
+        { type: 'section_mediaFullbleed'},
         { type: 'section_projectsFeed'},
         { type: 'section_projectsGrid'},
         { type: 'section_projectsFullBleed'},
@@ -25,6 +27,7 @@ export default defineType({
         { type: 'section_practicesFeed'},
         { type: 'section_quote'},
         { type: 'section_richContent'},
+        { type: 'section_serviceFeature'},
         { type: 'section_servicesFeed'},
         { type: 'section_statsCarousel'},
         { type: 'section_textClients'},

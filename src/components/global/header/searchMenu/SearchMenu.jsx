@@ -1,6 +1,8 @@
 import { Show, createEffect, createSignal } from 'solid-js';
 import styles from './SearchMenu.module.css'
-import { urlFor } from '../../utils/cms-queries';
+import { urlFor } from '../../../../lib/cms-queries';
+import { Translations } from '../../../../lib/locales';
+import { getTranslationString } from 'src/lib/translations';
 
 function ProjectCard(props) {
     return (
@@ -24,7 +26,7 @@ function BlogCard(props) {
         <div class={styles.blogCard}>
             <div class={styles.blogInfo}>
                 <a class={`${styles.cardTag} caption`} href={props.categoryUrl}>{props.categoryTitle}</a>
-                <a class={`${styles.blogTitle}`} href={props.url}>{props.title}</a>
+                <a class={`${styles.blogTitle}`} href={props.url}>{props.locale && props.title.translations?.[props.locale] ? props.title.translations[props.locale] : props.localizeTitle ? props.title.text : props.title}</a>
             </div>
             <a class={styles.blogImage} href={props.url}>
                 <img 
@@ -113,7 +115,6 @@ export default function SearchMenu(props) {
                 const data = await pageFind().search(query, {filters: {type: queryType}})
                 if (data === null) return
                 const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
-                // console.log(filteredResults)
                 if (filteredResults) return setter(filteredResults)
                 return setter(null)
             }
@@ -122,8 +123,6 @@ export default function SearchMenu(props) {
             await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine', setBlogResults, 3)
             await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine', setFeatureResults, 10)
             await getFilteredResults('partner', setPartnerResults, 5)
-
-            // console.log(partnerResults())
         }
     }
 
@@ -171,7 +170,7 @@ export default function SearchMenu(props) {
                 {/* Projects */}
                 <Show when={!query() || (query() && projectResults()?.length > 0)} >
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'projects' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>Projects</p>
+                        <p class={styles.columnTitle}>{props.locale ? Translations.PROJECTS.locales[props.locale] : Translations.PROJECTS.name}</p>
                         <div class={styles.projectsList}>
 
                             {projectResults() ?
@@ -186,10 +185,10 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultProjects}>{project => 
                                     <ProjectCard
-                                        url={`${project.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.slug.current}`} 
-                                        title={project.title} 
-                                        image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
-                                        alt={project.thumbnailMedia.image.alt} 
+                                        url={`${project.data.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.id}`} 
+                                        title={project.data.title} 
+                                        image={urlFor(project.data.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
+                                        alt={project.data.thumbnailMedia.image.alt} 
                                         />
                                 }</For>
                             }
@@ -200,7 +199,7 @@ export default function SearchMenu(props) {
                 {/* Blog */}
                 <Show when={!query() || (query() && blogResults()?.length > 0)}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'insights' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>Insights</p>
+                        <p class={styles.columnTitle}>{props.locale ? Translations.INSIGHTS.locales[props.locale] : Translations.INSIGHTS.name}</p>
                         <div class={styles.projectsList}>
                             {blogResults() ? 
                                 <For each={blogResults()}>{result => 
@@ -210,18 +209,23 @@ export default function SearchMenu(props) {
                                         categoryTitle={result.meta.categoryTitle}
                                         categoryUrl={result.meta.categoryUrl}
                                         image={result.meta.image} 
-                                        alt={result.meta.image_alt} 
+                                        alt={result.meta.image_alt}
+                                        locale={props.locale}
+                                        localizeTitle={false}
                                     />
                                 }</For>
                             :
                                 <For each={props.defaultBlogPosts}>{post => 
                                     <BlogCard 
-                                        url={`${post.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.category.slug.current}/${post.slug.current}`} 
-                                        title={post.title}
-                                        categoryTitle={post.category.title}
-                                        categoryUrl={`/insights/${post.category.slug.current}`}
-                                        image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} 
-                                        alt={post.thumbnailImage.image.alt} 
+                                        url={`${post.data.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.data.category.slug.current}/${post.id}`} 
+                                        // title={getTranslationString(post.data.title, props.locale)}
+                                        title={post.data.title}
+                                        categoryTitle={getTranslationString(post.data.category.title, props.locale)}
+                                        categoryUrl={`/insights/${post.data.category.slug.current}`}
+                                        image={urlFor(post.data.thumbnailImage.image).width(300).height(300).auto('format').url()} 
+                                        alt={post.data.thumbnailImage.image.alt} 
+                                        locale={props.locale}
+                                        localizeTitle={true}
                                     />
                                 }</For>
                             }
@@ -232,20 +236,22 @@ export default function SearchMenu(props) {
                 {/* Features/ */}
                 <Show when={!query() || (query() && featureResults()?.length > 0)}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'features' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>Features</p>
+                        <p class={styles.columnTitle}>{props.locale ? Translations.FEATURES.locales[props.locale] : Translations.FEATURES.name}</p>
                         <div class={styles.featuresList}>
                             {featureResults() ? 
                                 <For each={featureResults()}>{result => 
                                     <FeatureCard 
                                         url={result.url} 
                                         title={result.meta.title} 
+                                        locale={props.locale}
                                     />
                                 }</For>
                             :
                                 <For each={props.defaultFeatures}>{feature => 
                                     <FeatureCard 
-                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.slug.current}`} 
-                                        title={feature.title} 
+                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.id}`} 
+                                        title={getTranslationString(feature.data.title, props.locale)} 
+                                        locale={props.locale}
                                     />
                                 }</For>
                             }
@@ -256,7 +262,7 @@ export default function SearchMenu(props) {
                 {/* Partners */}
                 <Show when={!query() || (query() && partnerResults()?.length > 0)}>
                     <div class={styles.resultsColumn} data-tab-active={activeTab() === 'partners' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>Partners</p>
+                        <p class={styles.columnTitle}>{props.locale ? Translations.PARTNERS.locales[props.locale] : Translations.PARTNERS.name}</p>
                         <div class={styles.partnersList}>
                             {partnerResults() ?
                                 <For each={partnerResults()}>{result => 
@@ -271,11 +277,11 @@ export default function SearchMenu(props) {
                                 :
                                 <For each={props.defaultPartners}>{partner => 
                                     <PartnerCard 
-                                        url={`/partners/${partner.slug.current}`} 
-                                        title={partner.title}
-                                        icon={urlFor(partner.icon.image).auto('format').width(300).height(300).url()}
-                                        alt={partner.icon.alt} 
-                                        excerpt={partner.excerpt}
+                                        url={`/partners/${partner.id}`} 
+                                        title={partner.data.title}
+                                        icon={urlFor(partner.data.icon.image).auto('format').width(300).height(300).url()}
+                                        alt={partner.data.icon.alt} 
+                                        excerpt={getTranslationString(partner.data.excerpt, props.locale)}
                                     />
                                 }</For>
                             }

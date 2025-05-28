@@ -1,0 +1,99 @@
+<script>
+
+  const settings = {
+    bidirectional: false,
+    rootMargin: "0% 0% -10% 0%",
+    threshold: 0.3,
+    delay: 0
+  }
+
+  const callback = (entries, observer) => {
+    entries.forEach((entry) => {
+      const delay = entry.target.dataset.animationDelay ? entry.target.dataset.animationDelay : 0
+
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          return entry.target.dataset.animateViewport = false
+        }, delay)
+      }
+    })
+  }
+
+  const initAnimations = (observer) => {
+    const animatedElements = document.querySelectorAll('[data-animate-viewport="true"]')
+    animatedElements.forEach((element) => {
+      observer.observe(element);
+    })
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const viewportAnimationObserver = new IntersectionObserver(callback, settings);
+    initAnimations(viewportAnimationObserver)
+  })
+
+</script>
+
+<style is:global>
+
+  *[data-animation="zoom"]{
+    transition: opacity var(--anim-lg), scale var(--anim-lg);
+  }
+
+
+  *[data-animation="zoom"][data-animate-viewport="true"] {
+    opacity: 0;
+    scale: 1.1;
+  }
+
+  *[data-animation="zoom"][data-animate-viewport="false"] {
+    opacity: 1;
+    scale: 1;
+  }
+
+  *[data-animation="fade-up"]{
+    transition: opacity var(--anim-lg), translate var(--anim-lg);
+  }
+
+  *[data-animation="fade-up"][data-animate-viewport="true"] {
+    opacity: 0;
+    translate: 0 40px;
+  }
+
+  *[data-animation="fade-up"][data-animate-viewport="false"] {
+    opacity: 1;
+    translate: 0 0px;
+  }
+
+  *[data-animation="fade"]{
+    transition: opacity var(--anim-lg);
+  }
+
+  *[data-animation="fade"][data-animate-viewport="true"] {
+    opacity: 0;
+  }
+
+  *[data-animation="fade"][data-animate-viewport="false"] {
+    opacity: 1;
+  }
+
+  *[data-animation="clip-left"] > *{
+    transition: clip-path var(--anim-md);
+  }
+
+  *[data-animation="clip-left"][data-animate-viewport="true"] > * {
+    clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+  }
+
+  *[data-animation="clip-left"][data-animate-viewport="false"] > * {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+
+
+  @media screen and (width < 768px) {
+    *[data-animate-viewport="true"][data-animate-mobile="false"] {
+      opacity: 1;
+      translate: 0;
+      transition: none;
+    }
+  }
+</style>

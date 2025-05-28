@@ -21,23 +21,45 @@ export default defineType({
       to: [
         { type: 'type_serviceType'},
         { type: 'type_serviceGroup'}
-      ]
+      ],
+      validation: Rule => Rule.required(),
     }),
-    // defineField({
-    //   name: 'heading',
-    //   title: 'Heading',
-    //   type: 'string',
-    // }),
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'snippet_locale-string',
+      description: 'If added, will override the Sevice title.'
+    }),
+    defineField({
+      name: 'headingSize',
+      title: 'Heading Size',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Small", value: "small" },
+          { title: "Large", value: "large" },
+        ],
+        layout: "radio",
+        direction: "horizontal"
+      },
+      initialValue: "large"
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'snippet_locale-text',
+      description: 'If added, will override the Sevice excerpt.'
+    }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
   ],
   preview: {
     select: {
-      title: 'featuredService.title',
-      subtitle: 'heading' 
+      title: 'featuredService.title.text',
+      subtitle: 'heading.text' 
     },
     prepare(selection) {
       const { title, subtitle } = selection

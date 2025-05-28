@@ -1,7 +1,7 @@
 ---
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
-const { section, brand, key } = Astro.props 
+const { section, brand, key, locale } = Astro.props 
 ---
 <section class="section-content-blocks">
     <div class="content-blocks" >
@@ -23,7 +23,6 @@ const { section, brand, key } = Astro.props
                         preserveAspect={contentBlock.insetMedia ? true : false}
                         cover={contentBlock.insetMedia ? false : true}
                         contain={contentBlock.insetMedia ? true : false}
-                        // aspectRatio={!contentBlock.insetMedia ? 3/4 : null}
                         aspectRatio={section.contentBlocks.length > 1 ? 3/4 : null}
                         sizes="100vw"
                     />
@@ -50,12 +49,6 @@ const { section, brand, key } = Astro.props
 
     // const section = document.getElementById(`content-blocks_${key}`)
     
-
-
-    
-
-
-    // console.log(media)
 </script>
 
 <style>
@@ -113,6 +106,10 @@ const { section, brand, key } = Astro.props
         .content-block {
             flex: 0 0 auto;
             max-height: unset;
+        }
+
+        .content-block[data-inset="true"] .block-media {
+            padding: var(--space-lg);
         }
     }
 </style>

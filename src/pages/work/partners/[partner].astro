@@ -1,48 +1,34 @@
 ---
-import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { getPartners_Domaine, getProjects_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, imageFields, urlFor } from '../../../components/global/utils/cms-queries';
-
-export const prerender = true
+import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0]{
-        _id,
-        title, 
-        excerpt, 
-        slug, 
-        icon{${imageFields}}, 
-        tier->{slug, title, createLandingPages}, 
-        websiteUrl, 
-        orderRank,
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
+    const partners = await getCollection('partners_Domaine')
     return partners.map((partner) => {
         return {
-            params: { partner: partner.slug.current },
-            props: { content: partner }
+            params: { partner: partner.id },
+            props: { content: {...partner.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let partnerContent
+
+if (isSSR()) {
+    const { partner } = Astro.params
+    const { data } = await getEntry('partners_Domaine', partner)
+    partnerContent = data
+} else {
+    const { content } = Astro.props
+    partnerContent = content
 }
 
-const { content } = Astro.props
-const allProjects = await getProjects_Domaine()
-const projects = await allProjects.filter((project) => project.partners && project.partners.some((partner) => partner._id === content._id))
-
+const projects = await Promise.all(partnerContent.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
-<LayoutDomaineProjects 
-    title={`${content.title} x Domaine | Work`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter="type:project-service"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+content={partnerContent}
     projects={projects}
-    currentPath={`/partners/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
->
-</LayoutDomaineProjects>
+    currentPath={`/partners/${partnerContent.slug.current}`}
+/>

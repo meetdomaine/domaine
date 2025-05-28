@@ -3,10 +3,13 @@ import { sanityClient } from 'sanity:client';
 import LayoutGlobal from './Layout-Global.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
-import '../styles/studio/typography.css'
-import '../styles/studio/color.css'
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
-import { getBrandSettings_Studio, getFooterSettings_Studio } from '../components/global/utils/cms-content';
+import { getBrandSettings_Studio, getFooterSettings_Studio } from '../lib/cms-content';
+import { getTranslationString } from '../lib/translations';
+import { Brands } from '../enums/brands';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 
 interface Props {
 	title: string,
@@ -16,34 +19,52 @@ interface Props {
     searchFilter?: string,
     activePath?: string,
     searchExposed?: boolean,
+    showPreloader?: boolean,
+    locale?: string;
+    noIndex?: boolean;
+    brand?: string;
+    marketingHeader?: boolean;
+    marketingHeaderButtonLabel?: string;
+    indexSearch?: boolean;
 }
 
-const { title, description, image, theme, searchFilter, activePath, searchExposed } = Astro.props;
+const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
-const currentBrand = await getBrandSettings_Studio()
-const footerSettings = await getFooterSettings_Studio()
+const { data: brandSettings } = await getEntry('pageSettings', 'brandSettings_Studio')
+const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer--studio')
 ---
 <LayoutGlobal
-    title={`${title ? title : "Home"} | ${currentBrand.metafields.title}`}
-    description={ description ? description : currentBrand.description }
-    favicon={currentBrand.favicon}
-    image={image ? image : currentBrand.metafields.image}
+    title={`${title ? title : "Domaine Studio"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
+    description={ description ? description : brandSettings.metafields.description ? getTranslationString(brandSettings.metafields.description, locale) : null}
+    image={image ? image : brandSettings.metafields.image}
+    favicon={brandSettings.favicon}
     searchFilter={searchFilter}
-    currentBrand={currentBrand}
-    cookieNoticeText={currentBrand.cookieNoticeText}
+    currentBrand={brandSettings}
+    cookieNoticeText={brandSettings.cookieNoticeText}
+    showPreloader={showPreloader}
+    brand={Brands.STUDIO}
+    indexSearch={indexSearch}
 >
-    <Header
-        currentBrand={currentBrand}
-        activePath={activePath}
-        searchExposed={searchExposed}
-    />
+    {marketingHeader ? 
+        <GlobalMarketingHeader 
+            brand={Brands.STUDIO}
+            locale={locale}
+            buttonLabel={marketingHeaderButtonLabel}
+        />
+    :
+        <Header
+            currentBrand={brandSettings}
+            activePath={activePath}
+            searchExposed={searchExposed}
+            brand={Brands.STUDIO}
+        />
+    }
 
     <main>
         <slot />
     </main>
-    <Footer currentBrand={currentBrand} footerSettings={footerSettings}>
-        <AtomHubspotForm 
-            formId={footerSettings.newsletterHubspotFormId}
-        />
-    </Footer>
+    <Footer 
+        footerSettings={footerSettings}
+        locale={locale}
+    />
 </LayoutGlobal>

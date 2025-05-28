@@ -1,65 +1,59 @@
 ---
-import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../utils/cms-content"
+import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../../../lib/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
 import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
-
-const { 
+import { checkDateIsPast } from "../../../lib/check-date-is-past"
+import { Translations } from "../../../lib/locales"
+import { getLocaleString, getLocaleUrl, getTranslationString } from "../../../lib/translations"
+import { getCollection } from "astro:content"
+const {
+  content,
   currentBrand, 
-  showPromoMessage, 
-  promoMessage, 
-  promoMessageUrl, 
-  promoMessageIcon,
-  clocks,
-  locationClocks,
-  showLinkCard,
-  linkCardTitle,
-  linkCardText,
-  linkCardImage,
-  linkCardNewTab,
-  linkCardUrl,
-  showCareers,
-  careersHeading,
-  careersSubheading,
-  careersUrl,
-  careersNewTab,
-  showBlog,
+  locale,
+  brand
 } = Astro.props
 
 const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const latestProjects = currentBrand.slug.current === "/studio" ? await getProjects_Studio() : await getProjects_Domaine()
-const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getBlogPosts_Studio() : await getBlogPosts_Domaine()
-const allEvents = await getEvents()
-const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
+const latestProjects = currentBrand.slug.current === "/studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
 
-// console.log(upcomingEvent)
-// console.log(latestWork)
+const events = await getCollection('events')
+const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
-  {(showPromoMessage && promoMessage) &&
-    <a class="promo-message caption" href={promoMessageUrl} data-color-scheme="brand-02">{promoMessageIcon && <Icon name={promoMessageIcon} />}{promoMessage}</a>
+  {(content.showPromoMessage && content.promoMessage) &&
+    <a 
+      class="promo-message caption" 
+      href={content.promoMessageUrl} 
+      data-color-scheme="brand-02"
+    >
+      {/* {content.promoMessageIcon && 
+        <Icon name={content.promoMessageIcon} />
+      } */}
+      {getTranslationString(content.promoMessage, locale)}
+    </a>
   }
 
   <div class="latest-projects">
     {latestProjects.slice(0,2).map((project) => (
       <AtomNotificationLink 
-        title="Latest Work"
-        text={project.title}
-        url={`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
-        image={project.thumbnailMedia.image ? project.thumbnailMedia.image : project.thumbnailImageSecondary.image}
+        title={project.data.title}
+        url={getLocaleUrl(`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.data.slug.current}`, locale)}
+        image={project.data.thumbnailMedia.image ? project.data.thumbnailMedia.image : project.data.thumbnailImageSecondary.image}
       />
     ))}
   </div>
 
-  {locationClocks?.length > 0 &&
+  {content.locationClocks?.length > 0 &&
     <div class="clocks" data-color-scheme="glass-dark">
-      {locationClocks.map((clock) => (
+      {content.locationClocks.map((clock) => (
         <div class="clock" data-timezone={clock.timezone} data-daytime="true">
           <div class="clock-icon">
             <span class="tick"></span>
@@ -86,55 +80,61 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 
   {upcomingEvents?.length > 0 && 
     <div class="event-card" data-color-scheme="glass-dark">
-      <p class="caption">Upcoming Events</p>
+      {content.eventsTitle && <p class="caption">{getTranslationString(content.eventsTitle, locale)}</p>}
       {upcomingEvents.map((event) => (
-        <a class="event-info color-reset" href={`/events/${event.slug.current}`} data-color-scheme="default">
+        <a 
+          class="event-info color-reset" 
+          href={getLocaleUrl(`/events/${event.id}`, locale)} 
+          data-color-scheme="default"
+        >
           <div class="event-date">
-            <p class="event-month caption">{new Intl.DateTimeFormat("en-us", monthOptions).format(new Date(event.dateTime))}</p>
-            <p class="event-day h4">{new Date(event.dateTime).getDate()}</p>
+            <p class="event-month caption">{new Intl.DateTimeFormat(locale ? locale : "en-us", monthOptions).format(new Date(event.data.dateTime))}</p>
+            <p class="event-day h4">{new Date(event.data.dateTime).getDate()}</p>
           </div>
           <div class="event-details">
-            <p class="event-title">{event.title}</p>
-            <p class="event-location caption">{event.location}</p>
+            <p class="event-title">{getTranslationString(event.data.title)}</p>
+            <p class="event-location caption">{getTranslationString(event.data.location, locale)}</p>
           </div>
         </a>
       ))}
     </div>
   }
 
-{showLinkCard && showCareers &&
+{content.showLinkCard && content.showCareers &&
   <div class="brand-cards">
-    {showLinkCard && linkCardTitle &&
+    {content.showLinkCard && content.linkCardTitle &&
       <AtomNotificationLink 
-        title={linkCardTitle}
-        text={linkCardText}
-        url={linkCardUrl}
-        newTab={linkCardNewTab}
-        image={linkCardImage.image}
+        title={content.linkCardTitle}
+        subtitle={content.linkCardText}
+        url={content.linkCardUrl}
+        newTab={content.linkCardNewTab}
+        image={content.linkCardImage.image}
+        locale={locale}
       />
     }
-    {showCareers && careersHeading && careersUrl &&
-      <a href={careersUrl} class="careers-card" data-color-scheme="glass-dark" target={careersNewTab ? "_blank" : ""}>
+    {content.showCareers && content.careersHeading && content.careersUrl &&
+      <a href={content.careersUrl} class="careers-card" data-color-scheme="glass-dark" target={content.careersNewTab ? "_blank" : ""}>
         <Icon name="dot-laptop" class="careers-icon" />
         <div class="careers-heading">
-          <p class="h6">{careersHeading}</p>
+          {content.careersHeading && <p class="h6">{getTranslationString(content.careersHeading.text, locale)}</p>}
           <AtomCounter 
             count={allCareers.length}
           />
         </div>
-        {careersSubheading && <p class="careers-subheading">{careersSubheading}</p>}
+        {content.careersSubheading && <p class="careers-subheading">{getTranslationString(content.careersSubheading, locale)}</p>}
       </a>
     }
   </div>
 }
   
-{showBlog && latestBlogPosts.length > 1 &&
+{content.showBlog && latestBlogPosts.length > 1 &&
   <div class="blog-posts" data-color-scheme="glass-dark">
-    <p class="blog-posts-heading caption">Insights</p>
+    <p class="blog-posts-heading caption">{getLocaleString("INSIGHTS")}</p>
     {latestBlogPosts.slice(0,2).map((blogPost) => (
       <GlobalBlogTile 
-        post={blogPost}
+        post={blogPost.data}
         currentBrand={currentBrand}
+        locale={locale}
       />
     ))}
   </div>
@@ -144,7 +144,8 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
 </dialog>
 
 <script>
-  import { getIsDaytime, getLocalTime } from "../utils/get-local-time"
+  import { isMobileBreakpoint } from "../../../lib/check-device"
+  import { getIsDaytime, getLocalTime } from "../../../lib/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -156,21 +157,23 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
   let pageEndOpen = false
   let currentScroll = window.scrollY
 
-  window.addEventListener("scroll", (e) => {
-    const scrolledTo = window.scrollY + window.innerHeight
-    const isAtPageEnd = document.body.scrollHeight === scrolledTo
-    const newScroll = window.scrollY
-    if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
-      pageEndOpen = true
-      notificationMenu.showPopover()
-      notificationMenu.blur()
-    } else if (newScroll < currentScroll && pageEndOpen) {
-      pageEndOpen = false
-      notificationMenu.hidePopover()
-    }
-    currentScroll = newScroll
-    
-  })
+  if (!isMobileBreakpoint) {
+    window.addEventListener("scroll", (e) => {
+      const scrolledTo = window.scrollY + window.innerHeight
+      const isAtPageEnd = document.body.scrollHeight === scrolledTo
+      const newScroll = window.scrollY
+      if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
+        pageEndOpen = true
+        notificationMenu.showPopover()
+        // notificationMenu.blur()
+      } else if (newScroll < currentScroll && pageEndOpen) {
+        pageEndOpen = false
+        notificationMenu.hidePopover()
+      }
+      currentScroll = newScroll
+      
+    })
+  }
 
   const updateTime = () => {
       
@@ -178,33 +181,24 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
         let time, hours, minutes, seconds
         
         const timezoneId = clock.dataset.timezone
+        const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
         const timeElement: HTMLElement = clock.querySelector('.time')
 
-        time = new Date(new Date().toLocaleString("en-US", {timeZone: timezoneId } ));
+        time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId} ));
         hours = time.getHours()
         minutes = time.getMinutes()
         seconds = time.getSeconds()
 
-        getLocalTime(timeElement, timezoneId, 'innerText')
-        getLocalTime(clock, timezoneId, 'customProps')
-        getIsDaytime(clock, timezoneId)
-        // timeElement.getLocal
-
-        // timeElement.innerText = `${hours}:${minutes}`
-        // if (hours >= 19) clock.dataset.daytime = "false"
-
-        // clock.style.setProperty('--hours', hours)
-        // clock.style.setProperty('--minutes', minutes)
-        // clock.style.setProperty('--seconds', seconds)
-        
-        
-        // console.log(hours)
+        getLocalTime(timeElement, cleanedTimezoneId, 'innerText')
+        getLocalTime(clock, cleanedTimezoneId, 'customProps')
+        getIsDaytime(clock, cleanedTimezoneId)
         
       })
-      // requestAnimationFrame(updateTime)
     }
 
-    setInterval(updateTime, 1000)
+    if (!isMobileBreakpoint) {
+      setInterval(updateTime, 1000)
+    }
   
 </script>
 
@@ -519,9 +513,15 @@ const upcomingEvents = allEvents.filter((event) => !event.isPrivate)
     border-radius: var(--radius-sm);
   }
 
-  .careers-card:focus:not(:focus-visible) {
+  .careers-card:focus,
+  .careers-card:focus-visible {
     outline: none;
+    border: none;
   }
+
+  /* .careers-card:focus:not(:focus-visible) {
+    outline: none;
+  } */
 
   .careers-card:focus {
     outline-offset: -2px;

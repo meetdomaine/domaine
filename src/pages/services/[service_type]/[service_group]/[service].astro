@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutService from '../../../../layouts/Layout_Service.astro';
+import { Brands } from '../../../../enums/brands';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../../lib/get-is-ssr';
+
+export async function getStaticPaths() {
+    const services = await getCollection('services_Domaine')
+    return services.map((service) => {
+        return {
+            params: { 
+                service: service.id,
+                service_group: service.data.serviceGroup.slug.current,
+                service_type: service.data.serviceGroup.serviceType.slug.current, 
+            },
+            props: { 
+                content: {...service.data}
+            }
+        }
+    })
+}
+
+let serviceContent
+
+if (isSSR()) {
+    const { service, service_type } = Astro.params
+    const { data } = await getEntry('services_Domaine', service)
+    serviceContent = data
+} else {
+    const { content } = Astro.props
+    serviceContent = content
+}
+---
+<LayoutService 
+    content={serviceContent}
+    brand={Brands.DOMAINE}
+    activePath="/services"
+/>

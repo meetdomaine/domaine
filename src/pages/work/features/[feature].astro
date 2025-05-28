@@ -1,45 +1,35 @@
 ---
-import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { getProjectFeatures_Domaine, getProjects_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
-
-export const prerender = true
+import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr'
 
 export async function getStaticPaths() {
-    const features = await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{
-        _id,
-        title,
-        excerpt,
-        slug, 
-        orderRank,
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
+    const features = await getCollection('features_Domaine')
     return features.map((feature) => {
         return {
-            params: { feature: feature.slug.current },
-            props: { content: feature }
+            params: { feature: feature.id },
+            props: { content: {...feature.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let featureContent
+
+if (isSSR()) {
+    const { feature } = Astro.params
+    const { data } = await getEntry('features_Domaine', feature)
+    featureContent = data
+} else {
+    const { content } = Astro.props
+    featureContent = content
 }
 
-const { content } = Astro.props
-const allProjects = await getProjects_Domaine()
-const projects = await allProjects.filter((project) => project.features && project.features.some((feature) => feature._id === content._id))
+const projects = await Promise.all(featureContent.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
-<LayoutDomaineProjects 
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Work`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter="type:project-feature_domaine"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex 
+    content={featureContent}
     projects={projects}
-    currentPath={`/features/${content.slug.current}`}
->
-    <!-- <p slot="before-grid">Howdy</p>
-    <p slot="after-grid">End</p> -->
-</LayoutDomaineProjects>
+    currentPath={`/features/${featureContent.id}`}
+    indexSearch={true}
+/>

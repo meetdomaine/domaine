@@ -1,19 +1,21 @@
 ---
 import { Icon } from "astro-icon/components"
-import { getLocations } from "../utils/cms-content"
+import { getLocations } from "../../../lib/cms-content"
 import AtomButton from "../atoms/atom-button.astro"
+import { getRelativeLocaleUrl } from "astro:i18n"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
-const { section, brand, key } = Astro.props
+const { section, brand, key, locale } = Astro.props
 const locations = await getLocations()
 ---
 <section class="section-locations-feed">
   <div class="section-title">
-    <h2 class="heading h2">{section.heading}</h2>
-    {section.text && <p>{section.text}</p>}
-    {section.button.text && section.button.url && 
+    {section.heading && <h2 class="heading h2">{getTranslationString(section.heading, locale)}</h2>}
+    {section.subheading && <p>{getTranslationString(section.subheading.text, locale)}</p>}
+    {section.button?.label && section.button?.url && 
       <AtomButton 
-       text={section.button.text}
-       url={section.button.url}
+       text={getTranslationString(section.button.label.text, locale)}
+       url={getLocaleUrl(section.button.url, locale)}
        newTab={section.button.newTab}
        style="secondary"
       />
@@ -37,7 +39,7 @@ const locations = await getLocations()
 </section>
 
 <script>
-import { getLocalTime } from "../utils/get-local-time"
+import { getLocalTime } from "../../../lib/get-local-time"
   window.addEventListener("DOMContentLoaded", () => {
     const sections = Array.from(document.getElementsByClassName('section-locations-feed') as HTMLCollectionOf<HTMLElement>) 
     sections.forEach((section) => {

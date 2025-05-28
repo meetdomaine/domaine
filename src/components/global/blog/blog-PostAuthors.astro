@@ -1,12 +1,13 @@
 ---
+import { Translations } from "../../../lib/locales"
+import { getTranslationString } from "../../../lib/translations"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 
-const { authors } = Astro.props
-// console.log(authors)
+const { authors, locale } = Astro.props
 ---
 <section class="blog-post-authors">
-    <h2 class="section-title h5">Authors</h2>
+    <h2 class="section-title h5">{locale ? Translations.AUTHORS.locales[locale] : Translations.AUTHORS.name}</h2>
     <div class="authors">
         {authors.map((author) => (
             <div class="author">
@@ -19,12 +20,12 @@ const { authors } = Astro.props
                 <div class="author-details">
                     <div class="author-title">
                         <AtomTag 
-                            text={author.department.title}
+                            text={getTranslationString(author.department.title, locale)}
                         />
                         <h6 class="name h4">{author.name}</h6>
-                        <p>{author.role}</p>
+                        <p>{getTranslationString(author.role, locale)}</p>
                     </div>
-                    {author.bio && <p>{author.bio}</p>}
+                    {author.bio && <p>{getTranslationString(author.bio, locale)}</p>}
                 </div>
             </div>
         ))}

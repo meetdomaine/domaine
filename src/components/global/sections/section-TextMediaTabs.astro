@@ -1,21 +1,21 @@
 ---
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
-const { section, brand, key } = Astro.props
-// console.log(section.insetMedia)
+const { section, brand, key, locale } = Astro.props
 ---
 <section class="section-text-media-tabs" data-key={key}>
 
   <div class="section-content">
 
     <div class="section-title">
-      {section.eyebrow && <p class="accent utility">{section.eyebrow}</p>}
-      <h1 class="h5">{section.heading}</h1>
+      {section.eyebrow && <p class="accent utility">{getTranslationString(section.eyebrow, locale)}</p>}
+      <h1 class="h5">{getTranslationString(section.heading, locale)}</h1>
       {section.button.text && section.button.url &&
         <AtomButton 
-          text={section.button.text}
-          url={section.button.url}
+          text={getTranslationString(section.button.label, locale)}
+          url={getLocaleUrl(section.button.url, locale)}
           icon="arrow-diagonal"
         />
       } 
@@ -27,7 +27,7 @@ const { section, brand, key } = Astro.props
           class="tab-button h3 button-reset" 
           data-index={`${key}-${i}`}
           data-active={i === 0 ? "true" : "false"}
-        >{tab.title}</button>
+        >{getTranslationString(tab.title, locale)}</button>
       ))}
     </div>
 
@@ -38,12 +38,12 @@ const { section, brand, key } = Astro.props
           data-index={`${key}-${i}`}
           data-active={i === 0 ? "true" : "false"}
         >
-          <p class="content-title h6">{currentTab.title}</p>
-          <p>{currentTab.text}</p>
-          {currentTab.button.text && currentTab.button.url &&
+          <p class="content-title h6">{getTranslationString(currentTab.title, locale)}</p>
+          <p>{getTranslationString(currentTab.subtitle, locale)}</p>
+          {currentTab.button?.text && currentTab.button?.url &&
             <AtomButton 
-              text={currentTab.button.text}
-              url={currentTab.button.url}
+              text={getTranslationString(currentTab.button.label, locale)}
+              url={getLocaleUrl(currentTab.button.url, locale)}
               style="tertiary"
               icon="arrow-diagonal"
             />
@@ -143,12 +143,13 @@ const { section, brand, key } = Astro.props
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
   }
 
   .tab-button {
     color: var(--color-foreground-secondary);
     transition: color var(--anim-md);
+    text-align: left;
   }
 
   .tab-button:hover {
@@ -220,6 +221,10 @@ const { section, brand, key } = Astro.props
 
     .section-content {
       gap: var(--space-xl);
+    }
+
+    .section-media {
+      flex: 0 0 auto;
     }
 
     .content-title {

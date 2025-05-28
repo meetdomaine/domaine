@@ -15,9 +15,13 @@ pnpm-debug.log*
 
 # environment variables
 .env
+.env.archive
+.env.production
 wrangler.toml
+wrangler.json
 # .npmrc
 
 # macOS-specific files
 .DS_Store
 .vercel
+_wrangler.toml

@@ -1,35 +1,36 @@
 ---
-import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { getClientsIndustries_Studio, getProjects_Studio } from '../../../../components/global/utils/cms-content';
-
-export const prerender = true
+import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
+import { Brands } from '../../../../enums/brands';
+import { isSSR } from '../../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const industries = await getClientsIndustries_Studio()
+    const industries = await getCollection('industries_Studio')
     return industries.map((industry) => {
         return {
-            params: { industry: industry.slug.current },
-            props: { content: industry }
+            params: { industry: industry.id },
+            props: { content: {...industry.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let industryContent
+
+if (isSSR()) {
+    const { industry } = Astro.params
+    const { data } = await getEntry('industries_Studio', industry)
+    industryContent = data
+} else {
+    const { content } = Astro.props
+    industryContent = content
 }
 
-const { content } = Astro.props
-const allProjects = await getProjects_Studio()
-const projects = allProjects.filter((project) => project.industry && project.industry._id === content._id)
+const projects = await Promise.all(industryContent.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
-<LayoutStudioProjects 
-    title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}
-    description={content.metafields && content.metafields.description ? content.metafields.description : null}
-    searchFilter="type:industry"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+    content={industryContent}
     projects={projects}
-    currentPath={`/industries/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
->
-</LayoutStudioProjects>
+    currentPath={`/industries/${industryContent.id}`}
+    brand={Brands.STUDIO}
+/>

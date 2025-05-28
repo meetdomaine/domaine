@@ -1,95 +1,37 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutDomaine from '../../../layouts/Layout-Domaine.astro';
-import { blogCardFields, globalSectionsFields, imageBaseFields, imageFields, richContentFields, urlFor } from '../../../components/global/utils/cms-queries';
-import SectionBlogFeed from '../../../components/global/sections/section-BlogFeed.astro';
-import BlogPostBody from '../../../components/global/blog/blog-PostBody.astro';
-import BlogPostHero from '../../../components/global/blog/blog-PostHero.astro';
-import BlogPostAuthors from '../../../components/global/blog/blog-PostAuthors.astro';
-import { getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
-import BlogPostSidebar from '../../../components/global/blog/blogPost-Sidebar.astro';
-import GlobalSections from '../../../components/global/sections/section-GlobalSections.astro';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
+import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    // console.log(posts)
-    const posts = await sanityClient.fetch(`*[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" ]{
-        ..., 
-        _id,
-        authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-        postDate,
-        thumbnailImage{${imageFields}},
-        category->{..., slug{...} }, 
-        body[]{${richContentFields}},
-        agencyBrand->{slug},
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} }
-    }`)
-    return posts.map((post) => {
+    const blogPosts = await getCollection('blogPosts_Domaine')
+    return blogPosts.map((post) => {
         return {
-            params: { post: post.slug.current, category: post.category.slug.current },
-            props: { content: post }
+            params: { 
+                post: post.id, 
+                category: post.data.category.slug.current 
+            },
+            props: { 
+                content: {...post.data} 
+            }
         }
     })
 }
 
-interface Props {
-    content: any
+let blogPostContent
+
+if (isSSR()) {
+    const { post, category } = Astro.params
+    const { data } = await getEntry('blogPosts_Domaine', post)
+    blogPostContent = data
+} else {
+    const { content } = Astro.props
+    blogPostContent = content
 }
 
-const { content } = Astro.props;
-
-const blogPosts = await getBlogPosts_Domaine()
-console.log(content.metafields)
-
-const relatedPosts = await sanityClient.fetch(`
-    *[_type == "type_blog" 
-        && agencyBrand->slug.current == "/" 
-        && category->_id == '${content.category._id}' 
-        && isHidden != true
-    ]{${blogCardFields}} | order(orderRank asc)`)
-
+const { content } = Astro.props
 ---
-<LayoutDomaine
-    title={content.metafields?.title ? content.metafields.title : content.title}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter={content.isHidden ? "" : "type:blog-post_domaine"}
-    activePath="/insights"
-    noIndex={content.isHidden}
->
-    <BlogPostHero
-        post={content}
-    />
-    
-    <BlogPostBody content={content.body}>
-        <BlogPostSidebar 
-            latestPosts={blogPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
-        />
-    </BlogPostBody>
-
-    { content.authors && 
-        <BlogPostAuthors 
-            authors={content.authors}
-        />
-    }
-
-    {content.globalSections && content.globalSections.sections.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} />
-    ))}
-
-    <!-- { relatedPosts.length > 1 && 
-        <SectionBlogFeed 
-            heading="Related Posts"
-            posts={relatedPosts.filter((post) => post.slug.current != content.slug.current)}
-        />
-    } -->
-
-    <!-- { relatedProjects?.length > 0 && 
-        <SectionProjectsFeed
-            heading="Related Projects"
-            projects={relatedProjects}
-        />
-    } -->
-</LayoutDomaine>
+<LayoutBlogPost
+  content={blogPostContent}
+/>

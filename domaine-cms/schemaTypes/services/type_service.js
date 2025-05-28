@@ -10,7 +10,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -18,7 +18,7 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.text',
         maxLength: 96,
       },
       validation: Rule => Rule.required(),
@@ -32,13 +32,13 @@ export default defineType({
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'snippet_locale-text',
       // validation: Rule => Rule.required(),
     }),
     defineField({
@@ -111,9 +111,27 @@ export default defineType({
       ]
     }),
     defineField({
+      name: 'formHeading',
+      title: 'Form: Heading',
+      type: 'snippet_locale-string',
+      description: 'If none is added, will pull from Service Group/Type.'
+    }),
+    defineField({
+      name: 'formText',
+      title: 'Form: Text',
+      type: 'snippet_locale-string',
+      description: 'If none is added, will pull from Service Group/Type.'
+    }),
+    defineField({
+      name: 'hubspotFormId',
+      title: 'Form: Hubspot ID',
+      type: 'string',
+      description: 'If none is added, will pull from Service Group/Type.'
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
-      type: 'snippet_SEO-fields',
+      type: 'snippet_locale-SEO-fields',
     }),
     // defineField({
     //   name: 'formHeading',
@@ -137,8 +155,8 @@ export default defineType({
 
   preview: {
     select: {
-      title: 'title',
-      group: 'serviceGroup.title'
+      title: 'title.text',
+      group: 'serviceGroup.title.text'
     },
     prepare(selection) {
       return {

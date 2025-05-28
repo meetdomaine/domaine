@@ -16,12 +16,12 @@ export default defineType({
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
@@ -36,12 +36,12 @@ export default defineType({
     defineField({
       name: 'quote',
       title: 'Quote',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'quoteAuthor',
       title: 'Quote: Author',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'quoteClient',
@@ -50,19 +50,19 @@ export default defineType({
       to: [{ type: 'type_client' }],
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'text',
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'snippet_locale-text',
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
   ],
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading.text', 
     },
     prepare(selection) {
       return {

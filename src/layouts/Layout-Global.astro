@@ -1,6 +1,7 @@
 ---
-import { urlFor } from '../components/global/utils/cms-queries';
-import ViewportAnimation from '../components/global/animation/ViewportAnimation.astro';
+import { urlFor } from '../lib/cms-queries';
+import ViewportAnimation from '../animation/ViewportAnimation.astro';
+import { VisualEditing } from '@sanity/astro/visual-editing'
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -22,27 +23,26 @@ interface Props {
 	backgroundColor?: string;
 	foregroundColor?: string;
 	searchFilter?: string;
-	currentBrand: any,
-	noIndex?: boolean,
-	cookieNoticeText: Array<any>
+	currentBrand: any;
+	noIndex?: boolean;
+	showPreloader?: boolean;
+	cookieNoticeText: Array<any>;
+	brand?: string;
+	locale?: string;
+	indexSearch?: boolean;
 }
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText } = Astro.props;
-const currentPath = Astro.url.pathname;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
+const currentPath = Astro.url.pathname;
+const visualEditingEnabled = true
+// const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
 	<head>
 
-		<!-- <script>
-			if (sessionStorage.getItem("cachedSession")) {
-				document.write('<style>#site-preloader { display: none !important; }</style>');
-			}
-		</script> -->
-
-		<!-- Remove once live -->
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
 		<!-- Add back once live -->
@@ -71,14 +71,6 @@ const currentPath = Astro.url.pathname;
 			}
 		</script>
 
-		<!-- OLD: Google Tag Manager -->
-		<!-- <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-PG5JGM7P');</script> -->
-		<!-- End Google Tag Manager -->
-
 		<!-- Google Tag Manager -->
 		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -89,7 +81,6 @@ const currentPath = Astro.url.pathname;
 
 		<!-- HTML Meta Tags -->
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" href={urlFor(favicon).url()}>
 		<link rel="sitemap" href="/sitemap-index.xml" />
@@ -117,34 +108,66 @@ const currentPath = Astro.url.pathname;
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 
 	</head>
-	<body data-pagefind-filter={searchFilter}>
-
-		<!-- OLD: Google Tag Manager (noscript) -->
-		<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG5JGM7P"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
-		<!-- End Google Tag Manager (noscript) -->
+	<body {...{
+		...(indexSearch ? { "data-pagefind-body": "" } : { "data-pagefind-ignore": "true"}),
+		...(searchFilter ? { "data-pagefind-filter": searchFilter } : {})
+	}}>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<GlobalPreloader currentBrand={currentBrand} />
+		<VisualEditing enabled={visualEditingEnabled} />
+
+    <GlobalPreloader 
+      currentBrand={currentBrand}
+      showPreloader={showPreloader}
+			brand={brand}
+			locale={locale}
+    />
+    
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
+			brand={brand}
+			locale={locale}
 		/>
 		<slot />
 		<ViewportAnimation />
+
+    <!-- Front chat integration -->
+    <script src='https://chat-assets.frontapp.com/v1/chat.bundle.js' is:inline></script>
+    <script is:inline>
+      window.FrontChat('init', {chatId: '065bffd753c9111b8275e69a65e7ff26', useDefaultLauncher: true});
+    </script>
+
 	</body>
 </html>
 
 <script>
 	import '@mux/mux-player';
 	import "@mux/mux-player/themes/minimal";
-	import { initLenis } from '../components/global/utils/lenis';
+	import { initLenis } from '../lib/lenis';
 
 	document.addEventListener("DOMContentLoaded", () => {
     initLenis()
   })
 </script>
 
+<!-- <script define:vars={{ showPreloader }}>
+  if (!showPreloader) {
+    const preloadComplete = new Event("preload:complete");
+    // window.dispatchEvent(preloadComplete)
+    window.addEventListener("DOMContentLoaded", () => {
+      window.dispatchEvent(preloadComplete)
+    })
+  }
+</script> -->
+
+<style>
+  @media screen and (max-width: 860px) {
+    :global(#front-chat-iframe) {
+      display: none !important;
+    }
+  }
+</style>

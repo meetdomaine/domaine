@@ -1,8 +1,9 @@
 ---
+import { Brands } from "../../../enums/brands"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import AtomServiceLink from "../atoms/atom-serviceLink.astro"
 
-const { subservices, brand, title, description, excerpt, breadcrumbs } = Astro.props
-console.log(subservices)
+const { subservices, brand, title, description, excerpt, breadcrumbs, locale } = Astro.props
 ---
 <section class="service-hero">
     <div class="section=title">
@@ -10,22 +11,25 @@ console.log(subservices)
             {breadcrumbs?.map((breadcrumb) => (
                 <a 
                     class="breadcrumb-link" 
-                    href={breadcrumb.url}>{breadcrumb.title}</a>
+                    href={getLocaleUrl(breadcrumb.url, locale)}
+                >
+                    {breadcrumb.title.translations ? getTranslationString(breadcrumb.title, locale) : breadcrumb.title}
+                </a>
 
             ))}
         </div>
-        <h1 class="service-title h5">{title}</h1>
+        <h1 class="service-title h5">{getTranslationString(title, locale)}</h1>
     </div>
     <div class="section-content">
-        { excerpt && <p class="h4">{excerpt}</p>}
-        { description && <p class="text h6">{description}</p>}
+        { excerpt && <p class="h4">{getTranslationString(excerpt, locale)}</p>}
+        { description && <p class="text h6">{getTranslationString(description, locale)}</p>}
         { subservices &&
             <div class="subservices">
                 { subservices.map((subservice) => (
                     <AtomServiceLink 
-                        title={subservice.title}
-                        url={`${brand === "studio" ? "/studio" : ""}/services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.slug.current}`}
-                        excerpt={subservice.excerpt}
+                        title={getTranslationString(subservice.title, locale)}
+                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.serviceGroup.slug.current}/${subservice.slug.current}`, locale)}
+                        excerpt={getTranslationString(subservice.excerpt, locale)}
                         isHidden={subservice.isHidden}
                     />
                 )) }

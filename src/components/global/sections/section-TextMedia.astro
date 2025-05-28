@@ -2,12 +2,12 @@
 import { Icon } from "astro-icon/components"
 import AtomButton from "../atoms/atom-button.astro"
 import SanityMedia from "../atoms/atom-sanityMedia.astro"
-import { replaceStringIcons } from "../../global/utils/inline-icon-text"
+import { replaceStringIcons } from "../../../lib/inline-icon-text"
+import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 
-const { section, brand } = Astro.props
-// console.log(section.media)
+const { section, brand, locale } = Astro.props
 
-const iconText = replaceStringIcons(section.heading)
+const iconText = replaceStringIcons(getTranslationString(section.heading, locale))
 ---
 <section class="section-text-media" data-layout={section.layout} data-color-scheme={section.colorScheme ? section.colorScheme : "brand-02"}>
 
@@ -17,14 +17,14 @@ const iconText = replaceStringIcons(section.heading)
             data-animate-viewport="true"
             data-animation="fade-up"
         >
-            {section.eyebrow && <p class="eyebrow utility">{section.eyebrow}</p>}
+            {section.eyebrow && <p class="eyebrow utility">{getTranslationString(section.eyebrow, locale)}</p>}
             <h2 class="heading h2"><Fragment set:html={iconText} /></h2>
-            {section.text && <p class={`text ${section.largeText ? "h4" : ""}`}>{section.text}</p>}
-            {section.button && section.button.text && section.button.url &&
+            {section.subheading && <p class={`text ${section.largeText ? "h4" : ""}`}>{getTranslationString(section.subheading, locale)}</p>}
+            {section.button?.label && section.button?.url &&
                 <AtomButton 
-                    text={section.button.text}
-                    url={section.button.url}
-                    newTab={section.buttonSecondary.newTab}
+                    text={getTranslationString(section.button.label, locale)}
+                    url={getLocaleUrl(section.button.url, locale)}
+                    newTab={section.button.newTab}
                     style="primary"
                     icon="arrow-diagonal"
                 />
@@ -33,23 +33,26 @@ const iconText = replaceStringIcons(section.heading)
         {section.bulletPoints &&
             <div class="bullets">
                 {section.bulletPoints.map((bulletPoint) => (
-                    <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(bulletPoint)} /></p>
+                    <p class="bullet-point h6"><Fragment set:html={replaceStringIcons(getTranslationString(bulletPoint, locale))} /></p>
                 ))}
             </div>
         }
     </div>
-    <div class="section-media">
-        <SanityMedia 
-            video={section.media.video}
-            aspectRatio={3 / 4}
-            image={section.media.image}
-            sizes="50vw"
-        />
-    </div>
+    {section.media &&
+        <div class="section-media">
+            <SanityMedia 
+                video={section.media.video}
+                aspectRatio={3 / 4}
+                image={section.media.image}
+                sizes="50vw"
+                cover={true}
+            />
+        </div>
+    }
 </section>
 
 <script>
-    import { addParallax, fadeUp, gsap } from "../../global/utils/gsap"
+    import { addParallax, fadeUp, gsap } from "../../../lib/gsap"
 
     const animateSection = () => {
         const sections = document.querySelectorAll('.section-text-media')
@@ -115,9 +118,13 @@ const iconText = replaceStringIcons(section.heading)
         flex-direction: column;
         gap: var(--space-md);
     }
+
+    .bullet-point {
+        text-wrap: auto;
+    }
     
     .bullet-point :global(svg) {
-        margin-right: 0.5em;
+        /* margin-right: 0.2em; */
     }
 
     .section-media {
@@ -139,6 +146,13 @@ const iconText = replaceStringIcons(section.heading)
         .section-text-media {
             flex-direction: column;
             justify-content: flex-start;
+            flex: 0 0 auto;
+            width: 100%;
+        }
+
+
+        .section-text-media[data-layout="mediaLeft"] {
+            flex-direction: column-reverse;
         }
 
         .section-content {
@@ -148,6 +162,8 @@ const iconText = replaceStringIcons(section.heading)
             justify-content: flex-start;
             flex: 0 0 auto;
             gap: var(--space-lg);
+            width: 100%;
+            max-width: unset;
         }
     }
 

@@ -5,6 +5,7 @@ export default defineType({
   name: 'snippet_button',
   title: 'Button',
   type: 'document',
+  deprecated: true,
   fields: [
     defineField({
         name: 'text',
@@ -27,6 +28,4 @@ export default defineType({
         initialValue: false,
     }),
   ],
-
-  
 })

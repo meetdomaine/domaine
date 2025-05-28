@@ -1,38 +1,47 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutStudioBlogIndex from '../../../../layouts/Layout-Studio-BlogIndex.astro';
-import { getBlogCategories_Studio, getBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
-
-export const prerender = true
+import { isSSR } from '../../../../lib/get-is-ssr';
+import { Brands } from '../../../../enums/brands';
+import LayoutBlogIndex from '../../../../layouts/Layout_BlogIndex.astro';
+import { urlFor } from '../../../../lib/cms-queries';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-    const categories = await getBlogCategories_Studio()
+    const categories = await getCollection('blogCategories_Studio')
     return categories.map((category) => {
-        // console.log(category)
         return {
-            params: { category: category.slug.current },
-            props: { content: category }
+            params: { 
+                category: category.id
+            },
+            props: { content: {...category.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let blogCategoryContent
+
+if (isSSR()) {
+    const { category } = Astro.params
+    const { data } = await getEntry('blogCategories_Studio', category)
+    blogCategoryContent = data
+} else {
+    const { content } = Astro.props
+    blogCategoryContent = content
 }
 
-const { content } = Astro.props;
-
-const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`)
-const allBlogPosts = await getBlogPosts_Studio()
-const blogPosts = allBlogPosts.filter((post) => post.category._id === content._id)
+const pageSettings = await getEntry('pageSettings', 'page_blog-index-studio')
+const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
 ---
-<LayoutStudioBlogIndex
-    pageSetting={pageSettings}
+<LayoutBlogIndex
+    title={pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title}
+    description={pageSettings.data.metafields?.description ? pageSettings.data.metafields.description : null}
+    image={pageSettings.data.metafields?.image ? urlFor(pageSettings.data.metafields.image).url() : null}
+    pageSettings={pageSettings.data}
     blogPosts={blogPosts}
-    heading={content.title}
-    subheading="Lorem ipsum dolor sit amet."
-    searchFilter="type:blog-category"
-    slug={content.slug}
->
-
-</LayoutStudioBlogIndex>
+    heading={pageSettings.data.title}
+    subheading={pageSettings.data.heading}
+    searchFilter="type:page"
+    showPreloader={false}
+    brand={Brands.STUDIO}
+    slug={blogCategoryContent.slug}
+/>

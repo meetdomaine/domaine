@@ -1,13 +1,19 @@
 ---
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 
-const { section, brand, key, media } = Astro.props
+const { section, brand, key, media, locale } = Astro.props
 ---
 <section class="section-video-fullbleed">
   <AtomSanityMedia 
-    video={media.video}
-    image={media.image}
+    video={section?.media ? section.media.video : media.video}
+    image={section?.media ? section.media.image : media.image}
     autoplay={false}
     sizes="100vw"
   />
 </section>
+
+<style>
+.section-video-fullbleed {
+  position: relative;
+}
+</style>

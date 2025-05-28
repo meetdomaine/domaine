@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 import AtomHubspotForm from "../atoms/atom-hubspotForm.astro"
 
-const { hubspotFormId, forms } = Astro.props
+const { hubspotFormId, forms, locale } = Astro.props
 ---
 <dialog popover id="contact-menu" class="contact-menu color-reset" data-lenis-prevent>
     <div class="section-title">
@@ -16,7 +16,7 @@ const { hubspotFormId, forms } = Astro.props
             <ul class="tabs">
                 {forms.map((form, i) => (
                     <li class="tab" >
-                        <button data-form-id={form.hubspotFormId} class="global-form-tab" data-active={i === 0 ? "true" : "false"}>{form.title}</button>
+                        <button data-form-id={form.hubspotFormId} class="global-form-tab" data-active={i === 0 ? "true" : "false"}>{locale && form.title.translations?.[locale] ? form.title.translations[locale] : form.title.text}</button>
                     </li>
                 ))}
             </ul>

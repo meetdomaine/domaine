@@ -1,51 +1,40 @@
 ---
-import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { globalSectionsFields, imageBaseFields, urlFor } from "../components/global/utils/cms-queries";
-import LayoutDomaine from "../layouts/Layout-Domaine.astro";
-
-interface Props {
-  content: any
-}
+import { getCollection } from "astro:content";
+import LayoutPage from "../layouts/Layout-Page.astro";
+import { Brands } from "../enums/brands";
+import { getEntry } from "astro:content";
+import { isSSR } from "../lib/get-is-ssr";
+import LayoutMarketingPage from "../layouts/Layout_MarketingPage.astro";
 
 export async function getStaticPaths() {
-    const pages = await sanityClient.fetch(`*[_type == 'page_general']{ 
-        ..., 
-        globalSections{ sections[]{${globalSectionsFields}} },
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
+    const pages = await getCollection('generalPages_Domaine')
     return pages.map((page) => {
         return {
-            params: { page: page.slug.current },
-            props: { content: page }
+            params: { page: page.id },
+            props: { content: {...page.data} }
         }
     })
 }
 
-const { content } = Astro.props
-// console.log(content)
----
-<LayoutDomaine
-    title={content.title}
-    searchFilter="type:page"
-    title={`${content.metafields?.title ? content.metafields.title : content.title}`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
->
-    <div 
-        class="page-content" 
-        data-color-scheme={content.colorScheme} 
-        data-header-padding={content.addHeaderPadding ? "true" : "false"}
-        style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
-    >
-    <!-- <h1>{content.title}</h1> -->
-        {content.globalSections?.sections.map((section, i) => (
-            <GlobalSections brand="domaine" section={section} key={i} />
-        ))}
-    </div>
-</LayoutDomaine>
+let pageContent
 
-<style>
-    .page-content[data-header-padding="true"] {
-        padding-top: calc(var(--headeer-height) * 2);
-    }
-</style>
+if (isSSR()) {
+    const { page } = Astro.params
+    const { data } = await getEntry('generalPages_Domaine', page)
+    pageContent = data
+} else {
+    const { content } = Astro.props
+    pageContent = content
+}
+---
+{pageContent.isMarketingPage ? 
+    <LayoutMarketingPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+    :
+    <LayoutPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+}

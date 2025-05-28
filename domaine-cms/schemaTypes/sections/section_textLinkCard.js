@@ -18,8 +18,13 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'snippet_locale-text',
     }),
     defineField({
       name: 'stats',
@@ -31,20 +36,20 @@ export default defineType({
           {
             name: 'number',
             title: 'Number',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required()
           },
           {
             name: 'label',
             title: 'Label',
-            type: 'string',
+            type: 'snippet_locale-string',
             validation: Rule => Rule.required()
           }
         ],
         preview: {
           select: {
-            title: 'number',
-            subtitle: 'label'
+            title: 'number.text',
+            subtitle: 'label.text'
           },
           prepare(selection){
             return {
@@ -58,7 +63,7 @@ export default defineType({
     defineField({
       name: 'linkCardHeading',
       title: 'Link Card: Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
       validation: Rule => Rule.required()
     }),
     defineField({
@@ -101,11 +106,31 @@ export default defineType({
       },
       initialValue: "light",
     }),
+    defineField({
+      name: 'orientation',
+      title: 'Orientation',
+      type: 'string',
+      options: {
+        list: [
+          { title: "Horizontal", value: "horizontal" },
+          { title: "Vertical", value: "vertical" },
+        ],
+        layout: 'radio'
+      },
+      initialValue: "horizontal",
+    }),
+    defineField({
+      name: 'imageWidth',
+      title: 'Image Width',
+      description: 'Width of image in container (%).',
+      type: 'number',
+      initialValue: 25,
+    }),
   ],
 
   preview: {
     select: {
-      title: 'heading', 
+      title: 'heading.text', 
     },
     prepare(selection) {
       const { title } = selection

@@ -1,13 +1,14 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomCounter from "../atoms/atom-counter.astro"
+import { getTranslationString } from "../../../lib/translations"
 
-const { brand, section, key } = Astro.props
+const { brand, section, key, locale } = Astro.props
 ---
 <section class="section-link-list">
 
   <div class="section-title">
-    <h2 class="title-xl">{section.title}</h2>
+    {section.title && <h2 class="title-xl">{getTranslationString(section.title, locale)}</h2>}
     <AtomCounter 
       count={section.links.length}
     />
@@ -15,13 +16,13 @@ const { brand, section, key } = Astro.props
 
 
   <div class="section-content">
-    {section.heading && <p class="h5">{section.heading}</p>}
+    {section.heading && <p class="h5">{getTranslationString(section.heading, locale)}</p>}
     <div class="links">
-      {section.links.map((link) => (
+      {section.links?.map((link) => (
         <a class="link" href={link.url} target={link.newTab ? "_blank" : ""}>
           <div>
-            <div class="link-text">{link.title}</div>
-            {link.subtitle && <div class="subtitle">{link.subtitle}</div>}
+            <div class="link-text">{getTranslationString(link.title, locale)}</div>
+            {link.subtitle && <div class="subtitle">{getTranslationString(link.subtitle, locale)}</div>}
           </div>
           <Icon name="arrow-diagonal" />
         </a>

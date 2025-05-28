@@ -132,7 +132,10 @@ declare interface BlogCard {
 declare interface ProjectCard {
     title,
     slug: Slug,
-    excerpt: string,
+    excerpt: {
+        text: string;
+        translations: any
+    },
     industry?: Industry, 
     partners?: Array<Partner>, 
     features?: Array<ProjectFeature>, 

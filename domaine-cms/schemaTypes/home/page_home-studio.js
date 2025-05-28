@@ -8,22 +8,22 @@ export default defineType({
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'subheading',
       title: 'Subheading',
-      type: 'string',
+      type: 'snippet_locale-string',
     }),
     defineField({
       name: 'button',
       title: 'Button',
-      type: 'snippet_button',
+      type: 'snippet_locale-button',
     }),
     defineField({
       name: 'projects',
@@ -96,11 +96,22 @@ export default defineType({
       title: 'Global Sections',
       type: 'section_globalSections',
     }),
+    defineField({
+      name: 'showPreloader',
+      title: 'Show Preloader',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'metafields',
+      title: 'Metafields',
+      type: 'snippet_locale-SEO-fields',
+    }),
   ],
 
   preview: {
     select: {
-      title: 'title', 
+      title: 'heading.text', 
     },
   },
 })

@@ -1,42 +1,34 @@
 ---
-import { sanityClient } from 'sanity:client'
-import { paths } from '../../../components/global/utils/paths';
-import LayoutStudio from '../../../layouts/Layout-Studio.astro';
-import WorkPostHero from '../../../components/global/projects/workPost-Hero.astro';
-import { projectPageFields, projectPostQuery } from "../../../components/global/utils/cms-queries"
-import WorkPostContent from '../../../components/global/projects/workPost-Content.astro';
-
-export const prerender = true
-
-interface Props {
-    content: any
-}
+import LayoutProject from '../../../layouts/Layout_Project.astro';
+import { Brands } from '../../../enums/brands';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == "Studio"]{${projectPageFields}} | order( orderRank asc)`)
+    const projects = await getCollection('projects_Studio')
     return projects.map((project) => {
         return {
-            params: { project: project.slug.current },
-            props: { content: project }
+            params: { project: project.id },
+            props: { content: {...project.data} }
         }
     })
 }
 
-const { content } = Astro.props
+let projectContent
+
+if (isSSR()) {
+    const { project } = Astro.params
+    const { data } = await getEntry('projects_Studio', project)
+    projectContent = data
+} else {
+    const { content } = Astro.props
+    projectContent = content
+}
 ---
-<LayoutStudio
-    title={content.title}
+<LayoutProject
+    content={projectContent}
     searchFilter="type:case-study_studio"
     activePath="/studio/work"
->
-    <WorkPostContent 
-        content={content} 
-        brand="studio"
-    />
-</LayoutStudio>
-
-<style>
-    mux-player {
-        --controls: none;
-    }
-</style>
+    brand={Brands.STUDIO}
+/>

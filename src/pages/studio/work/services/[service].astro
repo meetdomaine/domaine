@@ -1,36 +1,36 @@
 ---
-import LayoutStudioProjects from '../../../../layouts/Layout-Studio-ProjectsIndex.astro';
-import { getProjects_Studio, getServices_Studio } from '../../../../components/global/utils/cms-content';
-
-export const prerender = true
+import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
+import { Brands } from '../../../../enums/brands';
+import { isSSR } from '../../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const services = await getServices_Studio()
+    const services = await getCollection('services_Studio')
     return services.map((service) => {
         return {
-            params: { service: service.slug.current },
-            props: { content: service }
+            params: { service: service.id },
+            props: { content: {...service.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let serviceContent
+
+if (isSSR()) {
+    const { service } = Astro.params
+    const { data } = await getEntry('services_Studio', service)
+    serviceContent = data
+} else {
+    const { content } = Astro.props
+    serviceContent = content
 }
 
-const { content } = Astro.props
-const allProjects = await getProjects_Studio()
-const projects = allProjects.filter((project) => project.services && project.services.some((service) => service._id === content._id ))
-
+const projects = await Promise.all(serviceContent.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
-<LayoutStudioProjects 
-    title={ `Work | ${content.metafields && content.metafields.title ? content.metafields.title : content.title}`}
-    description={content.metafields && content.metafields.description ? content.metafields.description : null}
-    searchFilter="type:project-service"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+    content={serviceContent}
     projects={projects}
-    currentPath={`/services/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
->
-</LayoutStudioProjects>
+    currentPath={`/services/${serviceContent.id}`}
+    brand={Brands.STUDIO}
+/>

@@ -4,17 +4,18 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
 
 <LayoutDomaine
     title="Page Not Found"
+    showPreloader={false}
 >
     <section class="not-found-section">
         <!-- <h2>404</h2> -->
         <h1 class="h1">Whoops!</h1> 
         <p>Page not found.</p>
         <a class="button" href="/work">View our Work</a>
-        <!-- <div id="three-canvas"></div> -->
+        <div id="three-canvas"></div>
     </section>
 </LayoutDomaine>
 
-<!-- <script>
+<script>
     import { 
         Scene, 
         PerspectiveCamera, 
@@ -30,7 +31,7 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         CubeTextureLoader,
         Raycaster
     } from 'three';
-    import { gsap } from '../components/global/utils/gsap';
+    import { gsap } from '../lib/gsap';
 
     // import * as vertex from '../shaders/vertex.glsl'
     // import * as fragment from '../shaders/frag.glsl'
@@ -81,19 +82,19 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
 
             void main() {
 
-                gl_FragColor = vec4(1.0 * vMouseDistance, 0.2, 1.0, 1.0);
+                gl_FragColor = vec4(0.0, 0.0, 0.2 * vMouseDistance, 1.0);
             }
         `
 
     }); 
 
     const animate = () => {
-        // gsap.to(logoGroup.rotation, {
-        //     x: - mousePosition.y * 0.25, 
-        //     y: mousePosition.x * 0.25,
-        //     duration: 1,
-        //     ease: "power4.out"
-        // })
+        gsap.to(logoGroup.rotation, {
+            x: - mousePosition.y * 0.25, 
+            y: mousePosition.x * 0.25,
+            duration: 1,
+            ease: "power4.out"
+        })
 
         // shader.uniforms.uMousePosition.value = mousePosition
         gsap.to(shader.uniforms.uMousePosition.value, { 
@@ -137,7 +138,6 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
                         'bluecloud_ft.jpg',
                         'bluecloud_bk.jpg'
                     ], () =>{
-                        // console.log('loaded')
                         initGeometry()
                     });
         scene.environmentIntensity = 2
@@ -165,12 +165,12 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         const geometryWide = new BoxGeometry( sizeWide, 1, 1, 15, 10, 10 );
         const geometryNormal = new BoxGeometry( sizeNormal, 1, 1, 10, 10, 10 );
 
-        const box01 = new Mesh( geometryExtraWide, shader );
+        const box01 = new Mesh( geometryExtraWide, material );
         box01.position.set(-2.75, sizeNormal, 0)
         box01.rotation.set(0, 0, 0)
         logoGroup.add( box01 );
 
-        const box02 = new Mesh( geometryExtraWide, shader );
+        const box02 = new Mesh( geometryExtraWide, material );
         box02.position.set(-2.75, sizeNormal * -1, 0)
         logoGroup.add( box02 );
 
@@ -234,12 +234,11 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro"
         const posX = (e.clientX / window.innerWidth - 0.5) * 2
         const posY = - (e.clientY / window.innerHeight - 0.5) * 2
         mousePosition = new Vector2(posX, posY)
-        // console.log(mousePosition)
     })
 
     window.addEventListener("resize", handleResize)
     
-</script> -->
+</script>
 
 <style>
     .not-found-section {

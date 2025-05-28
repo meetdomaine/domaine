@@ -1,36 +1,37 @@
 ---
-import LayoutStudio from '../../../../layouts/Layout-Studio.astro';
-import { getBlogPosts_Studio } from '../../../../components/global/utils/cms-content';
-import BlogPostHero from '../../../../components/global/blog/blog-PostHero.astro';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
+import LayoutBlogPost from '../../../../layouts/Layout_BlogPost.astro';
+import { Brands } from '../../../../enums/brands';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const posts = await getBlogPosts_Studio()
-    return posts.map((post) => {
-        // console.log(post)
+    const blogPosts = await getCollection('blogPosts_Studio')
+    return blogPosts.map((post) => {
         return {
-            params: { post: post.slug.current, category: post.category.slug.current },
-            props: { content: post }
+            params: { 
+                post: post.id, 
+                category: post.data.category.slug.current 
+            },
+            props: { 
+                content: {...post.data} 
+            }
         }
     })
 }
 
-interface Props {
-    content: any
+let blogPostContent
+
+if (isSSR()) {
+    const { post } = Astro.params
+    const { data } = await getEntry('blogPosts_Studio', post)
+    blogPostContent = data
+} else {
+    const { content } = Astro.props
+    blogPostContent = content
 }
-
-// console.log(Astro.props)
-
-const { content } = Astro.props;
 ---
-<LayoutStudio
-    title={content.title}
-    searchFilter="type:blog-post_studio"
-    activePath="/studio/insights"
->
-    <BlogPostHero
-        post={content}
-    />
-    
-</LayoutStudio>
+<LayoutBlogPost
+  content={blogPostContent}
+  brand={Brands.STUDIO}
+/>

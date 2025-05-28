@@ -1,42 +1,34 @@
 ---
-import LayoutDomaineProjects from '../../../layouts/Layout-Domaine-ProjectsIndex.astro';
-import { getClientsIndustries_Domaine, getProjects_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
-
-export const prerender = true
+import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr'
 
 export async function getStaticPaths() {
-    const industries = await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ]{ 
-        ..., 
-        excerpt,
-        metafields{ title, description, image{${imageBaseFields}} },
-    }`)
+    const industries = await getCollection('industries_Domaine')
     return industries.map((industry) => {
         return {
-            params: { industry: industry.slug.current },
-            props: { content: industry }
+            params: { industry: industry.id },
+            props: { content: {...industry.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let industryContent
+
+if (isSSR()) {
+    const { industry } = Astro.params
+    const { data } = await getEntry('industries_Domaine', industry)
+    industryContent = data
+} else {
+    const { content } = Astro.props
+    industryContent = content
 }
 
-const { content } = Astro.props
-const allProjects = await getProjects_Domaine()
-const projects = await allProjects.filter((project) => project.industry && project.industry._id === content._id)
-// console.log(content)
+const projects = await Promise.all(industryContent.relatedProjects?.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
-<LayoutDomaineProjects 
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Work`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    searchFilter="type:industry"
-    heading={content.title}
-    subheading={content.excerpt}
+<LayoutProjectsIndex
+    content={industryContent}
     projects={projects}
-    currentPath={`/industries/${content.slug.current}`}
-    relatedBlogPosts={content.relatedBlogPosts}
->
-</LayoutDomaineProjects>
+    currentPath={`/industries/${industryContent.id}`}
+/>

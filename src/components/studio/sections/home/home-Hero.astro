@@ -1,40 +1,62 @@
 ---
 import { Icon } from "astro-icon/components"
 import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
-import { replaceStringIcons } from "../../../global/utils/inline-icon-text"
+import { replaceStringIcons } from "../../../../lib/inline-icon-text"
 import AtomCursorFollow from "../../../global/atoms/atom-cursorFollow.astro"
+import { getLocaleUrl, getTranslationString } from "../../../../lib/translations"
 
-const { heading, subheading, eyebrow, button, projects } = Astro.props
+const { heading, subheading, eyebrow, button, projects, locale } = Astro.props
 
-const iconText = replaceStringIcons(heading)
+const iconText = replaceStringIcons(getTranslationString(heading, locale))
 
 ---
 <section id="home-hero" class="home-hero" data-color-scheme="brand-02" data-link-hover="false">
     <div class="section-content">
         <div class="section-text h1">
-            {eyebrow && <p class="utility">{eyebrow}</p>}
+            {eyebrow && <p class="utility">{getTranslationString(eyebrow, locale)}</p>}
             {heading && <h1 class=""><Fragment set:html={iconText}/></h1>}
-            {subheading && <p class="caption">{subheading}</p>}
+            {subheading && <p class="subheading h6">{getTranslationString(subheading, locale)}</p>}
         </div>
-        {button.text && button.url &&
-            <a class={`button color-invert`} data-style="tertiary" href={button.url}>{button.text}<Icon name="arrow-diagonal" /></a>
+        {button.label && button.url &&
+            <a class={`button color-invert`} data-style="tertiary" href={getLocaleUrl(button.url, locale)}>{getTranslationString(button.label, locale)}<Icon name="arrow-diagonal" /></a>
         }
     </div>
     <div class="section-media">
-        {projects.map((projectCard, i) => (
-            <a 
-                class="project-card" 
-                data-index={i} 
-                href={`${projectCard.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${projectCard.project.slug.current}`}
-                data-project-title={projectCard.project.title} 
-                style={`--index: ${i}; --random-seed: ${Math.random()};`}
-            >
-                <AtomSanityImage 
-                    sizes="50vw"
-                    image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
-                />
-            </a>
-        ))}
+        {projects.map((projectCard, i) => {
+
+            const angle = (i / projects.length) * 360 * (Math.PI / 180)
+            const radiusMin = 20;
+            const radiusMax = 80;
+            const radius = radiusMin + (radiusMax - radiusMin);
+            const spreadZ = 20
+
+            const posX = Math.cos(angle) * radius / 2 + 50;
+            const posY = Math.sin(angle) * radius / 2 + 50;
+            const posZ = Math.random() * spreadZ - spreadZ / 2
+
+            return (
+                <a 
+                    class="project-card" 
+                    data-index={i} 
+                    href={`${projectCard.project.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/work/${projectCard.project.slug.current}`}
+                    data-project-title={projectCard.project.title} 
+                    style={`
+                        --index: ${i}; 
+                        --total: ${projects.length}; 
+                        --random-float: ${Math.random()};
+
+                        --angle: ${angle};
+                        --x: ${posX};
+                        --y: ${posY};
+                        --z: ${posZ};
+                    `}
+                >
+                    <AtomSanityImage 
+                        sizes="50vw"
+                        image={projectCard.image ? projectCard.image.image : projectCard.project.thumbnailMedia.image}
+                    />
+                </a>
+            )})}
     </div>
     <AtomCursorFollow>
         <div 
@@ -291,20 +313,71 @@ const iconText = replaceStringIcons(heading)
 
 <style>
 
+
+
+    @media screen and (width >= 768px) {
+
+        .home-hero[data-link-hover="true"] {
+            cursor: pointer;
+        }
+
+        .section-media {
+            --parallax-factor: 5deg;
+            transform: rotateX( calc( var(--mouseY) * var(--parallax-factor) * 2 - var(--parallax-factor) )) rotateY( calc( var(--mouseX) * var(--parallax-factor) * 2 - var(--parallax-factor) ));
+        }
+
+        .project-card {
+            --hover-rotation-factor: 20deg;
+        }
+
+        .project-card :global(img) {
+            transform: 
+                rotateX(calc(var(--hoverY) * var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor))) 
+                rotateY(calc( var(--hoverX) * var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor)));
+            transition: transform var(--anim-sm);
+        }
+
+        .project-card:hover {
+            scale: 1.05;
+            opacity: 1;
+        }
+        
+        .project-label {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--space-sm);
+            border-radius: var(--radius-sm);
+            padding: var(--space-2xs) var(--space-xs);
+            clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+            transition: clip-path var(--anim-sm);
+        }
+
+        .home-hero:has(.project-card:hover) .project-label {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .project-label :global(svg) {
+            flex: 0 0 1rem;
+        }
+
+        .project-title {
+            flex: 0 0 auto;
+            word-wrap: normal;
+            word-break: keep-all;
+        }
+
+    }
+
     .home-hero {
         position: relative;
         z-index: 1;
-        /* padding-inline: var(--page-margin); */
         min-height: 95svh;
         display: flex;
         flex-direction: column;
         justify-content: stretch;
         align-items: stretch;
         overflow: hidden;
-    }
-
-    .home-hero[data-link-hover="true"] {
-        cursor: pointer;
     }
 
     .section-content {
@@ -318,6 +391,7 @@ const iconText = replaceStringIcons(heading)
         gap: var(--space-md);
         width: min(60rem, 100%);
         z-index: 1;
+        padding-inline: var(--page-margin);
     }
 
     .section-text {
@@ -325,96 +399,70 @@ const iconText = replaceStringIcons(heading)
         flex-direction: column;
         align-items: center;
         text-align: center;
-        /* max-width: 60em; */
         gap: var(--space-sm);
     }
 
+    .subheading {
+        max-width: 30em;
+    }
+
     .section-media {
-        --depth: 400px;
-        --parallax-factor: 3deg;
-        --spread-factor: 0.75;
+        --depth: 60rem;
+        --spread: 1rem;
         --entrance-duration: 3s;
-        --entrance-depth-factor: 0.05;
         --entrance-easing: cubic-bezier(0.83, 0, 0.17, 1);
         position: relative;
         flex: 1 0 100%;
         z-index: 0;
         padding: var(--space-lg);
         perspective: var(--depth);
-        transform: rotateX(calc( var(--mouseY) * var(--parallax-factor) * 2 - var(--parallax-factor) )) rotateY(calc( var(--mouseX) * var(--parallax-factor) * 2 - var(--parallax-factor) )) translateZ(calc(var(--depth) / 2 * -1));
         transform-style: preserve-3d;
         animation-play-state: paused;
     }
 
     .project-card {
-        --index-of-total: calc(var(--index) / var(--image-count));
-        --hover-rotation-factor: 20deg;
-        --card-top: calc( 50% - cos( pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        --card-left: calc( 50% + sin(pi * 2 * var(--index-of-total)) * 50% * var(--spread-factor));
-        --card-transforms: translate3d(-50%, -50%, calc(var(--depth) * var(--random-seed) - var(--depth)/2));
         position: absolute;
-        left: var(--card-left);
-        top: var(--card-top);
-        transform: var(--card-transforms);
-        transform-origin: center center;
-        width: 12%;
-        animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-seed) * 0.4s) 1 normal both paused;
+        transform: translate3d(-50%, -50%, 0);
+        transform-origin: 0% 0%;
+        width: max(12%, 80px);
+        animation: image-card-enter var(--entrance-duration) var(--entrance-easing) calc(var(--random-float) * 0.4s) 1 normal both paused;
+        transition: scale var(--anim-sm), opacity var(--anim-sm);
+        opacity: 0.9;
     }
 
     .project-card :global(img) {
-        transform: rotateX(calc(var(--hoverY) * var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor))) rotateY(calc( var(--hoverX) * var(--hover-rotation-factor) * 2 - var(--hover-rotation-factor)));
-        transition: transform var(--anim-sm);
         border-radius: var(--radius-sm);
-    }
-
-    .project-card:hover {
-        /* scale: 1.2; */
-        /* opacity: 0.2; */
-    }
-
-    .project-label {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: var(--space-sm);
-        border-radius: var(--radius-sm);
-        padding: var(--space-2xs) var(--space-xs);
-        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-        transition: clip-path var(--anim-sm);
-    }
-
-    .home-hero:has(.project-card:hover) .project-label {
-        /* rotate: 2deg; */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-    }
-
-    .project-label :global(svg) {
-        flex: 0 0 1rem;
-    }
-
-    .project-title {
-        flex: 0 0 auto;
-        word-wrap: normal;
-        word-break: keep-all;
     }
 
     @keyframes image-card-enter {
         0% {
-            top: 150%;
+            top: 120%;
             left: 50%;
-            transform: rotate3d(1, 0, 0, 360deg) translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1));
+            rotate: 1 0 0 360deg;
+            transform: translate3d(-50%, -50%, calc(var(--index) * var(--spread)));
         }
 
         50% {
             top: 50%;
             left: 50%;
-            transform: rotate3d(1, 0, 0, 360deg) translate3d(-50%, -50%, calc(var(--index) * var(--depth) * var(--entrance-depth-factor) * -1));
+            rotate: 1 0 0 360deg;
+            transform: translate3d(-50%, -50%, calc(var(--index) * var(--spread)));
         }
 
         100% {
-            top: var(--card-top);
-            left: var(--card-left);
-            transform: var(--card-transforms);
+            top: calc(var(--y) * 1%);
+            left: calc(var(--x) * 1%);
+            rotate: 1 0 0 0;
+            transform: translate3d(-50%, -50%, calc(var(--index) * var(--spread) * var(--random-float)));
         }
     }
+
+    @media screen and (width < 768px) {
+    
+        .project-label {
+            display: none;
+        }
+    }
+
+
 </style>

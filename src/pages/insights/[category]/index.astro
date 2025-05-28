@@ -1,44 +1,40 @@
 ---
-import { sanityClient } from 'sanity:client';
-import LayoutDomaineBlogIndex from '../../../layouts/Layout-Domaine-BlogIndex.astro';
-import { getBlogCategories_Domaine, getBlogPosts_Domaine } from '../../../components/global/utils/cms-content';
-import { imageBaseFields, urlFor } from '../../../components/global/utils/cms-queries';
-
-export const prerender = true
+import { getCollection } from 'astro:content';
+import { urlFor } from '../../../lib/cms-queries';
+import { getEntry } from 'astro:content';
+import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
-    const categories = await sanityClient.fetch(`*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" && references(^._id)] ) > 0]{
-        ...,
-        metafields{ title, description, image{${imageBaseFields}} }
-    }`)
+    const categories = await getCollection('blogCategories_Domaine')
     return categories.map((category) => {
         return {
-            params: { category: category.slug.current },
-            props: { content: category }
+            params: { category: category.id },
+            props: { content: {...category.data} }
         }
     })
 }
 
-interface Props {
-    content: any
+let blogCategoryContent
+
+if (isSSR()) {
+    const { category } = Astro.params
+    const { data } = await getEntry('blogCategories_Domaine', category)
+    blogCategoryContent = data
+} else {
+    const { content } = Astro.props
+    blogCategoryContent = content
 }
 
-const { content } = Astro.props;
-
-const pageSettings = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`)
-const allBlogPosts = await getBlogPosts_Domaine()
-const blogPosts = allBlogPosts.filter((post) => post.category._id === content._id)
+const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Domaine', blogPost.slug.current)))
 ---
-<LayoutDomaineBlogIndex
-    pageSetting={pageSettings}
+<LayoutBlogIndex
     blogPosts={blogPosts}
-    title={`${content.metafields?.title ? content.metafields.title : content.title} | Insights`}
-    description={content.metafields?.description ? content.metafields.description : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
-    heading={content.title}
-    subheading={content.heading}
-    searchFilter="type:blog-category"
-    slug={content.slug}
->
+    title={blogCategoryContent.metafields?.title ? blogCategoryContent.metafields.title : blogCategoryContent.title}
+    description={blogCategoryContent.metafields?.description ? blogCategoryContent.metafields.description : null}
+    image={blogCategoryContent.metafields?.image ? urlFor(blogCategoryContent.metafields.image).url() : null}
+    heading={blogCategoryContent.title}
+    subheading={blogCategoryContent.heading}
+    slug={blogCategoryContent.slug}
+/>
 
-</LayoutDomaineBlogIndex>

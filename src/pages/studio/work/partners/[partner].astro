@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
+import { Brands } from '../../../../enums/brands';
+import { isSSR } from '../../../../lib/get-is-ssr';
+
+export async function getStaticPaths() {
+    const partners = await getCollection('partners_Studio')
+    return partners.map((partner) => {
+        return {
+            params: { partner: partner.id },
+            props: { content: {...partner.data} }
+        }
+    })
+}
+
+let partnerContent
+
+if (isSSR()) {
+    const { partner } = Astro.params
+    const { data } = await getEntry('partners_Studio', partner)
+    partnerContent = data
+} else {
+    const { content } = Astro.props
+    partnerContent = content
+}
+
+const projects = await Promise.all(partnerContent.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
+---
+<LayoutProjectsIndex
+    content={partnerContent}
+    projects={projects}
+    currentPath={`/partners/${partnerContent.id}`}
+    brand={Brands.STUDIO}
+/>

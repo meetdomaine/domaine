@@ -3,7 +3,7 @@ import type_blog from "./blog/type_blog";
 import type_blogCategory from "./blog/type_blogCategory";
 import type_client from "./projects/type_client.js";
 // import type_clientStage from "./projects/type_clientStage.js";
-import type_event from "./events/type_event.js";
+import type_event from "./events/type_event.jsx";
 import type_industry from "./projects/type_industry";
 import type_partner from "./partners/type_partner";
 import type_partnerTier from "./partners/type_partnerTier.js";
@@ -73,6 +73,14 @@ import section_textHeading from "./sections/section_textHeading.js";
 import type_location from "./siteSettings/type_location.jsx";
 import section_locationsFeed from "./sections/section_locationsFeed.js";
 import section_textMediaBlocks from "./sections/section_textMediaBlocks.js";
+import section_mediaFullbleed from "./sections/section_mediaFullbleed.js";
+import section_agenda from "./sections/section_agenda.js";
+import snippet_localeString from "./snippets/snippet_locale-string.js";
+import snippet_localeButton from "./snippets/snippet_locale-button.js";
+import snippet_localeText from "./snippets/snippet_locale-text.js";
+import snippet_localeLinkList from "./snippets/snippet_locale-link-list.js";
+import snippet_localeSEOFields from "./snippets/snippet_locale-SEO-fields.js";
+import snippet_localeRichContent from "./snippets/snippet_locale-rich-content.js";
 
 
 export const schemaTypes = [
@@ -115,16 +123,24 @@ export const schemaTypes = [
     snippet_linkList,
     snippet_image,
     snippet_video,
-    snippet_button,
+    snippet_button, // Deprecated
     snippet_richContent,
+    snippet_localeString,
+    snippet_localeText,
+    snippet_localeButton,
+    snippet_localeLinkList,
+    snippet_localeSEOFields,
+    snippet_localeRichContent,
 
     section_globalSections,
+    section_agenda,
     section_blogFeed,
     section_contentBlocks,
     section_form,
     section_imageFullHeight,
     section_linkList,
     section_mediaCarousel,
+    section_mediaFullbleed,
     section_partnersFeed,
     section_practicesFeed,
     section_projectsFeed,
