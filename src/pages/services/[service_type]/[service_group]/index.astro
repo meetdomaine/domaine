@@ -10,8 +10,8 @@ export async function getStaticPaths() {
     return serviceGroups.map((serviceGroup) => {
         return {
             params: { 
-              service_type: serviceGroup.data.serviceType.slug.current, 
-              service_group: serviceGroup.id
+              service_group: serviceGroup.id,
+              service_type: serviceGroup.data.serviceType.slug.current
             },
             props: { 
               content: {...serviceGroup.data}

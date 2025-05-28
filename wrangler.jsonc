@@ -1,8 +1,15 @@
 {
   "name": "domaine-content",
-  "compatibility_date": "2024-09-23",
+  "main": "./dist/_worker.js/index.js",
+  "compatibility_date": "2025-03-25",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "dist/_worker.js",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
+  },
   "build": {
     "command": "SERVER_RENDERING_ENABLED=true npm run build-ssr"
   },
@@ -22,7 +29,7 @@
     },
     "preview": {
       "vars": {
-        "SERVER_RENDERING_ENABLED": "false"
+        "SERVER_RENDERING_ENABLED": "true"
       }
     }
   }
