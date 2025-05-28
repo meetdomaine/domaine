@@ -11,7 +11,7 @@
     "enabled": true
   },
   "build": {
-    "command": "SERVER_RENDERING_ENABLED=true npm run build-ssr"
+    "command": "npm install --legacy-peer-deps && SERVER_RENDERING_ENABLED='true' npm run build-ssr"
   },
   "site": {
     "bucket": "./dist"
