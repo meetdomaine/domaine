@@ -2,6 +2,9 @@
 import { getCollection } from "astro:content";
 import LayoutPage from "../layouts/Layout-Page.astro";
 import { Brands } from "../enums/brands";
+import { getEntry } from "astro:content";
+import { isSSR } from "../lib/get-is-ssr";
+import LayoutMarketingPage from "../layouts/Layout_MarketingPage.astro";
 
 export async function getStaticPaths() {
     const pages = await getCollection('generalPages_Domaine')
@@ -13,9 +16,25 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
+let pageContent
+
+if (isSSR()) {
+    const { page } = Astro.params
+    const { data } = await getEntry('generalPages_Domaine', page)
+    pageContent = data
+} else {
+    const { content } = Astro.props
+    pageContent = content
+}
 ---
-<LayoutPage
-    content={content}
-    brand={Brands.DOMAINE}
-/>
+{pageContent.isMarketingPage ? 
+    <LayoutMarketingPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+    :
+    <LayoutPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+}

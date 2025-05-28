@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import LayoutProject from '../../layouts/Layout_Project.astro';
+import { getEntry } from 'astro:content';
+import { isSSR } from '../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
     const projects = await getCollection('projects_Domaine')
@@ -12,8 +14,17 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
+let projectContent
+
+if (isSSR()) {
+    const { project } = Astro.params
+    const { data } = await getEntry('projects_Domaine', project)
+    projectContent = data
+} else {
+    const { content } = Astro.props
+    projectContent = content
+}
 ---
 <LayoutProject 
-    content={content}
+    content={projectContent}
 />

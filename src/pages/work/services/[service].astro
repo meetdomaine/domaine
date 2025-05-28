@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
+import { isSSR } from '../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
     const services = await getCollection('services_Domaine')
@@ -13,11 +14,21 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
-const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
+let serviceContent
+
+if (isSSR()) {
+    const { service } = Astro.params
+    const { data } = await getEntry('services_Domaine', service)
+    serviceContent = data
+} else {
+    const { content } = Astro.props
+    serviceContent = content
+}
+
+const projects = await Promise.all(serviceContent.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
 <LayoutProjectsIndex
-    content={content}
+    content={serviceContent}
     projects={projects}
-    currentPath={`/services/${content.slug.current}`}
+    currentPath={`/services/${serviceContent.id}`}
 />

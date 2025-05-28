@@ -27,7 +27,7 @@ const allFilters = await Promise.all([
     },
     {
         title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
-        path: 'services/',
+        path: 'service-groups/',
         filters: await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' in agencyBrands[]->slug.current]{${serviceGroupQuery}} | order(orderRank asc)`)
     },
 ])

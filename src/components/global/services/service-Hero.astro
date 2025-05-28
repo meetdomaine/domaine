@@ -28,7 +28,7 @@ const { subservices, brand, title, description, excerpt, breadcrumbs, locale } =
                 { subservices.map((subservice) => (
                     <AtomServiceLink 
                         title={getTranslationString(subservice.title, locale)}
-                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.slug.current}`, locale)}
+                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${subservice.serviceGroup.serviceType.slug.current}/${subservice.serviceGroup.slug.current}/${subservice.slug.current}`, locale)}
                         excerpt={getTranslationString(subservice.excerpt, locale)}
                         isHidden={subservice.isHidden}
                     />

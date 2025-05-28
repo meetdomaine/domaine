@@ -14,6 +14,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     showPreloader={content.showPreloader}
+    activePath={`${brand === Brands.STUDIO ? "/studio/" : "/"}${content.slug.current}`}
     locale={locale}
 >
     <div 

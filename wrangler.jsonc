@@ -4,8 +4,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "dist/_worker.js",
   "build": {
-    "command": "SERVER_RENDERING_ENABLED=true npm run build-ssr",
-    "node_version": "20"
+    "command": "SERVER_RENDERING_ENABLED=true npm run build-ssr"
   },
   "vars": {
     "SERVER_RENDERING_ENABLED": "true"

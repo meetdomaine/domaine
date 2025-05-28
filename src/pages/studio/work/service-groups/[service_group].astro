@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
+import { isSSR } from '../../../../lib/get-is-ssr';
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Studio')
@@ -14,12 +15,22 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
-const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
+let serviceGroupContent
+
+if (isSSR()) {
+    const { service_group } = Astro.params
+    const { data } = await getEntry('serviceGroups_Studio', service_group)
+    serviceGroupContent = data
+} else {
+    const { content } = Astro.props
+    serviceGroupContent = content
+}
+
+const projects = await Promise.all(serviceGroupContent.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
 <LayoutProjectsIndex
-    content={content}
+    content={serviceGroupContent}
     projects={projects}
-    currentPath={`/services/${content.slug.current}`}
+    currentPath={`/services/${serviceGroupContent.id}`}
     brand={Brands.STUDIO}
 />

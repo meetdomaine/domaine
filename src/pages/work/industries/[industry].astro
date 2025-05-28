@@ -2,6 +2,7 @@
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
+import { isSSR } from '../../../lib/get-is-ssr'
 
 export async function getStaticPaths() {
     const industries = await getCollection('industries_Domaine')
@@ -13,11 +14,21 @@ export async function getStaticPaths() {
     })
 }
 
-const { content } = Astro.props
-const projects = await Promise.all(content.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
+let industryContent
+
+if (isSSR()) {
+    const { industry } = Astro.params
+    const { data } = await getEntry('industries_Domaine', industry)
+    industryContent = data
+} else {
+    const { content } = Astro.props
+    industryContent = content
+}
+
+const projects = await Promise.all(industryContent.relatedProjects?.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
 <LayoutProjectsIndex
-    content={content}
+    content={industryContent}
     projects={projects}
-    currentPath={`/industries/${content.slug.current}`}
+    currentPath={`/industries/${industryContent.id}`}
 />

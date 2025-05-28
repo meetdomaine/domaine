@@ -343,13 +343,16 @@ const partnerTiers_Domaine = defineCollection({
 
 // General Pages
 
+const query_Page = `
+  ..., 
+  media{${imageFields}, ${videoFields}},
+  globalSections{ sections[]{${globalSectionsFields}} },
+  metafields{ title, description, image{${imageBaseFields}} },
+`
+
 const generalPages_Domaine = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "page_general" && !isMarketingPage]{
-      ..., 
-      globalSections{ sections[]{${globalSectionsFields}} },
-      metafields{ title, description, image{${imageBaseFields}} },
-    } | order(_createdAt desc)`})
+    const { data } = await loadQuery({ query: `*[_type == "page_general"]{${query_Page}} | order(_createdAt desc)`})
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
@@ -359,11 +362,7 @@ const generalPages_Domaine = defineCollection({
 
 const generalPages_Studio = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "page_studio-general"]{
-      ..., 
-      globalSections{ sections[]{${globalSectionsFields}} },
-      metafields{ title, description, image{${imageBaseFields}} },
-    } | order(_createdAt desc)`})
+    const { data } = await loadQuery({ query: `*[_type == "page_studio-general"]{${query_Page}} | order(_createdAt desc)`})
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
@@ -373,6 +372,7 @@ const generalPages_Studio = defineCollection({
 
 // Marketing Pages
 
+//DEPRECATED
 const marketingPages_Domaine = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "page_general" && isMarketingPage == true]{
@@ -388,6 +388,7 @@ const marketingPages_Domaine = defineCollection({
   }
 })
 
+//DEPRECATED
 const marketingPages_Studio = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "page_studio_general" && isMarketingPage == true]{
