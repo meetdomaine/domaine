@@ -2,9 +2,10 @@
 import { isSSR } from '../../../../lib/get-is-ssr';
 import { Brands } from '../../../../enums/brands';
 import LayoutBlogIndex from '../../../../layouts/Layout_BlogIndex.astro';
-import { urlFor } from '../../../../lib/cms-queries';
+import { blogCardFields, urlFor } from '../../../../lib/cms-queries';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
+import { loadQuery } from '../../../../lib/sanity-load-query';
 
 export async function getStaticPaths() {
     const categories = await getCollection('blogCategories_Studio')
@@ -30,7 +31,8 @@ if (isSSR()) {
 }
 
 const pageSettings = await getEntry('pageSettings', 'page_blog-index-studio')
-const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
+const { data: blogPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`})
+// const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
 ---
 <LayoutBlogIndex
     title={pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title}
