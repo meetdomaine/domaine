@@ -7,13 +7,13 @@
   },
   "scripts": {
     "dev": "astro dev --host",
+    "dev:content": "SERVER_RENDERING_ENABLED='true' astro build && wrangler pages dev ./dist",
     "start": "astro dev",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/ && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
     "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build && cp public/.assetsignore dist/",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "preview": "astro preview",
-    "astro": "astro",
-    "preview-wrangler": "wrangler pages dev ./dist"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
