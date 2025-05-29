@@ -3,9 +3,9 @@ import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
-import { isSSR } from '../../../../lib/get-is-ssr';
 import { loadQuery } from '../../../../lib/sanity-load-query';
 import { projectGridFields } from '../../../../lib/cms-queries';
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const partners = await getCollection('partners_Studio')
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 
 let partnerContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { partner } = Astro.params
     const { data } = await getEntry('partners_Studio', partner)
     partnerContent = data

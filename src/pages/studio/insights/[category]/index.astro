@@ -1,11 +1,11 @@
 ---
-import { isSSR } from '../../../../lib/get-is-ssr';
 import { Brands } from '../../../../enums/brands';
 import LayoutBlogIndex from '../../../../layouts/Layout_BlogIndex.astro';
 import { blogCardFields, urlFor } from '../../../../lib/cms-queries';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import { loadQuery } from '../../../../lib/sanity-load-query';
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const categories = await getCollection('blogCategories_Studio')
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let blogCategoryContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { category } = Astro.params
     const { data } = await getEntry('blogCategories_Studio', category)
     blogCategoryContent = data

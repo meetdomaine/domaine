@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { getEntry } from 'astro:content';
-import { isSSR } from '../../../lib/get-is-ssr';
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const blogPosts = await getCollection('blogPosts_Domaine')
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let blogPostContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { post, category } = Astro.params
     const { data } = await getEntry('blogPosts_Domaine', post)
     blogPostContent = data

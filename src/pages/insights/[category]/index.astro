@@ -3,9 +3,9 @@ import { getCollection } from 'astro:content';
 import { blogCardFields, urlFor } from '../../../lib/cms-queries';
 import { getEntry } from 'astro:content';
 import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
-import { isSSR } from '../../../lib/get-is-ssr';
 import { loadQuery } from '../../../lib/sanity-load-query';
 import { Brands } from '../../../enums/brands';
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const categories = await getCollection('blogCategories_Domaine')
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 
 let blogCategoryContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { category } = Astro.params
     const { data } = await getEntry('blogCategories_Domaine', category)
     blogCategoryContent = data
