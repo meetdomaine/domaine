@@ -47,6 +47,7 @@ const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer
     {marketingHeader ?
         <GlobalMarketingHeader
             locale={locale}
+            brand={Brands.DOMAINE}
             buttonLabel={marketingHeaderButtonLabel}
         />
     :
