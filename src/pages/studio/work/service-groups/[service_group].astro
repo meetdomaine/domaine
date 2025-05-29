@@ -4,6 +4,8 @@ import { getEntry } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { isSSR } from '../../../../lib/get-is-ssr';
+import { loadQuery } from '../../../../lib/sanity-load-query';
+import { projectGridFields } from '../../../../lib/cms-queries';
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Studio')
@@ -26,7 +28,8 @@ if (isSSR()) {
     serviceGroupContent = content
 }
 
-const projects = await Promise.all(serviceGroupContent.relatedProjects?.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
+const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceGroupContent.id}' in services[]->serviceGroup->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
+// const projects = await Promise.all(serviceGroupContent.relatedProjects?.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}
