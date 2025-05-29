@@ -355,7 +355,6 @@ const features_Domaine = defineCollection({
       slug, 
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
     }`})
     return data.map((entry) => ({
       id: entry.slug.current,
@@ -363,6 +362,24 @@ const features_Domaine = defineCollection({
   }))
   }
 })
+
+// const features_Domaine = defineCollection({
+//   loader: async () => {
+//     const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{
+//       _id,
+//       title,
+//       excerpt,
+//       slug, 
+//       orderRank,
+//       metafields{ title, description, image{${imageBaseFields}} },
+//       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
+//     }`})
+//     return data.map((entry) => ({
+//       id: entry.slug.current,
+//       ...entry
+//   }))
+//   }
+// })
 
 const features_Studio = defineCollection({
   loader: async () => {
@@ -373,7 +390,6 @@ const features_Studio = defineCollection({
       slug, 
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
     }`})
     return data.map((entry) => ({
       id: entry.slug.current,
@@ -381,6 +397,24 @@ const features_Studio = defineCollection({
   }))
   }
 })
+
+// const features_Studio = defineCollection({
+//   loader: async () => {
+//     const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]) > 0 ]{
+//       _id,
+//       title,
+//       excerpt,
+//       slug, 
+//       orderRank,
+//       metafields{ title, description, image{${imageBaseFields}} },
+//       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
+//     }`})
+//     return data.map((entry) => ({
+//       id: entry.slug.current,
+//       ...entry
+//   }))
+//   }
+// })
 
 // Partners
 

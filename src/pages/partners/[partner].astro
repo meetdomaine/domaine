@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import LayoutPartner from '../../layouts/Layout_Partner.astro';
 import { isSSR } from '../../lib/get-is-ssr';
 import { getEntry } from 'astro:content';
+import { Brands } from '../../enums/brands';
 
 export async function getStaticPaths() {
     const partners = await getCollection('partners_Domaine')
@@ -27,4 +28,5 @@ if (isSSR()) {
 ---
 <LayoutPartner
     content={partnerContent}
+    brand={Brands.DOMAINE}
 />
