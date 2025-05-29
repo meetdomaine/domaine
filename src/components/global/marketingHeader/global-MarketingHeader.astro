@@ -1,7 +1,7 @@
 ---
-import { Icon } from "astro-icon/components"
+// import { Icon } from "astro-icon/components"
 import AtomButton from "../atoms/atom-button.astro"
-import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
+// import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import { Brands } from "../../../enums/brands"
 
 const {buttonLabel, brand, locale } = Astro.props
@@ -16,7 +16,8 @@ const {buttonLabel, brand, locale } = Astro.props
     <div class="sticky-button">
       <AtomButton 
         url="#contact"
-        text={getTranslationString(buttonLabel, locale)}
+        text="TEST"
+        // text={getTranslationString(buttonLabel, locale)}
         style="primary"
       />
     </div>
