@@ -13,6 +13,9 @@ const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || loadEnv
 const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
 console.log(`RENDER MODE: ${renderMode}`);
 
+const PROD = process.env.PROD || loadEnv(process.env.NODE_ENV, process.cwd(), "").PROD;
+console.log(PROD)
+
 export default defineConfig({
   integrations: [
     sitemap(), 

@@ -9,7 +9,7 @@ const { buttonLabel, brand, locale } = Astro.props
 <header
   data-color-scheme="secondary"
 >
-  <!-- <a href={getLocaleUrl(brand === Brands.STUDIO ? "/studio" : "/", locale)}>
+  <a href={getLocaleUrl(brand === Brands.STUDIO ? "/studio" : "/", locale)}>
     <Icon name={brand === Brands.STUDIO ? "domaine-studio" : "domaine-wordmark"} />
   </a>
   {buttonLabel && 
@@ -20,7 +20,7 @@ const { buttonLabel, brand, locale } = Astro.props
         style="primary"
       />
     </div>
-  } -->
+  }
 </header>
 
 <style>
