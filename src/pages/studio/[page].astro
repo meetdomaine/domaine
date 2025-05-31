@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import LayoutPage from "../../layouts/Layout-Page.astro";
 import { Brands } from "../../enums/brands";
 import { getEntry } from "astro:content";
+import LayoutMarketingPage from "../../layouts/Layout_MarketingPage.astro";
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
@@ -26,7 +27,14 @@ if (env.SERVER_RENDERING_ENABLED) {
     pageContent = content
 }
 ---
-<LayoutPage 
-    content={pageContent}
-    brand={Brands.STUDIO}
-/>
+{pageContent.isMarketingPage ? 
+    <LayoutMarketingPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+    :
+    <LayoutPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+}
