@@ -58,6 +58,11 @@ export default defineType({
             title: 'Subheading',
             type: 'snippet_locale-text',
           },
+          {
+            name: 'button',
+            title: 'Button',
+            type: 'snippet_locale-button',
+          }
         ],
         preview: {
           select: {

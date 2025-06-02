@@ -5,6 +5,7 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 
 const { section, brand, key, locale } = Astro.props
+console.log(section)
 ---
 <section class="section-text-media-blocks">
   <div class="section-title">
@@ -37,6 +38,15 @@ const { section, brand, key, locale } = Astro.props
         <div class="block-content">
           {block.heading && <h3 class="block-heading h5">{locale && block.heading.translations?.[locale] ? block.heading.translations[locale] : block.heading.text}</h3>}
           {block.subheading && <p class="block-text">{locale && block.subheading.translations?.[locale] ? block.subheading.translations[locale] : block.subheading.text}</p>}
+          {block.button?.label && block.button?.url &&
+            <AtomButton 
+              text={locale && block.button.label.translations?.[locale] ? block.button.label.translations?.[locale] : block.button.label.text}
+              url={locale ? getRelativeLocaleUrl(locale, block.button.url) : block.button.url}
+              newTab={block.button.newTab}
+              style="secondary"
+              icon="arrow-diagonal"
+            />
+          }
         </div>
       </div>
     ))}
@@ -86,6 +96,13 @@ const { section, brand, key, locale } = Astro.props
     aspect-ratio: 1 / 1;
     border-radius: var(--radius-sm);
     overflow: hidden;
+  }
+
+  .block-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    align-items: flex-start;
   }
 
   @media screen and (width <= 768px) {
