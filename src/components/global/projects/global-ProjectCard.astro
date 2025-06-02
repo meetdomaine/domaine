@@ -4,9 +4,9 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { urlFor } from "../../../lib/cms-queries";
 import { getRawSvg } from "../../../lib/raw-svg";
-import { isDev } from "../../../lib/modes"
 import { getTranslationString } from "../../../lib/translations";
 import { Translations } from '../../../lib/locales';
+const { env } = Astro.locals.runtime;
 
 interface Props {
   project: ProjectCard;
@@ -98,7 +98,7 @@ if (project.client?.logo) {
   </div>
 </a>
 
-{!isDev && 
+{!env.DEV && 
   <link
     rel="preload"
     href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}

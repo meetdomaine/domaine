@@ -1,6 +1,7 @@
 // load-query.ts
 import {type QueryParams} from 'sanity'
 import {sanityClient} from 'sanity:client'
+// const { env } = Astro.locals.runtime;
 
 const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
 const token = import.meta.env.SANITY_API_READ_TOKEN

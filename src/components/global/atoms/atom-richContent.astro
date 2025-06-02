@@ -34,35 +34,39 @@ import Table from "../sections/richContent/richContent-Table.astro";
 
     .rich-content {
       /* --content-width: min(calc(100% - var(--page-margin) * 2), 45rem); */
-      --content-width: min(calc(100% - var(--page-margin) * 2), 60rem);
+      --content-width: min(calc(100% - var(--page-margin) * 2), 40rem);
       --content-width-wide: min(calc(100%), 60rem);
       /* flex: 0 1 auto; */
     }
 
+    :not(.event-hero-content) > .rich-content {
 
-    .rich-content > h1,
-    .rich-content > h2,
-    .rich-content > h3,
-    .rich-content > h4,
-    .rich-content > h5,
-    .rich-content > h6 {
-      margin-block-start: 1em;
-      margin-block-end: 0.4em;
-      text-wrap: balance;
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-block-start: 1em;
+        margin-block-end: 0.4em;
+        text-wrap: balance;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      ul,
+      ol {
+        margin-inline: auto;
+        max-width: var(--content-width);
+      }
     }
 
-    .rich-content > h1,
-    .rich-content > h2,
-    .rich-content > h3,
-    .rich-content > h4,
-    .rich-content > h5,
-    .rich-content > h6,
-    .rich-content > p,
-    .rich-content > ul,
-    .rich-content > ol {
-      margin-inline: auto;
-      max-width: var(--content-width);
-    }
+    
 
     .rich-content > blockquote {
       margin-block: 1em 2em;

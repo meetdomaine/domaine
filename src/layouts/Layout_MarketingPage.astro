@@ -4,7 +4,6 @@ import { getLocaleUrl, getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
 import LayoutStudio from './Layout-Studio.astro';
 import LayoutDomaine from './Layout-Domaine.astro';
-import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { urlFor } from '../lib/cms-queries';
 import AtomSanityMedia from '../components/global/atoms/atom-sanityMedia.astro';
@@ -22,13 +21,8 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     showPreloader={content.showPreloader}
     marketingHeader={true}
     marketingHeaderButtonLabel={content.buttonText}
+    locale={locale}
 >
-
-  <GlobalMarketingHeader 
-    colorScheme={content.colorScheme} 
-    currentBrand="domaine"
-    buttonText={content.buttonText}
-  />
   <div 
     class="page-content" 
     data-color-scheme={content.colorScheme} 
@@ -75,7 +69,6 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         <SectionGlobalSections section={section} key={i} locale={locale} brand={brand} />
     ))}
   </div>
-
 </BrandLayout>
 
 

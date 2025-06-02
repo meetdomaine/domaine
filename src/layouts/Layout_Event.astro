@@ -97,9 +97,9 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
             </div>
           </div>
 
-          {content.button?.url && content.button?.text && 
+          {content.button?.url && content.button?.label && 
             <AtomButton 
-              text={content.button.text}
+              text={getTranslationString(content.button.label, locale)}
               url={content.button.url}
               newTab={content.button.newTab}
               icon="arrow-diagonal"

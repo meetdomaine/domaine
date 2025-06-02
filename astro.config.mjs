@@ -13,6 +13,9 @@ const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || loadEnv
 const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
 console.log(`RENDER MODE: ${renderMode}`);
 
+const PROD = process.env.PROD || loadEnv(process.env.NODE_ENV, process.cwd(), "").PROD;
+console.log(PROD)
+
 export default defineConfig({
   integrations: [
     sitemap(), 
@@ -56,24 +59,29 @@ export default defineConfig({
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {
-    define: {
-      "import.meta.env.HUBSPOT_PORTAL_ID": JSON.stringify(process.env.HUBSPOT_PORTAL_ID),
-      "import.meta.env.HUBSPOT_ACCESS_TOKEN": JSON.stringify(process.env.HUBSPOT_ACCESS_TOKEN),
-      "import.meta.env.GREENSOCK_AUTH_TOKEN": JSON.stringify(process.env.GREENSOCK_AUTH_TOKEN),
-      "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
-    },
+    // define: {
+    //   "import.meta.env.HUBSPOT_PORTAL_ID": JSON.stringify(process.env.HUBSPOT_PORTAL_ID),
+    //   "import.meta.env.HUBSPOT_ACCESS_TOKEN": JSON.stringify(process.env.HUBSPOT_ACCESS_TOKEN),
+    //   "import.meta.env.GREENSOCK_AUTH_TOKEN": JSON.stringify(process.env.GREENSOCK_AUTH_TOKEN),
+    //   "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
+    // },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
       // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
-      alias: import.meta.env.PROD && {
+      // TODO: Find the right way to import env
+      alias: (import.meta.env.PROD ) && {
         "react-dom/server": "react-dom/server.edge", // Hacky fix for Astro bug
       },
     },
     optimizeDeps: {
       exclude: ['detect-libc']
     },
+    build: {
+      minify: false,
+    },
     ssr: {
       noExternal: ['detect-libc'],
+      external: ['node:buffer'],
       target: 'node',
       format: 'esm'
     }

@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import LayoutEvent from "../../layouts/Layout_Event.astro";
 import { getEntry } from "astro:content";
-import { isSSR } from "../../lib/get-is-ssr";
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const events = await getCollection('events')
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 let eventContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { event } = Astro.params
     const { data } = await getEntry('events', event)
     eventContent = data

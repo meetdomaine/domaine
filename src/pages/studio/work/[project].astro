@@ -3,7 +3,7 @@ import LayoutProject from '../../../layouts/Layout_Project.astro';
 import { Brands } from '../../../enums/brands';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
-import { isSSR } from '../../../lib/get-is-ssr';
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const projects = await getCollection('projects_Studio')
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
 let projectContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { project } = Astro.params
     const { data } = await getEntry('projects_Studio', project)
     projectContent = data
