@@ -1,9 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import { urlFor } from '../../../lib/cms-queries';
+import { blogCardFields, urlFor } from '../../../lib/cms-queries';
 import { getEntry } from 'astro:content';
 import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
-import { isSSR } from '../../../lib/get-is-ssr';
+import { loadQuery } from '../../../lib/sanity-load-query';
+import { Brands } from '../../../enums/brands';
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const categories = await getCollection('blogCategories_Domaine')
@@ -17,7 +19,7 @@ export async function getStaticPaths() {
 
 let blogCategoryContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { category } = Astro.params
     const { data } = await getEntry('blogCategories_Domaine', category)
     blogCategoryContent = data
@@ -26,7 +28,8 @@ if (isSSR()) {
     blogCategoryContent = content
 }
 
-const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Domaine', blogPost.slug.current)))
+const { data: blogPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`})
+// const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Domaine', blogPost.slug.current)))
 ---
 <LayoutBlogIndex
     blogPosts={blogPosts}

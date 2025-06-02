@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import LayoutServiceGroup from "../../../../layouts/Layout_ServiceGroup.astro";
 import { Brands } from "../../../../enums/brands";
 import { getEntry } from "astro:content";
-import { isSSR } from "../../../../lib/get-is-ssr";
+const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
     const serviceGroups = await getCollection('serviceGroups_Domaine')
@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 
 let serviceGroupContent
 
-if (isSSR()) {
+if (env.SERVER_RENDERING_ENABLED) {
     const { service_type, service_group } = Astro.params
     const { data } = await getEntry('serviceGroups_Domaine', service_group)
     serviceGroupContent = data

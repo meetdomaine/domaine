@@ -57,11 +57,11 @@ export const projectGridFields = `
   logoColor,
   features[]->{ title, slug, _id } | order(orderRank), 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
-  orderRank,
   thumbnailMedia{${videoFields}, ${imageFields}},
   thumbnailImageSecondary{${imageFields}},
   heroMedia{${videoFields}, ${imageFields}},
   isHidden,
+  orderRank,
 `
 
 export const serviceQuery = `
@@ -177,7 +177,6 @@ export const projectPageFields = `
   thumbnailImageSecondary{${imageFields}},
   slug{...},
   heroMedia{..., ${videoFields}, ${imageFields}},
-  "relatedProjects": *[_type == "type_project" && isHidden != true && agencyBrand->slug.current == ^.agencyBrand->slug.current && references(^.industry._ref) && _id != ^._id]{${projectGridFields}}|order(orderRank)[0...3],
   sections[]{${globalSectionsFields}},
   metafields{ title, description, image{${imageBaseFields}} },
   orderRank,

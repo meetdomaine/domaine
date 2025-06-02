@@ -17,11 +17,13 @@ pnpm-debug.log*
 .env
 .env.archive
 .env.production
-wrangler.toml
-wrangler.json
 # .npmrc
 
 # macOS-specific files
 .DS_Store
-.vercel
+
+# Cloudflare Wrangler
+.wrangler/
 _wrangler.toml
+wrangler.toml
+wrangler.jsonc

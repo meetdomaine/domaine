@@ -3,8 +3,8 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { formatDate } from "../../../lib/format-date";
-import { isDev } from "../../../lib/modes";
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
+const { env } = Astro.locals.runtime;
 
 interface Props {
   title: any;
@@ -57,7 +57,7 @@ const formattedDate = formatDate(postDate);
     />
     {postDate && <p class="date caption">{formattedDate}</p>}
   </div>
-  {!isDev &&
+  {!env.DEV &&
     <link
       rel="preload"
       href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl}
