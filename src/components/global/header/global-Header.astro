@@ -21,16 +21,11 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { getEntry } from "astro:content";
 import { Brands } from "../../../enums/brands";
 import { getCollection } from "astro:content";
+import { getBlogPosts, getProjects, getProjectFeatures } from "../../../lib/cached-content";
 
-// TODO: Move to content collection
-
-const allBlogPosts = await getCollection('blogPosts')
-const allProjects = await getCollection('projects')
-const allFeatures = await getCollection('features')
-
-const defaultBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
-const defaultProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
-const defaultProjectFeatures = allFeatures.filter((feature) => feature.data.projectCount[brand] > 0)
+const defaultBlogPosts = await getBlogPosts(brand)
+const defaultProjects = await getProjects(brand)
+const defaultProjectFeatures = await getProjectFeatures(brand)
 const defaultPartners = await getCollection('partners')
 
 const { data: headerSettings } = await getEntry('headerSettings', brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine')

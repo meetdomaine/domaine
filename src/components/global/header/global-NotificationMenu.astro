@@ -8,6 +8,7 @@ import { checkDateIsPast } from "../../../lib/check-date-is-past"
 import { Translations } from "../../../lib/locales"
 import { getLocaleString, getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import { getCollection } from "astro:content"
+import { getProjects, getBlogPosts } from "../../../lib/cached-content"
 const {
   content,
   currentBrand, 
@@ -19,11 +20,8 @@ const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const allProjects = await getCollection('projects')
-const latestProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
-
-const allBlogPosts = await getCollection('blogPosts')
-const latestBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
+const latestProjects = await getProjects(brand)
+const latestBlogPosts = await getBlogPosts(brand)
 
 const events = await getCollection('events')
 const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )

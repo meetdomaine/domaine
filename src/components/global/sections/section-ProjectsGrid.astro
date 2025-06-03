@@ -6,11 +6,10 @@ import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { getRawSvg } from "../../../lib/raw-svg";
 import { getCollection } from "astro:content";
 import { getLocaleUrl } from "../../../lib/translations";
+import { getProjects } from "../../../lib/cached-content";
 
 const { section, brand, locale } = Astro.props;
-
-const allProjects = await getCollection('projects')
-const projects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
+const projects = await getProjects(brand)
 ---
 
 <section class="section-projects-grid">

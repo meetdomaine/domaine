@@ -11,6 +11,7 @@ import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
 import { getCollection } from "astro:content";
 import { getEntry } from "astro:content";
 import { Translations } from "../../../lib/locales";
+import { getBlogPosts } from "../../../lib/cached-content";
 
 const { section, brand, heading, subheading, posts, sidebarTitle, locale } = Astro.props
 
@@ -28,7 +29,7 @@ if (section?.featuredCategory) {
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 } else {
     const allBlogPosts = await getCollection('blogPosts')
-    blogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
+    blogPosts = getBlogPosts(brand)
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 }
 

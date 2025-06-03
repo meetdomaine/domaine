@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import ProjectCard from "../projects/global-ProjectCard.astro";
 import { getTranslationString } from "../../../lib/translations";
+import { getProjects } from "../../../lib/cached-content";
 
 const { section, brand, projects, heading, subheading, locale, key } = Astro.props
 
@@ -12,8 +13,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    const allProjects = await getCollection('projects')
-    feedProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
+    feedProjects = getProjects(brand)
 }
 
 

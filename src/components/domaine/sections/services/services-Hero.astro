@@ -1,12 +1,11 @@
 ---
-import { Brands } from "../../../../enums/brands"
+import { getServiceTypes, getServices } from "../../../../lib/cached-content"
 import AtomCounter from "../../../global/atoms/atom-counter.astro"
-import { getCollection } from "astro:content"
 
 const { title, heading, locale, brand } = Astro.props
-const serviceTypes = await getCollection('serviceTypes')
-const services = await getCollection('services')
-const serviceCount = services.filter((service) => service.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand)).length
+const serviceTypes = await getServiceTypes(brand)
+const services = await getServices(brand)
+const serviceCount = services.length
 ---
 <section class="services-hero">
     <div class="section-title">
@@ -16,7 +15,7 @@ const serviceCount = services.filter((service) => service.data.agencyBrands.some
     <div class="section-content">
         {heading && <h3 class="heading h4">{locale && heading.translations?.[locale] ? heading.translations[locale] : heading.text}</h3>}
         <div class="service-buttons">
-            {serviceTypes.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand)).map((serviceType, i) => (
+            {serviceTypes.map((serviceType, i) => (
                 <button 
                     class="serviceType-jumplink" 
                     data-slug={serviceType.id}
