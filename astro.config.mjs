@@ -8,16 +8,22 @@ import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
 
+// Load environment variables
+const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
+
 // Try to get the variable from Cloudflare first, then fall back to local env
-const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || loadEnv(process.env.NODE_ENV, process.cwd(), "").SERVER_RENDERING_ENABLED;
+const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || env.SERVER_RENDERING_ENABLED;
 const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
 console.log(`RENDER MODE: ${renderMode}`);
 
-const PROD = process.env.PROD || loadEnv(process.env.NODE_ENV, process.cwd(), "").PROD;
+const PROD = process.env.PROD || env.PROD;
 console.log(PROD)
 
+// Get SANITY token from environment
+const SANITY_API_READ_TOKEN = process.env.SANITY_API_READ_TOKEN || env.SANITY_API_READ_TOKEN;
+
 // Debug environment variables
-console.log('SANITY_API_READ_TOKEN available:', !!process.env.SANITY_API_READ_TOKEN)
+console.log('SANITY_API_READ_TOKEN available:', !!SANITY_API_READ_TOKEN)
 console.log('All env vars starting with SANITY:', Object.keys(process.env).filter(key => key.startsWith('SANITY')))
 
 export default defineConfig({
@@ -64,7 +70,7 @@ export default defineConfig({
   site: 'https://meetdomaine.com/',
   vite: {
     define: {
-      "import.meta.env.SANITY_API_READ_TOKEN": JSON.stringify(process.env.SANITY_API_READ_TOKEN),
+      "import.meta.env.SANITY_API_READ_TOKEN": JSON.stringify(SANITY_API_READ_TOKEN),
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
