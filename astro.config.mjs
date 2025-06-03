@@ -16,6 +16,10 @@ console.log(`RENDER MODE: ${renderMode}`);
 const PROD = process.env.PROD || loadEnv(process.env.NODE_ENV, process.cwd(), "").PROD;
 console.log(PROD)
 
+// Debug environment variables
+console.log('SANITY_API_READ_TOKEN available:', !!process.env.SANITY_API_READ_TOKEN)
+console.log('All env vars starting with SANITY:', Object.keys(process.env).filter(key => key.startsWith('SANITY')))
+
 export default defineConfig({
   integrations: [
     sitemap(), 
