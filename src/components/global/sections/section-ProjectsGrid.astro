@@ -9,7 +9,8 @@ import { getLocaleUrl } from "../../../lib/translations";
 
 const { section, brand, locale } = Astro.props;
 
-const projects = brand === "studio" ? await getCollection('projects_Domaine') : await getCollection('projects_Domaine');
+const allProjects = await getCollection('projects')
+const projects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
 ---
 
 <section class="section-projects-grid">

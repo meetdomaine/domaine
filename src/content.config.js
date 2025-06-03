@@ -77,7 +77,6 @@ const blogPosts = defineCollection({
   }
 });
 
-
 // Blog Categories
 const blogCategories = defineCollection({
   loader: async () => {
@@ -99,19 +98,33 @@ const blogCategories = defineCollection({
 });
 
 // Projects
-const projects_Domaine = defineCollection({
+const projects = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == "Domaine" && isHidden != true ]{${projectPageFields}} | order( orderRank asc)`})
-    return data.map((entry) => ({
-        id: entry.slug.current,
-        ...entry
-    }))
-  }
-});
-
-const projects_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == "Studio" && isHidden != true ]{${projectPageFields}} | order( orderRank asc)`})
+    const { data } = await loadQuery({ query: `*[_type == "type_project" && isHidden != true ]{
+      title,
+      isHidden,
+      description,
+      excerpt,
+      industry->{...},
+      url,
+      client->{..., logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise, "logo": logo.asset->url },
+      foregroundColor,
+      backgroundColor,
+      accentColor,
+      services[]->{..., serviceGroup->{slug, title, serviceType->{slug} } },
+      features[]->{...},
+      partners[]->{..., title, excerpt, slug, icon{${imageFields}}, tier->{..., createLandingPages}, websiteUrl },
+      metrics[]{...},
+      awards[]{...},
+      agencyBrand->{slug, name},
+      thumbnailMedia{${videoFields}, ${imageFields}},
+      thumbnailImageSecondary{${imageFields}},
+      slug{...},
+      heroMedia{..., ${videoFields}, ${imageFields}},
+      sections[]{${globalSectionsFields}},
+      metafields{ title, description, image{${imageBaseFields}} },
+      orderRank,
+    } | order( orderRank asc)`})
     return data.map((entry) => ({
         id: entry.slug.current,
         ...entry
@@ -582,8 +595,7 @@ export const collections = {
   serviceTypes,
   blogPosts,
   blogCategories,
-  projects_Domaine,
-  projects_Studio,
+  projects,
   industries_Domaine,
   industries_Studio,
   features_Domaine,

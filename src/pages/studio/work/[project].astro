@@ -6,8 +6,8 @@ import { getEntry } from 'astro:content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const projects = await getCollection('projects_Studio')
-    return projects.map((project) => {
+    const projects = await getCollection('projects')
+    return projects.filter((project) => project.data.agencyBrand.name === Brands.STUDIO).map((project) => {
         return {
             params: { project: project.id },
             props: { content: {...project.data} }
@@ -19,7 +19,7 @@ let projectContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { project } = Astro.params
-    const { data } = await getEntry('projects_Studio', project)
+    const { data } = await getEntry('projects', project)
     projectContent = data
 } else {
     const { content } = Astro.props

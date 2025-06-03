@@ -19,7 +19,8 @@ const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const latestProjects = currentBrand.slug.current === "/studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+const allProjects = await getCollection('projects')
+const latestProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
 
 const allBlogPosts = await getCollection('blogPosts')
 const latestBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)

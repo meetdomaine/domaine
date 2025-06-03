@@ -28,7 +28,6 @@ if (env.SERVER_RENDERING_ENABLED) {
     serviceContent = content
 }
 const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && '${serviceContent.id}' in services[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
-// const projects = await Promise.all(serviceContent.relatedProjects.map(async (project) => await getEntry('projects_Domaine', project.slug.current)))
 ---
 <LayoutProjectsIndex
     content={serviceContent}

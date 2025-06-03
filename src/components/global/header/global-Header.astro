@@ -25,9 +25,11 @@ import { getCollection } from "astro:content";
 // TODO: Move to content collection
 
 const allBlogPosts = await getCollection('blogPosts')
-const defaultBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
+const allProjects = await getCollection('projects')
 
-const defaultProjects = brand === Brands.STUDIO ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+const defaultBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
+const defaultProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
+
 const defaultProjectFeatures = brand === Brands.STUDIO ? await getCollection('features_Studio') : await getCollection('features_Domaine')
 const defaultPartners = brand === Brands.STUDIO ? await getCollection('partners_Studio') : await getCollection('partners_Domaine')
 

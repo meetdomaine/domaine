@@ -12,7 +12,8 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = brand === "studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
+    const allProjects = await getCollection('projects')
+    feedProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
 }
 
 
