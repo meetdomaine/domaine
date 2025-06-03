@@ -2,14 +2,14 @@
 import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomButton from "../atoms/atom-button.astro"
 import GlobalPartnerTile from "../partners/global-PartnerTile.astro"
-import { getPartners_Domaine, getPartners_Studio } from "../../../lib/cms-content"
+import { getCollection } from "astro:content"
 
 const { section, brand, locale } = Astro.props
 
 
 const partnerTileCount = 4
 
-const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() : await getPartners_Domaine()
+const partners = brand.toLowerCase() === "studio" ? await getCollection('partners_Studio') : await getCollection('partners_Domaine')
 ---
 <section class="section-partners-feed" data-color-scheme="brand-02">
     <div 
@@ -41,7 +41,7 @@ const partners = brand.toLowerCase() === "studio" ? await getPartners_Studio() :
                 >
                     <GlobalPartnerTile 
                         locale={locale}
-                        partner={partner}
+                        partner={partner.data}
                         theme="light"
                     />
                 </div>

@@ -1,12 +1,12 @@
 ---
 import { Icon } from "astro-icon/components"
-import { getLocations } from "../../../lib/cms-content"
 import AtomButton from "../atoms/atom-button.astro"
 import { getRelativeLocaleUrl } from "astro:i18n"
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations"
+import { getCollection } from "astro:content"
 
 const { section, brand, key, locale } = Astro.props
-const locations = await getLocations()
+const locations = await getCollection('locations')
 ---
 <section class="section-locations-feed">
   <div class="section-title">
@@ -26,12 +26,12 @@ const locations = await getLocations()
     {locations.map((location) => (
       <li class="location">
         <div class="location-title">
-          <p class="city h5">{location.city}</p>
-          <p class="country">{location.country}</p>
+          <p class="city h5">{location.data.city}</p>
+          <p class="country">{location.data.country}</p>
         </div>
         <div class="clock">
           <Icon name="icon-clock" />
-          <p class="location-time" data-timezone={location.timezone}></p>
+          <p class="location-time" data-timezone={location.data.timezone}></p>
         </div>
       </li>
     ))}

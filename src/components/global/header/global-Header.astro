@@ -17,16 +17,6 @@ import LogoStudio from '../../../icons/domaine-studio.svg'
 const { currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
 
 import SearchMenu from "./searchMenu/SearchMenu"
-import { 
-    getProjects_Domaine,
-    getProjectFeatures_Domaine,
-    getProjects_Studio,
-    getProjectFeatures_Studio,
-    getBlogPosts_Domaine,
-    getBlogPosts_Studio,
-    getPartners_Studio,
-    getPartners_Domaine,
-} from "../../../lib/cms-content"
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getEntry } from "astro:content";
 import { Brands } from "../../../enums/brands";

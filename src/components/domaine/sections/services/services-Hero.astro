@@ -1,10 +1,10 @@
 ---
 import AtomCounter from "../../../global/atoms/atom-counter.astro"
-import { getServices_Domaine, getServiceTypes_Domaine } from "../../../../lib/cms-content"
+import { getCollection } from "astro:content"
 
 const { title, heading, locale } = Astro.props
-const serviceTypes = await getServiceTypes_Domaine()
-const services = await getServices_Domaine()
+const serviceTypes = await getCollection('serviceTypes_Domaine')
+const services = await getCollection('services_Domaine')
 const serviceCount = services.length
 ---
 <section class="services-hero">
@@ -18,9 +18,9 @@ const serviceCount = services.length
             {serviceTypes.map((serviceType, i) => (
                 <button 
                     class="serviceType-jumplink" 
-                    data-slug={serviceType.slug.current}
+                    data-slug={serviceType.id}
                 >
-                    {locale && serviceType.title.translations?.[locale] ? serviceType.title.translations[locale] : serviceType.title.text}
+                    {locale && serviceType.data.title.translations?.[locale] ? serviceType.data.title.translations[locale] : serviceType.data.title.text}
                 </button>
             ))}
         </div>

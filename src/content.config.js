@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, locationsQuery, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
+import { agencyBrandsQuery, blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, locationsQuery, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
 import {sanityClient} from "sanity:client"
 import { loadQuery } from './lib/sanity-load-query';
 
@@ -416,6 +416,37 @@ const features_Studio = defineCollection({
 //   }
 // })
 
+const agencyBrands = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`})
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
+const locations = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "type_location"]{${locationsQuery}} | order(orderRank)`})
+    return data.map((entry) => ({
+      id: entry.slug.current,
+      ...entry
+    }))
+  }
+})
+
+const careers = defineCollection({
+  loader: async () => {
+    const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
+    const data = await careersResponse.json()
+    return data.map((entry) => ({
+      id: entry.uuid,
+      ...entry
+    }));
+  }
+})
+
 // Partners
 
 const query_Partner = `
@@ -732,5 +763,8 @@ export const collections = {
   generalPages_Domaine,
   generalPages_Studio,
   marketingPages_Domaine,
-  marketingPages_Studio
+  marketingPages_Studio,
+  agencyBrands,
+  locations,
+  careers
 };

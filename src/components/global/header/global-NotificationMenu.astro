@@ -1,5 +1,4 @@
 ---
-import { getAllCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../../../lib/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
@@ -25,7 +24,7 @@ const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getColle
 
 const events = await getCollection('events')
 const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )
-const allCareers = await getAllCareers();
+const allCareers = await getCollection('careers');
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 

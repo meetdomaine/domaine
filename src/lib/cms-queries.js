@@ -244,5 +244,6 @@ export const locationsQuery = `
   timezone,
   text,
   button,
-  orderRank
+  orderRank,
+  slug
 `
