@@ -8,8 +8,8 @@ import { projectGridFields } from '../../../lib/cms-queries';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const features = await getCollection('features_Domaine')
-    return features.map((feature) => {
+    const features = await getCollection('features')
+    return features.filter((feature) => feature.data.projectCount[Brands.DOMAINE] > 0).map((feature) => {
         return {
             params: { feature: feature.id },
             props: { content: {...feature.data} }
@@ -21,7 +21,7 @@ let featureContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { feature } = Astro.params
-    const { data } = await getEntry('features_Domaine', feature)
+    const { data } = await getEntry('features', feature)
     featureContent = data
 } else {
     const { content } = Astro.props

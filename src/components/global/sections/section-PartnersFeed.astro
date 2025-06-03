@@ -9,7 +9,7 @@ const { section, brand, locale } = Astro.props
 
 const partnerTileCount = 4
 
-const partners = brand.toLowerCase() === "studio" ? await getCollection('partners_Studio') : await getCollection('partners_Domaine')
+const partners = await getCollection('partners')
 ---
 <section class="section-partners-feed" data-color-scheme="brand-02">
     <div 

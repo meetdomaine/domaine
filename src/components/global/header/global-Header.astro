@@ -26,12 +26,12 @@ import { getCollection } from "astro:content";
 
 const allBlogPosts = await getCollection('blogPosts')
 const allProjects = await getCollection('projects')
+const allFeatures = await getCollection('features')
 
 const defaultBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
 const defaultProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
-
-const defaultProjectFeatures = brand === Brands.STUDIO ? await getCollection('features_Studio') : await getCollection('features_Domaine')
-const defaultPartners = brand === Brands.STUDIO ? await getCollection('partners_Studio') : await getCollection('partners_Domaine')
+const defaultProjectFeatures = allFeatures.filter((feature) => feature.data.projectCount[brand] > 0)
+const defaultPartners = await getCollection('partners')
 
 const { data: headerSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'headerSettings_Studio' : 'headerSettings_Domaine')
 // console.log(headerSettings)

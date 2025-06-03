@@ -7,8 +7,8 @@ import LayoutMarketingPage from "../../layouts/Layout_MarketingPage.astro";
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const pages = await getCollection('generalPages_Studio')
-    return pages.map((page) => {
+    const pages = await getCollection('pages')
+    return pages.filter((page) => page.data._type === "page_studio-general").map((page) => {
         return {
             params: { page: page.id },
             props: { content: {...page.data} }
@@ -20,7 +20,7 @@ let pageContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { page } = Astro.params
-    const { data } = await getEntry('generalPages_Studio', page)
+    const { data } = await getEntry('pages', page)
     pageContent = data
 } else {
     const { content } = Astro.props
@@ -30,11 +30,11 @@ if (env.SERVER_RENDERING_ENABLED) {
 {pageContent.isMarketingPage ? 
     <LayoutMarketingPage
         content={pageContent}
-        brand={Brands.DOMAINE}
+        brand={Brands.STUDIO}
     />
     :
     <LayoutPage
         content={pageContent}
-        brand={Brands.DOMAINE}
+        brand={Brands.STUDIO}
     />
 }

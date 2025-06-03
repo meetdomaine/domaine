@@ -8,8 +8,8 @@ import { projectGridFields } from '../../../../lib/cms-queries';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const industries = await getCollection('industries_Studio')
-    return industries.map((industry) => {
+    const industries = await getCollection('industries')
+    return industries.filter((industry) => industry.data.projectCount[Brands.STUDIO] > 0).map((industry) => {
         return {
             params: { industry: industry.id },
             props: { content: {...industry.data} }
@@ -21,14 +21,14 @@ let industryContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { industry } = Astro.params
-    const { data } = await getEntry('industries_Studio', industry)
+    const { data } = await getEntry('industries', industry)
     industryContent = data
 } else {
     const { content } = Astro.props
     industryContent = content
 }
 
-const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${industryContent.id}' in industries[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
+const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && industry->slug.current == '${industryContent.id}' ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
 ---
 <LayoutProjectsIndex
     content={industryContent}

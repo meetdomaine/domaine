@@ -4,7 +4,6 @@ import {sanityClient} from "sanity:client"
 import { loadQuery } from './lib/sanity-load-query';
 import { Brands } from './enums/brands';
 
-
 // Services
 const services = defineCollection({
   loader: async () => {
@@ -133,11 +132,14 @@ const projects = defineCollection({
 });
 
 // Industries
-
-const industries_Domaine = defineCollection({
+const industries = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ]{ 
-      ..., 
+      ...,
+      "projectCount": {
+        "${Brands.DOMAINE}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
+        "${Brands.STUDIO}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+      },
       excerpt,
       metafields{ title, description, image{${imageBaseFields}} },
     }`})
@@ -148,63 +150,19 @@ const industries_Domaine = defineCollection({
   }))
   }
 })
-
-// const industries_Domaine = defineCollection({
-//   loader: async () => {
-//     const { data } = await loadQuery({ query: `*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ]{ 
-//       ..., 
-//       excerpt,
-//       metafields{ title, description, image{${imageBaseFields}} },
-//       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
-//     }`})
-//     return data.map((entry) => ({
-//       // id: entry._id,
-//       id: entry.slug.current,
-//       ...entry
-//   }))
-//   }
-// })
-
-const industries_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio"]) > 0 ]{ 
-      ..., 
-      excerpt,
-      metafields{ title, description, image{${imageBaseFields}} },
-    }`})
-    return data.map((entry) => ({
-      // id: entry._id,
-      id: entry.slug.current,
-      ...entry
-  }))
-  }
-})
-
-// const industries_Studio = defineCollection({
-//   loader: async () => {
-//     const { data } = await loadQuery({ query: `*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio"]) > 0 ]{ 
-//       ..., 
-//       excerpt,
-//       metafields{ title, description, image{${imageBaseFields}} },
-//       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
-//     }`})
-//     return data.map((entry) => ({
-//       // id: entry._id,
-//       id: entry.slug.current,
-//       ...entry
-//   }))
-//   }
-// })
 
 // Features
-
-const features_Domaine = defineCollection({
+const features = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{
       _id,
       title,
       excerpt,
       slug, 
+      "projectCount": {
+        "${Brands.DOMAINE}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
+        "${Brands.STUDIO}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+      },
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
     }`})
@@ -215,59 +173,7 @@ const features_Domaine = defineCollection({
   }
 })
 
-// const features_Domaine = defineCollection({
-//   loader: async () => {
-//     const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{
-//       _id,
-//       title,
-//       excerpt,
-//       slug, 
-//       orderRank,
-//       metafields{ title, description, image{${imageBaseFields}} },
-//       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug },
-//     }`})
-//     return data.map((entry) => ({
-//       id: entry.slug.current,
-//       ...entry
-//   }))
-//   }
-// })
-
-const features_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]) > 0 ]{
-      _id,
-      title,
-      excerpt,
-      slug, 
-      orderRank,
-      metafields{ title, description, image{${imageBaseFields}} },
-    }`})
-    return data.map((entry) => ({
-      id: entry.slug.current,
-      ...entry
-  }))
-  }
-})
-
-// const features_Studio = defineCollection({
-//   loader: async () => {
-//     const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id)]) > 0 ]{
-//       _id,
-//       title,
-//       excerpt,
-//       slug, 
-//       orderRank,
-//       metafields{ title, description, image{${imageBaseFields}} },
-//       "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
-//     }`})
-//     return data.map((entry) => ({
-//       id: entry.slug.current,
-//       ...entry
-//   }))
-//   }
-// })
-
+// Agency Brands
 const agencyBrands = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`})
@@ -278,6 +184,7 @@ const agencyBrands = defineCollection({
   }
 })
 
+// Locations
 const locations = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_location"]{${locationsQuery}} | order(orderRank)`})
@@ -288,6 +195,7 @@ const locations = defineCollection({
   }
 })
 
+// Careers
 const careers = defineCollection({
   loader: async () => {
     const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
@@ -300,56 +208,35 @@ const careers = defineCollection({
 })
 
 // Partners
-
-const query_Partner = `
-  _id,
-  title, 
-  slug, 
-  excerpt,
-  description,
-  richContent{ translations{ ...}, richContent[]{${richContentFields}} },
-  globalSections{ sections[]{${globalSectionsFields}} },
-  icon{${imageFields}}, 
-  tier->{slug, title, createLandingPages}, 
-  websiteUrl, 
-  websiteText,
-  instagramUrl,
-  twitterUrl,
-  linkedInUrl,
-  youTubeUrl,
-  tikTokUrl,
-  "relatedBlogPosts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true]{ _id, slug, postDate} | order(postDate desc),
-  "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank),
-  metafields{ title, description, image{${imageBaseFields}} },
-  orderRank,
-`
-
-const partners_Domaine = defineCollection({
+const partners = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_partner" && count(*[_type == "type_project" && agencyBrand->name == "Domaine"]) > 0]{${query_Partner}}`})
-    return data.map((entry) => ({
-      id: entry.slug.current,
-      ...entry
-  }))
-  }
-})
-
-const partners_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query :`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Studio"]) > 0]{
+    const { data } = await loadQuery({ query: `*[_type == "type_partner"]{
       _id,
       title, 
-      excerpt, 
       slug, 
+      excerpt,
+      description,
+      richContent{ translations{ ...}, richContent[]{${richContentFields}} },
+      globalSections{ sections[]{${globalSectionsFields}} },
       icon{${imageFields}}, 
       tier->{slug, title, createLandingPages}, 
       websiteUrl, 
-      orderRank,
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Studio" && references(^._id) && isHidden != true ]{ _id, slug },
+      websiteText,
+      instagramUrl,
+      twitterUrl,
+      linkedInUrl,
+      youTubeUrl,
+      tikTokUrl,
+      "projectCount": {
+        "${Brands.DOMAINE}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
+        "${Brands.STUDIO}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+      },
+      "relatedBlogPosts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true]{ _id, slug, postDate} | order(postDate desc),
+      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank),
       metafields{ title, description, image{${imageBaseFields}} },
-    }`})
+      orderRank,
+    } | order(orderRank)`} )
     return data.map((entry) => ({
-      // id: entry._id,
       id: entry.slug.current,
       ...entry
   }))
@@ -357,7 +244,7 @@ const partners_Studio = defineCollection({
 })
 
 // Partner Tiers
-const partnerTiers_Domaine = defineCollection({
+const partnerTiers = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_partnerTier"]{ 
       ...,
@@ -373,56 +260,9 @@ const partnerTiers_Domaine = defineCollection({
 })
 
 // General Pages
-
-const query_Page = `
-  ..., 
-  media{${imageFields}, ${videoFields}},
-  globalSections{ sections[]{${globalSectionsFields}} },
-  metafields{ title, description, image{${imageBaseFields}} },
-`
-
-const generalPages_Domaine = defineCollection({
+const pages = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "page_general"]{${query_Page}} | order(_createdAt desc)`})
-    return data.map((entry) => ({
-      id: entry.slug.current,
-      ...entry
-    }))
-  }
-})
-
-const generalPages_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "page_studio-general"]{${query_Page}} | order(_createdAt desc)`})
-    return data.map((entry) => ({
-      id: entry.slug.current,
-      ...entry
-    }))
-  }
-})
-
-// Marketing Pages
-
-//DEPRECATED
-const marketingPages_Domaine = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "page_general" && isMarketingPage == true]{
-      ..., 
-      media{${imageFields}, ${videoFields}},
-      globalSections{ sections[]{${globalSectionsFields}} },
-      metafields{ title, description, image{${imageBaseFields}} },
-    } | order(_createdAt desc)`})
-    return data.map((entry) => ({
-      id: entry.slug.current,
-      ...entry
-    }))
-  }
-})
-
-//DEPRECATED
-const marketingPages_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "page_studio_general" && isMarketingPage == true]{
+    const { data } = await loadQuery({ query: `*[_type == "page_general" || _type == "page_studio-general" ]{
       ..., 
       media{${imageFields}, ${videoFields}},
       globalSections{ sections[]{${globalSectionsFields}} },
@@ -436,10 +276,17 @@ const marketingPages_Studio = defineCollection({
 })
 
 // Events
-
 const events = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_event"]{${eventQuery}} | order(dateTime)`})
+    const { data } = await loadQuery({ query: `*[_type == "type_event"]{
+      ...,
+      dateTime,
+      partnerLogos[]{${imageFields}},
+      speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
+      thumbnailImage{${imageFields}},
+      globalSections{ sections[]{${globalSectionsFields}}},
+      thumbnailImage{${imageFields}},
+    } | order(dateTime)`})
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
@@ -575,20 +422,6 @@ const pageSettings = defineCollection({
   }
 });
 
-// Add a function to fetch full service details on-demand
-export async function getServiceDetails(slug) {
-  const { data } = await loadQuery({ 
-    query: `*[_type == "type_service" && slug.current == $slug][0]{
-      ${serviceQuery}
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank asc),
-      "relatedPosts": *[ _type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) ]{ _id, slug, postDate } | order(postDate desc),
-      "pageSections": pageSectionsDomaine[]{${globalSectionsFields}},
-    }`,
-    params: { slug }
-  });
-  return data;
-}
-
 export const collections = { 
   services,
   serviceGroups,
@@ -596,19 +429,13 @@ export const collections = {
   blogPosts,
   blogCategories,
   projects,
-  industries_Domaine,
-  industries_Studio,
-  features_Domaine,
-  features_Studio,
-  partners_Domaine,
-  partners_Studio,
-  partnerTiers_Domaine,
+  industries,
+  features,
+  partners,
+  partnerTiers,
   events,
+  pages,
   pageSettings,
-  generalPages_Domaine,
-  generalPages_Studio,
-  marketingPages_Domaine,
-  marketingPages_Studio,
   agencyBrands,
   locations,
   careers
