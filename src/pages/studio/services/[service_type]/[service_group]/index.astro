@@ -6,8 +6,8 @@ import { getEntry } from "astro:content"
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const serviceGroups = await getCollection('serviceGroups_Studio')
-    return serviceGroups.map((serviceGroup) => {
+    const serviceGroups = await getCollection('serviceGroups')
+    return serviceGroups.filter((serviceGroup) => serviceGroup.data.agencyBrands.some((agencyBrand) => agencyBrand.name === Brands.STUDIO)).map((serviceGroup) => {
         return {
             params: { 
                 service_group: serviceGroup.id,
@@ -24,14 +24,12 @@ let serviceGroupContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { service_type, service_group } = Astro.params
-    const { data } = await getEntry('serviceGroups_Studio', service_group)
+    const { data } = await getEntry('serviceGroups', service_group)
     serviceGroupContent = data
 } else {
     const { content } = Astro.props
     serviceGroupContent = content
 }
-
-const { content } = Astro.props;
 ---
 <LayoutServiceGroup 
     content={serviceGroupContent}

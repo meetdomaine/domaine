@@ -8,8 +8,8 @@ import { projectGridFields } from '../../../../lib/cms-queries';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const serviceGroups = await getCollection('serviceGroups_Studio')
-    return serviceGroups.map((serviceGroup) => {
+    const serviceGroups = await getCollection('serviceGroups')
+    return serviceGroups.filter((serviceGroup) => serviceGroup.data.agencyBrands.some((agencyBrand) => agencyBrand.name === Brands.STUDIO)).map((serviceGroup) => {
         return {
             params: { service_group: serviceGroup.id },
             props: { content: {...serviceGroup.data} }
@@ -21,7 +21,7 @@ let serviceGroupContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { service_group } = Astro.params
-    const { data } = await getEntry('serviceGroups_Studio', service_group)
+    const { data } = await getEntry('serviceGroups', service_group)
     serviceGroupContent = data
 } else {
     const { content } = Astro.props
@@ -29,7 +29,6 @@ if (env.SERVER_RENDERING_ENABLED) {
 }
 
 const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceGroupContent.id}' in services[]->serviceGroup->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
-// const projects = await Promise.all(serviceGroupContent.relatedProjects?.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}

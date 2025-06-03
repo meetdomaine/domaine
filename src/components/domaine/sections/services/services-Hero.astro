@@ -4,7 +4,7 @@ import AtomCounter from "../../../global/atoms/atom-counter.astro"
 import { getCollection } from "astro:content"
 
 const { title, heading, locale, brand } = Astro.props
-const serviceTypes = await getCollection('serviceTypes_Domaine')
+const serviceTypes = await getCollection('serviceTypes')
 const services = await getCollection('services')
 const serviceCount = services.filter((service) => service.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand)).length
 ---
@@ -16,7 +16,7 @@ const serviceCount = services.filter((service) => service.data.agencyBrands.some
     <div class="section-content">
         {heading && <h3 class="heading h4">{locale && heading.translations?.[locale] ? heading.translations[locale] : heading.text}</h3>}
         <div class="service-buttons">
-            {serviceTypes.map((serviceType, i) => (
+            {serviceTypes.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand)).map((serviceType, i) => (
                 <button 
                     class="serviceType-jumplink" 
                     data-slug={serviceType.id}

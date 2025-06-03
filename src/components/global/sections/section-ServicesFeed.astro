@@ -8,7 +8,8 @@ import { getCollection } from "astro:content";
 
 const { section, brand, locale, key } = Astro.props
 
-const serviceTypes = brand === "studio" ? await getCollection('serviceTypes_Studio') : await getCollection('serviceTypes_Domaine')
+const allServiceTypes = await getCollection('serviceTypes')
+const serviceTypes = allServiceTypes.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand))
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 

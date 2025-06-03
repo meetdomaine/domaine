@@ -6,8 +6,8 @@ import { getEntry } from "astro:content"
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const serviceTypes = await getCollection('serviceTypes_Domaine')
-    return serviceTypes.map((serviceType) => {
+    const serviceTypes = await getCollection('serviceTypes')
+    return serviceTypes.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === Brands.DOMAINE )).map((serviceType) => {
         return {
             params: { service_type: serviceType.id },
             props: { content: {...serviceType.data} }
@@ -19,7 +19,7 @@ let serviceTypeContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { service_type } = Astro.params
-    const { data } = await getEntry('serviceTypes_Domaine', service_type)
+    const { data } = await getEntry('serviceTypes', service_type)
     serviceTypeContent = data
 } else {
     const { content } = Astro.props

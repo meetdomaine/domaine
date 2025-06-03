@@ -20,12 +20,12 @@ const services = defineCollection({
 });
 
 // Service Groups
-
-const serviceGroups_Domaine = defineCollection({
+const serviceGroups = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_serviceGroup" && "/" in agencyBrands[]->slug.current]{
+    const { data } = await loadQuery({ query: `*[_type == "type_serviceGroup"]{
       ${serviceGroupQuery}
-      pageSectionsDomaine{ sections[]{${globalSectionsFields}}}
+      pageSectionsDomaine{ sections[]{${globalSectionsFields}}},
+      pageSectionsStudio[]{ sections[]{${globalSectionsFields}}},
   }`})
     return data.map((entry) => ({
       id: entry.slug.current,
@@ -34,24 +34,10 @@ const serviceGroups_Domaine = defineCollection({
   }
 })
 
-const serviceGroups_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_serviceGroup" && "/studio" in agencyBrands[]->slug.current ]{
-      ${serviceGroupQuery}
-      pageSectionsStudio[]{ sections[]{${globalSectionsFields}}},
-    }`})
-    return data.map((entry) => ({
-      id: entry.slug.current,
-      ...entry
-    }))
-  }
-})
-
 // Service Types
-
-const serviceTypes_Domaine = defineCollection({
+const serviceTypes = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_serviceType" && 'Domaine' in agencyBrands[]->name]{
+    const { data } = await loadQuery({ query: `*[_type == "type_serviceType" ]{
       _id,
       title,
       slug,
@@ -65,22 +51,7 @@ const serviceTypes_Domaine = defineCollection({
   }
 })
 
-const serviceTypes_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_serviceType" && '/studio' in agencyBrands[]->slug.current ]{
-      ${serviceTypePageQuery}
-    } | order(orderRank)`})
-    return data.map((entry) => ({
-      // id: entry._id,
-      id: entry.slug.current,
-      ...entry
-  }))
-  }
-})
-
-
 // Blog Posts
-
 const query_BlogPost = `
   ..., 
   _id,
@@ -406,7 +377,6 @@ const partnerTiers_Domaine = defineCollection({
       } | order(orderRank),
     } | order(orderRank)`})
     return data.map((entry) => ({
-      // id: entry._id,
       id: entry.slug.current,
       ...entry
   }))
@@ -632,10 +602,8 @@ export async function getServiceDetails(slug) {
 
 export const collections = { 
   services,
-  serviceGroups_Domaine,
-  serviceTypes_Domaine,
-  serviceGroups_Studio,
-  serviceTypes_Studio,
+  serviceGroups,
+  serviceTypes,
   blogPosts_Domaine,
   blogPosts_Studio,
   blogCategories_Domaine,

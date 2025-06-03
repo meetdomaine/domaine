@@ -143,6 +143,7 @@ export const globalSectionsFields = `
 export const serviceTypePageQuery = `
   ...,
   excerpt,
+  agencyBrands[]->{ ..., name },
   pageSectionsDomaine[]{${globalSectionsFields}},
   pageSectionsStudio[]{${globalSectionsFields}},
   images[]{${imageFields}},
