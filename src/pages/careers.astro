@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
-import { allCareers } from "../lib/cms-content";
+import { getAllCareers } from "../lib/cms-content";
 import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
@@ -12,6 +12,8 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,
   metafields{ title, description, image{${imageBaseFields}} },
 }[0]`)
+
+const allCareers = await getAllCareers();
 
 // TODO: Migrate to content collections
 ---

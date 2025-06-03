@@ -217,5 +217,7 @@ export const getLocations = async () => {
 }
 
 // Careers
-const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
-export const allCareers = await careersResponse.json();
+export async function getAllCareers() {
+  const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
+  return await careersResponse.json();
+}
