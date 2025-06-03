@@ -1,6 +1,5 @@
 import { defineCollection } from 'astro:content';
 import { agencyBrandsQuery, blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, locationsQuery, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
-import {sanityClient} from "sanity:client"
 import { loadQuery } from './lib/sanity-load-query';
 import { Brands } from './enums/brands';
 
@@ -294,63 +293,119 @@ const events = defineCollection({
   }
 })
 
-// Page Settings
-
-const query_HeaderSettings = `
-  ...,
-  locationClocks[]->{${locationsQuery}},
-  linkCardImage{${imageFields}},
-  brandMenuBrands[]{
-      ..., 
-      media{${videoFields}, ${imageFields}} 
-  }
-`
-
-const pageSettings = defineCollection({
-  // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
+// Header
+const headerSettings = defineCollection({
   loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "settings_header"]{
+      ...,
+      locationClocks[]->{${locationsQuery}},
+      linkCardImage{${imageFields}},
+      brandMenuBrands[]{
+          ..., 
+          media{${videoFields}, ${imageFields}} 
+      }
+    } | order(dateTime)`})
+    return data.map((entry) => ({
+      id: entry._id,
+      ...entry
+    }))
+  }
+})
 
-    const { data: headerSettings_Domaine } = await loadQuery({ query: `*[_type == "settings_header" && _id == "settings_header--domaine"]{${query_HeaderSettings}}[0]`})
-    const { data: headerSettings_Studio } = await loadQuery({ query: `*[_type == "settings_header" && _id == "settings_header--studio"]{${query_HeaderSettings}}[0]`})
+// Footer
+const footerSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "settings_footer"]`})
+    return data.map((entry) => ({
+      id: entry._id,
+      ...entry
+    }))
+  }
+})
 
-    const { data: pageHome_Domaine } = await loadQuery({ query: `*[_type == "page_home-domaine"][0]{ 
-      ...,  
+// Homepage Settings
+const homePageSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "page_home-domaine" || _type == "page_home-studio"]{
+      ...,
       globalSections{ sections[]{${globalSectionsFields}} }, 
       media{ ..., ${imageFields}, ${videoFields} },
       metafields{ title, description, image{${imageBaseFields}} },
+      projects[]{
+        project->{${projectGridFields}},
+        image{${imageFields}}
+      },
     }`})
+    return data.map((entry) => ({
+      id: entry._id,
+      ...entry
+    }))
+  }
+})
 
-    const { data: blogIndex_Domaine } = await loadQuery({ query: `*[_type == "page_blog-index" && _id == "page_blog-index-domaine"][0]`})
-    const { data: blogIndex_Studio } = await loadQuery({ query: `*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`})
+// Projects Index Settings
+const projectsIndexSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "page_projects-index"]`})
+    return data.map((entry) => ({
+      id: entry._id,
+      ...entry
+    }))
+  }
+})
 
-    const { data: projectsIndex_Domaine } = await loadQuery({ query: `*[_type == "page_projects-index" && _id == "page_projects-index-domaine"][0]`})
-    const { data: projectsIndex_Studio } = await loadQuery({ query: `*[_type == "page_projects-index" && _id == "page_projects-index-studio"][0]`})
-    
-    const { data: servicesIndex_Domaine } = await loadQuery({ query: `
-      *[_type == "page_services-index-domaine" && _id == "page_services-index-domaine"]{
-          ...,
-          sections[]{${globalSectionsFields}},
-          metafields{ title, description, image{${imageBaseFields}} },
-      }[0]
-    `})
-    
-    const { data: servicesIndex_Studio } = await loadQuery({ query: `*[_type == "page_services-index-studio" && _id == "page_services-index-studio"]{
-        ...,  
-        title,
-        heading,
-        images[]{${imageFields}},
-        sections[]{${globalSectionsFields}},
-        metafields
-      }[0]
-    `})
+// Blog Index Settings
+const blogIndexSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "page_blog-index"]`})
+    return data.map((entry) => ({
+      id: entry._id,
+      ...entry
+    }))
+  }
+})
 
-    const { data: footerSettings_Domaine } = await loadQuery({ query: `*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]` })
-    const { data: footerSettings_Studio } = await loadQuery({ query: `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]` })
+// Services Index Settings
+const servicesIndexSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "page_services-index-domaine" || _type == "page_services-index-studio"]{
+      ...,  
+      title,
+      heading,
+      images[]{${imageFields}},
+      sections[]{${globalSectionsFields}},
+      metafields{ title, description, image{${imageBaseFields}} },
+    }`})
+    return data.map((entry) => ({
+      id: entry._id,
+      ...entry
+    }))
+  }
+})
 
-    const { data: brandSettings_Domaine } = await loadQuery({ query: `*[_type == "type_agencyBrand" && slug.current == "/"][0]{ ..., cookieNoticeText{ ..., richContent[]{${richContentFields}} }}`})
-    const { data: brandSettings_Studio } = await loadQuery({ query: `*[_type == "type_agencyBrand" && slug.current == "/studio"][0]`})
+// Brand Settings
+const brandSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: `*[_type == "type_agencyBrand" ]{
+      ..., 
+      cookieNoticeText{ 
+        ..., 
+        richContent[]{${richContentFields}}
+      },
+      metafields{ title, description, image{${imageBaseFields}} },
+    }`})
+    return data.map((entry) => ({
+      id: entry.name,
+      ...entry
+    }))
+  }
+})
 
-    const { data: partnersIndex_Domaine } = await loadQuery({ query: ` *[_type == "page_partners-index"] { 
+// Page Settings
+const partnersIndexSettings = defineCollection({
+  loader: async () => {
+    const { data } = await loadQuery({ query: ` *[_type == "page_partners-index"] { 
+      _id,
       title, 
       heading, 
       heroMedia{${videoFields}}, 
@@ -360,63 +415,10 @@ const pageSettings = defineCollection({
       hubspotFormId,
       metafields{ title, description, image{${imageBaseFields}} },
     }[0]`})
-
     return [
       {
-        id: pageHome_Domaine._id,
-        ...pageHome_Domaine
-      },
-      {
-        id: blogIndex_Domaine._id,
-        ...blogIndex_Domaine
-      },
-      {
-        id: blogIndex_Studio._id,
-        ...blogIndex_Studio
-      },
-      {
-        id: projectsIndex_Domaine._id,
-        ...projectsIndex_Domaine
-      },
-      {
-        id: projectsIndex_Studio._id,
-        ...projectsIndex_Studio
-      },
-      {
-        id: servicesIndex_Domaine._id,
-        ...servicesIndex_Domaine
-      },
-      {
-        id: servicesIndex_Studio._id,
-        ...servicesIndex_Studio
-      },
-      {
-        id: "headerSettings_Domaine",
-        ...headerSettings_Domaine
-      },
-      {
-        id: "headerSettings_Studio",
-        ...headerSettings_Studio
-      },
-      {
-        id: footerSettings_Domaine._id,
-        ...footerSettings_Domaine
-      },
-      {
-        id: footerSettings_Studio._id,
-        ...footerSettings_Studio
-      },
-      {
-        id: "brandSettings_Domaine",
-        ...brandSettings_Domaine
-      },
-      {
-        id: "brandSettings_Studio",
-        ...brandSettings_Studio
-      },
-      {
-        id: "partnersIndex_Domaine",
-        ...partnersIndex_Domaine
+        id: "partnersIndex",
+        ...data
       }
     ]
   }
@@ -435,8 +437,15 @@ export const collections = {
   partnerTiers,
   events,
   pages,
-  pageSettings,
-  agencyBrands,
   locations,
-  careers
+  careers,
+  headerSettings,
+  footerSettings,
+  homePageSettings,
+  projectsIndexSettings,
+  blogIndexSettings,
+  servicesIndexSettings,
+  brandSettings,
+  partnersIndexSettings,
+  agencyBrands,
 };

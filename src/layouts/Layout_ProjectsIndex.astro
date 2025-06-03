@@ -13,7 +13,7 @@ import { getCollection } from 'astro:content';
 
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
 
-const { data: pageSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine')
+const { data: pageSettings } = await getEntry('projectsIndexSettings', brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine')
 
 const allProjects = await getCollection('projects')
 const brandProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)

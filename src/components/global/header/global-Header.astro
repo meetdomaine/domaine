@@ -33,7 +33,7 @@ const defaultProjects = allProjects.filter((project) => project.data.agencyBrand
 const defaultProjectFeatures = allFeatures.filter((feature) => feature.data.projectCount[brand] > 0)
 const defaultPartners = await getCollection('partners')
 
-const { data: headerSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'headerSettings_Studio' : 'headerSettings_Domaine')
+const { data: headerSettings } = await getEntry('headerSettings', brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine')
 // console.log(headerSettings)
 ---
 <header id="header" data-color-scheme="glass-dark">

@@ -8,7 +8,7 @@ import { getTranslationString } from "../lib/translations";
 import { Brands } from "../enums/brands";
 
 const { locale } = Astro.props;
-const { data: pageSettings } = await getEntry('pageSettings', 'page_home-domaine')
+const { data: pageSettings } = await getEntry('homePageSettings', 'page_home-domaine')
 
 ---
 <LayoutDomaine

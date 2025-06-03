@@ -11,7 +11,7 @@ import { Brands } from '../enums/brands';
 
 const { title, description, image, heading, subheading, searchFilter, blogPosts, brand, slug, locale } = Astro.props;
 
-const { data: pageSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine')
+const { data: pageSettings } = await getEntry('blogIndexSettings', brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine')
 
 const allBlogPosts = await getCollection('blogPosts')
 const allBrandBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
