@@ -1,15 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
 import { blogCardFields, urlFor } from '../../../lib/cms-queries';
 import { getEntry } from 'astro:content';
 import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
 import { loadQuery } from '../../../lib/sanity-load-query';
 import { Brands } from '../../../enums/brands';
+import { getBlogCategories } from '../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const categories = await getCollection('blogCategories')
-    return categories.filter((category) => category.data.postCount[Brands.DOMAINE] > 0).map((category) => {
+    const categories = await getBlogCategories(Brands.DOMAINE)
+    return categories.map((category) => {
         return {
             params: { category: category.id },
             props: { content: {...category.data} }

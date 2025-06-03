@@ -1,15 +1,17 @@
 import { getCollection } from "astro:content"
 
 let _serviceTypes = {}
+let _serviceGroups = {}
 let _services = {}
+
 let _blogCategories = {}
 let _blogPosts = {}
+
 let _projects = {}
 let _projectFeatures = {}
 
 
 // Services
-
 export const getServiceTypes = async (brand) => {
   if (_serviceTypes[brand]) return _serviceTypes[brand]
   const allServiceTypes = await getCollection('serviceTypes')
@@ -18,8 +20,13 @@ export const getServiceTypes = async (brand) => {
   return serviceTypes
 }
 
-
-
+export const getServiceGroups = async (brand) => {
+  if (_serviceGroups[brand]) return _serviceGroups[brand]
+  const allServiceGroups = await getCollection('serviceGroups')
+  const serviceGroups = allServiceGroups.filter((serviceGroup) => serviceGroup.data.agencyBrands.some((brand) => brand.name === brand))
+  _serviceGroups[brand] = serviceGroups
+  return serviceGroups
+}
 
 export const getServices = async (brand) => {
   if (_services[brand]) return _services[brand]

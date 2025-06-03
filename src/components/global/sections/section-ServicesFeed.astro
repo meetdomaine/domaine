@@ -1,15 +1,12 @@
 ---
 import AtomTag from "../atoms/atom-tag.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
-import { Icon } from "astro-icon/components";
 import AtomButton from "../atoms/atom-button.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { getCollection } from "astro:content";
+import { getServiceTypes } from "../../../lib/cached-content";
 
 const { section, brand, locale, key } = Astro.props
-
-const allServiceTypes = await getCollection('serviceTypes')
-const serviceTypes = allServiceTypes.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand))
+const serviceTypes = await getServiceTypes(brand)
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 

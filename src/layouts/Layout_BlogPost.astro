@@ -13,11 +13,11 @@ import { getCollection } from 'astro:content';
 import { Brands } from '../enums/brands';
 import { getLocaleString, getTranslationString } from '../lib/translations';
 import { getEntry } from 'astro:content';
+import { getBlogPosts } from '../lib/cached-content';
 
 const { content, locale , brand} = Astro.props;
 
-const allBlogPosts = await getCollection('blogPosts')
-const latestPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
+const latestPosts = await getBlogPosts(brand)
 const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => await getEntry('blogPosts', post.slug.current) ))
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---

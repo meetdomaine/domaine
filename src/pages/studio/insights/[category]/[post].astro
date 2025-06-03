@@ -1,13 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import LayoutBlogPost from '../../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../../enums/brands';
 import { getEntry } from 'astro:content';
+import { getBlogPosts } from '../../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const blogPosts = await getCollection('blogPosts')
-    return blogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === Brands.STUDIO).map((post) => {
+    const blogPosts = await getBlogPosts(Brands.STUDIO)
+    return blogPosts.map((post) => {
         return {
             params: { 
                 post: post.id, 

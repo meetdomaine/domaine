@@ -5,11 +5,12 @@ import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro'
 import { Brands } from '../../../../enums/brands';
 import { loadQuery } from '../../../../lib/sanity-load-query';
 import { projectGridFields, projectsGridQuery } from '../../../../lib/cms-queries';
+import { getServices } from '../../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const services = await getCollection('services')
-    return services.filter((service) => service.data.agencyBrands.some((brand) => brand.name === Brands.STUDIO)).map((service) => {
+    const services = await getServices(Brands.STUDIO)
+    return services.map((service) => {
         return {
             params: { service: service.id },
             props: { content: {...service.data} }

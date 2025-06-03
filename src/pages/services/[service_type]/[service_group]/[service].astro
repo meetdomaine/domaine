@@ -1,13 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import LayoutService from '../../../../layouts/Layout_Service.astro';
 import { Brands } from '../../../../enums/brands';
 import { getEntry } from 'astro:content';
+import { getServices } from '../../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const services = await getCollection('services')
-    return services.filter((service) => service.data.agencyBrands.some((brand) => brand.name === Brands.DOMAINE)).map((service) => {
+    const services = await getServices(Brands.DOMAINE)
+    return services.map((service) => {
         return {
             params: { 
                 service: service.id,

@@ -9,14 +9,13 @@ import { Translations } from '../lib/locales';
 import { getEntry } from 'astro:content';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
-import { getCollection } from 'astro:content';
+import { getProjects } from '../lib/cached-content';
 
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
 
 const { data: pageSettings } = await getEntry('projectsIndexSettings', brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine')
 
-const allProjects = await getCollection('projects')
-const brandProjects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
+const brandProjects = await getProjects(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
