@@ -11,7 +11,8 @@ const { brand, slug, locale } = Astro.props
 //     *[_type == "type_blogCategory" 
 //         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
 
-const categories = brand === Brands.STUDIO ? await getCollection('blogCategories_Studio') : await getCollection('blogCategories_Domaine')
+const allCategories = await getCollection('blogCategories')
+const categories = allCategories.filter((category) => category.data.postCount[brand] > 0)
 ---
 <div class="blog-filters">
     <a

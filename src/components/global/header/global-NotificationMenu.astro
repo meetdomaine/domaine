@@ -20,7 +20,9 @@ const monthOptions: UseDateTimeFormatOptions = {
 }
 
 const latestProjects = currentBrand.slug.current === "/studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
-const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
+
+const allBlogPosts = await getCollection('blogPosts')
+const latestBlogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
 
 const events = await getCollection('events')
 const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )

@@ -8,8 +8,8 @@ import { loadQuery } from '../../../../lib/sanity-load-query';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const categories = await getCollection('blogCategories_Studio')
-    return categories.map((category) => {
+    const categories = await getCollection('blogCategories')
+    return categories.filter((blogPost) => blogPost.data.postCount[Brands.STUDIO] > 0).map((category) => {
         return {
             params: { 
                 category: category.id
@@ -23,7 +23,7 @@ let blogCategoryContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { category } = Astro.params
-    const { data } = await getEntry('blogCategories_Studio', category)
+    const { data } = await getEntry('blogCategories', category)
     blogCategoryContent = data
 } else {
     const { content } = Astro.props
@@ -32,7 +32,6 @@ if (env.SERVER_RENDERING_ENABLED) {
 
 const pageSettings = await getEntry('pageSettings', 'page_blog-index-studio')
 const { data: blogPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`})
-// const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Studio', blogPost.slug.current)))
 ---
 <LayoutBlogIndex
     title={pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title}

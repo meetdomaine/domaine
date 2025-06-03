@@ -16,9 +16,9 @@ import { getEntry } from 'astro:content';
 
 const { content, locale , brand} = Astro.props;
 
-const blogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
-const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => brand === Brands.STUDIO ? await getEntry('blogPosts_Studio', post.slug.current) : await getEntry('blogPosts_Domaine', post.slug.current)  ))
-
+const allBlogPosts = await getCollection('blogPosts')
+const latestPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
+const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => await getEntry('blogPosts', post.slug.current) ))
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
@@ -43,7 +43,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         brand={brand}
     >
         <BlogPostSidebar 
-            latestPosts={blogPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
+            latestPosts={latestPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
             locale={locale}
             brand={brand}
         />

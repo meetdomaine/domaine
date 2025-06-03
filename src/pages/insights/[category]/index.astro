@@ -8,8 +8,8 @@ import { Brands } from '../../../enums/brands';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const categories = await getCollection('blogCategories_Domaine')
-    return categories.map((category) => {
+    const categories = await getCollection('blogCategories')
+    return categories.filter((category) => category.data.postCount[Brands.DOMAINE] > 0).map((category) => {
         return {
             params: { category: category.id },
             props: { content: {...category.data} }
@@ -21,7 +21,7 @@ let blogCategoryContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { category } = Astro.params
-    const { data } = await getEntry('blogCategories_Domaine', category)
+    const { data } = await getEntry('blogCategories', category)
     blogCategoryContent = data
 } else {
     const { content } = Astro.props
@@ -29,7 +29,6 @@ if (env.SERVER_RENDERING_ENABLED) {
 }
 
 const { data: blogPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`})
-// const blogPosts = await Promise.all(blogCategoryContent.posts.map(async (blogPost) => await getEntry('blogPosts_Domaine', blogPost.slug.current)))
 ---
 <LayoutBlogIndex
     blogPosts={blogPosts}
@@ -39,5 +38,6 @@ const { data: blogPosts } = await loadQuery({ query: `*[_type == "type_blog" && 
     heading={blogCategoryContent.title}
     subheading={blogCategoryContent.heading}
     slug={blogCategoryContent.slug}
+    brand={Brands.DOMAINE}
 />
 

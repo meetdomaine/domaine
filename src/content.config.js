@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { agencyBrandsQuery, blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, locationsQuery, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
 import {sanityClient} from "sanity:client"
 import { loadQuery } from './lib/sanity-load-query';
+import { Brands } from './enums/brands';
 
 
 // Services
@@ -52,25 +53,23 @@ const serviceTypes = defineCollection({
 })
 
 // Blog Posts
-const query_BlogPost = `
-  ..., 
-  _id,
-  slug,
-  authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-  postDate,
-  thumbnailImage{${imageFields}},
-  category->{..., slug{...} }, 
-  body{..., richContent[]{${richContentFields}} },
-  services[]->{...},
-  agencyBrand->{slug},
-  globalSections{ sections[]{${globalSectionsFields}} },
-  metafields{ title, description, image{${imageBaseFields}} },
-  "relatedPosts": *[_type == "type_blog" && agencyBrand->name == ^.agencyBrand->name && category._ref == ^.category->._id && isHidden != true && _id != ^._id ]{ _id, slug, postDate } | order(postDate desc)
-`
-
-const blogPosts_Domaine = defineCollection({
+const blogPosts = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == "Domaine" ]{${query_BlogPost}} | order(postDate desc)`})
+    const { data } = await loadQuery({ query: `*[_type == "type_blog" ]{
+      ..., 
+      _id,
+      slug,
+      authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+      postDate,
+      thumbnailImage{${imageFields}},
+      category->{..., slug{...} }, 
+      body{..., richContent[]{${richContentFields}} },
+      services[]->{...},
+      agencyBrand->{slug, name },
+      globalSections{ sections[]{${globalSectionsFields}} },
+      metafields{ title, description, image{${imageBaseFields}} },
+      "relatedPosts": *[_type == "type_blog" && agencyBrand->name == ^.agencyBrand->name && category._ref == ^.category->._id && isHidden != true && _id != ^._id ]{ _id, slug, postDate } | order(postDate desc)
+    } | order(postDate desc)`})
     return data.map((entry) => ({
         id: entry.slug.current,
         ...entry
@@ -78,39 +77,17 @@ const blogPosts_Domaine = defineCollection({
   }
 });
 
-const blogPosts_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == "Studio" ]{${query_BlogPost}} | order(postDate desc)`})
-    return data.map((entry) => ({
-        id: entry.slug.current,
-        ...entry
-    }))
-  }
-});
 
 // Blog Categories
-
-const blogCategories_Domaine = defineCollection({
-  // loader: sanityLoader({ query: `*[_type == 'type_service']{...}` })
+const blogCategories = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Domaine" && references(^._id)] ) > 0]{
+    const { data } = await loadQuery({ query: `*[_type == "type_blogCategory"]{
         ...,
         "posts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug, postDate } | order(postDate desc),
-        metafields{ title, description, image{${imageBaseFields}} }
-    } | order(title.text asc)`})
-    return data.map((entry) => ({
-        // id: entry._id,
-        id: entry.slug.current,
-        ...entry
-    }))
-  }
-});
-
-const blogCategories_Studio = defineCollection({
-  loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_blogCategory" && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "Studio" && references(^._id)] ) > 0]{
-        ...,
-        "posts": *[_type == "type_blog" && agencyBrand->name == "Studio" && references(^._id)]{ _id, slug, postDate } | order(postDate desc),
+        "postCount": {
+          "${Brands.DOMAINE}": count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
+          "${Brands.STUDIO}": count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+        },
         metafields{ title, description, image{${imageBaseFields}} }
     } | order(title.text asc)`})
     return data.map((entry) => ({
@@ -122,7 +99,6 @@ const blogCategories_Studio = defineCollection({
 });
 
 // Projects
-
 const projects_Domaine = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == "Domaine" && isHidden != true ]{${projectPageFields}} | order( orderRank asc)`})
@@ -604,10 +580,8 @@ export const collections = {
   services,
   serviceGroups,
   serviceTypes,
-  blogPosts_Domaine,
-  blogPosts_Studio,
-  blogCategories_Domaine,
-  blogCategories_Studio,
+  blogPosts,
+  blogCategories,
   projects_Domaine,
   projects_Studio,
   industries_Domaine,
