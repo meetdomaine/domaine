@@ -59,12 +59,9 @@ export default defineConfig({
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {
-    // define: {
-    //   "import.meta.env.HUBSPOT_PORTAL_ID": JSON.stringify(process.env.HUBSPOT_PORTAL_ID),
-    //   "import.meta.env.HUBSPOT_ACCESS_TOKEN": JSON.stringify(process.env.HUBSPOT_ACCESS_TOKEN),
-    //   "import.meta.env.GREENSOCK_AUTH_TOKEN": JSON.stringify(process.env.GREENSOCK_AUTH_TOKEN),
-    //   "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
-    // },
+    define: {
+      "import.meta.env.SANITY_API_READ_TOKEN": JSON.stringify(process.env.SANITY_API_READ_TOKEN),
+    },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
       // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
