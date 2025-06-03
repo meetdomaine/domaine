@@ -20,12 +20,12 @@ const PROD = process.env.PROD || env.PROD;
 console.log(PROD)
 
 // Get SANITY token from environment
-const SANITY_API_READ_TOKEN = process.env.SANITY_API_READ_TOKEN || env.SANITY_API_READ_TOKEN;
+const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN || env.PUBLIC_SANITY_API_READ_TOKEN;
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
 // console.log(SANITY_API_READ_TOKEN)
 
 // Debug environment variables
-console.log('SANITY_API_READ_TOKEN available:', !!SANITY_API_READ_TOKEN)
+console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
 
 export default defineConfig({
   integrations: [
@@ -71,8 +71,9 @@ export default defineConfig({
   site: 'https://meetdomaine.com/',
   vite: {
     define: {
-      "import.meta.env.SANITY_API_READ_TOKEN": JSON.stringify(SANITY_API_READ_TOKEN),
+      "import.meta.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(PUBLIC_SANITY_API_READ_TOKEN),
       "import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
+      "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.

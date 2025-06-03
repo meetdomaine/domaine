@@ -9,7 +9,7 @@
     "dev": "astro dev --host",
     "dev:content": "SERVER_RENDERING_ENABLED='true' npx astro build && npx wrangler pages dev ./dist",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/ && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
-    "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' SERVER_RENDERING_ENABLED='true' PUBLIC_SANITY_VISUAL_EDITING_ENABLED='true' astro build && cp public/.assetsignore dist/",
+    "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build && cp public/.assetsignore dist/",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "start": "astro dev",
     "preview": "astro preview",
