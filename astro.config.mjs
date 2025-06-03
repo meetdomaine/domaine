@@ -70,7 +70,7 @@ export default defineConfig({
   site: 'https://meetdomaine.com/',
   vite: {
     define: {
-      "import.meta.env.SANITY_API_READ_TOKEN": JSON.stringify(SANITY_API_READ_TOKEN),
+      "SANITY_API_READ_TOKEN": SANITY_API_READ_TOKEN,
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
