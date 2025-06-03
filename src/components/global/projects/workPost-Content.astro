@@ -25,6 +25,7 @@ const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_pro
       title={content.title}
       heroMedia={content.heroMedia}
       accentColor={content.accentColor}
+      brand={brand}
       locale={locale}
   />
 
@@ -36,11 +37,12 @@ const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_pro
       metrics={content.metrics}
       agencyBrand={content.agencyBrand.slug.current}
       theme={content.foregroundColor === "light" ? "glass-dark" : "glass-light"}
+      brand={brand}
       locale={locale}
   />
 
   {content.sections && content.sections.map((section, i) => (
-      <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
+      <GlobalSections brand={brand} section={section} key={i} locale={locale} />
   ))}
 
   <WorkPostDetails
@@ -50,6 +52,7 @@ const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_pro
       features={content.features}
       partners={content.partners}
       metrics={content.metrics}
+      brand={brand}
       agencyBrand={content.agencyBrand.slug.current}
       theme={content.foregroundColor === "light" ? "light" : "dark"}
       locale={locale}

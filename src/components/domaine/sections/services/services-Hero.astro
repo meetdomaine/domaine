@@ -1,11 +1,12 @@
 ---
+import { Brands } from "../../../../enums/brands"
 import AtomCounter from "../../../global/atoms/atom-counter.astro"
 import { getCollection } from "astro:content"
 
-const { title, heading, locale } = Astro.props
+const { title, heading, locale, brand } = Astro.props
 const serviceTypes = await getCollection('serviceTypes_Domaine')
-const services = await getCollection('services_Domaine')
-const serviceCount = services.length
+const services = await getCollection('services')
+const serviceCount = services.filter((service) => service.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand)).length
 ---
 <section class="services-hero">
     <div class="section-title">

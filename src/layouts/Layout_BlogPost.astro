@@ -37,10 +37,15 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         locale={locale}
     />
     
-    <BlogPostBody content={content.body} locale={locale}>
+    <BlogPostBody 
+        content={content.body} 
+        locale={locale}
+        brand={brand}
+    >
         <BlogPostSidebar 
             latestPosts={blogPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
             locale={locale}
+            brand={brand}
         />
     </BlogPostBody>
 

@@ -5,8 +5,9 @@ import AtomButton from "../atoms/atom-button.astro"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { getRawSvg } from "../../../lib/raw-svg"
+import { Brands } from "../../../enums/brands"
 
-const { url, client, services, partners, features, metrics, theme, agencyBrand, locale } = Astro.props
+const { url, client, services, partners, features, metrics, theme, agencyBrand, locale, brand } = Astro.props
 const logo = getRawSvg(client.logo)
 ---
 <section class="work-post_details">
@@ -42,7 +43,7 @@ const logo = getRawSvg(client.logo)
                     {services.map((service) => (
                         <AtomTag 
                             text={getTranslationString(service.title, locale)}
-                            url={getLocaleUrl(`${agencyBrand === "studio" ? "/studio" : ""}/work/services/${service.slug.current}`, locale)}
+                            url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio" : ""}/work/services/${service.slug.current}`, locale)}
                             theme={theme === "light" ? "glass-dark" : "glass-light"}
                         />
                     ))}
@@ -57,7 +58,7 @@ const logo = getRawSvg(client.logo)
                     {features.map((feature) => (
                         <AtomTag 
                             text={getTranslationString(feature.title, locale)}
-                            url={getLocaleUrl(`${agencyBrand === "studio" ? "/studio" : ""}/work/features/${feature.slug.current}`, locale)}
+                            url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio" : ""}/work/features/${feature.slug.current}`, locale)}
                             theme={theme === "light" ? "glass-dark" : "glass-light"}
                         />
                     ))}
