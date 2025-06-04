@@ -4,8 +4,9 @@ import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
-import { getEntry } from 'astro:content';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
+import { loadQuery } from '../lib/sanity-load-query';
+import { richContentFields, imageBaseFields } from '../lib/cms-queries';
 
 interface Props {
 	title: string,
@@ -26,8 +27,24 @@ interface Props {
 
 const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
-const { data: brandSettings } = await getEntry('brandSettings', Brands.STUDIO)
-const { data: footerSettings } = await getEntry('footerSettings', 'settings_footer--studio')
+const { data: brandSettingsData } = await loadQuery({ 
+  query: `*[_type == "type_agencyBrand" && name == $brand ][0]{
+    ..., 
+    cookieNoticeText{ 
+      ..., 
+      richContent[]{${richContentFields}}
+    },
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`,
+  params: { brand: Brands.STUDIO }
+})
+
+const { data: footerSettingsData } = await loadQuery({ 
+  query: `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`
+})
+
+const brandSettings = brandSettingsData
+const footerSettings = footerSettingsData
 ---
 <LayoutGlobal
     title={`${title ? title : "Domaine Studio"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}

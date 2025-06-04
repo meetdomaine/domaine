@@ -185,10 +185,10 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultProjects}>{project => 
                                     <ProjectCard
-                                        url={`${project.data.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.id}`} 
-                                        title={project.data.title} 
-                                        image={urlFor(project.data.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
-                                        alt={project.data.thumbnailMedia.image.alt} 
+                                        url={`${project.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.slug.current}`} 
+                                        title={project.title} 
+                                        image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
+                                        alt={project.thumbnailMedia.image.alt} 
                                         />
                                 }</For>
                             }
@@ -217,13 +217,13 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultBlogPosts}>{post => 
                                     <BlogCard 
-                                        url={`${post.data.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.data.category.slug.current}/${post.id}`} 
-                                        // title={getTranslationString(post.data.title, props.locale)}
-                                        title={post.data.title}
-                                        categoryTitle={getTranslationString(post.data.category.title, props.locale)}
-                                        categoryUrl={`/insights/${post.data.category.slug.current}`}
-                                        image={urlFor(post.data.thumbnailImage.image).width(300).height(300).auto('format').url()} 
-                                        alt={post.data.thumbnailImage.image.alt} 
+                                        url={`${post.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.category.slug.current}/${post.slug.current}`} 
+                                        // title={getTranslationString(post.title, props.locale)}
+                                        title={post.title}
+                                        categoryTitle={getTranslationString(post.category.title, props.locale)}
+                                        categoryUrl={`/insights/${post.category.slug.current}`}
+                                        image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} 
+                                        alt={post.thumbnailImage.image.alt} 
                                         locale={props.locale}
                                         localizeTitle={true}
                                     />
@@ -249,8 +249,8 @@ export default function SearchMenu(props) {
                             :
                                 <For each={props.defaultFeatures}>{feature => 
                                     <FeatureCard 
-                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.id}`} 
-                                        title={getTranslationString(feature.data.title, props.locale)} 
+                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.slug.current}`} 
+                                        title={getTranslationString(feature.title, props.locale)} 
                                         locale={props.locale}
                                     />
                                 }</For>
@@ -277,11 +277,11 @@ export default function SearchMenu(props) {
                                 :
                                 <For each={props.defaultPartners}>{partner => 
                                     <PartnerCard 
-                                        url={`/partners/${partner.id}`} 
-                                        title={partner.data.title}
-                                        icon={urlFor(partner.data.icon.image).auto('format').width(300).height(300).url()}
-                                        alt={partner.data.icon.alt} 
-                                        excerpt={getTranslationString(partner.data.excerpt, props.locale)}
+                                        url={`/partners/${partner.slug.current}`} 
+                                        title={partner.title}
+                                        icon={urlFor(partner.icon.image).auto('format').width(300).height(300).url()}
+                                        alt={partner.icon.alt} 
+                                        excerpt={getTranslationString(partner.excerpt, props.locale)}
                                     />
                                 }</For>
                             }

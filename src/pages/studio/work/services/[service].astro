@@ -1,6 +1,4 @@
 ---
-import { getEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields, projectsGridQuery } from '../../../../lib/cms-queries';
@@ -12,29 +10,29 @@ export async function getStaticPaths() {
     const services = await getServices(Brands.STUDIO)
     return services.map((service) => {
         return {
-            params: { service: service.id },
-            props: { content: {...service.data} }
+            params: { service: service.slug.current },
+            props: { content: service }
         }
     })
 }
 
 let serviceContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
     const { service } = Astro.params
-    const { data } = await getEntry('services', service)
-    serviceContent = data
+    const services = await getServices(Brands.STUDIO)
+    serviceContent = services.find(s => s.slug.current === service)
 } else {
     const { content } = Astro.props
     serviceContent = content
 }
 
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceContent.id}' in services[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceContent.slug.current}' in services[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
 ---
 <LayoutProjectsIndex
     content={serviceContent}
     projects={projects}
-    currentPath={`/services/${serviceContent.id}`}
+    currentPath={`/services/${serviceContent.slug.current}`}
     brand={Brands.STUDIO}
 />

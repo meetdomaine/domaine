@@ -1,6 +1,5 @@
 ---
 import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
-import { getEntry } from 'astro:content';
 import { Brands } from '../../../enums/brands';
 import { getBlogPosts } from '../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
@@ -10,11 +9,11 @@ export async function getStaticPaths() {
     return blogPosts.map((post) => {
         return {
             params: { 
-                post: post.id, 
-                category: post.data.category.slug.current 
+                post: post.slug.current, 
+                category: post.category.slug.current 
             },
             props: { 
-                content: {...post.data} 
+                content: post 
             }
         }
     })
@@ -22,10 +21,10 @@ export async function getStaticPaths() {
 
 let blogPostContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
     const { post, category } = Astro.params
-    const { data } = await getEntry('blogPosts', post)
-    blogPostContent = data
+    const blogPosts = await getBlogPosts(Brands.DOMAINE)
+    blogPostContent = blogPosts.find(p => p.slug.current === post)
 } else {
     const { content } = Astro.props
     blogPostContent = content

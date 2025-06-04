@@ -23,9 +23,9 @@ const serviceTypes = await getServiceTypes(brand)
                         data-animate-viewport="true"
                         data-animation="fade"
                         data-slug={serviceType.id}
-                        href={serviceType.data.isHidden ? null : `/services/${serviceType.id}`}
+                        href={serviceType.isHidden ? null : `/services/${serviceType.slug.current}`}
                     >
-                        {locale && serviceType.data.title?.translations?.[locale] ? serviceType.data.title?.translations?.[locale] : serviceType.data.title.text}
+                        {locale && serviceType.title?.translations?.[locale] ? serviceType.title?.translations?.[locale] : serviceType.title.text}
                         
                         {/* <Icon name="arrow-diagonal" class="service-type__icon" /> */}
                     </a>
@@ -36,7 +36,7 @@ const serviceTypes = await getServiceTypes(brand)
                             data-slug={serviceType.id}
                             data-active="false"
                         >
-                            {serviceType.data.serviceGroups.map((serviceGroup) => (
+                            {serviceType.serviceGroups.map((serviceGroup) => (
                                 <div class="service-type__group">
                                     <div class="service-type__services">
                                         <a 
@@ -54,14 +54,14 @@ const serviceTypes = await getServiceTypes(brand)
                             ))}
                         </div>
                     </div>
-                    <div class="service-type__description body">{locale && serviceType.data.excerpt?.translations?.[locale] ? serviceType.data.excerpt.translations[locale] : serviceType.data.excerpt.text}</div>
+                    <div class="service-type__description body">{locale && serviceType.excerpt?.translations?.[locale] ? serviceType.excerpt.translations[locale] : serviceType.excerpt.text}</div>
                 </div>
                 <div class="section-media"
                     data-animate-viewport="true"
                     data-animation="fade"
                     data-animation-delay={400}
                 >
-                    {serviceType.data.images.slice(0, 4).map((imageObject) => (
+                    {serviceType.images.slice(0, 4).map((imageObject) => (
                         <div 
                             class="service-image"
                         >

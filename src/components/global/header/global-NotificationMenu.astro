@@ -5,10 +5,9 @@ import AtomCounter from "../atoms/atom-counter.astro"
 import GlobalBlogTile from "../blog/global-BlogTile.astro"
 import type { UseDateTimeFormatOptions } from "sanity"
 import { checkDateIsPast } from "../../../lib/check-date-is-past"
-import { Translations } from "../../../lib/locales"
 import { getLocaleString, getLocaleUrl, getTranslationString } from "../../../lib/translations"
-import { getCollection } from "astro:content"
-import { getProjects, getBlogPosts } from "../../../lib/cached-content"
+import { getProjects, getBlogPosts, getEvents, getCareers } from "../../../lib/cached-content"
+
 const {
   content,
   currentBrand, 
@@ -23,9 +22,9 @@ const monthOptions: UseDateTimeFormatOptions = {
 const latestProjects = await getProjects(brand)
 const latestBlogPosts = await getBlogPosts(brand)
 
-const events = await getCollection('events')
-const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )
-const allCareers = await getCollection('careers');
+const events = await getEvents()
+const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
+const allCareers = await getCareers()
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
@@ -45,9 +44,9 @@ const allCareers = await getCollection('careers');
   <div class="latest-projects">
     {latestProjects.slice(0,2).map((project) => (
       <AtomNotificationLink 
-        title={project.data.title}
-        url={getLocaleUrl(`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.data.slug.current}`, locale)}
-        image={project.data.thumbnailMedia.image ? project.data.thumbnailMedia.image : project.data.thumbnailImageSecondary.image}
+        title={project.title}
+        url={getLocaleUrl(`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.slug.current}`, locale)}
+        image={project.thumbnailMedia.image ? project.thumbnailMedia.image : project.thumbnailImageSecondary.image}
       />
     ))}
   </div>
@@ -85,16 +84,16 @@ const allCareers = await getCollection('careers');
       {upcomingEvents.map((event) => (
         <a 
           class="event-info color-reset" 
-          href={getLocaleUrl(`/events/${event.id}`, locale)} 
+          href={getLocaleUrl(`/events/${event.slug.current}`, locale)} 
           data-color-scheme="default"
         >
           <div class="event-date">
-            <p class="event-month caption">{new Intl.DateTimeFormat(locale ? locale : "en-us", monthOptions).format(new Date(event.data.dateTime))}</p>
-            <p class="event-day h4">{new Date(event.data.dateTime).getDate()}</p>
+            <p class="event-month caption">{new Intl.DateTimeFormat(locale ? locale : "en-us", monthOptions).format(new Date(event.dateTime))}</p>
+            <p class="event-day h4">{new Date(event.dateTime).getDate()}</p>
           </div>
           <div class="event-details">
-            <p class="event-title">{getTranslationString(event.data.title)}</p>
-            <p class="event-location caption">{getTranslationString(event.data.location, locale)}</p>
+            <p class="event-title">{getTranslationString(event.title)}</p>
+            <p class="event-location caption">{getTranslationString(event.location, locale)}</p>
           </div>
         </a>
       ))}
@@ -133,7 +132,7 @@ const allCareers = await getCollection('careers');
     <p class="blog-posts-heading caption">{getLocaleString("INSIGHTS")}</p>
     {latestBlogPosts.slice(0,2).map((blogPost) => (
       <GlobalBlogTile 
-        post={blogPost.data}
+        post={blogPost}
         currentBrand={currentBrand}
         locale={locale}
       />

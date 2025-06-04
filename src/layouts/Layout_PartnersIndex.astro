@@ -5,14 +5,34 @@ import TextHeading from '../components/global/sections/section-TextHeading.astro
 import PartnersIndexTier from '../components/global/partners/partnersIndex-tier.astro';
 import SectionForm from '../components/global/sections/section-Form.astro';
 import MediaFullbleed from '../components/global/sections/section-MediaFullbleed.astro';
-import { getCollection } from 'astro:content';
-import { getEntry } from 'astro:content';
 import { getTranslationString } from '../lib/translations';
+import { loadQuery } from '../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
+import { getPartners } from '../lib/cached-content';
+import { Brands } from '../enums/brands';
 
-const partnerTiers =  await getCollection('partnerTiers')
-const partners = await getCollection('partners')
+const partnerTiers = await sanityClient.fetch(`*[_type == "type_partnerTier"]{ 
+  ...,
+  "partners": *[_type == "type_partner" && references(^._id)]{
+    ${partnerTileFields} 
+  } | order(orderRank),
+} | order(orderRank)`)
 
-const { data: pageSettings } = await getEntry('partnersIndexSettings', 'partnersIndex')
+const partners = await getPartners(Brands.DOMAINE)
+
+const { data: pageSettings } = await loadQuery({ 
+  query: `*[_type == "page_partners-index"][0] { 
+    _id,
+    title, 
+    heading, 
+    heroMedia{${videoFields}}, 
+    text, 
+    formHeading, 
+    formText, 
+    hubspotFormId,
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+})
 const { locale } = Astro.props
 ---
 <LayoutDomaine
@@ -39,7 +59,7 @@ const { locale } = Astro.props
     <div class="partner-tiers">
         {partnerTiers.map((tier) => (
             <PartnersIndexTier 
-                tier={tier.data}
+                tier={tier}
                 locale={locale}
             />
         ))}

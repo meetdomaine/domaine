@@ -57,7 +57,8 @@ const formattedDate = formatDate(postDate);
     />
     {postDate && <p class="date caption">{formattedDate}</p>}
   </div>
-  {!env.DEV &&
+  <!-- TODO: Add preload -->
+  <!-- {!env.DEV &&
     <link
       rel="preload"
       href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl}
@@ -65,7 +66,7 @@ const formattedDate = formatDate(postDate);
       crossorigin="anonymous"
       type=""
     />
-  }
+  } -->
 </article>
 
 <style>

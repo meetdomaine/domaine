@@ -20,7 +20,7 @@ const serviceCount = services.length
                     class="serviceType-jumplink" 
                     data-slug={serviceType.id}
                 >
-                    {locale && serviceType.data.title.translations?.[locale] ? serviceType.data.title.translations[locale] : serviceType.data.title.text}
+                    {locale && serviceType.title.translations?.[locale] ? serviceType.title.translations[locale] : serviceType.title.text}
                 </button>
             ))}
         </div>

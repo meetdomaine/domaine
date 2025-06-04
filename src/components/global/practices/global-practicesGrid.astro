@@ -1,11 +1,17 @@
 ---
-import { getCollection } from "astro:content";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import { Icon } from "astro-icon/components";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { sanityClient } from "sanity:client";
+import { agencyBrandsQuery, imageFields } from "../../../lib/cms-queries";
 
-const agencyBrands = await getCollection('agencyBrands')
-const locations = await getCollection('locations')
+const agencyBrands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`)
+const locations = await sanityClient.fetch(`*[_type == "type_location"]{
+  ...,
+  agencyBrand->{slug},
+  images[]{${imageFields}},
+  metafields{ title, description, image{crop, asset->{_id, metadata}, hotspot} },
+} | order(orderRank)`)
 
 const { locale } = Astro.props
 ---
@@ -15,8 +21,8 @@ const { locale } = Astro.props
       <div class="brand-media">
         <AtomSanityMedia 
           sizes="50vw"
-          image={agencyBrands[0].data.thumbnailMedia.image}
-          video={agencyBrands[0].data.thumbnailMedia.video}
+          image={agencyBrands[0].thumbnailMedia.image}
+          video={agencyBrands[0].thumbnailMedia.video}
           aspectRatio={1 / 1}
           cover={true}
         />
@@ -27,7 +33,7 @@ const { locale } = Astro.props
         </div>
         <div class="brand-text">
           <p class="brand-name caption">Domaine</p>
-          <p class="brand-heading h5">{locale && agencyBrands[0].data.excerpt.translations?.[locale] ? agencyBrands[0].data.excerpt.translations[locale] : agencyBrands[0].data.excerpt.text}</p>
+          <p class="brand-heading h5">{locale && agencyBrands[0].excerpt.translations?.[locale] ? agencyBrands[0].excerpt.translations[locale] : agencyBrands[0].excerpt.text}</p>
         </div>
       </div>
     </a>
@@ -40,8 +46,8 @@ const { locale } = Astro.props
         <div class="locations-list">
           {locations.map((location) => (
             <div class="location">
-                <p class="city caption">{location.data.city}</p>
-                {location.data.country && <p class="country caption">{location.data.country}</p>}
+                <p class="city caption">{location.city}</p>
+                {location.country && <p class="country caption">{location.country}</p>}
                 {/* <Icon name="icon-globe-outline" class="location-time" /> */}
             </div>
           ))}
@@ -53,8 +59,8 @@ const { locale } = Astro.props
         <div class="brand-media">
           <AtomSanityMedia 
             sizes="50vw"
-            image={agencyBrands[1].data.thumbnailMedia.image}
-            video={agencyBrands[1].data.thumbnailMedia.video}
+            image={agencyBrands[1].thumbnailMedia.image}
+            video={agencyBrands[1].thumbnailMedia.video}
             aspectRatio={4 / 3}
             cover={true}
           />
@@ -65,7 +71,7 @@ const { locale } = Astro.props
           </div>
           <div class="brand-text">
             <p class="brand-name caption">Domaine Studio</p>
-            <p class="brand-heading h6">{locale && agencyBrands[1].data.excerpt.translations?.[locale] ? agencyBrands[1].data.excerpt.translations[locale] : agencyBrands[1].data.excerpt.text}</p>
+            <p class="brand-heading h6">{locale && agencyBrands[1].excerpt.translations?.[locale] ? agencyBrands[1].excerpt.translations[locale] : agencyBrands[1].excerpt.text}</p>
           </div>
         </div>
       </a>

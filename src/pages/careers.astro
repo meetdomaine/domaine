@@ -6,14 +6,15 @@ import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { imageBaseFields, urlFor } from '../lib/cms-queries';
-import { getCollection } from 'astro:content';
 
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,
   metafields{ title, description, image{${imageBaseFields}} },
 }[0]`)
 
-const allCareers = await getCollection('careers');
+// Fetch careers from Rippling API
+const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
+const allCareers = await careersResponse.json();
 ---
 <LayoutDomaine
     searchFilter="type:page"
@@ -38,19 +39,19 @@ const allCareers = await getCollection('careers');
       {allCareers.length > 0 ?
         allCareers.map((role) => (
           <div class="role-card">
-            {role.data.department && 
-              <AtomTag text={role.data.department.label} />
+            {role.department && 
+              <AtomTag text={role.department.label} />
             }
-            <p class="h3" >{role.data.name}</p>
+            <p class="h3" >{role.name}</p>
             <div class="role-details">
               <AtomButton
                 text="Learn More"
-                url={role.data.url}
+                url={role.url}
                 newTab={true}
               />
               <div class="location">
                 <Icon name="icon-pin" class="location-icon" />
-                {role.data.workLocation && <p>{role.data.workLocation.label}</p>}
+                {role.workLocation && <p>{role.workLocation.label}</p>}
               </div>
             </div>
           </div>
