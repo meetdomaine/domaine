@@ -12,6 +12,7 @@ import { getCollection } from "astro:content";
 import { getEntry } from "astro:content";
 import { Translations } from "../../../lib/locales";
 import { getBlogPosts } from "../../../lib/cached-content";
+import { loadQuery } from "../../../lib/sanity-load-query";
 
 const { section, brand, heading, subheading, posts, sidebarTitle, locale } = Astro.props
 
@@ -21,8 +22,8 @@ let featuredPostDate
 let sidebarTitleText
 
 if (section?.featuredCategory) {
-    const category = await getEntry('blogCategories', section.featuredCategory.slug.current)
-    blogPosts = await Promise.all(category.data.posts.map(async (post) => await getEntry('blogPosts', post.slug.current)))
+    const { data: categoryPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && category->slug.current == '${section.featuredCategory.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}}, postDate }|order(data.postDate desc)`})
+    blogPosts = categoryPosts
     sidebarTitleText = sidebarTitle ? sidebarTitle : section.featuredCategory.title
 } else if (posts) {
     blogPosts = posts
