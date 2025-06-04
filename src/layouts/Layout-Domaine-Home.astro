@@ -8,7 +8,7 @@ import { Brands } from "../enums/brands";
 import { loadQuery } from "../lib/sanity-load-query";
 
 const { locale } = Astro.props;
-const { data: pageSettings } = await loadQuery({ 
+const { data: pageSettings } = await loadQuery({
   query: `*[_type == "page_home-domaine"][0]{
     ...,
     globalSections{ sections[]{${globalSectionsFields}} }, 
