@@ -12,7 +12,7 @@ import { loadEnv } from "vite";
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 // Try to get the variable from Cloudflare first, then fall back to local env
-const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || env.SERVER_RENDERING_ENABLED;
+const SERVER_RENDERING_ENABLED = process.env.PUBLIC_SERVER_RENDERING_ENABLED || env.PUBLIC_SERVER_RENDERING_ENABLED;
 const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
 console.log(`RENDER MODE: ${renderMode}`);
 
