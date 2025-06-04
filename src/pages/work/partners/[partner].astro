@@ -5,11 +5,12 @@ import { getEntry } from 'astro:content';
 import { loadQuery } from '../../../lib/sanity-load-query';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
+import { getPartners } from '../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const partners = await getCollection('partners')
-    return partners.filter((partner) => partner.data.projectCount[Brands.DOMAINE] > 0).map((partner) => {
+    const partners = await getPartners(Brands.DOMAINE)
+    return partners.map((partner) => {
         return {
             params: { partner: partner.id },
             props: { content: {...partner.data} }

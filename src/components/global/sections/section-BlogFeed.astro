@@ -28,8 +28,7 @@ if (section?.featuredCategory) {
     blogPosts = posts
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 } else {
-    const allBlogPosts = await getCollection('blogPosts')
-    blogPosts = getBlogPosts(brand)
+    blogPosts = await getBlogPosts(brand)
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 }
 

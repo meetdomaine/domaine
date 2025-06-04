@@ -16,6 +16,9 @@ export async function getStaticPaths() {
     })
 }
 
+const test = await getCollection('pages')
+console.log(test.map((page) => page.data._type))
+
 let pageContent
 
 if (env.SERVER_RENDERING_ENABLED) {

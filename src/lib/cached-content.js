@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content"
+import { Brands } from "../enums/brands"
 
 let _serviceTypes = {}
 let _serviceGroups = {}
@@ -10,6 +11,10 @@ let _blogPosts = {}
 let _projects = {}
 let _projectFeatures = {}
 let _projectIndustries = {}
+
+let _pages = {}
+
+let _partners = {}
 
 
 // Services
@@ -79,3 +84,20 @@ export const getProjectIndustries = async (brand) => {
   return projectIndustries
 }
 
+// Pages
+export const getPages = async (brand) => {
+  if (_pages[brand]) return _pages[brand]
+  const allPages = await getCollection('pages')
+  const pages = allPages.filter((page) => page.data._type === (brand === Brands.STUDIO ? 'page_studio-general' :  'page_general') )
+  _pages[brand] = pages
+  return pages
+}
+
+// Partners
+export const getPartners = async (brand) => {
+  if (_partners[brand]) return _partners[brand]
+  const allPartners = await getCollection('partners')
+  const partners = allPartners.filter((partner) => partner.data.projectCount[brand] > 0)
+  _partners[brand] = partners
+  return partners
+}
