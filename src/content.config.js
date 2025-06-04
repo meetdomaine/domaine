@@ -66,7 +66,6 @@ const blogPosts = defineCollection({
       agencyBrand->{slug, name },
       globalSections{ sections[]{${globalSectionsFields}} },
       metafields{ title, description, image{${imageBaseFields}} },
-      "relatedPosts": *[_type == "type_blog" && agencyBrand->name == ^.agencyBrand->name && category._ref == ^.category->._id && isHidden != true && _id != ^._id ]{ _id, slug, postDate } | order(postDate desc)
     } | order(postDate desc)`})
     return data.map((entry) => ({
         id: entry.slug.current,

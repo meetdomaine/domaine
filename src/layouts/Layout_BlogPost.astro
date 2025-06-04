@@ -7,18 +7,23 @@ import BlogPostHero from '../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../components/global/blog/blog-PostAuthors.astro';
 import BlogPostSidebar from '../components/global/blog/blog-Post-Sidebar.astro';
 import GlobalSections from '../components/global/sections/section-GlobalSections.astro';
-import { urlFor } from '../lib/cms-queries';
+import { blogCardFields, urlFor } from '../lib/cms-queries';
 import { Translations } from '../lib/locales';
-import { getCollection } from 'astro:content';
 import { Brands } from '../enums/brands';
 import { getLocaleString, getTranslationString } from '../lib/translations';
-import { getEntry } from 'astro:content';
 import { getBlogPosts } from '../lib/cached-content';
+import { loadQuery } from '../lib/sanity-load-query';
 
 const { content, locale , brand} = Astro.props;
 
 const latestPosts = await getBlogPosts(brand)
-const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => await getEntry('blogPosts', post.slug.current) ))
+
+const { data: relatedPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{
+    "id": slug.current,
+    "data": {${blogCardFields}},
+    postDate
+} | order(postDate desc)`})
+
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
