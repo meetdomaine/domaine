@@ -1,15 +1,15 @@
 ---
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
-import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import { loadQuery } from '../../../lib/sanity-load-query';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
+import { getProjectIndustries } from '../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const industries = await getCollection('industries')
-    return industries.filter((industry) => industry.data.projectCount[Brands.DOMAINE] > 0).map((industry) => {
+    const industries = await getProjectIndustries(Brands.DOMAINE)
+    return industries.map((industry) => {
         return {
             params: { industry: industry.id },
             props: { content: {...industry.data} }

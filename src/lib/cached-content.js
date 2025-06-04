@@ -9,6 +9,7 @@ let _blogPosts = {}
 
 let _projects = {}
 let _projectFeatures = {}
+let _projectIndustries = {}
 
 
 // Services
@@ -69,3 +70,12 @@ export const getProjectFeatures = async (brand) => {
   _projectFeatures[brand] = projectFeatures
   return projectFeatures
 }
+
+export const getProjectIndustries = async (brand) => {
+  if (_projectIndustries[brand]) return _projectIndustries[brand]
+  const allProjectIndustries = await getCollection('industries')
+  const projectIndustries = allProjectIndustries.filter((industry) => industry.data.projectCount[brand] > 0)
+  _projectIndustries[brand] = projectIndustries
+  return projectIndustries
+}
+

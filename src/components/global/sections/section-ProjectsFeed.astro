@@ -13,7 +13,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = getProjects(brand)
+    feedProjects = await getProjects(brand)
 }
 
 
