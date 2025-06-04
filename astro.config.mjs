@@ -26,6 +26,7 @@ const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_ED
 
 // Debug environment variables
 console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
+console.log('PUBLIC_SANITY_VISUAL_EDITING_ENABLED available:', !!PUBLIC_SANITY_VISUAL_EDITING_ENABLED)
 
 export default defineConfig({
   integrations: [
