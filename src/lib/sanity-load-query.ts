@@ -8,6 +8,8 @@ const token = import.meta.env.PUBLIC_SANITY_API_READ_TOKEN
 // Debug logging (remove after fixing)
 if (visualEditingEnabled) {
   console.log('Visual editing enabled, token present:', !!token)
+} else {
+  console.log('NO VIZ ED')
 }
 
 export async function loadQuery<QueryResponse>({
