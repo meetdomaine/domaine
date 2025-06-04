@@ -5,7 +5,7 @@ import Footer from '../components/global/global-Footer.astro';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
 import { getEntry } from 'astro:content';
-// import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 
 interface Props {
 	title: string,
@@ -41,7 +41,7 @@ const { data: footerSettings } = await getEntry('footerSettings', 'settings_foot
     brand={Brands.STUDIO}
     indexSearch={indexSearch}
 >
-    <!-- {marketingHeader ? 
+    {marketingHeader ? 
         <GlobalMarketingHeader 
             brand={Brands.STUDIO}
             locale={locale}
@@ -54,14 +54,14 @@ const { data: footerSettings } = await getEntry('footerSettings', 'settings_foot
             searchExposed={searchExposed}
             brand={Brands.STUDIO}
         />
-    } -->
+    }
 
-    <Header
+    <!-- <Header
         currentBrand={brandSettings}
         activePath={activePath}
         searchExposed={searchExposed}
         brand={Brands.STUDIO}
-    />
+    /> -->
 
     <main>
         <slot />

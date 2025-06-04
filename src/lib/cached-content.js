@@ -29,7 +29,7 @@ export const getServiceTypes = async (brand) => {
 export const getServiceGroups = async (brand) => {
   if (_serviceGroups[brand]) return _serviceGroups[brand]
   const allServiceGroups = await getCollection('serviceGroups')
-  const serviceGroups = allServiceGroups.filter((serviceGroup) => serviceGroup.data.agencyBrands.some((brand) => brand.name === brand))
+  const serviceGroups = allServiceGroups.filter((serviceGroup) => serviceGroup.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand))
   _serviceGroups[brand] = serviceGroups
   return serviceGroups
 }
