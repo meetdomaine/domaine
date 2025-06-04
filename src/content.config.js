@@ -174,7 +174,7 @@ const features = defineCollection({
 // Agency Brands
 const agencyBrands = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`})
+    const data = await sanityClient.fetch(`*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`)
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
