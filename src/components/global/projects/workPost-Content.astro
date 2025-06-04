@@ -5,14 +5,12 @@ import SectionProjectsFeed from "../sections/section-ProjectsFeed.astro"
 import WorkPostAbout from "./workPost-About.astro"
 import WorkPostDetails from "./workPost-Details.astro"
 import WorkPostHero from "./workPost-Hero.astro"
-import { loadQuery } from "../../../lib/sanity-load-query"
-import { Brands } from "../../../enums/brands"
-import { getCollection } from "astro:content"
 import { projectGridFields } from "../../../lib/cms-queries"
+import { sanityClient } from "sanity:client"
 
 const { content, brand, locale } = Astro.props
 
-const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && industry->slug.current == '${content.industry.slug.current}' && slug.current != '${content.slug.current}' ]{${projectGridFields}} | order(orderRank)`})
+const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && industry->slug.current == '${content.industry.slug.current}' && slug.current != '${content.slug.current}' ]{${projectGridFields}} | order(orderRank)`)
 ---
 <div 
   class="project-content"

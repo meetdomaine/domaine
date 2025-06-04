@@ -10,15 +10,15 @@ import SectionBlogFeed from "../components/global/sections/section-BlogFeed.astr
 import SectionProjectsFeed from "../components/global/sections/section-ProjectsFeed.astro"
 import SectionForm from "../components/global/sections/section-Form.astro"
 import SectionGlobalSections from "../components/global/sections/section-GlobalSections.astro"
-import { loadQuery } from "../lib/sanity-load-query"
 import { blogCardFields, projectGridFields } from "../lib/cms-queries"
+import { sanityClient } from "sanity:client"
 
 const { content, locale, brand, activePath } = Astro.props;
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 
-const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
-const { data: relatedPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`})
+const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
+const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`)
 ---
 <BrandLayout
   title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getTranslationString(content.serviceGroup.title, locale)} | ${getTranslationString(content.serviceGroup.serviceType.title, locale)} ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}

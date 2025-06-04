@@ -14,13 +14,6 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
 }[0]`)
 
 const allCareers = await getCollection('careers');
-
-// const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
-// console.log(await careersResponse.json());
-const test = await getCollection('careers')
-// console.log(test)
-
-// TODO: Migrate to content collections
 ---
 <LayoutDomaine
     searchFilter="type:page"

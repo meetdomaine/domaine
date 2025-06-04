@@ -12,17 +12,17 @@ import { Translations } from '../lib/locales';
 import { Brands } from '../enums/brands';
 import { getLocaleString, getTranslationString } from '../lib/translations';
 import { getBlogPosts } from '../lib/cached-content';
-import { loadQuery } from '../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { content, locale , brand} = Astro.props;
 
 const latestPosts = await getBlogPosts(brand)
 
-const { data: relatedPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{
+const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{
     "id": slug.current,
     "data": {${blogCardFields}},
     postDate
-} | order(postDate desc)`})
+} | order(postDate desc)`)
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---

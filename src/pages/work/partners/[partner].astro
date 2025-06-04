@@ -1,11 +1,10 @@
 ---
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
-import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
-import { loadQuery } from '../../../lib/sanity-load-query';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
 import { getPartners } from '../../../lib/cached-content';
+import { sanityClient } from 'sanity:client';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
@@ -29,7 +28,7 @@ if (env.SERVER_RENDERING_ENABLED) {
     partnerContent = content
 }
 
-const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && '${partnerContent.id}' in partners[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && '${partnerContent.id}' in partners[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
 ---
 <LayoutProjectsIndex
 content={partnerContent}

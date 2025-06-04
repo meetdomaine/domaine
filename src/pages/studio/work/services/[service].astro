@@ -3,9 +3,9 @@ import { getEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
-import { loadQuery } from '../../../../lib/sanity-load-query';
 import { projectGridFields, projectsGridQuery } from '../../../../lib/cms-queries';
 import { getServices } from '../../../../lib/cached-content';
+import { sanityClient } from 'sanity:client';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
@@ -30,7 +30,7 @@ if (env.SERVER_RENDERING_ENABLED) {
 }
 
 
-const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceContent.id}' in services[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceContent.id}' in services[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
 ---
 <LayoutProjectsIndex
     content={serviceContent}

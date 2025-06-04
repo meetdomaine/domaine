@@ -7,13 +7,11 @@ import SectionGlobalSections from '../components/global/sections/section-GlobalS
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 import PartnerPostHero from '../components/global/partners/partnerPost-hero.astro';
 import { getLocaleString, getTranslationString } from '../lib/translations';
-import { Brands } from '../enums/brands';
-import { getEntry } from 'astro:content';
-import { loadQuery } from '../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { content, locale, brand } = Astro.props;
-const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
-const { data: blogPosts } = await loadQuery({ query: `*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`})
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`)
 ---
 <LayoutDomaine
     title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : content.title} | ${getLocaleString("PARTNER")}`}
