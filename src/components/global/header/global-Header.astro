@@ -17,28 +17,18 @@ import LogoStudio from '../../../icons/domaine-studio.svg'
 const { currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
 
 import SearchMenu from "./searchMenu/SearchMenu"
-import { 
-    getProjects_Domaine,
-    getProjectFeatures_Domaine,
-    getProjects_Studio,
-    getProjectFeatures_Studio,
-    getBlogPosts_Domaine,
-    getBlogPosts_Studio,
-    getPartners_Studio,
-    getPartners_Domaine,
-} from "../../../lib/cms-content"
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getEntry } from "astro:content";
 import { Brands } from "../../../enums/brands";
 import { getCollection } from "astro:content";
+import { getBlogPosts, getProjects, getProjectFeatures } from "../../../lib/cached-content";
 
-// TODO: Move to content collection
-const defaultBlogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine') 
-const defaultProjects = brand === Brands.STUDIO ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
-const defaultProjectFeatures = brand === Brands.STUDIO ? await getCollection('features_Studio') : await getCollection('features_Domaine')
-const defaultPartners = brand === Brands.STUDIO ? await getCollection('partners_Studio') : await getCollection('partners_Domaine')
+const defaultBlogPosts = await getBlogPosts(brand)
+const defaultProjects = await getProjects(brand)
+const defaultProjectFeatures = await getProjectFeatures(brand)
+const defaultPartners = await getCollection('partners')
 
-const { data: headerSettings } = await getEntry('pageSettings', brand === Brands.STUDIO ? 'headerSettings_Studio' : 'headerSettings_Domaine')
+const { data: headerSettings } = await getEntry('headerSettings', brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine')
 // console.log(headerSettings)
 ---
 <header id="header" data-color-scheme="glass-dark">

@@ -2,20 +2,15 @@
 import { Translations } from "../../../lib/locales"
 import GlobalSections from "../sections/section-GlobalSections.astro"
 import SectionProjectsFeed from "../sections/section-ProjectsFeed.astro"
-import { getProjects_Domaine, getProjects_Studio } from "../../../lib/cms-content"
 import WorkPostAbout from "./workPost-About.astro"
 import WorkPostDetails from "./workPost-Details.astro"
 import WorkPostHero from "./workPost-Hero.astro"
-import { loadQuery } from "../../../lib/sanity-load-query"
-import { Brands } from "../../../enums/brands"
-import { getCollection } from "astro:content"
 import { projectGridFields } from "../../../lib/cms-queries"
+import { sanityClient } from "sanity:client"
 
 const { content, brand, locale } = Astro.props
 
-const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && industry->slug.current == '${content.industry.slug.current}' && slug.current != '${content.slug.current}' ]{${projectGridFields}} | order(orderRank)`})
-// const allProjects = brand === Brands.STUDIO ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
-// const relatedProjects = allProjects.filter((project) => project.industry.slug.current === content.industry.slug.current && project.slug.current !== content.slug.current)
+const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && industry->slug.current == '${content.industry.slug.current}' && slug.current != '${content.slug.current}' ]{${projectGridFields}} | order(orderRank)`)
 ---
 <div 
   class="project-content"
@@ -26,6 +21,7 @@ const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_pro
       title={content.title}
       heroMedia={content.heroMedia}
       accentColor={content.accentColor}
+      brand={brand}
       locale={locale}
   />
 
@@ -37,11 +33,12 @@ const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_pro
       metrics={content.metrics}
       agencyBrand={content.agencyBrand.slug.current}
       theme={content.foregroundColor === "light" ? "glass-dark" : "glass-light"}
+      brand={brand}
       locale={locale}
   />
 
   {content.sections && content.sections.map((section, i) => (
-      <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
+      <GlobalSections brand={brand} section={section} key={i} locale={locale} />
   ))}
 
   <WorkPostDetails
@@ -51,6 +48,7 @@ const { data: relatedProjects } = await loadQuery({ query: `*[_type == "type_pro
       features={content.features}
       partners={content.partners}
       metrics={content.metrics}
+      brand={brand}
       agencyBrand={content.agencyBrand.slug.current}
       theme={content.foregroundColor === "light" ? "light" : "dark"}
       locale={locale}

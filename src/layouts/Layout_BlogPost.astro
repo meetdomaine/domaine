@@ -7,17 +7,22 @@ import BlogPostHero from '../components/global/blog/blog-PostHero.astro';
 import BlogPostAuthors from '../components/global/blog/blog-PostAuthors.astro';
 import BlogPostSidebar from '../components/global/blog/blog-Post-Sidebar.astro';
 import GlobalSections from '../components/global/sections/section-GlobalSections.astro';
-import { urlFor } from '../lib/cms-queries';
+import { blogCardFields, urlFor } from '../lib/cms-queries';
 import { Translations } from '../lib/locales';
-import { getCollection } from 'astro:content';
 import { Brands } from '../enums/brands';
 import { getLocaleString, getTranslationString } from '../lib/translations';
-import { getEntry } from 'astro:content';
+import { getBlogPosts } from '../lib/cached-content';
+import { sanityClient } from 'sanity:client';
 
 const { content, locale , brand} = Astro.props;
 
-const blogPosts = brand === Brands.STUDIO ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
-const relatedPosts = await Promise.all(content.relatedPosts?.map( async (post) => brand === Brands.STUDIO ? await getEntry('blogPosts_Studio', post.slug.current) : await getEntry('blogPosts_Domaine', post.slug.current)  ))
+const latestPosts = await getBlogPosts(brand)
+
+const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{
+    "id": slug.current,
+    "data": {${blogCardFields}},
+    postDate
+} | order(postDate desc)`)
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
@@ -37,10 +42,15 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         locale={locale}
     />
     
-    <BlogPostBody content={content.body} locale={locale}>
+    <BlogPostBody 
+        content={content.body} 
+        locale={locale}
+        brand={brand}
+    >
         <BlogPostSidebar 
-            latestPosts={blogPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
+            latestPosts={latestPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
             locale={locale}
+            brand={brand}
         />
     </BlogPostBody>
 

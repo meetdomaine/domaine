@@ -9,10 +9,10 @@ import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import { getTranslationString } from '../lib/translations';
 
-const partnerTiers =  await getCollection('partnerTiers_Domaine')
-const partners = await getCollection('partners_Domaine')
+const partnerTiers =  await getCollection('partnerTiers')
+const partners = await getCollection('partners')
 
-const { data: pageSettings } = await getEntry('pageSettings', 'partnersIndex_Domaine')
+const { data: pageSettings } = await getEntry('partnersIndexSettings', 'partnersIndex')
 const { locale } = Astro.props
 ---
 <LayoutDomaine

@@ -4,7 +4,12 @@ import {sanityClient} from 'sanity:client'
 // const { env } = Astro.locals.runtime;
 
 const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
-const token = import.meta.env.SANITY_API_READ_TOKEN
+const token = import.meta.env.PUBLIC_SANITY_API_READ_TOKEN
+
+// Debug logging (remove after fixing)
+if (visualEditingEnabled) {
+  console.log('Visual editing enabled, token present:', !!token)
+}
 
 export async function loadQuery<QueryResponse>({
   query,
@@ -23,7 +28,7 @@ export async function loadQuery<QueryResponse>({
 
   const {result, resultSourceMap} = await sanityClient.fetch(query, params ?? {}, {
     filterResponse: false,
-    perspective: visualEditingEnabled ? "previewDrafts" : "published",
+    perspective: visualEditingEnabled ? "drafts" : "published",
     resultSourceMap: visualEditingEnabled ? 'withKeyArraySelector' : false,
     stega: visualEditingEnabled,
     ...(visualEditingEnabled ? {token} : {}),

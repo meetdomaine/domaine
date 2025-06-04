@@ -1,11 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { getEntry } from 'astro:content';
+import { Brands } from '../../../enums/brands';
+import { getBlogPosts } from '../../../lib/cached-content';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const blogPosts = await getCollection('blogPosts_Domaine')
+    const blogPosts = await getBlogPosts(Brands.DOMAINE)
     return blogPosts.map((post) => {
         return {
             params: { 
@@ -23,7 +24,7 @@ let blogPostContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { post, category } = Astro.params
-    const { data } = await getEntry('blogPosts_Domaine', post)
+    const { data } = await getEntry('blogPosts', post)
     blogPostContent = data
 } else {
     const { content } = Astro.props
@@ -34,4 +35,5 @@ const { content } = Astro.props
 ---
 <LayoutBlogPost
   content={blogPostContent}
+  brand={Brands.DOMAINE}
 />

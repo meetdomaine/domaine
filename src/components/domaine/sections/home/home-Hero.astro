@@ -5,12 +5,6 @@ import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 import AtomTag from "../../../global/atoms/atom-tag.astro"
 
 const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
-
-// import { loadQuery } from '../../../../lib/sanity-load-query'
-
-// const {data: projects} = await loadQuery<Array<{title: string}>>({
-//   query: `*[_type == 'type_project']`,
-// })
 ---
 <section id="domaine-home-hero" class="section-home-hero" data-color-scheme={heroTextColor === "light" ? "invert" : ""}>
     <div class="section-content">

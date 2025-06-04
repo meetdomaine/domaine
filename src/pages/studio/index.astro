@@ -1,28 +1,9 @@
 ---
-import { sanityClient } from "sanity:client";
-import { globalSectionsFields, imageFields, videoFields, projectGridFields } from "../../lib/cms-queries";
 import LayoutStudioHome from "../../layouts/Layout-Studio_Home.astro";
+import { getEntry } from "astro:content";
 
-const pageSettings = await sanityClient.fetch(`
-    *[_type == "page_home-studio"][0]{ 
-        ...,
-        projects[]{
-            project->{${projectGridFields}},
-            image{${imageFields}}
-        },
-        globalSections{ 
-            sections[]{${globalSectionsFields}}
-        }, 
-        media{ 
-            ..., 
-            ${imageFields}, 
-            ${videoFields} 
-        } 
-    }
-`)
-
-// TODO: Migrate to content collections
+const pageSettings = await getEntry('homePageSettings', 'page_home-studio')
 ---
 <LayoutStudioHome 
-    content={pageSettings}
+    content={pageSettings.data}
 />

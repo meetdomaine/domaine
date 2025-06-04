@@ -27,7 +27,7 @@ export default defineConfig({
       rowType: 'my-custom-row-type',
     }),
     presentationTool({
-      previewUrl: 'http://localhost:4322/'
+      previewUrl: '/'
     }),
     // vercelDeployTool(),
     // inlineSvgInput(),

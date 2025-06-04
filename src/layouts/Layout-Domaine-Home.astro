@@ -5,9 +5,10 @@ import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 import { urlFor } from "../lib/cms-queries"
 import { getEntry } from "astro:content";
 import { getTranslationString } from "../lib/translations";
+import { Brands } from "../enums/brands";
 
 const { locale } = Astro.props;
-const { data: pageSettings } = await getEntry('pageSettings', 'page_home-domaine')
+const { data: pageSettings } = await getEntry('homePageSettings', 'page_home-domaine')
 
 ---
 <LayoutDomaine
@@ -25,10 +26,11 @@ const { data: pageSettings } = await getEntry('pageSettings', 'page_home-domaine
         button={pageSettings.button}
         media={pageSettings.media}
         heroTextColor = {pageSettings.heroTextColor}
+        brand={Brands.DOMAINE}
     />
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
         <GlobalSections 
-          brand="domaine" 
+          brand={Brands.DOMAINE}
           locale={locale}
           section={section}
           key={i} 

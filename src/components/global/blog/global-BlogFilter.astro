@@ -1,18 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import { Translations } from '../../../lib/locales';
 import { getLocaleUrl, getTranslationString } from '../../../lib/translations';
 import AtomTag from '../atoms/atom-tag.astro';
-import { getBlogCategories_Domaine, getBlogCategories_Studio } from '../../../lib/cms-content';
 import { Brands } from '../../../enums/brands';
+import { getBlogCategories } from '../../../lib/cached-content';
 
 const { brand, slug, locale } = Astro.props
-
-// const categories = await sanityClient.fetch(`
-//     *[_type == "type_blogCategory" 
-//         && count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == "${brand === "studio" ? "Studio" : "Domaine"}" && references(^._id)] ) > 0] | order( orderRank )`)
-
-const categories = brand === Brands.STUDIO ? await getCollection('blogCategories_Studio') : await getCollection('blogCategories_Domaine')
+const categories = await getBlogCategories(brand)
 ---
 <div class="blog-filters">
     <a

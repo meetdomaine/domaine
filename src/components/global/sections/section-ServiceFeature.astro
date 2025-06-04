@@ -14,6 +14,8 @@ const currentSlug = brand === "studio" ? "/studio/" : "/"
 
 const heading = section.heading ? section.heading : section.featuredService.title
 const subheading = section.subheading ? section.subheading : section.featuredService.excerpt
+
+// TODO: Optimize logic
 ---
 <section class="section-service-type" id={`service-type-${section.featuredService.slug.current}`}>
     <h2 aria-label={section.featuredService?.title}>

@@ -1,5 +1,4 @@
 ---
-import { allCareers, getProjects_Domaine, getProjects_Studio, getBlogPosts_Studio, getBlogPosts_Domaine, getEvents } from "../../../lib/cms-content"
 import { Icon } from "astro-icon/components"
 import AtomNotificationLink from "../atoms/atom-notificationLink.astro"
 import AtomCounter from "../atoms/atom-counter.astro"
@@ -9,6 +8,7 @@ import { checkDateIsPast } from "../../../lib/check-date-is-past"
 import { Translations } from "../../../lib/locales"
 import { getLocaleString, getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import { getCollection } from "astro:content"
+import { getProjects, getBlogPosts } from "../../../lib/cached-content"
 const {
   content,
   currentBrand, 
@@ -20,11 +20,12 @@ const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const latestProjects = currentBrand.slug.current === "/studio" ? await getCollection('projects_Studio') : await getCollection('projects_Domaine')
-const latestBlogPosts = currentBrand.slug.current === "/studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
+const latestProjects = await getProjects(brand)
+const latestBlogPosts = await getBlogPosts(brand)
 
 const events = await getCollection('events')
 const upcomingEvents = events.filter((event) => !event.data.isPrivate && !checkDateIsPast(new Date(event.data.dateTime)) )
+const allCareers = await getCollection('careers');
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
 
