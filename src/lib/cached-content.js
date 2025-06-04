@@ -54,7 +54,7 @@ export const getBlogPosts = async (brand) => {
 export const getBlogCategories = async (brand) => {
   if (_blogCategories[brand]) return _blogCategories[brand]
   const allBlogCategories = await getCollection('blogCategories')
-  const blogCategories = allBlogCategories.filter((category) => category.data.postCount[brand] > 0)
+  const blogCategories = allBlogCategories.filter((category) => category.data.hasContent[brand])
   _blogCategories[brand] = blogCategories
   return blogCategories
 }
@@ -71,7 +71,7 @@ export const getProjects = async (brand) => {
 export const getProjectFeatures = async (brand) => {
   if (_projectFeatures[brand]) return _projectFeatures[brand]
   const allProjectFeatures = await getCollection('features')
-  const projectFeatures = allProjectFeatures.filter((feature) => feature.data.projectCount[brand] > 0)
+  const projectFeatures = allProjectFeatures.filter((feature) => feature.data.hasContent[brand])
   _projectFeatures[brand] = projectFeatures
   return projectFeatures
 }
@@ -79,7 +79,7 @@ export const getProjectFeatures = async (brand) => {
 export const getProjectIndustries = async (brand) => {
   if (_projectIndustries[brand]) return _projectIndustries[brand]
   const allProjectIndustries = await getCollection('industries')
-  const projectIndustries = allProjectIndustries.filter((industry) => industry.data.projectCount[brand] > 0)
+  const projectIndustries = allProjectIndustries.filter((industry) => industry.data.hasContent[brand])
   _projectIndustries[brand] = projectIndustries
   return projectIndustries
 }
@@ -97,7 +97,7 @@ export const getPages = async (brand) => {
 export const getPartners = async (brand) => {
   if (_partners[brand]) return _partners[brand]
   const allPartners = await getCollection('partners')
-  const partners = allPartners.filter((partner) => partner.data.projectCount[brand] > 0)
+  const partners = allPartners.filter((partner) => partner.data.hasContent[brand])
   _partners[brand] = partners
   return partners
 }

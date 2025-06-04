@@ -79,10 +79,9 @@ const blogCategories = defineCollection({
   loader: async () => {
     const { data } = await loadQuery({ query: `*[_type == "type_blogCategory"]{
         ...,
-        "posts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id)]{ _id, slug, postDate } | order(postDate desc),
-        "postCount": {
-          "${Brands.DOMAINE}": count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
-          "${Brands.STUDIO}": count( *[_type == "type_blog" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+        "hasContent": {
+          "${Brands.DOMAINE}": defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+          "${Brands.STUDIO}": defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
         },
         metafields{ title, description, image{${imageBaseFields}} }
     } | order(title.text asc)`})
@@ -132,11 +131,11 @@ const projects = defineCollection({
 // Industries
 const industries = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"]) > 0 ]{ 
+    const { data } = await loadQuery({ query: `*[_type == "type_industry" && defined(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"][0]) ]{ 
       ...,
-      "projectCount": {
-        "${Brands.DOMAINE}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
-        "${Brands.STUDIO}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+      "hasContent": {
+        "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+        "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
       },
       excerpt,
       metafields{ title, description, image{${imageBaseFields}} },
@@ -152,14 +151,14 @@ const industries = defineCollection({
 // Features
 const features = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)]) > 0 ]{
+    const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)][0]) ]{
       _id,
       title,
       excerpt,
       slug, 
-      "projectCount": {
-        "${Brands.DOMAINE}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
-        "${Brands.STUDIO}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+      "hasContent": {
+        "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+        "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
       },
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
@@ -225,12 +224,10 @@ const partners = defineCollection({
       linkedInUrl,
       youTubeUrl,
       tikTokUrl,
-      "projectCount": {
-        "${Brands.DOMAINE}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)] ),
-        "${Brands.STUDIO}": count( *[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)] ),
+      "hasContent": {
+        "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+        "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
       },
-      "relatedBlogPosts": *[_type == "type_blog" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true]{ _id, slug, postDate} | order(postDate desc),
-      "relatedProjects": *[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id) && isHidden != true ]{ _id, slug, orderRank } | order(orderRank),
       metafields{ title, description, image{${imageBaseFields}} },
       orderRank,
     } | order(orderRank)`} )
