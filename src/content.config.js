@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { agencyBrandsQuery, blogCardFields, eventQuery, globalSectionsFields, imageBaseFields, imageFields, locationsQuery, partnerTileFields, projectGridFields, projectPageFields, richContentFields, serviceGroupQuery, serviceQuery, serviceTypePageQuery, videoFields } from './lib/cms-queries';
 import { loadQuery } from './lib/sanity-load-query';
 import { Brands } from './enums/brands';
+import { sanityClient } from 'sanity:client';
 
 // Services
 const services = defineCollection({
@@ -53,7 +54,7 @@ const serviceTypes = defineCollection({
 // Blog Posts
 const blogPosts = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_blog" ]{
+    const data = await sanityClient.fetch(`*[_type == "type_blog" ]{
       ..., 
       _id,
       slug,
@@ -66,7 +67,7 @@ const blogPosts = defineCollection({
       agencyBrand->{slug, name },
       globalSections{ sections[]{${globalSectionsFields}} },
       metafields{ title, description, image{${imageBaseFields}} },
-    } | order(postDate desc)`})
+    } | order(postDate desc)`)
     return data.map((entry) => ({
         id: entry.slug.current,
         ...entry
@@ -96,7 +97,7 @@ const blogCategories = defineCollection({
 // Projects
 const projects = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_project" && isHidden != true ]{
+    const data = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true ]{
       title,
       isHidden,
       description,
@@ -120,7 +121,7 @@ const projects = defineCollection({
       sections[]{${globalSectionsFields}},
       metafields{ title, description, image{${imageBaseFields}} },
       orderRank,
-    } | order( orderRank asc)`})
+    } | order( orderRank asc)`)
     return data.map((entry) => ({
         id: entry.slug.current,
         ...entry
@@ -131,7 +132,7 @@ const projects = defineCollection({
 // Industries
 const industries = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_industry" && defined(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"][0]) ]{ 
+    const data = await sanityClient.fetch(`*[_type == "type_industry" && defined(*[_type == "type_project" && references(^._id) && agencyBrand->name == "Domaine"][0]) ]{ 
       ...,
       "hasContent": {
         "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
@@ -139,7 +140,7 @@ const industries = defineCollection({
       },
       excerpt,
       metafields{ title, description, image{${imageBaseFields}} },
-    }`})
+    }`)
     return data.map((entry) => ({
       // id: entry._id,
       id: entry.slug.current,
@@ -151,7 +152,7 @@ const industries = defineCollection({
 // Features
 const features = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)][0]) ]{
+    const data = await sanityClient.fetch(`*[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == "Domaine" && references(^._id)][0]) ]{
       _id,
       title,
       excerpt,
@@ -162,7 +163,7 @@ const features = defineCollection({
       },
       orderRank,
       metafields{ title, description, image{${imageBaseFields}} },
-    }`})
+    }`)
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
@@ -184,7 +185,7 @@ const agencyBrands = defineCollection({
 // Locations
 const locations = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_location"]{${locationsQuery}} | order(orderRank)`})
+    const data = await sanityClient.fetch(`*[_type == "type_location"]{${locationsQuery}} | order(orderRank)`)
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
@@ -207,7 +208,7 @@ const careers = defineCollection({
 // Partners
 const partners = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_partner"]{
+    const data = await sanityClient.fetch(`*[_type == "type_partner"]{
       _id,
       title, 
       slug, 
@@ -230,7 +231,7 @@ const partners = defineCollection({
       },
       metafields{ title, description, image{${imageBaseFields}} },
       orderRank,
-    } | order(orderRank)`} )
+    } | order(orderRank)`)
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry
@@ -241,12 +242,12 @@ const partners = defineCollection({
 // Partner Tiers
 const partnerTiers = defineCollection({
   loader: async () => {
-    const { data } = await loadQuery({ query: `*[_type == "type_partnerTier"]{ 
+    const data = await sanityClient.fetch(`*[_type == "type_partnerTier"]{ 
       ...,
       "partners": *[_type == "type_partner" && references(^._id)]{
         ${partnerTileFields} 
       } | order(orderRank),
-    } | order(orderRank)`})
+    } | order(orderRank)`)
     return data.map((entry) => ({
       id: entry.slug.current,
       ...entry

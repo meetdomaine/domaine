@@ -5,7 +5,7 @@ import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getTranslationString } from '../lib/translations';
 import { getEntry } from 'astro:content';
-// import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
 import { getCollection } from 'astro:content';
 
@@ -45,7 +45,7 @@ const { data: footerSettings } = await getEntry('footerSettings', 'settings_foot
     locale={locale}
     indexSearch={indexSearch}
 >
-    <!-- {marketingHeader ?
+    {marketingHeader ?
         <GlobalMarketingHeader
             locale={locale}
             brand={Brands.DOMAINE}
@@ -59,15 +59,15 @@ const { data: footerSettings } = await getEntry('footerSettings', 'settings_foot
             brand={Brands.DOMAINE}
             locale={locale}
         />
-    } -->
+    }
 
-    <Header
+    <!-- <Header
         currentBrand={brandSettings}
         activePath={activePath}
         searchExposed={searchExposed}
         brand={Brands.DOMAINE}
         locale={locale}
-    />
+    /> -->
     <main>
         <slot />
     </main>
