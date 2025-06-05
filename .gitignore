@@ -28,3 +28,4 @@ pnpm-debug.log*
 _wrangler.toml
 wrangler.toml
 wrangler.jsonc
+.vercel
