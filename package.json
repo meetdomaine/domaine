@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev --host",
-    "build:content": "astro build && astro dev --host",
-    "dev:content": "SERVER_RENDERING_ENABLED='true' npx astro build && npx wrangler pages dev ./dist",
+    "dev:content": "astro build && astro dev --host",
+    "build:content": "astro build",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist  && cp -r dist/pagefind public/ && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
     "build:ssr": "astro build",
     "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build && cp public/.assetsignore dist/",
