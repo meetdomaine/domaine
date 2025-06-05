@@ -12,17 +12,15 @@ import { loadEnv } from "vite";
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 // Try to get the variable from Cloudflare first, then fall back to local env
-const SERVER_RENDERING_ENABLED = process.env.PUBLIC_SERVER_RENDERING_ENABLED || env.PUBLIC_SERVER_RENDERING_ENABLED;
-const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
-console.log(`RENDER MODE: ${renderMode}`);
-
-const PROD = process.env.PROD || env.PROD;
-console.log(PROD)
+// const SERVER_RENDERING_ENABLED = process.env.PUBLIC_SERVER_RENDERING_ENABLED || env.PUBLIC_SERVER_RENDERING_ENABLED;
 
 // Get SANITY token from environment
 const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN || env.PUBLIC_SANITY_API_READ_TOKEN;
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
 // console.log(SANITY_API_READ_TOKEN)
+
+const renderMode = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? 'server' : 'static';
+console.log(`RENDER MODE: ${renderMode}`);
 
 // Debug environment variables
 console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
@@ -35,7 +33,7 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: false,
+      useCdn: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" ? true : false,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
@@ -74,7 +72,6 @@ export default defineConfig({
     define: {
       "import.meta.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(PUBLIC_SANITY_API_READ_TOKEN),
       "import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
-      "import.meta.env.PUBLIC_SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.

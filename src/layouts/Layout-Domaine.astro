@@ -2,12 +2,10 @@
 import LayoutGlobal from './Layout-Global.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
-import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getTranslationString } from '../lib/translations';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
-import { loadQuery } from '../lib/sanity-load-query';
-import { richContentFields, imageBaseFields } from '../lib/cms-queries';
+import { getBrandSettings, getFooterSettings } from '../lib/cached-content';
 
 interface Props {
 	title: string;
@@ -30,24 +28,8 @@ interface Props {
 
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
-const { data: brandSettingsData } = await loadQuery({ 
-  query: `*[_type == "type_agencyBrand" && name == $brand ][0]{
-    ..., 
-    cookieNoticeText{ 
-      ..., 
-      richContent[]{${richContentFields}}
-    },
-    metafields{ title, description, image{${imageBaseFields}} },
-  }`,
-  params: { brand: Brands.DOMAINE }
-})
-
-const { data: footerSettingsData } = await loadQuery({ 
-  query: `*[_type == "settings_footer" && _id == "settings_footer--domaine"][0]`
-})
-
-const brandSettings = brandSettingsData
-const footerSettings = footerSettingsData
+const brandSettings = await getBrandSettings(Brands.DOMAINE)
+const footerSettings = await getFooterSettings(Brands.DOMAINE)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}

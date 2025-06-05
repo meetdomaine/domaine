@@ -17,6 +17,9 @@ let _projectIndustries = {}
 let _pages = {}
 
 let _partners = {}
+let _brandSettings = {}
+let _footerSettings = {}
+
 let _events
 let _careers
 
@@ -268,4 +271,31 @@ export const getCareers = async () => {
   const careers = await response.json();
   _careers = careers
   return careers
+}
+
+// Brand Settings
+export const getBrandSettings = async (brand) => {
+  if (_brandSettings[brand]) return _brandSettings[brand]
+  const { data } = await loadQuery({ 
+    query: `*[_type == "type_agencyBrand" && name == '${Brands.DOMAINE}' ][0]{
+      ..., 
+      cookieNoticeText{ 
+        ..., 
+        richContent[]{${richContentFields}}
+      },
+      metafields{ title, description, image{${imageBaseFields}} },
+    }`
+  })
+  _brandSettings[brand] = data
+  return data
+}
+
+// Footer Settings
+export const getFooterSettings = async (brand) => {
+  if (_footerSettings[brand]) return _footerSettings[brand]
+  const { data } = await loadQuery({ 
+    query: `*[_type == "settings_footer" && _id == '${brand === Brands.STUDIO ? "settings_footer--studio" : "settings_footer--domaine"}' ][0]`
+  })
+  _footerSettings[brand] = data
+  return data
 }

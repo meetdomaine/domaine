@@ -20,6 +20,7 @@ const { data: pageSettings } = await loadQuery({
     },
   }`
 })
+// console.log(pageSettings.heroTextColor)
 ---
 <LayoutDomaine
     title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}
@@ -35,7 +36,7 @@ const { data: pageSettings } = await loadQuery({
         heading={locale && pageSettings.heading.translations[locale] ? pageSettings.heading.translations[locale] : pageSettings.heading.text}
         button={pageSettings.button}
         media={pageSettings.media}
-        heroTextColor = {pageSettings.heroTextColor}
+        heroTextColor={pageSettings.heroTextColor}
         brand={Brands.DOMAINE}
     />
     {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (

@@ -3,9 +3,10 @@ import { sanityClient } from "sanity:client"
 import { imageFields } from "../../lib/cms-queries"
 import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 import { getTranslationString } from "../../lib/translations"
+import { Brands } from "../../enums/brands"
 
-const { currentBrand, showPreloader, locale } = Astro.props
-const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${currentBrand.name === "Studio" ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
+const { currentBrand, showPreloader, locale, brand } = Astro.props
+const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${brand === Brands.STUDIO ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
 ---
 
 <div id="site-preloader" class="preloader" data-color-scheme="brand-02" data-show-preloader={showPreloader ? "true" : "false"}>

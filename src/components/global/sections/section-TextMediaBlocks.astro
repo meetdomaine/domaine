@@ -102,6 +102,10 @@ const { section, brand, key, locale } = Astro.props
     flex-direction: column;
     gap: var(--space-2xs);
     align-items: flex-start;
+
+    .block-heading {
+      align-self: stretch;
+    }
   }
 
   @media screen and (width <= 768px) {

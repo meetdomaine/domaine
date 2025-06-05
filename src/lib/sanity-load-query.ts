@@ -5,13 +5,6 @@ import {sanityClient} from 'sanity:client'
 const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
 const token = import.meta.env.PUBLIC_SANITY_API_READ_TOKEN
 
-// Debug logging (remove after fixing)
-if (visualEditingEnabled) {
-  console.log('Visual editing enabled, token present:', !!token)
-} else {
-  console.log('NO VIZ ED')
-}
-
 export async function loadQuery<QueryResponse>({
   query,
   params,
@@ -30,7 +23,7 @@ export async function loadQuery<QueryResponse>({
   const {result, resultSourceMap} = await sanityClient.fetch(query, params ?? {}, {
     filterResponse: false,
     perspective,
-    resultSourceMap: visualEditingEnabled ? "withKeyArraySelector" : false,
+    resultSourceMap: visualEditingEnabled ? 'withKeyArraySelector' : false,
     stega: visualEditingEnabled,
     useCdn: !visualEditingEnabled,
     ...(visualEditingEnabled ? {token} : {}),
