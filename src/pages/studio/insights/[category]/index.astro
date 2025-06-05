@@ -5,7 +5,7 @@ import { blogCardFields, urlFor } from '../../../../lib/cms-queries';
 import { getBlogCategories } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { loadQuery } from '../../../../lib/sanity-load-query';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../../../lib/getEnv';
 
 export async function getStaticPaths() {
     const categories = await getBlogCategories(Brands.STUDIO)
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let blogCategoryContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { category } = Astro.params
     const categories = await getBlogCategories(Brands.STUDIO)
     blogCategoryContent = categories.find(cat => cat.slug.current === category)

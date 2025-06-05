@@ -4,7 +4,7 @@ import { Brands } from '../../../../enums/brands';
 import { projectGridFields } from '../../../../lib/cms-queries';
 import { getPartners } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../../../lib/getEnv';
 
 export async function getStaticPaths() {
     const partners = await getPartners(Brands.STUDIO)
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 
 let partnerContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { partner } = Astro.params
     const partners = await getPartners(Brands.STUDIO)
     partnerContent = partners.find(p => p.slug.current === partner)

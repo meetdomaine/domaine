@@ -6,7 +6,7 @@ import { urlFor } from "../../../lib/cms-queries";
 import { getRawSvg } from "../../../lib/raw-svg";
 import { getTranslationString } from "../../../lib/translations";
 import { Translations } from '../../../lib/locales';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../../lib/getEnv';
 
 interface Props {
   project: ProjectCard;
@@ -98,7 +98,7 @@ if (project.client?.logo) {
   </div>
 </a>
 
-{!env.DEV && 
+{!getEnv('DEV', Astro.locals) && 
   <link
     rel="preload"
     href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}

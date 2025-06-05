@@ -2,7 +2,7 @@
 import LayoutEvent from "../../layouts/Layout_Event.astro";
 import { loadQuery } from "../../lib/sanity-load-query";
 import { imageFields, globalSectionsFields } from "../../lib/cms-queries";
-const { env } = Astro.locals.runtime;
+import { getEnv } from "../../lib/getEnv";
 
 export async function getStaticPaths() {
     const { data: events } = await loadQuery({ 
@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 
 let eventContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { event } = Astro.params
     const { data } = await loadQuery({ 
       query: `*[_type == "type_event" && slug.current == $slug][0]{

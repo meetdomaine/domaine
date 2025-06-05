@@ -1,9 +1,10 @@
 // load-query.ts
 import {type QueryParams} from 'sanity'
 import {sanityClient} from 'sanity:client'
+import { getEnv } from './getEnv'
 
-const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
-const token = import.meta.env.PUBLIC_SANITY_API_READ_TOKEN
+const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED') === 'true'
+const token = getEnv('PUBLIC_SANITY_API_READ_TOKEN')
 
 export async function loadQuery<QueryResponse>({
   query,

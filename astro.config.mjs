@@ -7,6 +7,7 @@ import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
+import vercel from '@astrojs/vercel';
 
 // Load environment variables
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
@@ -20,6 +21,7 @@ const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_ED
 // console.log(SANITY_API_READ_TOKEN)
 
 const renderMode = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? 'server' : 'static';
+const adapter = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? vercel() : cloudflare();
 console.log(`RENDER MODE: ${renderMode}`);
 
 // Debug environment variables
@@ -66,7 +68,7 @@ export default defineConfig({
   // output: 'server',
   output: renderMode,
   // output: 'static',
-  adapter: cloudflare(),
+  adapter: adapter,
   site: 'https://meetdomaine.com/',
   vite: {
     define: {

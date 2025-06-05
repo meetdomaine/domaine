@@ -1,5 +1,6 @@
 import type { APIContext } from 'astro';
 import type { APIRoute } from 'astro';
+import { getEnv } from '../../lib/getEnv';
 
 export const prerender = false;
 
@@ -7,7 +8,7 @@ export const prerender = false;
 export const POST = async ( context ) => {
 
     const data = await context.request.formData()
-    const accessToken = context.locals.runtime.env.HUBSPOT_ACCESS_TOKEN
+    const accessToken = getEnv('HUBSPOT_ACCESS_TOKEN', context.locals)
 
     const fileOptions = {
         access: "PUBLIC_NOT_INDEXABLE",

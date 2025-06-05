@@ -4,7 +4,7 @@ import { Brands } from "../../enums/brands";
 import LayoutMarketingPage from "../../layouts/Layout_MarketingPage.astro";
 import { loadQuery } from "../../lib/sanity-load-query";
 import { globalSectionsFields, imageFields, videoFields, imageBaseFields, generalPageFields } from "../../lib/cms-queries";
-const { env } = Astro.locals.runtime;
+import { getEnv } from "../../lib/getEnv";
 
 export async function getStaticPaths() {
     const { data: pages } = await loadQuery({ 
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let pageContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { page } = Astro.params
     const { data } = await loadQuery({ 
         query: `*[ _type == "page_studio-general" && slug.current == '${page}'][0]{${generalPageFields}}`

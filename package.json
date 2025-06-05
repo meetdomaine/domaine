@@ -23,6 +23,7 @@
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.0",
     "@astrojs/solid-js": "^5.1.0",
+    "@astrojs/vercel": "^8.1.5",
     "@mux/mux-player": "^2.7.0",
     "@sanity/astro": "^3.2.6",
     "@sanity/client": "^6.29.1",

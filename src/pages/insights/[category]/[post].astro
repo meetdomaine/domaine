@@ -2,7 +2,7 @@
 import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../enums/brands';
 import { getBlogPosts } from '../../../lib/cached-content';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../../lib/getEnv';
 
 export async function getStaticPaths() {
     const blogPosts = await getBlogPosts(Brands.DOMAINE)
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let blogPostContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { post, category } = Astro.params
     const blogPosts = await getBlogPosts(Brands.DOMAINE)
     blogPostContent = blogPosts.find(p => p.slug.current === post)

@@ -2,7 +2,7 @@
 import LayoutServiceType from "../../../layouts/Layout_ServiceType.astro"
 import { Brands } from "../../../enums/brands"
 import { getServiceTypes } from "../../../lib/cached-content";
-const { env } = Astro.locals.runtime;
+import { getEnv } from "../../../lib/getEnv";
 
 export async function getStaticPaths() {
     const serviceTypes = await getServiceTypes(Brands.DOMAINE)
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 let serviceTypeContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { service_type } = Astro.params
     const serviceTypes = await getServiceTypes(Brands.DOMAINE)
     serviceTypeContent = serviceTypes.find(st => st.slug.current === service_type)

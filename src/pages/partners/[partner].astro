@@ -2,7 +2,7 @@
 import LayoutPartner from '../../layouts/Layout_Partner.astro';
 import { Brands } from '../../enums/brands';
 import { getPartners } from '../../lib/cached-content';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../lib/getEnv';
 
 export async function getStaticPaths() {
     const partners = await getPartners(Brands.DOMAINE)
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 let partnerContent
 
-if (env.PUBLIC_SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { partner } = Astro.params
     const partners = await getPartners(Brands.DOMAINE)
     partnerContent = partners.find(p => p.slug.current === partner)
