@@ -4,14 +4,13 @@ import BlogCard from "../blog/global-BlogCard.astro";
 import { blogCardFields } from "../../../lib/cms-queries"
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomTag from "../atoms/atom-tag.astro";
-import { getBlogPosts_Domaine, getBlogPosts_Studio } from "../../../lib/cms-content";
 import GlobalBlogTile from "../blog/global-BlogTile.astro";
 import { formatDate } from "../../../lib/format-date";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getLocaleUrl, getTranslationString } from "../../../lib/translations";
-import { getCollection } from "astro:content";
 import { getEntry } from "astro:content";
 import { Translations } from "../../../lib/locales";
+import { getBlogPosts } from "../../../lib/cached-content";
 
 const { section, brand, heading, subheading, posts, sidebarTitle, locale } = Astro.props
 
@@ -21,19 +20,19 @@ let featuredPostDate
 let sidebarTitleText
 
 if (section?.featuredCategory) {
-    const category = await getEntry(brand === 'studio' ? 'blogCategories_Studio' : 'blogCategories_Domaine', section.featuredCategory.slug.current)
-    blogPosts = await Promise.all(category.data.posts.map(async (post) => await getEntry(brand === "studio" ? 'blogPosts_Studio' : 'blogPosts_Domaine', post.slug.current)))
+    const categoryPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && category->slug.current == '${section.featuredCategory.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}}, postDate }|order(data.postDate desc)`)
+    blogPosts = categoryPosts
     sidebarTitleText = sidebarTitle ? sidebarTitle : section.featuredCategory.title
 } else if (posts) {
     blogPosts = posts
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 } else {
-    blogPosts = brand === "studio" ? await getCollection('blogPosts_Studio') : await getCollection('blogPosts_Domaine')
+    blogPosts = await getBlogPosts(brand)
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 }
 
 if (section?.featuredPost) {
-    featuredPost = await getEntry(brand === "studio" ? 'blogPosts_Studio' : 'blogPosts_Domaine', section.featuredPost.slug.current)
+    featuredPost = await getEntry('blogPosts', section.featuredPost.slug.current)
 } else {
     featuredPost = blogPosts.shift()
 }

@@ -8,13 +8,24 @@ import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
 
+// Load environment variables
+const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
+
 // Try to get the variable from Cloudflare first, then fall back to local env
-const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || loadEnv(process.env.NODE_ENV, process.cwd(), "").SERVER_RENDERING_ENABLED;
+const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || env.SERVER_RENDERING_ENABLED;
 const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
 console.log(`RENDER MODE: ${renderMode}`);
 
-const PROD = process.env.PROD || loadEnv(process.env.NODE_ENV, process.cwd(), "").PROD;
+const PROD = process.env.PROD || env.PROD;
 console.log(PROD)
+
+// Get SANITY token from environment
+const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN || env.PUBLIC_SANITY_API_READ_TOKEN;
+const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
+// console.log(SANITY_API_READ_TOKEN)
+
+// Debug environment variables
+console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
 
 export default defineConfig({
   integrations: [
@@ -59,12 +70,11 @@ export default defineConfig({
   adapter: cloudflare(),
   site: 'https://meetdomaine.com/',
   vite: {
-    // define: {
-    //   "import.meta.env.HUBSPOT_PORTAL_ID": JSON.stringify(process.env.HUBSPOT_PORTAL_ID),
-    //   "import.meta.env.HUBSPOT_ACCESS_TOKEN": JSON.stringify(process.env.HUBSPOT_ACCESS_TOKEN),
-    //   "import.meta.env.GREENSOCK_AUTH_TOKEN": JSON.stringify(process.env.GREENSOCK_AUTH_TOKEN),
-    //   "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
-    // },
+    define: {
+      "import.meta.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(PUBLIC_SANITY_API_READ_TOKEN),
+      "import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
+      "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
+    },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
       // Without this, MessageChannel from node:worker_threads needs to be polyfilled.

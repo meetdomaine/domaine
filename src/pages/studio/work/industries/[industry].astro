@@ -3,12 +3,13 @@ import { getEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
-import { loadQuery } from '../../../../lib/sanity-load-query';
 import { projectGridFields } from '../../../../lib/cms-queries';
+import { getProjectIndustries } from '../../../../lib/cached-content';
+import { sanityClient } from 'sanity:client';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const industries = await getCollection('industries_Studio')
+    const industries = await getProjectIndustries(Brands.STUDIO)
     return industries.map((industry) => {
         return {
             params: { industry: industry.id },
@@ -21,15 +22,14 @@ let industryContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { industry } = Astro.params
-    const { data } = await getEntry('industries_Studio', industry)
+    const { data } = await getEntry('industries', industry)
     industryContent = data
 } else {
     const { content } = Astro.props
     industryContent = content
 }
 
-const { data: projects } = await loadQuery({ query: `*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${industryContent.id}' in industries[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`})
-// const projects = await Promise.all(industryContent.relatedProjects.map(async (project) => await getEntry('projects_Studio', project.slug.current)))
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && industry->slug.current == '${industryContent.id}' ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
 ---
 <LayoutProjectsIndex
     content={industryContent}

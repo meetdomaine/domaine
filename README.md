@@ -1,37 +1,160 @@
-# Domaine Agency Site
-Domaine is the world's largest independent Shopify design & development partner. Our agency site is built for performance, scalability, and ease-of-use.
+# Domaine Agency Website
 
-[View Live Site](https://meetdomaine.com/)
+> The world's largest independent Shopify design & development partner
 
-## 🚀 Astro
-Domaine uses [Astro](https://astro.build) as a lightweight framework for SSR and SSG. Astro ships zero javascript by default, allowing for many of the conveniences of Next.js but without the bulk and performance concerns of React. If needed, components can opt-in to a reactivity framework like React, but so far this has not been needed.
+A high-performance, dual-brand website built with Astro and Sanity CMS, serving both **Domaine** (main agency) and **Studio** (creative services) brands through a unified codebase.
 
-We use hybrid rendering throughout this project, but in reality this results in all pages being fully static, leading to great performance and SEO optimization. We fetch all CMS content on the server at build time, so no client-side rendering is needed. More on CMS data-fetching below.
+**Live Sites:**
+- [meetdomaine.com](https://meetdomaine.com/) (Production)
+- [staging.meetdomaine.com](https://staging.meetdomaine.com/) (Staging)
 
-Astro also comes with some nice quality-of-life features like performance auditing, viewport transitions, single-file components, scoped CSS, and much more.
+## 🏗️ Architecture
 
-[Learn more about Astro](https://astro.build)
+### Tech Stack
+- **Framework**: [Astro](https://astro.build) with hybrid rendering
+- **CMS**: [Sanity](https://sanity.io) for content management
+- **Styling**: Scoped CSS with GSAP animations
+- **Search**: Pagefind for static site search
+- **Deployment**: Cloudflare Pages (primary), Vercel (secondary)
 
+### Dual-Brand System
+The site serves two distinct brands from a single codebase:
+- **Domaine**: Full-service agency focusing on enterprise Shopify solutions
+- **Studio**: Creative services for design and development
 
-## 🗂️ Sanity
-We use Sanity as the CMS for our site, for its extensibility, flexibility, and optimizations. The site is built modularly using a set of reusable sections, giving editors a high level of control over page building outside of the core site pages. Once content changes have been published, they can be deployed directly from Sanity to either Staging or Production.
+Brand switching is handled through:
+- Dedicated layout components (`Layout-Domaine.astro`, `Layout-Studio.astro`)
+- CMS content filtering via `agencyBrand` references
+- Brand-specific styling and navigation
 
-## ✨ Deployment
-We use [Vercel](https://www.vercel.com) to manage deployments of the site via their GitHub integration. Pushes to the `staging` or `master` branch will trigger a build in Vercel and deploy to [staging.meetdomaine.com](https://staging.meetdomaine.com/) or [meetdomaine.com](https://meetdomaine.com/) respectively.
+## 🚀 Getting Started
 
+### Prerequisites
+- Node.js >= 22.13.1
+- npm or yarn
 
-## 🧞 Commands
+### Installation & Development
 
-All commands are run from the root of the project, from a terminal:
+```bash
+# Install dependencies
+npm install
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+# Start development server
+npm run dev
+# → http://localhost:4321
 
-## 👀 Questions, feedback, bugs?
-Reach out to [trey@meetdomaine.com](trey@meetdomaine.com)!
+# Start Sanity Studio (in separate terminal)
+cd domaine-cms
+npm run dev
+# → http://localhost:3333/admin
+```
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build with search indexing |
+| `npm run preview` | Preview production build locally |
+| `npm run dev:content` | Test server-side rendering with Wrangler |
+| `npm run index` | Rebuild search index only |
+
+### CMS Development
+
+```bash
+cd domaine-cms
+
+# Development
+npm run dev          # Start Sanity Studio
+npm run build        # Build Studio for production
+npm run deploy       # Deploy Studio to Sanity hosting
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+├── layouts/            # Brand-specific layout templates
+├── pages/              # Route pages and API endpoints
+├── lib/                # Utilities, CMS queries, animations
+├── enums/              # TypeScript enums (brands, locales)
+└── content.config.js   # Content collections configuration
+
+domaine-cms/
+├── schemaTypes/        # Sanity schema definitions
+│   ├── sections/       # Modular page sections
+│   ├── pages/          # Page-specific schemas
+│   ├── siteSettings/   # Global settings
+│   └── snippets/       # Reusable field groups
+└── sanity.config.js    # CMS configuration
+```
+
+## 🎨 Content Management
+
+### Modular Page Building
+The CMS provides a flexible page building system using reusable sections:
+- **Content Blocks**: Rich text with media
+- **Media Carousels**: Image/video galleries
+- **Service Feeds**: Dynamic service listings
+- **Project Grids**: Case study showcases
+- **Form Sections**: Contact and lead capture
+
+### Content Types
+- **Projects**: Case studies with client details, services, and metrics
+- **Services**: Service offerings organized by groups and types
+- **Blog Posts**: Articles with categorization and author attribution
+- **Partners**: Partner ecosystem with tier-based organization
+- **Team Members**: Staff profiles with department grouping
+- **Events**: Webinars, conferences, and speaking engagements
+
+## 🌍 Internationalization
+
+Multi-locale support for:
+- **English** (default)
+- **German** (`de`)
+- **Dutch** (`nl`)
+
+Content localization handled through:
+- Locale-specific content fields in CMS
+- URL routing with locale prefixes
+- Fallback content for missing translations
+
+## 🔍 Search & Performance
+
+### Search
+- **Pagefind** for client-side search
+- Brand-filtered results
+- Automatic indexing during build process
+
+### Performance Features
+- Static site generation by default
+- Image optimization via Sanity CDN
+- Code splitting and lazy loading
+- GSAP for performant animations
+- Lenis smooth scrolling
+
+## 🚀 Deployment
+
+### Automatic Deployments
+- **Production**: `master` branch → [meetdomaine.com](https://meetdomaine.com/)
+- **Staging**: `staging` branch → [staging.meetdomaine.com](https://staging.meetdomaine.com/)
+
+### Manual Deployments
+Content editors can deploy directly from Sanity Studio using the Vercel Deploy plugin.
+
+### Environment Variables
+Key variables for deployment:
+- `PUBLIC_SANITY_API_READ_TOKEN`: CMS read access
+- `SERVER_RENDERING_ENABLED`: Toggle SSR mode
+- `HUBSPOT_*`: Form integration credentials
+
+## 📧 Contact & Support
+
+**Technical Questions**: [trey@meetdomaine.com](mailto:trey@meetdomaine.com)
+
+**Agency Inquiries**: [hello@meetdomaine.com](mailto:hello@meetdomaine.com)
+
+---
+
+Built with ⚡ by the Domaine team

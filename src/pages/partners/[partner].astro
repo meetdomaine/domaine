@@ -6,7 +6,7 @@ import { Brands } from '../../enums/brands';
 const { env } = Astro.locals.runtime;
 
 export async function getStaticPaths() {
-    const partners = await getCollection('partners_Domaine')
+    const partners = await getCollection('partners')
     return partners.filter((partner) => partner.data.tier?.createLandingPages).map((partner) => {
         return {
             params: { partner: partner.id },
@@ -19,7 +19,7 @@ let partnerContent
 
 if (env.SERVER_RENDERING_ENABLED) {
     const { partner } = Astro.params
-    const { data } = await getEntry('partners_Domaine', partner)
+    const { data } = await getEntry('partners', partner)
     partnerContent = data
 } else {
     const { content } = Astro.props

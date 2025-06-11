@@ -1,14 +1,12 @@
 ---
 import AtomTag from "../atoms/atom-tag.astro";
 import AtomSanityImage from "../atoms/atom-sanityImage.astro";
-import { getServiceTypes_Studio, getServiceTypes_Domaine } from "../../../lib/cms-content";
-import { Icon } from "astro-icon/components";
 import AtomButton from "../atoms/atom-button.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { getServiceTypes } from "../../../lib/cached-content";
 
 const { section, brand, locale, key } = Astro.props
-
-const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await getServiceTypes_Domaine()
+const serviceTypes = await getServiceTypes(brand)
 ---
 <section class="section-services-feed" id={`section-services-feed-${key}`}>
 
@@ -24,10 +22,10 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                         class="service-type__button h1" 
                         data-animate-viewport="true"
                         data-animation="fade"
-                        data-slug={serviceType.slug.current}
-                        href={serviceType.isHidden ? null : `/services/${serviceType.slug.current}`}
+                        data-slug={serviceType.id}
+                        href={serviceType.data.isHidden ? null : `/services/${serviceType.id}`}
                     >
-                        {locale && serviceType.title?.translations?.[locale] ? serviceType.title?.translations?.[locale] : serviceType.title.text}
+                        {locale && serviceType.data.title?.translations?.[locale] ? serviceType.data.title?.translations?.[locale] : serviceType.data.title.text}
                         
                         {/* <Icon name="arrow-diagonal" class="service-type__icon" /> */}
                     </a>
@@ -35,20 +33,20 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                     <div class="services">
                         <div 
                             class="service-type__groups" 
-                            data-slug={serviceType.slug.current}
+                            data-slug={serviceType.id}
                             data-active="false"
                         >
-                            {serviceType.serviceGroups.map((serviceGroup) => (
+                            {serviceType.data.serviceGroups.map((serviceGroup) => (
                                 <div class="service-type__group">
                                     <div class="service-type__services">
                                         <a 
                                             class="service-type__group-title h6" 
-                                            href={serviceGroup.isHidden ? null : `${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
+                                            href={serviceGroup.isHidden ? null : `${brand === "studio" ? "/studio": ""}/services/${serviceType.id}/${serviceGroup.slug.current}`}
                                         >{locale && serviceGroup.title?.translations?.[locale] ? serviceGroup.title.translations[locale] : serviceGroup.title.text}</a>
                                         {serviceGroup.services.map((service, i) => (
                                             <AtomTag 
                                                 text={locale && service.title?.translations?.[locale] ? service.title.translations[locale] : service.title.text}
-                                                url={service.isHidden ? null : `${locale ? `/${locale}` : ""}${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
+                                                url={service.isHidden ? null : `${locale ? `/${locale}` : ""}${brand === "studio" ? "/studio": ""}/services/${serviceType.id}/${service.slug.current}`}
                                             />
                                         ))}
                                     </div>
@@ -56,14 +54,14 @@ const serviceTypes = brand === "studio" ? await getServiceTypes_Studio() : await
                             ))}
                         </div>
                     </div>
-                    <div class="service-type__description body">{locale && serviceType.excerpt?.translations?.[locale] ? serviceType.excerpt.translations[locale] : serviceType.excerpt.text}</div>
+                    <div class="service-type__description body">{locale && serviceType.data.excerpt?.translations?.[locale] ? serviceType.data.excerpt.translations[locale] : serviceType.data.excerpt.text}</div>
                 </div>
                 <div class="section-media"
                     data-animate-viewport="true"
                     data-animation="fade"
                     data-animation-delay={400}
                 >
-                    {serviceType.images.slice(0, 4).map((imageObject) => (
+                    {serviceType.data.images.slice(0, 4).map((imageObject) => (
                         <div 
                             class="service-image"
                         >

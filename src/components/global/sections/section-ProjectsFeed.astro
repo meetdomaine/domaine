@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import ProjectCard from "../projects/global-ProjectCard.astro";
-import { getProjects_Domaine, getProjects_Studio } from "../../../lib/cms-content";
 import { getTranslationString } from "../../../lib/translations";
+import { getProjects } from "../../../lib/cached-content";
 
 const { section, brand, projects, heading, subheading, locale, key } = Astro.props
 
@@ -13,7 +13,7 @@ if (section && section.projects) {
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = brand === "studio" ? await getProjects_Studio() : await getCollection('projects_Domaine')
+    feedProjects = await getProjects(brand)
 }
 
 

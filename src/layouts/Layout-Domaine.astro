@@ -5,8 +5,9 @@ import Footer from '../components/global/global-Footer.astro';
 import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getTranslationString } from '../lib/translations';
 import { getEntry } from 'astro:content';
-// import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
+import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
+import { getCollection } from 'astro:content';
 
 interface Props {
 	title: string;
@@ -28,8 +29,8 @@ interface Props {
 }
 
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
-const { data: brandSettings } = await getEntry('pageSettings', 'brandSettings_Domaine')
-const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer--domaine')
+const { data: brandSettings } = await getEntry('brandSettings', Brands.DOMAINE)
+const { data: footerSettings } = await getEntry('footerSettings', 'settings_footer--domaine')
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -44,7 +45,7 @@ const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer
     locale={locale}
     indexSearch={indexSearch}
 >
-    <!-- {marketingHeader ?
+    {marketingHeader ?
         <GlobalMarketingHeader
             locale={locale}
             brand={Brands.DOMAINE}
@@ -58,15 +59,15 @@ const { data: footerSettings } = await getEntry('pageSettings', 'settings_footer
             brand={Brands.DOMAINE}
             locale={locale}
         />
-    } -->
+    }
 
-    <Header
+    <!-- <Header
         currentBrand={brandSettings}
         activePath={activePath}
         searchExposed={searchExposed}
         brand={Brands.DOMAINE}
         locale={locale}
-    />
+    /> -->
     <main>
         <slot />
     </main>

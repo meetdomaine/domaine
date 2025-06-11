@@ -84,7 +84,7 @@ export const serviceGroupQuery = `
   excerpt,
   description,
   images[]{${imageFields}},
-  agencyBrands[]->{..., slug, name},
+  agencyBrands[]->{..., slug },
   serviceType->{..., formHeading, formText, hubspotFormId },
   "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
   metafields{ title, description, image{${imageBaseFields}} },
@@ -143,6 +143,7 @@ export const globalSectionsFields = `
 export const serviceTypePageQuery = `
   ...,
   excerpt,
+  agencyBrands[]->{ ..., name },
   pageSectionsDomaine[]{${globalSectionsFields}},
   pageSectionsStudio[]{${globalSectionsFields}},
   images[]{${imageFields}},
@@ -244,5 +245,6 @@ export const locationsQuery = `
   timezone,
   text,
   button,
-  orderRank
+  orderRank,
+  slug
 `

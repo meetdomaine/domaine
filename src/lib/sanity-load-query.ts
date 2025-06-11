@@ -1,10 +1,14 @@
 // load-query.ts
 import {type QueryParams} from 'sanity'
 import {sanityClient} from 'sanity:client'
-// const { env } = Astro.locals.runtime;
 
 const visualEditingEnabled = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
-const token = import.meta.env.SANITY_API_READ_TOKEN
+const token = import.meta.env.PUBLIC_SANITY_API_READ_TOKEN
+
+// Debug logging (remove after fixing)
+if (visualEditingEnabled) {
+  console.log('Visual editing enabled, token present:', !!token)
+}
 
 export async function loadQuery<QueryResponse>({
   query,
@@ -21,13 +25,19 @@ export async function loadQuery<QueryResponse>({
 
   const perspective = visualEditingEnabled ? 'drafts' : 'published'
 
+  // For build-time content collections, optimize performance even in visual editing mode
+  const isBuildTime = typeof window === 'undefined'
+  const optimizeForBuild = visualEditingEnabled && isBuildTime
+
   const {result, resultSourceMap} = await sanityClient.fetch(query, params ?? {}, {
     filterResponse: false,
-    perspective: visualEditingEnabled ? "previewDrafts" : "published",
-    resultSourceMap: visualEditingEnabled ? 'withKeyArraySelector' : false,
-    stega: visualEditingEnabled,
+    perspective: visualEditingEnabled ? "drafts" : "published",
+    // Reduce overhead during build time by disabling source maps and stega
+    resultSourceMap: optimizeForBuild ? false : (visualEditingEnabled ? 'withKeyArraySelector' : false),
+    stega: optimizeForBuild ? false : visualEditingEnabled,
     ...(visualEditingEnabled ? {token} : {}),
-    useCdn: !visualEditingEnabled,
+    // Use CDN for build performance, direct API for runtime visual editing
+    useCdn: optimizeForBuild ? true : !visualEditingEnabled,
   })
 
   return {

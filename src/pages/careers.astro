@@ -1,19 +1,19 @@
 ---
 import { sanityClient } from 'sanity:client'
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
-import { allCareers } from "../lib/cms-content";
 import AtomButton from "../components/global/atoms/atom-button.astro";
 import AtomTag from '../components/global/atoms/atom-tag.astro';
 import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { imageBaseFields, urlFor } from '../lib/cms-queries';
+import { getCollection } from 'astro:content';
 
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,
   metafields{ title, description, image{${imageBaseFields}} },
 }[0]`)
 
-// TODO: Migrate to content collections
+const allCareers = await getCollection('careers');
 ---
 <LayoutDomaine
     searchFilter="type:page"
@@ -38,19 +38,19 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
       {allCareers.length > 0 ?
         allCareers.map((role) => (
           <div class="role-card">
-            {role.department && 
-              <AtomTag text={role.department.label} />
+            {role.data.department && 
+              <AtomTag text={role.data.department.label} />
             }
-            <p class="h3" >{role.name}</p>
+            <p class="h3" >{role.data.name}</p>
             <div class="role-details">
               <AtomButton
                 text="Learn More"
-                url={role.url}
+                url={role.data.url}
                 newTab={true}
               />
               <div class="location">
                 <Icon name="icon-pin" class="location-icon" />
-                {role.workLocation && <p>{role.workLocation.label}</p>}
+                {role.data.workLocation && <p>{role.data.workLocation.label}</p>}
               </div>
             </div>
           </div>

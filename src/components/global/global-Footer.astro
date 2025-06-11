@@ -1,17 +1,17 @@
 ---
 import { Icon } from "astro-icon/components"
-// import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
-import { getAgencyBrands } from "../../lib/cms-content"
 import { getRawSvg } from "../../lib/raw-svg"
 import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
+import { getCollection } from "astro:content"
 
 const { footerSettings, locale } = Astro.props
 
-const agencyBrands = await getAgencyBrands()
+const agencyBrands = await getCollection('agencyBrands')
+// console.log(agencyBrands)
 
 const logos = await agencyBrands.map( async (brand) => {
-    return await getRawSvg(brand.logo)
+    return await getRawSvg(brand.data.logo)
 })
 ---
 <footer data-color-scheme="brand-02">
@@ -75,13 +75,13 @@ const logos = await agencyBrands.map( async (brand) => {
                 }
                 <div class="agency-brands__content">
                     {agencyBrands?.map((brand, i) => (
-                        <a class="brand-card" href={brand.url}>
+                        <a class="brand-card" href={brand.data.url}>
                             <div class="brand-logo">
                                 <Fragment set:html={logos[i]} />
                             </div>
                             <div class="brand-info">
-                                <p class="brand-info__title h6">{brand.name}</p>
-                                <p class="brand-info__excerpt caption">{locale && brand.excerpt.translations?.[locale] ? brand.excerpt.translations[locale] : brand.excerpt.text}</p>
+                                <p class="brand-info__title h6">{brand.data.name}</p>
+                                <p class="brand-info__excerpt caption">{locale && brand.data.excerpt.translations?.[locale] ? brand.data.excerpt.translations[locale] : brand.data.excerpt.text}</p>
                             </div>
                         </a>
                     ))}

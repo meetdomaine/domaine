@@ -5,7 +5,7 @@ import GlobalSections from "../components/global/sections/section-GlobalSections
 import { getEntry } from "astro:content";
 import { getTranslationString } from "../lib/translations";
 
-const { data: pageSettings} = await getEntry('pageSettings', 'page_services-index-studio')
+const { data: pageSettings} = await getEntry('servicesIndexSettings', 'page_services-index-studio')
 const { locale } = Astro.props
 ---
 <LayoutStudio
