@@ -24,9 +24,6 @@ interface Props {
 const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain, alt, autoplay, videoWidth, videoHeight, pagefindMeta, preload } = Astro.props;
 ---
 
-
-
-
 {video ? 
     <mux-player
         id={`mux-video_${video.asset.playbackId}`}
@@ -35,7 +32,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         autoplay={autoplay === false ? false : true}
         preload={preload ? "auto" : "none"}
         loop
-        muted={autoplay === false ? false : true}
+        {...(autoplay !== false && { muted: true })}
         style={{ aspectRatio: aspectRatio }}
         width={videoWidth}
         height={videoHeight}
