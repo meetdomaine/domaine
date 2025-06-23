@@ -7,25 +7,26 @@ import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
+import vercel from '@astrojs/vercel';
 
 // Load environment variables
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 // Try to get the variable from Cloudflare first, then fall back to local env
-const SERVER_RENDERING_ENABLED = process.env.SERVER_RENDERING_ENABLED || env.SERVER_RENDERING_ENABLED;
-const renderMode = SERVER_RENDERING_ENABLED === "true" ? 'server' : 'static';
-console.log(`RENDER MODE: ${renderMode}`);
-
-const PROD = process.env.PROD || env.PROD;
-console.log(PROD)
+// const SERVER_RENDERING_ENABLED = process.env.PUBLIC_SERVER_RENDERING_ENABLED || env.PUBLIC_SERVER_RENDERING_ENABLED;
 
 // Get SANITY token from environment
 const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN || env.PUBLIC_SANITY_API_READ_TOKEN;
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
 // console.log(SANITY_API_READ_TOKEN)
 
+const renderMode = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? 'server' : 'static';
+const adapter = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? vercel() : cloudflare();
+console.log(`RENDER MODE: ${renderMode}`);
+
 // Debug environment variables
 console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
+console.log('PUBLIC_SANITY_VISUAL_EDITING_ENABLED available:', !!PUBLIC_SANITY_VISUAL_EDITING_ENABLED)
 
 export default defineConfig({
   integrations: [
@@ -34,7 +35,7 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: false,
+      useCdn: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" ? true : false,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
@@ -67,13 +68,12 @@ export default defineConfig({
   // output: 'server',
   output: renderMode,
   // output: 'static',
-  adapter: cloudflare(),
+  adapter: adapter,
   site: 'https://meetdomaine.com/',
   vite: {
     define: {
       "import.meta.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(PUBLIC_SANITY_API_READ_TOKEN),
       "import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
-      "import.meta.env.SERVER_RENDERING_ENABLED": JSON.stringify(SERVER_RENDERING_ENABLED),
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.

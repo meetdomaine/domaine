@@ -1,39 +1,37 @@
 ---
-import { getEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields } from '../../../../lib/cms-queries';
 import { getProjectIndustries } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../../../lib/getEnv';
 
 export async function getStaticPaths() {
     const industries = await getProjectIndustries(Brands.STUDIO)
     return industries.map((industry) => {
         return {
-            params: { industry: industry.id },
-            props: { content: {...industry.data} }
+            params: { industry: industry.slug.current },
+            props: { content: industry }
         }
     })
 }
 
 let industryContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { industry } = Astro.params
-    const { data } = await getEntry('industries', industry)
-    industryContent = data
+    const industries = await getProjectIndustries(Brands.STUDIO)
+    industryContent = industries.find(i => i.slug.current === industry)
 } else {
     const { content } = Astro.props
     industryContent = content
 }
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && industry->slug.current == '${industryContent.id}' ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && industry->slug.current == '${industryContent.slug.current}' ]{${projectGridFields}} | order(orderRank)`)
 ---
 <LayoutProjectsIndex
     content={industryContent}
     projects={projects}
-    currentPath={`/industries/${industryContent.id}`}
+    currentPath={`/industries/${industryContent.slug.current}`}
     brand={Brands.STUDIO}
 />

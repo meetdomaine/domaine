@@ -8,7 +8,7 @@ const { projects, heading, locale } = Astro.props
     {heading && <h2>{heading}</h2>}
     {projects.map((project) => (
         <GlobalProjectCard
-            project={project.data}
+            project={project}
             locale={locale}
         />
     ))}

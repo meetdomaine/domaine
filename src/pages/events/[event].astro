@@ -1,24 +1,43 @@
 ---
-import { getCollection } from "astro:content";
 import LayoutEvent from "../../layouts/Layout_Event.astro";
-import { getEntry } from "astro:content";
-const { env } = Astro.locals.runtime;
+import { loadQuery } from "../../lib/sanity-load-query";
+import { imageFields, globalSectionsFields } from "../../lib/cms-queries";
+import { getEnv } from "../../lib/getEnv";
 
 export async function getStaticPaths() {
-    const events = await getCollection('events')
+    const { data: events } = await loadQuery({ 
+      query: `*[_type == "type_event"]{
+        ...,
+        dateTime,
+        partnerLogos[]{${imageFields}},
+        speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
+        thumbnailImage{${imageFields}},
+        globalSections{ sections[]{${globalSectionsFields}}},
+      } | order(dateTime)`
+    })
     return events.map((event) => {
         return {
-            params: { event: event.id },
-            props: { content: {...event.data} }
+            params: { event: event.slug.current },
+            props: { content: event }
         }
     })
 }
 
 let eventContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { event } = Astro.params
-    const { data } = await getEntry('events', event)
+    const { data } = await loadQuery({ 
+      query: `*[_type == "type_event" && slug.current == $slug][0]{
+        ...,
+        dateTime,
+        partnerLogos[]{${imageFields}},
+        speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
+        thumbnailImage{${imageFields}},
+        globalSections{ sections[]{${globalSectionsFields}}},
+      }`,
+      params: { slug: event }
+    })
     eventContent = data
 } else {
     const { content } = Astro.props

@@ -139,6 +139,12 @@ export const globalSectionsFields = `
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, clients[]->{ title, slug, "logo": logo.asset->url, logoScale }, quoteClient->{"logo": logo.asset->url, logoScale}, text, button },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
 `
+export const generalPageFields = `
+    ..., 
+    media{${imageFields}, ${videoFields}},
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} }
+`;
 
 export const serviceTypePageQuery = `
   ...,

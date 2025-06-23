@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
-const { env } = Astro.locals.runtime;
 import cachedFetch from '../../../lib/cachedFetch';
+import { getEnv } from '../../../lib/getEnv';
 
 interface Props {
     formId: any,
@@ -11,8 +11,8 @@ interface Props {
 
 const { formId, buttonToggles, key } = Astro.props
 
-const portalId = env.HUBSPOT_PORTAL_ID
-const accessToken = env.HUBSPOT_ACCESS_TOKEN
+const portalId = getEnv("HUBSPOT_PORTAL_ID")
+const accessToken = getEnv("HUBSPOT_ACCESS_TOKEN")
 
 let formData;
 try {
@@ -34,8 +34,6 @@ try {
         }
     };
 }
-
-// console.log(formData)
 
 const fieldGroups = formData.fieldGroups || [];
 const consentData = formData.legalConsentOptions || {};

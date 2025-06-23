@@ -1,5 +1,7 @@
-import { getCollection } from "astro:content"
+import { loadQuery } from "./sanity-load-query"
+import { sanityClient } from "sanity:client"
 import { Brands } from "../enums/brands"
+import { imageBaseFields, imageFields, videoFields, globalSectionsFields, richContentFields, serviceQuery } from "./cms-queries"
 
 let _serviceTypes = {}
 let _serviceGroups = {}
@@ -15,89 +17,285 @@ let _projectIndustries = {}
 let _pages = {}
 
 let _partners = {}
+let _brandSettings = {}
+let _footerSettings = {}
+
+let _events
+let _careers
 
 
 // Services
 export const getServiceTypes = async (brand) => {
   if (_serviceTypes[brand]) return _serviceTypes[brand]
-  const allServiceTypes = await getCollection('serviceTypes')
-  const serviceTypes = allServiceTypes.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand))
-  _serviceTypes[brand] = serviceTypes
-  return serviceTypes
+  
+  const data = await sanityClient.fetch(`*[_type == "type_serviceType" && '${brand}' in agencyBrands[]->name ]{
+    ...,
+    agencyBrands[]->{ ..., name },
+    pageSectionsDomaine[]{${globalSectionsFields}},
+    pageSectionsStudio[]{${globalSectionsFields}},
+    "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
+        ...,
+        serviceType->{slug},
+        "services": *[_type == "type_service" && references(^._id)] {
+            ...
+        } | order(orderRank)
+    } | order(orderRank),
+    isHidden,
+    excerpt,
+    images[]{${imageFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  } | order(orderRank)`)
+
+  _serviceTypes[brand] = data
+  return data
 }
 
 export const getServiceGroups = async (brand) => {
   if (_serviceGroups[brand]) return _serviceGroups[brand]
-  const allServiceGroups = await getCollection('serviceGroups')
-  const serviceGroups = allServiceGroups.filter((serviceGroup) => serviceGroup.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand))
-  _serviceGroups[brand] = serviceGroups
-  return serviceGroups
+  
+  const data = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${brand}' in agencyBrands[]->name ]{
+    ...,
+    isHidden,
+    excerpt,
+    description,
+    images[]{${imageFields}},
+    agencyBrands[]->{..., slug },
+    serviceType->{..., formHeading, formText, hubspotFormId },
+    "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
+    metafields{ title, description, image{${imageBaseFields}} },
+    pageSectionsDomaine[]{${globalSectionsFields}},
+    pageSectionsStudio[]{${globalSectionsFields}},
+  } | order(orderRank)`)
+  _serviceGroups[brand] = data
+  return data
 }
 
 export const getServices = async (brand) => {
   if (_services[brand]) return _services[brand]
-  const allServices = await getCollection('services')
-  const services = allServices.filter((serviceType) => serviceType.data.agencyBrands.some((agencyBrand) => agencyBrand.name === brand))
-  _services[brand] = services
-  return services
+  
+  const data = await sanityClient.fetch(`*[_type == "type_service" && '${brand}' in agencyBrands[]->name ]{
+    ...,
+    isHidden,
+    excerpt,
+    description,
+    agencyBrands[]->{..., slug, name},
+    serviceGroup->{
+        ..., 
+        serviceType->{...},
+        _id
+    },
+    pageSectionsDomaine[]{${globalSectionsFields}},
+    pageSectionsStudio[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  } | order(postDate desc)`)
+
+  _services[brand] = data
+  return data
 }
 
 // Blog
 export const getBlogPosts = async (brand) => {
   if (_blogPosts[brand]) return _blogPosts[brand]
-  const allBlogPosts = await getCollection('blogPosts')
-  const blogPosts = allBlogPosts.filter((blogPost) => blogPost.data.agencyBrand.name === brand)
-  _blogPosts[brand] = blogPosts
-  return blogPosts
+  const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' ]{
+    ..., 
+    _id,
+    slug,
+    authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+    postDate,
+    thumbnailImage{${imageFields}},
+    category->{..., slug{...} }, 
+    body{..., richContent[]{${richContentFields}} },
+    services[]->{...},
+    agencyBrand->{slug, name },
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} },
+  } | order(postDate desc)`)
+
+  _blogPosts[brand] = data
+  return data
 }
 
 export const getBlogCategories = async (brand) => {
   if (_blogCategories[brand]) return _blogCategories[brand]
-  const allBlogCategories = await getCollection('blogCategories')
-  const blogCategories = allBlogCategories.filter((category) => category.data.hasContent[brand])
-  _blogCategories[brand] = blogCategories
-  return blogCategories
+  
+  const data = await sanityClient.fetch(`*[_type == "type_blogCategory" && defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0])]{
+    ...,
+    "hasContent": {
+      "${brand}": defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]),
+    },
+    metafields{ title, description, image{${imageBaseFields}} }
+  } | order(title.text asc)`)
+
+  _blogCategories[brand] = data
+  return data
 }
 
 // Projects
 export const getProjects = async (brand) => {
   if (_projects[brand]) return _projects[brand]
-  const allProjects = await getCollection('projects')
-  const projects = allProjects.filter((project) => project.data.agencyBrand.name === brand)
-  _projects[brand] = projects
-  return projects
+  
+  const data = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' ]{
+    title,
+    isHidden,
+    description,
+    excerpt,
+    industry->{...},
+    url,
+    client->{..., logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise, "logo": logo.asset->url },
+    foregroundColor,
+    backgroundColor,
+    accentColor,
+    services[]->{..., serviceGroup->{slug, title, serviceType->{slug} } },
+    features[]->{...},
+    partners[]->{..., title, excerpt, slug, icon{${imageFields}}, tier->{..., createLandingPages}, websiteUrl },
+    metrics[]{...},
+    awards[]{...},
+    agencyBrand->{slug, name},
+    thumbnailMedia{${videoFields}, ${imageFields}},
+    thumbnailImageSecondary{${imageFields}},
+    slug{...},
+    heroMedia{..., ${videoFields}, ${imageFields}},
+    sections[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+    orderRank,
+  } | order( orderRank asc)`)
+
+  _projects[brand] = data
+  return data
 }
 
 export const getProjectFeatures = async (brand) => {
   if (_projectFeatures[brand]) return _projectFeatures[brand]
-  const allProjectFeatures = await getCollection('features')
-  const projectFeatures = allProjectFeatures.filter((feature) => feature.data.hasContent[brand])
-  _projectFeatures[brand] = projectFeatures
-  return projectFeatures
+  
+  const data = await sanityClient.fetch(`*[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${brand}' && references(^._id)][0]) ]{
+    _id,
+    title,
+    excerpt,
+    slug, 
+    "hasContent": {
+      "${brand}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]),
+    },
+    orderRank,
+    metafields{ title, description, image{${imageBaseFields}} },
+  } | order(orderRank)`)
+
+  _projectFeatures[brand] = data
+  return data
 }
 
 export const getProjectIndustries = async (brand) => {
   if (_projectIndustries[brand]) return _projectIndustries[brand]
-  const allProjectIndustries = await getCollection('industries')
-  const projectIndustries = allProjectIndustries.filter((industry) => industry.data.hasContent[brand])
-  _projectIndustries[brand] = projectIndustries
-  return projectIndustries
+  
+  const data = await sanityClient.fetch(`*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${brand}' && references(^._id)][0]) ]{ 
+    ...,
+    "hasContent": {
+      "${brand}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]),
+    },
+    excerpt,
+    metafields{ title, description, image{${imageBaseFields}} },
+  } | order(title)`)
+
+  _projectIndustries[brand] = data
+  return data
 }
 
 // Pages
 export const getPages = async (brand) => {
   if (_pages[brand]) return _pages[brand]
-  const allPages = await getCollection('pages')
-  const pages = allPages.filter((page) => page.data._type === (brand === Brands.STUDIO ? 'page_studio-general' :  'page_general') )
-  _pages[brand] = pages
-  return pages
+  
+  const pageType = brand === Brands.STUDIO ? 'page_studio-general' : 'page_general'
+  const data = await sanityClient.fetch(`*[_type == $pageType ]{
+    ..., 
+    media{${imageFields}, ${videoFields}},
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} },
+  } | order(_createdAt desc)`, { pageType })
+
+  _pages[brand] = data
+  return data
 }
 
 // Partners
 export const getPartners = async (brand) => {
   if (_partners[brand]) return _partners[brand]
-  const allPartners = await getCollection('partners')
-  const partners = allPartners.filter((partner) => partner.data.hasContent[brand])
-  _partners[brand] = partners
-  return partners
+  
+  const data = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${brand}' && references(^._id)][0])]{
+    _id,
+    title, 
+    slug, 
+    excerpt,
+    description,
+    richContent{ translations{ ...}, richContent[]{${richContentFields}} },
+    globalSections{ sections[]{${globalSectionsFields}} },
+    icon{${imageFields}}, 
+    tier->{slug, title, createLandingPages}, 
+    websiteUrl, 
+    websiteText,
+    instagramUrl,
+    twitterUrl,
+    linkedInUrl,
+    youTubeUrl,
+    tikTokUrl,
+    "hasContent": {
+      "${brand}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]),
+    },
+    metafields{ title, description, image{${imageBaseFields}} },
+    orderRank,
+  } | order(orderRank)`)
+
+  _partners[brand] = data
+  return data
+}
+
+// Events
+export const getEvents = async () => {
+  if (_events) return _events
+  const { data: events } = await loadQuery({ 
+    query: `*[_type == "type_event"]{
+      ...,
+      dateTime,
+      partnerLogos[]{${imageFields}},
+      speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
+      thumbnailImage{${imageFields}},
+      globalSections{ sections[]{${globalSectionsFields}}},
+    } | order(dateTime)`
+  })
+  _events = events
+  return events
+}
+
+// Careers
+export const getCareers = async () => {
+  if (_careers) return _careers
+  const response = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
+  const careers = await response.json();
+  _careers = careers
+  return careers
+}
+
+// Brand Settings
+export const getBrandSettings = async (brand) => {
+  if (_brandSettings[brand]) return _brandSettings[brand]
+  const { data } = await loadQuery({ 
+    query: `*[_type == "type_agencyBrand" && name == '${Brands.DOMAINE}' ][0]{
+      ..., 
+      cookieNoticeText{ 
+        ..., 
+        richContent[]{${richContentFields}}
+      },
+      metafields{ title, description, image{${imageBaseFields}} },
+    }`
+  })
+  _brandSettings[brand] = data
+  return data
+}
+
+// Footer Settings
+export const getFooterSettings = async (brand) => {
+  if (_footerSettings[brand]) return _footerSettings[brand]
+  const { data } = await loadQuery({ 
+    query: `*[_type == "settings_footer" && _id == '${brand === Brands.STUDIO ? "settings_footer--studio" : "settings_footer--domaine"}' ][0]`
+  })
+  _footerSettings[brand] = data
+  return data
 }

@@ -2,11 +2,20 @@
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
 import ServicesHero from "../components/domaine/sections/services/services-Hero.astro";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { urlFor } from "../lib/cms-queries";
-import { getEntry } from "astro:content";
+import { urlFor, imageFields, globalSectionsFields, imageBaseFields } from "../lib/cms-queries";
 import { getTranslationString } from "../lib/translations";
+import { loadQuery } from "../lib/sanity-load-query";
 
-const { data: pageSettings } = await getEntry('servicesIndexSettings', 'page_services-index-domaine')
+const { data: pageSettings } = await loadQuery({ 
+  query: `*[_type == "page_services-index-domaine"][0]{
+    ...,  
+    title,
+    heading,
+    images[]{${imageFields}},
+    sections[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+})
 const { brand, locale } = Astro.props
 ---
 <LayoutDomaine

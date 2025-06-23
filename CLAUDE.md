@@ -38,10 +38,18 @@ npm run build            # Build Sanity Studio
 npm run deploy           # Deploy Studio to Sanity
 ```
 
+## Code Quality & Standards
+
+### CMS Code Quality
+The CMS has linting and formatting configured:
+- ESLint with Sanity Studio config (`@sanity/eslint-config-studio`)
+- Prettier with specific formatting rules (no semicolons, single quotes, 100 char width)
+- No project-level linting/testing setup for main Astro app
+
 ## CMS Architecture
 
 ### Content Collections
-The site uses Astro's content collections to fetch all CMS data at build time via `src/content.config.js`. Key collections:
+The site fetches all CMS data at build time via Sanity client integration. Key content types:
 - `services`, `serviceGroups`, `serviceTypes`: Service hierarchy
 - `projects`: Case studies with brand filtering
 - `blogPosts`, `blogCategories`: Blog content
@@ -65,8 +73,9 @@ Sanity schemas in `domaine-cms/schemaTypes/` are organized by:
 
 The site uses conditional rendering modes:
 - **Static** (default): All pages pre-rendered at build time
-- **Server**: Dynamic rendering when `SERVER_RENDERING_ENABLED=true`
-- Mode controlled via environment variables and Cloudflare adapter
+- **Server**: Dynamic rendering when visual editing is enabled (`PUBLIC_SANITY_VISUAL_EDITING_ENABLED=true`)
+- Mode automatically switches between Cloudflare (static) and Vercel (server) adapters
+- Visual editing requires server-side rendering for draft content access
 
 ## Environment Variables
 
@@ -100,3 +109,10 @@ Key environment variables (see `.env`):
 - Multi-locale support: English (default), German (`de`), Dutch (`nl`)
 - Locale-specific content snippets in CMS schemas
 - Translation utilities in `src/lib/translations.js`
+
+## Technical Requirements
+
+- **Node.js**: >= 22.13.1 (specified in package.json engines)
+- **Framework**: Astro 5.8.0 with hybrid rendering
+- **UI Libraries**: SolidJS for interactive components, React for CMS
+- **TypeScript**: Full TypeScript support with JSX preserve mode

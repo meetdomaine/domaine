@@ -1,35 +1,47 @@
 ---
-// import { Icon } from "astro-icon/components";
 import ContactMenu from "./global-ContactMenu.astro";
-// import SearchMenu from "./searchMenu/global-SearchMenu.astro";
+import SearchMenu from "./searchMenu/SearchMenu"
 import NavigationMenu from "./global-NavigationMenu.astro";
 import BrandMenu from "./global-BrandMenu.astro";
 import NotificationMenu from "./global-NotificationMenu.astro";
-
 import IconBell from '../../../icons/icon-bell.svg'
 import IconX from '../../../icons/icon-x.svg'
 import IconEmail from '../../../icons/icon-email.svg'
 import IconMenuBox from '../../../icons/icon-menu-box.svg'
-
 import LogoDomaine from '../../../icons/domaine-wordmark.svg'
 import LogoStudio from '../../../icons/domaine-studio.svg'
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { Brands } from "../../../enums/brands";
+import { getBlogPosts, getProjects, getProjectFeatures, getPartners } from "../../../lib/cached-content";
+import { loadQuery } from "../../../lib/sanity-load-query";
+import { imageFields, videoFields } from "../../../lib/cms-queries";
 
 const { currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
 
-import SearchMenu from "./searchMenu/SearchMenu"
-import { getRelativeLocaleUrl } from "astro:i18n";
-import { getEntry } from "astro:content";
-import { Brands } from "../../../enums/brands";
-import { getCollection } from "astro:content";
-import { getBlogPosts, getProjects, getProjectFeatures } from "../../../lib/cached-content";
 
 const defaultBlogPosts = await getBlogPosts(brand)
 const defaultProjects = await getProjects(brand)
 const defaultProjectFeatures = await getProjectFeatures(brand)
-const defaultPartners = await getCollection('partners')
+const defaultPartners = await getPartners(brand)
 
-const { data: headerSettings } = await getEntry('headerSettings', brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine')
-// console.log(headerSettings)
+const headerId = brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine'
+const { data: headerSettings } = await loadQuery({ 
+  query: `*[_type == "settings_header" && _id == $headerId][0]{
+    ...,
+    locationClocks[]->{
+      ...,
+      agencyBrand->{slug},
+      images[]{${imageFields}},
+      metafields{ title, description, image{crop, asset->{_id, metadata}, hotspot} },
+    },
+    linkCardImage{${imageFields}},
+    brandMenuBrands[]{
+        ..., 
+        media{video{ asset->{playbackId, assetId, filename} }, ${imageFields}} 
+    }
+  }`,
+  params: { headerId }
+})
 ---
 <header id="header" data-color-scheme="glass-dark">
 
@@ -64,11 +76,8 @@ const { data: headerSettings } = await getEntry('headerSettings', brand === Bran
 
         <div id="utility-menu" class="utility-menu">
             <button id="notification-toggle" class="utility-button notification-button" data-color-scheme="glass-dark" popovertarget="notification-menu" data-active="false">
-                <!-- <Icon name="icon-bell" class="utility-icon icon-open" /> -->
-                <!-- <BellIcon class="utility-icon icon-open" /> -->
                  <IconBell class="utility-icon icon-open" />
                  <IconX class="utility-icon icon-close" />
-                <!-- <Icon name="icon-x" class="utility-icon icon-close" /> -->
             </button>
             <button class="utility-button contact-button" data-color-scheme="glass-dark" popovertarget="contact-menu">
                 <!-- <Icon name="icon-email" class="utility-icon" /> -->
@@ -91,7 +100,6 @@ const { data: headerSettings } = await getEntry('headerSettings', brand === Bran
         forms={headerSettings.contactForms} 
         locale={locale}
     />
-    <!-- <SearchMenu currentBrand={currentBrand} /> -->
 
     <SearchMenu 
         client:only="solid-js"

@@ -1,33 +1,38 @@
 ---
-import { getCollection } from "astro:content";
 import LayoutPage from "../../layouts/Layout-Page.astro";
 import { Brands } from "../../enums/brands";
-import { getEntry } from "astro:content";
 import LayoutMarketingPage from "../../layouts/Layout_MarketingPage.astro";
-const { env } = Astro.locals.runtime;
+import { loadQuery } from "../../lib/sanity-load-query";
+import { globalSectionsFields, imageFields, videoFields, imageBaseFields, generalPageFields } from "../../lib/cms-queries";
+import { getEnv } from "../../lib/getEnv";
 
 export async function getStaticPaths() {
-    const pages = await getCollection('pages')
-    return pages.filter((page) => page.data._type === "page_studio-general").map((page) => {
+    const { data: pages } = await loadQuery({ 
+        query: `*[_type == "page_studio-general"]{${generalPageFields}} | order(_createdAt desc)`
+    })
+    
+    return pages.map((page) => {
         return {
-            params: { page: page.id },
-            props: { content: {...page.data} }
+            params: { page: page.slug.current },
+            props: { content: page }
         }
     })
 }
 
 let pageContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { page } = Astro.params
-    const { data } = await getEntry('pages', page)
+    const { data } = await loadQuery({ 
+        query: `*[ _type == "page_studio-general" && slug.current == '${page}'][0]{${generalPageFields}}`
+    })
     pageContent = data
 } else {
     const { content } = Astro.props
     pageContent = content
 }
 ---
-{pageContent.isMarketingPage ? 
+<!-- {pageContent.isMarketingPage ? 
     <LayoutMarketingPage
         content={pageContent}
         brand={Brands.STUDIO}
@@ -37,4 +42,4 @@ if (env.SERVER_RENDERING_ENABLED) {
         content={pageContent}
         brand={Brands.STUDIO}
     />
-}
+} -->

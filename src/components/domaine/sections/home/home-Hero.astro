@@ -3,10 +3,14 @@ import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomButton from "../../../global/atoms/atom-button.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 import AtomTag from "../../../global/atoms/atom-tag.astro"
+import { stegaClean } from '@sanity/client/stega'
 
 const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
+console.log(heroTextColor)
+console.log(typeof heroTextColor)
+console.log(await stegaClean(heroTextColor) == 'light')
 ---
-<section id="domaine-home-hero" class="section-home-hero" data-color-scheme={heroTextColor === "light" ? "invert" : ""}>
+<section id="domaine-home-hero" class="section-home-hero" data-color-scheme={stegaClean(heroTextColor) === "light" ? "invert" : ""}>
     <div class="section-content">
         <!-- {projects.map((project) => (
             <p>{project.title}</p>
@@ -19,7 +23,7 @@ const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
             }
             <h1 class="heading h2" id="heading" >{heading}</h1>
         </div>
-        {button.label && button.url &&
+        {button?.label && button?.url &&
             <AtomButton 
                 text={locale && button.label.translations[locale] ? button.label.translations[locale] : button.label.text}
                 url={locale ? getRelativeLocaleUrl(locale, button.url) : button.url}

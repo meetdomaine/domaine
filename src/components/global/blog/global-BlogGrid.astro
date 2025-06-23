@@ -11,13 +11,13 @@ const { blogPosts, locale } = Astro.props
 <div class="blog-grid">
     {blogPosts.map((blogPost) => (
         <GlobalBlogCard 
-            title={blogPost.data.title}
-            series={blogPost.data.series}
-            postDate={blogPost.data.postDate}
-            category={blogPost.data.category}
-            slug={blogPost.data.slug}
-            thumbnailImage={blogPost.data.thumbnailImage}
-            agencyBrand={blogPost.data.agencyBrand}
+            title={blogPost.title}
+            series={blogPost.series}
+            postDate={blogPost.postDate}
+            category={blogPost.category}
+            slug={blogPost.slug}
+            thumbnailImage={blogPost.thumbnailImage}
+            agencyBrand={blogPost.agencyBrand}
             locale={locale}
         />
     ))}

@@ -18,11 +18,7 @@ const { content, locale , brand} = Astro.props;
 
 const latestPosts = await getBlogPosts(brand)
 
-const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{
-    "id": slug.current,
-    "data": {${blogCardFields}},
-    postDate
-} | order(postDate desc)`)
+const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)`)
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
@@ -48,7 +44,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         brand={brand}
     >
         <BlogPostSidebar 
-            latestPosts={latestPosts.filter((post) => post.data.slug.current != content.slug.current).slice(0, 3)}
+            latestPosts={latestPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
             locale={locale}
             brand={brand}
         />
