@@ -17,9 +17,9 @@ const categories = await getBlogCategories(brand)
     <div class="filter-tags">
         {categories.map((category) => (
             <AtomTag 
-                title={getTranslationString(category.data.title, locale)}
-                url={getLocaleUrl(`${brand == Brands.STUDIO ? '/studio' : ''}/insights/${category.data.slug.current}`, locale)}
-                theme={slug?.current == category.data.slug.current ? "glass-dark" : "default"}
+                title={getTranslationString(category.title, locale)}
+                url={getLocaleUrl(`${brand == Brands.STUDIO ? '/studio' : ''}/insights/${category.slug.current}`, locale)}
+                theme={slug?.current == category.slug.current ? "glass-dark" : "default"}
             />
         ))}
     </div>

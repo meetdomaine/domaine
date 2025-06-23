@@ -2,10 +2,20 @@
 import LayoutStudio from "../layouts/Layout-Studio.astro";
 import SectionServiceLandingHero from "../components/studio/sections/services/services-Hero.astro";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
-import { getEntry } from "astro:content";
 import { getTranslationString } from "../lib/translations";
+import { loadQuery } from "../lib/sanity-load-query";
+import { imageFields, globalSectionsFields, imageBaseFields } from "../lib/cms-queries";
 
-const { data: pageSettings} = await getEntry('servicesIndexSettings', 'page_services-index-studio')
+const { data: pageSettings} = await loadQuery({ 
+  query: `*[_type == "page_services-index-studio"][0]{
+    ...,  
+    title,
+    heading,
+    images[]{${imageFields}},
+    sections[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+})
 const { locale } = Astro.props
 ---
 <LayoutStudio

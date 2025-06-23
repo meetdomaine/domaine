@@ -1,38 +1,37 @@
 ---
-import { getEntry } from 'astro:content';
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields } from '../../../../lib/cms-queries';
 import { getServiceGroups } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../../../../lib/getEnv';
 
 export async function getStaticPaths() {
     const serviceGroups = await getServiceGroups(Brands.STUDIO)
     return serviceGroups.map((serviceGroup) => {
         return {
-            params: { service_group: serviceGroup.id },
-            props: { content: {...serviceGroup.data} }
+            params: { service_group: serviceGroup.slug.current },
+            props: { content: serviceGroup }
         }
     })
 }
 
 let serviceGroupContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { service_group } = Astro.params
-    const { data } = await getEntry('serviceGroups', service_group)
-    serviceGroupContent = data
+    const serviceGroups = await getServiceGroups(Brands.STUDIO)
+    serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
 } else {
     const { content } = Astro.props
     serviceGroupContent = content
 }
 
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceGroupContent.id}' in services[]->serviceGroup->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceGroupContent.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`)
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}
     projects={projects}
-    currentPath={`/services/${serviceGroupContent.id}`}
+    currentPath={`/services/${serviceGroupContent.slug.current}`}
     brand={Brands.STUDIO}
 />

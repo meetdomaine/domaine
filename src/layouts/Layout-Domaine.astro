@@ -2,12 +2,10 @@
 import LayoutGlobal from './Layout-Global.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
-import AtomHubspotForm from '../components/global/atoms/atom-hubspotForm.astro';
 import { getTranslationString } from '../lib/translations';
-import { getEntry } from 'astro:content';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
-import { getCollection } from 'astro:content';
+import { getBrandSettings, getFooterSettings } from '../lib/cached-content';
 
 interface Props {
 	title: string;
@@ -29,8 +27,9 @@ interface Props {
 }
 
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
-const { data: brandSettings } = await getEntry('brandSettings', Brands.DOMAINE)
-const { data: footerSettings } = await getEntry('footerSettings', 'settings_footer--domaine')
+
+const brandSettings = await getBrandSettings(Brands.DOMAINE)
+const footerSettings = await getFooterSettings(Brands.DOMAINE)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -60,14 +59,6 @@ const { data: footerSettings } = await getEntry('footerSettings', 'settings_foot
             locale={locale}
         />
     }
-
-    <!-- <Header
-        currentBrand={brandSettings}
-        activePath={activePath}
-        searchExposed={searchExposed}
-        brand={Brands.DOMAINE}
-        locale={locale}
-    /> -->
     <main>
         <slot />
     </main>

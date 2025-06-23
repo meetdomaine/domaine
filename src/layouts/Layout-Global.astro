@@ -2,7 +2,7 @@
 import { urlFor } from '../lib/cms-queries';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
 import { VisualEditing } from '@sanity/astro/visual-editing'
-const { env } = Astro.locals.runtime;
+import { getEnv } from '../lib/getEnv';
 
 import '../styles/global/lenis.css'
 import '../styles/global/base.css'
@@ -36,7 +36,7 @@ interface Props {
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const visualEditingEnabled = env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
+const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
 ---
 
 <!doctype html>
@@ -82,7 +82,7 @@ const visualEditingEnabled = env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 		<!-- HTML Meta Tags -->
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href={urlFor(favicon).url()}>
+		<link rel="icon" type="image/png" href={favicon ? urlFor(favicon).url() : ""}>
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="canonical" href={`https://www.meetdomaine.com${currentPath}`} />
 		<meta name="generator" content={Astro.generator} />
@@ -94,7 +94,7 @@ const visualEditingEnabled = env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 		<meta property="og:type" content="website">
 		<meta property="og:title" content={title}>
 		<meta property="og:description" content={description}>
-		<meta property="og:image" content={urlFor(image).url()}>
+		<meta property="og:image" content={image ? urlFor(image).url() : ""}>
 
 		<!-- Twitter Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image">
@@ -102,7 +102,7 @@ const visualEditingEnabled = env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 		<meta property="twitter:url" content="https://meetdomaine.com/">
 		<meta name="twitter:title" content={title}>
 		<meta name="twitter:description" content={description}>
-		<meta name="twitter:image" content={urlFor(image).url()}>
+		<meta name="twitter:image" content={image ? urlFor(image).url() : ""}>
 
 		<!-- PageFind Search -->
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
@@ -120,8 +120,7 @@ const visualEditingEnabled = env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 
 		<VisualEditing enabled={visualEditingEnabled} />
 
-    <GlobalPreloader 
-      currentBrand={currentBrand}
+    <GlobalPreloader
       showPreloader={showPreloader}
 			brand={brand}
 			locale={locale}

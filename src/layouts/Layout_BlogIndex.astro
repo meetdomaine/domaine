@@ -4,14 +4,18 @@ import LayoutStudio from './Layout-Studio.astro';
 import GlobalBlogFilter from '../components/global/blog/global-BlogFilter.astro';
 import GlobalBlogGrid from '../components/global/blog/global-BlogGrid.astro';
 import SectionTextHeading from '../components/global/sections/section-TextHeading.astro';
-import { getEntry } from 'astro:content';
 import { getLocaleString, getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
 import { getBlogPosts } from '../lib/cached-content';
+import { loadQuery } from '../lib/sanity-load-query';
 
 const { title, description, image, heading, subheading, searchFilter, blogPosts, brand, slug, locale } = Astro.props;
 
-const { data: pageSettings } = await getEntry('blogIndexSettings', brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine')
+const blogIndexId = brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine'
+const { data: pageSettings } = await loadQuery({ 
+  query: `*[_type == "page_blog-index" && _id == $blogIndexId][0]`,
+  params: { blogIndexId }
+})
 const allBrandBlogPosts = await getBlogPosts(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
@@ -20,7 +24,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     description={description ? getTranslationString(description, locale) : pageSettings?.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
     image={image ? image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
     locale={locale}
-    activePath="/insights"
+    activePath={ brand === Brands.STUDIO ? "/studio/insights" : "/insights" }
     showPreloader={false}
 >
     <SectionTextHeading 

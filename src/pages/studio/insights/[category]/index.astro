@@ -2,45 +2,47 @@
 import { Brands } from '../../../../enums/brands';
 import LayoutBlogIndex from '../../../../layouts/Layout_BlogIndex.astro';
 import { blogCardFields, urlFor } from '../../../../lib/cms-queries';
-import { getEntry } from 'astro:content';
 import { getBlogCategories } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-const { env } = Astro.locals.runtime;
+import { loadQuery } from '../../../../lib/sanity-load-query';
+import { getEnv } from '../../../../lib/getEnv';
 
 export async function getStaticPaths() {
     const categories = await getBlogCategories(Brands.STUDIO)
     return categories.map((category) => {
         return {
             params: { 
-                category: category.id
+                category: category.slug.current
             },
-            props: { content: {...category.data} }
+            props: { content: category }
         }
     })
 }
 
 let blogCategoryContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { category } = Astro.params
-    const { data } = await getEntry('blogCategories', category)
-    blogCategoryContent = data
+    const categories = await getBlogCategories(Brands.STUDIO)
+    blogCategoryContent = categories.find(cat => cat.slug.current === category)
 } else {
     const { content } = Astro.props
     blogCategoryContent = content
 }
 
-const pageSettings = await getEntry('blogIndexSettings', 'page_blog-index-studio')
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`)
+const { data: pageSettings } = await loadQuery({ 
+  query: `*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`
+})
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{${blogCardFields}}|order(postDate desc)`)
 ---
 <LayoutBlogIndex
-    title={pageSettings.data.metafields?.title ? pageSettings.data.metafields.title : pageSettings.data.title}
-    description={pageSettings.data.metafields?.description ? pageSettings.data.metafields.description : null}
-    image={pageSettings.data.metafields?.image ? urlFor(pageSettings.data.metafields.image).url() : null}
-    pageSettings={pageSettings.data}
+    title={pageSettings.metafields?.title ? pageSettings.metafields.title : pageSettings.title}
+    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    pageSettings={pageSettings}
     blogPosts={blogPosts}
-    heading={pageSettings.data.title}
-    subheading={pageSettings.data.heading}
+    heading={pageSettings.title}
+    subheading={pageSettings.heading}
     searchFilter="type:page"
     showPreloader={false}
     brand={Brands.STUDIO}

@@ -1,26 +1,25 @@
 ---
-import { getCollection } from 'astro:content';
 import LayoutPartner from '../../layouts/Layout_Partner.astro';
-import { getEntry } from 'astro:content';
 import { Brands } from '../../enums/brands';
-const { env } = Astro.locals.runtime;
+import { getPartners } from '../../lib/cached-content';
+import { getEnv } from '../../lib/getEnv';
 
 export async function getStaticPaths() {
-    const partners = await getCollection('partners')
-    return partners.filter((partner) => partner.data.tier?.createLandingPages).map((partner) => {
+    const partners = await getPartners(Brands.DOMAINE)
+    return partners.filter((partner) => partner.tier?.createLandingPages).map((partner) => {
         return {
-            params: { partner: partner.id },
-            props: { content: {...partner.data} }
+            params: { partner: partner.slug.current },
+            props: { content: partner }
         }
     })
 }
 
 let partnerContent
 
-if (env.SERVER_RENDERING_ENABLED) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { partner } = Astro.params
-    const { data } = await getEntry('partners', partner)
-    partnerContent = data
+    const partners = await getPartners(Brands.DOMAINE)
+    partnerContent = partners.find(p => p.slug.current === partner)
 } else {
     const { content } = Astro.props
     partnerContent = content

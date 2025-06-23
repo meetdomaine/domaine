@@ -10,8 +10,8 @@ import { getLocaleString, getTranslationString } from '../lib/translations';
 import { sanityClient } from 'sanity:client';
 
 const { content, locale, brand } = Astro.props;
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{ "id": slug.current, "data":{${projectGridFields}} } | order(data.orderRank)`)
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{ "id": slug.current, "data":{${blogCardFields}} }|order(data.postDate desc)`)
+const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{${blogCardFields}}|order(postDate desc)`)
 ---
 <LayoutDomaine
     title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : content.title} | ${getLocaleString("PARTNER")}`}

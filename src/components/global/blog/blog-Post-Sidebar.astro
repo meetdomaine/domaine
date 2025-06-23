@@ -9,8 +9,8 @@ const { latestPosts, locale } = Astro.props
   <div class="blog-posts">
     {latestPosts.map((post) => (
       <GlobalBlogTile
-        post={post.data}
-        currentBrand={post.data.agencyBrand}
+        post={post}
+        currentBrand={post.agencyBrand}
         locale={locale}
       />
     ))}
