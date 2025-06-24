@@ -11,8 +11,8 @@ interface Props {
 
 const { formId, buttonToggles, key } = Astro.props
 
-const portalId = getEnv("HUBSPOT_PORTAL_ID")
-const accessToken = getEnv("HUBSPOT_ACCESS_TOKEN")
+const portalId = getEnv("HUBSPOT_PORTAL_ID", Astro.locals)
+const accessToken = getEnv("HUBSPOT_ACCESS_TOKEN", Astro.locals)
 
 let formData;
 try {

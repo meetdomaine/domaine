@@ -14,7 +14,7 @@
     "build-ssr": "NODE_OPTIONS='--max-old-space-size=4096' astro build && cp public/.assetsignore dist/",
     "index": "pagefind --site dist  && cp -r dist/pagefind public/",
     "start": "astro dev",
-    "preview": "astro preview",
+    "preview": "wrangler pages dev ./dist",
     "astro": "astro"
   },
   "dependencies": {
