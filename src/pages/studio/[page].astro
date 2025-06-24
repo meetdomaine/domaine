@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let pageContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { page } = Astro.params
     const { data } = await loadQuery({ 
         query: `*[ _type == "page_studio-general" && slug.current == '${page}'][0]{${generalPageFields}}`

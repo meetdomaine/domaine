@@ -11,7 +11,6 @@ export async function getStaticPaths() {
     const { data: pages } = await loadQuery({ 
         query: `*[_type == "page_general"]{${generalPageFields}} | order(_createdAt desc)`
     })
-    
     return pages.filter((page) => page._type === "page_general").map((page) => {
         return {
             params: { page: page.slug.current },
@@ -22,26 +21,29 @@ export async function getStaticPaths() {
 
 let pageContent
 
-const { content } = Astro.props
-// if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
-//     const { page } = Astro.params
-//     const { data } = await loadQuery({ 
-//         query: `*["page_general" && slug.current == '${page}'][0]{${generalPageFields}}`
-//     })
-//     pageContent = data
-// } else {
-//     const { content } = Astro.props
-//     pageContent = content
-// }
+// const { content } = Astro.props
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
+    console.log("Rendering SERVER")
+    const { page } = Astro.params
+    const { data } = await loadQuery({ 
+        query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
+    })
+    pageContent = await data
+} else {
+    console.log("Rendering STATIC")
+    const { content } = Astro.props
+    pageContent = content
+}
+// console.log(await pageContent)
 ---
-{content?.isMarketingPage ? 
+{pageContent?.isMarketingPage ? 
     <LayoutMarketingPage
-        content={content}
+        content={pageContent}
         brand={Brands.DOMAINE}
     />
     :
     <LayoutPage
-        content={content}
+        content={pageContent}
         brand={Brands.DOMAINE}
     />
 }

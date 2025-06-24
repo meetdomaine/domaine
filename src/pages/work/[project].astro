@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 let projectContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { project } = Astro.params
     const projects = await getProjects(Brands.DOMAINE)
     projectContent = projects.find(p => p.slug.current === project)

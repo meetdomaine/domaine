@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 let blogCategoryContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { category } = Astro.params
     const categories = await getBlogCategories(Brands.STUDIO)
     blogCategoryContent = categories.find(cat => cat.slug.current === category)
