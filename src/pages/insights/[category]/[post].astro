@@ -29,8 +29,6 @@ if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { content } = Astro.props
     blogPostContent = content
 }
-
-const { content } = Astro.props
 ---
 <LayoutBlogPost
   content={blogPostContent}

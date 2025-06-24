@@ -105,7 +105,16 @@ export const getBlogPosts = async (brand) => {
     postDate,
     thumbnailImage{${imageFields}},
     category->{..., slug{...} }, 
-    body{..., richContent[]{${richContentFields}} },
+    body{
+      ..., 
+      richContent[]{${richContentFields}},
+      translations{ 
+          ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
+          )
+        ).join()}
+      },
+    },
     services[]->{...},
     agencyBrand->{slug, name },
     globalSections{ sections[]{${globalSectionsFields}} },
@@ -283,7 +292,6 @@ export const getBrandSettings = async (brand) => {
       cookieNoticeText{ 
         translations{ 
           ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
-            // `${Locales[locale]}[0]->{children[]{${richContentFields}}}`
             `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
           )
         ).join()}
