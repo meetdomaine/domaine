@@ -25,12 +25,10 @@ let pageContent
 if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     console.log("Rendering SERVER")
     const { page } = Astro.params
-    console.log(page)
     const { data } = await loadQuery({ 
         query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
     })
     pageContent = await data
-    console.log(await data)
 } else {
     console.log("Rendering STATIC")
     const { content } = Astro.props

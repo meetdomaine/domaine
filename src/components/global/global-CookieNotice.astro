@@ -1,12 +1,13 @@
 ---
 import AtomRichContent from "./atoms/atom-richContent.astro"
 
-const { content } = Astro.props
+const { content, locale } = Astro.props
 ---
 <div id="cookie-notice" class="cookie-notice" data-hidden="true" data-color-scheme="glass-dark">
     <div class="notice-text caption"></p>
         <AtomRichContent 
             content={content}
+            locale={locale}
         />
     </div>
     <div class="buttons">

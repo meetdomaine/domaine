@@ -1,6 +1,7 @@
 import { loadQuery } from "./sanity-load-query"
 import { sanityClient } from "sanity:client"
 import { Brands } from "../enums/brands"
+import { Locales } from "../enums/locales"
 import { imageBaseFields, imageFields, videoFields, globalSectionsFields, richContentFields, serviceQuery } from "./cms-queries"
 
 let _serviceTypes = {}
@@ -280,8 +281,14 @@ export const getBrandSettings = async (brand) => {
     query: `*[_type == "type_agencyBrand" && name == '${Brands.DOMAINE}' ][0]{
       ..., 
       cookieNoticeText{ 
-        ..., 
-        richContent[]{${richContentFields}}
+        translations{ 
+          ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+            // `${Locales[locale]}[0]->{children[]{${richContentFields}}}`
+            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
+          )
+        ).join()}
+        },
+        "richContent": richContent[]{ ..., children[]{${richContentFields}}}
       },
       metafields{ title, description, image{${imageBaseFields}} },
     }`
