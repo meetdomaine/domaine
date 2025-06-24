@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 
 let eventContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { event } = Astro.params
     const { data } = await loadQuery({ 
       query: `*[_type == "type_event" && slug.current == $slug][0]{
