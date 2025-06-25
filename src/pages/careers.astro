@@ -7,6 +7,8 @@ import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { imageBaseFields, urlFor } from '../lib/cms-queries';
 
+export const prerender = false
+
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,
   metafields{ title, description, image{${imageBaseFields}} },
