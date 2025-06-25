@@ -32,7 +32,7 @@ if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     pageContent = content
 }
 ---
-<!-- {pageContent.isMarketingPage ? 
+{pageContent.isMarketingPage ? 
     <LayoutMarketingPage
         content={pageContent}
         brand={Brands.STUDIO}
@@ -42,4 +42,4 @@ if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
         content={pageContent}
         brand={Brands.STUDIO}
     />
-} -->
+}

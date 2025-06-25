@@ -66,6 +66,9 @@ export const getServiceGroups = async (brand) => {
     metafields{ title, description, image{${imageBaseFields}} },
     pageSectionsDomaine[]{${globalSectionsFields}},
     pageSectionsStudio[]{${globalSectionsFields}},
+    "hasContent": {
+      "${brand}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && ^._id in services[]->serviceGroup._ref ][0]),
+    },
   } | order(orderRank)`)
   _serviceGroups[brand] = data
   return data
