@@ -35,7 +35,7 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" ? false : true,
+      useCdn: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" ? true : false,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
