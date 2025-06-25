@@ -73,9 +73,9 @@ if (featuredPost) {
                         class="featured-post-heading h2" 
                         href={getLocaleUrl(`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`, locale)}
                     >
-                        {getTranslationString(featuredPost.title.text, locale)}
+                        {getTranslationString(featuredPost.title, locale)}
                     </a>
-                    <p class="">{getTranslationString(featuredPost.excerpt.text, locale)}</p>
+                    <p class="">{getTranslationString(featuredPost.excerpt, locale)}</p>
                 </div>
             </article>
             <aside class="sidebar" data-color-scheme="glass-dark">
