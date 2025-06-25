@@ -6,31 +6,67 @@ import { getLocaleUrl } from '../../../lib/translations';
 import { getTranslationString } from '../../../lib/translations';
 import { Translations } from '../../../lib/locales';
 import { sanityClient } from "sanity:client"
+import { getProjectIndustries, getPartners, getProjectFeatures, getServiceGroups } from '../../../lib/cached-content';
 
 const { brand, currentPath, locale } = Astro.props;
+
+// const allFilters = await Promise.all([
+//     {
+//         title: locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name,
+//         path: 'industries/',
+//         filters:  await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->slug.current == '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}']) > 0 ]{ ..., excerpt } | order(title asc)`)
+//     },
+//     {
+//         title: locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name,
+//         path: 'features/',
+//         filters:  await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->slug.current == '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' && references(^._id)]) > 2 ]{${projectFeatureQuery} } | order( title asc)`)
+//     },
+//     {
+//         title: locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name,
+//         path: 'partners/',
+//         filters:  await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->slug.current == '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' ]) > 2]{${partnerTileFields}} | order(orderRank)`)
+//     },
+//     {
+//         title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
+//         path: 'service-groups/',
+//         filters: await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' in agencyBrands[]->slug.current]{${serviceGroupQuery}} | order(orderRank asc)`)
+//     },
+// ])
+
+const allFeatures = await getProjectFeatures(brand)
+const allIndustries = await getProjectIndustries(brand)
+const allPartners = await getPartners(brand)
+const allServiceGroups = await getServiceGroups(brand)
+
+const brandFeatures = await allFeatures.filter((feature) => feature.hasContent[brand])
+const brandIndustries = await allIndustries.filter((industry) => industry.hasContent[brand])
+const brandPartners = await allPartners.filter((partner) => partner.hasContent[brand])
+const brandServiceGroups = await allServiceGroups.filter((serviceGroup) => serviceGroup.hasContent[brand])
 
 const allFilters = await Promise.all([
     {
         title: locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name,
         path: 'industries/',
-        filters:  await sanityClient.fetch(`*[_type == "type_industry" && count(*[_type == "type_project" && references(^._id) && agencyBrand->slug.current == '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}']) > 0 ]{ ..., excerpt } | order(title asc)`)
+        filters:  brandIndustries
     },
     {
         title: locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name,
         path: 'features/',
-        filters:  await sanityClient.fetch(`*[_type == "type_projectFeature" &&  count(*[_type == "type_project" && agencyBrand->slug.current == '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' && references(^._id)]) > 2 ]{${projectFeatureQuery} } | order( title asc)`)
+        filters: brandFeatures
     },
     {
         title: locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name,
         path: 'partners/',
-        filters:  await sanityClient.fetch(`*[_type == "type_partner" && count(*[_type == "type_project" && references(^._id) && agencyBrand->slug.current == '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' ]) > 2]{${partnerTileFields}} | order(orderRank)`)
+        filters: brandPartners
     },
     {
         title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
         path: 'service-groups/',
-        filters: await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${brand?.toLowerCase() === "studio" ? "/studio" : "/"}' in agencyBrands[]->slug.current]{${serviceGroupQuery}} | order(orderRank asc)`)
+        filters: brandServiceGroups
     },
 ])
+
+
 
 ---
 <dialog popover id="projects-filter" class="projects-filter" data-lenis-prevent>
@@ -45,7 +81,7 @@ const allFilters = await Promise.all([
             <div class="filter-type">
                 <p class="filter-title h6">{filterGroup.title}</p>
                 <div class="filters">
-                    {filterGroup.filters.map((filter) => {
+                    {filterGroup.filters.slice(0, 20).map((filter) => {
                         return (
                             <AtomTag 
                                 text={getTranslationString(filter.title, locale)}

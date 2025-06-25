@@ -33,4 +33,5 @@ const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBr
     content={industryContent}
     projects={projects}
     currentPath={`/industries/${industryContent.slug.current}`}
+    brand={Brands.DOMAINE}
 />

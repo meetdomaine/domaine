@@ -37,6 +37,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         projectCount={projects ? projects.length : brandProjects.length}
         isTopLevel={isTopLevel}
         locale={locale}
+        brand={brand}
     />
     <ProjectsFilter 
         brand={brand}
@@ -47,6 +48,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     <GlobalProjectsGrid 
         projects={projects ? projects : brandProjects}
         locale={locale}
+        brand={brand}
     />
     <slot name="after-grid" /> 
     <!-- {relatedBlogPosts && relatedBlogPosts.length > 2 &&
