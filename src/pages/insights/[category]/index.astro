@@ -5,6 +5,7 @@ import { Brands } from '../../../enums/brands';
 import { getBlogCategories } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../lib/getEnv';
+import { Locales } from '../../../enums/locales';
 
 export async function getStaticPaths() {
     const categories = await getBlogCategories(Brands.DOMAINE)
@@ -38,5 +39,6 @@ const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBran
     subheading={blogCategoryContent.heading}
     slug={blogCategoryContent.slug}
     brand={Brands.DOMAINE}
+    locale={Locales.EN}
 />
 

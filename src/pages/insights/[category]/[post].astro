@@ -3,6 +3,7 @@ import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../enums/brands';
 import { getBlogPosts } from '../../../lib/cached-content';
 import { getEnv } from '../../../lib/getEnv';
+import { Locales } from '../../../enums/locales';
 
 export async function getStaticPaths() {
     const blogPosts = await getBlogPosts(Brands.DOMAINE)
@@ -33,4 +34,5 @@ if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
 <LayoutBlogPost
   content={blogPostContent}
   brand={Brands.DOMAINE}
+  locale={Locales.EN}
 />

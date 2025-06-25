@@ -79,7 +79,7 @@ if (featuredPost) {
                 </div>
             </article>
             <aside class="sidebar" data-color-scheme="glass-dark">
-                <p class="sidebar-heading">{getTranslationString(sidebarTitleText, locale)}</p>
+                {sidebarTitleText && <p class="sidebar-heading">{getTranslationString(sidebarTitleText, locale)}</p>}
                 <div class="sidebar-posts">
                     {blogPosts.slice(0, 3)?.map((post) => (
                         <GlobalBlogTile 
