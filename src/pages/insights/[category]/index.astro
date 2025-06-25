@@ -4,29 +4,11 @@ import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { getBlogCategories } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
 import { Locales } from '../../../enums/locales';
 
-export async function getStaticPaths() {
-    const categories = await getBlogCategories(Brands.DOMAINE)
-    return categories.map((category) => {
-        return {
-            params: { category: category.slug.current },
-            props: { content: category }
-        }
-    })
-}
-
-let blogCategoryContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { category } = Astro.params
-    const categories = await getBlogCategories(Brands.DOMAINE)
-    blogCategoryContent = categories.find(cat => cat.slug.current === category)
-} else {
-    const { content } = Astro.props
-    blogCategoryContent = content
-}
+const { category } = Astro.params
+const categories = await getBlogCategories(Brands.DOMAINE)
+const blogCategoryContent = categories.find(cat => cat.slug.current === category)
 
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{${blogCardFields} }|order(postDate desc)`)
 ---

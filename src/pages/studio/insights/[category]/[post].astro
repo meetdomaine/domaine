@@ -2,35 +2,10 @@
 import LayoutBlogPost from '../../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../../enums/brands';
 import { getBlogPosts } from '../../../../lib/cached-content';
-import { getEnv } from '../../../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const blogPosts = await getBlogPosts(Brands.STUDIO)
-    return blogPosts.map((post) => {
-        return {
-            params: { 
-                post: post.slug.current, 
-                category: post.category.slug.current 
-            },
-            props: { 
-                content: post 
-            }
-        }
-    })
-}
-
-let blogPostContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    console.log('render SERVER')
-    const { post } = Astro.params
-    const blogPosts = await getBlogPosts(Brands.STUDIO)
-    blogPostContent = blogPosts.find(p => p.slug.current === post)
-} else {
-    console.log('render STATIC')
-    const { content } = Astro.props
-    blogPostContent = content
-}
+const { post } = Astro.params
+const blogPosts = await getBlogPosts(Brands.STUDIO)
+const blogPostContent = blogPosts.find(p => p.slug.current === post)
 ---
 <LayoutBlogPost
   content={blogPostContent}

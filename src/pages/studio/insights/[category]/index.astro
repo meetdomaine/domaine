@@ -5,31 +5,12 @@ import { blogCardFields, urlFor } from '../../../../lib/cms-queries';
 import { getBlogCategories } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { loadQuery } from '../../../../lib/sanity-load-query';
-import { getEnv } from '../../../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const categories = await getBlogCategories(Brands.STUDIO)
-    return categories.map((category) => {
-        return {
-            params: { 
-                category: category.slug.current
-            },
-            props: { content: category }
-        }
-    })
-}
+const { category } = Astro.params
+const categories = await getBlogCategories(Brands.STUDIO)
+const blogCategoryContent = categories.find(cat => cat.slug.current === category)
 
-let blogCategoryContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { category } = Astro.params
-    const categories = await getBlogCategories(Brands.STUDIO)
-    blogCategoryContent = categories.find(cat => cat.slug.current === category)
-} else {
-    const { content } = Astro.props
-    blogCategoryContent = content
-}
-
+// To-do: Get pagesettings at build-time
 const { data: pageSettings } = await loadQuery({ 
   query: `*[_type == "page_blog-index" && _id == "page_blog-index-studio"][0]`
 })

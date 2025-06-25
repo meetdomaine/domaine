@@ -2,33 +2,10 @@
 import LayoutServiceGroup from "../../../../../layouts/Layout_ServiceGroup.astro"
 import { Brands } from "../../../../../enums/brands"
 import { getServiceGroups } from "../../../../../lib/cached-content";
-import { getEnv } from "../../../../../lib/getEnv";
 
-export async function getStaticPaths() {
-    const serviceGroups = await getServiceGroups(Brands.STUDIO)
-    return serviceGroups.map((serviceGroup) => {
-        return {
-            params: { 
-                service_group: serviceGroup.slug.current,
-                service_type: serviceGroup.serviceType.slug.current
-            },
-            props: { 
-                content: serviceGroup
-            }
-        }
-    })
-}
-
-let serviceGroupContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service_type, service_group } = Astro.params
-    const serviceGroups = await getServiceGroups(Brands.STUDIO)
-    serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
-} else {
-    const { content } = Astro.props
-    serviceGroupContent = content
-}
+const { service_type, service_group } = Astro.params
+const serviceGroups = await getServiceGroups(Brands.STUDIO)
+const serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
 ---
 <LayoutServiceGroup 
     content={serviceGroupContent}

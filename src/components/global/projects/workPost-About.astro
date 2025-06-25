@@ -5,8 +5,9 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
 import AtomTag from "../atoms/atom-tag.astro"
 import { paths } from "../../../lib/paths"
+import { Brands } from "../../../enums/brands"
 
-const { description, excerpt, agencyBrand, client, industry, theme, metrics, locale } = Astro.props
+const { description, excerpt, brand, client, industry, theme, metrics, locale } = Astro.props
 ---
 <section class="work-post_about">
 
@@ -31,7 +32,7 @@ const { description, excerpt, agencyBrand, client, industry, theme, metrics, loc
             <AtomTag 
                 title={locale ? Translations.INDUSTRY.locales[locale] : Translations.INDUSTRY.name}
                 text={getTranslationString(industry.title, locale)}
-                url={getLocaleUrl(`${agencyBrand == "studio" ? "/studio" : ""}/work/industries/${industry.slug.current}`, locale)}
+                url={getLocaleUrl(`${brand == Brands.STUDIO ? "/studio" : ""}/work/industries/${industry.slug.current}`, locale)}
                 theme={theme}
             />
             {client.isEnterprise && 

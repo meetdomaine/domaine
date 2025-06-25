@@ -98,16 +98,6 @@ if (project.client?.logo) {
   </div>
 </a>
 
-{!getEnv('DEV', Astro.locals) && 
-  <link
-    rel="preload"
-    href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
-    as="fetch"
-    crossorigin="anonymous"
-    type=""
-  />
-}
-
 <style>
   .project-card {
     flex: 0 1 100%;

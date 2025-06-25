@@ -4,28 +4,10 @@ import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
 import { getServiceGroups } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const serviceGroups = await getServiceGroups(Brands.DOMAINE)
-    return serviceGroups.map((serviceGroup) => {
-        return {
-            params: { service_group: serviceGroup.slug.current },
-            props: { content: serviceGroup }
-        }
-    })
-}
-
-let serviceGroupContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service_group } = Astro.params
-    const serviceGroups = await getServiceGroups(Brands.DOMAINE)
-    serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
-} else {
-    const { content } = Astro.props
-    serviceGroupContent = content
-}
+const { service_group } = Astro.params
+const serviceGroups = await getServiceGroups(Brands.DOMAINE)
+const serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
 
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && '${serviceGroupContent.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`)
 ---

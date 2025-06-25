@@ -7,8 +7,7 @@ import { Icon } from 'astro-icon/components';
 import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import { imageBaseFields, urlFor } from '../lib/cms-queries';
 
-export const prerender = false
-
+// To-do: Cache page settings or move to build-time
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,
   metafields{ title, description, image{${imageBaseFields}} },
@@ -25,8 +24,6 @@ const allCareers = await careersResponse.json();
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     showPreloader={false}
 >
-
-
   <section class="page-content">
 
     <div class="section-title">
@@ -48,6 +45,7 @@ const allCareers = await careersResponse.json();
             <div class="role-details">
               <AtomButton
                 text="Learn More"
+                style="secondary"
                 url={role.url}
                 newTab={true}
               />
@@ -59,7 +57,7 @@ const allCareers = await careersResponse.json();
           </div>
         ))
       :
-      <p>Ro Openings!</p>
+      <p>No Openings!</p>
       }
     </div>
 
