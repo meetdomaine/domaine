@@ -26,6 +26,6 @@ export const getLocaleUrl = (url, locale) => {
 
 export const getLocaleString = (string, locale) => {
   if (!Translations[string]) return string
-  if (locale) return Translations[string].locales[locale]
+  if (locale && Translations[string].locales[locale]) return Translations[string].locales[locale]
   return Translations[string].name
 }
