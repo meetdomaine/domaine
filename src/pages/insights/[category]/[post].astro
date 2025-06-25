@@ -3,6 +3,7 @@ import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../enums/brands';
 import { getBlogPosts } from '../../../lib/cached-content';
 import { getEnv } from '../../../lib/getEnv';
+import { Locales } from '../../../enums/locales';
 
 export async function getStaticPaths() {
     const blogPosts = await getBlogPosts(Brands.DOMAINE)
@@ -21,7 +22,7 @@ export async function getStaticPaths() {
 
 let blogPostContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { post, category } = Astro.params
     const blogPosts = await getBlogPosts(Brands.DOMAINE)
     blogPostContent = blogPosts.find(p => p.slug.current === post)
@@ -29,10 +30,9 @@ if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
     const { content } = Astro.props
     blogPostContent = content
 }
-
-const { content } = Astro.props
 ---
 <LayoutBlogPost
   content={blogPostContent}
   brand={Brands.DOMAINE}
+  locale={Locales.EN}
 />

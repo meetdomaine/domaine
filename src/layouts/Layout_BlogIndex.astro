@@ -18,6 +18,11 @@ const { data: pageSettings } = await loadQuery({
 })
 const allBrandBlogPosts = await getBlogPosts(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+
+console.log(`=== ${locale} ROUTE ===`)
+console.log(`Total posts: ${allBrandBlogPosts.length}`)
+console.log(`First post: ${allBrandBlogPosts[0]?.title.text} (${allBrandBlogPosts[0]?.postDate})`)
+console.log(`Missing post title here? Check for: [YOUR_MISSING_POST_TITLE]`)
 ---
 <BrandLayout
     title={ `${title ? getTranslationString(title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} ${title || pageSettings.metafields.title ? "|" : ""} ${getLocaleString("INSIGHTS")} `}}

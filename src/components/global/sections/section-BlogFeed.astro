@@ -73,13 +73,13 @@ if (featuredPost) {
                         class="featured-post-heading h2" 
                         href={getLocaleUrl(`${brand === 'studio' ? '/studio' : ''}/insights/${featuredPost.category.slug.current}/${featuredPost.slug.current}`, locale)}
                     >
-                        {getTranslationString(featuredPost.title.text, locale)}
+                        {getTranslationString(featuredPost.title, locale)}
                     </a>
-                    <p class="">{getTranslationString(featuredPost.excerpt.text, locale)}</p>
+                    <p class="">{getTranslationString(featuredPost.excerpt, locale)}</p>
                 </div>
             </article>
             <aside class="sidebar" data-color-scheme="glass-dark">
-                <p class="sidebar-heading">{getTranslationString(sidebarTitleText, locale)}</p>
+                {sidebarTitleText && <p class="sidebar-heading">{getTranslationString(sidebarTitleText, locale)}</p>}
                 <div class="sidebar-posts">
                     {blogPosts.slice(0, 3)?.map((post) => (
                         <GlobalBlogTile 

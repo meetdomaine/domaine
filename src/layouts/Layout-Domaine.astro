@@ -2,7 +2,7 @@
 import LayoutGlobal from './Layout-Global.astro';
 import Header from '../components/global/header/global-Header.astro';
 import Footer from '../components/global/global-Footer.astro';
-import { getTranslationString } from '../lib/translations';
+import { getTranslationString, getTranslationRichContent } from '../lib/translations';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
 import { getBrandSettings, getFooterSettings } from '../lib/cached-content';
@@ -30,6 +30,12 @@ const { title, description, image, searchFilter, activePath, searchExposed, noIn
 
 const brandSettings = await getBrandSettings(Brands.DOMAINE)
 const footerSettings = await getFooterSettings(Brands.DOMAINE)
+
+// console.log(brandSettings?.cookieNoticeText.translations)
+// console.log(brandSettings?.cookieNoticeText)
+
+// const test = getTranslationRichContent(brandSettings.cookieNoticeText, locale)
+// console.log(test)
 ---
 <LayoutGlobal
     title={`${title ? title : "Home"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -39,7 +45,7 @@ const footerSettings = await getFooterSettings(Brands.DOMAINE)
     searchFilter={searchFilter}
     currentBrand={brandSettings}
     noIndex={noIndex}
-    cookieNoticeText={brandSettings.cookieNoticeText}
+    cookieNoticeText={brandSettings?.cookieNoticeText}
     showPreloader={showPreloader}
     locale={locale}
     indexSearch={indexSearch}

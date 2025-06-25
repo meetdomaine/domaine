@@ -5,6 +5,7 @@ import { getRelativeLocaleUrl } from "astro:i18n"
 import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
 import { sanityClient } from "sanity:client"
 import { agencyBrandsQuery } from "../../lib/cms-queries"
+import { getTranslationString } from "../../lib/translations"
 
 const { footerSettings, locale } = Astro.props
 
@@ -133,7 +134,7 @@ const logos = await agencyBrands.map( async (brand) => {
                     {locale && link.linkText.translations?.[locale] ? link.linkText.translations[locale] : link.linkText.text}
                 </a>
             ))}
-            {footerSettings.copyrightText && <p class="subfooter-link caption">{footerSettings.copyrightText} </p>}
+            {footerSettings.copyrightText && <p class="subfooter-link caption">{getTranslationString(footerSettings.copyrightText, locale)} </p>}
         </div>
     </div>
 

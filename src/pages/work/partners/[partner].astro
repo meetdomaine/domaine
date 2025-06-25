@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 
 let partnerContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { partner } = Astro.params
     const partners = await getPartners(Brands.DOMAINE)
     partnerContent = partners.find(p => p.slug.current === partner)

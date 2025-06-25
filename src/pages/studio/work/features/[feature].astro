@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 
 let featureContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { feature } = Astro.params
     const features = await getProjectFeatures(Brands.STUDIO)
     featureContent = features.find(f => f.slug.current === feature)

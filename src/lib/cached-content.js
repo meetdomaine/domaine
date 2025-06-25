@@ -1,6 +1,7 @@
 import { loadQuery } from "./sanity-load-query"
 import { sanityClient } from "sanity:client"
 import { Brands } from "../enums/brands"
+import { Locales } from "../enums/locales"
 import { imageBaseFields, imageFields, videoFields, globalSectionsFields, richContentFields, serviceQuery } from "./cms-queries"
 
 let _serviceTypes = {}
@@ -95,8 +96,8 @@ export const getServices = async (brand) => {
 
 // Blog
 export const getBlogPosts = async (brand) => {
-  if (_blogPosts[brand]) return _blogPosts[brand]
-  const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' ]{
+  // if (_blogPosts[brand]) return _blogPosts[brand]
+  const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true ]{
     ..., 
     _id,
     slug,
@@ -104,14 +105,23 @@ export const getBlogPosts = async (brand) => {
     postDate,
     thumbnailImage{${imageFields}},
     category->{..., slug{...} }, 
-    body{..., richContent[]{${richContentFields}} },
+    body{
+      ..., 
+      richContent[]{${richContentFields}},
+      translations{ 
+          ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
+          )
+        ).join()}
+      },
+    },
     services[]->{...},
     agencyBrand->{slug, name },
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
   } | order(postDate desc)`)
 
-  _blogPosts[brand] = data
+  // _blogPosts[brand] = await data
   return data
 }
 
@@ -280,8 +290,13 @@ export const getBrandSettings = async (brand) => {
     query: `*[_type == "type_agencyBrand" && name == '${Brands.DOMAINE}' ][0]{
       ..., 
       cookieNoticeText{ 
-        ..., 
-        richContent[]{${richContentFields}}
+        translations{ 
+          ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
+          )
+        ).join()}
+        },
+        "richContent": richContent[]{ ..., children[]{${richContentFields}}}
       },
       metafields{ title, description, image{${imageBaseFields}} },
     }`

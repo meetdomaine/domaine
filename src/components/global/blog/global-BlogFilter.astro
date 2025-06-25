@@ -13,7 +13,7 @@ const categories = await getBlogCategories(brand)
         class="filter-all filter caption" 
         href={getLocaleUrl(`${brand == Brands.STUDIO ? '/studio' : ''}/insights/`, locale)}
         data-active={!slug ? "true" : "false"}
-    >{locale ? Translations['ALL-INSIGHTS'].locales[locale] : Translations['ALL-INSIGHTS'].name}</a>
+    >{locale && Translations['ALL-INSIGHTS'].locales[locale] ? Translations['ALL-INSIGHTS'].locales[locale] : Translations['ALL-INSIGHTS'].name}</a>
     <div class="filter-tags">
         {categories.map((category) => (
             <AtomTag 

@@ -21,11 +21,13 @@ export async function getStaticPaths() {
 
 let blogPostContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
+    console.log('render SERVER')
     const { post } = Astro.params
     const blogPosts = await getBlogPosts(Brands.STUDIO)
     blogPostContent = blogPosts.find(p => p.slug.current === post)
 } else {
+    console.log('render STATIC')
     const { content } = Astro.props
     blogPostContent = content
 }

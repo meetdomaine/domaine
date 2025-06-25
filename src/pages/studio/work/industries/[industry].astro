@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 
 let industryContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { industry } = Astro.params
     const industries = await getProjectIndustries(Brands.STUDIO)
     industryContent = industries.find(i => i.slug.current === industry)

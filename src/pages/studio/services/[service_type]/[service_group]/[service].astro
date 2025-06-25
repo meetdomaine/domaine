@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 
 let serviceContent
 
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals)) {
+if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
     const { service, service_type } = Astro.params
     const services = await getServices(Brands.STUDIO)
     serviceContent = services.find(s => s.slug.current === service)
