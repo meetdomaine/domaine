@@ -96,8 +96,8 @@ export const getServices = async (brand) => {
 
 // Blog
 export const getBlogPosts = async (brand) => {
-  if (_blogPosts[brand]) return _blogPosts[brand]
-  const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' ]{
+  // if (_blogPosts[brand]) return _blogPosts[brand]
+  const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true ]{
     ..., 
     _id,
     slug,
@@ -121,7 +121,7 @@ export const getBlogPosts = async (brand) => {
     metafields{ title, description, image{${imageBaseFields}} },
   } | order(postDate desc)`)
 
-  _blogPosts[brand] = data
+  // _blogPosts[brand] = await data
   return data
 }
 

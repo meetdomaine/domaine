@@ -44,18 +44,18 @@ const { section, brand, locale, key } = Astro.props
 {section._type == "section_practicesFeed" && section.showSection && <PracticesFeed section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_projectsFeed" && section.showSection && <ProjectsFeed section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_projectsFullBleed" && section.showSection && <ProjectsFullBleed section={section} brand={brand} locale={locale} key={key} />}
-<!-- {section._type == "section_projectsGrid" && section.showSection && <ProjectsGrid section={section} brand={brand} locale={locale} key={key} />} -->
+{section._type == "section_projectsGrid" && section.showSection && <ProjectsGrid section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_quote" && section.showSection && <Quote section={section} brand={brand} locale={locale} key={key} />}
-<!-- {section._type == "section_richContent" && section.showSection && <RichContent section={section} brand={brand} locale={locale} key={key} />} -->
+{section._type == "section_richContent" && section.showSection && <RichContent section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_serviceCards" && section.showSection && <ServiceCards section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_serviceFeature" && section.showSection && <ServiceFeature section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_servicesFeed" && section.showSection && <ServicesFeed section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_statsCarousel" && section.showSection && <StatsCarousel section={section} brand={brand} locale={locale} key={key} />}
-<!-- {section._type == "section_textClients" && section.showSection && <TextClients section={section} brand={brand} locale={locale} key={key} />} -->
+{section._type == "section_textClients" && section.showSection && <TextClients section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_textColumns" && section.showSection && <TextColumns section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_textHeading" && section.showSection && <TextHeading section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_textLinkCard" && section.showSection &&  <TextLinkCard section={section} brand={brand} locale={locale} key={key} />}
-<!-- {section._type == "section_textMedia" && section.showSection && <TextMedia section={section} brand={brand} locale={locale} key={key} />} -->
+{section._type == "section_textMedia" && section.showSection && <TextMedia section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_textMediaBlocks" && section.showSection && <TextMediaBlocks section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_textMediaTabs" && section.showSection && <TextMediaTabs section={section} brand={brand} locale={locale} key={key} />}
 {section._type == "section_textVideoPlayer" && section.showSection && <TextVideoPlayer section={section} brand={brand} locale={locale} key={key} />}
