@@ -4,6 +4,8 @@ import { urlFor } from '../../../../lib/cms-queries';
 import { Translations } from '../../../../lib/locales';
 import { getTranslationString } from 'src/lib/translations';
 import { Document } from 'flexsearch';
+import { Brands } from '../../../../enums/brands';
+import ImagePlaceholder from '../../../../icons/domaine-icon.svg?raw'
 
 function SearchIcon() {
     return (
@@ -25,13 +27,18 @@ export default function SearchMenu(props) {
 
     const [ searchReady, setSearchReady ] = createSignal(false)
     const [ query, setQuery ] = createSignal(null)
+    const [ isSearching, setIsSearching ] = createSignal(false)
     const [ projectResults, setProjectResults ] = createSignal(null)
     const [ blogResults, setBlogResults ] = createSignal(null)
     const [ partnerResults, setPartnerResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
 
+    let debounceTimer;
+
     let projectsIndex, blogIndex, featuresIndex, partnersIndex;
     let projectsLookup, blogLookup, featuresLookup, partnersLookup;
+
+    let inputElement, dialogElement
 
     const initSearch = async () => {
         try {
@@ -82,12 +89,12 @@ export default function SearchMenu(props) {
             });
             
             featuresIndex = new Document({
-                document: { id: "id", index: ["title"] },
+                document: { id: "id", index: ["title", "subtitle"] },
                 tokenize: "forward"
             });
             
             partnersIndex = new Document({
-                document: { id: "id", index: ["title"] },
+                document: { id: "id", index: ["title", "subtitle"] },
                 tokenize: "forward"
             });
             
@@ -203,9 +210,9 @@ export default function SearchMenu(props) {
         }
     };
 
-
     const clearResults = () => {
         setQuery(null)
+        setIsSearching(false)
         setProjectResults(null)
         setBlogResults(null)
         setPartnerResults(null)
@@ -213,32 +220,55 @@ export default function SearchMenu(props) {
     }
 
     const handleInput = (e) => {
-        if (e.target.value) {
-            setQuery(e.target.value)
-            handleSearch(e.target.value)
+        const value = e.target.value;
+        setQuery(value);
+        
+        // Clear existing timer
+        clearTimeout(debounceTimer);
+        
+        if (value) {
+            setIsSearching(true);
+            // Debounce search by 100ms
+            debounceTimer = setTimeout(() => {
+                handleSearch(value);
+                setIsSearching(false);
+            }, 100);
         } else {
-            clearResults()
+            clearResults();
         }
     }
 
     const ResultCard = (props) => (
-        <a href="#" class={styles.resultCard}>
-            {props.title && <p class="h6">{props.title}</p>}
-            {props.subtitle && <p>{props.subtitle}</p>}
+        <a href={`${props.brand === Brands.STUDIO ? '/studio' : ''}${props.path}${props.slug}`} class={styles.resultCard}>
+            <div class={styles.media}>
+                {props.image ? <img src={props.image} /> : <div class={styles.imagePlaceholder} innerHTML={ImagePlaceholder}></div>}
+            </div>
+            <div class={styles.content}>
+                {props.title && <p class="h6">{props.title}</p>}
+                {props.subtitle && <p class={`${styles.subtitle} caption`}>{props.subtitle}</p>}
+            </div>
         </a>
     )
 
     const ResultsGroup = (props) => (
         <div class={`${styles.resultsGroup} ${props.results?.length > 0 ? styles.visible : styles.hidden}`}>
-            <p>{props.title}</p>
-            <For each={props.results}>
-                {(result) => (
-                    <ResultCard 
-                        title={result.title}
-                        subtitle={result.subtitle}
-                    />
-                )}
-            </For>
+            <div class={styles.groupTitle}>
+                <p>{props.title}</p>
+            </div>
+            <div class={styles.resultsList}>
+                <For each={props.results}>
+                    {(result) => (
+                        <ResultCard 
+                            title={result.title}
+                            subtitle={result.subtitle}
+                            image={result.image}
+                            brand={result.brand}
+                            slug={result.slug}
+                            path={props.path}
+                        />
+                    )}
+                </For>
+            </div>
         </div>
     )
 
@@ -273,10 +303,10 @@ export default function SearchMenu(props) {
         console.log('Features:', filteredFeatures.length);
         console.log('Partners:', filteredPartners.length);
         
-        setProjectResults(filteredProjects.slice(0, 4));
+        setProjectResults(filteredProjects.slice(0, 3));
         setBlogResults(filteredBlog.slice(0, 3));
-        setFeatureResults(filteredFeatures.slice(0, 10));
-        setPartnerResults(filteredPartners.slice(0, 5));
+        setFeatureResults(filteredFeatures.slice(0, 6));
+        setPartnerResults(filteredPartners.slice(0, 3));
     }
 
     onMount(() => {
@@ -286,10 +316,22 @@ export default function SearchMenu(props) {
 
     return (
 
-        <dialog popover id="search-menu" class={styles.searchMenu} data-color-scheme="default" data-lenis-prevent>
+        <dialog 
+            popover 
+            id="search-menu" 
+            class={styles.searchMenu} 
+            data-color-scheme="glass-dark" 
+            data-lenis-prevent
+            ref={(element) => {
+                element.addEventListener("toggle", () => {
+                    clearResults()
+                    if(inputElement) inputElement.value = ''
+                })
+            }}
+        >
 
             {/* Search Input */}
-            <div class={styles.menuControls} data-color-scheme="glass-light">
+            <div class={styles.menuControls}>
                 
                 <div class={styles.searchInput}>  
                     <input 
@@ -298,6 +340,7 @@ export default function SearchMenu(props) {
                         class={`${styles.input} h4`} 
                         placeholder="Search"
                         oninput={handleInput}
+                        ref={inputElement}
                     />
                     <span class={styles.searchIcon}><SearchIcon /></span>
                 </div>
@@ -311,32 +354,38 @@ export default function SearchMenu(props) {
 
                 <ResultsGroup 
                     title="Projects"
+                    path="/work/"
                     results={projectResults()}
                 />
 
                 <ResultsGroup 
                     title="Insights"
+                    path="/insights/"
                     results={blogResults()}
                 />
 
                 <ResultsGroup 
                     title="Features"
+                    path="/work/features/"
                     results={featureResults()}
                 />
 
                 <ResultsGroup 
                     title="Partner"
+                    path="/partners/"
                     results={partnerResults()}
                 />
 
                 {/* No Results */}
-                <Show when={ query() && 
+                <Show when={ query() && !isSearching() &&
                     (!projectResults() || projectResults().length <= 0) &&
                     (!blogResults() || blogResults().length <= 0) &&
                     (!featureResults() || featureResults().length <= 0) &&
                     (!partnerResults() || partnerResults().length <= 0)
                 }>
-                    <h2>No Results</h2>
+                    <div class={styles.noResults}>
+                        <p class="h5">No Results</p>
+                    </div>
                 </Show>
 
             </div>

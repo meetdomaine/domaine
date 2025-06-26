@@ -28,7 +28,7 @@
     --color-glass-dark: color-mix(in srgb, var(--color-darkest) 50%, transparent);
     --color-glass-light: color-mix(in srgb, var(--color-lightest) 50%, transparent);
 
-    --background-blur-backdrop: blur(2px);
+    --background-blur-backdrop: blur(6px);
     --background-color-backdrop: color-mix(in srgb, var(--color-darkest) 10%, transparent);
 }
 

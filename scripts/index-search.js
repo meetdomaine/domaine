@@ -3,6 +3,7 @@ import { Document } from "flexsearch";
 import { writeFileSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import imageUrlBuilder from '@sanity/image-url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,6 +14,13 @@ const sanityClient = createClient({
   useCdn: false, // set to `false` to bypass the edge cache
   apiVersion: '2025-06-25',
 })
+
+// Create urlFor function for this script
+const urlBuilder = imageUrlBuilder(sanityClient);
+const urlFor = (source) => urlBuilder.image(source);
+
+const imageFields = 'image{crop, asset->{_id, metadata}, hotspot, alt }'
+const mediaFields = `video{ asset->{playbackId, assetId, filename} }, ${imageFields}`
 
 const loadIndex = async () => {
 
@@ -44,7 +52,7 @@ const loadIndex = async () => {
   const featuresIndex = new Document({
     document: {
       id: "id",
-      index: ["title"]
+      index: ["title", "subtitle"]
     },
     tokenize: "forward"
   });
@@ -52,7 +60,7 @@ const loadIndex = async () => {
   const partnersIndex = new Document({
     document: {
       id: "id",
-      index: ["title"]
+      index: ["title", "subtitle"]
     },
     tokenize: "forward"
   });
@@ -61,34 +69,40 @@ const loadIndex = async () => {
   const [projects, blogPosts, features, partners] = await Promise.all([
     sanityClient.fetch(`*[ _type == "type_project" && isHidden != true ]{
       title,
+      slug,
       excerpt,
-      agencyBrand->{
-        slug
-      },
+      agencyBrand->{name, slug},
+      thumbnailMedia{${mediaFields}},
       orderRank
     } | order(orderRank)`),
     
     sanityClient.fetch(`*[ _type == "type_blog" && isHidden != true ]{
       title,
+      slug,
       excerpt,
       agencyBrand->{
         slug
       },
+      thumbnailImage{${imageFields}},
       orderRank
     } | order(orderRank)`),
     
     sanityClient.fetch(`*[ _type == "type_projectFeature" && isHidden != true ]{
       _id,
       title,
-      agencyBrand->{
-        slug
-      },
+      excerpt,
+      slug,
+      agencyBrand->{name, slug},
       orderRank
     } | order(orderRank)`),
     
     sanityClient.fetch(`*[ _type == "type_partner" && isHidden != true ]{
       _id,
       title,
+      slug,
+      agencyBrand->{name, slug},
+      excerpt,
+      icon{${imageFields}},
       orderRank
     } | order(orderRank)`)
   ]);
@@ -99,8 +113,12 @@ const loadIndex = async () => {
     const projectData = {
       id: `project-${index}`,
       title: String(project.title || ''),
-      subtitle: String(project.excerpt.text || ''),
-      type: project.agencyBrand?.slug?.current === '/studio' ? 'case-study_studio' : 'case-study_domaine'
+      slug: String(project.slug?.current || ''),
+      subtitle: String(project.excerpt?.text || ''),
+      image: urlFor(project.thumbnailMedia.image).auto('format').width(600).height(800).url(),
+      video: project.thumbnailMedia.video?.asset.playbackId,
+      brand: project.agencyBrand?.name,
+      type: project.agencyBrand?.slug?.current === '/studio' ? 'case-study_studio' : 'case-study_domaine' // DEPRECATED
     };
     
     projectsData.push(projectData);
@@ -113,10 +131,12 @@ const loadIndex = async () => {
     const postData = {
       id: `blog-${index}`,
       title: extractText(post.title),
-      subtitle: String(post.excerpt.text || ''),
+      slug: String(post.slug?.current || ''),
+      subtitle: String(post.excerpt?.text || ''),
+      image: urlFor(post.thumbnailImage.image).auto('format').width(600).height(800).url(),
       type: post.agencyBrand?.slug?.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine'
     };
-    
+
     blogData.push(postData);
     blogIndex.add(postData);
   });
@@ -127,6 +147,8 @@ const loadIndex = async () => {
     const featureData = {
       id: `feature-${index}`,
       title: extractText(feature.title),
+      slug: String(feature.slug?.current || ''),
+      subtitle: String(feature.excerpt?.text || ''),
       type: feature.agencyBrand?.slug?.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine'
     };
     
@@ -140,8 +162,12 @@ const loadIndex = async () => {
     const partnerData = {
       id: `partner-${index}`,
       title: String(partner.title || ''),
+      slug: String(partner.slug?.current || ''),
+      subtitle: String(partner.excerpt?.text || ''),
+      image: urlFor(partner.icon.image).auto('format').width(600).height(800).url(),
       type: 'partner' // Partners don't have agency brand filtering
     };
+    console.log(partnerData)
     
     partnersData.push(partnerData);
     partnersIndex.add(partnerData);
