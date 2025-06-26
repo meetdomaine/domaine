@@ -135,7 +135,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => projectsLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => projectsLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Projects search error:', error);
             return [];
@@ -153,7 +155,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => blogLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => blogLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Blog search error:', error);
             return [];
@@ -171,7 +175,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => featuresLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => featuresLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Features search error:', error);
             return [];
@@ -189,7 +195,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => partnersLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => partnersLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Partners search error:', error);
             return [];
