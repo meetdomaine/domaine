@@ -3,6 +3,7 @@ import styles from './SearchMenu.module.css'
 import { urlFor } from '../../../../lib/cms-queries';
 import { Translations } from '../../../../lib/locales';
 import { getTranslationString } from 'src/lib/translations';
+import { Document } from 'flexsearch';
 
 function ProjectCard(props) {
     return (
@@ -90,6 +91,50 @@ export default function SearchMenu(props) {
     const [ partnerResults, setPartnerResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
     const [ activeTab, setActiveTab ] = createSignal('projects') // Mobile only tabs
+
+
+    let projectsIndex, projectsData, dataLookup
+
+    const initSearch = async () => {
+        projectsIndex = new Document({
+            document: {
+                id: "id",
+                index: ["title", "excerpt", "description", "clientName", "industryName", "serviceNames", "featureNames"]
+            },
+            tokenize: "forward"
+        });
+
+        const indexData = await fetch('/search/projects-index.json').then(r => r.json());
+        projectsData = await fetch('/search/projects-data.json').then(r => r.json());
+
+        projectsIndex.import(indexData);
+
+        dataLookup = projectsData.reduce((acc, item) => {
+            acc[item.id] = item;
+            return acc;
+        }, {});
+    
+    }
+
+    const searchProjects = async (query) => {
+        // Search returns array of matching document IDs
+        const results = projectsIndex.search(query, { limit: 10 });
+
+        // Look up full data for each result
+        const fullResults = results.map(id => dataLookup[id]);
+
+        return fullResults;
+    };
+
+    initSearch()
+
+    const testSearch = async () => {
+        const test = await searchProjects("Timex")
+        console.log(test)
+    }
+
+    testSearch()
+
 
     const clearResults = () => {
         setQuery(null)
