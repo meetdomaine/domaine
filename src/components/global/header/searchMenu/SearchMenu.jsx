@@ -28,9 +28,9 @@ export default function SearchMenu(props) {
 
     const initSearch = async () => {
         try {
-            console.log('Starting search initialization...');
+            console.log('Lazy loading search system...');
             
-            // Fetch all search indexes and data
+            // Fetch all search indexes and data (only when search is opened)
             const [
                 projectsIndexResponse, projectsDataResponse,
                 blogIndexResponse, blogDataResponse,
@@ -135,7 +135,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => projectsLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => projectsLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Projects search error:', error);
             return [];
@@ -153,7 +155,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => blogLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => blogLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Blog search error:', error);
             return [];
@@ -171,7 +175,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => featuresLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => featuresLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Features search error:', error);
             return [];
@@ -189,7 +195,9 @@ export default function SearchMenu(props) {
                     allIds.push(...fieldResult.result);
                 }
             });
-            return allIds.map(id => partnersLookup[id]).filter(Boolean);
+            // Remove duplicates using Set
+            const uniqueIds = [...new Set(allIds)];
+            return uniqueIds.map(id => partnersLookup[id]).filter(Boolean);
         } catch (error) {
             console.error('Partners search error:', error);
             return [];
@@ -289,15 +297,20 @@ export default function SearchMenu(props) {
     }
 
     onMount(() => {
-        initSearch();
-
         if (dialogElement) {
-            dialogElement.addEventListener("toggle", () => {
+            // Initialize search only when dialog is first opened
+            dialogElement.addEventListener("toggle", (e) => {
+                if (e.newState === 'open' && !searchReady()) {
+                    initSearch();
+                }
                 clearResults()
                 if(inputElement) inputElement.value = ''
             })
             window.addEventListener("keydown", (e) => {
-                if (e.key === "/") dialogElement.showPopover()
+                if (e.key === "/" && (!dialogElement.matches(":popover-open"))) {
+                    e.preventDefault()
+                    dialogElement.showPopover()
+                }
             })
         }
     })

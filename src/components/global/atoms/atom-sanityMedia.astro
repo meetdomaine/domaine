@@ -30,7 +30,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         playback-id={video.asset.playbackId}
         metadata-video-title={video.asset.filename}
         autoplay={autoplay === false ? false : true}
-        preload={preload ? "auto" : "none"}
+        preload={preload && eager ? "auto" : preload ? "metadata" : "none"}
         loop
         {...(autoplay !== false && { muted: true })}
         style={{ aspectRatio: aspectRatio }}

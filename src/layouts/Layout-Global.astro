@@ -45,11 +45,16 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
-		<!-- Add back once live -->
+		<!-- Preload critical fonts for faster rendering -->
+		<link rel="preload" href="/SuisseIntl-Regular.woff2" as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href="/SuisseIntl-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+		
+		<!-- Resource hints -->
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin>
     <link rel="preconnect" href="https://stream.mux.com" crossorigin>
-		<link rel="preconnect" href="https://www.googletagmanager.com">
-		<link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://image.mux.com" crossorigin>
+		<link rel="dns-prefetch" href="//www.googletagmanager.com">
+		<link rel="dns-prefetch" href="//www.google-analytics.com">
 
 		 <!-- Setup Consent Mode -->
 		 <script is:inline>
@@ -72,12 +77,24 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 			}
 		</script>
 
-		<!-- Google Tag Manager -->
-		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-M36NWV8B');</script>
+		<!-- Google Tag Manager (deferred for performance) -->
+		<script is:inline>
+			// Defer GTM loading until page is interactive
+			function loadGTM() {
+				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+				})(window,document,'script','dataLayer','GTM-M36NWV8B');
+			}
+			
+			// Load GTM after critical content
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', loadGTM);
+			} else {
+				loadGTM();
+			}
+		</script>
 		<!-- End Google Tag Manager -->
 
 		<!-- HTML Meta Tags -->
@@ -108,6 +125,12 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<!-- PageFind Search -->
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 
+		<!-- Prevent flash of content before preloader -->
+		<style is:inline>
+			body { visibility: hidden; }
+			body.preloader-ready { visibility: visible; }
+		</style>
+
 	</head>
 	<body {...{
 		...(indexSearch ? { "data-pagefind-body": "" } : { "data-pagefind-ignore": "true"}),
@@ -135,10 +158,25 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<slot />
 		<ViewportAnimation />
 
-    <!-- Front chat integration -->
-    <script src='https://chat-assets.frontapp.com/v1/chat.bundle.js' is:inline></script>
+    <!-- Front chat integration (lazy loaded for performance) -->
     <script is:inline>
-      window.FrontChat('init', {chatId: '065bffd753c9111b8275e69a65e7ff26', useDefaultLauncher: true});
+      function loadFrontChat() {
+        if (window.FrontChat) return; // Prevent duplicate loading
+        
+        const script = document.createElement('script');
+        script.src = 'https://chat-assets.frontapp.com/v1/chat.bundle.js';
+        document.head.appendChild(script);
+        
+        script.onload = () => {
+          window.FrontChat('init', {chatId: '065bffd753c9111b8275e69a65e7ff26', useDefaultLauncher: true});
+        };
+      }
+      
+      // Load Front Chat after 3 seconds or on first user interaction
+      setTimeout(loadFrontChat, 3000);
+      ['mousedown', 'touchstart', 'scroll'].forEach(event => {
+        document.addEventListener(event, loadFrontChat, {once: true});
+      });
     </script>
 
 	</body>

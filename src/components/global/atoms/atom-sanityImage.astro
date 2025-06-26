@@ -54,6 +54,7 @@ const generateSrcSets = () => {
   src={urlFor(image).width(Math.floor(width)).height(Math.floor(width / ratio)).auto('format').url()}
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
   alt={alt ? alt : image.alt}
   data-cover={cover ? "true" : "false"}
   data-contain={contain ? "true" : "false"}
