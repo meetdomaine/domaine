@@ -28,9 +28,9 @@ export default function SearchMenu(props) {
 
     const initSearch = async () => {
         try {
-            console.log('Starting search initialization...');
+            console.log('Lazy loading search system...');
             
-            // Fetch all search indexes and data
+            // Fetch all search indexes and data (only when search is opened)
             const [
                 projectsIndexResponse, projectsDataResponse,
                 blogIndexResponse, blogDataResponse,
@@ -297,15 +297,19 @@ export default function SearchMenu(props) {
     }
 
     onMount(() => {
-        initSearch();
-
         if (dialogElement) {
-            dialogElement.addEventListener("toggle", () => {
+            // Initialize search only when dialog is first opened
+            dialogElement.addEventListener("toggle", (e) => {
+                if (e.newState === 'open' && !searchReady()) {
+                    initSearch();
+                }
                 clearResults()
                 if(inputElement) inputElement.value = ''
             })
             window.addEventListener("keydown", (e) => {
-                if (e.key === "/") dialogElement.showPopover()
+                if (e.key === "/") {
+                    dialogElement.showPopover()
+                }
             })
         }
     })

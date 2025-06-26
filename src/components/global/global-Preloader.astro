@@ -17,7 +17,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 		>
 			<AtomSanityImage 
 				image={entry.image}
-				sizes="25vw"
+				sizes="20vw"
 				cover={true}
 				eager={true}
 			/>
@@ -36,24 +36,22 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 
 	const preloadComplete = new Event("preload:complete");
   const handlePreloadComplete = () => {
+		// Show the body content when preloader completes
+		document.body.classList.add("preloader-ready");
 		window.dispatchEvent(preloadComplete)
 	}
 
-  // Do nothing if preloader is disabled on this page or has shown already
+	// Immediately show body if no preloader should show
   if (sessionCached || showPreloader != "true") {
+		document.body.classList.add("preloader-ready");
+		preloader.style.display = "none";
     window.addEventListener("DOMContentLoaded", handlePreloadComplete)
   } else {
-
+		// Show body but keep preloader on top
+		document.body.classList.add("preloader-ready");
     sessionStorage.setItem("cachedSession", "true");
 
     const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
-
-    gsap.set(preloader, {
-      opacity: 1,
-      visibility: "visible",
-      y: 0,
-      autoAlpha: 1,
-    })
 
     gsap.set("#header", {
       y: "-150%"
@@ -126,16 +124,16 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 
 <style>
 	.preloader {
-		opacity: 0;
-		visibility: hidden;
-		translate: 0 -100%;
+		opacity: 1;
+		visibility: visible;
+		translate: 0 0;
 		--load-duration: 0.8s;
 		--load-background-delay: 0.1s;
 		--load-out-delay: 0.1s;
 		position: fixed;
 		width: 100%;
 		height: 100dvh;
-		z-index: 9;
+		z-index: 999;
 		display: grid;
 		grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr 1fr;
@@ -145,7 +143,9 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 	}
 
   .preloader[data-show-preloader="false"] {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -100%;
   }
 
 	.preloader-image {
