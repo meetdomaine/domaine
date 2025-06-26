@@ -80,9 +80,7 @@ const loadIndex = async () => {
       title,
       slug,
       excerpt,
-      agencyBrand->{
-        slug
-      },
+      agencyBrand->{name,slug},
       category->{slug},
       thumbnailImage{${imageFields}},
       orderRank
@@ -101,7 +99,6 @@ const loadIndex = async () => {
       _id,
       title,
       slug,
-      agencyBrand->{name, slug},
       excerpt,
       icon{${imageFields}},
       orderRank
@@ -137,6 +134,7 @@ const loadIndex = async () => {
         : post.slug?.current || '',
       subtitle: String(post.excerpt?.text || ''),
       image: urlFor(post.thumbnailImage.image).auto('format').width(600).height(800).url(),
+      brand: post.agencyBrand?.name,
       type: post.agencyBrand?.slug?.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine'
     };
     console.log(postData)
@@ -153,6 +151,7 @@ const loadIndex = async () => {
       title: extractText(feature.title),
       slug: String(feature.slug?.current || ''),
       subtitle: String(feature.excerpt?.text || ''),
+      brand: feature.agencyBrand?.name,
       type: feature.agencyBrand?.slug?.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine'
     };
     
