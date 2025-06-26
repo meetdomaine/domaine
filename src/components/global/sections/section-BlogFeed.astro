@@ -18,20 +18,21 @@ let featuredPost
 let featuredPostDate
 let sidebarTitleText
 
+// Batch all blog queries into a single call for better performance
+const allBlogPosts = await getBlogPosts(brand)
+
 if (section?.featuredCategory) {
-    const categoryPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && category->slug.current == '${section.featuredCategory.slug.current}' ]{${blogCardFields}}|order(postDate desc)`)
-    blogPosts = categoryPosts
+    blogPosts = allBlogPosts.filter(post => post.category?.slug?.current === section.featuredCategory.slug.current)
     sidebarTitleText = sidebarTitle ? sidebarTitle : section.featuredCategory.title
 } else if (posts) {
     blogPosts = posts
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 } else {
-    blogPosts = await getBlogPosts(brand)
+    blogPosts = allBlogPosts
     sidebarTitleText = sidebarTitle ? sidebarTitle : locale ? Translations.INSIGHTS.locales[locale] : Translations.INSIGHTS.name
 }
 
 if (section?.featuredPost) {
-    const allBlogPosts = await getBlogPosts(brand)
     featuredPost = allBlogPosts.find(post => post.slug.current === section.featuredPost.slug.current)
 } else {
     featuredPost = blogPosts.shift()
@@ -59,6 +60,7 @@ if (featuredPost) {
                         image={featuredPost.thumbnailImage.image}
                         sizes="50vw"
                         aspectRatio={3 / 4}
+                        eager={true}
                     />
                 </a>
                 <div class="featured-post-content">
