@@ -307,7 +307,8 @@ export default function SearchMenu(props) {
                 if(inputElement) inputElement.value = ''
             })
             window.addEventListener("keydown", (e) => {
-                if (e.key === "/") {
+                if (e.key === "/" && (!dialogElement.matches(":popover-open"))) {
+                    e.preventDefault()
                     dialogElement.showPopover()
                 }
             })
