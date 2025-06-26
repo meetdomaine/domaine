@@ -2,28 +2,10 @@
 import LayoutProject from '../../layouts/Layout_Project.astro';
 import { Brands } from '../../enums/brands';
 import { getProjects } from '../../lib/cached-content';
-import { getEnv } from '../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const projects = await getProjects(Brands.DOMAINE)
-    return projects.map((project) => {
-        return {
-            params: { project: project.slug.current },
-            props: { content: project }
-        }
-    })
-}
-
-let projectContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { project } = Astro.params
-    const projects = await getProjects(Brands.DOMAINE)
-    projectContent = projects.find(p => p.slug.current === project)
-} else {
-    const { content } = Astro.props
-    projectContent = content
-}
+const { project } = Astro.params
+const projects = await getProjects(Brands.DOMAINE)
+const projectContent = projects.find(p => p.slug.current === project)
 ---
 <LayoutProject 
     content={projectContent}

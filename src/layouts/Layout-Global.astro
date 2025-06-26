@@ -46,9 +46,10 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
 		<!-- Add back once live -->
-		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
-		<link rel="preconnect" href="https://snap.licdn.com">
-		<link rel="preconnect" href="https://www.google-analytics.com"> -->
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin>
+    <link rel="preconnect" href="https://stream.mux.com" crossorigin>
+		<link rel="preconnect" href="https://www.googletagmanager.com">
+		<link rel="preconnect" href="https://www.google-analytics.com">
 
 		 <!-- Setup Consent Mode -->
 		 <script is:inline>
@@ -118,7 +119,7 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<VisualEditing enabled={visualEditingEnabled} />
+		<VisualEditing enabled={visualEditingEnabled === "true"} />
 
     <GlobalPreloader
       showPreloader={showPreloader}

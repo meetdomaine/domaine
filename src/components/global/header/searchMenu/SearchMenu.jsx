@@ -1,98 +1,204 @@
-import { Show, createEffect, createSignal } from 'solid-js';
+import { For, Show, createEffect, createSignal, onMount } from 'solid-js';
 import styles from './SearchMenu.module.css'
 import { urlFor } from '../../../../lib/cms-queries';
 import { Translations } from '../../../../lib/locales';
 import { getTranslationString } from 'src/lib/translations';
-
-function ProjectCard(props) {
-    return (
-        <a href={props.url} class={`${styles.projectCard} caption`} data-color-scheme="secondary">
-            <img 
-                src={props.image} 
-                alt={props.alt}
-                class={styles.projectImage}
-                loading='eager'
-            />
-            <p class={`${styles.projectInfo} caption`}>
-                {props.title}
-            </p>
-        </a>
-
-    )
-}
-
-function BlogCard(props) {
-    return (
-        <div class={styles.blogCard}>
-            <div class={styles.blogInfo}>
-                <a class={`${styles.cardTag} caption`} href={props.categoryUrl}>{props.categoryTitle}</a>
-                <a class={`${styles.blogTitle}`} href={props.url}>{props.locale && props.title.translations?.[props.locale] ? props.title.translations[props.locale] : props.localizeTitle ? props.title.text : props.title}</a>
-            </div>
-            <a class={styles.blogImage} href={props.url}>
-                <img 
-                    src={props.image} 
-                    alt={props.alt}
-                    loading='eager'
-                />
-            </a>
-        </div>
-    )
-}
-
-function FeatureCard(props) {
-    return <a href={props.url} class={`${styles.cardTag} caption`}>{props.title}</a>
-}
-
-function PartnerCard(props) {
-    return (
-        <a 
-            href={props.url} 
-            class={`${styles.partnerCard} color-reset`}
-            data-color-scheme="secondary"
-        >
-            <div class={styles.partnerMedia}>
-                <img 
-                    src={props.icon} 
-                    alt={props.alt}
-                    loading='eager'
-                />
-            </div>
-            <div class={styles.partnerText}>
-                <span class={`${styles.partnerTitle} caption`}>{props.title}</span>
-                <span class={`${styles.partnerExcerpt} caption`}>{props.excerpt}</span>
-            </div>
-        </a>
-    )
-}
-
-function SearchIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-4.5-4.5m1.5-3.75a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"/>
-        </svg>
-    )
-}
-
-function CloseIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M15 3 3 15M3 3l12 12"/>
-        </svg>
-    )
-}
+import { Document } from 'flexsearch';
+import { Brands } from '../../../../enums/brands';
+import ImagePlaceholder from '../../../../icons/domaine-icon.svg?raw'
+import IconSearch from '../../../../icons/icon-search.svg?raw'
+import IconClose from '../../../../icons/icon-x.svg?raw'
 
 export default function SearchMenu(props) {
 
-    const [ pageFind, setPageFind ] = createSignal(null)
+    const [ searchReady, setSearchReady ] = createSignal(false)
     const [ query, setQuery ] = createSignal(null)
+    const [ isSearching, setIsSearching ] = createSignal(false)
     const [ projectResults, setProjectResults ] = createSignal(null)
     const [ blogResults, setBlogResults ] = createSignal(null)
     const [ partnerResults, setPartnerResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
-    const [ activeTab, setActiveTab ] = createSignal('projects') // Mobile only tabs
+
+    let debounceTimer;
+
+    let projectsIndex, blogIndex, featuresIndex, partnersIndex;
+    let projectsLookup, blogLookup, featuresLookup, partnersLookup;
+
+    let inputElement, dialogElement
+
+    const initSearch = async () => {
+        try {
+            console.log('Starting search initialization...');
+            
+            // Fetch all search indexes and data
+            const [
+                projectsIndexResponse, projectsDataResponse,
+                blogIndexResponse, blogDataResponse,
+                featuresIndexResponse, featuresDataResponse,
+                partnersIndexResponse, partnersDataResponse
+            ] = await Promise.all([
+                fetch('/search/projects-index.json'),
+                fetch('/search/projects-data.json'),
+                fetch('/search/blog-index.json'),
+                fetch('/search/blog-data.json'),
+                fetch('/search/features-index.json'),
+                fetch('/search/features-data.json'),
+                fetch('/search/partners-index.json'),
+                fetch('/search/partners-data.json')
+            ]);
+            
+            const [
+                projectsIndexData, projectsData,
+                blogIndexData, blogData,
+                featuresIndexData, featuresData,
+                partnersIndexData, partnersData
+            ] = await Promise.all([
+                projectsIndexResponse.json(),
+                projectsDataResponse.json(),
+                blogIndexResponse.json(),
+                blogDataResponse.json(),
+                featuresIndexResponse.json(),
+                featuresDataResponse.json(),
+                partnersIndexResponse.json(),
+                partnersDataResponse.json()
+            ]);
+
+            // Initialize FlexSearch indexes
+            projectsIndex = new Document({
+                document: { id: "id", index: ["title", "subtitle"] },
+                tokenize: "forward"
+            });
+            
+            blogIndex = new Document({
+                document: { id: "id", index: ["title", "subtitle"] },
+                tokenize: "forward"
+            });
+            
+            featuresIndex = new Document({
+                document: { id: "id", index: ["title", "subtitle"] },
+                tokenize: "forward"
+            });
+            
+            partnersIndex = new Document({
+                document: { id: "id", index: ["title", "subtitle"] },
+                tokenize: "forward"
+            });
+            
+            // Import index data
+            Object.keys(projectsIndexData).forEach(key => {
+                projectsIndex.import(key, projectsIndexData[key]);
+            });
+            Object.keys(blogIndexData).forEach(key => {
+                blogIndex.import(key, blogIndexData[key]);
+            });
+            Object.keys(featuresIndexData).forEach(key => {
+                featuresIndex.import(key, featuresIndexData[key]);
+            });
+            Object.keys(partnersIndexData).forEach(key => {
+                partnersIndex.import(key, partnersIndexData[key]);
+            });
+            
+            // Create lookup tables
+            projectsLookup = projectsData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            blogLookup = blogData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            featuresLookup = featuresData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            partnersLookup = partnersData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            
+            setSearchReady(true);
+            console.log('✅ FlexSearch initialized with', projectsData.length, 'projects,', blogData.length, 'blog posts,', featuresData.length, 'features,', partnersData.length, 'partners');
+
+        } catch (error) {
+            console.error('❌ Failed to initialize search:', error);
+        }
+    }
+
+    const searchProjects = (query) => {
+        if (!searchReady() || !projectsIndex || !query) return [];
+        
+        try {
+            const results = projectsIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => projectsLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Projects search error:', error);
+            return [];
+        }
+    };
+
+    const searchBlog = (query) => {
+        if (!searchReady() || !blogIndex || !query) return [];
+        
+        try {
+            const results = blogIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => blogLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Blog search error:', error);
+            return [];
+        }
+    };
+
+    const searchFeatures = (query) => {
+        if (!searchReady() || !featuresIndex || !query) return [];
+        
+        try {
+            const results = featuresIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => featuresLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Features search error:', error);
+            return [];
+        }
+    };
+
+    const searchPartners = (query) => {
+        if (!searchReady() || !partnersIndex || !query) return [];
+        
+        try {
+            const results = partnersIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => partnersLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Partners search error:', error);
+            return [];
+        }
+    };
 
     const clearResults = () => {
         setQuery(null)
+        setIsSearching(false)
         setProjectResults(null)
         setBlogResults(null)
         setPartnerResults(null)
@@ -100,203 +206,172 @@ export default function SearchMenu(props) {
     }
 
     const handleInput = (e) => {
-        if (e.target.value) {
-            setQuery(e.target.value)
-            handleSearch(e.target.value)
+        const value = e.target.value;
+        setQuery(value);
+        
+        // Clear existing timer
+        clearTimeout(debounceTimer);
+        
+        if (value) {
+            setIsSearching(true);
+            // Debounce search by 100ms
+            debounceTimer = setTimeout(() => {
+                handleSearch(value);
+                setIsSearching(false);
+            }, 100);
         } else {
-            clearResults()
+            clearResults();
         }
     }
+
+    const ResultCard = (props) => (
+        <a href={`${props.brand === Brands.STUDIO ? '/studio' : ''}${props.path}${props.slug}`} class={styles.resultCard}>
+            <div class={styles.media}>
+                {props.image ? <img src={props.image} /> : <div class={styles.imagePlaceholder} innerHTML={ImagePlaceholder}></div>}
+            </div>
+            <div class={styles.content}>
+                {props.title && <p class="h6">{props.title}</p>}
+                {props.subtitle && <p class={`${styles.subtitle} caption`}>{props.subtitle}</p>}
+            </div>
+        </a>
+    )
+
+    const ResultsGroup = (props) => (
+        <div class={`${styles.resultsGroup} ${props.results?.length > 0 ? styles.visible : styles.hidden}`}>
+            <div class={styles.groupTitle}>
+                <p>{props.title}</p>
+            </div>
+            <div class={styles.resultsList}>
+                <For each={props.results}>
+                    {(result) => (
+                        <ResultCard 
+                            title={result.title}
+                            subtitle={result.subtitle}
+                            image={result.image}
+                            brand={result.brand}
+                            slug={result.slug}
+                            path={props.path}
+                        />
+                    )}
+                </For>
+            </div>
+        </div>
+    )
 
     const handleSearch = async (query) => {
-        if (pageFind()) {
-
-            const getFilteredResults = async (queryType, setter, maxResults = 6) => {
-                const data = await pageFind().search(query, {filters: {type: queryType}})
-                if (data === null) return
-                const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
-                if (filteredResults) return setter(filteredResults)
-                return setter(null)
-            }
-
-            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'case-study_studio' : 'case-study_domaine', setProjectResults, 4)
-            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine', setBlogResults, 3)
-            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine', setFeatureResults, 10)
-            await getFilteredResults('partner', setPartnerResults, 5)
+        if (!searchReady()) {
+            console.log('Search not ready yet');
+            return;
         }
+
+        console.log('=== SEARCHING ALL CONTENT TYPES ===');
+        console.log('Query:', query);
+
+        // Search all content types
+        const projectSearchResults = searchProjects(query);
+        const blogSearchResults = searchBlog(query);
+        const featureSearchResults = searchFeatures(query);
+        const partnerSearchResults = searchPartners(query);
+        
+        const featureBrandType = props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine';
+        
+        const filteredProjects = projectSearchResults.filter(result => result?.brand === props.brand);
+        const filteredBlog = blogSearchResults.filter(result => result && result.brand === props.brand);
+        const filteredFeatures = featureSearchResults.filter(result => result && result.type === featureBrandType);
+
+        // Partners don't have brand filtering
+        const filteredPartners = partnerSearchResults;
+        
+        setProjectResults(filteredProjects.slice(0, 3));
+        setBlogResults(filteredBlog.slice(0, 3));
+        setFeatureResults(filteredFeatures.slice(0, 6));
+        setPartnerResults(filteredPartners.slice(0, 3));
     }
 
-    createEffect(() => {
-        if (window.pagefind) {
-            setPageFind(window.pagefind)
-            pageFind().init({
-                "baseUrl": "../"
+    onMount(() => {
+        initSearch();
+
+        if (dialogElement) {
+            dialogElement.addEventListener("toggle", () => {
+                clearResults()
+                if(inputElement) inputElement.value = ''
             })
-        }   
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "/") dialogElement.showPopover()
+            })
+        }
     })
+
 
     return (
 
-        <dialog popover id="search-menu" class={styles.searchMenu} data-color-scheme="default" data-lenis-prevent>
+        <dialog 
+            popover 
+            id="search-menu" 
+            class={styles.searchMenu} 
+            data-color-scheme="glass-dark" 
+            data-lenis-prevent
+            ref={dialogElement}
+        >
 
             {/* Search Input */}
-            <div class={styles.menuControls} data-color-scheme="glass-light">
+            <div class={styles.menuControls}>
                 
-                <div class={styles.searchInput}>  
+                <div class={styles.searchInput} data-color-scheme="default">  
                     <input 
                         autofocus 
                         type="search" 
-                        class={`${styles.input} h4`} 
+                        class={`${styles.input} h5`} 
                         placeholder="Search"
                         oninput={handleInput}
+                        ref={inputElement}
                     />
-                    <span class={styles.searchIcon}><SearchIcon /></span>
+                    <span class={styles.searchIcon}>
+                        <svg innerHTML={IconSearch} />
+                    </span>
                 </div>
 
                 <button class={`${styles.closeIcon}`} popoverTarget='search-menu'>
-                    <CloseIcon />
+                    <svg innerHTML={IconClose} />
                 </button>
             </div>
 
             <div class={styles.results}>
 
-                <div class={styles.resultsTabs}>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('projects')} data-active={activeTab() === 'projects' ? 'true' : 'false'}>Projects</button>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('insights')} data-active={activeTab() === 'insights' ? 'true' : 'false'}>Insights</button>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('features')} data-active={activeTab() === 'features' ? 'true' : 'false'}>Features</button>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('partners')} data-active={activeTab() === 'partners' ? 'true' : 'false'}>Partners</button>
-                </div>
+                <ResultsGroup 
+                    title="Projects"
+                    path="/work/"
+                    results={projectResults()}
+                />
 
-                {/* Projects */}
-                <Show when={!query() || (query() && projectResults()?.length > 0)} >
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'projects' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.PROJECTS.locales[props.locale] : Translations.PROJECTS.name}</p>
-                        <div class={styles.projectsList}>
+                <ResultsGroup 
+                    title="Insights"
+                    path="/insights/"
+                    results={blogResults()}
+                />
 
-                            {projectResults() ?
-                                <For each={projectResults()}>{result => 
-                                    <ProjectCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        image={result.meta.image} 
-                                        alt={result.meta.image_alt} 
-                                    />
-                                }</For>
-                            :
-                                <For each={props.defaultProjects}>{project => 
-                                    <ProjectCard
-                                        url={`${project.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.slug.current}`} 
-                                        title={project.title} 
-                                        image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
-                                        alt={project.thumbnailMedia.image.alt} 
-                                        />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
+                <ResultsGroup 
+                    title="Features"
+                    path="/work/features/"
+                    results={featureResults()}
+                />
 
-                {/* Blog */}
-                <Show when={!query() || (query() && blogResults()?.length > 0)}>
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'insights' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.INSIGHTS.locales[props.locale] : Translations.INSIGHTS.name}</p>
-                        <div class={styles.projectsList}>
-                            {blogResults() ? 
-                                <For each={blogResults()}>{result => 
-                                    <BlogCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        categoryTitle={result.meta.categoryTitle}
-                                        categoryUrl={result.meta.categoryUrl}
-                                        image={result.meta.image} 
-                                        alt={result.meta.image_alt}
-                                        locale={props.locale}
-                                        localizeTitle={false}
-                                    />
-                                }</For>
-                            :
-                                <For each={props.defaultBlogPosts}>{post => 
-                                    <BlogCard 
-                                        url={`${post.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.category.slug.current}/${post.slug.current}`} 
-                                        // title={getTranslationString(post.title, props.locale)}
-                                        title={post.title}
-                                        categoryTitle={getTranslationString(post.category.title, props.locale)}
-                                        categoryUrl={`/insights/${post.category.slug.current}`}
-                                        image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} 
-                                        alt={post.thumbnailImage.image.alt} 
-                                        locale={props.locale}
-                                        localizeTitle={true}
-                                    />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
-
-                {/* Features/ */}
-                <Show when={!query() || (query() && featureResults()?.length > 0)}>
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'features' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.FEATURES.locales[props.locale] : Translations.FEATURES.name}</p>
-                        <div class={styles.featuresList}>
-                            {featureResults() ? 
-                                <For each={featureResults()}>{result => 
-                                    <FeatureCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        locale={props.locale}
-                                    />
-                                }</For>
-                            :
-                                <For each={props.defaultFeatures}>{feature => 
-                                    <FeatureCard 
-                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.slug.current}`} 
-                                        title={getTranslationString(feature.title, props.locale)} 
-                                        locale={props.locale}
-                                    />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
-
-                {/* Partners */}
-                <Show when={!query() || (query() && partnerResults()?.length > 0)}>
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'partners' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.PARTNERS.locales[props.locale] : Translations.PARTNERS.name}</p>
-                        <div class={styles.partnersList}>
-                            {partnerResults() ?
-                                <For each={partnerResults()}>{result => 
-                                    <PartnerCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        icon={result.meta.image}
-                                        alt={result.meta.image_alt} 
-                                        excerpt={result.meta.excerpt}
-                                    />
-                                }</For>
-                                :
-                                <For each={props.defaultPartners}>{partner => 
-                                    <PartnerCard 
-                                        url={`/partners/${partner.slug.current}`} 
-                                        title={partner.title}
-                                        icon={urlFor(partner.icon.image).auto('format').width(300).height(300).url()}
-                                        alt={partner.icon.alt} 
-                                        excerpt={getTranslationString(partner.excerpt, props.locale)}
-                                    />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
+                <ResultsGroup 
+                    title="Partner"
+                    path="/partners/"
+                    results={partnerResults()}
+                />
 
                 {/* No Results */}
-                <Show when={ query() && 
+                <Show when={ query() && !isSearching() &&
                     (!projectResults() || projectResults().length <= 0) &&
                     (!blogResults() || blogResults().length <= 0) &&
                     (!featureResults() || featureResults().length <= 0) &&
                     (!partnerResults() || partnerResults().length <= 0)
                 }>
-                    <h2>No Results</h2>
+                    <div class={styles.noResults}>
+                        <p class="h5">No Results</p>
+                    </div>
                 </Show>
 
             </div>

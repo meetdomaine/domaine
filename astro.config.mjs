@@ -21,7 +21,7 @@ const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_ED
 // console.log(SANITY_API_READ_TOKEN)
 
 const renderMode = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? 'server' : 'static';
-const adapter = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? vercel() : cloudflare();
+// const adapter = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? vercel() : cloudflare({});
 console.log(`RENDER MODE: ${renderMode}`);
 
 // Debug environment variables
@@ -61,14 +61,16 @@ export default defineConfig({
     //   fallbackType: "rewrite"
     // }
   },
-  prefetch: true,
+  prefetch: {
+    prefetchAll: true
+  },
   experimental: {
     clientPrerender: true
   },
-  // output: 'server',
-  output: renderMode,
-  // output: 'static',
-  adapter: adapter,
+  output: 'server',
+  adapter: cloudflare({
+    imageService: 'cloudflare'
+  }),
   site: 'https://meetdomaine.com/',
   vite: {
     define: {

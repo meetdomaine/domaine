@@ -4,28 +4,11 @@ import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
 import { getProjectFeatures } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const features = await getProjectFeatures(Brands.DOMAINE)
-    return features.map((feature) => {
-        return {
-            params: { feature: feature.slug.current },
-            props: { content: feature }
-        }
-    })
-}
+const { feature } = Astro.params
+const features = await getProjectFeatures(Brands.DOMAINE)
+const featureContent = features.find(f => f.slug.current === feature)
 
-let featureContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { feature } = Astro.params
-    const features = await getProjectFeatures(Brands.DOMAINE)
-    featureContent = features.find(f => f.slug.current === feature)
-} else {
-    const { content } = Astro.props
-    featureContent = content
-}
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && '${featureContent.slug.current}' in features[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
 ---
 <LayoutProjectsIndex 
