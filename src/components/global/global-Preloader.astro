@@ -19,7 +19,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 				image={entry.image}
 				sizes="20vw"
 				cover={true}
-				eager={true}
+				eager={false}
 			/>
 		</div>
 	))}
@@ -51,13 +51,15 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
 		document.body.classList.add("preloader-ready");
     sessionStorage.setItem("cachedSession", "true");
 
-    const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
+    // Start animation immediately on DOMContentLoaded, don't wait for images
+    const startAnimation = () => {
+      const heading = new SplitText("#preloader_heading", {type: "lines", linesClass: "preloader-text-line"});
 
-    gsap.set("#header", {
-      y: "-150%"
-    })
+      gsap.set("#header", {
+        y: "-150%"
+      })
 
-    const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
+      const preloaderTimeline = gsap.timeline({ defaults: {duration:0.5, ease: "cubic"} })
 
     if (isMobileBreakpoint) {
       preloaderTimeline.fromTo(".preloader-image", {
@@ -111,6 +113,14 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
         opacity: 0,
         autoAlpha: 1,
       }, ">")
+    }
+    }
+
+    // Start animation immediately when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startAnimation);
+    } else {
+      startAnimation();
     }
   }
 </script>

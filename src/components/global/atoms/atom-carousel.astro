@@ -19,7 +19,7 @@ const { slides, aspectRatio, slideCount, centered, spacing } = Astro.props
     data-spacing={spacing}
 >
     <div class="swiper-wrapper">
-        {slides.map((carouselItem) => (
+        {slides.map((carouselItem, index) => (
             <div 
                 class="swiper-slide"
                 style={`aspect-ratio: ${aspectRatio}`}
@@ -29,6 +29,9 @@ const { slides, aspectRatio, slideCount, centered, spacing } = Astro.props
                     video={carouselItem.video}
                     aspectRatio={aspectRatio}
                     sizes="90vw"
+                    eager={index === 0}
+                    preload={index === 0}
+                    autoplay={false}
                     // contain={true}
                 />
             </div>
