@@ -1,70 +1,9 @@
-import { Show, createEffect, createSignal } from 'solid-js';
+import { For, Show, createEffect, createSignal, onMount } from 'solid-js';
 import styles from './SearchMenu.module.css'
 import { urlFor } from '../../../../lib/cms-queries';
 import { Translations } from '../../../../lib/locales';
 import { getTranslationString } from 'src/lib/translations';
 import { Document } from 'flexsearch';
-
-function ProjectCard(props) {
-    return (
-        <a href={props.url} class={`${styles.projectCard} caption`} data-color-scheme="secondary">
-            <img 
-                src={props.image} 
-                alt={props.alt}
-                class={styles.projectImage}
-                loading='eager'
-            />
-            <p class={`${styles.projectInfo} caption`}>
-                {props.title}
-            </p>
-        </a>
-
-    )
-}
-
-function BlogCard(props) {
-    return (
-        <div class={styles.blogCard}>
-            <div class={styles.blogInfo}>
-                <a class={`${styles.cardTag} caption`} href={props.categoryUrl}>{props.categoryTitle}</a>
-                <a class={`${styles.blogTitle}`} href={props.url}>{props.locale && props.title.translations?.[props.locale] ? props.title.translations[props.locale] : props.localizeTitle ? props.title.text : props.title}</a>
-            </div>
-            <a class={styles.blogImage} href={props.url}>
-                <img 
-                    src={props.image} 
-                    alt={props.alt}
-                    loading='eager'
-                />
-            </a>
-        </div>
-    )
-}
-
-function FeatureCard(props) {
-    return <a href={props.url} class={`${styles.cardTag} caption`}>{props.title}</a>
-}
-
-function PartnerCard(props) {
-    return (
-        <a 
-            href={props.url} 
-            class={`${styles.partnerCard} color-reset`}
-            data-color-scheme="secondary"
-        >
-            <div class={styles.partnerMedia}>
-                <img 
-                    src={props.icon} 
-                    alt={props.alt}
-                    loading='eager'
-                />
-            </div>
-            <div class={styles.partnerText}>
-                <span class={`${styles.partnerTitle} caption`}>{props.title}</span>
-                <span class={`${styles.partnerExcerpt} caption`}>{props.excerpt}</span>
-            </div>
-        </a>
-    )
-}
 
 function SearchIcon() {
     return (
@@ -84,56 +23,185 @@ function CloseIcon() {
 
 export default function SearchMenu(props) {
 
-    const [ pageFind, setPageFind ] = createSignal(null)
+    const [ searchReady, setSearchReady ] = createSignal(false)
     const [ query, setQuery ] = createSignal(null)
     const [ projectResults, setProjectResults ] = createSignal(null)
     const [ blogResults, setBlogResults ] = createSignal(null)
     const [ partnerResults, setPartnerResults ] = createSignal(null)
     const [ featureResults, setFeatureResults ] = createSignal(null)
-    const [ activeTab, setActiveTab ] = createSignal('projects') // Mobile only tabs
 
-
-    let projectsIndex, projectsData, dataLookup
+    let projectsIndex, blogIndex, featuresIndex, partnersIndex;
+    let projectsLookup, blogLookup, featuresLookup, partnersLookup;
 
     const initSearch = async () => {
-        projectsIndex = new Document({
-            document: {
-                id: "id",
-                index: ["title", "excerpt", "description", "clientName", "industryName", "serviceNames", "featureNames"]
-            },
-            tokenize: "forward"
-        });
+        try {
+            console.log('Starting search initialization...');
+            
+            // Fetch all search indexes and data
+            const [
+                projectsIndexResponse, projectsDataResponse,
+                blogIndexResponse, blogDataResponse,
+                featuresIndexResponse, featuresDataResponse,
+                partnersIndexResponse, partnersDataResponse
+            ] = await Promise.all([
+                fetch('/search/projects-index.json'),
+                fetch('/search/projects-data.json'),
+                fetch('/search/blog-index.json'),
+                fetch('/search/blog-data.json'),
+                fetch('/search/features-index.json'),
+                fetch('/search/features-data.json'),
+                fetch('/search/partners-index.json'),
+                fetch('/search/partners-data.json')
+            ]);
+            
+            const [
+                projectsIndexData, projectsData,
+                blogIndexData, blogData,
+                featuresIndexData, featuresData,
+                partnersIndexData, partnersData
+            ] = await Promise.all([
+                projectsIndexResponse.json(),
+                projectsDataResponse.json(),
+                blogIndexResponse.json(),
+                blogDataResponse.json(),
+                featuresIndexResponse.json(),
+                featuresDataResponse.json(),
+                partnersIndexResponse.json(),
+                partnersDataResponse.json()
+            ]);
 
-        const indexData = await fetch('/search/projects-index.json').then(r => r.json());
-        projectsData = await fetch('/search/projects-data.json').then(r => r.json());
+            // Initialize FlexSearch indexes
+            projectsIndex = new Document({
+                document: { id: "id", index: ["title", "subtitle"] },
+                tokenize: "forward"
+            });
+            
+            blogIndex = new Document({
+                document: { id: "id", index: ["title", "subtitle"] },
+                tokenize: "forward"
+            });
+            
+            featuresIndex = new Document({
+                document: { id: "id", index: ["title"] },
+                tokenize: "forward"
+            });
+            
+            partnersIndex = new Document({
+                document: { id: "id", index: ["title"] },
+                tokenize: "forward"
+            });
+            
+            // Import index data
+            Object.keys(projectsIndexData).forEach(key => {
+                projectsIndex.import(key, projectsIndexData[key]);
+            });
+            Object.keys(blogIndexData).forEach(key => {
+                blogIndex.import(key, blogIndexData[key]);
+            });
+            Object.keys(featuresIndexData).forEach(key => {
+                featuresIndex.import(key, featuresIndexData[key]);
+            });
+            Object.keys(partnersIndexData).forEach(key => {
+                partnersIndex.import(key, partnersIndexData[key]);
+            });
+            
+            // Create lookup tables
+            projectsLookup = projectsData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            blogLookup = blogData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            featuresLookup = featuresData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            partnersLookup = partnersData.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {});
+            
+            setSearchReady(true);
+            console.log('✅ FlexSearch initialized with', projectsData.length, 'projects,', blogData.length, 'blog posts,', featuresData.length, 'features,', partnersData.length, 'partners');
 
-        projectsIndex.import(indexData);
-
-        dataLookup = projectsData.reduce((acc, item) => {
-            acc[item.id] = item;
-            return acc;
-        }, {});
-    
+        } catch (error) {
+            console.error('❌ Failed to initialize search:', error);
+        }
     }
 
-    const searchProjects = async (query) => {
-        // Search returns array of matching document IDs
-        const results = projectsIndex.search(query, { limit: 10 });
-
-        // Look up full data for each result
-        const fullResults = results.map(id => dataLookup[id]);
-
-        return fullResults;
+    const searchProjects = (query) => {
+        if (!searchReady() || !projectsIndex || !query) return [];
+        
+        try {
+            const results = projectsIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => projectsLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Projects search error:', error);
+            return [];
+        }
     };
 
-    initSearch()
+    const searchBlog = (query) => {
+        if (!searchReady() || !blogIndex || !query) return [];
+        
+        try {
+            const results = blogIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => blogLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Blog search error:', error);
+            return [];
+        }
+    };
 
-    const testSearch = async () => {
-        const test = await searchProjects("Timex")
-        console.log(test)
-    }
+    const searchFeatures = (query) => {
+        if (!searchReady() || !featuresIndex || !query) return [];
+        
+        try {
+            const results = featuresIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => featuresLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Features search error:', error);
+            return [];
+        }
+    };
 
-    testSearch()
+    const searchPartners = (query) => {
+        if (!searchReady() || !partnersIndex || !query) return [];
+        
+        try {
+            const results = partnersIndex.search(query, { limit: 10 });
+            const allIds = [];
+            results.forEach(fieldResult => {
+                if (fieldResult.result) {
+                    allIds.push(...fieldResult.result);
+                }
+            });
+            return allIds.map(id => partnersLookup[id]).filter(Boolean);
+        } catch (error) {
+            console.error('Partners search error:', error);
+            return [];
+        }
+    };
 
 
     const clearResults = () => {
@@ -153,32 +221,68 @@ export default function SearchMenu(props) {
         }
     }
 
+    const ResultCard = (props) => (
+        <a href="#" class={styles.resultCard}>
+            {props.title && <p class="h6">{props.title}</p>}
+            {props.subtitle && <p>{props.subtitle}</p>}
+        </a>
+    )
+
+    const ResultsGroup = (props) => (
+        <div class={`${styles.resultsGroup} ${props.results?.length > 0 ? styles.visible : styles.hidden}`}>
+            <p>{props.title}</p>
+            <For each={props.results}>
+                {(result) => (
+                    <ResultCard 
+                        title={result.title}
+                        subtitle={result.subtitle}
+                    />
+                )}
+            </For>
+        </div>
+    )
+
     const handleSearch = async (query) => {
-        if (pageFind()) {
-
-            const getFilteredResults = async (queryType, setter, maxResults = 6) => {
-                const data = await pageFind().search(query, {filters: {type: queryType}})
-                if (data === null) return
-                const filteredResults = await Promise.all(await data.results.slice(0, maxResults).map(r => r.data()))
-                if (filteredResults) return setter(filteredResults)
-                return setter(null)
-            }
-
-            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'case-study_studio' : 'case-study_domaine', setProjectResults, 4)
-            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine', setBlogResults, 3)
-            await getFilteredResults(props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine', setFeatureResults, 10)
-            await getFilteredResults('partner', setPartnerResults, 5)
+        if (!searchReady()) {
+            console.log('Search not ready yet');
+            return;
         }
+
+        console.log('=== SEARCHING ALL CONTENT TYPES ===');
+        console.log('Query:', query);
+
+        // Search all content types
+        const projectSearchResults = searchProjects(query);
+        const blogSearchResults = searchBlog(query);
+        const featureSearchResults = searchFeatures(query);
+        const partnerSearchResults = searchPartners(query);
+        
+        // Filter by current brand
+        const brandType = props.currentBrand.slug.current === '/studio' ? 'case-study_studio' : 'case-study_domaine';
+        const blogBrandType = props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine';
+        const featureBrandType = props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine';
+        
+        const filteredProjects = projectSearchResults.filter(result => result && result.type === brandType);
+        const filteredBlog = blogSearchResults.filter(result => result && result.type === blogBrandType);
+        const filteredFeatures = featureSearchResults.filter(result => result && result.type === featureBrandType);
+        // Partners don't have brand filtering
+        const filteredPartners = partnerSearchResults;
+        
+        console.log('Projects:', filteredProjects.length);
+        console.log('Blog:', filteredBlog.length);
+        console.log('Features:', filteredFeatures.length);
+        console.log('Partners:', filteredPartners.length);
+        
+        setProjectResults(filteredProjects.slice(0, 4));
+        setBlogResults(filteredBlog.slice(0, 3));
+        setFeatureResults(filteredFeatures.slice(0, 10));
+        setPartnerResults(filteredPartners.slice(0, 5));
     }
 
-    createEffect(() => {
-        if (window.pagefind) {
-            setPageFind(window.pagefind)
-            pageFind().init({
-                "baseUrl": "../"
-            })
-        }   
+    onMount(() => {
+        initSearch();
     })
+
 
     return (
 
@@ -205,134 +309,25 @@ export default function SearchMenu(props) {
 
             <div class={styles.results}>
 
-                <div class={styles.resultsTabs}>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('projects')} data-active={activeTab() === 'projects' ? 'true' : 'false'}>Projects</button>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('insights')} data-active={activeTab() === 'insights' ? 'true' : 'false'}>Insights</button>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('features')} data-active={activeTab() === 'features' ? 'true' : 'false'}>Features</button>
-                    <button class={`${styles.tabButton} button-reset`} onClick={() => setActiveTab('partners')} data-active={activeTab() === 'partners' ? 'true' : 'false'}>Partners</button>
-                </div>
+                <ResultsGroup 
+                    title="Projects"
+                    results={projectResults()}
+                />
 
-                {/* Projects */}
-                <Show when={!query() || (query() && projectResults()?.length > 0)} >
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'projects' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.PROJECTS.locales[props.locale] : Translations.PROJECTS.name}</p>
-                        <div class={styles.projectsList}>
+                <ResultsGroup 
+                    title="Insights"
+                    results={blogResults()}
+                />
 
-                            {projectResults() ?
-                                <For each={projectResults()}>{result => 
-                                    <ProjectCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        image={result.meta.image} 
-                                        alt={result.meta.image_alt} 
-                                    />
-                                }</For>
-                            :
-                                <For each={props.defaultProjects}>{project => 
-                                    <ProjectCard
-                                        url={`${project.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/work/${project.slug.current}`} 
-                                        title={project.title} 
-                                        image={urlFor(project.thumbnailMedia.image).width(300).height(300).auto('format').url()} 
-                                        alt={project.thumbnailMedia.image.alt} 
-                                        />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
+                <ResultsGroup 
+                    title="Features"
+                    results={featureResults()}
+                />
 
-                {/* Blog */}
-                <Show when={!query() || (query() && blogResults()?.length > 0)}>
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'insights' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.INSIGHTS.locales[props.locale] : Translations.INSIGHTS.name}</p>
-                        <div class={styles.projectsList}>
-                            {blogResults() ? 
-                                <For each={blogResults()}>{result => 
-                                    <BlogCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        categoryTitle={result.meta.categoryTitle}
-                                        categoryUrl={result.meta.categoryUrl}
-                                        image={result.meta.image} 
-                                        alt={result.meta.image_alt}
-                                        locale={props.locale}
-                                        localizeTitle={false}
-                                    />
-                                }</For>
-                            :
-                                <For each={props.defaultBlogPosts}>{post => 
-                                    <BlogCard 
-                                        url={`${post.agencyBrand.slug.current === '/studio' ? '/studio' : ''}/insights/${post.category.slug.current}/${post.slug.current}`} 
-                                        // title={getTranslationString(post.title, props.locale)}
-                                        title={post.title}
-                                        categoryTitle={getTranslationString(post.category.title, props.locale)}
-                                        categoryUrl={`/insights/${post.category.slug.current}`}
-                                        image={urlFor(post.thumbnailImage.image).width(300).height(300).auto('format').url()} 
-                                        alt={post.thumbnailImage.image.alt} 
-                                        locale={props.locale}
-                                        localizeTitle={true}
-                                    />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
-
-                {/* Features/ */}
-                <Show when={!query() || (query() && featureResults()?.length > 0)}>
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'features' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.FEATURES.locales[props.locale] : Translations.FEATURES.name}</p>
-                        <div class={styles.featuresList}>
-                            {featureResults() ? 
-                                <For each={featureResults()}>{result => 
-                                    <FeatureCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        locale={props.locale}
-                                    />
-                                }</For>
-                            :
-                                <For each={props.defaultFeatures}>{feature => 
-                                    <FeatureCard 
-                                        url={`${props.currentBrand.slug.current === '/studio' ? '/studio' : ''}/work/features/${feature.slug.current}`} 
-                                        title={getTranslationString(feature.title, props.locale)} 
-                                        locale={props.locale}
-                                    />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
-
-                {/* Partners */}
-                <Show when={!query() || (query() && partnerResults()?.length > 0)}>
-                    <div class={styles.resultsColumn} data-tab-active={activeTab() === 'partners' ? 'true' : 'false'}>
-                        <p class={styles.columnTitle}>{props.locale ? Translations.PARTNERS.locales[props.locale] : Translations.PARTNERS.name}</p>
-                        <div class={styles.partnersList}>
-                            {partnerResults() ?
-                                <For each={partnerResults()}>{result => 
-                                    <PartnerCard 
-                                        url={result.url} 
-                                        title={result.meta.title} 
-                                        icon={result.meta.image}
-                                        alt={result.meta.image_alt} 
-                                        excerpt={result.meta.excerpt}
-                                    />
-                                }</For>
-                                :
-                                <For each={props.defaultPartners}>{partner => 
-                                    <PartnerCard 
-                                        url={`/partners/${partner.slug.current}`} 
-                                        title={partner.title}
-                                        icon={urlFor(partner.icon.image).auto('format').width(300).height(300).url()}
-                                        alt={partner.icon.alt} 
-                                        excerpt={getTranslationString(partner.excerpt, props.locale)}
-                                    />
-                                }</For>
-                            }
-                        </div>
-                    </div>
-                </Show>
+                <ResultsGroup 
+                    title="Partner"
+                    results={partnerResults()}
+                />
 
                 {/* No Results */}
                 <Show when={ query() && 

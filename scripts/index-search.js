@@ -16,72 +16,168 @@ const sanityClient = createClient({
 
 const loadIndex = async () => {
 
-  // Create FlexSearch Document index for projects
+  // Helper function to extract text from Sanity localized content
+  const extractText = (field) => {
+    if (!field) return '';
+    if (typeof field === 'string') return field;
+    if (field.text) return field.text;
+    return '';
+  };
+
+  // Create FlexSearch Document indexes for each content type
   const projectsIndex = new Document({
     document: {
       id: "id",
-      index: ["title", "excerpt", "description", "clientName", "industryName", "serviceNames", "featureNames"]
+      index: ["title", "subtitle"]
     },
     tokenize: "forward"
   });
 
-  const projects = await sanityClient.fetch(`*[ _type == "type_project" && !isHidden ]{
-    _id,
-    title,
-    excerpt,
-    description,
-    slug,
-    agencyBrand->{
-      slug,
-      name
+  const blogIndex = new Document({
+    document: {
+      id: "id", 
+      index: ["title", "subtitle"]
     },
-    client->{
-      title
-    },
-    industry->{
-      title
-    },
-    services[]->{
-      title
-    },
-    features[]->{
-      title
-    },
-    thumbnailMedia{
-      image{
-        asset->{
-          _id,
-          url
-        },
-        alt
-      }
-    },
-    orderRank
-  } | order(orderRank)`)
+    tokenize: "forward"
+  });
 
-  // Process and index projects
-  const projectsData = [];
+  const featuresIndex = new Document({
+    document: {
+      id: "id",
+      index: ["title"]
+    },
+    tokenize: "forward"
+  });
+
+  const partnersIndex = new Document({
+    document: {
+      id: "id",
+      index: ["title"]
+    },
+    tokenize: "forward"
+  });
+
+  // Fetch all content types
+  const [projects, blogPosts, features, partners] = await Promise.all([
+    sanityClient.fetch(`*[ _type == "type_project" && isHidden != true ]{
+      title,
+      excerpt,
+      agencyBrand->{
+        slug
+      },
+      orderRank
+    } | order(orderRank)`),
+    
+    sanityClient.fetch(`*[ _type == "type_blog" && isHidden != true ]{
+      title,
+      excerpt,
+      agencyBrand->{
+        slug
+      },
+      orderRank
+    } | order(orderRank)`),
+    
+    sanityClient.fetch(`*[ _type == "type_projectFeature" && isHidden != true ]{
+      _id,
+      title,
+      agencyBrand->{
+        slug
+      },
+      orderRank
+    } | order(orderRank)`),
+    
+    sanityClient.fetch(`*[ _type == "type_partner" && isHidden != true ]{
+      _id,
+      title,
+      orderRank
+    } | order(orderRank)`)
+  ]);
   
+  // Process projects
+  const projectsData = [];
   projects.forEach((project, index) => {
     const projectData = {
       id: `project-${index}`,
       title: String(project.title || ''),
-      excerpt: String(project.excerpt || ''),
-      description: String(project.description || ''),
-      clientName: String(project.client?.title || ''),
-      industryName: String(project.industry?.title || ''),
-      serviceNames: String(project.services?.map(s => s.title).filter(Boolean).join(' ') || ''),
-      featureNames: String(project.features?.map(f => f.title).filter(Boolean).join(' ') || ''),
-      url: `${project.agencyBrand?.slug?.current === '/studio' ? '/studio' : ''}/work/${project.slug?.current || ''}`,
-      image: project.thumbnailMedia?.image?.asset?.url || '',
-      imageAlt: project.thumbnailMedia?.image?.alt || '',
-      brand: project.agencyBrand?.slug?.current || '',
+      subtitle: String(project.excerpt.text || ''),
       type: project.agencyBrand?.slug?.current === '/studio' ? 'case-study_studio' : 'case-study_domaine'
     };
     
     projectsData.push(projectData);
     projectsIndex.add(projectData);
   });
+
+  // Process blog posts
+  const blogData = [];
+  blogPosts.forEach((post, index) => {
+    const postData = {
+      id: `blog-${index}`,
+      title: extractText(post.title),
+      subtitle: String(post.excerpt.text || ''),
+      type: post.agencyBrand?.slug?.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine'
+    };
+    
+    blogData.push(postData);
+    blogIndex.add(postData);
+  });
+
+  // Process features
+  const featuresData = [];
+  features.forEach((feature, index) => {
+    const featureData = {
+      id: `feature-${index}`,
+      title: extractText(feature.title),
+      type: feature.agencyBrand?.slug?.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine'
+    };
+    
+    featuresData.push(featureData);
+    featuresIndex.add(featureData);
+  });
+
+  // Process partners
+  const partnersData = [];
+  partners.forEach((partner, index) => {
+    const partnerData = {
+      id: `partner-${index}`,
+      title: String(partner.title || ''),
+      type: 'partner' // Partners don't have agency brand filtering
+    };
+    
+    partnersData.push(partnerData);
+    partnersIndex.add(partnerData);
+  });
+
+  // Export all indexes
+  const [projectsIndexData, blogIndexData, featuresIndexData, partnersIndexData] = await Promise.all([
+    new Promise((resolve) => {
+      const exportedIndex = {};
+      projectsIndex.export((key, data) => {
+        exportedIndex[key] = data;
+      });
+      resolve(exportedIndex);
+    }),
+    new Promise((resolve) => {
+      const exportedIndex = {};
+      blogIndex.export((key, data) => {
+        exportedIndex[key] = data;
+      });
+      resolve(exportedIndex);
+    }),
+    new Promise((resolve) => {
+      const exportedIndex = {};
+      featuresIndex.export((key, data) => {
+        exportedIndex[key] = data;
+      });
+      resolve(exportedIndex);
+    }),
+    new Promise((resolve) => {
+      const exportedIndex = {};
+      partnersIndex.export((key, data) => {
+        exportedIndex[key] = data;
+      });
+      resolve(exportedIndex);
+    })
+  ]);
 
   // Create search directory
   const searchDir = join(__dirname, '../public/search');
@@ -91,21 +187,21 @@ const loadIndex = async () => {
     console.log('Search directory already exists or created');
   }
 
-  // Export index to JSON (Document indexes need to be exported differently)
-  const exportedIndex = await new Promise((resolve) => {
-    const exported = {};
-    projectsIndex.export((key, data) => {
-      exported[key] = data;
-    });
-    resolve(exported);
-  });
-  
-  // Save index and data
-  writeFileSync(join(searchDir, 'projects-index.json'), JSON.stringify(exportedIndex));
+  // Save all search indexes and data files
+  writeFileSync(join(searchDir, 'projects-index.json'), JSON.stringify(projectsIndexData));
   writeFileSync(join(searchDir, 'projects-data.json'), JSON.stringify(projectsData));
+  
+  writeFileSync(join(searchDir, 'blog-index.json'), JSON.stringify(blogIndexData));
+  writeFileSync(join(searchDir, 'blog-data.json'), JSON.stringify(blogData));
+  
+  writeFileSync(join(searchDir, 'features-index.json'), JSON.stringify(featuresIndexData));
+  writeFileSync(join(searchDir, 'features-data.json'), JSON.stringify(featuresData));
+  
+  writeFileSync(join(searchDir, 'partners-index.json'), JSON.stringify(partnersIndexData));
+  writeFileSync(join(searchDir, 'partners-data.json'), JSON.stringify(partnersData));
 
-  console.log(`Indexed ${projects.length} projects`);
-  console.log('Projects search index created successfully!');
+  console.log(`Indexed ${projects.length} projects, ${blogPosts.length} blog posts, ${features.length} features, ${partners.length} partners`);
+  console.log('All search indexes created successfully!');
 
 }
 

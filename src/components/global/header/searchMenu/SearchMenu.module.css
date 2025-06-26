@@ -105,14 +105,29 @@
 
 .results {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    flex-direction: column;
+    /* justify-content: flex-start; */
     /* justify-content: space-between; */
     /* grid-template-columns: repeat(4, 1fr); */
     /* overflow-y: auto; */
     gap: var(--space-xl);
     padding: var(--space-md);
     /* flex-wrap: wrap; */
+
+    .resultsGroup {
+        /* opacity: 1; */
+        display: none;
+        flex-direction: column;
+
+        &.visible {
+            /* rotate: 20deg; */
+            display: flex;
+        }
+
+        .resultCard {
+            text-decoration: none;
+        }
+    }
 }
 
 .resultsColumn {
