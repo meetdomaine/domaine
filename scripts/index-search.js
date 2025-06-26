@@ -83,6 +83,7 @@ const loadIndex = async () => {
       agencyBrand->{
         slug
       },
+      category->{slug},
       thumbnailImage{${imageFields}},
       orderRank
     } | order(orderRank)`),
@@ -131,11 +132,14 @@ const loadIndex = async () => {
     const postData = {
       id: `blog-${index}`,
       title: extractText(post.title),
-      slug: String(post.slug?.current || ''),
+      slug: post.category?.slug?.current && post.slug?.current 
+        ? `${post.category.slug.current}/${post.slug.current}` 
+        : post.slug?.current || '',
       subtitle: String(post.excerpt?.text || ''),
       image: urlFor(post.thumbnailImage.image).auto('format').width(600).height(800).url(),
       type: post.agencyBrand?.slug?.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine'
     };
+    console.log(postData)
 
     blogData.push(postData);
     blogIndex.add(postData);
@@ -167,7 +171,6 @@ const loadIndex = async () => {
       image: urlFor(partner.icon.image).auto('format').width(600).height(800).url(),
       type: 'partner' // Partners don't have agency brand filtering
     };
-    console.log(partnerData)
     
     partnersData.push(partnerData);
     partnersIndex.add(partnerData);

@@ -6,6 +6,8 @@ import { getTranslationString } from 'src/lib/translations';
 import { Document } from 'flexsearch';
 import { Brands } from '../../../../enums/brands';
 import ImagePlaceholder from '../../../../icons/domaine-icon.svg?raw'
+import IconSearch from '../../../../icons/icon-search.svg?raw'
+import IconClose from '../../../../icons/icon-x.svg?raw'
 
 function SearchIcon() {
     return (
@@ -38,7 +40,7 @@ export default function SearchMenu(props) {
     let projectsIndex, blogIndex, featuresIndex, partnersIndex;
     let projectsLookup, blogLookup, featuresLookup, partnersLookup;
 
-    let inputElement, dialogElement
+    let inputElement
 
     const initSearch = async () => {
         try {
@@ -298,11 +300,6 @@ export default function SearchMenu(props) {
         // Partners don't have brand filtering
         const filteredPartners = partnerSearchResults;
         
-        console.log('Projects:', filteredProjects.length);
-        console.log('Blog:', filteredBlog.length);
-        console.log('Features:', filteredFeatures.length);
-        console.log('Partners:', filteredPartners.length);
-        
         setProjectResults(filteredProjects.slice(0, 3));
         setBlogResults(filteredBlog.slice(0, 3));
         setFeatureResults(filteredFeatures.slice(0, 6));
@@ -342,11 +339,13 @@ export default function SearchMenu(props) {
                         oninput={handleInput}
                         ref={inputElement}
                     />
-                    <span class={styles.searchIcon}><SearchIcon /></span>
+                    <span class={styles.searchIcon}>
+                        <svg innerHTML={IconSearch} />
+                    </span>
                 </div>
 
                 <button class={`${styles.closeIcon}`} popoverTarget='search-menu'>
-                    <CloseIcon />
+                    <svg innerHTML={IconClose} />
                 </button>
             </div>
 
