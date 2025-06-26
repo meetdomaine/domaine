@@ -9,22 +9,6 @@ import ImagePlaceholder from '../../../../icons/domaine-icon.svg?raw'
 import IconSearch from '../../../../icons/icon-search.svg?raw'
 import IconClose from '../../../../icons/icon-x.svg?raw'
 
-function SearchIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-4.5-4.5m1.5-3.75a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"/>
-        </svg>
-    )
-}
-
-function CloseIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M15 3 3 15M3 3l12 12"/>
-        </svg>
-    )
-}
-
 export default function SearchMenu(props) {
 
     const [ searchReady, setSearchReady ] = createSignal(false)
@@ -40,7 +24,7 @@ export default function SearchMenu(props) {
     let projectsIndex, blogIndex, featuresIndex, partnersIndex;
     let projectsLookup, blogLookup, featuresLookup, partnersLookup;
 
-    let inputElement
+    let inputElement, dialogElement
 
     const initSearch = async () => {
         try {
@@ -308,6 +292,16 @@ export default function SearchMenu(props) {
 
     onMount(() => {
         initSearch();
+
+        if (dialogElement) {
+            dialogElement.addEventListener("toggle", () => {
+                clearResults()
+                if(inputElement) inputElement.value = ''
+            })
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "/") dialogElement.showPopover()
+            })
+        }
     })
 
 
@@ -319,12 +313,7 @@ export default function SearchMenu(props) {
             class={styles.searchMenu} 
             data-color-scheme="glass-dark" 
             data-lenis-prevent
-            ref={(element) => {
-                element.addEventListener("toggle", () => {
-                    clearResults()
-                    if(inputElement) inputElement.value = ''
-                })
-            }}
+            ref={dialogElement}
         >
 
             {/* Search Input */}

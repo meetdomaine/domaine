@@ -12,22 +12,6 @@ const { brands, brandIndex, links, activePath, searchExposed, locale, searchPlac
     data-default-visible={searchExposed ? "true" : "false"}
 >
 
-    <!-- <div class="brand-cards--mobile">
-        {brands.map((brand, i) => {
-            if (brandIndex != i) {
-                return (
-                    <a href={brand.path} class="brand-card--mobile" data-index={i} >
-                        <div class="brand-card--mobile__header">
-                            <Icon class="logo" name={brand.logo} />
-                            <Icon class="icon" name="arrow-diagonal" />
-                        </div>
-                        <p class="brand-card--mobile__content">{brand.description}</p>
-                    </a>
-                )
-            }
-        })}
-    </div> -->
-
     <nav class="navigation-links color-reset" data-color-scheme="secondary">
         {links?.map((link, i) => (
             <a 
@@ -42,7 +26,8 @@ const { brands, brandIndex, links, activePath, searchExposed, locale, searchPlac
     <div class="search-wrapper">
         <button class="search-button" popovertarget="search-menu">
             <Icon class="icon" name="icon-search" />
-            <span>{locale && searchPlaceholderTitle.translations?.[locale] ? searchPlaceholderTitle.translations[locale] : searchPlaceholderTitle.text} <em>{locale && searchPlaceholderText.translations?.[locale] ? searchPlaceholderText.translations[locale] : searchPlaceholderText.text}</em></span>
+            <span class="placeholder-text">{locale && searchPlaceholderTitle.translations?.[locale] ? searchPlaceholderTitle.translations[locale] : searchPlaceholderTitle.text} <em>{locale && searchPlaceholderText.translations?.[locale] ? searchPlaceholderText.translations[locale] : searchPlaceholderText.text}</em></span>
+            <span class="shortcut-label">&#47;</span>
         </button>
     </div>
 
@@ -98,11 +83,28 @@ const { brands, brandIndex, links, activePath, searchExposed, locale, searchPlac
         gap: var(--space-xs);
         width: 100%;
         background-color: transparent;
-    }
 
-    .search-button em {
-        font-style: normal;
-        color: var(--color-foreground-secondary);
+        .placeholder-text {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            flex-grow: 1;
+            gap: 0.5ch;
+
+            em {
+                font-style: normal;
+                color: var(--color-foreground-secondary);
+            }
+        }
+
+        .shortcut-label {
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-foreground);
+            color: var(--color-foreground);
+            padding-inline: 0.6em;
+            padding-block: 0.2em;
+            opacity: .2;
+        }
     }
 
     .utility-menu {
