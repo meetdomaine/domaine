@@ -95,9 +95,10 @@ const loadIndex = async () => {
       orderRank
     } | order(orderRank)`),
     
-    sanityClient.fetch(`*[ _type == "type_partner" && isHidden != true ]{
+    sanityClient.fetch(`*[ _type == "type_partner" && isHidden != true && tier->createLandingPages ]{
       _id,
       title,
+      tier->{createLandingPages},
       slug,
       excerpt,
       icon{${imageFields}},
@@ -118,6 +119,7 @@ const loadIndex = async () => {
       brand: project.agencyBrand?.name,
       type: project.agencyBrand?.slug?.current === '/studio' ? 'case-study_studio' : 'case-study_domaine' // DEPRECATED
     };
+    console.log(projectData)
     
     projectsData.push(projectData);
     projectsIndex.add(projectData);
@@ -137,7 +139,6 @@ const loadIndex = async () => {
       brand: post.agencyBrand?.name,
       type: post.agencyBrand?.slug?.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine'
     };
-    console.log(postData)
 
     blogData.push(postData);
     blogIndex.add(postData);

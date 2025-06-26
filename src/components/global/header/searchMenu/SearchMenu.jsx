@@ -273,14 +273,12 @@ export default function SearchMenu(props) {
         const featureSearchResults = searchFeatures(query);
         const partnerSearchResults = searchPartners(query);
         
-        // Filter by current brand
-        const brandType = props.currentBrand.slug.current === '/studio' ? 'case-study_studio' : 'case-study_domaine';
-        const blogBrandType = props.currentBrand.slug.current === '/studio' ? 'blog-post_studio' : 'blog-post_domaine';
         const featureBrandType = props.currentBrand.slug.current === '/studio' ? 'project-feature_studio' : 'project-feature_domaine';
         
-        const filteredProjects = projectSearchResults.filter(result => result && result.type === brandType);
-        const filteredBlog = blogSearchResults.filter(result => result && result.type === blogBrandType);
+        const filteredProjects = projectSearchResults.filter(result => result?.brand === props.brand);
+        const filteredBlog = blogSearchResults.filter(result => result && result.brand === props.brand);
         const filteredFeatures = featureSearchResults.filter(result => result && result.type === featureBrandType);
+
         // Partners don't have brand filtering
         const filteredPartners = partnerSearchResults;
         
@@ -319,11 +317,11 @@ export default function SearchMenu(props) {
             {/* Search Input */}
             <div class={styles.menuControls}>
                 
-                <div class={styles.searchInput}>  
+                <div class={styles.searchInput} data-color-scheme="default">  
                     <input 
                         autofocus 
                         type="search" 
-                        class={`${styles.input} h4`} 
+                        class={`${styles.input} h5`} 
                         placeholder="Search"
                         oninput={handleInput}
                         ref={inputElement}

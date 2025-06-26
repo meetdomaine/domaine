@@ -68,12 +68,6 @@
     -webkit-backdrop-filter: var(--background-blur-backdrop) opacity(0);
 }
 
-.input:focus-visible {
-    outline-color: var(--color-neutral);
-    outline-offset: 0.1rem;
-    /* outli-radius: var(--radius-sm); */
-}
-
 .menuControls {
     /* display: grid;
     grid-template-columns: 1fr 2fr 1fr; */
@@ -113,9 +107,11 @@
     /* grid-column: 2 / span 1; */
     /* justify-self: center; */
     flex: 0 1 100%;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
 }
 
-.searchInput input {
+.searchInput input.input {
     border: none;
     padding-block: 0.3em;
     padding-inline-end: calc(var(--icon-md) + var(--space-sm));
@@ -124,7 +120,15 @@
     margin: 0;
     background-color: transparent;
     /* max-width: 30rem; */
+
+    &:focus-visible {
+        outline: none;
+        /* outline-color: var(--color-neutral); */
+        /* outline-offset: 0.1rem; */
+        /* outli-radius: var(--radius-sm); */
+    }
 }
+
 
 .searchInput input::-webkit-search-cancel-button {
     display: none;
