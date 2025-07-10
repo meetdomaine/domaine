@@ -25,7 +25,7 @@ const timeOptions: UseDateTimeFormatOptions = {
   minute: 'numeric',
   hour12: content.use24hourFormat ? false : true,
 };
-const timeOptionsTimeZone: UseDateTimeFormatOptions = {
+const timeZoneOptions: UseDateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
   hour12: content.use24hourFormat ? false : true,
@@ -36,7 +36,7 @@ const timeOptionsTimeZone: UseDateTimeFormatOptions = {
 const dateTime = new Date(content.dateTime)
 const date = new Intl.DateTimeFormat(locale ? locale : 'en-US', dateOptions).format(dateTime);
 const time = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptions).format(dateTime);
-const timeZone = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptionsTimeZone).formatToParts(new Date())?.find(part => part.type === 'timeZoneName')?.value
+const timeZone = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeZoneOptions).formatToParts(new Date())?.find(part => part.type === 'timeZoneName')?.value
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
