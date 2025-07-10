@@ -59,7 +59,8 @@ export default defineType({
       options: {
         dateFormat: "MM-DD-YYYY",
         timeFormat: "HH:mm",
-        timeStep: 15
+        timeStep: 15,
+        displayTimeZone: "UTC",
       },
       validation: Rule => Rule.required(),
     }),
