@@ -6,7 +6,7 @@ import { getEnv } from '../../../../lib/getEnv';
 import { Locales } from '../../../../enums/locales';
 
 export async function getStaticPaths() {
-    const blogPosts = await getBlogPosts(Brands.DOMAINE)
+    const blogPosts = await getBlogPosts(Brands.DOMAINE, true)
     return blogPosts.map((post) => {
         return {
             params: { 
