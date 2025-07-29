@@ -10,6 +10,7 @@ import { loadQuery } from "../lib/sanity-load-query";
 const { locale } = Astro.props;
 const { data: pageSettings } = await loadQuery({
   query: `*[_type == "page_home-domaine"][0]{
+    ...,
     metafields{ title, description, image{${imageBaseFields}} },
     projects[]{
       project->{${projectGridFields}},
@@ -35,5 +36,5 @@ const { data: pageSettings } = await loadQuery({
   <GlobalSectionsList
     brand={Brands.DOMAINE}
     locale={locale}
-  />
+    />
 </LayoutDomaine>
