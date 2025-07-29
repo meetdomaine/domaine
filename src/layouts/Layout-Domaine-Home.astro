@@ -1,8 +1,8 @@
 ---
 import HomeHero from "../components/domaine/sections/home/home-Hero.astro";
-import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import GlobalSectionsList from "../components/global/sections/section-GlobalSectionsList.astro";
 import LayoutDomaine from "../layouts/Layout-Domaine.astro";
-import { urlFor, globalSectionsFields, imageFields, videoFields, imageBaseFields, projectGridFields } from "../lib/cms-queries"
+import { urlFor, imageFields, imageBaseFields, projectGridFields } from "../lib/cms-queries"
 import { getTranslationString } from "../lib/translations";
 import { Brands } from "../enums/brands";
 import { loadQuery } from "../lib/sanity-load-query";
@@ -10,17 +10,15 @@ import { loadQuery } from "../lib/sanity-load-query";
 const { locale } = Astro.props;
 const { data: pageSettings } = await loadQuery({
   query: `*[_type == "page_home-domaine"][0]{
-    ...,
-    globalSections{ sections[]{${globalSectionsFields}} }, 
-    media{ ..., ${imageFields}, ${videoFields} },
     metafields{ title, description, image{${imageBaseFields}} },
     projects[]{
       project->{${projectGridFields}},
       image{${imageFields}}
     },
+    showPreloader
   }`
 })
-// console.log(pageSettings.heroTextColor)
+
 ---
 <LayoutDomaine
     title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}
@@ -30,21 +28,12 @@ const { data: pageSettings } = await loadQuery({
     showPreloader={pageSettings.showPreloader}
     locale={locale}
 >
-    <HomeHero
-        locale={locale}
-        eyebrow={locale && pageSettings.eyebrow.translations[locale] ? pageSettings.eyebrow.translations[locale] : pageSettings.eyebrow.text}
-        heading={locale && pageSettings.heading.translations[locale] ? pageSettings.heading.translations[locale] : pageSettings.heading.text}
-        button={pageSettings.button}
-        media={pageSettings.media}
-        heroTextColor={pageSettings.heroTextColor}
-        brand={Brands.DOMAINE}
-    />
-    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
-        <GlobalSections 
-          brand={Brands.DOMAINE}
-          locale={locale}
-          section={section}
-          key={i} 
-        />
-    ))}
+  <HomeHero
+      locale={locale}
+      brand={Brands.DOMAINE}
+  />
+  <GlobalSectionsList
+    brand={Brands.DOMAINE}
+    locale={locale}
+  />
 </LayoutDomaine>

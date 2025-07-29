@@ -1,0 +1,24 @@
+---
+import { globalSectionsFields } from "../../../lib/cms-queries"
+import { loadQuery } from "../../../lib/sanity-load-query";
+import GlobalSections from "./section-GlobalSections.astro"
+import { Brands } from "../../../enums/brands";
+
+const { locale, brand } = Astro.props;
+
+const { data: pageSettings } = await loadQuery({
+  query: `*[_type == '${brand === Brands.STUDIO ? "page_home-studio" : "page_home-domaine"}'][0]{
+    globalSections{ sections[]{${globalSectionsFields}} },
+  }`
+})
+
+---
+
+{pageSettings?.globalSections && pageSettings?.globalSections.sections.map((section, i) => (
+  <GlobalSections
+    brand={brand}
+    locale={locale}
+    section={section}
+    key={i} 
+  />
+))}

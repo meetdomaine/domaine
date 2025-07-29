@@ -1,11 +1,20 @@
 ---
 import LayoutStudio from "../layouts/Layout-Studio.astro";
 import HomeHero from "../components/studio/sections/home/home-Hero.astro";
-import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
+import GlobalSectionsList from "../components/global/sections/section-GlobalSectionsList.astro";
 import { getTranslationString } from "../lib/translations";
 import { urlFor } from "../lib/cms-queries";
+import { loadQuery } from "../lib/sanity-load-query";
+import { imageFields, videoFields, imageBaseFields } from "../lib/cms-queries";
 
-const { content, locale } = Astro.props
+const { locale } = Astro.props
+const { data: content } = await loadQuery({
+  query: `*[_type == "page_home-studio"][0]{
+    media{ ..., ${imageFields}, ${videoFields} },
+    metafields{ title, description, image{${imageBaseFields}} },
+    showPreloader
+  }`
+})
 ---
 <LayoutStudio
     title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
@@ -26,8 +35,6 @@ const { content, locale } = Astro.props
         locale={locale}
     />
 
-    {content.globalSections && content.globalSections.sections.map((section, i) => (
-        <GlobalSections brand="studio" section={section} key={i} locale={locale} />
-    ))}
+    <GlobalSectionsList brand="studio" locale={locale} />
 
 </LayoutStudio>

@@ -5,7 +5,7 @@ import Footer from '../components/global/global-Footer.astro';
 import { getTranslationString, getTranslationRichContent } from '../lib/translations';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
-import { getBrandSettings, getFooterSettings } from '../lib/cached-content';
+import { getBrandSettings } from '../lib/cached-content';
 
 interface Props {
 	title: string;
@@ -29,7 +29,7 @@ interface Props {
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
 const brandSettings = await getBrandSettings(Brands.DOMAINE)
-const footerSettings = await getFooterSettings(Brands.DOMAINE)
+const footerQuery = `*[_type == "settings_footer" && _id == 'settings_footer--domaine' ][0]`
 
 // console.log(brandSettings?.cookieNoticeText.translations)
 // console.log(brandSettings?.cookieNoticeText)
@@ -69,7 +69,8 @@ const footerSettings = await getFooterSettings(Brands.DOMAINE)
         <slot />
     </main>
     <Footer
-        footerSettings={footerSettings}
+        footerQuery={footerQuery}
+        brand={Brands.DOMAINE}
         locale={locale} 
     />
 </LayoutGlobal>
