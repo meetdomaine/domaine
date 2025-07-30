@@ -1,11 +1,20 @@
 ---
 import { getServiceTypes, getServices } from "../../../../lib/cached-content"
 import AtomCounter from "../../../global/atoms/atom-counter.astro"
+import { loadQuery } from "../../../../lib/sanity-load-query";
 
-const { title, heading, locale, brand } = Astro.props
+const { locale, brand } = Astro.props
 const serviceTypes = await getServiceTypes(brand)
 const services = await getServices(brand)
 const serviceCount = services.length
+
+const { data: sectionSettings } = await loadQuery({ 
+  query: `*[_type == "page_services-index-domaine"][0]{
+    title,
+    heading,
+  }`
+})
+const { title, heading } = sectionSettings
 ---
 <section class="services-hero">
     <div class="section-title">

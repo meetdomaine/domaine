@@ -4,9 +4,25 @@ import AtomSanityImage from "../../../global/atoms/atom-sanityImage.astro"
 import { replaceStringIcons } from "../../../../lib/inline-icon-text"
 import AtomCursorFollow from "../../../global/atoms/atom-cursorFollow.astro"
 import { getLocaleUrl, getTranslationString } from "../../../../lib/translations"
+import { imageFields, videoFields, projectGridFields } from "../../../../lib/cms-queries"
+import { loadQuery } from "../../../../lib/sanity-load-query";
 
-const { heading, subheading, eyebrow, button, projects, locale } = Astro.props
-
+const { locale } = Astro.props
+const { data: sectionSettings } = await loadQuery({
+  query: `*[_type == "page_home-studio"][0]{
+    media{ ..., ${imageFields}, ${videoFields} },
+    eyebrow,
+    heading,
+    subheading,
+    button,
+    heroTextColor,
+    projects[]{
+      project->{${projectGridFields}},
+      image{${imageFields}}
+    },
+  }`
+})
+const { heading, subheading, eyebrow, button, projects } = sectionSettings
 const iconText = replaceStringIcons(getTranslationString(heading, locale))
 
 ---

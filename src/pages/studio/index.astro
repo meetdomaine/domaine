@@ -1,21 +1,5 @@
 ---
 import LayoutStudioHome from "../../layouts/Layout-Studio_Home.astro";
-import { loadQuery } from "../../lib/sanity-load-query";
-import { globalSectionsFields, imageFields, videoFields, imageBaseFields, projectGridFields } from "../../lib/cms-queries";
 
-const { data: pageSettings } = await loadQuery({ 
-  query: `*[_type == "page_home-studio"][0]{
-    ...,
-    globalSections{ sections[]{${globalSectionsFields}} }, 
-    media{ ..., ${imageFields}, ${videoFields} },
-    metafields{ title, description, image{${imageBaseFields}} },
-    projects[]{
-      project->{${projectGridFields}},
-      image{${imageFields}}
-    },
-  }`
-})
 ---
-<LayoutStudioHome 
-    content={pageSettings}
-/>
+<LayoutStudioHome />

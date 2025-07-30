@@ -4,8 +4,23 @@ import AtomButton from "../../../global/atoms/atom-button.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 import AtomTag from "../../../global/atoms/atom-tag.astro"
 import { stegaClean } from '@sanity/client/stega'
+import { imageFields, videoFields } from "../../../../lib/cms-queries"
+import { loadQuery } from "../../../../lib/sanity-load-query";
 
-const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
+const { locale } = Astro.props
+const { data: sectionSettings } = await loadQuery({
+  query: `*[_type == "page_home-domaine"][0]{
+    media{ ..., ${imageFields}, ${videoFields} },
+    eyebrow,
+    heading,
+    button,
+    heroTextColor,
+  }`
+})
+const {button, heroTextColor} = sectionSettings
+const eyebrow = locale && sectionSettings.eyebrow.translations[locale] ? sectionSettings.eyebrow.translations[locale] : sectionSettings.eyebrow.text
+const heading = locale && sectionSettings.heading.translations[locale] ? sectionSettings.heading.translations[locale] : sectionSettings.heading.text
+console.log('sectionSettings', sectionSettings)
 ---
 <section id="domaine-home-hero" class="section-home-hero" data-color-scheme={stegaClean(heroTextColor) === "light" ? "invert" : ""}>
     <div class="section-content">
@@ -30,11 +45,11 @@ const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
             />
         }
     </div>
-    {media && 
+    {sectionSettings?.media && 
         <div class="section-media">
             <AtomSanityMedia 
-                video={media.video}
-                image={media.image}
+                video={sectionSettings?.media.video}
+                image={sectionSettings?.media.image}
                 sizes="100vw"
                 cover={true}
                 preload={true}

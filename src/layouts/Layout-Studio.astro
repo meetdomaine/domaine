@@ -39,12 +39,10 @@ const { data: brandSettingsData } = await loadQuery({
   params: { brand: Brands.STUDIO }
 })
 
-const { data: footerSettingsData } = await loadQuery({ 
-  query: `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`
-})
+const footerQuery = `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`
 
 const brandSettings = brandSettingsData
-const footerSettings = footerSettingsData
+
 ---
 <LayoutGlobal
     title={`${title ? title : "Domaine Studio"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -84,7 +82,8 @@ const footerSettings = footerSettingsData
         <slot />
     </main>
     <Footer 
-        footerSettings={footerSettings}
         locale={locale}
+        footerQuery={footerQuery}
+        brand={Brands.STUDIO}
     />
 </LayoutGlobal>

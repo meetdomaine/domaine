@@ -6,14 +6,17 @@ import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
 import { sanityClient } from "sanity:client"
 import { agencyBrandsQuery } from "../../lib/cms-queries"
 import { getTranslationString } from "../../lib/translations"
+import { getFooterSettings } from '../../lib/cached-content';
 
-const { footerSettings, locale } = Astro.props
+const { footerQuery, brand, locale } = Astro.props
 
 const agencyBrands = await sanityClient.fetch(`*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`)
 
 const logos = await agencyBrands.map( async (brand) => {
     return await getRawSvg(brand.logo)
 })
+const footerSettings = await getFooterSettings(brand, footerQuery)
+
 ---
 <footer data-color-scheme="brand-02">
     <div class="footer-inner">
@@ -43,7 +46,7 @@ const logos = await agencyBrands.map( async (brand) => {
         <div class="footer-info__primary">
 
             <div class="link-columns">
-                {footerSettings.linkColumns.map((column) => (
+                {footerSettings.linkColumns?.map((column) => (
                     <div class="link-column">
                         <p class="link-column___title">{locale && column.title.translations?.[locale] ? column.title.translations[locale] : column.title.text}</p>
                         <div class="link-column__links">
@@ -61,7 +64,7 @@ const logos = await agencyBrands.map( async (brand) => {
                 ))}
             </div>
              <div class="footer-form">
-                <p class="footer-form__title">{locale && footerSettings.newsletterHeading.translations?.[locale] ? footerSettings.newsletterHeading.translations[locale] : footerSettings.newsletterHeading.text}</p>
+                <p class="footer-form__title">{locale && footerSettings.newsletterHeading?.translations?.[locale] ? footerSettings.newsletterHeading?.translations[locale] : footerSettings.newsletterHeading?.text}</p>
                 <AtomHubspotForm formId={footerSettings.newsletterHubspotFormId} />
             </div>
 
