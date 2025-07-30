@@ -20,7 +20,7 @@ const { data: sectionSettings } = await loadQuery({
 const {button, heroTextColor} = sectionSettings
 const eyebrow = locale && sectionSettings.eyebrow.translations[locale] ? sectionSettings.eyebrow.translations[locale] : sectionSettings.eyebrow.text
 const heading = locale && sectionSettings.heading.translations[locale] ? sectionSettings.heading.translations[locale] : sectionSettings.heading.text
-
+console.log('sectionSettings', sectionSettings)
 ---
 <section id="domaine-home-hero" class="section-home-hero" data-color-scheme={stegaClean(heroTextColor) === "light" ? "invert" : ""}>
     <div class="section-content">

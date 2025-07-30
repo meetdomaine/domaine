@@ -19,7 +19,7 @@ const { data: pageSettings } = await loadQuery({
     showPreloader
   }`
 })
-
+console.log('pageSettings', pageSettings)
 ---
 <LayoutDomaine
     title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}

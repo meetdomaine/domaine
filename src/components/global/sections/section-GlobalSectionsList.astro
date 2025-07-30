@@ -9,12 +9,13 @@ const { locale, brand } = Astro.props;
 const { data: pageSettings } = await loadQuery({
   query: `*[_type == '${brand === Brands.STUDIO ? "page_home-studio" : "page_home-domaine"}'][0]{
     globalSections{ sections[]{${globalSectionsFields}} },
+    sections[]{${globalSectionsFields}},
   }`
 })
 
 ---
 
-{pageSettings?.globalSections && pageSettings?.globalSections.sections.map((section, i) => (
+{((pageSettings?.globalSections && pageSettings?.globalSections.sections) || pageSettings?.sections).map((section, i) => (
   <GlobalSections
     brand={brand}
     locale={locale}
