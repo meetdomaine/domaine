@@ -76,6 +76,7 @@ export default defineConfig({
     define: {
       "import.meta.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(PUBLIC_SANITY_API_READ_TOKEN),
       "import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
+      "process.env": process.env
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
