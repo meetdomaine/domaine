@@ -10,7 +10,6 @@ import { loadQuery } from "../lib/sanity-load-query";
 const { locale } = Astro.props;
 const { data: pageSettings } = await loadQuery({
   query: `*[_type == "page_home-domaine"][0]{
-    ...,
     metafields{ title, description, image{${imageBaseFields}} },
     projects[]{
       project->{${projectGridFields}},
@@ -19,7 +18,7 @@ const { data: pageSettings } = await loadQuery({
     showPreloader
   }`
 })
-console.log('pageSettings', pageSettings)
+
 ---
 <LayoutDomaine
     title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}
@@ -36,5 +35,5 @@ console.log('pageSettings', pageSettings)
   <GlobalSectionsList
     brand={Brands.DOMAINE}
     locale={locale}
-    />
+  />
 </LayoutDomaine>
