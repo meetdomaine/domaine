@@ -5,7 +5,7 @@ import { getBlogPosts } from '../../../../lib/cached-content';
 import { getEnv } from '../../../../lib/getEnv';
 
 export async function getStaticPaths() {
-    const blogPosts = await getBlogPosts(Brands.STUDIO)
+    const blogPosts = await getBlogPosts(Brands.STUDIO, true)
     return blogPosts.map((post) => {
         return {
             params: { 
