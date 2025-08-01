@@ -36,6 +36,8 @@ if (project.client?.logo) {
         image={project.thumbnailMedia.image}
         aspectRatio={3 / 4}
         sizes="30vw"
+        customWidth={540}
+        customHeight={720}
       />
     </div>
     {project.client?.logo && (
@@ -55,6 +57,8 @@ if (project.client?.logo) {
 					<AtomSanityImage
 						image={project.thumbnailImageSecondary.image}
 						sizes="40vw"
+            customWidth={540}
+            customHeight={958.5}
 					/>
 				</div>
 			</div>
@@ -76,8 +80,10 @@ if (project.client?.logo) {
     {project.client && (
 			<div class="product-media">
 				<img
-					src={urlFor(project.client.productImage).auto("format").url()}
+					src={urlFor(project.client.productImage).auto("format").width(60).height(60).url()}
 					class="product-image"
+          width="60"
+          height="60"
 				/>
 			</div>
 		)}
