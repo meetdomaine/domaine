@@ -14,9 +14,11 @@ interface Props {
   transitionName?: string,
   pagefindMeta?: string,
   preserveAspect?: boolean,
+  customWidth: number,
+  customHeight: number,
 }
 
-const { image, sizes, eager, aspectRatio, cover, contain, alt, pagefindMeta, preserveAspect } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, contain, alt, pagefindMeta, preserveAspect, customWidth, customHeight } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -27,8 +29,8 @@ const cropRight = crop ? crop.right : 0
 const cropBottom = crop ? crop.bottom : 0
 const cropLeft = crop ? crop.left : 0
 
-const width = srcWidth - (srcWidth * cropLeft) - (srcWidth * cropRight)
-const height = srcHeight - (srcHeight * cropTop) - (srcHeight * cropBottom)
+const width = customWidth || srcWidth - (srcWidth * cropLeft) - (srcWidth * cropRight)
+const height = customHeight || srcHeight - (srcHeight * cropTop) - (srcHeight * cropBottom)
 
 const ratio = aspectRatio ? aspectRatio : width / height
 
