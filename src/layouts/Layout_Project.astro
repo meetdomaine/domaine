@@ -7,6 +7,8 @@ import { Brands } from '../enums/brands';
 import LayoutStudio from './Layout-Studio.astro';
 import { getTranslationString } from '../lib/translations';
 
+export const prerender = false // Make Project content static so it doesn't refetch on each page load
+
 const { content, locale, brand } = Astro.props
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine

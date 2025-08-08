@@ -11,6 +11,7 @@ import GlobalSections from "../components/global/sections/section-GlobalSections
 import { Brands } from "../enums/brands"
 import LayoutStudio from "./Layout-Studio.astro"
 
+export const prerender = false // Make Event content static so it doesn't refetch on each page load
 
 const { content, locale, brand } = Astro.props
 

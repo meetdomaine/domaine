@@ -14,6 +14,8 @@ import { getLocaleString, getTranslationString } from '../lib/translations';
 import { getBlogPosts } from '../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 
+export const prerender = false // Make Blog Post content static so it doesn't refetch on each page load
+
 const { content, locale , brand} = Astro.props;
 
 const latestPosts = await getBlogPosts(brand)
