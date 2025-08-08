@@ -4,6 +4,8 @@ import { loadQuery } from "../../lib/sanity-load-query";
 import { imageFields, globalSectionsFields } from "../../lib/cms-queries";
 import { getEnv } from "../../lib/getEnv";
 
+export const prerender = false // Make Event content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const { data: events } = await loadQuery({ 
       query: `*[_type == "type_event"]{

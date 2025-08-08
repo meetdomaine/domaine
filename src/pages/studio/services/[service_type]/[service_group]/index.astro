@@ -4,6 +4,8 @@ import { Brands } from "../../../../../enums/brands"
 import { getServiceGroups } from "../../../../../lib/cached-content";
 import { getEnv } from "../../../../../lib/getEnv";
 
+export const prerender = false // Make Service Group content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const serviceGroups = await getServiceGroups(Brands.STUDIO)
     return serviceGroups.map((serviceGroup) => {

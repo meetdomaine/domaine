@@ -7,6 +7,8 @@ import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../lib/getEnv';
 import { Locales } from '../../../enums/locales';
 
+export const prerender = false // Make Blog Category content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const categories = await getBlogCategories(Brands.DOMAINE)
     return categories.map((category) => {

@@ -6,6 +6,8 @@ import { getProjectFeatures } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../../lib/getEnv';
 
+export const prerender = false // Make Feature content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const features = await getProjectFeatures(Brands.STUDIO)
     return features.map((feature) => {

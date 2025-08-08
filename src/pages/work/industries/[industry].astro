@@ -6,6 +6,8 @@ import { getProjectIndustries } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../lib/getEnv';
 
+export const prerender = false // Make Industry content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const industries = await getProjectIndustries(Brands.DOMAINE)
     return industries.map((industry) => {

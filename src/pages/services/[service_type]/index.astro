@@ -4,6 +4,8 @@ import { Brands } from "../../../enums/brands"
 import { getServiceTypes } from "../../../lib/cached-content";
 import { getEnv } from "../../../lib/getEnv";
 
+export const prerender = false // Make Service Type content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const serviceTypes = await getServiceTypes(Brands.DOMAINE)
     return serviceTypes.map((serviceType) => {

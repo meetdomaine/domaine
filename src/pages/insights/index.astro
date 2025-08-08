@@ -2,6 +2,8 @@
 import { Locales } from '../../enums/locales';
 import { Brands } from '../../enums/brands';
 import LayoutBlogIndex from '../../layouts/Layout_BlogIndex.astro';
+
+export const prerender = false // Make Blog Index content static so it doesn't refetch on each page load
 ---
 <LayoutBlogIndex 
   brand={Brands.DOMAINE}

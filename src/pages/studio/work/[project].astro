@@ -4,6 +4,8 @@ import { Brands } from '../../../enums/brands';
 import { getProjects } from '../../../lib/cached-content';
 import { getEnv } from '../../../lib/getEnv';
 
+export const prerender = false // Make Project content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const projects = await getProjects(Brands.STUDIO)
     return projects.map((project) => {

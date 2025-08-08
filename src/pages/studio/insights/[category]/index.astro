@@ -7,6 +7,8 @@ import { sanityClient } from 'sanity:client';
 import { loadQuery } from '../../../../lib/sanity-load-query';
 import { getEnv } from '../../../../lib/getEnv';
 
+export const prerender = false // Make Blog Category content static so it doesn't refetch on each page load
+
 export async function getStaticPaths() {
     const categories = await getBlogCategories(Brands.STUDIO)
     return categories.map((category) => {
