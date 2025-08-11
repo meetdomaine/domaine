@@ -62,11 +62,10 @@ export default defineConfig({
     // }
   },
   prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'hover'
+    prefetchAll: true
   },
   experimental: {
-    clientPrerender: false
+    clientPrerender: true
   },
   output: 'server',
   // output: renderMode,
@@ -92,7 +91,7 @@ export default defineConfig({
       exclude: ['detect-libc']
     },
     build: {
-      minify: false,
+      minify: true,
     },
     ssr: {
       noExternal: ['detect-libc'],
