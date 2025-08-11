@@ -1,32 +1,32 @@
 ---
-// RENDERED STATICALLY ON BUILD
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
-import { projectGridFields } from '../../../lib/cms-queries';
+import { imageFields, projectGridFields } from '../../../lib/cms-queries';
 import { getServiceGroups } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../lib/getEnv';
+import { loadQuery } from '../../../lib/sanity-load-query';
 
-export const prerender = true // Make Service Group content static so it doesn't refetch on each page load
-
-export async function getStaticPaths() {
-    const serviceGroups = await getServiceGroups(Brands.DOMAINE)
-    return serviceGroups.map((serviceGroup) => {
-        return {
-            params: { service_group: serviceGroup.slug.current },
-            props: { content: serviceGroup }
-        }
-    })
-}
-
-let serviceGroupContent
-const { content } = Astro.props
-serviceGroupContent = content
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && '${serviceGroupContent.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const { service_group } = Astro.params
+const { data: serviceGroupContent } = await loadQuery({
+    query: `*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+    ...,
+    isHidden,
+    excerpt,
+    description,
+    images[]{${imageFields}},
+    agencyBrands[]->{..., slug },
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank),
+    "hasContent": {
+      "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && ^._id in services[]->serviceGroup._ref ][0]),
+    },
+  }`
+})
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}
-    projects={projects}
+    projects={serviceGroupContent.projects}
     currentPath={`/services/${serviceGroupContent.slug.current}`}
     brand={Brands.DOMAINE}
 />

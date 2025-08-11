@@ -71,7 +71,9 @@ export default defineConfig({
   output: 'server',
   // output: renderMode,
   // output: 'static',
-  adapter: adapter,
+  adapter: cloudflare({
+    imageService: 'cloudflare',
+  }),
   site: 'https://meetdomaine.com/',
   vite: {
     define: {

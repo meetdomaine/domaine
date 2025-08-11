@@ -1,32 +1,25 @@
 ---
-// RENDERED STATICALLY ON BUILD
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields, projectsGridQuery } from '../../../lib/cms-queries';
-import { getServices } from '../../../lib/cached-content';
-import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
+import { loadQuery } from '../../../lib/sanity-load-query';
 
-export const prerender = true // Make Service content static so it doesn't refetch on each page load
-
-export async function getStaticPaths() {
-    const services = await getServices(Brands.DOMAINE)
-    return services.map((service) => {
-        return {
-            params: { service: service.slug.current },
-            props: { content: service }
-        }
-    })
-}
-
-let serviceContent
-const { content } = Astro.props
-serviceContent = content
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && '${serviceContent.slug.current}' in services[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const { service } = Astro.params
+const { data: serviceContent } = await loadQuery({
+    query: `*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
+    ...,
+    isHidden,
+    excerpt,
+    description,
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in services[]->slug.current ]{${projectGridFields}} | order(orderRank),
+    agencyBrands[]->{..., slug, name},
+  }`
+})
 ---
 <LayoutProjectsIndex
     content={serviceContent}
-    projects={projects}
+    projects={serviceContent.projects}
     currentPath={`/services/${serviceContent.slug.current}`}
     brand={Brands.DOMAINE}
 />
