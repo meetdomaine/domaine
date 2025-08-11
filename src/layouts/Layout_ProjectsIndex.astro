@@ -10,8 +10,8 @@ import { Brands } from '../enums/brands';
 import { getProjectPageSettings } from '../lib/cached-content';
 
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
-
 const pageSettings = await getProjectPageSettings(brand)
+console.log(pageSettings)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
@@ -25,8 +25,8 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     indexSearch={indexSearch}
 >
     <Hero
-        heading={content?.title ? content.title : pageSettings.heading}
-        subheading={content?.excerpt ? content.excerpt : pageSettings.subheading}
+        heading={content?.title ? content.title : pageSettings?.heading}
+        subheading={content?.excerpt ? content.excerpt : pageSettings?.subheading}
         projectCount={projects.length}
         isTopLevel={isTopLevel}
         locale={locale}
