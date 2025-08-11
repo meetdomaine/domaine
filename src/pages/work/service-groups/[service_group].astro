@@ -3,14 +3,10 @@
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { imageFields, projectGridFields } from '../../../lib/cms-queries';
-import { getServiceGroups } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
-import { loadQuery } from '../../../lib/sanity-load-query';
 
 const { service_group } = Astro.params
-const { data: serviceGroupContent } = await loadQuery({
-    query: `*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
     ...,
     isHidden,
     excerpt,
@@ -22,7 +18,7 @@ const { data: serviceGroupContent } = await loadQuery({
       "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && ^._id in services[]->serviceGroup._ref ][0]),
     },
   }`
-})
+  )
 if (!serviceGroupContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
