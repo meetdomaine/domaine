@@ -41,7 +41,6 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         projects={projects}
         locale={locale}
         brand={brand}
-        server:defer
     />
     <slot name="after-grid" /> 
     <!-- {relatedBlogPosts && relatedBlogPosts.length > 2 &&
