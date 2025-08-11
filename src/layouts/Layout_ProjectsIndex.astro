@@ -4,19 +4,14 @@ import LayoutStudio from './Layout-Studio.astro';
 import Hero from '../components/domaine/sections/work/workIndex-Hero.astro'
 import ProjectsFilter from '../components/global/projects/global-ProjectsFilter.astro'
 import GlobalProjectsGrid from '../components/global/projects/global-ProjectsGrid.astro'
-import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
 import { Translations } from '../lib/locales';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
-import { loadQuery } from '../lib/sanity-load-query';
+import { getProjectPageSettings } from '../lib/cached-content';
 
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
 
-const projectsIndexId = brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine'
-const { data: pageSettings } = await loadQuery({ 
-  query: `*[_type == "page_projects-index" && _id == $projectsIndexId][0]`,
-  params: { projectsIndexId }
-})
+const pageSettings = await getProjectPageSettings(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout

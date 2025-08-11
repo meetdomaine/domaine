@@ -10,10 +10,12 @@ let _services = {}
 
 let _blogCategories = {}
 let _blogPosts = {}
+let _blogPageSettings = {}
 
 let _projects = {}
 let _projectFeatures = {}
 let _projectIndustries = {}
+let _projectPageSettings = {}
 
 let _pages = {}
 
@@ -143,6 +145,14 @@ export const getBlogCategories = async (brand) => {
   return data
 }
 
+export const getBlogPageSettings = async (brand) => {
+  if (_blogPageSettings[brand]) return _blogPageSettings[brand]
+  const blogIndexId = brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine'
+  const data = await sanityClient.fetch(`*[_type == "page_blog-index" && _id == ${blogIndexId}][0]`)
+  _blogPageSettings[brand] = data
+  return data
+}
+
 // Projects
 export const getProjects = async (brand) => {
   if (_projects[brand]) return _projects[brand]
@@ -209,6 +219,14 @@ export const getProjectIndustries = async (brand) => {
   } | order(title)`)
 
   _projectIndustries[brand] = data
+  return data
+}
+
+export const getProjectPageSettings = async (brand) => {
+  if (_projectPageSettings[brand]) return _projectPageSettings[brand]
+  const projectsIndexId = brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine'
+  const data = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == '${projectsIndexId}'][0]`)
+  _projectPageSettings[brand] = data
   return data
 }
 
