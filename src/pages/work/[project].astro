@@ -37,6 +37,7 @@ const projectContent = await sanityClient.fetch(`*[_type == "type_project" && is
   )
 
 if (projectContent === null) return Astro.redirect('/404')
+console.log("PROJECT LOADED")
 ---
 <LayoutProject 
     content={projectContent}

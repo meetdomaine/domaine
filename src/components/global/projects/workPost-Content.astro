@@ -52,6 +52,7 @@ const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && i
       agencyBrand={content.agencyBrand.slug.current}
       theme={content.foregroundColor === "light" ? "light" : "dark"}
       locale={locale}
+      server:defer
   />
 </div>
 
@@ -60,6 +61,7 @@ const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && i
             heading={locale ? Translations["RELATED-PROJECTS"].locales[locale] : Translations["RELATED-PROJECTS"].name}
             projects={relatedProjects}
             locale={locale}
+            server:defer
         />
     }
 
