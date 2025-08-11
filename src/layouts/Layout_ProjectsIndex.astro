@@ -8,7 +8,6 @@ import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astr
 import { Translations } from '../lib/locales';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
-import { getProjects } from '../lib/cached-content';
 import { loadQuery } from '../lib/sanity-load-query';
 
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
@@ -18,7 +17,6 @@ const { data: pageSettings } = await loadQuery({
   query: `*[_type == "page_projects-index" && _id == $projectsIndexId][0]`,
   params: { projectsIndexId }
 })
-const brandProjects = await getProjects(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
@@ -34,7 +32,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     <Hero
         heading={content?.title ? content.title : pageSettings.heading}
         subheading={content?.excerpt ? content.excerpt : pageSettings.subheading}
-        projectCount={projects ? projects.length : brandProjects.length}
+        projectCount={projects.length}
         isTopLevel={isTopLevel}
         locale={locale}
         brand={brand}
@@ -46,7 +44,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     />
     <slot name="before-grid" /> 
     <GlobalProjectsGrid 
-        projects={projects ? projects : brandProjects}
+        projects={projects}
         locale={locale}
         brand={brand}
     />

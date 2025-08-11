@@ -1,39 +1,26 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields } from '../../../../lib/cms-queries';
-import { getProjectIndustries } from '../../../../lib/cached-content';
-import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../../lib/getEnv';
+import { loadQuery } from '../../../../lib/sanity-load-query';
 
-export const prerender = false // Make Industry content static so it doesn't refetch on each page load
-
-export async function getStaticPaths() {
-    const industries = await getProjectIndustries(Brands.STUDIO)
-    return industries.map((industry) => {
-        return {
-            params: { industry: industry.slug.current },
-            props: { content: industry }
-        }
-    })
-}
-
-let industryContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { industry } = Astro.params
-    const industries = await getProjectIndustries(Brands.STUDIO)
-    industryContent = industries.find(i => i.slug.current === industry)
-} else {
-    const { content } = Astro.props
-    industryContent = content
-}
-
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && industry->slug.current == '${industryContent.slug.current}' ]{${projectGridFields}} | order(orderRank)`)
+const { industry } = Astro.params
+const { data: industryContent } = await loadQuery({
+    query: `*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]) && slug.current == '${industry}'][0]{ 
+    ...,
+    "hasContent": {
+      "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
+    },
+    excerpt,
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && industry->slug.current == ^.slug.current ]{${projectGridFields}} | order(orderRank),
+  }`
+})
+if (!industryContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={industryContent}
-    projects={projects}
+    projects={industryContent.projects}
     currentPath={`/industries/${industryContent.slug.current}`}
     brand={Brands.STUDIO}
 />

@@ -23,6 +23,7 @@ const { data: serviceGroupContent } = await loadQuery({
     },
   }`
 })
+if (!serviceGroupContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}

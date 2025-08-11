@@ -17,6 +17,7 @@ const { data: industryContent } = await loadQuery({
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 })
+if (!industryContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={industryContent}

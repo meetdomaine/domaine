@@ -1,39 +1,40 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields } from '../../../../lib/cms-queries';
 import { getPartners } from '../../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../../lib/getEnv';
+import { loadQuery } from '../../../../lib/sanity-load-query';
 
-export const prerender = false // Make Partner content static so it doesn't refetch on each page load
-
-export async function getStaticPaths() {
-    const partners = await getPartners(Brands.STUDIO)
-    return partners.map((partner) => {
-        return {
-            params: { partner: partner.slug.current },
-            props: { content: partner }
-        }
-    })
-}
-
-let partnerContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { partner } = Astro.params
-    const partners = await getPartners(Brands.STUDIO)
-    partnerContent = partners.find(p => p.slug.current === partner)
-} else {
-    const { content } = Astro.props
-    partnerContent = content
-}
-
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && !isHidden && '${partnerContent.slug.current}' in partners[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const { partner } = Astro.params
+const { data: partnerContent } = await loadQuery({
+    query: `*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]) && slug.current == '${partner}'][0]{
+        _id,
+        title, 
+        slug, 
+        excerpt,
+        description,
+        tier->{slug, title, createLandingPages},
+        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{${projectGridFields}} | order(orderRank),
+        websiteUrl, 
+        websiteText,
+        instagramUrl,
+        twitterUrl,
+        linkedInUrl,
+        youTubeUrl,
+        tikTokUrl,
+        "hasContent": {
+            "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
+        },
+    }`
+})
+if (!partnerContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={partnerContent}
-    projects={projects}
+    projects={partnerContent.projects}
     currentPath={`/partners/${partnerContent.slug.current}`}
     brand={Brands.STUDIO}
 />

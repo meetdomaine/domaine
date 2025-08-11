@@ -1,39 +1,30 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
-import { projectGridFields } from '../../../../lib/cms-queries';
-import { getProjectFeatures } from '../../../../lib/cached-content';
-import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../../lib/getEnv';
+import { imageBaseFields, projectGridFields } from '../../../../lib/cms-queries';
+import { loadQuery } from '../../../../lib/sanity-load-query';
 
-export const prerender = false // Make Feature content static so it doesn't refetch on each page load
-
-export async function getStaticPaths() {
-    const features = await getProjectFeatures(Brands.STUDIO)
-    return features.map((feature) => {
-        return {
-            params: { feature: feature.slug.current },
-            props: { content: feature }
-        }
-    })
-}
-
-let featureContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { feature } = Astro.params
-    const features = await getProjectFeatures(Brands.STUDIO)
-    featureContent = features.find(f => f.slug.current === feature)
-} else {
-    const { content } = Astro.props
-    featureContent = content
-}
-
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${featureContent.slug.current}' in features[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const { feature } = Astro.params
+const { data: featureContent } = await loadQuery({
+    query: `
+    *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && references(^._id) ][0]) && slug.current == '${feature}'][0]{
+        _id,
+        title,
+        excerpt,
+        slug, 
+        "hasContent": {
+        "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
+        },
+        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && ^.slug.current in features[]->slug.current ]{${projectGridFields}} | order(orderRank),
+        metafields{ title, description, image{${imageBaseFields}} },
+    }`
+})
+if (!featureContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex 
     content={featureContent}
-    projects={projects}
+    projects={featureContent.projects}
     currentPath={`/features/${featureContent.slug.current}`}
     brand={Brands.STUDIO}
 />

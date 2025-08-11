@@ -27,6 +27,7 @@ const { data: partnerContent } = await loadQuery({
         },
     }`
 })
+if (!partnerContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={partnerContent}

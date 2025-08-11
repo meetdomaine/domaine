@@ -1,9 +1,18 @@
 ---
-// RENDERED STATICALLY ON BUILD
+// SERVER RENDERED AT LOAD TIME
+import { projectGridFields } from '../../lib/cms-queries';
 import { Brands } from '../../enums/brands';
 import LayoutProjectsIndex from '../../layouts/Layout_ProjectsIndex.astro';
+import { loadQuery } from '../../lib/sanity-load-query';
+
+const { data: allProjects } = await loadQuery({ 
+  query: `
+    *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true]{${projectGridFields}} | order(orderRank)`
+})
+if (!allProjects) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     brand={Brands.DOMAINE}
+    projects={allProjects}
     isTopLevel
 />

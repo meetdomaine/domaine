@@ -16,6 +16,7 @@ const { data: serviceContent } = await loadQuery({
     agencyBrands[]->{..., slug, name},
   }`
 })
+if (!serviceContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={serviceContent}
