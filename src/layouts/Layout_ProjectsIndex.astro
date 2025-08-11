@@ -11,7 +11,6 @@ import { getProjectPageSettings } from '../lib/cached-content';
 
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
 const pageSettings = await getProjectPageSettings(brand)
-console.log(pageSettings)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 <BrandLayout
@@ -42,6 +41,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         projects={projects}
         locale={locale}
         brand={brand}
+        server:defer
     />
     <slot name="after-grid" /> 
     <!-- {relatedBlogPosts && relatedBlogPosts.length > 2 &&
