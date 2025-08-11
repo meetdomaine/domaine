@@ -31,7 +31,8 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: true,
+      useCdn: PUBLIC_SANITY_API_READ_TOKEN ? true : false,
+      token: PUBLIC_SANITY_API_READ_TOKEN,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',

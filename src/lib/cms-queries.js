@@ -64,6 +64,21 @@ export const projectGridFields = `
   orderRank,
 `
 
+export const projectGridFieldsOptimized = `
+  title,
+  excerpt,
+  slug, 
+  industry->{title, _id },
+  agencyBrand->{slug},
+  client->{title, "logo": logo.asset->url, logoScale, isEnterprise },
+  logoColor,
+  features[0..2]->{ title, slug } | order(orderRank), 
+  thumbnailMedia{${videoFields}, ${imageFields}},
+  thumbnailImageSecondary{${imageFields}},
+  isHidden,
+  orderRank,
+`
+
 export const serviceQuery = `
   ...,
   isHidden,
