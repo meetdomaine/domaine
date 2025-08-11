@@ -15,6 +15,7 @@ import '../styles/global/forms.css'
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -104,20 +105,15 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<meta name="twitter:description" content={description}>
 		<meta name="twitter:image" content={image ? urlFor(image).url() : ""}>
 
-		<!-- PageFind Search -->
-		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
-
 	</head>
-	<body {...{
-		...(indexSearch ? { "data-pagefind-body": "" } : { "data-pagefind-ignore": "true"}),
-		...(searchFilter ? { "data-pagefind-filter": searchFilter } : {})
-	}}>
+	<body>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
+		<!-- <ClientRouter /> -->
 		<!-- <VisualEditing enabled={visualEditingEnabled} /> -->
 
     <GlobalPreloader

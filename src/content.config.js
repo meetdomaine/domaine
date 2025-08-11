@@ -1,6 +1,6 @@
 import { defineCollection } from "astro:content";
 import { sanityClient } from "sanity:client";
-import { imageBaseFields, imageFields, richContentFields } from "./lib/cms-queries";
+import { agencyBrandsQuery, imageBaseFields, imageFields, richContentFields } from "./lib/cms-queries";
 import { Brands } from "./enums/brands";
 import { Locales } from "./enums/locales";
 
@@ -97,4 +97,14 @@ const globalSettingsStudio = defineCollection({
   }
 });
 
-export const collections = { globalSettingsDomaine, globalSettingsStudio };
+const agencyBrands = defineCollection({
+  loader: async () => {
+    const content = await sanityClient.fetch(`*[_type == "type_agencyBrand"]{ ${agencyBrandsQuery} }`)
+    return content.map(brand => ({
+      id: brand.slug.current,
+      ...brand
+    }))
+  }
+});
+
+export const collections = { globalSettingsDomaine, globalSettingsStudio, agencyBrands };
