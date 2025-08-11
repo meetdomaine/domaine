@@ -107,4 +107,21 @@ const agencyBrands = defineCollection({
   }
 });
 
-export const collections = { globalSettingsDomaine, globalSettingsStudio, agencyBrands };
+const preloaderSettings = defineCollection({
+  loader: async () => {
+    const settingsDomaine = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-domaine"][0]{..., heading, images[]{${imageFields}} }`)
+    const settingsStudio = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-studio"][0]{..., heading, images[]{${imageFields}} }`)
+    return [
+      {
+        id: 'preloaderSettings-domaine',
+        ...settingsDomaine
+      },
+      {
+        id: 'preloaderSettings-studio',
+        ...settingsStudio
+      }
+    ]
+  }
+});
+
+export const collections = { globalSettingsDomaine, globalSettingsStudio, agencyBrands, preloaderSettings };

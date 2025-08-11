@@ -20,10 +20,6 @@ const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN ||
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
 // console.log(SANITY_API_READ_TOKEN)
 
-const renderMode = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? 'server' : 'static';
-const adapter = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? vercel() : cloudflare();
-console.log(`RENDER MODE: ${renderMode}`);
-
 // Debug environment variables
 console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
 console.log('PUBLIC_SANITY_VISUAL_EDITING_ENABLED available:', !!PUBLIC_SANITY_VISUAL_EDITING_ENABLED)
@@ -64,11 +60,10 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true
   },
-  experimental: {
-    clientPrerender: true
-  },
+  // experimental: {
+  //   clientPrerender: true
+  // },
   output: 'server',
-  // output: renderMode,
   // output: 'static',
   adapter: cloudflare({
     imageService: 'cloudflare',
