@@ -6,6 +6,7 @@ import AtomHubspotForm from "./atoms/atom-hubspotForm.astro"
 import { sanityClient } from "sanity:client"
 import { agencyBrandsQuery } from "../../lib/cms-queries"
 import { getTranslationString } from "../../lib/translations"
+import { getEntry } from "astro:content"
 
 const { footerSettings, locale } = Astro.props
 

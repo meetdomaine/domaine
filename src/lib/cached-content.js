@@ -307,13 +307,3 @@ export const getBrandSettings = async (brand) => {
   _brandSettings[brand] = data
   return data
 }
-
-// Footer Settings
-export const getFooterSettings = async (brand) => {
-  if (_footerSettings[brand]) return _footerSettings[brand]
-  const { data } = await loadQuery({ 
-    query: `*[_type == "settings_footer" && _id == '${brand === Brands.STUDIO ? "settings_footer--studio" : "settings_footer--domaine"}' ][0]`
-  })
-  _footerSettings[brand] = data
-  return data
-}
