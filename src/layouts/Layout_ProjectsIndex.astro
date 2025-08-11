@@ -31,11 +31,11 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         locale={locale}
         brand={brand}
     />
-    <!-- <ProjectsFilter 
+    <ProjectsFilter 
         brand={brand}
         currentPath={currentPath}
         locale={locale}
-    /> -->
+    />
     <slot name="before-grid" /> 
     <GlobalProjectsGrid 
         projects={projects}

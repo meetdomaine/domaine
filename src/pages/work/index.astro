@@ -5,7 +5,7 @@ import { Brands } from '../../enums/brands';
 import LayoutProjectsIndex from '../../layouts/Layout_ProjectsIndex.astro';
 import { sanityClient } from 'sanity:client';
 
-const { data: allProjects } = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true]{${projectGridFields}} | order(orderRank)`)
+const allProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true]{${projectGridFields}} | order(orderRank)`)
 if (!allProjects) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex

@@ -4,10 +4,10 @@ import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { imageBaseFields, projectGridFields } from '../../../lib/cms-queries';
 import { loadQuery } from '../../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { feature } = Astro.params
-const { data: featureContent } = await loadQuery({
-    query: `
+const featureContent = await sanityClient.fetch(`
     *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id) ][0]) && slug.current == '${feature}'][0]{
         _id,
         title,
@@ -19,7 +19,7 @@ const { data: featureContent } = await loadQuery({
         "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in features[]->slug.current ]{${projectGridFields}} | order(orderRank),
         metafields{ title, description, image{${imageBaseFields}} },
     }`
-})
+)
 if (!featureContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex 

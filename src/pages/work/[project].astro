@@ -5,11 +5,10 @@ import { Brands } from '../../enums/brands';
 import { imageFields, videoFields } from '../../lib/cms-queries';
 import { imageBaseFields } from '../../lib/cms-queries';
 import { globalSectionsFields } from '../../lib/cms-queries';
-import { loadQuery } from '../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { project } = Astro.params
-const { data: projectContent } = await loadQuery({
-    query: `*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
+const projectContent = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
         ...,
         title,
         isHidden,
@@ -35,7 +34,7 @@ const { data: projectContent } = await loadQuery({
         metafields{ title, description, image{${imageBaseFields}} },
         orderRank,
     }[0]`
-})
+  )
 
 if (projectContent === null) return Astro.redirect('/404')
 ---

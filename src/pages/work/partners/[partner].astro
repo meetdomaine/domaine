@@ -4,29 +4,28 @@ import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
 import { loadQuery } from '../../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { partner } = Astro.params
-const { data: partnerContent } = await loadQuery({
-    query: `*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${partner}'][0]{
-        _id,
-        title, 
-        slug, 
-        excerpt,
-        description,
-        tier->{slug, title, createLandingPages},
-        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{${projectGridFields}} | order(orderRank),
-        websiteUrl, 
-        websiteText,
-        instagramUrl,
-        twitterUrl,
-        linkedInUrl,
-        youTubeUrl,
-        tikTokUrl,
-        "hasContent": {
-            "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
-        },
-    }`
-})
+const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${partner}'][0]{
+    _id,
+    title, 
+    slug, 
+    excerpt,
+    description,
+    tier->{slug, title, createLandingPages},
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{${projectGridFields}} | order(orderRank),
+    websiteUrl, 
+    websiteText,
+    instagramUrl,
+    twitterUrl,
+    linkedInUrl,
+    youTubeUrl,
+    tikTokUrl,
+    "hasContent": {
+        "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+    },
+}`)
 if (!partnerContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex

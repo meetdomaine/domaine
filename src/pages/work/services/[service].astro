@@ -3,11 +3,10 @@
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields, projectsGridQuery } from '../../../lib/cms-queries';
-import { loadQuery } from '../../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { service } = Astro.params
-const { data: serviceContent } = await loadQuery({
-    query: `*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
     ...,
     isHidden,
     excerpt,
@@ -15,7 +14,7 @@ const { data: serviceContent } = await loadQuery({
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in services[]->slug.current ]{${projectGridFields}} | order(orderRank),
     agencyBrands[]->{..., slug, name},
   }`
-})
+)
 if (!serviceContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex

@@ -3,11 +3,10 @@
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { imageBaseFields, projectGridFields } from '../../../lib/cms-queries';
-import { loadQuery } from '../../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { industry } = Astro.params
-const { data: industryContent } = await loadQuery({
-    query: `*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${industry}'][0]{ 
+const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${industry}'][0]{ 
     ...,
     "hasContent": {
       "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
@@ -16,7 +15,7 @@ const { data: industryContent } = await loadQuery({
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && industry->slug.current == ^.slug.current ]{${projectGridFields}} | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
   }`
-})
+)
 if (!industryContent) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
