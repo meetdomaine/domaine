@@ -1,12 +1,12 @@
 ---
+// RENDERED STATICALLY ON BUILD
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
 import { getProjectIndustries } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
 
-export const prerender = false // Make Industry content static so it doesn't refetch on each page load
+export const prerender = true // Make Industry content static so it doesn't refetch on each page load
 
 export async function getStaticPaths() {
     const industries = await getProjectIndustries(Brands.DOMAINE)
@@ -19,21 +19,13 @@ export async function getStaticPaths() {
 }
 
 let industryContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { industry } = Astro.params
-    const industries = await getProjectIndustries(Brands.DOMAINE)
-    industryContent = industries.find(i => i.slug.current === industry)
-} else {
-    const { content } = Astro.props
-    industryContent = content
-}
-
+const { content } = Astro.props
+industryContent = content
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && industry->slug.current == '${industryContent.slug.current}' ]{${projectGridFields}} | order(orderRank)`)
 ---
 <LayoutProjectsIndex
     content={industryContent}
     projects={projects}
-    currentPath={`/industries/${industryContent.slug.current}`}
+    currentPath={`/industries/${industryContent?.slug?.current}`}
     brand={Brands.DOMAINE}
 />

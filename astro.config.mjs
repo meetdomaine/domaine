@@ -61,12 +61,15 @@ export default defineConfig({
     //   fallbackType: "rewrite"
     // }
   },
-  prefetch: true,
-  experimental: {
-    clientPrerender: true
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
   },
-  // output: 'server',
-  output: renderMode,
+  experimental: {
+    clientPrerender: false
+  },
+  output: 'server',
+  // output: renderMode,
   // output: 'static',
   adapter: adapter,
   site: 'https://meetdomaine.com/',

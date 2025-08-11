@@ -1,4 +1,5 @@
 ---
+// RENDERED STATICALLY ON BUILD
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
@@ -6,7 +7,7 @@ import { getServiceGroups } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 import { getEnv } from '../../../lib/getEnv';
 
-export const prerender = false // Make Service Group content static so it doesn't refetch on each page load
+export const prerender = true // Make Service Group content static so it doesn't refetch on each page load
 
 export async function getStaticPaths() {
     const serviceGroups = await getServiceGroups(Brands.DOMAINE)
@@ -19,16 +20,8 @@ export async function getStaticPaths() {
 }
 
 let serviceGroupContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service_group } = Astro.params
-    const serviceGroups = await getServiceGroups(Brands.DOMAINE)
-    serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
-} else {
-    const { content } = Astro.props
-    serviceGroupContent = content
-}
-
+const { content } = Astro.props
+serviceGroupContent = content
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && '${serviceGroupContent.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`)
 ---
 <LayoutProjectsIndex

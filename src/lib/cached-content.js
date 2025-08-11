@@ -99,7 +99,7 @@ export const getServices = async (brand) => {
 
 // Blog
 export const getBlogPosts = async (brand) => {
-  // if (_blogPosts[brand]) return _blogPosts[brand]
+  if (_blogPosts[brand]) return _blogPosts[brand]
   const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true ]{
     ..., 
     _id,

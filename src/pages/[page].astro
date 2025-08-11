@@ -1,40 +1,17 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutPage from "../layouts/Layout-Page.astro";
 import { Brands } from "../enums/brands";
 import LayoutMarketingPage from "../layouts/Layout_MarketingPage.astro";
 import { loadQuery } from "../lib/sanity-load-query";
-import { globalSectionsFields, imageFields, videoFields, imageBaseFields } from "../lib/cms-queries";
-import { getEnv } from "../lib/getEnv";
 import { generalPageFields } from "../lib/cms-queries"
 
-export async function getStaticPaths() {
-    const { data: pages } = await loadQuery({ 
-        query: `*[_type == "page_general"]{${generalPageFields}} | order(_createdAt desc)`
-    })
-    return pages.filter((page) => page._type === "page_general").map((page) => {
-        return {
-            params: { page: page.slug.current },
-            props: { content: page }
-        }
-    })
-}
+const { page } = Astro.params
+const { data: pageContent } = await loadQuery({ 
+    query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
+})
 
-let pageContent
-
-// const { content } = Astro.props
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    console.log("Rendering SERVER")
-    const { page } = Astro.params
-    const { data } = await loadQuery({ 
-        query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
-    })
-    pageContent = await data
-} else {
-    console.log("Rendering STATIC")
-    const { content } = Astro.props
-    pageContent = content
-}
-// console.log(await pageContent)
+if (pageContent === null) return Astro.redirect('/404')
 ---
 {pageContent?.isMarketingPage ? 
     <LayoutMarketingPage
