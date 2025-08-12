@@ -19,8 +19,11 @@ const featureContent = await sanityClient.fetch(`
 )
 if (!featureContent || featureContent.projects.length === 0) return Astro.redirect('/404')
 
-const projectSlugs = new Set(featureContent.projects.map(project => project.slug.current))
-const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))
+const allProjects = await getCollection('projectCards')
+const projectsMap = new Map(allProjects.map(p => [p.data.slug.current, p]))
+const projects = featureContent.projects
+  .map(fp => projectsMap.get(fp.slug.current))
+  .filter(Boolean)
 ---
 <LayoutProjectsIndex 
     content={featureContent}

@@ -9,35 +9,33 @@ import { sanityClient } from 'sanity:client';
 
 const { project } = Astro.params
 const projectContent = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
-        ...,
         title,
         isHidden,
         description,
         excerpt,
-        industry->{...},
+        industry->{ slug, title },
         url,
-        client->{..., logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise, "logo": logo.asset->url },
+        client->{ slug, title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise, "logo": logo.asset->url },
         foregroundColor,
         backgroundColor,
         accentColor,
-        services[]->{..., serviceGroup->{slug, title, serviceType->{slug} } },
-        features[]->{...},
-        partners[]->{..., title, excerpt, slug, icon{${imageFields}}, tier->{..., createLandingPages}, websiteUrl },
-        metrics[]{...},
-        awards[]{...},
+        services[]->{ title, slug, serviceGroup->{slug, title, serviceType->{slug} } },
+        features[]->{ title, slug },
+        partners[]->{ title, excerpt, slug, icon{${imageFields}}, tier->{ createLandingPages}, websiteUrl },
+        metrics[]{ label, number },
+        awards[]{ awardTitle, publication },
         agencyBrand->{slug, name},
         thumbnailMedia{${videoFields}, ${imageFields}},
         thumbnailImageSecondary{${imageFields}},
-        slug{...},
-        heroMedia{..., ${videoFields}, ${imageFields}},
+        slug,
+        heroMedia{${videoFields}, ${imageFields}},
         sections[]{${globalSectionsFields}},
         metafields{ title, description, image{${imageBaseFields}} },
         orderRank,
     }[0]`
   )
-
+console.log(projectContent.awards)
 if (projectContent === null) return Astro.redirect('/404')
-console.log("PROJECT LOADED")
 ---
 <LayoutProject 
     content={projectContent}
