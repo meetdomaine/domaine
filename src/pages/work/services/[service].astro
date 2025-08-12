@@ -16,7 +16,7 @@ const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '$
     agencyBrands[]->{..., slug, name},
   }`
 )
-if (!serviceContent) return Astro.redirect('/404')
+if (!serviceContent || serviceContent.projects.length === 0) return Astro.redirect('/404')
 
 const projectSlugs = new Set(serviceContent.projects.map(project => project.slug.current))
 const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))

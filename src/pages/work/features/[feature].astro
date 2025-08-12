@@ -8,7 +8,7 @@ import { getCollection } from 'astro:content';
 
 const { feature } = Astro.params
 const featureContent = await sanityClient.fetch(`
-    *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id) ][0]) && slug.current == '${feature}'][0]{
+    *[_type == "type_projectFeature" && slug.current == '${feature}'][0]{
         _id,
         title,
         excerpt,
@@ -17,7 +17,7 @@ const featureContent = await sanityClient.fetch(`
         metafields{ title, description, image{${imageBaseFields}} },
     }`
 )
-if (!featureContent) return Astro.redirect('/404')
+if (!featureContent || featureContent.projects.length === 0) return Astro.redirect('/404')
 
 const projectSlugs = new Set(featureContent.projects.map(project => project.slug.current))
 const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))

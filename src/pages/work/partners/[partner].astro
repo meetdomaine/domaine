@@ -6,7 +6,7 @@ import { sanityClient } from 'sanity:client';
 import { getCollection } from 'astro:content';
 
 const { partner } = Astro.params
-const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${partner}'][0]{
+const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && slug.current == '${partner}'][0]{
     _id,
     title, 
     slug, 
@@ -15,7 +15,7 @@ const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && de
     tier->{slug, title, createLandingPages},
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && references(^._id) ]{ slug, orderRank } | order(orderRank),
 }`)
-if (!partnerContent) return Astro.redirect('/404')
+if (!partnerContent || partnerContent.projects.length === 0) return Astro.redirect('/404')
 
 const projectSlugs = new Set(partnerContent.projects.map(project => project.slug.current))
 const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))

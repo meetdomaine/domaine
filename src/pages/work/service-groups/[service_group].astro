@@ -17,7 +17,7 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(*[_type == "type_service" && serviceGroup->slug.current == '${service_group}']._id) ]{ slug, orderRank } | order(orderRank),
   }`
 )
-if (!serviceGroupContent) return Astro.redirect('/404')
+if (!serviceGroupContent || serviceGroupContent.projects.length === 0) return Astro.redirect('/404')
 
 const projectSlugs = new Set(serviceGroupContent.projects.map(project => project.slug.current))
 const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))
