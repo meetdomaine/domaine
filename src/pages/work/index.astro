@@ -1,12 +1,15 @@
 ---
-// SERVER RENDERED AT LOAD TIME
+// STATICALLY GENERATED AT BUILD TIME
 import { projectGridFields } from '../../lib/cms-queries';
 import { Brands } from '../../enums/brands';
 import LayoutProjectsIndex from '../../layouts/Layout_ProjectsIndex.astro';
 import { sanityClient } from 'sanity:client';
 
-const allProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true]{${projectGridFields}}[0..10] | order(orderRank)`)
+export const prerender = true
+
+const allProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true]{${projectGridFields}} | order(orderRank)`)
 if (!allProjects) return Astro.redirect('/404')
+console.log(allProjects)
 ---
 <LayoutProjectsIndex
     brand={Brands.DOMAINE}
