@@ -48,7 +48,7 @@ export const projectFeatureQuery = `
 
 export const projectGridFields = `
   title,
-  agencyBrand->{slug},
+  agencyBrand->{slug, name},
   client->{title, "logo": logo.asset->url, logoScale, productImage{${imageBaseFields}}, isEnterprise },
   excerpt,
   features[]->{ title, slug, _id, orderRank } | order(orderRank), 
