@@ -54,7 +54,7 @@ export const projectGridFields = `
   features[]->{ title, slug, _id, orderRank } | order(orderRank), 
   slug, 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
-  industry->{ title, _id },
+  industry->{ title, _id, slug },
   logoColor,
   thumbnailMedia{${videoFields}, ${imageFields}},
   thumbnailImageSecondary{${imageFields}},

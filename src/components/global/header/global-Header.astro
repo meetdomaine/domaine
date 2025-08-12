@@ -13,13 +13,35 @@ import LogoStudio from '../../../icons/domaine-studio.svg'
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { Brands } from "../../../enums/brands";
 import { getBlogPosts, getProjects, getProjectFeatures, getPartners } from "../../../lib/cached-content";
+import { loadQuery } from "../../../lib/sanity-load-query";
+import { imageFields, videoFields } from "../../../lib/cms-queries";
 
-const { headerSettings, currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
+const { currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
 
-// const defaultBlogPosts = await getBlogPosts(brand)
-// const defaultProjects = await getProjects(brand)
-// const defaultProjectFeatures = await getProjectFeatures(brand)
-// const defaultPartners = await getPartners(brand)
+
+const defaultBlogPosts = await getBlogPosts(brand)
+const defaultProjects = await getProjects(brand)
+const defaultProjectFeatures = await getProjectFeatures(brand)
+const defaultPartners = await getPartners(brand)
+
+const headerId = brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine'
+const { data: headerSettings } = await loadQuery({ 
+  query: `*[_type == "settings_header" && _id == $headerId][0]{
+    ...,
+    locationClocks[]->{
+      ...,
+      agencyBrand->{slug},
+      images[]{${imageFields}},
+      metafields{ title, description, image{crop, asset->{_id, metadata}, hotspot} },
+    },
+    linkCardImage{${imageFields}},
+    brandMenuBrands[]{
+        ..., 
+        media{video{ asset->{playbackId, assetId, filename} }, ${imageFields}} 
+    }
+  }`,
+  params: { headerId }
+})
 ---
 <header id="header" data-color-scheme="glass-dark">
 
@@ -79,7 +101,7 @@ const { headerSettings, currentBrand, activePath, searchExposed, locale, brand }
         locale={locale}
     />
 
-    <!-- <SearchMenu 
+    <SearchMenu 
         client:only="solid-js"
         defaultBlogPosts={defaultBlogPosts.slice(0, 3)}
         defaultProjects={defaultProjects.slice(0, 4)}
@@ -87,7 +109,8 @@ const { headerSettings, currentBrand, activePath, searchExposed, locale, brand }
         defaultPartners={defaultPartners.slice(0, 5)}
         currentBrand={currentBrand}
         locale={locale}
-    /> -->
+        brand={brand}
+    />
 
     <NotificationMenu
         content={headerSettings}

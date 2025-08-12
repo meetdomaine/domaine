@@ -1,12 +1,19 @@
 ---
-// SERVER RENDERED AT LOAD TIME
+// STATICALLY GENERATED AT BUILD TIME
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { imageBaseFields, projectGridFields } from '../../../lib/cms-queries';
 import { sanityClient } from 'sanity:client';
 
-const { industry } = Astro.params
-const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${industry}'][0]{ 
+export const prerender = true
+
+// TODO: Add type for industry
+interface Props {
+  content: any
+}
+
+export const getStaticPaths = async () => {
+  const industries = await sanityClient.fetch(`*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0])]{ 
     ...,
     "hasContent": {
       "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
@@ -14,13 +21,18 @@ const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && 
     excerpt,
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && industry->slug.current == ^.slug.current ]{${projectGridFields}} | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
-  }`
-)
-if (!industryContent) return Astro.redirect('/404')
+  }`)
+  return industries.map(industry => ({ 
+    props: {content: industry},
+    params: { industry: industry.slug.current }
+   }))
+}
+
+const { content } = Astro.props
 ---
 <LayoutProjectsIndex
-    content={industryContent}
-    projects={industryContent.projects}
-    currentPath={`/industries/${industryContent?.slug?.current}`}
+    content={content}
+    projects={content?.projects}
+    currentPath={`/industries/${content.slug?.current}`}
     brand={Brands.DOMAINE}
 />

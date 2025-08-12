@@ -7,8 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev --host",
-    "dev:content": "astro build && astro dev --host",
-    "build:content": "astro build",
+    "prebuild": "node scripts/index-search.js",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
     "start": "astro dev",
     "preview": "wrangler pages dev ./dist",
@@ -37,6 +36,7 @@
     "astro-icon": "^1.1.0",
     "astro-portabletext": "^0.9.9",
     "astro-sanity-picture": "^0.2.0",
+    "flexsearch": "^0.8.205",
     "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -54,7 +54,6 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "pagefind": "^1.1.0",
     "wrangler": "^4.17.0"
   }
 }

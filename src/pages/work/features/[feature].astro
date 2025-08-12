@@ -7,6 +7,7 @@ import { loadQuery } from '../../../lib/sanity-load-query';
 import { sanityClient } from 'sanity:client';
 
 const { feature } = Astro.params
+
 const featureContent = await sanityClient.fetch(`
     *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id) ][0]) && slug.current == '${feature}'][0]{
         _id,
