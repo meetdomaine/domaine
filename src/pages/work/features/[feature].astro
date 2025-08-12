@@ -1,15 +1,20 @@
 ---
-// SERVER RENDERED AT LOAD TIME
+// STATICALLY GENERATED AT BUILD TIME
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { imageBaseFields, projectGridFields } from '../../../lib/cms-queries';
-import { loadQuery } from '../../../lib/sanity-load-query';
 import { sanityClient } from 'sanity:client';
 
-const { feature } = Astro.params
+export const prerender = true
 
-const featureContent = await sanityClient.fetch(`
-    *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id) ][0]) && slug.current == '${feature}'][0]{
+// TODO: Add type for feature
+interface Props {
+  content: any
+}
+
+export const getStaticPaths = async () => {
+  const features = await sanityClient.fetch(`
+    *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id) ][0])]{
         _id,
         title,
         excerpt,
@@ -19,14 +24,19 @@ const featureContent = await sanityClient.fetch(`
         },
         "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in features[]->slug.current ]{${projectGridFields}} | order(orderRank),
         metafields{ title, description, image{${imageBaseFields}} },
-    }`
-)
-if (!featureContent) return Astro.redirect('/404')
+    }`)
+  return features.map(feature => ({ 
+    props: {content: feature},
+    params: { feature: feature.slug.current }
+   }))
+}
+
+const { content } = Astro.props
 ---
 <LayoutProjectsIndex 
-    content={featureContent}
-    projects={featureContent.projects}
-    currentPath={`/features/${featureContent?.slug?.current}`}
+    content={content}
+    projects={content.projects}
+    currentPath={`/features/${content?.slug?.current}`}
     indexSearch={true}
     brand={Brands.DOMAINE}
 />

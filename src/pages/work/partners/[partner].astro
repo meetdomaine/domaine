@@ -1,36 +1,47 @@
 ---
-// SERVER RENDERED AT LOAD TIME
+// STATICALLY GENERATED AT BUILD TIME
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { projectGridFields } from '../../../lib/cms-queries';
 import { loadQuery } from '../../../lib/sanity-load-query';
 import { sanityClient } from 'sanity:client';
 
-const { partner } = Astro.params
-const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${partner}'][0]{
-    _id,
-    title, 
-    slug, 
-    excerpt,
-    description,
-    tier->{slug, title, createLandingPages},
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{${projectGridFields}} | order(orderRank),
-    websiteUrl, 
-    websiteText,
-    instagramUrl,
-    twitterUrl,
-    linkedInUrl,
-    youTubeUrl,
-    tikTokUrl,
-    "hasContent": {
-        "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
-    },
-}`)
-if (!partnerContent) return Astro.redirect('/404')
+export const prerender = true
+
+// TODO: Add type for partner
+interface Props {
+  content: any
+}
+
+export const getStaticPaths = async () => {
+    const partners = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0])]{
+        _id,
+        title, 
+        slug, 
+        excerpt,
+        description,
+        tier->{slug, title, createLandingPages},
+        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{${projectGridFields}} | order(orderRank),
+        instagramUrl,
+        twitterUrl,
+        linkedInUrl,
+        youTubeUrl,
+        tikTokUrl,
+        "hasContent": {
+            "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+        },
+    }`)
+    return partners.map(partner => ({ 
+        props: {content: partner},
+        params: { partner: partner.slug.current }
+    }))
+}
+
+const { content } = Astro.props
 ---
 <LayoutProjectsIndex
-    content={partnerContent}
-    projects={partnerContent.projects}
-    currentPath={`/partners/${partnerContent?.slug?.current}`}
+    content={content}
+    projects={content.projects}
+    currentPath={`/partners/${content?.slug?.current}`}
     brand={Brands.DOMAINE}
 />

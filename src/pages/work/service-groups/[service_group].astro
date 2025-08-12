@@ -5,8 +5,15 @@ import { Brands } from '../../../enums/brands';
 import { imageFields, projectGridFields } from '../../../lib/cms-queries';
 import { sanityClient } from 'sanity:client';
 
-const { service_group } = Astro.params
-const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+export const prerender = true
+
+// TODO: Add type for service group
+interface Props {
+  content: any
+}
+
+export const getStaticPaths = async () => {
+  const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name]{
     ...,
     isHidden,
     excerpt,
@@ -17,13 +24,18 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
     "hasContent": {
       "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && ^._id in services[]->serviceGroup._ref ][0]),
     },
-  }`
-  )
-if (!serviceGroupContent) return Astro.redirect('/404')
+  }`)
+  return serviceGroups.map(serviceGroup => ({ 
+    props: {content: serviceGroup},
+    params: { service_group: serviceGroup.slug.current }
+  }))
+}
+
+const { content } = Astro.props
 ---
 <LayoutProjectsIndex
-    content={serviceGroupContent}
-    projects={serviceGroupContent.projects}
-    currentPath={`/services/${serviceGroupContent.slug.current}`}
+    content={content}
+    projects={content.projects}
+    currentPath={`/services/${content.slug.current}`}
     brand={Brands.DOMAINE}
 />
