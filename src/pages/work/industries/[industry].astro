@@ -9,11 +9,8 @@ import { getCollection } from 'astro:content';
 const { industry } = Astro.params
 const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${industry}'][0]{ 
     ...,
-    "hasContent": {
-      "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
-    },
     excerpt,
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && industry->slug.current == ^.slug.current ]{ slug, orderRank } | order(orderRank),
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ slug, orderRank } | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 )

@@ -12,7 +12,7 @@ const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '$
     isHidden,
     excerpt,
     description,
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in services[]->slug.current ]{ slug, orderRank } | order(orderRank),
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ slug, orderRank } | order(orderRank),
     agencyBrands[]->{..., slug, name},
   }`
 )

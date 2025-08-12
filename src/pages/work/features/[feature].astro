@@ -13,10 +13,7 @@ const featureContent = await sanityClient.fetch(`
         title,
         excerpt,
         slug, 
-        "hasContent": {
-            "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
-        },
-        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in features[]->slug.current ]{ slug, orderRank } | order(orderRank),
+        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ slug, orderRank } | order(orderRank),
         metafields{ title, description, image{${imageBaseFields}} },
     }`
 )
