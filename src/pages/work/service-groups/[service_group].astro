@@ -4,38 +4,30 @@ import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { imageFields, projectGridFields } from '../../../lib/cms-queries';
 import { sanityClient } from 'sanity:client';
+import { getCollection } from 'astro:content';
 
-export const prerender = true
-
-// TODO: Add type for service group
-interface Props {
-  content: any
-}
-
-export const getStaticPaths = async () => {
-  const serviceGroups = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name]{
+const { service_group } = Astro.params
+const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
     ...,
     isHidden,
     excerpt,
     description,
     images[]{${imageFields}},
     agencyBrands[]->{..., slug },
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank),
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && ^.slug.current in services[]->serviceGroup->slug.current ]{ slug } | order(orderRank),
     "hasContent": {
       "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && ^._id in services[]->serviceGroup._ref ][0]),
     },
-  }`)
-  return serviceGroups.map(serviceGroup => ({ 
-    props: {content: serviceGroup},
-    params: { service_group: serviceGroup.slug.current }
-  }))
-}
+  }`
+)
+if (!serviceGroupContent) return Astro.redirect('/404')
 
-const { content } = Astro.props
+const projectSlugs = new Set(serviceGroupContent.projects.map(project => project.slug.current))
+const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))
 ---
 <LayoutProjectsIndex
-    content={content}
-    projects={content.projects}
-    currentPath={`/services/${content.slug.current}`}
+    content={serviceGroupContent}
+    projects={projects.map(project => project.data)}
+    currentPath={`/services/${serviceGroupContent.slug.current}`}
     brand={Brands.DOMAINE}
 />

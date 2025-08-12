@@ -1,47 +1,31 @@
 ---
-// STATICALLY GENERATED AT BUILD TIME
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
-import { projectGridFields } from '../../../lib/cms-queries';
-import { loadQuery } from '../../../lib/sanity-load-query';
 import { sanityClient } from 'sanity:client';
+import { getCollection } from 'astro:content';
 
-export const prerender = true
+const { partner } = Astro.params
+const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${partner}'][0]{
+    _id,
+    title, 
+    slug, 
+    excerpt,
+    description,
+    tier->{slug, title, createLandingPages},
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{ slug } | order(orderRank),
+    "hasContent": {
+        "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
+    },
+}`)
+if (!partnerContent) return Astro.redirect('/404')
 
-// TODO: Add type for partner
-interface Props {
-  content: any
-}
-
-export const getStaticPaths = async () => {
-    const partners = await sanityClient.fetch(`*[_type == "type_partner" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0])]{
-        _id,
-        title, 
-        slug, 
-        excerpt,
-        description,
-        tier->{slug, title, createLandingPages},
-        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{${projectGridFields}} | order(orderRank),
-        instagramUrl,
-        twitterUrl,
-        linkedInUrl,
-        youTubeUrl,
-        tikTokUrl,
-        "hasContent": {
-            "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
-        },
-    }`)
-    return partners.map(partner => ({ 
-        props: {content: partner},
-        params: { partner: partner.slug.current }
-    }))
-}
-
-const { content } = Astro.props
+const projectSlugs = new Set(partnerContent.projects.map(project => project.slug.current))
+const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))
 ---
 <LayoutProjectsIndex
-    content={content}
-    projects={content.projects}
-    currentPath={`/partners/${content?.slug?.current}`}
+    content={partnerContent}
+    projects={projects.map(project => project.data)}
+    currentPath={`/partners/${partnerContent?.slug?.current}`}
     brand={Brands.DOMAINE}
 />
