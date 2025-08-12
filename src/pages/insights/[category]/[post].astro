@@ -1,40 +1,46 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../enums/brands';
-import { getBlogPosts } from '../../../lib/cached-content';
-import { getEnv } from '../../../lib/getEnv';
 import { Locales } from '../../../enums/locales';
+import { sanityClient } from 'sanity:client';
+import { imageFields } from '../../../lib/cms-queries';
+import { richContentFields } from '../../../lib/cms-queries';
+import { globalSectionsFields } from '../../../lib/cms-queries';
+import { imageBaseFields } from '../../../lib/cms-queries';
 
-export const prerender = false // Make Blog Post content static so it doesn't refetch on each page load
+const { post, category } = Astro.params
 
-export async function getStaticPaths() {
-    const blogPosts = await getBlogPosts(Brands.DOMAINE)
-    return blogPosts.map((post) => {
-        return {
-            params: { 
-                post: post.slug.current, 
-                category: post.category.slug.current 
-            },
-            props: { 
-                content: post 
-            }
-        }
-    })
-}
+const currentCategory = await sanityClient.fetch(`*[_type == "type_blogCategory" && defined(*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${category}'][0]{ slug }`)
+if (!currentCategory) return Astro.redirect('/404')
 
-let blogPostContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { post, category } = Astro.params
-    const blogPosts = await getBlogPosts(Brands.DOMAINE)
-    blogPostContent = blogPosts.find(p => p.slug.current === post)
-} else {
-    const { content } = Astro.props
-    blogPostContent = content
-}
+const content = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
+    ..., 
+    _id,
+    slug,
+    authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+    postDate,
+    thumbnailImage{${imageFields}},
+    category->{..., slug{...} }, 
+    body{
+        ..., 
+        richContent[]{${richContentFields}},
+        translations{ 
+            ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
+            )
+        ).join()}
+        },
+    },
+    services[]->{...},
+    agencyBrand->{slug, name },
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} },
+}`)
+if (!content) return Astro.redirect('/404')
 ---
 <LayoutBlogPost
-  content={blogPostContent}
+  content={content}
   brand={Brands.DOMAINE}
   locale={Locales.EN}
 />

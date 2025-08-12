@@ -1,6 +1,6 @@
 import { defineCollection } from "astro:content";
 import { sanityClient } from "sanity:client";
-import { agencyBrandsQuery, imageBaseFields, imageFields, projectGridFields, richContentFields } from "./lib/cms-queries";
+import { agencyBrandsQuery, blogCardFields, imageBaseFields, imageFields, projectGridFields, richContentFields } from "./lib/cms-queries";
 import { Brands } from "./enums/brands";
 import { Locales } from "./enums/locales";
 
@@ -134,4 +134,14 @@ const projectCards = defineCollection({
   }
 })
 
-export const collections = { globalSettingsDomaine, globalSettingsStudio, agencyBrands, preloaderSettings, projectCards };
+const blogCards = defineCollection({
+  loader: async () => {
+    const content = await sanityClient.fetch(`*[_type == "type_blog" && isHidden != true && agencyBrand != null]{${blogCardFields}} | order(postDate desc)`)
+    return content.map(blog => ({
+      id: blog.slug.current,
+      ...blog
+    }))
+  }
+})
+
+export const collections = { globalSettingsDomaine, globalSettingsStudio, agencyBrands, preloaderSettings, projectCards, blogCards };

@@ -13,7 +13,7 @@ const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && de
     excerpt,
     description,
     tier->{slug, title, createLandingPages},
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{ slug } | order(orderRank),
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && ^.slug.current in partners[]->slug.current ]{ slug, orderRank } | order(orderRank),
     "hasContent": {
         "${Brands.DOMAINE}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]),
     },

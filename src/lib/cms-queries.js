@@ -34,7 +34,7 @@ export const blogCardFields = `
   postDate,
   category->{ _id, title, slug{...} },
   slug{...},
-  agencyBrand->{slug},
+  agencyBrand->{slug, name},
   thumbnailImage{${imageFields}}
   `
 

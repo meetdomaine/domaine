@@ -1,45 +1,32 @@
 ---
-import { blogCardFields, urlFor } from '../../../lib/cms-queries';
+// SERVER RENDERED AT LOAD TIME
+import { imageBaseFields, urlFor } from '../../../lib/cms-queries';
 import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
 import { Brands } from '../../../enums/brands';
-import { getBlogCategories } from '../../../lib/cached-content';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../lib/getEnv';
 import { Locales } from '../../../enums/locales';
+import { getCollection } from 'astro:content';
 
-export const prerender = false // Make Blog Category content static so it doesn't refetch on each page load
+const { category } = Astro.params
 
-export async function getStaticPaths() {
-    const categories = await getBlogCategories(Brands.DOMAINE)
-    return categories.map((category) => {
-        return {
-            params: { category: category.slug.current },
-            props: { content: category }
-        }
-    })
-}
+const categoryContent = await sanityClient.fetch(`
+*[_type == "type_blogCategory" && defined(*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${category}'][0]{
+    ...,
+    "posts": *[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${category}' ]{ slug, postDate }|order(postDate desc),
+    metafields{ title, description, image{${imageBaseFields}} }
+}`)
 
-let blogCategoryContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { category } = Astro.params
-    const categories = await getBlogCategories(Brands.DOMAINE)
-    blogCategoryContent = categories.find(cat => cat.slug.current === category)
-} else {
-    const { content } = Astro.props
-    blogCategoryContent = content
-}
-
-const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${blogCategoryContent.slug.current}' ]{${blogCardFields} }|order(postDate desc)`)
+const postSlugs = new Set(categoryContent.posts.map(post => post.slug.current))
+const posts = await getCollection('blogCards', ({ data}) => postSlugs.has(data.slug.current))
 ---
 <LayoutBlogIndex
-    blogPosts={blogPosts}
-    title={blogCategoryContent.metafields?.title ? blogCategoryContent.metafields.title : blogCategoryContent.title}
-    description={blogCategoryContent.metafields?.description ? blogCategoryContent.metafields.description : null}
-    image={blogCategoryContent.metafields?.image ? urlFor(blogCategoryContent.metafields.image).url() : null}
-    heading={blogCategoryContent.title}
-    subheading={blogCategoryContent.heading}
-    slug={blogCategoryContent.slug}
+    blogPosts={posts.map(post => post.data)}
+    title={categoryContent.metafields?.title ? categoryContent.metafields.title : categoryContent.title}
+    description={categoryContent.metafields?.description ? categoryContent.metafields.description : null}
+    image={categoryContent.metafields?.image ? urlFor(categoryContent.metafields.image).url() : null}
+    heading={categoryContent.title}
+    subheading={categoryContent.heading}
+    slug={categoryContent.slug}
     brand={Brands.DOMAINE}
     locale={Locales.EN}
 />

@@ -135,6 +135,7 @@ export const getBlogCategories = async (brand) => {
   
   const data = await sanityClient.fetch(`*[_type == "type_blogCategory" && defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0])]{
     ...,
+    "posts": *[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]{slug},
     "hasContent": {
       "${brand}": defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]),
     },
