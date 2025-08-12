@@ -50,7 +50,6 @@ const generateSrcSets = () => {
   width={width}
   height={height}
   sizes={sizes}
-  srcset={generateSrcSets()}
   src={urlFor(image).width(Math.floor(width)).height(Math.floor(width / ratio)).auto('format').url()}
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
