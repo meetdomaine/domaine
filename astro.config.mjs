@@ -61,9 +61,9 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true
   },
-  // experimental: {
-  //   clientPrerender: true
-  // },
+  experimental: {
+    clientPrerender: true
+  },
   output: 'server',
   // output: 'static',
   adapter: cloudflare({
