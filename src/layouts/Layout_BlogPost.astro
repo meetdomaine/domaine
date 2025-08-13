@@ -12,13 +12,14 @@ import { blogCardFields, urlFor } from '../lib/cms-queries';
 import { Translations } from '../lib/locales';
 import { Brands } from '../enums/brands';
 import { getLocaleString, getTranslationString } from '../lib/translations';
-import { getBlogPosts } from '../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 
 const { content, locale , brand} = Astro.props;
 
-const latestPosts = await getBlogPosts(brand)
-const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)`)
+const [latestPosts, relatedPosts] = await Promise.all([
+    sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)[0...3]`),
+    sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)`)
+])
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
@@ -44,7 +45,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         brand={brand}
     >
         <BlogPostSidebar 
-            latestPosts={latestPosts.filter((post) => post.slug.current != content.slug.current).slice(0, 3)}
+            latestPosts={latestPosts}
             locale={locale}
             brand={brand}
         />
