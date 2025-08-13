@@ -15,24 +15,27 @@ const currentCategory = await sanityClient.fetch(`*[_type == "type_blogCategory"
 if (!currentCategory) return Astro.redirect('/404')
 
 const content = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
-    ..., 
+    title,
+    heading,
     _id,
     slug,
+    isHidden,
     authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
     postDate,
     thumbnailImage{${imageFields}},
-    category->{..., slug{...} }, 
+    category->{_id, title, slug}, 
     body{
-        ..., 
+        _type,
+        _key,
         richContent[]{${richContentFields}},
         translations{ 
             ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
-            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
+            `"${Locales[locale]}": ${Locales[locale]}[]{ _type, _key, children[]{${richContentFields}} }`
             )
         ).join()}
         },
     },
-    services[]->{...},
+    services[]->{_id, title, slug, serviceGroup->{_id, title, slug}},
     agencyBrand->{slug, name },
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },

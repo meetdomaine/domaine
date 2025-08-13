@@ -7,11 +7,10 @@ import { getCollection } from 'astro:content';
 
 export const prerender = true // Make Blog Index content static so it doesn't refetch on each page load
 
-const blogCards = await getCollection('blogCards')
-const domaineBlogCards = blogCards.filter(blog => blog.data.agencyBrand.name === Brands.DOMAINE)
+const blogCards = await getCollection('blogCards', ({ data }) => data.agencyBrand.name === Brands.DOMAINE)
 ---
 <LayoutBlogIndex 
   brand={Brands.DOMAINE}
-  blogPosts={domaineBlogCards.map(blog => blog.data)}
+  blogPosts={blogCards.map(blog => blog.data)}
   locale={Locales.EN}
 />
