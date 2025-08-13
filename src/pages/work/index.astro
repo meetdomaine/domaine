@@ -6,8 +6,9 @@ import { getCollection } from 'astro:content';
 
 export const prerender = true
 
-const allProjects = await getCollection('projectCards')
-const domaineProjects = allProjects.filter(project => project.data.agencyBrand.name === Brands.DOMAINE)
+const domaineProjects = await getCollection('projectCards', ({ data }) => 
+    data.agencyBrand.name === Brands.DOMAINE
+)
 ---
 <LayoutProjectsIndex
     brand={Brands.DOMAINE}

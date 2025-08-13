@@ -19,10 +19,12 @@ const monthOptions: UseDateTimeFormatOptions = {
   month: "short"
 }
 
-const latestProjects = await getProjects(brand)
-const latestBlogPosts = await getBlogPosts(brand)
-const events = await getEvents()
-const allCareers = await getCareers()
+const [latestProjects, latestBlogPosts, events, allCareers] = await Promise.all([
+    getProjects(brand),
+    getBlogPosts(brand),
+    getEvents(),
+    getCareers()
+])
 
 const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
 ---

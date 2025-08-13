@@ -31,9 +31,15 @@ interface Props {
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
 
-const { data: headerSettings} = await getEntry('globalSettingsDomaine', 'headerSettings')
-const { data: footerSettings} = await getEntry('globalSettingsDomaine', 'footerSettings')
-const { data: brandSettings} = await getEntry('globalSettingsDomaine', 'brandSettings')
+const [
+    { data: headerSettings},
+    { data: footerSettings},
+    { data: brandSettings}
+] = await Promise.all([
+    getEntry('globalSettingsDomaine', 'headerSettings'),
+    getEntry('globalSettingsDomaine', 'footerSettings'),
+    getEntry('globalSettingsDomaine', 'brandSettings')
+])
 
 // console.log(brandSettings?.cookieNoticeText.translations)
 // console.log(brandSettings?.cookieNoticeText)
