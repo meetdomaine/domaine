@@ -10,18 +10,15 @@ const { industry } = Astro.params
 const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && slug.current == '${industry}'][0]{ 
     ...,
     excerpt,
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ slug, orderRank } | order(orderRank),
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 )
 if (!industryContent || industryContent.projects.length === 0) return Astro.redirect('/404')
-
-const projectSlugs = new Set(industryContent.projects.map(project => project.slug.current))
-const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))
 ---
 <LayoutProjectsIndex
     content={industryContent}
-    projects={projects.map(project => project.data)}
+    projects={industryContent.projects}
     currentPath={`/industries/${industryContent?.slug?.current}`}
     brand={Brands.DOMAINE}
 />

@@ -4,6 +4,7 @@ import LayoutProjectsIndex from '../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { sanityClient } from 'sanity:client';
 import { getCollection } from 'astro:content';
+import { projectGridFields } from '../../../lib/cms-queries';
 
 const { partner } = Astro.params
 const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && slug.current == '${partner}'][0]{
@@ -13,16 +14,13 @@ const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && sl
     excerpt,
     description,
     tier->{slug, title, createLandingPages},
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && references(^._id) ]{ slug, orderRank } | order(orderRank),
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
 }`)
 if (!partnerContent || partnerContent.projects.length === 0) return Astro.redirect('/404')
-
-const projectSlugs = new Set(partnerContent.projects.map(project => project.slug.current))
-const projects = await getCollection('projectCards', ({ data }) => projectSlugs.has(data.slug.current))
 ---
 <LayoutProjectsIndex
     content={partnerContent}
-    projects={projects.map(project => project.data)}
+    projects={partnerContent.projects}
     currentPath={`/partners/${partnerContent?.slug?.current}`}
     brand={Brands.DOMAINE}
 />

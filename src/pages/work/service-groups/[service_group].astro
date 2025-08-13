@@ -14,18 +14,14 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
     description,
     images[]{${imageFields}},
     agencyBrands[]->{..., slug },
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(*[_type == "type_service" && serviceGroup->slug.current == '${service_group}']._id) ]{ ${projectGridFields} } | order(orderRank),
   }`
 )
-if (!serviceGroupContent) return Astro.redirect('/404')
-
-// const projectSlugs = new Set(serviceGroupContent.projects.map(project => project.slug.current))
-const projects = await getCollection('projectCards', ({ data }) => data.services.some((service) => service.serviceGroup.slug.current == service_group) )
-console.log(projects[0])
-// console.log(await getCollection('projectCards'))
+if (!serviceGroupContent || serviceGroupContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}
-    projects={projects.map(project => project.data)}
+    projects={serviceGroupContent.projects}
     currentPath={`/services/${serviceGroupContent.slug.current}`}
     brand={Brands.DOMAINE}
 />
