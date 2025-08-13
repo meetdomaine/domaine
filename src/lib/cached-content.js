@@ -2,7 +2,7 @@ import { loadQuery } from "./sanity-load-query"
 import { sanityClient } from "sanity:client"
 import { Brands } from "../enums/brands"
 import { Locales } from "../enums/locales"
-import { imageBaseFields, imageFields, videoFields, globalSectionsFields, richContentFields, serviceQuery } from "./cms-queries"
+import { imageBaseFields, imageFields, videoFields, globalSectionsFields, richContentFields, serviceQuery, blogCardFields } from "./cms-queries"
 
 let _serviceTypes = {}
 let _serviceGroups = {}
@@ -32,15 +32,32 @@ export const getServiceTypes = async (brand) => {
   if (_serviceTypes[brand]) return _serviceTypes[brand]
   
   const data = await sanityClient.fetch(`*[_type == "type_serviceType" && '${brand}' in agencyBrands[]->name ]{
-    ...,
-    agencyBrands[]->{ ..., name },
+    _id,
+    title,
+    slug,
+    description,
+    formHeading,
+    formText,
+    hubspotFormId,
+    orderRank,
+    agencyBrands[]->{ _id, name, slug },
     pageSectionsDomaine[]{${globalSectionsFields}},
     pageSectionsStudio[]{${globalSectionsFields}},
     "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
-        ...,
+        _id,
+        title,
+        slug,
+        description,
+        excerpt,
+        orderRank,
         serviceType->{slug},
         "services": *[_type == "type_service" && references(^._id)] {
-            ...
+            _id,
+            title,
+            slug,
+            description,
+            excerpt,
+            orderRank
         } | order(orderRank)
     } | order(orderRank),
     isHidden,
@@ -57,14 +74,20 @@ export const getServiceGroups = async (brand) => {
   if (_serviceGroups[brand]) return _serviceGroups[brand]
   
   const data = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${brand}' in agencyBrands[]->name ]{
-    ...,
+    _id,
+    title,
+    slug,
+    orderRank,
     isHidden,
     excerpt,
     description,
+    formHeading,
+    formText,
+    hubspotFormId,
     images[]{${imageFields}},
-    agencyBrands[]->{..., slug },
-    serviceType->{..., formHeading, formText, hubspotFormId },
-    "services": *[_type == "type_service" && references(^._id)]{..., ${serviceQuery} } | order(orderRank),
+    agencyBrands[]->{ _id, name, slug },
+    serviceType->{ _id, title, slug, formHeading, formText, hubspotFormId },
+    "services": *[_type == "type_service" && references(^._id)]{ _id, title, slug, description, excerpt, orderRank } | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
     pageSectionsDomaine[]{${globalSectionsFields}},
     pageSectionsStudio[]{${globalSectionsFields}},
@@ -80,20 +103,27 @@ export const getServices = async (brand) => {
   if (_services[brand]) return _services[brand]
   
   const data = await sanityClient.fetch(`*[_type == "type_service" && '${brand}' in agencyBrands[]->name ]{
-    ...,
+    _id,
+    title,
+    slug,
+    orderRank,
     isHidden,
     excerpt,
     description,
-    agencyBrands[]->{..., slug, name},
+    formHeading,
+    formText,
+    hubspotFormId,
+    agencyBrands[]->{ _id, slug, name},
     serviceGroup->{
-        ..., 
-        serviceType->{...},
-        _id
+        _id,
+        title,
+        slug,
+        serviceType->{ _id, title, slug }
     },
     pageSectionsDomaine[]{${globalSectionsFields}},
     pageSectionsStudio[]{${globalSectionsFields}},
     metafields{ title, description, image{${imageBaseFields}} },
-  } | order(postDate desc)`)
+  } | order(orderRank)`)
 
   _services[brand] = data
   return data
@@ -103,30 +133,10 @@ export const getServices = async (brand) => {
 export const getBlogPosts = async (brand) => {
   if (_blogPosts[brand]) return _blogPosts[brand]
   const data = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true ]{
-    ..., 
-    _id,
-    slug,
-    authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-    postDate,
-    thumbnailImage{${imageFields}},
-    category->{..., slug{...} }, 
-    body{
-      ..., 
-      richContent[]{${richContentFields}},
-      translations{ 
-          ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
-            `"${Locales[locale]}": ${Locales[locale]}[]{ ..., children[]{${richContentFields}} }`
-          )
-        ).join()}
-      },
-    },
-    services[]->{...},
-    agencyBrand->{slug, name },
-    globalSections{ sections[]{${globalSectionsFields}} },
-    metafields{ title, description, image{${imageBaseFields}} },
+    ${blogCardFields}
   } | order(postDate desc)`)
 
-  // _blogPosts[brand] = await data
+  _blogPosts[brand] = data
   return data
 }
 
@@ -134,11 +144,8 @@ export const getBlogCategories = async (brand) => {
   if (_blogCategories[brand]) return _blogCategories[brand]
   
   const data = await sanityClient.fetch(`*[_type == "type_blogCategory" && defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0])]{
-    ...,
-    "posts": *[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]{slug},
-    "hasContent": {
-      "${brand}": defined(*[_type == "type_blog" && isHidden != true && agencyBrand->name == '${brand}' && references(^._id)][0]),
-    },
+    title,
+    slug,
     metafields{ title, description, image{${imageBaseFields}} }
   } | order(title.text asc)`)
 

@@ -9,13 +9,14 @@ import { Locales } from '../../../enums/locales';
 const { category } = Astro.params
 
 const categoryContent = await sanityClient.fetch(`
-*[_type == "type_blogCategory" && defined(*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${category}'][0]{
+*[_type == "type_blogCategory" && slug.current == '${category}'][0]{
     title,
     heading,
     slug,
     "posts": *[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${category}' ]{ ${blogCardFields} }|order(postDate desc),
     metafields{ title, description, image{${imageBaseFields}} }
 }`)
+if (!categoryContent || categoryContent.posts.length === 0) return Astro.redirect('/404')
 ---
 <LayoutBlogIndex
     blogPosts={categoryContent.posts}
