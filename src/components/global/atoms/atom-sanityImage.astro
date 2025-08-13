@@ -12,11 +12,10 @@ interface Props {
   aspectRatio?: number,
   alt?: string,
   transitionName?: string,
-  pagefindMeta?: string,
   preserveAspect?: boolean,
 }
 
-const { image, sizes, eager, aspectRatio, cover, contain, alt, pagefindMeta, preserveAspect } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, contain, alt, preserveAspect } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -56,7 +55,6 @@ const generateSrcSets = () => {
   alt={alt ? alt : image.alt}
   data-cover={cover ? "true" : "false"}
   data-contain={contain ? "true" : "false"}
-  {...(pagefindMeta ? {"data-pagefind-meta": pagefindMeta} : {}) }
 />
 
 <!-- <img

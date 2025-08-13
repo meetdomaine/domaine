@@ -112,20 +112,13 @@ const { data: headerSettings } = await loadQuery({
         brand={brand}
     />
 
-    <!-- <NotificationMenu
+    <NotificationMenu
         content={headerSettings}
         currentBrand={currentBrand} 
         locale={locale}
         brand={brand}
-    /> -->
+    />
 </header>
-
-<script is:inline>
-    const loadSearch = async () => {
-        window.pagefind = await import("/pagefind/pagefind.js");
-    }
-    loadSearch()
-</script>
 
 <script>
 

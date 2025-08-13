@@ -18,7 +18,6 @@ const formattedDate = formatDate(post.postDate)
         <AtomSanityImage 
             image={post.thumbnailImage.image}
             sizes="50vw"
-            pagefindMeta="image[src], image_alt[alt]"
             aspectRatio={3 / 4}
             cover={true}
         />
@@ -29,7 +28,6 @@ const formattedDate = formatDate(post.postDate)
             {post.title &&
                 <h1 
                     class="post-title h2"
-                    data-pagefind-meta={`title, categoryTitle:${post.category.title}, categoryUrl:${`${post.agencyBrand.slug.current === "studio" ? "/studio" : ""}/insights/${post.category.slug.current}`}`}
                 >{getTranslationString(post.title, locale)}</h1>
             }
         </div>
@@ -37,8 +35,6 @@ const formattedDate = formatDate(post.postDate)
             <div class="post-details">
                 <AtomTag 
                     text={getTranslationString(post.category.title, locale)}
-                    pagefindMetaText="categoryTitle"
-                    pagefindMetaUrl="categoryUrl[href]"
                     url={getLocaleUrl(`${post.agencyBrand.slug.current === "/studio" ? "/studio" : ""}/insights/${post.category.slug.current}`, locale)}
                 />
                 <p class="caption">{formattedDate}</p>

@@ -21,12 +21,12 @@ const monthOptions: UseDateTimeFormatOptions = {
 
 const latestProjects = await getProjects(brand)
 const latestBlogPosts = await getBlogPosts(brand)
-
 const events = await getEvents()
-const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
 const allCareers = await getCareers()
+
+const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
 ---
-<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true">
+<dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true" open>
 
   {(content.showPromoMessage && content.promoMessage) &&
     <a 

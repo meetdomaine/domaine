@@ -17,9 +17,11 @@ const { project, locale } = Astro.props;
 
 let clientLogo;
 
-if (project.client?.logo) {
-  clientLogo = await getRawSvg(project.client.logo);
-}
+console.log(project.client?.logo)
+
+// if (project.client?.logo) {
+//   clientLogo = await getRawSvg(project.client.logo);
+// }
 ---
 
 <a
@@ -36,15 +38,15 @@ if (project.client?.logo) {
       />
     </div>
     {project.client?.logo && (
-			<div
+			<img
 				class="client-logo"
+        src={project.client.logo}
 				data-color-scheme={
 					project.logoColor === "dark" ? "default" : "invert"
 				}
 				style={`width: ${project.client.logoScale / 2}%`}
-			>
-				<Fragment set:html={clientLogo} />
-			</div>
+			/>
+			
 		)}
     {project.thumbnailImageSecondary && (
 			<div class="card-overlay glass-ink">
@@ -130,6 +132,10 @@ if (project.client?.logo) {
     left: var(--space-sm);
     max-width: calc(100% - var(--space-sm) * 2);
     background-color: transparent;
+    
+    img {
+      color: inherit;
+    }
   }
 
   .client-logo :global(svg) {
