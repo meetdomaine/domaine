@@ -35,6 +35,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         brand={brand}
         currentPath={currentPath}
         locale={locale}
+        server:defer
     />
     <slot name="before-grid" /> 
     <GlobalProjectsGrid 

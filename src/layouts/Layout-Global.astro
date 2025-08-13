@@ -34,6 +34,8 @@ interface Props {
 	indexSearch?: boolean;
 }
 
+Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600");
+
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -47,9 +49,10 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
 		<!-- Add back once live -->
-		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
-		<link rel="preconnect" href="https://snap.licdn.com">
-		<link rel="preconnect" href="https://www.google-analytics.com"> -->
+		<link rel="preconnect" href="https://www.googletagmanager.com">
+		<link rel="preconnect" href="https://cdn.sanity.io">
+		<!-- <link rel="preconnect" href="https://snap.licdn.com"> -->
+		<!-- <link rel="preconnect" href="https://www.google-analytics.com"> -->
 
 		 <!-- Setup Consent Mode -->
 		 <script is:inline>

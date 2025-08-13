@@ -1,50 +1,42 @@
 ---
 import { Icon } from 'astro-icon/components';
 import AtomTag from '../atoms/atom-tag.astro';
-import { partnerTileFields, projectFeatureQuery, serviceGroupQuery } from '../../../lib/cms-queries';
 import { getLocaleUrl } from '../../../lib/translations';
 import { getTranslationString } from '../../../lib/translations';
 import { Translations } from '../../../lib/locales';
-import { sanityClient } from "sanity:client"
 import { getProjectIndustries, getPartners, getProjectFeatures, getServiceGroups } from '../../../lib/cached-content';
 
 const { brand, currentPath, locale } = Astro.props;
 
-const allFeatures = await getProjectFeatures(brand)
-const allIndustries = await getProjectIndustries(brand)
-const allPartners = await getPartners(brand)
-const allServiceGroups = await getServiceGroups(brand)
+const [allIndustries, allFeatures, allPartners, allServiceGroups] = await Promise.all([
+    getProjectIndustries(brand),
+    getProjectFeatures(brand),
+    getPartners(brand),
+    getServiceGroups(brand)
+])
 
-const brandFeatures = await allFeatures.filter((feature) => feature.hasContent[brand])
-const brandIndustries = await allIndustries.filter((industry) => industry.hasContent[brand])
-const brandPartners = await allPartners.filter((partner) => partner.hasContent[brand])
-const brandServiceGroups = await allServiceGroups.filter((serviceGroup) => serviceGroup.hasContent[brand])
-
-const allFilters = await Promise.all([
+const allFilters = [
     {
         title: locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name,
         path: 'industries/',
-        filters:  brandIndustries
+        filters: allIndustries
     },
     {
         title: locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name,
         path: 'features/',
-        filters: brandFeatures
+        filters: allFeatures
     },
     {
         title: locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name,
         path: 'partners/',
-        filters: brandPartners
+        filters: allPartners
     },
     {
         title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
         path: 'service-groups/',
-        filters: brandServiceGroups
+        filters: allServiceGroups
     },
-])
-
-
-
+]
 ---
 <dialog popover id="projects-filter" class="projects-filter" data-lenis-prevent>
     <div class="section-title">
@@ -58,7 +50,7 @@ const allFilters = await Promise.all([
             <div class="filter-type">
                 <p class="filter-title h6">{filterGroup.title}</p>
                 <div class="filters">
-                    {filterGroup.filters.slice(0, 20).map((filter) => {
+                    {filterGroup.filters?.slice(0, 20).map((filter) => {
                         return (
                             <AtomTag 
                                 text={getTranslationString(filter.title, locale)}

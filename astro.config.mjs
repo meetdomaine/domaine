@@ -20,10 +20,6 @@ const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN ||
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
 // console.log(SANITY_API_READ_TOKEN)
 
-// Debug environment variables
-console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
-console.log('PUBLIC_SANITY_VISUAL_EDITING_ENABLED available:', !!PUBLIC_SANITY_VISUAL_EDITING_ENABLED)
-
 export default defineConfig({
   integrations: [
     sitemap(), 
@@ -31,11 +27,16 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: PUBLIC_SANITY_API_READ_TOKEN ? true : false,
+      useCdn: true,
+      // useCdn: PUBLIC_SANITY_API_READ_TOKEN ? true : false,
       token: PUBLIC_SANITY_API_READ_TOKEN,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
+      },
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
+        'CDN-Cache-Control': 'public, s-maxage=3600',
       },
     }), 
     solid({
@@ -61,9 +62,9 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true
   },
-  // experimental: {
-  //   clientPrerender: true
-  // },
+  experimental: {
+    clientPrerender: true
+  },
   output: 'server',
   // output: 'static',
   adapter: cloudflare({

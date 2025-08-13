@@ -12,17 +12,10 @@ import LogoDomaine from '../../../icons/domaine-wordmark.svg'
 import LogoStudio from '../../../icons/domaine-studio.svg'
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { Brands } from "../../../enums/brands";
-import { getBlogPosts, getProjects, getProjectFeatures, getPartners } from "../../../lib/cached-content";
 import { loadQuery } from "../../../lib/sanity-load-query";
 import { imageFields, videoFields } from "../../../lib/cms-queries";
 
 const { currentBrand, activePath, searchExposed, locale, brand } = Astro.props;
-
-
-const defaultBlogPosts = await getBlogPosts(brand)
-const defaultProjects = await getProjects(brand)
-const defaultProjectFeatures = await getProjectFeatures(brand)
-const defaultPartners = await getPartners(brand)
 
 const headerId = brand === Brands.STUDIO ? 'settings_header--studio' : 'settings_header--domaine'
 const { data: headerSettings } = await loadQuery({ 
@@ -93,23 +86,22 @@ const { data: headerSettings } = await loadQuery({
             heading={headerSettings.brandMenuHeading}
             subheading={headerSettings.brandMenuSubheading}
             locale={locale}
+            server:defer
         />
     }
     <ContactMenu 
         hubspotFormId={headerSettings.hubspotFormId} 
         forms={headerSettings.contactForms} 
         locale={locale}
+        server:defer
     />
 
     <SearchMenu 
         client:only="solid-js"
-        defaultBlogPosts={defaultBlogPosts.slice(0, 3)}
-        defaultProjects={defaultProjects.slice(0, 4)}
-        defaultFeatures={defaultProjectFeatures.slice(0, 8)}
-        defaultPartners={defaultPartners.slice(0, 5)}
         currentBrand={currentBrand}
         locale={locale}
         brand={brand}
+        server:defer
     />
 
     <NotificationMenu
@@ -117,15 +109,9 @@ const { data: headerSettings } = await loadQuery({
         currentBrand={currentBrand} 
         locale={locale}
         brand={brand}
+        server:defer
     />
 </header>
-
-<script is:inline>
-    const loadSearch = async () => {
-        window.pagefind = await import("/pagefind/pagefind.js");
-    }
-    loadSearch()
-</script>
 
 <script>
 

@@ -44,6 +44,7 @@ const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-$
   // Do nothing if preloader is disabled on this page or has shown already
   if (sessionCached || showPreloader != "true") {
     window.addEventListener("DOMContentLoaded", handlePreloadComplete)
+		// window.addEventListener("astro:page-load", handlePreloadComplete)
   } else {
 
     sessionStorage.setItem("cachedSession", "true");
