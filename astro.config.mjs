@@ -38,6 +38,10 @@ export default defineConfig({
       stega: {
         studioUrl: '/admin',
       },
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
+        'CDN-Cache-Control': 'public, s-maxage=3600',
+      },
     }), 
     solid({
       devtools: true,
