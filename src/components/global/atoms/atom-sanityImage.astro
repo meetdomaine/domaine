@@ -17,7 +17,7 @@ interface Props {
   maxWidth?: number,
 }
 
-const { image, sizes, eager, aspectRatio, cover, contain, alt, preserveAspect, maxWidth } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, contain, alt, preserveAspect, maxWidth = 1880 } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
