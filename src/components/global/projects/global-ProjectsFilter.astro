@@ -10,12 +10,12 @@ import { getProjectIndustries, getPartners, getProjectFeatures, getServiceGroups
 
 const { brand, currentPath, locale } = Astro.props;
 
-const [allFeatures, allIndustries, allPartners, allServiceGroups] = await Promise.all([
-    getProjectFeatures(brand),
-    getProjectIndustries(brand),
-    getPartners(brand),
-    getServiceGroups(brand)
-])
+// const [allFeatures, allIndustries, allPartners, allServiceGroups] = await Promise.all([
+//     getProjectFeatures(brand),
+//     getProjectIndustries(brand),
+//     getPartners(brand),
+//     getServiceGroups(brand)
+// ])
 
 // const brandFeatures = allFeatures.filter((feature) => feature.hasContent[brand])
 // const brandIndustries = allIndustries.filter((industry) => industry.hasContent[brand])
@@ -26,27 +26,24 @@ const allFilters = await Promise.all([
     {
         title: locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name,
         path: 'industries/',
-        filters:  allIndustries
+        filters: await getProjectIndustries(brand)
     },
     {
         title: locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name,
         path: 'features/',
-        filters: allFeatures
+        filters: await getProjectFeatures(brand)
     },
     {
         title: locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name,
         path: 'partners/',
-        filters: allPartners
+        filters: await getPartners(brand)
     },
     {
         title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
         path: 'service-groups/',
-        filters: allServiceGroups
+        filters: await getServiceGroups(brand)
     },
 ])
-
-
-
 ---
 <dialog popover id="projects-filter" class="projects-filter" data-lenis-prevent>
     <div class="section-title">
