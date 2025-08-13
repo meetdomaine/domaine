@@ -13,17 +13,17 @@ const featureContent = await sanityClient.fetch(`
         title,
         excerpt,
         slug, 
-        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ slug, orderRank } | order(orderRank),
+        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
         metafields{ title, description, image{${imageBaseFields}} },
     }`
 )
 if (!featureContent || featureContent.projects.length === 0) return Astro.redirect('/404')
 
-const projects = await getCollection('projectCards', ({ data }) => data.agencyBrand.name === Brands.DOMAINE && data.isHidden !== true && data.features.some(feature => feature.slug.current == featureContent.slug.current) )
+// const projects = await getCollection('projectCards', ({ data }) => data.agencyBrand.name === Brands.DOMAINE && data.isHidden !== true && data.features.some(feature => feature.slug.current == featureContent.slug.current) )
 ---
 <LayoutProjectsIndex 
     content={featureContent}
-    projects={projects.map(project => project.data)}
+    projects={featureContent.projects}
     currentPath={`/features/${featureContent?.slug?.current}`}
     indexSearch={true}
     brand={Brands.DOMAINE}
