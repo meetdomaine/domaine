@@ -1,26 +1,24 @@
 ---
 // SERVER RENDERED AT LOAD TIME
-import { imageBaseFields, urlFor } from '../../../lib/cms-queries';
+import { blogCardFields, imageBaseFields, urlFor } from '../../../lib/cms-queries';
 import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
 import { Brands } from '../../../enums/brands';
 import { sanityClient } from 'sanity:client';
 import { Locales } from '../../../enums/locales';
-import { getCollection } from 'astro:content';
 
 const { category } = Astro.params
 
 const categoryContent = await sanityClient.fetch(`
 *[_type == "type_blogCategory" && defined(*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && references(^._id)][0]) && slug.current == '${category}'][0]{
-    ...,
-    "posts": *[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${category}' ]{ slug, postDate }|order(postDate desc),
+    title,
+    heading,
+    slug,
+    "posts": *[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${category}' ]{ ${blogCardFields} }|order(postDate desc),
     metafields{ title, description, image{${imageBaseFields}} }
 }`)
-
-const postSlugs = new Set(categoryContent.posts.map(post => post.slug.current))
-const posts = await getCollection('blogCards', ({ data}) => postSlugs.has(data.slug.current))
 ---
 <LayoutBlogIndex
-    blogPosts={posts.map(post => post.data)}
+    blogPosts={categoryContent.posts}
     title={categoryContent.metafields?.title ? categoryContent.metafields.title : categoryContent.title}
     description={categoryContent.metafields?.description ? categoryContent.metafields.description : null}
     image={categoryContent.metafields?.image ? urlFor(categoryContent.metafields.image).url() : null}

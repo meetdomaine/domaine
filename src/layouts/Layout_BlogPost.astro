@@ -1,4 +1,5 @@
 ---
+// Server Component
 import LayoutDomaine from '../layouts/Layout-Domaine.astro';
 import LayoutStudio from './Layout-Studio.astro';
 import SectionBlogFeed from '../components/global/sections/section-BlogFeed.astro';
@@ -14,12 +15,9 @@ import { getLocaleString, getTranslationString } from '../lib/translations';
 import { getBlogPosts } from '../lib/cached-content';
 import { sanityClient } from 'sanity:client';
 
-export const prerender = false // Make Blog Post content static so it doesn't refetch on each page load
-
 const { content, locale , brand} = Astro.props;
 
 const latestPosts = await getBlogPosts(brand)
-
 const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)`)
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
