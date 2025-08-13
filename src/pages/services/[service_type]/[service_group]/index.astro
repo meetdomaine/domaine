@@ -1,36 +1,46 @@
 ---
 import LayoutServiceGroup from "../../../../layouts/Layout_ServiceGroup.astro";
 import { Brands } from "../../../../enums/brands";
-import { getServiceGroups } from "../../../../lib/cached-content";
-import { getEnv } from "../../../../lib/getEnv";
+import { sanityClient } from "sanity:client";
+import { globalSectionsFields } from "../../../../lib/cms-queries";
+import { imageBaseFields } from "../../../../lib/cms-queries";
+import { imageFields } from "../../../../lib/cms-queries";
 
-export const prerender = true // Make page static so it doesn't refetch on each page load
+const { service_type, service_group } = Astro.params
 
-export async function getStaticPaths() {
-    const serviceGroups = await getServiceGroups(Brands.DOMAINE)
-    return serviceGroups.map((serviceGroup) => {
-        return {
-            params: { 
-              service_group: serviceGroup.slug.current,
-              service_type: serviceGroup.serviceType.slug.current
-            },
-            props: { 
-              content: serviceGroup
-            }
-        }
-    })
-}
-
-let serviceGroupContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service_type, service_group } = Astro.params
-    const serviceGroups = await getServiceGroups(Brands.DOMAINE)
-    serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
-} else {
-    const { content } = Astro.props
-    serviceGroupContent = content
-}
+const [ serviceType, serviceGroupContent ] = await Promise.all([
+  sanityClient.fetch(`*[_type == "type_serviceType" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_type}'][0]{ slug }`),
+  sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+    _id,
+    title,
+    slug,
+    isHidden,
+    excerpt,
+    description,
+    formHeading,
+    formText,
+    hubspotFormId,
+    orderRank,
+    images[]{${imageFields}},
+    agencyBrands[]->{ _id, name, slug },
+    serviceType->{ _id, title, slug, formHeading, formText, hubspotFormId },
+    "services": *[_type == "type_service" && references(^._id)]{
+      _id,
+      title,
+      slug,
+      isHidden,
+      excerpt,
+      description,
+      orderRank,
+      agencyBrands[]->{ _id, name, slug },
+      serviceGroup->{ _id, title, slug, serviceType->{ _id, title, slug } },
+      metafields{ title, description, image{${imageBaseFields}} }
+    } | order(orderRank),
+    metafields{ title, description, image{${imageBaseFields}} },
+    pageSectionsDomaine[]{${globalSectionsFields}}
+  }`)
+])
+if (!serviceGroupContent || !serviceType) return Astro.redirect('/404')
 ---
 <LayoutServiceGroup
     content={serviceGroupContent}
