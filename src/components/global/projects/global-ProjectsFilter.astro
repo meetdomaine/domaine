@@ -17,31 +17,31 @@ const [allFeatures, allIndustries, allPartners, allServiceGroups] = await Promis
     getServiceGroups(brand)
 ])
 
-const brandFeatures = allFeatures.filter((feature) => feature.hasContent[brand])
-const brandIndustries = allIndustries.filter((industry) => industry.hasContent[brand])
-const brandPartners = allPartners.filter((partner) => partner.hasContent[brand])
-const brandServiceGroups = allServiceGroups.filter((serviceGroup) => serviceGroup.hasContent[brand])
+// const brandFeatures = allFeatures.filter((feature) => feature.hasContent[brand])
+// const brandIndustries = allIndustries.filter((industry) => industry.hasContent[brand])
+// const brandPartners = allPartners.filter((partner) => partner.hasContent[brand])
+// const brandServiceGroups = allServiceGroups.filter((serviceGroup) => serviceGroup.hasContent[brand])
 
 const allFilters = await Promise.all([
     {
         title: locale ? Translations.INDUSTRIES.locales[locale] : Translations.INDUSTRIES.name,
         path: 'industries/',
-        filters:  brandIndustries
+        filters:  allIndustries
     },
     {
         title: locale ? Translations.FEATURES.locales[locale] : Translations.FEATURES.name,
         path: 'features/',
-        filters: brandFeatures
+        filters: allFeatures
     },
     {
         title: locale ? Translations.PARTNERS.locales[locale] : Translations.PARTNERS.name,
         path: 'partners/',
-        filters: brandPartners
+        filters: allPartners
     },
     {
         title: locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name,
         path: 'service-groups/',
-        filters: brandServiceGroups
+        filters: allServiceGroups
     },
 ])
 
