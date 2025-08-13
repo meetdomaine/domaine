@@ -54,7 +54,7 @@ const { data: brandSettings} = await getEntry('globalSettingsDomaine', 'brandSet
     locale={locale}
     indexSearch={indexSearch}
 >
-    {marketingHeader ?
+    <!-- {marketingHeader ?
         <GlobalMarketingHeader
             locale={locale}
             brand={Brands.DOMAINE}
@@ -70,12 +70,12 @@ const { data: brandSettings} = await getEntry('globalSettingsDomaine', 'brandSet
             locale={locale}
             transition:name='header'
         />
-    }
+    } -->
     <main>
         <slot />
     </main>
-    <Footer
+    <!-- <Footer
         footerSettings={footerSettings}
         locale={locale} 
-    />
+    /> -->
 </LayoutGlobal>
