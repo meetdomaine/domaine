@@ -116,17 +116,17 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<!-- <ClientRouter /> -->
 		<!-- <VisualEditing enabled={visualEditingEnabled} /> -->
 
-    <!-- <GlobalPreloader
+    <GlobalPreloader
       showPreloader={showPreloader}
 			brand={brand}
 			locale={locale}
-    /> -->
+    />
     
-		<!-- <GlobalCookieNotice 
+		<GlobalCookieNotice 
 			content={cookieNoticeText}
 			brand={brand}
 			locale={locale}
-		/> -->
+		/>
 		<slot />
 		<ViewportAnimation />
 
