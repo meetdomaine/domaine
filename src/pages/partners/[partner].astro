@@ -1,29 +1,43 @@
 ---
+// SERVER RENDERED
 import LayoutPartner from '../../layouts/Layout_Partner.astro';
 import { Brands } from '../../enums/brands';
-import { getPartners } from '../../lib/cached-content';
-import { getEnv } from '../../lib/getEnv';
+import { sanityClient } from 'sanity:client';
+import { imageBaseFields } from '../../lib/cms-queries';
+import { imageFields } from '../../lib/cms-queries';
+import { globalSectionsFields } from '../../lib/cms-queries';
+import { richContentFields } from '../../lib/cms-queries';
+import { Locales } from '../../enums/locales';
 
-export async function getStaticPaths() {
-    const partners = await getPartners(Brands.DOMAINE)
-    return partners.filter((partner) => partner.tier?.createLandingPages).map((partner) => {
-        return {
-            params: { partner: partner.slug.current },
-            props: { content: partner }
-        }
-    })
-}
-
-let partnerContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { partner } = Astro.params
-    const partners = await getPartners(Brands.DOMAINE)
-    partnerContent = partners.find(p => p.slug.current === partner)
-} else {
-    const { content } = Astro.props
-    partnerContent = content
-}
+const { partner } = Astro.params
+const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && tier->createLandingPages && slug.current == '${partner}'][0]{
+    _id,
+    title, 
+    slug, 
+    excerpt,
+    description,
+    richContent{ 
+        translations{ 
+            ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+                `"${Locales[locale]}": ${Locales[locale]}[]{ _type, _key, children[]{${richContentFields}} }`
+            )).join()}
+        }, 
+        richContent[]{${richContentFields}} 
+    },
+    globalSections{ sections[]{${globalSectionsFields}} },
+    icon{${imageFields}}, 
+    tier->{slug, title, createLandingPages}, 
+    websiteUrl, 
+    websiteText,
+    instagramUrl,
+    twitterUrl,
+    linkedInUrl,
+    youTubeUrl,
+    tikTokUrl,
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+)
+if (!partnerContent) return Astro.redirect('/404')
 ---
 <LayoutPartner
     content={partnerContent}

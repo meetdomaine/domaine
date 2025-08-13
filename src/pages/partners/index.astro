@@ -1,6 +1,8 @@
 ---
 import LayoutPartnersIndex from '../../layouts/Layout_PartnersIndex.astro';
 import { Brands } from '../../enums/brands';
+
+export const prerender = true // Make page static so it doesn't refetch on each page load
 ---
 <LayoutPartnersIndex
     brand={Brands.DOMAINE}
