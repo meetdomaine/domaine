@@ -18,9 +18,10 @@ interface Props {
   alt?: string,
   preserveAspect?: boolean,
   preload?: boolean,
+  maxWidth?: number,
 }
 
-const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain, alt, autoplay, videoWidth, videoHeight, preload } = Astro.props;
+const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain, alt, autoplay, videoWidth, videoHeight, preload, maxWidth } = Astro.props;
 ---
 
 {video ? 
@@ -49,6 +50,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         contain={contain}
         alt={alt}
         preserveAspect={preserveAspect}
+        maxWidth={maxWidth}
     />
     : <p>NO MEDIA</p>
 }

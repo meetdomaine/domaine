@@ -2,6 +2,7 @@
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import { urlFor } from '../../../lib/cms-queries';
 import { string } from 'astro/zod';
+import { Image } from 'astro:assets';
 
 interface Props {
   image: SanityImage,
@@ -13,9 +14,10 @@ interface Props {
   alt?: string,
   transitionName?: string,
   preserveAspect?: boolean,
+  maxWidth?: number,
 }
 
-const { image, sizes, eager, aspectRatio, cover, contain, alt, preserveAspect } = Astro.props;
+const { image, sizes, eager, aspectRatio, cover, contain, alt, preserveAspect, maxWidth } = Astro.props;
 
 const srcWidth = image.asset.metadata.dimensions.width;
 const srcHeight = image.asset.metadata.dimensions.height;
@@ -31,25 +33,31 @@ const height = srcHeight - (srcHeight * cropTop) - (srcHeight * cropBottom)
 
 const ratio = aspectRatio ? aspectRatio : width / height
 
-const generateSrcSets = () => {
-  const sources = []
-  for (let i = 1; i <=2.5; i+= 0.5) {
-    if (preserveAspect) {
-      sources.push( `${urlFor(image).width(Math.floor(width / i)).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
-    } else {
-      sources.push( `${urlFor(image).width(Math.floor(width / i)).height(Math.floor((width / i) / ratio )).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
-    }
-  }
-  return sources.toString()
-}
+// const generateSrcSets = () => {
+//   const sources = []
+//   for (let i = 1; i <=2.5; i+= 0.5) {
+//     if (preserveAspect) {
+//       sources.push( `${urlFor(image).width(Math.floor(width / i)).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
+//     } else {
+//       sources.push( `${urlFor(image).width(Math.floor(width / i)).height(Math.floor((width / i) / ratio )).auto('format').fit('crop').url()} ${Math.floor(width / i)}w`)
+//     }
+//   }
+//   return sources.toString()
+// }
 ---
-<img
+<Image
   id={image.asset._id}
   class="sanity-image"
   width={width}
   height={height}
   sizes={sizes}
-  src={urlFor(image).width(Math.floor(width)).height(Math.floor(width / ratio)).auto('format').url()}
+  srcset={[
+    `${urlFor(image).width(400).height(Math.floor(400 / ratio)).fit('max').auto('format').url()} 400w`,
+    `${urlFor(image).width(800).height(Math.floor(800 / ratio)).fit('max').auto('format').url()} 800w`,
+    `${urlFor(image).width(1200).height(Math.floor(1200 / ratio)).fit('max').auto('format').url()} 1200w`,
+    `${urlFor(image).width(maxWidth).height(Math.floor(maxWidth / ratio)).fit('max').auto('format').url()} ${maxWidth}w`,
+  ].join(', ')}
+  src={urlFor(image).width(Math.floor(maxWidth ? maxWidth : width)).height(Math.floor(maxWidth ? maxWidth / ratio : width / ratio)).auto('format').url()}
   decoding={eager ? 'sync' : 'async'}
   loading={eager ? 'eager' : 'lazy'}
   alt={alt ? alt : image.alt}

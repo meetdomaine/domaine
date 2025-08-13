@@ -26,7 +26,8 @@ const { project, locale } = Astro.props;
         video={project.thumbnailMedia.video ? project.thumbnailMedia.video : null}
         image={project.thumbnailMedia.image}
         aspectRatio={3 / 4}
-        sizes="30vw"
+        sizes="(width <= 768px) 50vw, 33vw"
+        maxWidth={960}
       />
     </div>
     {project.client?.logo && (
@@ -68,6 +69,11 @@ const { project, locale } = Astro.props;
 			<div class="product-media">
 				<img
 					src={urlFor(project.client.productImage).auto("format").url()}
+          sizes="(width <= 768px) 30vw, 0.09vw"
+          srcset={`${urlFor(project.client.productImage).width(100).auto("format").url()} 100w,
+            ${urlFor(project.client.productImage).width(200).auto("format").url()} 200w,
+            ${urlFor(project.client.productImage).width(400).auto("format").url()} 400w,
+            ${urlFor(project.client.productImage).width(600).auto("format").url()} 600w,`}
 					class="product-image"
 				/>
 			</div>
