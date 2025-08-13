@@ -1,4 +1,5 @@
 ---
+// SERVER RENDERED
 import LayoutServiceType from "../../../layouts/Layout_ServiceType.astro"
 import { Brands } from "../../../enums/brands"
 import { sanityClient } from "sanity:client";
@@ -7,7 +8,6 @@ import { imageBaseFields } from "../../../lib/cms-queries";
 import { globalSectionsFields } from "../../../lib/cms-queries";
 
 const { service_type } = Astro.params
-console.log(service_type)
 const serviceTypeContent = await sanityClient.fetch(`*[_type == "type_serviceType" && slug.current == '${service_type}'][0]{
     _id,
     title,
