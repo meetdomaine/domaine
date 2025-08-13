@@ -2,7 +2,6 @@
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import { urlFor } from '../../../lib/cms-queries';
 import { string } from 'astro/zod';
-import { Image } from 'astro:assets';
 
 interface Props {
   image: SanityImage,
@@ -45,7 +44,7 @@ const ratio = aspectRatio ? aspectRatio : width / height
 //   return sources.toString()
 // }
 ---
-<Image
+<img
   id={image.asset._id}
   class="sanity-image"
   width={width}
