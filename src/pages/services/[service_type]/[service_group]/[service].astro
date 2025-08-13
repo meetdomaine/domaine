@@ -9,26 +9,21 @@ import { imageBaseFields } from '../../../../lib/cms-queries';
 const { service, service_group, service_type } = Astro.params
 
 const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
-    _id,
     title,
     slug,
-    isHidden,
     excerpt,
     description,
     formHeading,
     formText,
     hubspotFormId,
-    orderRank,
-    agencyBrands[]->{ _id, name, slug },
+    agencyBrands[]->{ name },
     serviceGroup->{
-        _id,
         title,
         slug,
         formHeading,
         formText,
         hubspotFormId,
         serviceType->{
-            _id,
             title,
             slug,
             formHeading,
