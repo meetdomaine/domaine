@@ -11,10 +11,11 @@ A high-performance, dual-brand website built with Astro and Sanity CMS, serving 
 ## 🏗️ Architecture
 
 ### Tech Stack
-- **Framework**: [Astro](https://astro.build) with hybrid rendering
-- **CMS**: [Sanity](https://sanity.io) for content management
-- **Styling**: Scoped CSS with GSAP animations
-- **Search**: Pagefind for static site search
+- **Framework**: [Astro 5.8.0](https://astro.build) with hybrid rendering & i18n
+- **CMS**: [Sanity](https://sanity.io) with Visual Editing & CDN caching
+- **UI Libraries**: SolidJS (client components), React (CMS admin)
+- **Styling**: Scoped CSS with GSAP animations & Lenis smooth scrolling
+- **Search**: Pagefind for static site search with brand filtering
 - **Deployment**: Cloudflare Pages (primary), Vercel (secondary)
 
 ### Dual-Brand System
@@ -53,11 +54,10 @@ npm run dev
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build with search indexing |
-| `npm run preview` | Preview production build locally |
-| `npm run dev:content` | Test server-side rendering with Wrangler |
-| `npm run index` | Rebuild search index only |
+| `npm run dev` | Start development server with host access |
+| `npm run build` | Production build with search indexing (4GB memory) |
+| `npm run preview` | Preview production build via Wrangler |
+| `npm run astro` | Run Astro CLI commands |
 
 ### CMS Development
 
@@ -75,10 +75,11 @@ npm run deploy       # Deploy Studio to Sanity hosting
 ```
 src/
 ├── components/          # Reusable UI components
-├── layouts/            # Brand-specific layout templates
-├── pages/              # Route pages and API endpoints
-├── lib/                # Utilities, CMS queries, animations
+├── layouts/            # Brand-specific layout templates  
+├── pages/              # Route pages with server/static rendering
+├── lib/                # Utilities, CMS queries, cached content, animations
 ├── enums/              # TypeScript enums (brands, locales)
+├── animation/          # GSAP and viewport animation components
 └── content.config.js   # Content collections configuration
 
 domaine-cms/
@@ -124,15 +125,19 @@ Content localization handled through:
 
 ### Search
 - **Pagefind** for client-side search
-- Brand-filtered results
-- Automatic indexing during build process
+- Brand-filtered results  
+- Automatic indexing during build process via `prebuild` script
 
-### Performance Features
-- Static site generation by default
-- Image optimization via Sanity CDN
-- Code splitting and lazy loading
-- GSAP for performant animations
-- Lenis smooth scrolling
+### Performance Optimizations
+- **Static site generation** by default with hybrid rendering
+- **Optimized CMS queries** with explicit field selection (no spread operators)
+- **Parallel database queries** using `Promise.all()` 
+- **Cached content system** via `src/lib/cached-content.js`
+- **Image optimization** via Sanity CDN and `astro-sanity-picture`
+- **Timer cleanup** for client-side intervals (prevents CPU spikes)
+- **Code splitting** and lazy loading
+- **GSAP animations** with proper licensing
+- **Lenis smooth scrolling** with managed cleanup
 
 ## 🚀 Deployment
 
@@ -145,9 +150,10 @@ Content editors can deploy directly from Sanity Studio using the Vercel Deploy p
 
 ### Environment Variables
 Key variables for deployment:
-- `PUBLIC_SANITY_API_READ_TOKEN`: CMS read access
-- `SERVER_RENDERING_ENABLED`: Toggle SSR mode
+- `PUBLIC_SANITY_API_READ_TOKEN`: Sanity API access token
+- `PUBLIC_SANITY_VISUAL_EDITING_ENABLED`: Enable/disable visual editing mode
 - `HUBSPOT_*`: Form integration credentials
+- `GREENSOCK_AUTH_TOKEN`: GSAP licensing token
 
 ## 📧 Contact & Support
 

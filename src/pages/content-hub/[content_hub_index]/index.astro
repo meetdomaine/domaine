@@ -1,0 +1,134 @@
+---
+import { sanityClient } from "sanity:client";
+import LayoutDomaine from "../../../layouts/Layout-Domaine.astro";
+import { Locales } from "../../../enums/locales";
+import { getTranslationString } from "../../../lib/translations";
+import { globalSectionsFields, imageFields, videoFields } from "../../../lib/cms-queries";
+import { imageBaseFields } from "../../../lib/cms-queries";
+import SectionTextMedia from "../../../components/global/sections/section-TextMedia.astro";
+import { Brands } from "../../../enums/brands";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import AtomButton from "../../../components/global/atoms/atom-button.astro";
+import SectionTextMediaBlocks from "../../../components/global/sections/section-TextMediaBlocks.astro";
+
+const { content_hub_index } = Astro.params;
+
+const content = await sanityClient.fetch(
+  `*[_type == "type_contentHub-index" && slug.current == '${content_hub_index}'][0]{
+    title,
+    slug,
+    heading,
+    subheading,
+    description,
+    button,
+    colorScheme,
+    backgroundColor,
+    contentPagesEyebrow,
+    contentPagesHeading,
+    "pages": *[_type == "type_contentHub" && contentHubIndex->slug.current == '${content_hub_index}']{
+      title,
+      slug,
+      thumbnail{${videoFields},${imageFields}},
+      excerpt,
+      buttonLabel,
+      orderRank
+    } | order(orderRank),
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+);
+console.log(content.pages[0]);
+if (!content) return Astro.redirect("/404");
+---
+<LayoutDomaine
+  title="Content Hub" description="Content Hub"
+  locale={Locales.EN}
+>
+    <!-- {content.pages.map((page) => (
+        <a href={`/content-hub/${content_hub_index}/${page.slug}`}>{getTranslationString(page.title.text)}</a>
+    ))} -->
+    <section class="hero" data-color-scheme={content.colorScheme} style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}>
+      <div class="section-title">
+        <h1 class="h5">{getTranslationString(content.title.text)}</h1>
+        <h2 class="h1">{getTranslationString(content.heading.text)}</h2>
+      </div>
+      <div class="section-content">
+        <p class="h4">{getTranslationString(content.subheading.text)}</p>
+        <p>{getTranslationString(content.description.text)}</p>
+        {content.button?.label && content.button?.url &&
+          <AtomButton 
+              text={getTranslationString(content.button.label.text, Locales.EN)}
+              url={getRelativeLocaleUrl(Locales.EN, content.button.url)}
+              newTab={content.button.newTab}
+              style="primary"
+              icon="arrow-diagonal"
+          />
+      }
+      </div>
+    </section>
+
+    <SectionTextMediaBlocks
+      section={{
+        eyebrow: content.contentPagesEyebrow,
+        heading: content.contentPagesHeading,
+        blocks: content.pages.map((page) => ({
+          heading: page.title,
+          subheading: page.excerpt,
+          media: page.thumbnail,
+          button: {
+            label: page.buttonLabel,
+            url: `/content-hub/${content_hub_index}/${page.slug.current}`
+          }
+        }))
+      }}
+      brand={Brands.DOMAINE}
+      locale={Locales.EN}
+    />
+
+    <!-- <SectionTextMedia
+      section={
+        "eyebrow" content.globalSections.sections[0].eyebrow,
+        "heading": content.globalSections.sections[0].heading,
+        "subheading": content.globalSections.sections[0].subheading,
+        "button": content.globalSections.sections[0].button,
+        "bulletPoints": content.globalSections.sections[0].bulletPoints,
+        "layout": content.globalSections.sections[0].layout,
+        "colorScheme": content.globalSections.sections[0].colorScheme,
+        "largeText": content.globalSections.sections[0].largeText,
+      }
+      brand={Brands.DOMAINE}
+      locale={Locales.EN}
+    /> -->
+</LayoutDomaine>
+
+<style>
+  .hero {
+    padding-inline: var(--page-margin);
+    padding-block: calc(var(--header-height) * 2) var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-lg);
+
+    .section-title {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      max-width: 50rem;
+    }
+
+    .section-content {
+      max-width: 40rem;
+      align-self: flex-end;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2xs);
+
+      .button {
+        margin-top: var(--space-xs);
+      }
+    }
+  }
+</style>

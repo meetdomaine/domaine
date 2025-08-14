@@ -81,6 +81,8 @@ import snippet_localeText from "./snippets/snippet_locale-text.js";
 import snippet_localeLinkList from "./snippets/snippet_locale-link-list.js";
 import snippet_localeSEOFields from "./snippets/snippet_locale-SEO-fields.js";
 import snippet_localeRichContent from "./snippets/snippet_locale-rich-content.js";
+import type_contentHub from "./contentHub/type_contentHub.js";
+import type_contentHubIndex from "./contentHub/type_contentHub-index.js";
 
 
 export const schemaTypes = [
@@ -100,6 +102,8 @@ export const schemaTypes = [
     type_teamDepartment,
     type_agencyBrand,
     type_event,
+    type_contentHubIndex,
+    type_contentHub,
 
     page_aboutDomaine,
     page_aboutStudio,

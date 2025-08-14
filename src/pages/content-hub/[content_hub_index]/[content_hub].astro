@@ -1,0 +1,30 @@
+---
+import { sanityClient } from "sanity:client";
+import { Locales } from "../../../enums/locales";
+import LayoutDomaine from "../../../layouts/Layout-Domaine.astro";
+import { globalSectionsFields } from "../../../lib/cms-queries";
+import { imageBaseFields } from "../../../lib/cms-queries";
+
+const { content_hub_index, content_hub } = Astro.params;
+
+const contentHubContent = await sanityClient.fetch(
+  `*[_type == "type_contentHub" && slug.current == '${content_hub}']{
+    title,
+    slug,
+    contentHubIndex->{
+      title,
+    },
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} },
+  }[0]`
+);
+// console.log(contentHubContent);
+if (!contentHubContent || contentHubContent.contentHubIndex != content_hub_index) return Astro.redirect("/404");
+---
+<LayoutDomaine 
+  title="Content Hub" 
+  description="Content Hub"
+  locale={Locales.EN}
+>
+    <h1>Content Hub Page</h1>
+</LayoutDomaine>

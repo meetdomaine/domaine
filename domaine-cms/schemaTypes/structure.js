@@ -13,6 +13,9 @@ import {
     // iconClientStages, 
     iconClients, 
     iconContact, 
+    iconContentHub, 
+    iconContentHubIndex, 
+    iconContentHubPage, 
     iconEvents, 
     iconFooter, 
     iconHeader, 
@@ -44,6 +47,9 @@ import {
     // labelClientStages, 
     labelClients, 
     labelContact, 
+    labelContentHub, 
+    labelContentHubIndex, 
+    labelContentHubPage, 
     labelEvents, 
     labelFooter, 
     labelHeader, 
@@ -398,6 +404,31 @@ export const structure = (S, context) =>
                         type: 'type_partner',
                         title: labelPartners,
                         icon: iconPartners,
+                        S, 
+                        context
+                    }),
+                ])
+            ),
+        S.listItem()
+            .title(labelContentHub)
+            .icon(iconContentHub)
+            .child(
+                S.list()
+                .title(labelContentHub)
+                .items([
+                    S.listItem()
+                        .title(`${labelContentHubIndex}`)
+                        .icon(iconContentHubIndex)
+                        .child(
+                            S.document()
+                            .schemaType('type_contentHub-index')
+                            .documentId('type_contentHub-index')
+                            .title(`${labelContentHubIndex}`)
+                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_contentHub',
+                        title: labelContentHubPage,
+                        icon: iconContentHubPage,
                         S, 
                         context
                     }),
