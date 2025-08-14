@@ -11,7 +11,7 @@ import { imageBaseFields } from '../../../lib/cms-queries';
 
 const { post, category } = Astro.params
 
-const content =sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
+const content = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
     title,
     heading,
     excerpt,
@@ -39,8 +39,8 @@ const content =sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name =
     metafields{ title, description, image{${imageBaseFields}} },
 }`
 )
-
-if (!content || content.category.slug.current !== category) return Astro.redirect('/404')
+console.log(content)
+if (!content || !content.category || content.category.slug.current !== category) return Astro.redirect('/404')
 ---
 <LayoutBlogPost
   content={content}
