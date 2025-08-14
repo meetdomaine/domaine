@@ -4,23 +4,20 @@ import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro'
 import { Brands } from '../../../../enums/brands';
 import { imageBaseFields, projectGridFields } from '../../../../lib/cms-queries';
 import { loadQuery } from '../../../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { feature } = Astro.params
-const { data: featureContent } = await loadQuery({
-    query: `
-    *[_type == "type_projectFeature" && defined(*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && references(^._id) ][0]) && slug.current == '${feature}'][0]{
+const featureContent = await sanityClient.fetch(`
+    *[_type == "type_projectFeature" && slug.current == '${feature}'][0]{
         _id,
         title,
         excerpt,
         slug, 
-        "hasContent": {
-        "${Brands.STUDIO}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && references(^._id)][0]),
-        },
-        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && ^.slug.current in features[]->slug.current ]{${projectGridFields}} | order(orderRank),
+        "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
         metafields{ title, description, image{${imageBaseFields}} },
     }`
-})
-if (!featureContent) return Astro.redirect('/404')
+)
+if (!featureContent || featureContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex 
     content={featureContent}

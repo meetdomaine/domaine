@@ -1,7 +1,12 @@
 ---
+// STATIC ROUTE
+import { Locales } from "../../../enums/locales";
 import { Brands } from "../../../enums/brands";
 import LayoutStudioServicesIndex from "../../../layouts/Layout-Studio_ServicesIndex.astro";
+
+export const prerender = true // Make page static so it doesn't refetch on each page load
 ---
 <LayoutStudioServicesIndex
   brand={Brands.STUDIO}
+  locale={Locales.EN}
 />

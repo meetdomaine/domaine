@@ -12,7 +12,6 @@ const { content, locale } = Astro.props
     description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     locale={locale}
-    theme="dark"
     searchExposed={true}
     showPreloader={content.showPreloader}
 >

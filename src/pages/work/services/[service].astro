@@ -8,12 +8,14 @@ import { getCollection } from 'astro:content';
 
 const { service } = Astro.params
 const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
-    ...,
+    _id,
+    title,
+    slug,
     isHidden,
     excerpt,
     description,
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
-    agencyBrands[]->{..., slug, name},
+    agencyBrands[]->{ _id, slug, name},
   }`
 )
 if (!serviceContent || serviceContent.projects.length === 0) return Astro.redirect('/404')
