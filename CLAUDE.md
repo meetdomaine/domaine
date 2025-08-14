@@ -23,13 +23,10 @@ This is a dual-brand Astro website for Domaine Agency that serves both "Domaine"
 
 ```bash
 # Main development
-npm run dev              # Start dev server at localhost:4321
-npm run build            # Production build with pagefind indexing
-npm run preview          # Preview production build
-npm run index            # Rebuild pagefind search index
-
-# Content preview with server-side rendering
-npm run dev:content      # Build + serve via Wrangler for testing SSR
+npm run dev              # Start dev server at localhost:4321 with host access
+npm run build            # Production build with search indexing (uses 4GB memory)
+npm run preview          # Preview production build via Wrangler
+npm run astro            # Run Astro CLI commands
 
 # CMS development (from domaine-cms/)
 cd domaine-cms
@@ -40,6 +37,13 @@ npm run deploy           # Deploy Studio to Sanity
 
 ## Code Quality & Standards
 
+### Performance & CPU Optimization
+- **CRITICAL**: Never use `setInterval()` without proper cleanup - use `clearInterval()` in cleanup handlers
+- **CRITICAL**: Always avoid spread operators (`...`) in Sanity queries - use explicit field selection
+- Use `Promise.all()` for parallel database queries instead of sequential `await` calls
+- Prefer server-side filtering in Sanity queries over client-side JavaScript filtering
+- Use lightweight field queries (like `blogCardFields`) for list views instead of full content queries
+
 ### CMS Code Quality
 The CMS has linting and formatting configured:
 - ESLint with Sanity Studio config (`@sanity/eslint-config-studio`)
@@ -48,14 +52,14 @@ The CMS has linting and formatting configured:
 
 ## CMS Architecture
 
-### Content Collections
-The site fetches all CMS data at build time via Sanity client integration. Key content types:
-- `services`, `serviceGroups`, `serviceTypes`: Service hierarchy
-- `projects`: Case studies with brand filtering
-- `blogPosts`, `blogCategories`: Blog content
-- `partners`, `partnerTiers`: Partner ecosystem
-- `pages`: General/marketing pages
-- `brandSettings`: Brand-specific configurations
+### Cached Content System
+All CMS data is cached via `src/lib/cached-content.js` functions:
+- `getServiceTypes()`, `getServiceGroups()`, `getServices()`: Service hierarchy
+- `getProjects()`, `getProjectFeatures()`, `getProjectIndustries()`: Project/case study data
+- `getBlogPosts()`, `getBlogCategories()`: Blog content with brand filtering
+- `getPartners()`: Partner ecosystem data
+- `getEvents()`, `getCareers()`: Event and career listings
+- `getBrandSettings()`: Brand-specific configurations
 
 ### Schema Organization
 Sanity schemas in `domaine-cms/schemaTypes/` are organized by:
@@ -65,9 +69,10 @@ Sanity schemas in `domaine-cms/schemaTypes/` are organized by:
 - `snippets/`: Reusable field groups with internationalization support
 
 ### Content Queries
-- CMS queries defined in `src/lib/cms-queries.js`
+- CMS queries defined in `src/lib/cms-queries.js` with optimized field selections
 - Build-time data fetching via `src/lib/sanity-load-query.ts`
 - Image optimization through `astro-sanity-picture`
+- **Performance**: Use specific field queries (e.g., `blogCardFields`, `projectGridFields`) instead of full content for list views
 
 ## Rendering Strategy
 
@@ -79,40 +84,48 @@ The site uses conditional rendering modes:
 
 ## Environment Variables
 
-Key environment variables (see `.env`):
-- `PUBLIC_SANITY_API_READ_TOKEN`: Sanity API access
-- `PUBLIC_SANITY_VISUAL_EDITING_ENABLED`: Enable/disable visual editing
-- `SERVER_RENDERING_ENABLED`: Toggle between static/server rendering
+Key environment variables:
+- `PUBLIC_SANITY_API_READ_TOKEN`: Sanity API access token
+- `PUBLIC_SANITY_VISUAL_EDITING_ENABLED`: Enable/disable visual editing mode
 - `HUBSPOT_*`: Form integration credentials
-- `GREENSOCK_AUTH_TOKEN`: GSAP licensing
+- `GREENSOCK_AUTH_TOKEN`: GSAP licensing token
 
 ## Deployment
 
 - **Primary**: Cloudflare Pages (automatic deploys from `staging`/`master` branches)
-- **Secondary**: Vercel (GitHub integration for `staging.meetdomaine.com` and `meetdomaine.com`)
+- **Secondary**: Vercel (GitHub integration as backup)
 - Content deploys can be triggered directly from Sanity Studio
+- Build process includes search indexing and asset optimization
 
 ## Animation & Interactions
 
-- GSAP for complex animations (`src/lib/gsap.js`)
-- Lenis for smooth scrolling (`src/lib/lenis.js`)
-- View animations via `src/animation/ViewportAnimation.astro`
+- **GSAP**: Complex animations (`src/lib/gsap.js`) - requires auth token
+- **Lenis**: Smooth scrolling (`src/lib/lenis.js`) - managed cleanup required
+- **ViewportAnimation**: Component-based animations (`src/animation/ViewportAnimation.astro`)
+- **Timer Functions**: Local time displays (`src/lib/get-local-time.ts`) - **CRITICAL**: Always use cleanup functions
 
 ## Search
 
-- Pagefind for static site search
-- Indexes built during production build process
-- Search components reference collections via brand filtering
+- **Pagefind**: Static site search with build-time indexing
+- Search index built during `npm run build` via `prebuild` script
+- Brand-specific filtering integrated into search results
 
 ## Internationalization
 
 - Multi-locale support: English (default), German (`de`), Dutch (`nl`)
-- Locale-specific content snippets in CMS schemas
+- Configured in `astro.config.mjs` with locale routing
 - Translation utilities in `src/lib/translations.js`
+- Locale-specific content snippets in CMS schemas
 
 ## Technical Requirements
 
 - **Node.js**: >= 22.13.1 (specified in package.json engines)
-- **Framework**: Astro 5.8.0 with hybrid rendering
-- **UI Libraries**: SolidJS for interactive components, React for CMS
+- **Framework**: Astro 5.8.0 with hybrid rendering and i18n
+- **Adapters**: Cloudflare Pages (primary), Vercel (secondary)
+- **UI Libraries**: 
+  - SolidJS for interactive client components (`src/**/*`)
+  - React for CMS admin interface (`domaine-cms/**/*`)
 - **TypeScript**: Full TypeScript support with JSX preserve mode
+- **CMS**: Sanity with Visual Editing, CDN caching, and build webhooks
+- **Icons**: Astro Icon with custom icon set
+- **Image Processing**: Astro Sanity Picture for optimization

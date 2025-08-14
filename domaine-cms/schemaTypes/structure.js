@@ -12,7 +12,7 @@ import {
     iconBrandSecondary, 
     // iconClientStages, 
     iconClients, 
-    iconContact, 
+    iconContact,
     iconEvents, 
     iconFooter, 
     iconHeader, 
@@ -27,6 +27,9 @@ import {
     iconPreloader, 
     iconProjectFeatures, 
     iconProjects, 
+    iconResource, 
+    iconResourceIndex, 
+    iconResourcePage, 
     iconSEO, 
     iconServiceGroups, 
     iconServiceTypes, 
@@ -42,8 +45,7 @@ import {
     labelBrandPrimary, 
     labelBrandSecondary, 
     // labelClientStages, 
-    labelClients, 
-    labelContact, 
+    labelClients,
     labelEvents, 
     labelFooter, 
     labelHeader, 
@@ -58,6 +60,9 @@ import {
     labelPreloader, 
     labelProjectFeatures, 
     labelProjects, 
+    labelResource, 
+    labelResourceIndex, 
+    labelResourcePage, 
     labelSEO, 
     labelServiceGroups, 
     labelServiceTypes, 
@@ -398,6 +403,31 @@ export const structure = (S, context) =>
                         type: 'type_partner',
                         title: labelPartners,
                         icon: iconPartners,
+                        S, 
+                        context
+                    }),
+                ])
+            ),
+        S.listItem()
+            .title(labelResource)
+            .icon(iconResource)
+            .child(
+                S.list()
+                .title(labelResource)
+                .items([
+                    S.listItem()
+                        .title(`${labelResourceIndex}`)
+                        .icon(iconResourceIndex)
+                        .child(
+                            S.document()
+                            .schemaType('type_resources-index')
+                            .documentId('type_resources-index')
+                            .title(`${labelResourceIndex}`)
+                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_resource',
+                        title: labelResourcePage,
+                        icon: iconResourcePage,
                         S, 
                         context
                     }),
