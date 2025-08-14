@@ -54,7 +54,7 @@ if (!content) return Astro.redirect("/404");
         data-animate-viewport="true" 
         data-animation="fade-up"
       >
-        <h1 class="h5">{getTranslationString(content.title.text)}</h1>
+        <h1 class="h5"><span class="backlink">RESOURCE /&nbsp;</span>{getTranslationString(content.title.text)}</h1>
         <h2 class="h1">{getTranslationString(content.heading.text)}</h2>
       </div>
       <div 
@@ -133,8 +133,13 @@ if (!content) return Astro.redirect("/404");
     .section-title {
       display: flex;
       flex-direction: column;
-      gap: var(--space-xs);
+      gap: var(--space-sm);
       max-width: 50rem;
+
+      .backlink {
+        /* color: var(--color-foreground-secondary); */
+        color: color-mix(in srgb, var(--color-background) 50%, var(--color-foreground));
+      }
     }
 
     .section-content {
