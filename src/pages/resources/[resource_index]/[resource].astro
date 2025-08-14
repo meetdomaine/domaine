@@ -2,29 +2,88 @@
 import { sanityClient } from "sanity:client";
 import { Locales } from "../../../enums/locales";
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro";
-import { globalSectionsFields } from "../../../lib/cms-queries";
+import { globalSectionsFields, imageFields, videoFields } from "../../../lib/cms-queries";
 import { imageBaseFields } from "../../../lib/cms-queries";
+import { getTranslationString } from "../../../lib/translations";
+import SectionGlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
+import { Brands } from "../../../enums/brands";
+import AtomSanityMedia from "../../../components/global/atoms/atom-sanityMedia.astro";
 
 const { resource_index, resource } = Astro.params;
 
-const resourceContent = await sanityClient.fetch(
-  `*[_type == "type_contentHub" && slug.current == '${resource}']{
+const content = await sanityClient.fetch(
+  `*[_type == "type_resource" && slug.current == '${resource}'][0]{
     title,
+    heading,
     slug,
-    contentHubIndex->{
+    thumbnail{${videoFields},${imageFields}},
+    resourcesIndex->{
       title,
+      slug
     },
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
-  }[0]`
+  }`
 );
-// console.log(contentHubContent);
-if (!resourceContent || resourceContent.contentHubIndex != resource_index) return Astro.redirect("/404");
+console.log(content);
+if (!content || content.resourcesIndex.slug.current != resource_index) return Astro.redirect("/404");
 ---
 <LayoutDomaine 
   title="Content Hub" 
   description="Content Hub"
   locale={Locales.EN}
 >
-    <h1>Content Hub Page</h1>
+  <section class="hero"> 
+    <div class="section-title">
+      <a href={`/resources/${resource_index}`} class="backlink h5">{getTranslationString(content.resourcesIndex.title)}</a>
+      <h1 class="">{getTranslationString(content.heading ? content.heading : content.title)}</h1>
+    </div>
+    <div class="section-media">
+      <AtomSanityMedia 
+        image={content.thumbnail.image}
+        video={content.thumbnail.video}
+        sizes="50vw"
+      />
+    </div>
+  </section>
+
+  {content.globalSections?.sections.map((section, i) => (
+    <SectionGlobalSections 
+      brand={Brands.DOMAINE}
+      locale={Locales.EN}
+      section={section}
+      key={i} 
+    />
+  ))}
 </LayoutDomaine>
+
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--spacing-small);
+    margin-block: calc(var(--header-height) * 1) 0;
+    margin-inline: var(--page-margin);
+    padding-inline: var(--page-margin);
+    padding-block: var(--space-md);
+    gap: var(--space-sm);
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-md);
+
+    .section-title {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .section-media {
+      flex: 0 0 20rem;
+    }
+
+    .backlink {
+      text-decoration: none;
+    }
+  }
+</style>

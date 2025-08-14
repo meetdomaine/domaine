@@ -19,12 +19,14 @@
     padding-inline: var(--space-xs);
     padding-block: var(--space-xs);
     overflow: hidden;
+    pointer-events: none;
 }
 
 .searchMenu:popover-open {
     translate: -50% var(--header-height);
     display: flex;
     opacity: 1;
+    pointer-events: auto;
 }
 
 .searchMenu::backdrop {
