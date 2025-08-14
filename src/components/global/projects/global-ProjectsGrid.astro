@@ -4,10 +4,11 @@ const { projects, heading, locale } = Astro.props
 ---
 <div class="projects-grid">
     {heading && <h2>{heading}</h2>}
-    {projects.map((project) => (
+    {projects.map((project, i) => (
         <GlobalProjectCard
             project={project}
             locale={locale}
+            eager={i < 3 ? true : false}
         />
     ))}
 </div>

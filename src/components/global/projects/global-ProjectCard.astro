@@ -11,9 +11,10 @@ import { getEnv } from '../../../lib/getEnv';
 interface Props {
   project: ProjectCard;
   locale?: string;
+  eager?: boolean;
 }
 
-const { project, locale } = Astro.props;
+const { project, locale, eager } = Astro.props;
 ---
 
 <a
@@ -28,6 +29,7 @@ const { project, locale } = Astro.props;
         aspectRatio={3 / 4}
         sizes="(width <= 768px) 50vw, 33vw"
         maxWidth={960}
+        eager={eager}
       />
     </div>
     {project.client?.logo && (
