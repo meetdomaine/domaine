@@ -8,7 +8,10 @@ import { getCollection } from 'astro:content';
 
 const { industry } = Astro.params
 const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && slug.current == '${industry}'][0]{ 
-    ...,
+    _id,
+    title,
+    slug,
+    description,
     excerpt,
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },

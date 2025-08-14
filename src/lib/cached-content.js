@@ -233,7 +233,13 @@ export const getProjectIndustries = async (brand) => {
 export const getProjectPageSettings = async (brand) => {
   if (_projectPageSettings[brand]) return _projectPageSettings[brand]
   const projectsIndexId = brand === Brands.STUDIO ? 'page_projects-index-studio' : 'page_projects-index-domaine'
-  const data = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == '${projectsIndexId}'][0]`)
+  const data = await sanityClient.fetch(`*[_type == "page_projects-index" && _id == '${projectsIndexId}'][0]{
+    _id,
+    title,
+    heading,
+    subheading,
+    metafields{ title, description, image{${imageBaseFields}} }
+  }`)
   _projectPageSettings[brand] = data
   return data
 }
