@@ -56,6 +56,7 @@ export default defineType({
       title: 'Heading',
       type: 'snippet_locale-string',
       group: 'hero',
+      description: 'Optional override for title in hero section.',
     }),
     defineField({
       name: 'thumbnail',
