@@ -34,7 +34,6 @@ const projectContent = await sanityClient.fetch(`*[_type == "type_project" && is
         orderRank,
     }[0]`
   )
-console.log(projectContent.awards)
 if (projectContent === null) return Astro.redirect('/404')
 ---
 <LayoutProject 

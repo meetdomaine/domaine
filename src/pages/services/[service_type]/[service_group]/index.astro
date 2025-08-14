@@ -9,39 +9,35 @@ import { imageFields } from "../../../../lib/cms-queries";
 
 const { service_type, service_group } = Astro.params
 
-const [ serviceType, serviceGroupContent ] = await Promise.all([
-  sanityClient.fetch(`*[_type == "type_serviceType" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_type}'][0]{ slug }`),
-  sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+  title,
+  slug,
+  isHidden,
+  excerpt,
+  description,
+  formHeading,
+  formText,
+  hubspotFormId,
+  orderRank,
+  images[]{${imageFields}},
+  agencyBrands[]->{ _id, name, slug },
+  serviceType->{ _id, title, slug, formHeading, formText, hubspotFormId },
+  "services": *[_type == "type_service" && references(^._id)]{
     _id,
     title,
     slug,
     isHidden,
     excerpt,
     description,
-    formHeading,
-    formText,
-    hubspotFormId,
     orderRank,
-    images[]{${imageFields}},
     agencyBrands[]->{ _id, name, slug },
-    serviceType->{ _id, title, slug, formHeading, formText, hubspotFormId },
-    "services": *[_type == "type_service" && references(^._id)]{
-      _id,
-      title,
-      slug,
-      isHidden,
-      excerpt,
-      description,
-      orderRank,
-      agencyBrands[]->{ _id, name, slug },
-      serviceGroup->{ _id, title, slug, serviceType->{ _id, title, slug } },
-      metafields{ title, description, image{${imageBaseFields}} }
-    } | order(orderRank),
-    metafields{ title, description, image{${imageBaseFields}} },
-    pageSectionsDomaine[]{${globalSectionsFields}}
-  }`)
-])
-if (!serviceGroupContent || !serviceType) return Astro.redirect('/404')
+    serviceGroup->{ _id, title, slug, serviceType->{ _id, title, slug } },
+    metafields{ title, description, image{${imageBaseFields}} }
+  } | order(orderRank),
+  metafields{ title, description, image{${imageBaseFields}} },
+  pageSectionsDomaine[]{${globalSectionsFields}}
+}`)
+if (!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) return Astro.redirect('/404')
 ---
 <LayoutServiceGroup
     content={serviceGroupContent}

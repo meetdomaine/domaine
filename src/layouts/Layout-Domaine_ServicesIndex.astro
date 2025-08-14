@@ -8,7 +8,7 @@ import { loadQuery } from "../lib/sanity-load-query";
 
 const { data: pageSettings } = await loadQuery({ 
   query: `*[_type == "page_services-index-domaine"][0]{
-    ...,  
+    _id,
     title,
     heading,
     images[]{${imageFields}},

@@ -8,30 +8,22 @@ import { imageBaseFields } from '../../../../lib/cms-queries';
 
 const { service, service_group, service_type } = Astro.params
 
-const [ serviceType, serviceGroup, serviceContent ] = await Promise.all([
-  sanityClient.fetch(`*[_type == "type_serviceType" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_type}'][0]{ slug }`),
-  sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{ slug }`),
-  sanityClient.fetch(`*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
-    _id,
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service}'][0]{
     title,
     slug,
-    isHidden,
     excerpt,
     description,
     formHeading,
     formText,
     hubspotFormId,
-    orderRank,
-    agencyBrands[]->{ _id, name, slug },
+    agencyBrands[]->{ name },
     serviceGroup->{
-        _id,
         title,
         slug,
         formHeading,
         formText,
         hubspotFormId,
         serviceType->{
-            _id,
             title,
             slug,
             formHeading,
@@ -41,9 +33,9 @@ const [ serviceType, serviceGroup, serviceContent ] = await Promise.all([
     },
     pageSectionsDomaine[]{${globalSectionsFields}},
     metafields{ title, description, image{${imageBaseFields}} },
-  }`)
-])
-if (!serviceContent || !serviceGroup || !serviceType) return Astro.redirect('/404')
+  }`
+)
+if (!serviceContent || serviceContent.serviceGroup.slug.current !== service_group || serviceContent.serviceGroup.serviceType.slug.current !== service_type) return Astro.redirect('/404')
 ---
 <LayoutService 
     content={serviceContent}

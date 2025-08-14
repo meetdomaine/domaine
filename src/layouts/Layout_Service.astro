@@ -12,14 +12,14 @@ import SectionGlobalSections from "../components/global/sections/section-GlobalS
 import { blogCardFields, projectGridFields } from "../lib/cms-queries"
 import { sanityClient } from "sanity:client"
 
-export const prerender = false // Make Service content static so it doesn't refetch on each page load
-
 const { content, locale, brand, activePath } = Astro.props;
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 
-const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{${projectGridFields} } | order(orderRank)`)
-const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{${blogCardFields} }|order(postDate desc)`)
+const [ relatedProjects, relatedPosts ] = await Promise.all([
+  sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{${projectGridFields} } | order(orderRank)`),
+  sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->slug.current ]{${blogCardFields} }|order(postDate desc)`)
+])
 ---
 <BrandLayout
   title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getTranslationString(content.serviceGroup.title, locale)} | ${getTranslationString(content.serviceGroup.serviceType.title, locale)} ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
