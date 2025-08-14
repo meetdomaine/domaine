@@ -3,19 +3,21 @@ import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro'
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields, projectsGridQuery } from '../../../../lib/cms-queries';
 import { loadQuery } from '../../../../lib/sanity-load-query';
+import { sanityClient } from 'sanity:client';
 
 const { service } = Astro.params
-const { data: serviceContent } = await loadQuery({
-    query: `*[_type == "type_service" && '${Brands.STUDIO}' in agencyBrands[]->name && slug.current == '${service}'][0]{
-    ...,
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.STUDIO}' in agencyBrands[]->name && slug.current == '${service}'][0]{
+    _id,
+    title,
+    slug,
     isHidden,
     excerpt,
     description,
-    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && ^.slug.current in services[]->slug.current ]{${projectGridFields}} | order(orderRank),
-    agencyBrands[]->{..., slug, name},
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
+    agencyBrands[]->{ _id, slug, name},
   }`
-})
-if (!serviceContent) return Astro.redirect('/404')
+)
+if (!serviceContent || serviceContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={serviceContent}

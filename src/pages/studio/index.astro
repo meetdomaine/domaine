@@ -1,4 +1,5 @@
 ---
+// STATIC ROUTE
 import LayoutStudioHome from "../../layouts/Layout-Studio_Home.astro";
 import { loadQuery } from "../../lib/sanity-load-query";
 import { globalSectionsFields, imageFields, videoFields, imageBaseFields, projectGridFields } from "../../lib/cms-queries";
@@ -15,6 +16,8 @@ const { data: pageSettings } = await loadQuery({
     },
   }`
 })
+
+export const prerender = true // Make page static so it doesn't refetch on each page load
 ---
 <LayoutStudioHome 
     content={pageSettings}

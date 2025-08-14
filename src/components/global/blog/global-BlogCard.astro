@@ -14,9 +14,10 @@ interface Props {
   agencyBrand: any;
   postDate: any;
   locale: string;
+  eager?: boolean;
 }
 
-const { title, series, thumbnailImage, slug, category, agencyBrand, postDate, locale } = Astro.props;
+const { title, series, thumbnailImage, slug, category, agencyBrand, postDate, locale, eager } = Astro.props;
 
 const categoryUrl = `${agencyBrand.slug.current == "/studio" ? "/studio" : ""}/insights/${category.slug.current}`;
 const postUrl = `${categoryUrl}/${slug.current}`;
@@ -37,6 +38,7 @@ const formattedDate = formatDate(postDate);
       image={thumbnailImage.image}
       aspectRatio={3 / 4}
       sizes="30vw"
+      eager={eager}
     />
   </a>
   <div class="card-text">

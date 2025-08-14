@@ -5,15 +5,12 @@ import Footer from '../components/global/global-Footer.astro';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
-import { loadQuery } from '../lib/sanity-load-query';
-import { richContentFields, imageBaseFields } from '../lib/cms-queries';
 import { getEntry } from 'astro:content';
 
 interface Props {
 	title: string,
 	description?: string,
 	image?: string,
-	theme?: string,
     searchFilter?: string,
     activePath?: string,
     searchExposed?: boolean,
@@ -26,11 +23,17 @@ interface Props {
     indexSearch?: boolean;
 }
 
-const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
-const { data: headerSettings} = await getEntry('globalSettingsStudio', 'headerSettings')
-const { data: footerSettings} = await getEntry('globalSettingsStudio', 'footerSettings')
-const { data: brandSettings} = await getEntry('globalSettingsStudio', 'brandSettings')
+const [
+    { data: headerSettings},
+    { data: footerSettings},
+    { data: brandSettings}
+] = await Promise.all([
+    getEntry('globalSettingsStudio', 'headerSettings'),
+    getEntry('globalSettingsStudio', 'footerSettings'),
+    getEntry('globalSettingsStudio', 'brandSettings')
+])
 ---
 <LayoutGlobal
     title={`${title ? title : "Domaine Studio"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -59,13 +62,6 @@ const { data: brandSettings} = await getEntry('globalSettingsStudio', 'brandSett
             brand={Brands.STUDIO}
         />
     }
-
-    <!-- <Header
-        currentBrand={brandSettings}
-        activePath={activePath}
-        searchExposed={searchExposed}
-        brand={Brands.STUDIO}
-    /> -->
 
     <main>
         <slot />

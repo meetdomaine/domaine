@@ -1,12 +1,13 @@
 ---
 import AtomServiceLink from "../atoms/atom-serviceLink.astro"
+import { Brands } from "../../../enums/brands"
 
 const { serviceGroup, brand } = Astro.props
 ---
 <section class="service-group-hero">
     <div class="breadcrumbs">
-        <a class="h5" href={`${brand === "studio" ? "/studio" : ""}/services/`}>Services</a> /
-        <a href={`${brand === "studio" ? "/studio" : ""}/services/${serviceGroup.serviceType.slug.current}`} class="h5">{serviceGroup.serviceType.title}</a>
+        <a class="h5" href={`${brand === Brands.STUDIO ? "/studio" : ""}/services/`}>Services</a> /
+        <a href={`${brand === Brands.STUDIO ? "/studio" : ""}/services/${serviceGroup.serviceType.slug.current}`} class="h5">{serviceGroup.serviceType.title}</a>
     </div>
     <h1>{serviceGroup.title}</h1>
     {serviceGroup.description && <p>{serviceGroup.description}</p>}

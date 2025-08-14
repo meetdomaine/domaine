@@ -1,9 +1,11 @@
 ---
+// STATIC ROUTE
 import StyleguideContent from '../../components/global/styleguide/Styleguide-Content.astro';
 import LayoutStudio from '../../layouts/Layout-Studio.astro';
+
+export const prerender = true // Make page static so it doesn't refetch on each page load
 ---
-<LayoutStudio 
-  theme="dark"
+<LayoutStudio
   title="Styleguide"
   showPreloader={false}
 >
