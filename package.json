@@ -43,7 +43,7 @@
     "react-is": "^19.1.0",
     "sanity": "^3.89.0",
     "sanity-plugin-media": "^2.2.5",
-    "sanity-plugin-mux-input": "^2.3.4",
+    "sanity-plugin-mux-input": "^2.9.0",
     "sanity-plugin-vercel-deploy": "^3.3.4",
     "sanity-plugin-webhooks-trigger": "^0.3.1",
     "solid-devtools": "^0.30.1",

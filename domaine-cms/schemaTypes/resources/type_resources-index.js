@@ -1,11 +1,11 @@
 import {defineField, defineType} from 'sanity'
-import { iconContentHubIndex } from '../variables'
+import { iconResourceIndex } from '../variables'
 
 export default defineType({
-  name: 'type_contentHub-index',
-  title: 'Content Hub Index',
+  name: 'type_resources-index',
+  title: 'Resources Index',
   type: 'document',
-  icon: iconContentHubIndex,
+  icon: iconResourceIndex,
   groups: [
     {
       name: 'hero',

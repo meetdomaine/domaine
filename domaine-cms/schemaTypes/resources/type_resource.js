@@ -1,12 +1,12 @@
 import { orderRankField } from '@sanity/orderable-document-list'
 import {defineField, defineType} from 'sanity'
-import { iconContentHubPage } from '../variables'
+import { iconResource } from '../variables'
 
 export default defineType({
-  name: 'type_contentHub',
-  title: 'Content Hub',
+  name: 'type_resource',
+  title: 'Resource',
   type: 'document',
-  icon: iconContentHubPage,
+  icon: iconResource,
   groups: [
     {
       name: 'hero',
@@ -44,10 +44,10 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'contentHubIndex',
-      title: 'Content Hub',
+      name: 'resourcesIndex',
+      title: 'Resources Index',
       type: 'reference',
-      to: [{type: 'type_contentHub-index'}],
+      to: [{type: 'type_resources-index'}],
       validation: (Rule) => Rule.required(),
       group: 'hero',
     }),
@@ -95,8 +95,16 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'title.text', 
-      // subtitle: 'contentHubIndex->title.text',
-    }
+      title: 'title.text',
+      media: 'thumbnail.image',
+    },
+    // prepare(selection) {
+    //   const {title, subtitle, media} = selection
+    //   const test = subtitle.text
+    //   return {
+    //     title,
+    //     media
+    //   }
+    // }
   },
 })

@@ -12,10 +12,7 @@ import {
     iconBrandSecondary, 
     // iconClientStages, 
     iconClients, 
-    iconContact, 
-    iconContentHub, 
-    iconContentHubIndex, 
-    iconContentHubPage, 
+    iconContact,
     iconEvents, 
     iconFooter, 
     iconHeader, 
@@ -30,6 +27,9 @@ import {
     iconPreloader, 
     iconProjectFeatures, 
     iconProjects, 
+    iconResource, 
+    iconResourceIndex, 
+    iconResourcePage, 
     iconSEO, 
     iconServiceGroups, 
     iconServiceTypes, 
@@ -45,11 +45,7 @@ import {
     labelBrandPrimary, 
     labelBrandSecondary, 
     // labelClientStages, 
-    labelClients, 
-    labelContact, 
-    labelContentHub, 
-    labelContentHubIndex, 
-    labelContentHubPage, 
+    labelClients,
     labelEvents, 
     labelFooter, 
     labelHeader, 
@@ -64,6 +60,9 @@ import {
     labelPreloader, 
     labelProjectFeatures, 
     labelProjects, 
+    labelResource, 
+    labelResourceIndex, 
+    labelResourcePage, 
     labelSEO, 
     labelServiceGroups, 
     labelServiceTypes, 
@@ -410,25 +409,25 @@ export const structure = (S, context) =>
                 ])
             ),
         S.listItem()
-            .title(labelContentHub)
-            .icon(iconContentHub)
+            .title(labelResource)
+            .icon(iconResource)
             .child(
                 S.list()
-                .title(labelContentHub)
+                .title(labelResource)
                 .items([
                     S.listItem()
-                        .title(`${labelContentHubIndex}`)
-                        .icon(iconContentHubIndex)
+                        .title(`${labelResourceIndex}`)
+                        .icon(iconResourceIndex)
                         .child(
                             S.document()
-                            .schemaType('type_contentHub-index')
-                            .documentId('type_contentHub-index')
-                            .title(`${labelContentHubIndex}`)
+                            .schemaType('type_resources-index')
+                            .documentId('type_resources-index')
+                            .title(`${labelResourceIndex}`)
                         ),
                     orderableDocumentListDeskItem({
-                        type: 'type_contentHub',
-                        title: labelContentHubPage,
-                        icon: iconContentHubPage,
+                        type: 'type_resource',
+                        title: labelResourcePage,
+                        icon: iconResourcePage,
                         S, 
                         context
                     }),

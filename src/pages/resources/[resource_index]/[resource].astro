@@ -5,10 +5,10 @@ import LayoutDomaine from "../../../layouts/Layout-Domaine.astro";
 import { globalSectionsFields } from "../../../lib/cms-queries";
 import { imageBaseFields } from "../../../lib/cms-queries";
 
-const { content_hub_index, content_hub } = Astro.params;
+const { resource_index, resource } = Astro.params;
 
-const contentHubContent = await sanityClient.fetch(
-  `*[_type == "type_contentHub" && slug.current == '${content_hub}']{
+const resourceContent = await sanityClient.fetch(
+  `*[_type == "type_contentHub" && slug.current == '${resource}']{
     title,
     slug,
     contentHubIndex->{
@@ -19,7 +19,7 @@ const contentHubContent = await sanityClient.fetch(
   }[0]`
 );
 // console.log(contentHubContent);
-if (!contentHubContent || contentHubContent.contentHubIndex != content_hub_index) return Astro.redirect("/404");
+if (!resourceContent || resourceContent.contentHubIndex != resource_index) return Astro.redirect("/404");
 ---
 <LayoutDomaine 
   title="Content Hub" 

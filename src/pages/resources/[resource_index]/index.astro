@@ -10,11 +10,12 @@ import { Brands } from "../../../enums/brands";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomButton from "../../../components/global/atoms/atom-button.astro";
 import SectionTextMediaBlocks from "../../../components/global/sections/section-TextMediaBlocks.astro";
+import SectionGlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
 
-const { content_hub_index } = Astro.params;
+const { resource_index } = Astro.params;
 
 const content = await sanityClient.fetch(
-  `*[_type == "type_contentHub-index" && slug.current == '${content_hub_index}'][0]{
+  `*[_type == "type_resources-index" && slug.current == '${resource_index}'][0]{
     title,
     slug,
     heading,
@@ -25,7 +26,7 @@ const content = await sanityClient.fetch(
     backgroundColor,
     contentPagesEyebrow,
     contentPagesHeading,
-    "pages": *[_type == "type_contentHub" && contentHubIndex->slug.current == '${content_hub_index}']{
+    "pages": *[_type == "type_resource" && resourcesIndex->slug.current == '${resource_index}']{
       title,
       slug,
       thumbnail{${videoFields},${imageFields}},
@@ -37,7 +38,7 @@ const content = await sanityClient.fetch(
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 );
-console.log(content.pages[0]);
+console.log(content.globalSections);
 if (!content) return Astro.redirect("/404");
 ---
 <LayoutDomaine
@@ -45,7 +46,7 @@ if (!content) return Astro.redirect("/404");
   locale={Locales.EN}
 >
     <!-- {content.pages.map((page) => (
-        <a href={`/content-hub/${content_hub_index}/${page.slug}`}>{getTranslationString(page.title.text)}</a>
+        <a href={`/content-hub/${resource_index}/${page.slug}`}>{getTranslationString(page.title.text)}</a>
     ))} -->
     <section class="hero" data-color-scheme={content.colorScheme} style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}>
       <div class="section-title">
@@ -77,13 +78,22 @@ if (!content) return Astro.redirect("/404");
           media: page.thumbnail,
           button: {
             label: page.buttonLabel,
-            url: `/content-hub/${content_hub_index}/${page.slug.current}`
+            url: `/content-hub/${resource_index}/${page.slug.current}`
           }
         }))
       }}
       brand={Brands.DOMAINE}
       locale={Locales.EN}
     />
+
+    {content.globalSections?.sections.map((section, i) => (
+      <SectionGlobalSections 
+        brand={Brands.DOMAINE}
+        locale={Locales.EN}
+        section={section}
+        key={i} 
+      />
+  ))}
 
     <!-- <SectionTextMedia
       section={
