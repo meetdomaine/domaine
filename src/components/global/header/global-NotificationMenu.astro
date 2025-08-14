@@ -147,7 +147,7 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
 
 <script>
   import { isMobileBreakpoint } from "../../../lib/check-device"
-  import { getIsDaytime, getLocalTime } from "../../../lib/get-local-time"
+  import { getIsDaytime, getLocalTime, clearTimeIntervals } from "../../../lib/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -158,6 +158,7 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
 
   let pageEndOpen = false
   let currentScroll = window.scrollY
+  let timeUpdateInterval: number | null = null
 
   if (!isMobileBreakpoint) {
     window.addEventListener("scroll", (e) => {
@@ -177,30 +178,36 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
     })
   }
 
-  const updateTime = () => {
-      
-      clocks.forEach((clock: HTMLElement) => {
-        let time, hours, minutes, seconds
-        
-        const timezoneId = clock.dataset.timezone
-        const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
-        const timeElement: HTMLElement = clock.querySelector('.time')
+  // Initialize time displays once without intervals
+  const initializeTime = () => {
+    clocks.forEach((clock: HTMLElement) => {
+      const timezoneId = clock.dataset.timezone
+      const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
+      const timeElement: HTMLElement = clock.querySelector('.time')
 
-        time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId} ));
-        hours = time.getHours()
-        minutes = time.getMinutes()
-        seconds = time.getSeconds()
+      // Clear any existing intervals
+      clearTimeIntervals(timeElement)
+      clearTimeIntervals(clock)
 
-        getLocalTime(timeElement, cleanedTimezoneId, 'innerText')
-        getLocalTime(clock, cleanedTimezoneId, 'customProps')
-        getIsDaytime(clock, cleanedTimezoneId)
-        
-      })
-    }
+      // Set up new intervals and store their IDs
+      getLocalTime(timeElement, cleanedTimezoneId, 'innerText')
+      getLocalTime(clock, cleanedTimezoneId, 'customProps')
+      getIsDaytime(clock, cleanedTimezoneId)
+    })
+  }
 
-    if (!isMobileBreakpoint) {
-      setInterval(updateTime, 1000)
-    }
+  if (!isMobileBreakpoint) {
+    initializeTime()
+  }
+
+  // Clean up intervals when page unloads
+  window.addEventListener('beforeunload', () => {
+    clocks.forEach((clock: HTMLElement) => {
+      const timeElement: HTMLElement = clock.querySelector('.time')
+      clearTimeIntervals(timeElement)
+      clearTimeIntervals(clock)
+    })
+  })
   
 </script>
 

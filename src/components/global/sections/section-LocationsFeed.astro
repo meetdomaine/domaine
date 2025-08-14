@@ -45,13 +45,26 @@ const locations = await sanityClient.fetch(`*[_type == "type_location"]{
 </section>
 
 <script>
-import { getLocalTime } from "../../../lib/get-local-time"
+import { getLocalTime, clearTimeIntervals } from "../../../lib/get-local-time"
   window.addEventListener("DOMContentLoaded", () => {
     const sections = Array.from(document.getElementsByClassName('section-locations-feed') as HTMLCollectionOf<HTMLElement>) 
     sections.forEach((section) => {
       const clocks = Array.from(section.getElementsByClassName('location-time') as HTMLCollectionOf<HTMLElement>)
       clocks.forEach((clock) => {
+        // Clear any existing intervals
+        clearTimeIntervals(clock)
         getLocalTime(clock, clock.dataset.timezone, "innerText")
+      })
+    })
+  })
+
+  // Clean up intervals when page unloads
+  window.addEventListener('beforeunload', () => {
+    const sections = Array.from(document.getElementsByClassName('section-locations-feed') as HTMLCollectionOf<HTMLElement>) 
+    sections.forEach((section) => {
+      const clocks = Array.from(section.getElementsByClassName('location-time') as HTMLCollectionOf<HTMLElement>)
+      clocks.forEach((clock) => {
+        clearTimeIntervals(clock)
       })
     })
   })
