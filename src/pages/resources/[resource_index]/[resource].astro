@@ -13,7 +13,7 @@ import IconArrowBack from "../../../icons/arrow-back.svg";
 const { resource_index, resource } = Astro.params;
 
 const content = await sanityClient.fetch(
-  `*[_type == "type_resource" && slug.current == '${resource}'][0]{
+  `*[_type == "type_resource" && slug.current == '${resource}' && !(_id in path("drafts.**"))][0]{
     title,
     heading,
     slug,

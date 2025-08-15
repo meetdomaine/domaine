@@ -15,7 +15,7 @@ import SectionGlobalSections from "../../../components/global/sections/section-G
 const { resource_index } = Astro.params;
 
 const content = await sanityClient.fetch(
-  `*[_type == "type_resources-index" && slug.current == '${resource_index}'][0]{
+  `*[_type == "type_resources-index" && slug.current == '${resource_index}' && !(_id in path("drafts.**"))][0]{
     title,
     slug,
     heading,
@@ -26,7 +26,8 @@ const content = await sanityClient.fetch(
     backgroundColor,
     contentPagesEyebrow,
     contentPagesHeading,
-    "pages": *[_type == "type_resource" && resourcesIndex->slug.current == '${resource_index}']{
+    "pages": *[_type == "type_resource" && resourcesIndex->slug.current == '${resource_index}' && !(_id in path("drafts.**"))]{
+      _id,
       title,
       slug,
       thumbnail{${videoFields},${imageFields}},
@@ -40,6 +41,7 @@ const content = await sanityClient.fetch(
 );
 // console.log(content.globalSections);
 if (!content) return Astro.redirect("/404");
+console.log(content.pages.length);
 ---
 <LayoutDomaine
   title="Content Hub" description="Content Hub"
