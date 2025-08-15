@@ -3,7 +3,7 @@ import { sanityClient } from "sanity:client";
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro";
 import { Locales } from "../../../enums/locales";
 import { getTranslationString } from "../../../lib/translations";
-import { globalSectionsFields, imageFields, videoFields } from "../../../lib/cms-queries";
+import { globalSectionsFields, imageFields, urlFor, videoFields } from "../../../lib/cms-queries";
 import { imageBaseFields } from "../../../lib/cms-queries";
 import SectionTextMedia from "../../../components/global/sections/section-TextMedia.astro";
 import { Brands } from "../../../enums/brands";
@@ -11,6 +11,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import AtomButton from "../../../components/global/atoms/atom-button.astro";
 import SectionTextMediaBlocks from "../../../components/global/sections/section-TextMediaBlocks.astro";
 import SectionGlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
+import { Translations } from "../../../lib/locales";
 
 const { resource_index } = Astro.params;
 
@@ -27,6 +28,7 @@ const content = await sanityClient.fetch(
     contentPagesEyebrow,
     contentPagesHeading,
     "pages": *[_type == "type_resource" && resourcesIndex->slug.current == '${resource_index}']{
+      _id,
       title,
       slug,
       thumbnail{${videoFields},${imageFields}},
@@ -38,12 +40,15 @@ const content = await sanityClient.fetch(
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 );
-// console.log(content.globalSections);
 if (!content) return Astro.redirect("/404");
+
+const LOCALE = Locales.EN
 ---
 <LayoutDomaine
-  title="Content Hub" description="Content Hub"
-  locale={Locales.EN}
+  locale={LOCALE}
+  title={`${content.metafields?.title ? getTranslationString(content.metafields.title, LOCALE) : getTranslationString(content.title, LOCALE)} | ${Translations.RESOURCES.locales[LOCALE] ? Translations.RESOURCES.locales[LOCALE] : Translations.RESOURCES.name}`}
+  description={content.metafields?.description ? getTranslationString(content.metafields.description, LOCALE) : null}
+  image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
 >
     <!-- {content.pages.map((page) => (
         <a href={`/content-hub/${resource_index}/${page.slug}`}>{getTranslationString(page.title.text)}</a>
@@ -67,8 +72,8 @@ if (!content) return Astro.redirect("/404");
         <p>{getTranslationString(content.description.text)}</p>
         {content.button?.label && content.button?.url &&
           <AtomButton 
-              text={getTranslationString(content.button.label.text, Locales.EN)}
-              url={getRelativeLocaleUrl(Locales.EN, content.button.url)}
+              text={getTranslationString(content.button.label.text, LOCALE)}
+              url={getRelativeLocaleUrl(LOCALE, content.button.url)}
               newTab={content.button.newTab}
               style="primary"
               icon="arrow-diagonal"
@@ -92,13 +97,13 @@ if (!content) return Astro.redirect("/404");
         }))
       }}
       brand={Brands.DOMAINE}
-      locale={Locales.EN}
+      locale={LOCALE}
     />
 
     {content.globalSections?.sections.map((section, i) => (
       <SectionGlobalSections 
         brand={Brands.DOMAINE}
-        locale={Locales.EN}
+        locale={LOCALE}
         section={section}
         key={i} 
       />
@@ -116,7 +121,7 @@ if (!content) return Astro.redirect("/404");
         "largeText": content.globalSections.sections[0].largeText,
       }
       brand={Brands.DOMAINE}
-      locale={Locales.EN}
+      locale={LOCALE}
     /> -->
 </LayoutDomaine>
 
