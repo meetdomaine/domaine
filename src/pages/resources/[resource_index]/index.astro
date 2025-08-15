@@ -16,7 +16,7 @@ import { Translations } from "../../../lib/locales";
 const { resource_index } = Astro.params;
 
 const content = await sanityClient.fetch(
-  `*[_type == "type_resources-index" && slug.current == '${resource_index}' && !(_id in path("drafts.**"))][0]{
+  `*[_type == "type_resources-index" && slug.current == '${resource_index}'][0]{
     title,
     slug,
     heading,
@@ -27,7 +27,7 @@ const content = await sanityClient.fetch(
     backgroundColor,
     contentPagesEyebrow,
     contentPagesHeading,
-    "pages": *[_type == "type_resource" && resourcesIndex->slug.current == '${resource_index}' && !(_id in path("drafts.**"))]{
+    "pages": *[_type == "type_resource" && resourcesIndex->slug.current == '${resource_index}']{
       _id,
       title,
       slug,
