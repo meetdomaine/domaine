@@ -2,13 +2,14 @@
 import { sanityClient } from "sanity:client";
 import { Locales } from "../../../enums/locales";
 import LayoutDomaine from "../../../layouts/Layout-Domaine.astro";
-import { globalSectionsFields, imageFields, videoFields } from "../../../lib/cms-queries";
+import { globalSectionsFields, imageFields, urlFor, videoFields } from "../../../lib/cms-queries";
 import { imageBaseFields } from "../../../lib/cms-queries";
 import { getTranslationString } from "../../../lib/translations";
 import SectionGlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
 import { Brands } from "../../../enums/brands";
 import AtomSanityMedia from "../../../components/global/atoms/atom-sanityMedia.astro";
 import IconArrowBack from "../../../icons/arrow-back.svg";
+import { Translations } from "../../../lib/locales";
 
 const { resource_index, resource } = Astro.params;
 
@@ -29,13 +30,18 @@ const content = await sanityClient.fetch(
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 );
-console.log(content);
+// console.log(content);
 if (!content || content.resourcesIndex.slug.current != resource_index) return Astro.redirect("/404");
+
+const LOCALE = Locales.EN
 ---
-<LayoutDomaine 
-  title="Content Hub" 
-  description="Content Hub"
-  locale={Locales.EN}
+<LayoutDomaine
+  title={`${content.metafields?.title ? getTranslationString(content.metafields.title, LOCALE) : getTranslationString(content.title, LOCALE)} | ${getTranslationString(content.resourcesIndex.title, LOCALE)} | ${Translations.RESOURCES.locales[LOCALE] ? Translations.RESOURCES.locales[LOCALE] : Translations.RESOURCES.name}`}
+  description={content.metafields?.description ? getTranslationString(content.metafields.description, LOCALE) : null}
+  image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+  activePath={"/resources"}
+  showPreloader={true}
+  locale={LOCALE}
   searchExposed={false}
 >
   <section 
@@ -59,7 +65,7 @@ if (!content || content.resourcesIndex.slug.current != resource_index) return As
   {content.globalSections?.sections.map((section, i) => (
     <SectionGlobalSections 
       brand={Brands.DOMAINE}
-      locale={Locales.EN}
+      locale={LOCALE}
       section={section}
       key={i} 
     />
@@ -81,7 +87,7 @@ if (!content || content.resourcesIndex.slug.current != resource_index) return As
     padding-inline: var(--page-margin);
     padding-block: var(--space-md);
     gap: var(--space-sm);
-    background-color: var(--background-color, var(--color-background-secondary));
+    background-color: var(--color-background, var(--color-background-secondary));
     /* background-color: var(--color-background-secondary); */
     border-radius: var(--radius-md);
     min-height: 50svh;
