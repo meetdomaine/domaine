@@ -5,9 +5,9 @@ import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
+import vercel from "@astrojs/vercel";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
-import vercel from '@astrojs/vercel';
 
 // Load environment variables
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
@@ -18,7 +18,7 @@ const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 // Get SANITY token from environment
 const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN || env.PUBLIC_SANITY_API_READ_TOKEN;
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
-// console.log(SANITY_API_READ_TOKEN)
+console.log(PUBLIC_SANITY_VISUAL_EDITING_ENABLED ? "VE:ENABLED" : "VE:DISABLED")
 
 export default defineConfig({
   integrations: [
@@ -27,17 +27,18 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: true,
+      useCdn: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true' ? false : true,
       // useCdn: PUBLIC_SANITY_API_READ_TOKEN ? true : false,
       token: PUBLIC_SANITY_API_READ_TOKEN,
       studioBasePath: '/admin',
-      stega: {
+      stega: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true' ? {
         studioUrl: '/admin',
-      },
-      headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
-        'CDN-Cache-Control': 'public, s-maxage=3600',
-      },
+        enabled: true,
+      } : false,
+      // headers: {
+      //   'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
+      //   'CDN-Cache-Control': 'public, s-maxage=3600',
+      // },
     }), 
     solid({
       devtools: true,

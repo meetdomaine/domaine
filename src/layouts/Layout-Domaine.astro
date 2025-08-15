@@ -26,9 +26,10 @@ interface Props {
     marketingHeader?: boolean;
     marketingHeaderButtonLabel?: string;
     indexSearch?: boolean;
+    disableVisualEditing?: boolean;
 }
 
-const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch, disableVisualEditing } = Astro.props;
 
 
 const [
@@ -59,6 +60,7 @@ const [
     showPreloader={showPreloader}
     locale={locale}
     indexSearch={indexSearch}
+    disableVisualEditing={disableVisualEditing}
 >
     {marketingHeader ?
         <GlobalMarketingHeader

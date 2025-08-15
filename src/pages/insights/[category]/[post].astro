@@ -8,37 +8,39 @@ import { imageFields } from '../../../lib/cms-queries';
 import { richContentFields } from '../../../lib/cms-queries';
 import { globalSectionsFields } from '../../../lib/cms-queries';
 import { imageBaseFields } from '../../../lib/cms-queries';
+import { loadQuery } from '../../../lib/sanity-load-query';
 
 const { post, category } = Astro.params
 
-const content = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
-    title,
-    heading,
-    excerpt,
-    _id,
-    slug,
-    isHidden,
-    authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
-    postDate,
-    thumbnailImage{${imageFields}},
-    category->{_id, title, slug}, 
-    body{
-        _type,
-        _key,
-        richContent[]{${richContentFields}},
-        translations{ 
-            ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
-            `"${Locales[locale]}": ${Locales[locale]}[]{ _type, _key, children[]{${richContentFields}} }`
-            )
-        ).join()}
+const { data: content} = await loadQuery({
+    query: `*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
+        title,
+        heading,
+        excerpt,
+        _id,
+        slug,
+        isHidden,
+        authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+        postDate,
+        thumbnailImage{${imageFields}},
+        category->{_id, title, slug}, 
+        body{
+            _type,
+            _key,
+            richContent[]{${richContentFields}},
+            translations{ 
+                ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+                `"${Locales[locale]}": ${Locales[locale]}[]{ _type, _key, children[]{${richContentFields}} }`
+                )
+            ).join()}
+            },
         },
-    },
-    services[]->{_id, title, slug, serviceGroup->{_id, title, slug}},
-    agencyBrand->{slug, name },
-    globalSections{ sections[]{${globalSectionsFields}} },
-    metafields{ title, description, image{${imageBaseFields}} },
-}`
-)
+        services[]->{_id, title, slug, serviceGroup->{_id, title, slug}},
+        agencyBrand->{slug, name },
+        globalSections{ sections[]{${globalSectionsFields}} },
+        metafields{ title, description, image{${imageBaseFields}} },
+    }`
+});
 console.log(content)
 if (!content || !content.category || content.category.slug.current !== category) return Astro.redirect('/404')
 ---

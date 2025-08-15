@@ -9,11 +9,12 @@ import SectionGlobalSections from "../../../components/global/sections/section-G
 import { Brands } from "../../../enums/brands";
 import AtomSanityMedia from "../../../components/global/atoms/atom-sanityMedia.astro";
 import IconArrowBack from "../../../icons/arrow-back.svg";
+import { loadQuery } from "../../../lib/sanity-load-query";
 
 const { resource_index, resource } = Astro.params;
 
-const content = await sanityClient.fetch(
-  `*[_type == "type_resource" && slug.current == '${resource}'][0]{
+const { data: content} = await loadQuery({
+  query: `*[_type == "type_resource" && slug.current == '${resource}'][0]{
     title,
     heading,
     slug,
@@ -28,7 +29,7 @@ const content = await sanityClient.fetch(
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
   }`
-);
+});
 console.log(content);
 if (!content || content.resourcesIndex.slug.current != resource_index) return Astro.redirect("/404");
 ---

@@ -32,11 +32,12 @@ interface Props {
 	brand?: string;
 	locale?: string;
 	indexSearch?: boolean;
+	disableVisualEditing?: boolean;
 }
 
 Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600");
 
-const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
+const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch, disableVisualEditing } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
@@ -117,7 +118,7 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<!-- End Google Tag Manager (noscript) -->
 
 		<!-- <ClientRouter /> -->
-		<!-- <VisualEditing enabled={true} /> -->
+		{!disableVisualEditing && <VisualEditing enabled={visualEditingEnabled === 'true'} />}
 
     <GlobalPreloader
       showPreloader={showPreloader}
