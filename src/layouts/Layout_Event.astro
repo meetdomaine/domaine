@@ -19,11 +19,14 @@ const dateOptions: UseDateTimeFormatOptions = {
   weekday: 'long',
   month: 'long',
   day: 'numeric',
-  timeZone: content.timezone ? content.timezone : 'America/New_York',
-  timeZoneName: 'short'
 };
 
 const timeOptions: UseDateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: content.use24hourFormat ? false : true,
+};
+const timeZoneOptions: UseDateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
   hour12: content.use24hourFormat ? false : true,
@@ -34,6 +37,8 @@ const timeOptions: UseDateTimeFormatOptions = {
 const dateTime = new Date(content.dateTime)
 const date = new Intl.DateTimeFormat(locale ? locale : 'en-US', dateOptions).format(dateTime);
 const time = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptions).format(dateTime);
+const timeZone = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeZoneOptions).formatToParts(new Date())?.find(part => part.type === 'timeZoneName')?.value
+
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 
@@ -78,11 +83,11 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
           <div class="event-details">
             <div class="date">
               <Icon name="icon-calendar" />
-              <span>{date}</span>
+              <span>{date} at {timeZone}</span>
             </div>
             <div class="time">
               <Icon name="icon-clock" />
-              <span>{time}</span>
+              <span>{time} {timeZone}</span>
             </div>
             <div class="location">
               <Icon name="icon-pin" />
