@@ -3,11 +3,10 @@ import LayoutStudio from "../layouts/Layout-Studio.astro";
 import SectionServiceLandingHero from "../components/studio/sections/services/services-Hero.astro";
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
 import { getTranslationString } from "../lib/translations";
-import { loadQuery } from "../lib/sanity-load-query";
 import { imageFields, globalSectionsFields, imageBaseFields } from "../lib/cms-queries";
+import { sanityClient } from "sanity:client";
 
-const { data: pageSettings} = await loadQuery({ 
-  query: `*[_type == "page_services-index-studio"][0]{
+const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-studio"][0]{
     ...,  
     title,
     heading,
@@ -15,7 +14,7 @@ const { data: pageSettings} = await loadQuery({
     sections[]{${globalSectionsFields}},
     metafields{ title, description, image{${imageBaseFields}} },
   }`
-})
+)
 const { locale } = Astro.props
 ---
 <LayoutStudio
