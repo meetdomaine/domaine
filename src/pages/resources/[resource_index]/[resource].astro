@@ -46,7 +46,7 @@ const LOCALE = Locales.EN
 >
   <section 
     class="hero"
-    data-color-scheme={content.colorScheme}
+    data-color-scheme={content.colorScheme?.trim().replace(/[\u200B-\u200D\uFEFF]/g, '')}
     style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
   > 
     <div class="section-title">

@@ -10,7 +10,6 @@ const { page } = Astro.params
 const { data: pageContent } = await loadQuery({ 
     query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
 })
-
 if (!pageContent) return Astro.redirect('/404')
 ---
 {pageContent?.isMarketingPage ? 
