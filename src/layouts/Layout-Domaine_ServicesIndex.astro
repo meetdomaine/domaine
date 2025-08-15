@@ -4,10 +4,9 @@ import ServicesHero from "../components/domaine/sections/services/services-Hero.
 import GlobalSections from "../components/global/sections/section-GlobalSections.astro";
 import { urlFor, imageFields, globalSectionsFields, imageBaseFields } from "../lib/cms-queries";
 import { getTranslationString } from "../lib/translations";
-import { loadQuery } from "../lib/sanity-load-query";
+import { sanityClient } from "sanity:client";
 
-const { data: pageSettings } = await loadQuery({ 
-  query: `*[_type == "page_services-index-domaine"][0]{
+const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-domaine"][0]{
     _id,
     title,
     heading,
@@ -15,7 +14,7 @@ const { data: pageSettings } = await loadQuery({
     sections[]{${globalSectionsFields}},
     metafields{ title, description, image{${imageBaseFields}} },
   }`
-})
+)
 const { brand, locale } = Astro.props
 ---
 <LayoutDomaine

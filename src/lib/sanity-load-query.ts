@@ -15,7 +15,7 @@ export async function loadQuery<QueryResponse>({
 }) {
   if (visualEditingEnabled && !token) {
     throw new Error(
-      'The `SANITY_API_READ_TOKEN` environment variable is required during Visual Editing.',
+      'The `PUBLIC_SANITY_API_READ_TOKEN` environment variable is required during Visual Editing.',
     )
   }
 
