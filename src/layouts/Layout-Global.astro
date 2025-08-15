@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../lib/cms-queries';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
-import { VisualEditing } from '@sanity/astro/visual-editing'
+// import { VisualEditing } from '@sanity/astro/visual-editing'
 import { getEnv } from '../lib/getEnv';
 
 import '../styles/global/lenis.css'
@@ -39,7 +39,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600"
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
+// const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
 ---
 
 <!doctype html>
