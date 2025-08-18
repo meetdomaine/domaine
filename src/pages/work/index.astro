@@ -1,8 +1,17 @@
 ---
+// STATICALLY GENERATED AT BUILD TIME
 import { Brands } from '../../enums/brands';
 import LayoutProjectsIndex from '../../layouts/Layout_ProjectsIndex.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true
+
+const domaineProjects = await getCollection('projectCards', ({ data }) => 
+    data.agencyBrand.name === Brands.DOMAINE
+)
 ---
 <LayoutProjectsIndex
     brand={Brands.DOMAINE}
+    projects={domaineProjects.map(project => project.data)}
     isTopLevel
 />

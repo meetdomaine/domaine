@@ -19,7 +19,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 >
     <div 
         class="page-content" 
-        data-color-scheme={content.colorScheme} 
+        data-color-scheme={content.colorScheme?.trim().replace(/[\u200B-\u200D\uFEFF]/g, '')} 
         data-header-padding={content.addHeaderPadding ? "true" : "false"}
         style={`${content.backgroundColor ? `--color-background: ${content.backgroundColor.hex};` : null}`}
     >
@@ -30,6 +30,9 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 </BrandLayout>
 
 <style>
+    .page-content {
+        background-color: var(--color-background);
+    }
     .page-content[data-header-padding="true"] {
         padding-top: calc(var(--header-height) * 2);
     }

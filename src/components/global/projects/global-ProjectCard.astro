@@ -3,7 +3,6 @@ import AtomSanityImage from "../atoms/atom-sanityImage.astro";
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro";
 import AtomTag from "../atoms/atom-tag.astro";
 import { urlFor } from "../../../lib/cms-queries";
-import { getRawSvg } from "../../../lib/raw-svg";
 import { getTranslationString } from "../../../lib/translations";
 import { Translations } from '../../../lib/locales';
 import { getEnv } from '../../../lib/getEnv';
@@ -11,23 +10,15 @@ import { getEnv } from '../../../lib/getEnv';
 interface Props {
   project: ProjectCard;
   locale?: string;
+  eager?: boolean;
 }
 
-const { project, locale } = Astro.props;
-
-let clientLogo;
-
-if (project.client?.logo) {
-  clientLogo = await getRawSvg(project.client.logo);
-}
+const { project, locale, eager } = Astro.props;
 ---
 
 <a
   href={`${locale ? `/${locale}` : ""}${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
   class={`project-card`}
-  data-pagefind-ignore
-  data-animate-viewport="true"
-  data-animation="fade"
 >
   <div class="card-media">
     <div class="card-thumbnail">
@@ -35,19 +26,21 @@ if (project.client?.logo) {
         video={project.thumbnailMedia.video ? project.thumbnailMedia.video : null}
         image={project.thumbnailMedia.image}
         aspectRatio={3 / 4}
-        sizes="30vw"
+        sizes="(width <= 768px) 50vw, 33vw"
+        maxWidth={960}
+        eager={eager}
       />
     </div>
     {project.client?.logo && (
-			<div
+			<img
 				class="client-logo"
+        src={project.client.logo}
 				data-color-scheme={
 					project.logoColor === "dark" ? "default" : "invert"
 				}
-				style={`width: ${project.client.logoScale / 2}%`}
-			>
-				<Fragment set:html={clientLogo} />
-			</div>
+				style={`width: ${project.client.logoScale / 2}%; filter: ${project.logoColor === "dark" ? "none" : "invert(1)" }`}
+			/>
+			
 		)}
     {project.thumbnailImageSecondary && (
 			<div class="card-overlay glass-ink">
@@ -77,6 +70,11 @@ if (project.client?.logo) {
 			<div class="product-media">
 				<img
 					src={urlFor(project.client.productImage).auto("format").url()}
+          sizes="(width <= 768px) 30vw, 0.09vw"
+          srcset={`${urlFor(project.client.productImage).width(100).auto("format").url()} 100w,
+            ${urlFor(project.client.productImage).width(200).auto("format").url()} 200w,
+            ${urlFor(project.client.productImage).width(400).auto("format").url()} 400w,
+            ${urlFor(project.client.productImage).width(600).auto("format").url()} 600w,`}
 					class="product-image"
 				/>
 			</div>
@@ -98,16 +96,6 @@ if (project.client?.logo) {
   </div>
 </a>
 
-{!getEnv('DEV', Astro.locals) && 
-  <link
-    rel="preload"
-    href={`${project.agencyBrand.slug.current == "/studio" ? "/studio" : ""}/work/${project.slug.current}`}
-    as="fetch"
-    crossorigin="anonymous"
-    type=""
-  />
-}
-
 <style>
   .project-card {
     flex: 0 1 100%;
@@ -123,6 +111,8 @@ if (project.client?.logo) {
     width: 100%;
     border-radius: var(--radius-sm);
     overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background-color: var(--color-background-secondary);
   }
 
   .card-thumbnail {
@@ -141,6 +131,10 @@ if (project.client?.logo) {
     left: var(--space-sm);
     max-width: calc(100% - var(--space-sm) * 2);
     background-color: transparent;
+    
+    img {
+      color: inherit;
+    }
   }
 
   .client-logo :global(svg) {

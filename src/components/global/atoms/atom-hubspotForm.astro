@@ -3,6 +3,8 @@ import { Icon } from 'astro-icon/components'
 import cachedFetch from '../../../lib/cachedFetch';
 import { getEnv } from '../../../lib/getEnv';
 
+const { env } = Astro.locals.runtime;
+
 interface Props {
     formId: any,
     buttonToggles?: boolean,
@@ -11,11 +13,12 @@ interface Props {
 
 const { formId, buttonToggles, key } = Astro.props
 
-const portalId = getEnv("HUBSPOT_PORTAL_ID", Astro.locals)
-const accessToken = getEnv("HUBSPOT_ACCESS_TOKEN", Astro.locals)
+const portalId = process.env.HUBSPOT_PORTAL_ID || env.HUBSPOT_PORTAL_ID;
+const accessToken = process.env.HUBSPOT_ACCESS_TOKEN || env.HUBSPOT_ACCESS_TOKEN;
 
 let formData;
 try {
+    console.log("Form fetch successful")
     const response = await cachedFetch(`https://api.hubapi.com/marketing/v3/forms/${formId}`, {
         method: "GET",
         headers: {

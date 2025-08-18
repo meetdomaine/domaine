@@ -14,9 +14,10 @@ interface Props {
   agencyBrand: any;
   postDate: any;
   locale: string;
+  eager?: boolean;
 }
 
-const { title, series, thumbnailImage, slug, category, agencyBrand, postDate, locale } = Astro.props;
+const { title, series, thumbnailImage, slug, category, agencyBrand, postDate, locale, eager } = Astro.props;
 
 const categoryUrl = `${agencyBrand.slug.current == "/studio" ? "/studio" : ""}/insights/${category.slug.current}`;
 const postUrl = `${categoryUrl}/${slug.current}`;
@@ -28,7 +29,6 @@ const formattedDate = formatDate(postDate);
   class="blog-card"
   data-animate-viewport="true"
   data-animation="fade"
-  data-pagefind-ignore
 >
   <a 
     href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl } 
@@ -38,6 +38,7 @@ const formattedDate = formatDate(postDate);
       image={thumbnailImage.image}
       aspectRatio={3 / 4}
       sizes="30vw"
+      eager={eager}
     />
   </a>
   <div class="card-text">
@@ -56,16 +57,6 @@ const formattedDate = formatDate(postDate);
     />
     {postDate && <p class="date caption">{formattedDate}</p>}
   </div>
-  <!-- TODO: Add preload -->
-  <!-- {!env.DEV &&
-    <link
-      rel="preload"
-      href={locale ? getRelativeLocaleUrl(locale, postUrl) : postUrl}
-      as="fetch"
-      crossorigin="anonymous"
-      type=""
-    />
-  } -->
 </article>
 
 <style>

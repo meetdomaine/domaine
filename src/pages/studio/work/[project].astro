@@ -1,29 +1,40 @@
 ---
 import LayoutProject from '../../../layouts/Layout_Project.astro';
 import { Brands } from '../../../enums/brands';
-import { getProjects } from '../../../lib/cached-content';
-import { getEnv } from '../../../lib/getEnv';
+import { sanityClient } from 'sanity:client';
+import { imageBaseFields } from '../../../lib/cms-queries';
+import { imageFields } from '../../../lib/cms-queries';
+import { videoFields } from '../../../lib/cms-queries';
+import { globalSectionsFields } from '../../../lib/cms-queries';
 
-export async function getStaticPaths() {
-    const projects = await getProjects(Brands.STUDIO)
-    return projects.map((project) => {
-        return {
-            params: { project: project.slug.current },
-            props: { content: project }
-        }
-    })
-}
-
-let projectContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { project } = Astro.params
-    const projects = await getProjects(Brands.STUDIO)
-    projectContent = projects.find(p => p.slug.current === project)
-} else {
-    const { content } = Astro.props
-    projectContent = content
-}
+const { project } = Astro.params
+const projectContent = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.STUDIO}' && slug.current == '${project}']{
+      title,
+      isHidden,
+      description,
+      excerpt,
+      industry->{ slug, title },
+      url,
+      client->{ slug, title, logoDark{${imageBaseFields}}, logoLight{${imageBaseFields}}, isEnterprise, "logo": logo.asset->url },
+      foregroundColor,
+      backgroundColor,
+      accentColor,
+      services[]->{ title, slug, serviceGroup->{slug, title, serviceType->{slug} } },
+      features[]->{ title, slug },
+      partners[]->{ title, excerpt, slug, icon{${imageFields}}, tier->{ createLandingPages}, websiteUrl },
+      metrics[]{ label, number },
+      awards[]{ awardTitle, publication },
+      agencyBrand->{slug, name},
+      thumbnailMedia{${videoFields}, ${imageFields}},
+      thumbnailImageSecondary{${imageFields}},
+      slug,
+      heroMedia{${videoFields}, ${imageFields}},
+      sections[]{${globalSectionsFields}},
+      metafields{ title, description, image{${imageBaseFields}} },
+      orderRank,
+  }[0]`
+)
+if (projectContent === null) return Astro.redirect('/404')
 ---
 <LayoutProject
     content={projectContent}

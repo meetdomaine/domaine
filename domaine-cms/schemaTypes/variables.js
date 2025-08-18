@@ -158,6 +158,17 @@ export const iconAgencyBrand = RobotIcon
 export const labelLocation = "Locations"
 export const iconLocation = EarthAmericasIcon
 
+// Content Hub
+export const labelResource = "Resources"
+export const iconResource = ClipboardImageIcon
+
+// Content Hub Index
+export const labelResourceIndex = "Resources Index"
+export const iconResourceIndex = iconIndex
+
+// Content Hub Page
+export const labelResourcePage = "Resource Pages"
+export const iconResourcePage = ClipboardImageIcon
 
 export const iconStat = ChartUpwardIcon
 

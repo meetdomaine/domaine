@@ -1,37 +1,26 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
-import { projectGridFields } from '../../../../lib/cms-queries';
-import { getServiceGroups } from '../../../../lib/cached-content';
+import { imageFields, projectGridFields } from '../../../../lib/cms-queries';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const serviceGroups = await getServiceGroups(Brands.STUDIO)
-    return serviceGroups.map((serviceGroup) => {
-        return {
-            params: { service_group: serviceGroup.slug.current },
-            props: { content: serviceGroup }
-        }
-    })
-}
-
-let serviceGroupContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service_group } = Astro.params
-    const serviceGroups = await getServiceGroups(Brands.STUDIO)
-    serviceGroupContent = serviceGroups.find(sg => sg.slug.current === service_group)
-} else {
-    const { content } = Astro.props
-    serviceGroupContent = content
-}
-
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceGroupContent.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const { service_group } = Astro.params
+const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGroup" && '${Brands.STUDIO}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+    ...,
+    isHidden,
+    excerpt,
+    description,
+    images[]{${imageFields}},
+    agencyBrands[]->{..., slug },
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && references(*[_type == "type_service" && serviceGroup->slug.current == '${service_group}']._id) ]{ ${projectGridFields} } | order(orderRank),
+  }`
+)
+if (!serviceGroupContent || serviceGroupContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={serviceGroupContent}
-    projects={projects}
+    projects={serviceGroupContent.projects}
     currentPath={`/services/${serviceGroupContent.slug.current}`}
     brand={Brands.STUDIO}
 />

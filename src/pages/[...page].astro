@@ -1,0 +1,25 @@
+---
+// SERVER RENDERED AT LOAD TIME
+import LayoutPage from "../layouts/Layout-Page.astro";
+import { Brands } from "../enums/brands";
+import LayoutMarketingPage from "../layouts/Layout_MarketingPage.astro";
+import { loadQuery } from "../lib/sanity-load-query";
+import { generalPageFields } from "../lib/cms-queries"
+
+const { page } = Astro.params
+const { data: pageContent } = await loadQuery({ 
+    query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
+})
+if (!pageContent) return Astro.redirect('/404')
+---
+{pageContent?.isMarketingPage ? 
+    <LayoutMarketingPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+    :
+    <LayoutPage
+        content={pageContent}
+        brand={Brands.DOMAINE}
+    />
+}

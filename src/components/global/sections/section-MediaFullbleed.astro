@@ -9,11 +9,12 @@ const { section, brand, key, media, locale } = Astro.props
     image={section?.media ? section.media.image : media.image}
     autoplay={false}
     sizes="100vw"
+    aspectRatio={1920 / 1080}
   />
 </section>
 
 <style>
-.section-video-fullbleed {
-  position: relative;
-}
+  .section-video-fullbleed {
+    position: relative;
+  }
 </style>

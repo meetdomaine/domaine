@@ -5,7 +5,9 @@ import Footer from '../components/global/global-Footer.astro';
 import { getTranslationString, getTranslationRichContent } from '../lib/translations';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
 import { Brands } from '../enums/brands';
-import { getBrandSettings, getFooterSettings } from '../lib/cached-content';
+import { getBrandSettings } from '../lib/cached-content';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
 interface Props {
 	title: string;
@@ -28,8 +30,16 @@ interface Props {
 
 const { title, description, image, searchFilter, activePath, searchExposed, noIndex, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
-const brandSettings = await getBrandSettings(Brands.DOMAINE)
-const footerSettings = await getFooterSettings(Brands.DOMAINE)
+
+const [
+    { data: headerSettings},
+    { data: footerSettings},
+    { data: brandSettings}
+] = await Promise.all([
+    getEntry('globalSettingsDomaine', 'headerSettings'),
+    getEntry('globalSettingsDomaine', 'footerSettings'),
+    getEntry('globalSettingsDomaine', 'brandSettings')
+])
 
 // console.log(brandSettings?.cookieNoticeText.translations)
 // console.log(brandSettings?.cookieNoticeText)
@@ -55,14 +65,17 @@ const footerSettings = await getFooterSettings(Brands.DOMAINE)
             locale={locale}
             brand={Brands.DOMAINE}
             buttonLabel={marketingHeaderButtonLabel}
+            transition:name='marketing-header'
         />
     :
         <Header
+            headerSettings={headerSettings}
             currentBrand={brandSettings}
             activePath={activePath}
             searchExposed={searchExposed}
             brand={Brands.DOMAINE}
             locale={locale}
+            transition:name='header'
         />
     }
     <main>
@@ -71,5 +84,6 @@ const footerSettings = await getFooterSettings(Brands.DOMAINE)
     <Footer
         footerSettings={footerSettings}
         locale={locale} 
+        transition:name='footer'
     />
 </LayoutGlobal>

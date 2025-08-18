@@ -141,4 +141,11 @@ export const Translations = {
       [Locales.NL]: "Evenementen"
     }
   },
+  "RESOURCES": {
+    name: 'Resources',
+    locales: {
+      [Locales.DE]: "Ressourcen",
+      [Locales.NL]: "Bronnen"
+    }
+  },
 }

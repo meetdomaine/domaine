@@ -1,7 +1,7 @@
 ---
 import { urlFor } from '../lib/cms-queries';
 import ViewportAnimation from '../animation/ViewportAnimation.astro';
-import { VisualEditing } from '@sanity/astro/visual-editing'
+// import { VisualEditing } from '@sanity/astro/visual-editing'
 import { getEnv } from '../lib/getEnv';
 
 import '../styles/global/lenis.css'
@@ -15,6 +15,7 @@ import '../styles/global/forms.css'
 import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -33,10 +34,12 @@ interface Props {
 	indexSearch?: boolean;
 }
 
+Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600");
+
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
+// const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
 ---
 
 <!doctype html>
@@ -46,9 +49,10 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<meta name="robots" content={noIndex ? "noindex" : "all"}>
 
 		<!-- Add back once live -->
-		<!-- <link rel="preconnect" href="https://www.googletagmanager.com">
-		<link rel="preconnect" href="https://snap.licdn.com">
-		<link rel="preconnect" href="https://www.google-analytics.com"> -->
+		<link rel="preconnect" href="https://www.googletagmanager.com">
+		<link rel="preconnect" href="https://cdn.sanity.io">
+		<!-- <link rel="preconnect" href="https://snap.licdn.com"> -->
+		<!-- <link rel="preconnect" href="https://www.google-analytics.com"> -->
 
 		 <!-- Setup Consent Mode -->
 		 <script is:inline>
@@ -104,21 +108,16 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		<meta name="twitter:description" content={description}>
 		<meta name="twitter:image" content={image ? urlFor(image).url() : ""}>
 
-		<!-- PageFind Search -->
-		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
-
 	</head>
-	<body {...{
-		...(indexSearch ? { "data-pagefind-body": "" } : { "data-pagefind-ignore": "true"}),
-		...(searchFilter ? { "data-pagefind-filter": searchFilter } : {})
-	}}>
+	<body>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M36NWV8B"
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<VisualEditing enabled={visualEditingEnabled} />
+		<!-- <ClientRouter /> -->
+		<!-- <VisualEditing enabled={true} /> -->
 
     <GlobalPreloader
       showPreloader={showPreloader}
@@ -133,12 +132,6 @@ const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astr
 		/>
 		<slot />
 		<ViewportAnimation />
-
-    <!-- Front chat integration -->
-    <script src='https://chat-assets.frontapp.com/v1/chat.bundle.js' is:inline></script>
-    <script is:inline>
-      window.FrontChat('init', {chatId: '065bffd753c9111b8275e69a65e7ff26', useDefaultLauncher: true});
-    </script>
 
 	</body>
 </html>

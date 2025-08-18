@@ -7,13 +7,10 @@ interface Props {
     animateViewport?: boolean,
     animation?: string,
     animationDelay?: number,
-    pagefindMetaTitle?: string,
-    pagefindMetaText?: string,
-    pagefindMetaUrl?: string,
     newTab?: boolean
 }
 
-const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMetaUrl, newTab } = Astro.props
+const { title, text, url, theme, newTab } = Astro.props
 ---
 {url ? 
     <a 
@@ -21,11 +18,10 @@ const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMe
         href={url}
         data-theme={theme}
         data-color-scheme={theme === "glass-dark" ? "glass-dark" : "default"}
-        data-pagefind-meta={pagefindMetaUrl}
         target={newTab ? "_blank" : "_self"}
     >
-        {title && <span class="title caption" data-pagefind-meta={pagefindMetaTitle}>{title}</span>}
-        {text && <span class="text caption" data-pagefind-meta={pagefindMetaText}>{text}</span>}
+        {title && <span class="title caption">{title}</span>}
+        {text && <span class="text caption">{text}</span>}
     </a>
 :    
     <div 
@@ -33,8 +29,8 @@ const { title, text, url, theme, pagefindMetaTitle, pagefindMetaText, pagefindMe
         data-theme={theme}
         data-color-scheme={theme === "glass-dark" ? "glass-dark" : "default"}
     >
-        {title && <span class="title caption" data-pagefind-meta={pagefindMetaTitle}>{title}</span>}
-        {text && <span class="text caption" data-pagefind-meta={pagefindMetaText}>{text}</span>}
+        {title && <span class="title caption">{title}</span>}
+        {text && <span class="text caption">{text}</span>}
     </div>
 }
 

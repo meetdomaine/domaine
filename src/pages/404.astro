@@ -1,5 +1,8 @@
 ---
+// RENDERED STATICALLY ON BUILD
 import LayoutDomaine from "../layouts/Layout-Domaine.astro"
+
+export const prerender = true // Make 404 content static so it doesn't refetch on each page load
 ---
 
 <LayoutDomaine

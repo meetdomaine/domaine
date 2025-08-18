@@ -34,7 +34,7 @@ export const blogCardFields = `
   postDate,
   category->{ _id, title, slug{...} },
   slug{...},
-  agencyBrand->{slug},
+  agencyBrand->{slug, name},
   thumbnailImage{${imageFields}}
   `
 
@@ -48,18 +48,16 @@ export const projectFeatureQuery = `
 
 export const projectGridFields = `
   title,
+  agencyBrand->{slug, name},
+  client->{title, "logo": logo.asset->url, logoScale, productImage{${imageBaseFields}}, isEnterprise },
   excerpt,
+  features[]->{ title, slug, _id, orderRank } | order(orderRank), 
   slug, 
-  industry->{..., _id },
-  agencyBrand->{slug},
-  partners[]->{..., _id}, 
-  client->{title, logoDark{${imageFields}}, logoLight{${imageFields}}, "logo": logo.asset->url, logoScale, productImage{${imageBaseFields}}, isEnterprise },
-  logoColor,
-  features[]->{ title, slug, _id } | order(orderRank), 
   services[]->{ _id, title, serviceGroup->{ _id, title, slug} },
+  industry->{ title, _id, slug },
+  logoColor,
   thumbnailMedia{${videoFields}, ${imageFields}},
   thumbnailImageSecondary{${imageFields}},
-  heroMedia{${videoFields}, ${imageFields}},
   isHidden,
   orderRank,
 `

@@ -1,7 +1,10 @@
 ---
+// STATIC ROUTE
 import { Brands } from "../../enums/brands";
 import { Locales } from "../../enums/locales";
 import LayoutDomaineServices from "../../layouts/Layout-Domaine_ServicesIndex.astro";
+
+export const prerender = true // Make page static so it doesn't refetch on each page load
 ---
 <LayoutDomaineServices 
   brand={Brands.DOMAINE}

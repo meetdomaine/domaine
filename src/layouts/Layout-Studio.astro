@@ -5,14 +5,12 @@ import Footer from '../components/global/global-Footer.astro';
 import { getTranslationString } from '../lib/translations';
 import { Brands } from '../enums/brands';
 import GlobalMarketingHeader from '../components/global/marketingHeader/global-MarketingHeader.astro';
-import { loadQuery } from '../lib/sanity-load-query';
-import { richContentFields, imageBaseFields } from '../lib/cms-queries';
+import { getEntry } from 'astro:content';
 
 interface Props {
 	title: string,
 	description?: string,
 	image?: string,
-	theme?: string,
     searchFilter?: string,
     activePath?: string,
     searchExposed?: boolean,
@@ -25,26 +23,17 @@ interface Props {
     indexSearch?: boolean;
 }
 
-const { title, description, image, theme, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
+const { title, description, image, searchFilter, activePath, searchExposed, showPreloader, locale, marketingHeader, marketingHeaderButtonLabel, indexSearch } = Astro.props;
 
-const { data: brandSettingsData } = await loadQuery({ 
-  query: `*[_type == "type_agencyBrand" && name == $brand ][0]{
-    ..., 
-    cookieNoticeText{ 
-      ..., 
-      richContent[]{${richContentFields}}
-    },
-    metafields{ title, description, image{${imageBaseFields}} },
-  }`,
-  params: { brand: Brands.STUDIO }
-})
-
-const { data: footerSettingsData } = await loadQuery({ 
-  query: `*[_type == "settings_footer" && _id == "settings_footer--studio"][0]`
-})
-
-const brandSettings = brandSettingsData
-const footerSettings = footerSettingsData
+const [
+    { data: headerSettings},
+    { data: footerSettings},
+    { data: brandSettings}
+] = await Promise.all([
+    getEntry('globalSettingsStudio', 'headerSettings'),
+    getEntry('globalSettingsStudio', 'footerSettings'),
+    getEntry('globalSettingsStudio', 'brandSettings')
+])
 ---
 <LayoutGlobal
     title={`${title ? title : "Domaine Studio"} | ${getTranslationString(brandSettings.metafields.title, locale)}`}
@@ -66,6 +55,7 @@ const footerSettings = footerSettingsData
         />
     :
         <Header
+            headerSettings={headerSettings}
             currentBrand={brandSettings}
             activePath={activePath}
             searchExposed={searchExposed}
@@ -73,17 +63,10 @@ const footerSettings = footerSettingsData
         />
     }
 
-    <!-- <Header
-        currentBrand={brandSettings}
-        activePath={activePath}
-        searchExposed={searchExposed}
-        brand={Brands.STUDIO}
-    /> -->
-
     <main>
         <slot />
     </main>
-    <Footer 
+    <Footer
         footerSettings={footerSettings}
         locale={locale}
     />

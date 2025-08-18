@@ -41,7 +41,7 @@ if (featuredPost) {
     featuredPostDate = formatDate(featuredPost.postDate || featuredPost.postDate)
 }
 ---
-<section class="section-blog-feed" data-color-scheme="brand-01" data-pagefind-ignore>
+<section class="section-blog-feed" data-color-scheme="brand-01">
     <div class="section-title">
         {(section?.heading || heading) && 
             <h2 class="h5">{section?.heading ? getTranslationString(section.heading, locale) : heading ? getTranslationString(heading, locale) : "Insights"}</h2>

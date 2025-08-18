@@ -1,4 +1,26 @@
 ---
+// RENDERED STATICALLY ON BUILD
+import { globalSectionsFields } from "../lib/cms-queries";
 import LayoutDomaineHome from "../layouts/Layout-Domaine-Home.astro";
+import { imageFields } from "../lib/cms-queries";
+import { videoFields } from "../lib/cms-queries";
+import { imageBaseFields } from "../lib/cms-queries";
+import { projectGridFields } from "../lib/cms-queries";
+import { loadQuery } from "../lib/sanity-load-query";
+
+export const prerender = true // Make Home content static so it doesn't refetch on each page load
+
+const { data: pageSettings } = await loadQuery({
+  query: `*[_type == "page_home-domaine"][0]{
+    ...,
+    globalSections{ sections[]{${globalSectionsFields}} }, 
+    media{ ..., ${imageFields}, ${videoFields} },
+    metafields{ title, description, image{${imageBaseFields}} },
+    projects[]{
+      project->{${projectGridFields}},
+      image{${imageFields}}
+    },
+  }`
+})
 ---
-<LayoutDomaineHome />
+<LayoutDomaineHome content={pageSettings} />

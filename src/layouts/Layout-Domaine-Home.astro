@@ -7,39 +7,27 @@ import { getTranslationString } from "../lib/translations";
 import { Brands } from "../enums/brands";
 import { loadQuery } from "../lib/sanity-load-query";
 
-const { locale } = Astro.props;
-const { data: pageSettings } = await loadQuery({
-  query: `*[_type == "page_home-domaine"][0]{
-    ...,
-    globalSections{ sections[]{${globalSectionsFields}} }, 
-    media{ ..., ${imageFields}, ${videoFields} },
-    metafields{ title, description, image{${imageBaseFields}} },
-    projects[]{
-      project->{${projectGridFields}},
-      image{${imageFields}}
-    },
-  }`
-})
-// console.log(pageSettings.heroTextColor)
+const { locale, content } = Astro.props;
+// console.log(content.heroTextColor)
 ---
 <LayoutDomaine
-    title={pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : null}
-    description={pageSettings.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
-    image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
+    title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
+    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchExposed={true}
-    showPreloader={pageSettings.showPreloader}
+    showPreloader={content.showPreloader}
     locale={locale}
 >
     <HomeHero
         locale={locale}
-        eyebrow={locale && pageSettings.eyebrow.translations[locale] ? pageSettings.eyebrow.translations[locale] : pageSettings.eyebrow.text}
-        heading={locale && pageSettings.heading.translations[locale] ? pageSettings.heading.translations[locale] : pageSettings.heading.text}
-        button={pageSettings.button}
-        media={pageSettings.media}
-        heroTextColor={pageSettings.heroTextColor}
+        eyebrow={locale && content.eyebrow.translations[locale] ? content.eyebrow.translations[locale] : content.eyebrow.text}
+        heading={locale && content.heading.translations[locale] ? content.heading.translations[locale] : content.heading.text}
+        button={content.button}
+        media={content.media}
+        heroTextColor={content.heroTextColor}
         brand={Brands.DOMAINE}
     />
-    {pageSettings.globalSections && pageSettings.globalSections.sections.map((section, i) => (
+    {content.globalSections && content.globalSections.sections.map((section, i) => (
         <GlobalSections 
           brand={Brands.DOMAINE}
           locale={locale}

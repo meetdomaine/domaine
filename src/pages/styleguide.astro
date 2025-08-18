@@ -1,6 +1,9 @@
 ---
+// STATIC ROUTE
 import StyleguideContent from '../components/global/styleguide/Styleguide-Content.astro';
 import LayoutDomaine from '../layouts/Layout-Domaine.astro';
+
+export const prerender = true // Make page static so it doesn't refetch on each page load
 ---
 <LayoutDomaine 
   theme="dark"

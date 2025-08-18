@@ -29,7 +29,6 @@ export default defineConfig({
     presentationTool({
       previewUrl: '/'
     }),
-    // vercelDeployTool(),
     // inlineSvgInput(),
     colorInput(),
     media(),

@@ -2,37 +2,26 @@
 import LayoutProjectsIndex from '../../../../layouts/Layout_ProjectsIndex.astro';
 import { Brands } from '../../../../enums/brands';
 import { projectGridFields, projectsGridQuery } from '../../../../lib/cms-queries';
-import { getServices } from '../../../../lib/cached-content';
+import { loadQuery } from '../../../../lib/sanity-load-query';
 import { sanityClient } from 'sanity:client';
-import { getEnv } from '../../../../lib/getEnv';
 
-export async function getStaticPaths() {
-    const services = await getServices(Brands.STUDIO)
-    return services.map((service) => {
-        return {
-            params: { service: service.slug.current },
-            props: { content: service }
-        }
-    })
-}
-
-let serviceContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service } = Astro.params
-    const services = await getServices(Brands.STUDIO)
-    serviceContent = services.find(s => s.slug.current === service)
-} else {
-    const { content } = Astro.props
-    serviceContent = content
-}
-
-
-const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && '${serviceContent.slug.current}' in services[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
+const { service } = Astro.params
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.STUDIO}' in agencyBrands[]->name && slug.current == '${service}'][0]{
+    _id,
+    title,
+    slug,
+    isHidden,
+    excerpt,
+    description,
+    "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.STUDIO}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
+    agencyBrands[]->{ _id, slug, name},
+  }`
+)
+if (!serviceContent || serviceContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex
     content={serviceContent}
-    projects={projects}
+    projects={serviceContent.projects}
     currentPath={`/services/${serviceContent.slug.current}`}
     brand={Brands.STUDIO}
 />

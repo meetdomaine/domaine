@@ -1,38 +1,45 @@
 ---
 import LayoutService from "../../../../../layouts/Layout_Service.astro"
 import { Brands } from "../../../../../enums/brands"
-import { getServices } from "../../../../../lib/cached-content";
-import { getEnv } from "../../../../../lib/getEnv";
+import { sanityClient } from "sanity:client";
+import { globalSectionsFields } from "../../../../../lib/cms-queries";
+import { imageBaseFields } from "../../../../../lib/cms-queries";
+import { Locales } from "../../../../../enums/locales";
 
-export async function getStaticPaths() {
-    const services = await getServices(Brands.STUDIO)
-    return services.map((service) => {
-        return {
-            params: { 
-                service: service.slug.current,
-                service_group: service.serviceGroup.slug.current,
-                service_type: service.serviceGroup.serviceType.slug.current
-            },
-            props: { 
-                content: service
-            }
+const { service, service_group, service_type } = Astro.params
+
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.STUDIO}' in agencyBrands[]->name && slug.current == '${service}'][0]{
+    title,
+    slug,
+    excerpt,
+    description,
+    formHeading,
+    formText,
+    hubspotFormId,
+    agencyBrands[]->{ name },
+    serviceGroup->{
+        title,
+        slug,
+        formHeading,
+        formText,
+        hubspotFormId,
+        serviceType->{
+            title,
+            slug,
+            formHeading,
+            formText,
+            hubspotFormId
         }
-    })
-}
-
-let serviceContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { service, service_type } = Astro.params
-    const services = await getServices(Brands.STUDIO)
-    serviceContent = services.find(s => s.slug.current === service)
-} else {
-    const { content } = Astro.props
-    serviceContent = content
-}
+    },
+    pageSectionsStudio[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+)
+if (!serviceContent || serviceContent.serviceGroup.slug.current !== service_group || serviceContent.serviceGroup.serviceType.slug.current !== service_type) return Astro.redirect('/404')
 ---
 <LayoutService
     content={serviceContent}
     brand={Brands.STUDIO}
     activePath="/studio/services"
+    locale={Locales.EN}
 />

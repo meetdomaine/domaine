@@ -25,7 +25,12 @@ export const getLocalTime = (element: HTMLElement, timezone: string, mode: strin
     }
 
     updateTime()
-    setInterval(updateTime, 1000)
+    const intervalId = setInterval(updateTime, 1000)
+    
+    // Store interval ID on element so it can be cleared later
+    element.dataset.timeInterval = intervalId.toString()
+    
+    return intervalId
 }
 
 export const getIsDaytime = (element: HTMLElement, timezone: string ) => {
@@ -43,6 +48,23 @@ export const getIsDaytime = (element: HTMLElement, timezone: string ) => {
   }
 
   updateTime()
-  setInterval(updateTime, 1000)
+  const intervalId = setInterval(updateTime, 1000)
+  
+  // Store interval ID on element so it can be cleared later
+  element.dataset.daytimeInterval = intervalId.toString()
+  
+  return intervalId
+}
+
+// Helper function to clear all time intervals
+export const clearTimeIntervals = (element: HTMLElement) => {
+  if (element.dataset.timeInterval) {
+    clearInterval(parseInt(element.dataset.timeInterval))
+    delete element.dataset.timeInterval
+  }
+  if (element.dataset.daytimeInterval) {
+    clearInterval(parseInt(element.dataset.daytimeInterval))
+    delete element.dataset.daytimeInterval
+  }
 }
 

@@ -9,7 +9,7 @@ interface Props {
 const { blogPosts, locale } = Astro.props
 ---
 <div class="blog-grid">
-    {blogPosts.map((blogPost) => (
+    {blogPosts.map((blogPost, i) => (
         <GlobalBlogCard 
             title={blogPost.title}
             series={blogPost.series}
@@ -19,6 +19,7 @@ const { blogPosts, locale } = Astro.props
             thumbnailImage={blogPost.thumbnailImage}
             agencyBrand={blogPost.agencyBrand}
             locale={locale}
+            eager={i < 3 ? true : false}
         />
     ))}
 </div>

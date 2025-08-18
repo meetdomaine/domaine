@@ -1,16 +1,12 @@
 ---
-import { getTranslationString } from "../../../lib/translations"
-import AtomSanityImage from "../atoms/atom-sanityImage.astro"
 import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
-import { paths } from "../../../lib/paths"
 
 const { title, heroMedia, accentColor, locale } = Astro.props
 ---
 <section class="work-post_hero">
     <h1 
         id="project-title" 
-        class="project-title" 
-        data-pagefind-meta="title"
+        class="project-title"
         style={`${accentColor ? `color: ${accentColor.hex};` : null}`}
     >{title}</h1>
     <div id="hero-media" class="section-media">
@@ -19,8 +15,8 @@ const { title, heroMedia, accentColor, locale } = Astro.props
             video={heroMedia.video}
             cover={true}
             sizes="100vw"
-            pagefindMeta="image[src]"
             autoplay={true}
+            eager={true}
         />
     </div>
 </section>

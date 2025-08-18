@@ -1,38 +1,49 @@
 ---
+// SERVER RENDERED AT LOAD TIME
 import LayoutBlogPost from '../../../layouts/Layout_BlogPost.astro';
 import { Brands } from '../../../enums/brands';
-import { getBlogPosts } from '../../../lib/cached-content';
-import { getEnv } from '../../../lib/getEnv';
 import { Locales } from '../../../enums/locales';
+import { sanityClient } from 'sanity:client';
+import { imageFields } from '../../../lib/cms-queries';
+import { richContentFields } from '../../../lib/cms-queries';
+import { globalSectionsFields } from '../../../lib/cms-queries';
+import { imageBaseFields } from '../../../lib/cms-queries';
 
-export async function getStaticPaths() {
-    const blogPosts = await getBlogPosts(Brands.DOMAINE)
-    return blogPosts.map((post) => {
-        return {
-            params: { 
-                post: post.slug.current, 
-                category: post.category.slug.current 
-            },
-            props: { 
-                content: post 
-            }
-        }
-    })
-}
+const { post, category } = Astro.params
 
-let blogPostContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { post, category } = Astro.params
-    const blogPosts = await getBlogPosts(Brands.DOMAINE)
-    blogPostContent = blogPosts.find(p => p.slug.current === post)
-} else {
-    const { content } = Astro.props
-    blogPostContent = content
-}
+const content = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${post}'][0]{
+    title,
+    heading,
+    excerpt,
+    _id,
+    slug,
+    isHidden,
+    authors[]->{name, role, bio, image{${imageFields}}, department->{title} },
+    postDate,
+    thumbnailImage{${imageFields}},
+    category->{_id, title, slug}, 
+    body{
+        _type,
+        _key,
+        richContent[]{${richContentFields}},
+        translations{ 
+            ${Object.keys(Locales).filter(locale => Locales[locale] !== "en").map((locale) => (
+            `"${Locales[locale]}": ${Locales[locale]}[]{ _type, _key, children[]{${richContentFields}} }`
+            )
+        ).join()}
+        },
+    },
+    services[]->{_id, title, slug, serviceGroup->{_id, title, slug}},
+    agencyBrand->{slug, name },
+    globalSections{ sections[]{${globalSectionsFields}} },
+    metafields{ title, description, image{${imageBaseFields}} },
+}`
+)
+console.log(content)
+if (!content || !content.category || content.category.slug.current !== category) return Astro.redirect('/404')
 ---
 <LayoutBlogPost
-  content={blogPostContent}
+  content={content}
   brand={Brands.DOMAINE}
   locale={Locales.EN}
 />

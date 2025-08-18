@@ -1,7 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import { Brands } from '../../../enums/brands';
 import LayoutBlogIndex from '../../../layouts/Layout_BlogIndex.astro';
+import { Locales } from '../../../enums/locales';
+
+export const prerender = true // Make Blog Index content static so it doesn't refetch on each page load
+
+const blogCards = await getCollection('blogCards', ({ data }) => data.agencyBrand.name === Brands.STUDIO)
 ---
 <LayoutBlogIndex
   brand={Brands.STUDIO}
+  blogPosts={blogCards.map(blog => blog.data)}
+  locale={Locales.EN}
 />

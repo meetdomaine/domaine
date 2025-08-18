@@ -13,13 +13,13 @@ export default defineType({
       type: 'boolean',
       initialValue: true
     }),
-    defineField({
-      name: 'richContent',
-      title: 'Content',
-      type: 'snippet_rich-content',
-      deprecated: true,
-      // validation: Rule => Rule.required()
-    }),
+    // defineField({
+    //   name: 'richContent',
+    //   title: 'Content',
+    //   type: 'snippet_rich-content',
+    //   deprecated: true,
+    //   // validation: Rule => Rule.required()
+    // }),
     defineField({
       name: 'content',
       title: 'Content',

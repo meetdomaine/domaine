@@ -2,48 +2,38 @@
 import LayoutEvent from "../../layouts/Layout_Event.astro";
 import { loadQuery } from "../../lib/sanity-load-query";
 import { imageFields, globalSectionsFields } from "../../lib/cms-queries";
-import { getEnv } from "../../lib/getEnv";
+import { Locales } from "../../enums/locales";
 
-export async function getStaticPaths() {
-    const { data: events } = await loadQuery({ 
-      query: `*[_type == "type_event"]{
-        ...,
-        dateTime,
-        partnerLogos[]{${imageFields}},
-        speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
-        thumbnailImage{${imageFields}},
-        globalSections{ sections[]{${globalSectionsFields}}},
-      } | order(dateTime)`
-    })
-    return events.map((event) => {
-        return {
-            params: { event: event.slug.current },
-            props: { content: event }
-        }
-    })
-}
-
-let eventContent
-
-if (getEnv('PUBLIC_SERVER_RENDERING_ENABLED', Astro.locals) === "true") {
-    const { event } = Astro.params
-    const { data } = await loadQuery({ 
-      query: `*[_type == "type_event" && slug.current == $slug][0]{
-        ...,
-        dateTime,
-        partnerLogos[]{${imageFields}},
-        speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
-        thumbnailImage{${imageFields}},
-        globalSections{ sections[]{${globalSectionsFields}}},
-      }`,
-      params: { slug: event }
-    })
-    eventContent = data
-} else {
-    const { content } = Astro.props
-    eventContent = content
-}
+const { event } = Astro.params
+const { data: eventContent } = await loadQuery({ 
+  query: `*[_type == "type_event" && slug.current == '${event}'][0]{
+    _id,
+    title,
+    eyebrow,
+    description,
+    slug,
+    dateTime,
+    timezone,
+    use24hourFormat,
+    venue,
+    venueUrl,
+    location,
+    button{ label, url, newTab },
+    partnersHeading,
+    partnersSubheading,
+    speakersHeading,
+    speakersSubheading,
+    partnerLogos[]{${imageFields}},
+    speakers[]{ speakerName, speakerRole, speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
+    thumbnailImage{${imageFields}},
+    globalSections{ sections[]{${globalSectionsFields}}},
+    metafields{ title, description, image }
+  }`
+})
+console.log(eventContent.timezone)
+if (!eventContent) return Astro.redirect('/404')
 ---
 <LayoutEvent 
   content={eventContent}
+  locale={Locales.EN}
 />

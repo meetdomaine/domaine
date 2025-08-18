@@ -20,14 +20,6 @@ const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN ||
 const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
 // console.log(SANITY_API_READ_TOKEN)
 
-const renderMode = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? 'server' : 'static';
-const adapter = (PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" && PUBLIC_SANITY_API_READ_TOKEN !== undefined) ? vercel() : cloudflare();
-console.log(`RENDER MODE: ${renderMode}`);
-
-// Debug environment variables
-console.log('SANITY_API_READ_TOKEN available:', !!PUBLIC_SANITY_API_READ_TOKEN)
-console.log('PUBLIC_SANITY_VISUAL_EDITING_ENABLED available:', !!PUBLIC_SANITY_VISUAL_EDITING_ENABLED)
-
 export default defineConfig({
   integrations: [
     sitemap(), 
@@ -35,10 +27,17 @@ export default defineConfig({
     sanity({
       projectId: 'cxeknc6v',
       dataset: 'production',
-      useCdn: PUBLIC_SANITY_VISUAL_EDITING_ENABLED === "true" ? true : false,
+      useCdn: true,
+      // useCdn: PUBLIC_SANITY_API_READ_TOKEN ? true : false,
+      token: PUBLIC_SANITY_API_READ_TOKEN,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
+      },
+      perspective: 'published',
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
+        'CDN-Cache-Control': 'public, s-maxage=3600',
       },
     }), 
     solid({
@@ -61,14 +60,17 @@ export default defineConfig({
     //   fallbackType: "rewrite"
     // }
   },
-  prefetch: true,
+  prefetch: {
+    prefetchAll: true
+  },
   experimental: {
     clientPrerender: true
   },
-  // output: 'server',
-  output: renderMode,
+  output: 'server',
   // output: 'static',
-  adapter: adapter,
+  adapter: cloudflare({
+    imageService: 'cloudflare',
+  }),
   site: 'https://meetdomaine.com/',
   vite: {
     define: {
@@ -87,7 +89,7 @@ export default defineConfig({
       exclude: ['detect-libc']
     },
     build: {
-      minify: false,
+      minify: true,
     },
     ssr: {
       noExternal: ['detect-libc'],

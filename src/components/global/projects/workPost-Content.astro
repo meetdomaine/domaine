@@ -10,7 +10,7 @@ import { sanityClient } from "sanity:client"
 
 const { content, brand, locale } = Astro.props
 
-const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && industry->slug.current == '${content.industry.slug.current}' && slug.current != '${content.slug.current}' ]{${projectGridFields}} | order(orderRank)`)
+const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && industry->slug.current == '${content.industry.slug.current}' && slug.current != '${content.slug.current}' ][0...3]{${projectGridFields}} | order(orderRank)`)
 ---
 <div 
   class="project-content"

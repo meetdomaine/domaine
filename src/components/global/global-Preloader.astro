@@ -4,9 +4,11 @@ import { imageFields } from "../../lib/cms-queries"
 import AtomSanityImage from "./atoms/atom-sanityImage.astro"
 import { getTranslationString } from "../../lib/translations"
 import { Brands } from "../../enums/brands"
+import { getCollection } from "astro:content"
+import { getEntry } from "astro:content"
 
-const { currentBrand, showPreloader, locale, brand } = Astro.props
-const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id == "settings_preloader-${brand === Brands.STUDIO ? "studio" : "domaine"}"][0]{..., heading, images[]{${imageFields}} }`)
+const { showPreloader, locale, brand } = Astro.props
+const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-${brand === Brands.STUDIO ? "studio" : "domaine"}`)
 ---
 
 <div id="site-preloader" class="preloader" data-color-scheme="brand-02" data-show-preloader={showPreloader ? "true" : "false"}>
@@ -42,6 +44,7 @@ const content = await sanityClient.fetch(`*[_type == "settings_preloader" && _id
   // Do nothing if preloader is disabled on this page or has shown already
   if (sessionCached || showPreloader != "true") {
     window.addEventListener("DOMContentLoaded", handlePreloadComplete)
+		// window.addEventListener("astro:page-load", handlePreloadComplete)
   } else {
 
     sessionStorage.setItem("cachedSession", "true");

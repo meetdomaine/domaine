@@ -11,28 +11,41 @@ import GlobalSections from "../components/global/sections/section-GlobalSections
 import { Brands } from "../enums/brands"
 import LayoutStudio from "./Layout-Studio.astro"
 
+export const prerender = false // Make Event content static so it doesn't refetch on each page load
 
 const { content, locale, brand } = Astro.props
+
+// Clean timezone and dateTime data to remove invisible Unicode characters
+const cleanTimezone = content.timezone?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim() || 'America/New_York'
+const cleanDateTime = content.dateTime?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
 
 const dateOptions: UseDateTimeFormatOptions = {
   weekday: 'long',
   month: 'long',
-  day: 'numeric',
-  timeZone: content.timezone ? content.timezone : 'America/New_York',
-  timeZoneName: 'short'
+  day: 'numeric'
 };
 
 const timeOptions: UseDateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
   hour12: content.use24hourFormat ? false : true,
-  timeZone: content.timezone ? content.timezone : 'America/New_York',
+  timeZone: cleanTimezone,
   timeZoneName: 'short'
 };
 
-const dateTime = new Date(content.dateTime)
+const timeZoneOptions: UseDateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: content.use24hourFormat ? false : true,
+  timeZone: cleanTimezone,
+  timeZoneName: 'short'
+};
+
+const dateTime = new Date(cleanDateTime)
 const date = new Intl.DateTimeFormat(locale ? locale : 'en-US', dateOptions).format(dateTime);
 const time = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptions).format(dateTime);
+const timeZone = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeZoneOptions).formatToParts(new Date())?.find(part => part.type === 'timeZoneName')?.value
+
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
 
@@ -52,6 +65,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         image={content.thumbnailImage.image}
         aspectRatio={3 / 4}
         cover={true}
+        eager={true}
       />
     </div>
 

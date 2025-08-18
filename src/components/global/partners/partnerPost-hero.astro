@@ -15,11 +15,10 @@ const { content, locale } = Astro.props
         <AtomSanityImage 
           image={content.icon.image}
           sizes="30vw"
-          pagefindMeta="image[src], image_alt[alt]"
         />
       </div>
       <div class="title">
-        <h1 data-pagefind-meta="title" class="partner-title h4">{content.title}</h1>
+        <h1 class="partner-title h4">{content.title}</h1>
         <p class="partner-description caption">{getTranslationString(content.description, locale)}</p>
       </div>
     </div>
@@ -66,7 +65,7 @@ const { content, locale } = Astro.props
     </div>
   </div>
   
-  {content.excerpt && <h2 class="excerpt h1" data-pagefind-meta="excerpt">{getTranslationString(content.excerpt, locale)}</h2>}
+  {content.excerpt && <h2 class="excerpt h1">{getTranslationString(content.excerpt, locale)}</h2>}
 
 </section>
 
