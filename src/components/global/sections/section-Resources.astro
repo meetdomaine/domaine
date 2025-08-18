@@ -1,0 +1,117 @@
+---
+import { getTranslationString } from "../../../lib/translations"
+import GlobalBlogCard from "../blog/global-BlogCard.astro"
+import AtomSanityMedia from "../atoms/atom-sanityMedia.astro"
+import AtomTag from "../atoms/atom-tag.astro"
+
+const { section, brand, locale } = Astro.props
+console.log(section)
+---
+<section class="resources">
+  {(section.heading || section.subheading) &&
+    <div class="section-title">
+      {section.heading && <h2 class="h2">{getTranslationString(section.heading, locale)}</h2>}
+      {section.subheading && <p class="caption">{getTranslationString(section.subheading, locale)}</p>}
+    </div>
+  }
+  <div class="blocks">
+    {section.content.map((block, i) => {
+      if (block._type == "blog") {
+        return (
+          <GlobalBlogCard 
+            title={block.title}
+            series={block.series}
+            slug={block.slug}
+            thumbnailImage={block.thumbnailImage}
+            category={block.category}
+            agencyBrand={block.agencyBrand}
+            postDate={block.postDate}
+            locale={locale}
+          />
+        )
+      } 
+      if (block._type == "resource") {
+        return (
+          <a href={block.button.url} class="resource-card">
+            <div class="card-media">
+              <AtomSanityMedia 
+                video={block.media.video}
+                image={block.media.image}
+                sizes="33vw"
+                aspectRatio={3 / 4}
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="h6 card-title">{getTranslationString(block.title, locale)}</h3>
+            </div>
+            {block.badge && <AtomTag title={getTranslationString(block.badge, locale)} />}
+          </a>
+        )
+      }
+      return null
+    })}
+  </div>
+</section>
+
+<style>
+  .resources {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding-block: var(--space-2xl);
+  }
+
+  .section-title {
+    padding-inline: var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    max-width: 40rem;
+    gap: var(--space-3xs);
+  }
+
+  .blocks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding-inline: var(--page-margin);
+  }
+
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    text-decoration: none;
+
+    .card-media {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+
+      img {
+        scale: 1;
+        transition: scale var(--anim-lg);
+      }
+
+      &:hover img {
+        scale: 1.05;
+      }
+    }
+
+    
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xs);
+      align-items: flex-start;
+
+      .card-title {
+        transition: color var(--anim-sm);
+
+        &:hover {
+          color: var(--color-foreground-secondary);
+        }
+      }
+    }
+  }
+</style>
