@@ -119,7 +119,7 @@ const loadIndex = async () => {
       brand: project.agencyBrand?.name,
       type: project.agencyBrand?.slug?.current === '/studio' ? 'case-study_studio' : 'case-study_domaine' // DEPRECATED
     };
-    console.log(projectData)
+    // console.log(projectData)
     
     projectsData.push(projectData);
     projectsIndex.add(projectData);

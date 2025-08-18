@@ -30,6 +30,7 @@ const { data: eventContent } = await loadQuery({
     metafields{ title, description, image }
   }`
 })
+console.log(eventContent.timezone)
 if (!eventContent) return Astro.redirect('/404')
 ---
 <LayoutEvent 
