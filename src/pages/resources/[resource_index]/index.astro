@@ -94,7 +94,8 @@ const LOCALE = Locales.EN
             label: page.buttonLabel,
             url: `/resources/${resource_index}/${page.slug.current}`
           }
-        }))
+        })),
+        columnCount: content.pages.length
       }}
       brand={Brands.DOMAINE}
       locale={LOCALE}
