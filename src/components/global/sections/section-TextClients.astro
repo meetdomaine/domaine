@@ -53,7 +53,7 @@ if (section.quoteClient) {
                         class="quote-logo"
                         style={`--logo-scale: ${section.quoteClient?.logoScale}`}
                     >
-                        <Fragment set:html={quoteClientLogo} />
+                        <img src={section.quoteClient?.logo} alt={`${section.quoteClient?.title} logo`} />
                     </div>
                 }
             </div>
@@ -177,7 +177,7 @@ if (section.quoteClient) {
         /* width: calc(1rem * var(--logo-scale)); */
     }
 
-    .quote-logo :global(svg) {
+    .quote-logo :global(img) {
         width: max(calc(var(--logo-scale) * 0.4%), 10rem);
     }
 
