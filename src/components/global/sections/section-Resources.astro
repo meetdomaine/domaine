@@ -32,7 +32,11 @@ console.log(section)
       } 
       if (block._type == "resource") {
         return (
-          <a href={block.button.url} class="resource-card">
+          <a 
+            href={block.url} 
+            class="resource-card"
+            target={block.newTab ? "_blank" : "_self"}
+          >
             <div class="card-media">
               <AtomSanityMedia 
                 video={block.media.video}

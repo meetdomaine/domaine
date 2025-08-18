@@ -53,9 +53,19 @@ export default defineType({
             type: 'snippet_video',
           },
           {
-            name: 'button',
-            title: 'Button',
-            type: 'snippet_locale-button',
+            name: 'url',
+            title: 'URL',
+            type: 'url',
+            validation: Rule => Rule.uri({
+              allowRelative: true,
+              scheme: ['http', 'https']
+            })
+          },
+          {
+            name: 'newTab',
+            title: 'Open in New Tab',
+            type: 'boolean',
+            initialValue: false,
           }
         ],
         preview: {

@@ -123,7 +123,7 @@ export const globalSectionsFields = `
     _type == "section_quote" => { showSection, quote, author, authorInfo, quoteImage{${imageFields}} },
     _type == "section_resources" => { heading, subheading, content[]{
       _type == "reference" => @->{ "_type": "blog", ${blogCardFields} },
-      _type != "reference" => { "_type": "resource", title, badge, media{${videoFields}, ${imageFields}}, button{...} },
+      _type != "reference" => { "_type": "resource", title, badge, media{${videoFields}, ${imageFields}}, url, newTab },
     } },
     _type == "section_richContent" => { ..., showSection, richContent[]{..., ${richContentFields}}, content{..., richContent[]{${richContentFields}}, translations[]{${richContentFields}} } },
     _type == "section_statsCarousel" => { showSection, heading, subheading, stats[]{number, label, thumbnailImage{${imageFields}} } },
