@@ -19,10 +19,10 @@
 
     const links = Array.from(document.getElementsByTagName('a'))
     links.forEach((link) => {
-      const jumplinkValue = link.dataset.jumplink
-      if (jumplinkValue === "false") return
+      const isJumplink = link.href[0] === "#"
+      if (!isJumplink) return
       link.addEventListener("click", () => {
-        lenis.scrollTo(jumplinkValue, {
+        lenis.scrollTo(link.href, {
           easing: (t) => {
             1 - Math.pow(1 - t, 5);
           },

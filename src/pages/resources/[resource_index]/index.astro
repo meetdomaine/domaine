@@ -12,6 +12,7 @@ import AtomButton from "../../../components/global/atoms/atom-button.astro";
 import SectionTextMediaBlocks from "../../../components/global/sections/section-TextMediaBlocks.astro";
 import SectionGlobalSections from "../../../components/global/sections/section-GlobalSections.astro";
 import { Translations } from "../../../lib/locales";
+import { checkIsJumplink } from "../../../lib/functions";
 
 const { resource_index } = Astro.params;
 
@@ -74,7 +75,7 @@ const LOCALE = Locales.EN
         {content.button?.label && content.button?.url &&
           <AtomButton 
               text={getTranslationString(content.button.label.text, LOCALE)}
-              url={getRelativeLocaleUrl(LOCALE, content.button.url)}
+              url={checkIsJumplink(content.button.url) ? content.button.url : getRelativeLocaleUrl(LOCALE, content.button.url)}
               newTab={content.button.newTab}
               style="primary"
               icon="arrow-diagonal"

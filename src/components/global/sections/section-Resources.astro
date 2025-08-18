@@ -10,7 +10,7 @@ console.log(section)
 <section class="resources">
   {(section.heading || section.subheading) &&
     <div class="section-title">
-      {section.heading && <h2 class="h2">{getTranslationString(section.heading, locale)}</h2>}
+      {section.heading && <h2 class="h3">{getTranslationString(section.heading, locale)}</h2>}
       {section.subheading && <p class="caption">{getTranslationString(section.subheading, locale)}</p>}
     </div>
   }
@@ -32,7 +32,11 @@ console.log(section)
       } 
       if (block._type == "resource") {
         return (
-          <a href={block.button.url} class="resource-card">
+          <a 
+            href={block.url} 
+            class="resource-card"
+            target={block.newTab ? "_blank" : "_self"}
+          >
             <div class="card-media">
               <AtomSanityMedia 
                 video={block.media.video}
@@ -56,7 +60,8 @@ console.log(section)
 <style>
   .resources {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-start;
     gap: var(--space-xl);
     padding-block: var(--space-2xl);
   }
@@ -67,13 +72,26 @@ console.log(section)
     flex-direction: column;
     max-width: 40rem;
     gap: var(--space-3xs);
+    flex: 0 0 max(30%, 20rem);
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-2xl));
   }
 
   .blocks {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    /* display: grid; */
+    /* grid-template-columns: repeat(auto-fit, minmax(min(50%, 20rem), 1fr)); */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-xl) var(--grid-gap);
     padding-inline: var(--page-margin);
+    flex: 1 1 auto;
+
+    & > :global(*) {
+      flex: 0 0 calc(50% - var(--grid-gap) / 2);
+      max-width: calc(50% - var(--grid-gap) / 2);
+      min-width: unset;
+    }
   }
 
   .resource-card {
@@ -86,6 +104,7 @@ console.log(section)
     .card-media {
       border-radius: var(--radius-sm);
       overflow: hidden;
+      align-self: stretch;
 
       img {
         scale: 1;
@@ -112,6 +131,17 @@ console.log(section)
           color: var(--color-foreground-secondary);
         }
       }
+    }
+  }
+
+  @media screen and (width <= 768px) {
+    .resources {
+      flex-direction: column;
+    }
+
+    .section-title {
+      position: relative;
+      top: unset;
     }
   }
 </style>
