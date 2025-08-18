@@ -43,6 +43,7 @@ const LOCALE = Locales.EN
   showPreloader={true}
   locale={LOCALE}
   searchExposed={false}
+  showPreloader={false}
 >
   <section 
     class="hero"
@@ -53,7 +54,12 @@ const LOCALE = Locales.EN
       <a href={`/resources/${resource_index}`} class="backlink h5"><IconArrowBack />{getTranslationString(content.resourcesIndex.title)}</a>
       <h1 class="">{getTranslationString(content.heading ? content.heading : content.title)}</h1>
     </div>
-    <div class="section-media">
+    <div 
+      class="section-media"
+      data-animate-viewport="true" 
+      data-animation="fade-up"
+      data-animation-delay="200"
+    >
       <AtomSanityMedia 
         image={content.heroImage.image}
         video={content.heroImage.video}
@@ -85,11 +91,10 @@ const LOCALE = Locales.EN
     /* margin-block: calc(var(--header-height) * 1) 0;
     margin-inline: var(--page-margin); */
     padding-inline: var(--page-margin);
-    padding-block: var(--space-md);
+    padding-block: calc(var(--header-height) * 2) var(--space-md);
     gap: var(--space-sm);
     background-color: var(--color-background, var(--color-background-secondary));
     /* background-color: var(--color-background-secondary); */
-    border-radius: var(--radius-md);
     min-height: 50svh;
 
     .section-title {
@@ -117,6 +122,19 @@ const LOCALE = Locales.EN
         /* height: 1em; */
         width: 0.8em;
         height: 0.8em;
+      }
+    }
+  }
+
+  @media screen and (width < 768px) {
+    .hero {
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-sm);
+
+      .section-media {
+        flex: 0 0 auto;
       }
     }
   }

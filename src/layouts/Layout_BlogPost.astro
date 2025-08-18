@@ -13,13 +13,21 @@ import { Translations } from '../lib/locales';
 import { Brands } from '../enums/brands';
 import { getLocaleString, getTranslationString } from '../lib/translations';
 import { sanityClient } from 'sanity:client';
+import { getCollection } from 'astro:content';
 
 const { content, locale , brand} = Astro.props;
 
-const [latestPosts, relatedPosts] = await Promise.all([
-    sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)[0...3]`),
-    sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)`)
-])
+// Optimized: Single query with conditional logic and proper limits
+const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == $brand && category._ref == $categoryId && isHidden != true && _id != $currentId]{
+    ${blogCardFields}
+  } | order(postDate desc)[0...8]
+`, {
+  brand,
+  categoryId: content.category._id,
+  currentId: content._id
+})
+
+const latestPosts = await getCollection('blogCards')
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
@@ -45,7 +53,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
         brand={brand}
     >
         <BlogPostSidebar 
-            latestPosts={latestPosts}
+            latestPosts={latestPosts.slice(0, 3).map(post => post.data)}
             locale={locale}
             brand={brand}
         />
