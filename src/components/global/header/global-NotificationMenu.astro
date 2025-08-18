@@ -147,7 +147,6 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
 
 <script>
   import { isMobileBreakpoint } from "../../../lib/check-device"
-  import { getIsDaytime, getLocalTime, clearTimeIntervals } from "../../../lib/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -178,22 +177,51 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
     })
   }
 
-  // Initialize time displays once without intervals
+  // Initialize time displays with single shared interval
+  let sharedInterval: number | null = null
+  
   const initializeTime = () => {
-    clocks.forEach((clock: HTMLElement) => {
-      const timezoneId = clock.dataset.timezone
-      const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
-      const timeElement: HTMLElement = clock.querySelector('.time')
+    // Clear any existing interval
+    if (sharedInterval) {
+      clearInterval(sharedInterval)
+      sharedInterval = null
+    }
 
-      // Clear any existing intervals
-      clearTimeIntervals(timeElement)
-      clearTimeIntervals(clock)
+    // Update all clocks with a single shared interval
+    const updateAllClocks = () => {
+      clocks.forEach((clock: HTMLElement) => {
+        const timezoneId = clock.dataset.timezone
+        const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
+        const timeElement: HTMLElement = clock.querySelector('.time')
 
-      // Set up new intervals and store their IDs
-      getLocalTime(timeElement, cleanedTimezoneId, 'innerText')
-      getLocalTime(clock, cleanedTimezoneId, 'customProps')
-      getIsDaytime(clock, cleanedTimezoneId)
-    })
+        if (!cleanedTimezoneId) return
+
+        const time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId}))
+        const hours = time.getHours().toString().padStart(2, "0")
+        const minutes = time.getMinutes().toString().padStart(2, "0")
+        const seconds = time.getSeconds().toString().padStart(2, "0")
+
+        // Update time display
+        if (timeElement) {
+          timeElement.innerText = `${hours}:${minutes}`
+        }
+
+        // Update CSS custom properties
+        clock.style.setProperty('--hours', hours)
+        clock.style.setProperty('--minutes', minutes)
+        clock.style.setProperty('--seconds', seconds)
+
+        // Update day/night status
+        const isDayTime = time.getHours() > 6 && time.getHours() < 20
+        clock.dataset.isDaytime = isDayTime.toString()
+      })
+    }
+
+    // Initial update
+    updateAllClocks()
+    
+    // Set up single shared interval for all clocks
+    sharedInterval = setInterval(updateAllClocks, 1000)
   }
 
   if (!isMobileBreakpoint) {
@@ -202,11 +230,10 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
 
   // Clean up intervals when page unloads
   window.addEventListener('beforeunload', () => {
-    clocks.forEach((clock: HTMLElement) => {
-      const timeElement: HTMLElement = clock.querySelector('.time')
-      clearTimeIntervals(timeElement)
-      clearTimeIntervals(clock)
-    })
+    if (sharedInterval) {
+      clearInterval(sharedInterval)
+      sharedInterval = null
+    }
   })
   
 </script>
