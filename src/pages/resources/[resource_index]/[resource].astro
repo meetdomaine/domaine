@@ -43,6 +43,7 @@ const LOCALE = Locales.EN
   showPreloader={true}
   locale={LOCALE}
   searchExposed={false}
+  showPreloader={false}
 >
   <section 
     class="hero"
@@ -53,7 +54,12 @@ const LOCALE = Locales.EN
       <a href={`/resources/${resource_index}`} class="backlink h5"><IconArrowBack />{getTranslationString(content.resourcesIndex.title)}</a>
       <h1 class="">{getTranslationString(content.heading ? content.heading : content.title)}</h1>
     </div>
-    <div class="section-media">
+    <div 
+      class="section-media"
+      data-animate-viewport="true" 
+      data-animation="fade-up"
+      data-animation-delay="200"
+    >
       <AtomSanityMedia 
         image={content.heroImage.image}
         video={content.heroImage.video}
@@ -89,7 +95,6 @@ const LOCALE = Locales.EN
     gap: var(--space-sm);
     background-color: var(--color-background, var(--color-background-secondary));
     /* background-color: var(--color-background-secondary); */
-    border-radius: var(--radius-md);
     min-height: 50svh;
 
     .section-title {
