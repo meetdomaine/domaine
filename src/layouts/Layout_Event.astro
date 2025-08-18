@@ -33,6 +33,14 @@ const timeOptions: UseDateTimeFormatOptions = {
   timeZoneName: 'short'
 };
 
+const timeZoneOptions: UseDateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: content.use24hourFormat ? false : true,
+  timeZone: cleanTimezone,
+  timeZoneName: 'short'
+};
+
 const dateTime = new Date(cleanDateTime)
 const date = new Intl.DateTimeFormat(locale ? locale : 'en-US', dateOptions).format(dateTime);
 const time = new Intl.DateTimeFormat(locale ? locale : 'en-US', timeOptions).format(dateTime);
@@ -82,11 +90,11 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
           <div class="event-details">
             <div class="date">
               <Icon name="icon-calendar" />
-              <span>{date} at {timeZone}</span>
+              <span>{date}</span>
             </div>
             <div class="time">
               <Icon name="icon-clock" />
-              <span>{time} {timeZone}</span>
+              <span>{time}</span>
             </div>
             <div class="location">
               <Icon name="icon-pin" />
