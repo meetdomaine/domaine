@@ -1,19 +1,7 @@
 ---
 import AtomButton from "../atoms/atom-button.astro"
-import { getRawSvg } from "../../../lib/raw-svg"
 
 const { section, brand, key, locale } = Astro.props
-
-let quoteClientLogo
-
-const clients = await Promise.all(section.clients.map( async (client) => {
-    const clientData = { ...client, logoSvg: await getRawSvg(client.logo)}
-    return await clientData
-}))
-
-if (section.quoteClient) {
-    quoteClientLogo = await getRawSvg(section.quoteClient?.logo)
-}
 ---
 <section class="section-text-clients">
     <div 
@@ -27,16 +15,16 @@ if (section.quoteClient) {
     <!-- <div class="client-logos"> -->
         <div 
             class="logo-track"
-            style={`--logo-count: ${clients.length};`}
+            style={`--logo-count: ${section.clients.length};`}
         >
-            {clients.map((client, i) => (
+            {section.clients.map((client, i) => (
                 <div class="logo" style={`--width-offset: ${client.logoScale};`}>
-                    <Fragment set:html={client.logoSvg} />
+                    <img src={client.logo} alt={`${client.title} logo`} />
                 </div>
             ))}
-            {clients.map((client, i) => (
+            {section.clients.map((client, i) => (
                 <div class="logo" style={`--width-offset: ${client.logoScale};`}>
-                    <Fragment set:html={client.logoSvg} />
+                    <img src={client.logo} alt={`${client.title} logo`} />
                 </div>
             ))}
         </div>
@@ -48,7 +36,7 @@ if (section.quoteClient) {
                     <p class="quote h6">{locale && section.quote.translations?.[locale] ? section.quote.translations[locale] : section.quote.text}</p>
                     <p class="author">{locale && section.quoteAuthor.translations?.[locale] ? section.quoteAuthor.translations[locale] : section.quoteAuthor.text}</p>
                 </div>
-                {quoteClientLogo && 
+                {section.quoteClient?.logo && 
                     <div 
                         class="quote-logo"
                         style={`--logo-scale: ${section.quoteClient?.logoScale}`}
