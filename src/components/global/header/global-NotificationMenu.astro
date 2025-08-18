@@ -7,6 +7,10 @@ import type { UseDateTimeFormatOptions } from "sanity"
 import { checkDateIsPast } from "../../../lib/check-date-is-past"
 import { getLocaleString, getLocaleUrl, getTranslationString } from "../../../lib/translations"
 import { getProjects, getBlogPosts, getEvents, getCareers } from "../../../lib/cached-content"
+import { sanityClient } from "sanity:client"
+import { videoFields } from "../../../lib/cms-queries"
+import { imageFields } from "../../../lib/cms-queries"
+import { blogCardFields } from "../../../lib/cms-queries"
 
 const {
   content,
@@ -20,13 +24,28 @@ const monthOptions: UseDateTimeFormatOptions = {
 }
 
 const [latestProjects, latestBlogPosts, events, allCareers] = await Promise.all([
-    getProjects(brand),
-    getBlogPosts(brand),
-    getEvents(),
-    getCareers()
+  sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' ][0...2]{
+    title,
+    isHidden,
+    agencyBrand->{slug, name},
+    thumbnailMedia{${videoFields}, ${imageFields}},
+    slug{...},
+    orderRank,
+  } | order( orderRank)`),
+  sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true ]{
+    ${blogCardFields}
+  } | order(postDate desc)[0...2]`),
+  sanityClient.fetch(`*[_type == "type_event" && dateTime(dateTime) > dateTime(now()) && isPrivate != true]{
+    title,
+    isPrivate,
+    dateTime,
+    slug,
+    location,
+    thumbnailImage{${imageFields}},
+  } | order(dateTime)[0...2]`),
+  getCareers()
 ])
-
-const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIsPast(new Date(event.dateTime)) )
+// const upcomingEvents = events.filter((event) => !checkDateIsPast(new Date(event.dateTime)))
 ---
 <dialog popover id="notification-menu" class="notification-menu" data-lenis-prevent autofocus="true" open>
 
@@ -44,7 +63,7 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
   }
 
   <div class="latest-projects">
-    {latestProjects.slice(0,2).map((project) => (
+    {latestProjects.map((project) => (
       <AtomNotificationLink 
         title={project.title}
         url={getLocaleUrl(`${currentBrand.slug.current === "/studio" ? "/studio" : ""}/work/${project.slug.current}`, locale)}
@@ -80,10 +99,10 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
     </div>
   }
 
-  {upcomingEvents?.length > 0 && 
+  {events?.length > 0 && 
     <div class="event-card" data-color-scheme="glass-dark">
       {content.eventsTitle && <p class="caption">{getTranslationString(content.eventsTitle, locale)}</p>}
-      {upcomingEvents.map((event) => (
+      {events.map((event) => (
         <a 
           class="event-info color-reset" 
           href={getLocaleUrl(`/events/${event.slug.current}`, locale)} 
@@ -147,7 +166,6 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
 
 <script>
   import { isMobileBreakpoint } from "../../../lib/check-device"
-  import { getIsDaytime, getLocalTime, clearTimeIntervals } from "../../../lib/get-local-time"
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -178,22 +196,51 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
     })
   }
 
-  // Initialize time displays once without intervals
+  // Initialize time displays with single shared interval
+  let sharedInterval: number | null = null
+  
   const initializeTime = () => {
-    clocks.forEach((clock: HTMLElement) => {
-      const timezoneId = clock.dataset.timezone
-      const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
-      const timeElement: HTMLElement = clock.querySelector('.time')
+    // Clear any existing interval
+    if (sharedInterval) {
+      clearInterval(sharedInterval)
+      sharedInterval = null
+    }
 
-      // Clear any existing intervals
-      clearTimeIntervals(timeElement)
-      clearTimeIntervals(clock)
+    // Update all clocks with a single shared interval
+    const updateAllClocks = () => {
+      clocks.forEach((clock: HTMLElement) => {
+        const timezoneId = clock.dataset.timezone
+        const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
+        const timeElement: HTMLElement = clock.querySelector('.time')
 
-      // Set up new intervals and store their IDs
-      getLocalTime(timeElement, cleanedTimezoneId, 'innerText')
-      getLocalTime(clock, cleanedTimezoneId, 'customProps')
-      getIsDaytime(clock, cleanedTimezoneId)
-    })
+        if (!cleanedTimezoneId) return
+
+        const time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId}))
+        const hours = time.getHours().toString().padStart(2, "0")
+        const minutes = time.getMinutes().toString().padStart(2, "0")
+        const seconds = time.getSeconds().toString().padStart(2, "0")
+
+        // Update time display
+        if (timeElement) {
+          timeElement.innerText = `${hours}:${minutes}`
+        }
+
+        // Update CSS custom properties
+        clock.style.setProperty('--hours', hours)
+        clock.style.setProperty('--minutes', minutes)
+        clock.style.setProperty('--seconds', seconds)
+
+        // Update day/night status
+        const isDayTime = time.getHours() > 6 && time.getHours() < 20
+        clock.dataset.isDaytime = isDayTime.toString()
+      })
+    }
+
+    // Initial update
+    updateAllClocks()
+    
+    // Set up single shared interval for all clocks
+    sharedInterval = setInterval(updateAllClocks, 1000)
   }
 
   if (!isMobileBreakpoint) {
@@ -202,11 +249,10 @@ const upcomingEvents = events.filter((event) => !event.isPrivate && !checkDateIs
 
   // Clean up intervals when page unloads
   window.addEventListener('beforeunload', () => {
-    clocks.forEach((clock: HTMLElement) => {
-      const timeElement: HTMLElement = clock.querySelector('.time')
-      clearTimeIntervals(timeElement)
-      clearTimeIntervals(clock)
-    })
+    if (sharedInterval) {
+      clearInterval(sharedInterval)
+      sharedInterval = null
+    }
   })
   
 </script>
