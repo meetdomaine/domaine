@@ -16,10 +16,22 @@ import { sanityClient } from 'sanity:client';
 
 const { content, locale , brand} = Astro.props;
 
-const [latestPosts, relatedPosts] = await Promise.all([
-    sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)[0...3]`),
-    sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && category._ref == '${content.category._id}' && isHidden != true && _id != '${content._id}' ]{${blogCardFields}} | order(postDate desc)`)
-])
+// Optimized: Single query with conditional logic and proper limits
+const blogPosts = await sanityClient.fetch(`{
+  "latest": *[_type == "type_blog" && agencyBrand->name == $brand && isHidden != true && _id != $currentId]{
+    ${blogCardFields}
+  } | order(postDate desc)[0...3],
+  "related": *[_type == "type_blog" && agencyBrand->name == $brand && category._ref == $categoryId && isHidden != true && _id != $currentId]{
+    ${blogCardFields}
+  } | order(postDate desc)[0...8]
+}`, {
+  brand,
+  currentId: content._id,
+  categoryId: content.category._id
+})
+
+const latestPosts = blogPosts.latest || []
+const relatedPosts = blogPosts.related || []
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---
