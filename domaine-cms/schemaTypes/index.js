@@ -83,7 +83,7 @@ import snippet_localeSEOFields from "./snippets/snippet_locale-SEO-fields.js";
 import snippet_localeRichContent from "./snippets/snippet_locale-rich-content.js";
 import type_resource from "./resources/type_resource.js";
 import type_resourcesIndex from "./resources/type_resources-index.js";
-
+import section_resources from "./sections/section_resources.js";
 
 export const schemaTypes = [
     type_project,
@@ -152,6 +152,7 @@ export const schemaTypes = [
     section_projectsGrid,
     section_quote,
     section_locationsFeed,
+    section_resources,
     section_richContent,
     section_serviceCards,
     section_servicesFeed,
