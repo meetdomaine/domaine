@@ -20,6 +20,10 @@ const [ relatedProjects, relatedPosts ] = await Promise.all([
   sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`),
   sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->serviceGroup->slug.current ]{${blogCardFields}}|order(postDate desc)`)
 ])
+
+console.log(relatedProjects)
+console.log(relatedPosts)
+
 ---
 <BrandLayout
     title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getTranslationString(content.serviceType.title, locale)} ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
