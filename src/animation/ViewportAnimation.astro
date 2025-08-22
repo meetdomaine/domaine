@@ -26,7 +26,12 @@
     })
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   const viewportAnimationObserver = new IntersectionObserver(callback, settings);
+  //   initAnimations(viewportAnimationObserver)
+  // })
+
+  document.addEventListener("astro:page-load", () => {
     const viewportAnimationObserver = new IntersectionObserver(callback, settings);
     initAnimations(viewportAnimationObserver)
   })

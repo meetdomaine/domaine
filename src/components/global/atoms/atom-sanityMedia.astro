@@ -36,6 +36,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         style={{ aspectRatio: aspectRatio }}
         width={videoWidth}
         height={videoHeight}
+        eager={eager}
         data-cover={cover ? "true" : "false"}
         data-autoplay={autoplay === false ? "false" : "true"}
         nohotkeys
