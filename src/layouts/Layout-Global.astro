@@ -119,11 +119,11 @@ const currentPath = Astro.url.pathname;
 		<!-- <ClientRouter /> -->
 		<!-- <VisualEditing enabled={true} /> -->
 
-    <GlobalPreloader
+    <!-- <GlobalPreloader
       showPreloader={showPreloader}
 			brand={brand}
 			locale={locale}
-    />
+    /> -->
     
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
@@ -145,16 +145,6 @@ const currentPath = Astro.url.pathname;
     initLenis()
   })
 </script>
-
-<!-- <script define:vars={{ showPreloader }}>
-  if (!showPreloader) {
-    const preloadComplete = new Event("preload:complete");
-    // window.dispatchEvent(preloadComplete)
-    window.addEventListener("DOMContentLoaded", () => {
-      window.dispatchEvent(preloadComplete)
-    })
-  }
-</script> -->
 
 <style>
   @media screen and (max-width: 860px) {
