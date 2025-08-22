@@ -146,10 +146,17 @@ const currentPath = Astro.url.pathname;
   })
 </script>
 
-<style>
-  @media screen and (max-width: 860px) {
-    :global(#front-chat-iframe) {
-      display: none !important;
-    }
+<style is:global>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
+
+<style is:inline>
+  body {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.2s linear, opacity 0.2s linear;
   }
 </style>
