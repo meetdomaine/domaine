@@ -29,10 +29,9 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         id={`mux-video_${video.asset.playbackId}`}
         playback-id={video.asset.playbackId}
         metadata-video-title={video.asset.filename}
-        autoplay={autoplay === false ? false : true}
         preload={preload ? "auto" : "none"}
         loop
-        {...(autoplay !== false && { muted: true })}
+        {...(autoplay !== false && { muted: true, autoPlay: true })}
         style={{ aspectRatio: aspectRatio }}
         width={videoWidth}
         height={videoHeight}
@@ -56,7 +55,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
     : <p>NO MEDIA</p>
 }
 
-{video && autoplay === false &&
+{video && !autoplay &&
   <AtomCursorFollow>
     <button 
       id={`play-button_${video.asset.playbackId}`} 
@@ -67,6 +66,7 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
 }
 
 <script define:vars={{ video, autoplay }}>
+  
   document.addEventListener("astro:page-load", () => {
     if (video && autoplay === false) {
       const muxVideo = document.getElementById(`mux-video_${video.asset.playbackId}`)
@@ -87,6 +87,8 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
           playButton.dataset.active = "true"
           return muxVideo.play()
         })
+      } else {
+        console.log("No mux video or play button found")
       }
     }
   })
