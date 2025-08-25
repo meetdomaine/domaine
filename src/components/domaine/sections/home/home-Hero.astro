@@ -8,10 +8,11 @@ import { stegaClean } from '@sanity/client/stega'
 const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
 ---
 <section id="domaine-home-hero" class="section-home-hero" data-color-scheme={stegaClean(heroTextColor) === "light" ? "invert" : ""}>
-    <div class="section-content">
-        <!-- {projects.map((project) => (
-            <p>{project.title}</p>
-        ))} -->
+    <div 
+        class="section-content"
+        data-animate-viewport="true"
+        data-animation="fade-up"
+    >
         <div class="section-title">
             {eyebrow && 
                 <div class="eyebrow">
@@ -38,12 +39,13 @@ const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
                 sizes="100vw"
                 cover={true}
                 preload={true}
+                eager={true}
             />
         </div>
     }
 </section>
 
-<script>
+<!-- <script>
     import { addParallax, fadeUp, gsap, SplitText } from "../../../../lib/gsap"
 
     const sections = document.querySelectorAll('#domaine-home-hero')
@@ -82,12 +84,12 @@ const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
             })
         }
 
-        window.addEventListener("preload:complete", () => {
+        window.addEventListener("DOMContentLoaded", () => {
             animateSection()
         })
     })
 
-</script>
+</script> -->
 
 <style>
     .section-home-hero {

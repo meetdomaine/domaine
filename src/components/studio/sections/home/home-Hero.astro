@@ -117,7 +117,7 @@ const iconText = replaceStringIcons(getTranslationString(heading, locale))
 
     updateVariables()
 
-    window.addEventListener("preload:complete", () => {
+    document.addEventListener("astro:page-load", () => {
         projectCards.forEach((projectCard) => projectCard.style.animationPlayState = "running")
     })
 
@@ -305,7 +305,7 @@ const iconText = replaceStringIcons(getTranslationString(heading, locale))
         camera.updateProjectionMatrix();
     }
 
-    window.addEventListener("preload:complete", () => {
+    window.addEventListener("DOMContentLoaded", () => {
         initScene()
     })
 

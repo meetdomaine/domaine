@@ -59,7 +59,7 @@ const { serviceType, brand, locale } = Astro.props
 <script>
     import { getIsMobile, isMobileBreakpoint } from "../../../lib/check-device"
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
 
         const sections = document.querySelectorAll('.service-type-hero')
         sections.forEach((section) => {

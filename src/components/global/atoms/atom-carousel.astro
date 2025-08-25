@@ -40,7 +40,7 @@ const { slides, aspectRatio, slideCount, centered, spacing } = Astro.props
     import Swiper from 'swiper';
     import 'swiper/css';
 
-    window.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
 
         const swipers: NodeListOf<HTMLElement> = document.querySelectorAll('.swiper-carousel')
 

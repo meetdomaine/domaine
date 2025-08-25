@@ -69,7 +69,7 @@ const { content, locale } = Astro.props
         hideNotice()
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
 
         const cookiedConsent = localStorage.getItem('consentMode')
 
