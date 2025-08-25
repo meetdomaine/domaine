@@ -248,7 +248,7 @@ const [latestProjects, latestBlogPosts, events, allCareers] = await Promise.all(
   }
 
   // Clean up intervals when page unloads
-  window.addEventListener('beforeunload', () => {
+  window.addEventListener('astro:before-swap', () => {
     if (sharedInterval) {
       clearInterval(sharedInterval)
       sharedInterval = null

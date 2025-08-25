@@ -146,6 +146,11 @@ const currentPath = Astro.url.pathname;
   })
 </script>
 
+<!-- Remove Lenis onscrollend event -->
+<script is:inline>
+	delete window.onscrollend;
+</script>
+
 <style is:inline>
   body {
     visibility: hidden;
