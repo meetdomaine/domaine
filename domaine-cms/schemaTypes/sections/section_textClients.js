@@ -32,6 +32,7 @@ export default defineType({
         type: 'reference',
         to: [{ type: 'type_client'}]
       }],
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'quote',
