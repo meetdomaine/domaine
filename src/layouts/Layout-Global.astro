@@ -141,7 +141,7 @@ const currentPath = Astro.url.pathname;
 	import "@mux/mux-player/themes/minimal";
 	import { initLenis } from '../lib/lenis';
 
-	document.addEventListener("DOMContentLoaded", () => {
+	document.addEventListener("astro:page-load", () => {
     initLenis()
   })
 </script>

@@ -31,7 +31,7 @@ const { title, heroMedia, accentColor, locale } = Astro.props
     addParallax(media)
     const timeline = gsap.timeline({ defaults: { ease: "cubic", duration: 2 } })
 
-    window.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
         timeline.to(title, {
             y: "0%"
         })
@@ -52,7 +52,7 @@ const { title, heroMedia, accentColor, locale } = Astro.props
 
     if (title) handleResize()
 
-    window.addEventListener("resize", handleResize)
+    document.addEventListener("resize", handleResize)
 </script>
 
 <style>

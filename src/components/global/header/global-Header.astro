@@ -115,7 +115,7 @@ const { data: headerSettings } = await loadQuery({
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("astro:page-load", async () => {
 
         const navigationMenu: HTMLElement = document.getElementById('navigation-menu');
         const header: HTMLElement = document.getElementById('header');
