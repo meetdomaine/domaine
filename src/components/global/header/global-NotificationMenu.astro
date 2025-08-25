@@ -166,6 +166,8 @@ const [latestProjects, latestBlogPosts, events, allCareers] = await Promise.all(
 
 <script>
   import { isMobileBreakpoint } from "../../../lib/check-device"
+
+  document.addEventListener("astro:page-load", () => {
   const notificationMenu = document.getElementById('notification-menu')
   const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
   const clocks = notificationMenu.querySelectorAll('.clock')
@@ -248,13 +250,13 @@ const [latestProjects, latestBlogPosts, events, allCareers] = await Promise.all(
   }
 
   // Clean up intervals when page unloads
-  window.addEventListener('astro:before-swap', () => {
+  document.addEventListener('astro:before-swap', () => {
     if (sharedInterval) {
       clearInterval(sharedInterval)
       sharedInterval = null
     }
+    })
   })
-  
 </script>
 
 <style>
