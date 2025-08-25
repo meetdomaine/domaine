@@ -25,34 +25,42 @@ const { title, heroMedia, accentColor, locale } = Astro.props
 
     import { fadeUp, addParallax, gsap } from "../../../lib/gsap"
 
-    const title = document.getElementById("project-title")
-    const media = document.getElementById("hero-media")
-    
-    addParallax(media)
-    const timeline = gsap.timeline({ defaults: { ease: "cubic", duration: 2 } })
 
     document.addEventListener("astro:page-load", () => {
-        timeline.to(title, {
-            y: "0%"
-        })
+
+        
+
+        const title = document.getElementById("project-title")
+        const media = document.getElementById("hero-media")
+
+
+        if (media) addParallax(media)
+        const timeline = gsap.timeline({ defaults: { ease: "cubic", duration: 2 } })
+
+        if (title) {
+            const handleResize = () => {
+                let scaleFactor
+                const boundingRect = title.getBoundingClientRect()
+                const scaleFactorWidth = (window.innerWidth * 0.8) / boundingRect.width
+                const scaleFactorHeight = (window.innerHeight * 0.7) / boundingRect.height
+                if (scaleFactorWidth >= scaleFactorHeight) {
+                    scaleFactor = scaleFactorHeight
+                } else {
+                    scaleFactor = scaleFactorWidth
+                }
+                title.style.scale = Math.max(scaleFactor, 1).toString()
+            }
+
+            timeline.to(title, {
+                y: "0%"
+            })
+            handleResize()
+            document.addEventListener("resize", handleResize)
+        }
+
     })
 
-    const handleResize = () => {
-        let scaleFactor
-        const boundingRect = title.getBoundingClientRect()
-        const scaleFactorWidth = (window.innerWidth * 0.8) / boundingRect.width
-        const scaleFactorHeight = (window.innerHeight * 0.7) / boundingRect.height
-        if (scaleFactorWidth >= scaleFactorHeight) {
-            scaleFactor = scaleFactorHeight
-        } else {
-            scaleFactor = scaleFactorWidth
-        }
-        title.style.scale = Math.max(scaleFactor, 1).toString()
-    }
 
-    if (title) handleResize()
-
-    document.addEventListener("resize", handleResize)
 </script>
 
 <style>
