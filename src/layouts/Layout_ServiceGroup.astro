@@ -16,10 +16,7 @@ import { sanityClient } from "sanity:client"
 const { content, locale, brand, activePath } = Astro.props;
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 
-const [ relatedProjects, relatedPosts ] = await Promise.all([
-  sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->serviceGroup->slug.current ]{${projectGridFields}} | order(orderRank)`),
-  sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->serviceGroup->slug.current ]{${blogCardFields}}|order(postDate desc)`)
-])
+const { relatedProjects, relatedPosts } = await sanityClient.fetch(`{"relatedProjects": *[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->serviceGroup->slug.current ][0...3]{${projectGridFields}} | order(orderRank) ,"relatedPosts": *[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in services[]->serviceGroup->slug.current ][0...8]{${blogCardFields}}|order(postDate desc)}`)
 ---
 <BrandLayout
     title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${getTranslationString(content.serviceType.title, locale)} ${locale ? Translations.SERVICES.locales[locale] : Translations.SERVICES.name}`}
@@ -77,7 +74,6 @@ const [ relatedProjects, relatedPosts ] = await Promise.all([
           sidebarTitle={content.title}
       />
     }
-
 </BrandLayout>
 
 <style>
