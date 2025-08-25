@@ -38,7 +38,7 @@
     if (lenis) lenis.scrollTo(target)
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     initLenis()
   })
 
