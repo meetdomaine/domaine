@@ -56,7 +56,10 @@ const currentPath = Astro.url.pathname;
 <html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
 	<head>
 
-		{environment !== "PRODUCTION" && <meta name="robots" content={noIndex ? "noindex" : "all"} />}
+		{environment !== "PRODUCTION" ? 
+			<meta name="robots" content="noindex" />
+		: <meta name="robots" content={noIndex ? "noindex" : "all"} />
+		}
 
 		<!-- Add back once live -->
 		<link rel="preconnect" href="https://www.googletagmanager.com">
