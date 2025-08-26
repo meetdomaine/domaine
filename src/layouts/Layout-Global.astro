@@ -36,10 +36,10 @@ interface Props {
 	indexSearch?: boolean;
 }
 
-const environment = env.ENVIRONMENT || process.env.ENVIRONMENT;
+const environment = env.ENVIRONMENT;
 
 if (environment) {
-	console.log(environment);
+	console.log(`ENV is: ${environment}`);
 } else {
 	console.log("No environment set");
 }
@@ -56,7 +56,7 @@ const currentPath = Astro.url.pathname;
 <html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
 	<head>
 
-		<meta name="robots" content={noIndex ? "noindex" : "all"}>
+		{environment !== "PRODUCTION" && <meta name="robots" content={noIndex ? "noindex" : "all"} />}
 
 		<!-- Add back once live -->
 		<link rel="preconnect" href="https://www.googletagmanager.com">
