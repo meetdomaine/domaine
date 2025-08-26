@@ -29,13 +29,13 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         id={`mux-video_${video.asset.playbackId}`}
         playback-id={video.asset.playbackId}
         metadata-video-title={video.asset.filename}
-        autoplay={autoplay === false ? false : true}
         preload={preload ? "auto" : "none"}
         loop
-        {...(autoplay !== false && { muted: true })}
+        {...(autoplay !== false && { muted: true, autoPlay: true })}
         style={{ aspectRatio: aspectRatio }}
         width={videoWidth}
         height={videoHeight}
+        eager={eager && autoplay === false ? "true" : "false"}
         data-cover={cover ? "true" : "false"}
         data-autoplay={autoplay === false ? "false" : "true"}
         nohotkeys
@@ -66,25 +66,32 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
 }
 
 <script define:vars={{ video, autoplay }}>
-  if (video && !autoplay) {
-    const muxVideo = document.getElementById(`mux-video_${video.asset.playbackId}`)
-    const playButton = document.getElementById(`play-button_${video.asset.playbackId}`)
+  
+  document.addEventListener("astro:page-load", () => {
+    if (video && autoplay === false) {
+      const muxVideo = document.getElementById(`mux-video_${video.asset.playbackId}`)
+      const playButton = document.getElementById(`play-button_${video.asset.playbackId}`)
 
-      muxVideo.addEventListener("click", () => {
+      if (muxVideo && playButton) {
+        muxVideo.addEventListener("click", () => {
 
-        const isPlaying = muxVideo.currentTime > 0 && !muxVideo.paused && !muxVideo.ended && muxVideo.readyState > 2
+          const isPlaying = muxVideo.currentTime > 0 && !muxVideo.paused && !muxVideo.ended && muxVideo.readyState > 2
 
-        if (isPlaying) {
-          playButton.innerText = "Play"
-          playButton.dataset.active = "false"
-          return muxVideo.pause()
-          
-        }
-        playButton.innerText = "Pause"
-        playButton.dataset.active = "true"
-        return muxVideo.play()
-      })
+          if (isPlaying) {
+            playButton.innerText = "Play"
+            playButton.dataset.active = "false"
+            return muxVideo.pause()
+            
+          }
+          playButton.innerText = "Pause"
+          playButton.dataset.active = "true"
+          return muxVideo.play()
+        })
+      } else {
+        console.log("No mux video or play button found")
+      }
     }
+  })
 </script>
 
 <style>

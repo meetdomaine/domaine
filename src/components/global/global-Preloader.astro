@@ -28,7 +28,7 @@ const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-$
 	<p id="preloader_heading" class="preloader-heading h1">{getTranslationString(content.heading, locale)}</p>
 </div>
 
-<script>
+<!-- <script>
 	import { isMobileBreakpoint } from "../../lib/check-device";
 	import { gsap, SplitText } from "../../lib/gsap";
 
@@ -118,7 +118,7 @@ const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-$
       }, ">")
     }
   }
-</script>
+</script> -->
 
 <style is:global>
 	.preloader-text-line {
@@ -129,9 +129,9 @@ const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-$
 
 <style>
 	.preloader {
-		opacity: 0;
-		visibility: hidden;
-		translate: 0 -100%;
+		/* opacity: 0;
+		visibility: hidden; */
+		/* translate: 0 -100%; */
 		--load-duration: 0.8s;
 		--load-background-delay: 0.1s;
 		--load-out-delay: 0.1s;
@@ -148,7 +148,7 @@ const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-$
 	}
 
   .preloader[data-show-preloader="false"] {
-    display: none;
+    /* display: none; */
   }
 
 	.preloader-image {
@@ -160,7 +160,7 @@ const {data: content} = await getEntry('preloaderSettings', `preloaderSettings-$
 		grid-column: 1 / span 1;
 		grid-row: 1 / span 1;
 		/* clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%); */
-		clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+		/* clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%); */
 	}
 
 	.preloader-image:nth-child(1),

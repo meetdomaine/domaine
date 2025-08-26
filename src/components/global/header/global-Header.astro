@@ -109,13 +109,12 @@ const { data: headerSettings } = await loadQuery({
         currentBrand={currentBrand} 
         locale={locale}
         brand={brand}
-        server:defer
     />
 </header>
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("astro:page-load", async () => {
 
         const navigationMenu: HTMLElement = document.getElementById('navigation-menu');
         const header: HTMLElement = document.getElementById('header');

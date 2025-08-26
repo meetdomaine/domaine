@@ -166,95 +166,100 @@ const [latestProjects, latestBlogPosts, events, allCareers] = await Promise.all(
 
 <script>
   import { isMobileBreakpoint } from "../../../lib/check-device"
-  const notificationMenu = document.getElementById('notification-menu')
-  const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
-  const clocks = notificationMenu.querySelectorAll('.clock')
 
-  notificationMenu.addEventListener("toggle", (e: ToggleEvent) => {
-    notificationToggle.dataset.active = e.newState === "open" ? "true" : "false"
-  })
+  document.addEventListener("astro:page-load", () => {
+    const notificationMenu = document.getElementById('notification-menu')
+    const notificationToggle: HTMLElement = document.getElementById('notification-toggle')
 
-  let pageEndOpen = false
-  let currentScroll = window.scrollY
-  let timeUpdateInterval: number | null = null
+    if (notificationMenu && notificationToggle) {
+    const clocks = notificationMenu.querySelectorAll('.clock')
 
-  if (!isMobileBreakpoint) {
-    window.addEventListener("scroll", (e) => {
-      const scrolledTo = window.scrollY + window.innerHeight
-      const isAtPageEnd = document.body.scrollHeight === scrolledTo
-      const newScroll = window.scrollY
-      if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
-        pageEndOpen = true
-        notificationMenu.showPopover()
-        // notificationMenu.blur()
-      } else if (newScroll < currentScroll && pageEndOpen) {
-        pageEndOpen = false
-        notificationMenu.hidePopover()
-      }
-      currentScroll = newScroll
-      
+    notificationMenu.addEventListener("toggle", (e: ToggleEvent) => {
+      notificationToggle.dataset.active = e.newState === "open" ? "true" : "false"
     })
-  }
 
-  // Initialize time displays with single shared interval
-  let sharedInterval: number | null = null
-  
-  const initializeTime = () => {
-    // Clear any existing interval
-    if (sharedInterval) {
-      clearInterval(sharedInterval)
-      sharedInterval = null
-    }
+    let pageEndOpen = false
+    let currentScroll = window.scrollY
+    let timeUpdateInterval: number | null = null
 
-    // Update all clocks with a single shared interval
-    const updateAllClocks = () => {
-      clocks.forEach((clock: HTMLElement) => {
-        const timezoneId = clock.dataset.timezone
-        const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
-        const timeElement: HTMLElement = clock.querySelector('.time')
-
-        if (!cleanedTimezoneId) return
-
-        const time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId}))
-        const hours = time.getHours().toString().padStart(2, "0")
-        const minutes = time.getMinutes().toString().padStart(2, "0")
-        const seconds = time.getSeconds().toString().padStart(2, "0")
-
-        // Update time display
-        if (timeElement) {
-          timeElement.innerText = `${hours}:${minutes}`
+    if (!isMobileBreakpoint) {
+      window.addEventListener("scroll", (e) => {
+        const scrolledTo = window.scrollY + window.innerHeight
+        const isAtPageEnd = document.body.scrollHeight === scrolledTo
+        const newScroll = window.scrollY
+        if (isAtPageEnd && !notificationMenu.matches(":popover-open")) {
+          pageEndOpen = true
+          notificationMenu.showPopover()
+          // notificationMenu.blur()
+        } else if (newScroll < currentScroll && pageEndOpen) {
+          pageEndOpen = false
+          notificationMenu.hidePopover()
         }
-
-        // Update CSS custom properties
-        clock.style.setProperty('--hours', hours)
-        clock.style.setProperty('--minutes', minutes)
-        clock.style.setProperty('--seconds', seconds)
-
-        // Update day/night status
-        const isDayTime = time.getHours() > 6 && time.getHours() < 20
-        clock.dataset.isDaytime = isDayTime.toString()
+        currentScroll = newScroll
+        
       })
     }
 
-    // Initial update
-    updateAllClocks()
+    // Initialize time displays with single shared interval
+    let sharedInterval: number | null = null
     
-    // Set up single shared interval for all clocks
-    sharedInterval = setInterval(updateAllClocks, 1000)
-  }
+    const initializeTime = () => {
+      // Clear any existing interval
+      if (sharedInterval) {
+        clearInterval(sharedInterval)
+        sharedInterval = null
+      }
 
-  if (!isMobileBreakpoint) {
-    initializeTime()
-  }
+      // Update all clocks with a single shared interval
+      const updateAllClocks = () => {
+        clocks.forEach((clock: HTMLElement) => {
+          const timezoneId = clock.dataset.timezone
+          const cleanedTimezoneId = timezoneId?.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
+          const timeElement: HTMLElement = clock.querySelector('.time')
 
-  // Clean up intervals when page unloads
-  window.addEventListener('beforeunload', () => {
-    if (sharedInterval) {
-      clearInterval(sharedInterval)
-      sharedInterval = null
+          if (!cleanedTimezoneId) return
+
+          const time = new Date(new Date().toLocaleString("en-US", {timeZone: cleanedTimezoneId}))
+          const hours = time.getHours().toString().padStart(2, "0")
+          const minutes = time.getMinutes().toString().padStart(2, "0")
+          const seconds = time.getSeconds().toString().padStart(2, "0")
+
+          // Update time display
+          if (timeElement) {
+            timeElement.innerText = `${hours}:${minutes}`
+          }
+
+          // Update CSS custom properties
+          clock.style.setProperty('--hours', hours)
+          clock.style.setProperty('--minutes', minutes)
+          clock.style.setProperty('--seconds', seconds)
+
+          // Update day/night status
+          const isDayTime = time.getHours() > 6 && time.getHours() < 20
+          clock.dataset.isDaytime = isDayTime.toString()
+        })
+      }
+
+      // Initial update
+      updateAllClocks()
+      
+      // Set up single shared interval for all clocks
+      sharedInterval = setInterval(updateAllClocks, 1000)
     }
-  })
-  
+
+    if (!isMobileBreakpoint) {
+      initializeTime()
+    }
+
+    // Clean up intervals when page unloads
+    document.addEventListener('astro:before-swap', () => {
+      if (sharedInterval) {
+        clearInterval(sharedInterval)
+        sharedInterval = null
+      }
+    })
+  }
+})
 </script>
 
 <style>

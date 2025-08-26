@@ -21,6 +21,7 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
   orderRank,
   images[]{${imageFields}},
   agencyBrands[]->{ _id, name, slug },
+  pageSectionsDomaine{ sections[]{${globalSectionsFields}} },
   serviceType->{ _id, title, slug, formHeading, formText, hubspotFormId },
   "services": *[_type == "type_service" && references(^._id)]{
     _id,
@@ -34,13 +35,13 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
     serviceGroup->{ _id, title, slug, serviceType->{ _id, title, slug } },
     metafields{ title, description, image{${imageBaseFields}} }
   } | order(orderRank),
-  metafields{ title, description, image{${imageBaseFields}} },
-  pageSectionsDomaine[]{${globalSectionsFields}}
+  metafields{ title, description, image{${imageBaseFields}} }
 }`)
+console.log(serviceGroupContent)
 if (!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) return Astro.redirect('/404')
 ---
 <LayoutServiceGroup
-    content={serviceGroupContent}
-    activePath="/services"
+  content={serviceGroupContent}
+  activePath="/services"
   brand={Brands.DOMAINE}
 />

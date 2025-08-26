@@ -116,14 +116,14 @@ const currentPath = Astro.url.pathname;
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-		<!-- <ClientRouter /> -->
+		<ClientRouter />
 		<!-- <VisualEditing enabled={true} /> -->
 
-    <GlobalPreloader
+    <!-- <GlobalPreloader
       showPreloader={showPreloader}
 			brand={brand}
 			locale={locale}
-    />
+    /> -->
     
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
@@ -141,25 +141,28 @@ const currentPath = Astro.url.pathname;
 	import "@mux/mux-player/themes/minimal";
 	import { initLenis } from '../lib/lenis';
 
-	document.addEventListener("DOMContentLoaded", () => {
+	document.addEventListener("astro:page-load", () => {
     initLenis()
   })
 </script>
 
-<!-- <script define:vars={{ showPreloader }}>
-  if (!showPreloader) {
-    const preloadComplete = new Event("preload:complete");
-    // window.dispatchEvent(preloadComplete)
-    window.addEventListener("DOMContentLoaded", () => {
-      window.dispatchEvent(preloadComplete)
-    })
+<!-- Remove Lenis onscrollend event -->
+<script is:inline>
+	delete window.onscrollend;
+</script>
+
+<style is:inline>
+  body {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s linear, opacity 0.2s linear;
   }
-</script> -->
+</style>
 
 <style>
-  @media screen and (max-width: 860px) {
-    :global(#front-chat-iframe) {
-      display: none !important;
-    }
+  body {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: visibility 0.2s linear, opacity 0.2s linear;
   }
 </style>

@@ -34,7 +34,7 @@ const { brands, currentBrand, brandIndex } = Astro.props
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("astro:page-load", async () => {
 
         const brandMenu: HTMLElement = document.getElementById('brand-toggle');
 

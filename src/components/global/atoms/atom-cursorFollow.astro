@@ -8,6 +8,7 @@
   import { isMobileBreakpoint } from "../../../lib/check-device"
   import { gsap } from "../../../lib/gsap"
 
+  document.addEventListener("astro:page-load", () => {
 
   const cursors = document.querySelectorAll('.cursor-follow')
 
@@ -27,9 +28,10 @@
   }
 
   if (!isMobileBreakpoint) {
-    
     cursors.forEach((cursor) => followCursor(cursor))
   }
+  
+})
 
 </script>
 
