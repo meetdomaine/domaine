@@ -17,6 +17,8 @@ import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 import { ClientRouter } from 'astro:transitions';
 
+const { env } = Astro.locals.runtime;
+
 interface Props {
 	title: string;
 	description: string;
@@ -32,6 +34,14 @@ interface Props {
 	brand?: string;
 	locale?: string;
 	indexSearch?: boolean;
+}
+
+const environment = env.ENVIRONMENT;
+
+if (environment) {
+	console.log(environment);
+} else {
+	console.log("No environment set");
 }
 
 Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600");
