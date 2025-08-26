@@ -36,7 +36,7 @@ interface Props {
 	indexSearch?: boolean;
 }
 
-const environment = env.ENVIRONMENT;
+const environment = env.ENVIRONMENT || process.env.ENVIRONMENT;
 
 if (environment) {
 	console.log(environment);
