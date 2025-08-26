@@ -257,7 +257,7 @@ const fields = fieldGroups.flatMap((group) => {
         </div>
     
         <div class="form-field">
-            <input type="submit" value={formData.displayOptions?.submitButtonText || 'Submit'} />
+            <input type="button" class="submit-button" value={formData.displayOptions?.submitButtonText || 'Submit'} />
         </div>
     
     </form>
@@ -267,7 +267,7 @@ const fields = fieldGroups.flatMap((group) => {
 <script define:vars={{ portalId, formId, consentData, fields, key }}>
 
     const contactForm = document.querySelector(`#form-${formId}${key != undefined ? `-${key}` : ''} form`)
-    const submitButton = contactForm.querySelector('input[type="submit"]')
+    const submitButton = contactForm.querySelector('input.submit-button')
     const confirmationMessage = contactForm.querySelector('.confirmation-message')
 
     const getCookie = (cname) => {
@@ -404,9 +404,25 @@ const fields = fieldGroups.flatMap((group) => {
         })
     }
 
+    const handleKeyUp = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(onSubmit)(e);
+        }
+    };
+
     contactForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        submitForm();  
+        submitForm();
+    })
+
+    contactForm.addEventListener("keyup", (e) => {
+        e.preventDefault();
+        handleKeyUp();
+    })
+
+    submitButton.addEventListener("click", e => {
+        e.preventDefault();
+        submitForm();
     })
 
 </script>
