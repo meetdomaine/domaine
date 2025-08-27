@@ -159,11 +159,11 @@ const currentPath = Astro.url.pathname;
   })
 </script>
 
-<!-- Remove Lenis onscrollend event -->
 <script is:inline>
-	delete window.onscrollend;
+	delete window.onscrollend; // Hack to fix Lenis scrolling issues
 </script>
 
+<!-- TODO: Fix FOUC issues -->
 <style is:inline>
   body {
     visibility: hidden;

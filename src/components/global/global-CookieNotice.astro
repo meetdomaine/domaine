@@ -25,6 +25,7 @@ const { content, locale } = Astro.props
         interface Window {
             gtag: any,
             dataLayer: any,
+            _hsp: any,
         }
     }
 
@@ -56,6 +57,14 @@ const { content, locale } = Astro.props
             marketing: true,
             preferences: false,
         })
+        window._hsp.push([
+            'setHubSpotConsent',
+            {
+                analytics: true,
+                advertisement: true,
+                functionality: true,
+            },
+        ]);
         hideNotice()
     }
 
@@ -78,6 +87,17 @@ const { content, locale } = Astro.props
         } else {
             setConsent(JSON.parse(cookiedConsent))
         }
+
+        // Set HubSpot consent to false initially
+        window._hsp = window._hsp || [];
+        window._hsp.push([
+            'setHubSpotConsent',
+            {
+                analytics: false,
+                advertisement: false,
+                functionality: false,
+            },
+        ]);
 
         acceptButton.addEventListener("click", handleAccept)
         denyButton.addEventListener("click", handleDecline)

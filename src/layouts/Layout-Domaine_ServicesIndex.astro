@@ -5,6 +5,7 @@ import GlobalSections from "../components/global/sections/section-GlobalSections
 import { urlFor, imageFields, globalSectionsFields, imageBaseFields } from "../lib/cms-queries";
 import { getTranslationString } from "../lib/translations";
 import { sanityClient } from "sanity:client";
+import { Brands } from "../enums/brands";
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-domaine"][0]{
     _id,
@@ -33,7 +34,7 @@ const { brand, locale } = Astro.props
     />
 
     {pageSettings.sections && pageSettings.sections.map((section, i) => (
-        <GlobalSections brand="domaine" section={section} key={i} locale={locale} />
+        <GlobalSections brand={Brands.DOMAINE} section={section} key={i} locale={locale} />
     ))}
 
 </LayoutDomaine>

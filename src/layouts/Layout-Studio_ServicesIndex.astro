@@ -5,6 +5,7 @@ import GlobalSections from "../components/global/sections/section-GlobalSections
 import { getTranslationString } from "../lib/translations";
 import { imageFields, globalSectionsFields, imageBaseFields } from "../lib/cms-queries";
 import { sanityClient } from "sanity:client";
+import { Brands } from "../enums/brands";
 
 const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-studio"][0]{
     ...,  
@@ -33,6 +34,6 @@ const { locale } = Astro.props
     />
 
     {pageSettings.sections && pageSettings.sections.map((section, i) => (
-        <GlobalSections brand="studio" section={section} key={i} locale={locale} />
+        <GlobalSections brand={Brands.STUDIO} section={section} key={i} locale={locale} />
     ))}
 </LayoutStudio>

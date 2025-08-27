@@ -30,6 +30,8 @@
 
     --background-blur-backdrop: blur(2px);
     --background-color-backdrop: color-mix(in srgb, var(--color-darkest) 10%, transparent);
+
+    --color-video-player-accent: var(--color-blue);
 }
 
 html,
