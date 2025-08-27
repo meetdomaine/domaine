@@ -28,7 +28,7 @@ export default defineConfig({
       stega: {
         studioUrl: '/admin',
       },
-      perspective: env.ENVIRONMENT === 'PRODUCTION' ? 'published' : 'drafts',
+      perspective: 'published',
       headers: {
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
         'CDN-Cache-Control': 'public, s-maxage=3600',
