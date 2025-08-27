@@ -15,10 +15,12 @@ const sectionKey = section._key
     data-color={section.textColor}
 >
     <div class="section-content">
-        <div class="section-text">
-            <h2>{getTranslationString(section.heading, locale)}</h2>
-            <p>{getTranslationString(section.subheading, locale)}</p>
-        </div>
+        {section.heading || section.subheading && (
+            <div class="section-text">
+                {section.heading && <h2>{getTranslationString(section.heading, locale)}</h2>}
+                {section.subheading && <p>{getTranslationString(section.subheading, locale)}</p>}
+            </div>
+        )}
         <div class="video-controls">
             <button class="play-toggle" >
                 <Icon name="pixel_play" class="icon-play" />
@@ -142,7 +144,9 @@ const sectionKey = section._key
         min-width: unset;
         padding: var(--space-xs);
         background-color: transparent;
-        border: 1px solid currentColor;
+        /* border: 1px solid currentColor; */
+        background-color: var(--color-foreground);
+        color: var(--color-background);
     }
 
     .section-video-player[data-playing="false"] .mute-toggle {
@@ -184,6 +188,10 @@ const sectionKey = section._key
     .icon-audio--mute {
         width: var(--icon-sm);
         height: var(--icon-sm);
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     mux-player {
@@ -212,6 +220,7 @@ const sectionKey = section._key
         --time-display: none;
         --duration-display: none;
         --rendition-selectmenu: none;
+
     }
 
     mux-player::part(bottom play button) {
