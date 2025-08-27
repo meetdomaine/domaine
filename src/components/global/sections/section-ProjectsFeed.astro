@@ -2,17 +2,21 @@
 import ProjectCard from "../projects/global-ProjectCard.astro";
 import { getTranslationString } from "../../../lib/translations";
 import { getProjects } from "../../../lib/cached-content";
+import { getCollection } from "astro:content";
+import { Brands } from "../../../enums/brands";
 
 const { section, brand, projects, heading, subheading, locale, key } = Astro.props
 
 let feedProjects
-
 if (section && section.projects) {
     feedProjects = section.projects
 } else if (projects) {
     feedProjects = projects
 } else {
-    feedProjects = await getProjects(brand)
+    // feedProjects = await getProjects(brand)
+    feedProjects = await getCollection('projectCards', ({ data }) => 
+        data.agencyBrand.name === brand
+    )
 }
 
 
