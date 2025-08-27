@@ -88,7 +88,7 @@ const { content, locale } = Astro.props
             setConsent(JSON.parse(cookiedConsent))
         }
 
-        // Set HubSpot consent to false
+        // Set HubSpot consent to false initially
         window._hsp = window._hsp || [];
         window._hsp.push([
             'setHubSpotConsent',
