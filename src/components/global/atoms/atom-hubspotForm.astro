@@ -50,222 +50,224 @@ const fields = fieldGroups.flatMap((group) => {
   return null
 }) || [];
 ---
-<form id={`form-${formId}${key != undefined ? `-${key}` : ''}`} >
-    {fieldGroups?.map((group) => {
-      if (group.fields) {
-        
-        return (
-            <div class="form-field-group">
-        
-            {group.fields.map((field) => {
-                switch (field.fieldType) {
-                    case('single_line_text'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="text" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    case('email'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="email" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    case('phone'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="tel" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    case('datepicker'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="date" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    case('number'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="number" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    case('file'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <input type="file" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    case('dropdown'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                                <select name={field.name} id={field.name} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId}>
-                                    {field.options.map((option) => (
-                                        <option value={option.value}>{option.label}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        )
-                    // case('dropdown'):
-                    //     return (
-                    //         <div class="form-field">
-                    //             <p class="h6">{field.label}</p>
-                    //             {field.description && <p class="field-description caption">{field.description}</p>}
-                    //             <fieldset class="inputs-list toggle-button-list">
-                    //                 {field.options.map((option) => (
-                    //                     <div class="input-list-item toggle-button">
-                    //                         <input type="radio" id={option.value} name={field.name} value={option.value} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                    //                         <label for={option.value} hidden={field.hidden}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                    //                     </div>
-                    //                 ))}
-                    //             </fieldset>
-                    //         </div>
-                    //     )
-                    case('single_checkbox'):
-                        return (
-                            <div class="form-field">
-                                <div class="inputs-list">
-                                    <div class="input-list-item">
-                                        <input type="checkbox" id={field.name} name={field.name} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                        <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                        {field.description && <p class="field-description caption">{field.description}</p>}
+<div id={`form-${formId}${key != undefined ? `-${key}` : ''}`}>
+    <form>
+        {fieldGroups?.map((group) => {
+          if (group.fields) {
+            
+            return (
+                <div class="form-field-group">
+            
+                {group.fields.map((field) => {
+                    switch (field.fieldType) {
+                        case('single_line_text'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <input type="text" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        case('email'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <input type="email" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        case('phone'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <input type="tel" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        case('datepicker'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <input type="date" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        case('number'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <input type="number" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        case('file'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <input type="file" name={field.name} id={field.name} placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        case('dropdown'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                    <select name={field.name} id={field.name} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId}>
+                                        {field.options.map((option) => (
+                                            <option value={option.value}>{option.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )
+                        // case('dropdown'):
+                        //     return (
+                        //         <div class="form-field">
+                        //             <p class="h6">{field.label}</p>
+                        //             {field.description && <p class="field-description caption">{field.description}</p>}
+                        //             <fieldset class="inputs-list toggle-button-list">
+                        //                 {field.options.map((option) => (
+                        //                     <div class="input-list-item toggle-button">
+                        //                         <input type="radio" id={option.value} name={field.name} value={option.value} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                        //                         <label for={option.value} hidden={field.hidden}>{option.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                        //                     </div>
+                        //                 ))}
+                        //             </fieldset>
+                        //         </div>
+                        //     )
+                        case('single_checkbox'):
+                            return (
+                                <div class="form-field">
+                                    <div class="inputs-list">
+                                        <div class="input-list-item">
+                                            <input type="checkbox" id={field.name} name={field.name} required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                            <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                            {field.description && <p class="field-description caption">{field.description}</p>}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    case('multiple_checkboxes'):
-                        return (
-                            <div class="form-field">
-                                <p class="">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                                <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
-                                    {field.options.map((option) => (
-                                        <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`} role="checkbox">
-                                            <input 
-                                                type="checkbox" 
-                                                id={option.value} 
-                                                name={field.name} 
-                                                value={option.value} 
-                                                required={field.hidden ? false : field.required} 
-                                                hidden={field.hidden} 
-                                            />
-                                            <label for={option.value} hidden={field.hidden}>{option.label}</label>
-                                        </div>
-                                    ))}
-                                </fieldset>
-                            </div>
-                        )
-                    case('radio'):
-                        return (
-                            <div class="form-field">
-                                <p class="">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                                <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
-                                    {field.options.map((option) => (
-                                        <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
-                                            <input 
-                                                type="radio" 
-                                                id={option.value} 
-                                                name={field.name} 
-                                                value={option.value} 
-                                                required={field.hidden ? false : field.required} 
-                                                hidden={field.hidden}
-                                            />
-                                            <label for={option.value} hidden={field.hidden}>{option.label}</label>
-                                        </div>
-                                    ))}
-                                </fieldset>
-                            </div>
-                        )
-                    case('multi_line_text'):
-                        return (
-                            <div class="form-field">
-                                <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
-                                <textarea name={field.name} id={field.name} rows="4" cols="50" placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
-                                {field.description && <p class="field-description caption">{field.description}</p>}
-                            </div>
-                        )
-                    default: null
-                }
-            })}
-            </div>
-        )
-      }
-
-      if (group.richText) return (
-        <div class="rich-text-block">
-          <Fragment set:html={group.richText} />
-        </div>
-        )
-    })}
-
-    {consentData && consentData.communicationsCheckboxes && 
-        <div class="legal-consent">
-            {consentData.communicationConsentText && <Fragment set:html={consentData.communicationConsentText} />}
-            {consentData.communicationsCheckboxes.map((checkbox) => (
-                <div class="form-field">
-                    <div class="inputs-list">
-                        <div class="input-list-item">
-                            <input type="checkbox" id={`communication-consent-${formId}${key != undefined ? `-${key}` : ''}`} name={`communication-consent`} value={`communication-consent-${formId}`} required />
-                            <label for={`communication-consent-${formId}${key != undefined ? `-${key}` : ''}`}><Fragment set:html={checkbox.label}></Fragment></label>
-                        </div>
-                    </div>
+                            )
+                        case('multiple_checkboxes'):
+                            return (
+                                <div class="form-field">
+                                    <p class="">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                    <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
+                                        {field.options.map((option) => (
+                                            <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`} role="checkbox">
+                                                <input 
+                                                    type="checkbox" 
+                                                    id={option.value} 
+                                                    name={field.name} 
+                                                    value={option.value} 
+                                                    required={field.hidden ? false : field.required} 
+                                                    hidden={field.hidden} 
+                                                />
+                                                <label for={option.value} hidden={field.hidden}>{option.label}</label>
+                                            </div>
+                                        ))}
+                                    </fieldset>
+                                </div>
+                            )
+                        case('radio'):
+                            return (
+                                <div class="form-field">
+                                    <p class="">{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</p>
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                    <fieldset class={`inputs-list ${buttonToggles ? "toggle-button-list" : ""}`}>
+                                        {field.options.map((option) => (
+                                            <div class={`input-list-item ${buttonToggles ? "toggle-button" : ""}`}>
+                                                <input 
+                                                    type="radio" 
+                                                    id={option.value} 
+                                                    name={field.name} 
+                                                    value={option.value} 
+                                                    required={field.hidden ? false : field.required} 
+                                                    hidden={field.hidden}
+                                                />
+                                                <label for={option.value} hidden={field.hidden}>{option.label}</label>
+                                            </div>
+                                        ))}
+                                    </fieldset>
+                                </div>
+                            )
+                        case('multi_line_text'):
+                            return (
+                                <div class="form-field">
+                                    <label for={field.name} hidden={field.hidden}>{field.label}{!field.required && <span class="optional-label">(Optional)</span>}</label>
+                                    <textarea name={field.name} id={field.name} rows="4" cols="50" placeholder="" required={field.hidden ? false : field.required} hidden={field.hidden} data-object-type-id={field.objectTypeId} />
+                                    {field.description && <p class="field-description caption">{field.description}</p>}
+                                </div>
+                            )
+                        default: null
+                    }
+                })}
                 </div>
-            ))}
-        </div>
-    }
-
-    {consentData && 
-        <div class="legal-consent">
-            {consentData.consentToProcessText && <Fragment set:html={consentData.consentToProcessText} />}
-            {consentData.consentToProcessCheckboxLabel &&
-                <div class="form-field">
-                    <div class="inputs-list">
-                        <div class="input-list-item">
-                            <input type="checkbox" id={`consent-to-process-${formId}${key != undefined ? `-${key}` : ''}`} name={`consent-to-process`} value={`consent-to-process-${formId}`} required />
-                            <label for={`consent-to-process-${formId}${key != undefined ? `-${key}` : ''}`}>{consentData.consentToProcessCheckboxLabel}</label>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-
-    {consentData && consentData.privacyText && 
-        <div class="legal-consent">
-            <Fragment set:html={consentData.privacyText} />
-        </div>
-    }
+            )
+          }
     
-    <div class="confirmation-message h4" data-color-scheme="brand-02">
-        <Icon name="icon-email" class="confirmation-icon" />
-        Confirmed!
-    </div>
-
-    <div class="form-field">
-        <input type="submit" form={`form-${formId}${key != undefined ? `-${key}` : ''}`} value={formData.displayOptions?.submitButtonText || 'Submit'} />
-    </div>
-
-</form>
+          if (group.richText) return (
+            <div class="rich-text-block">
+              <Fragment set:html={group.richText} />
+            </div>
+            )
+        })}
+    
+        {consentData && consentData.communicationsCheckboxes && 
+            <div class="legal-consent">
+                {consentData.communicationConsentText && <Fragment set:html={consentData.communicationConsentText} />}
+                {consentData.communicationsCheckboxes.map((checkbox) => (
+                    <div class="form-field">
+                        <div class="inputs-list">
+                            <div class="input-list-item">
+                                <input type="checkbox" id={`communication-consent-${formId}${key != undefined ? `-${key}` : ''}`} name={`communication-consent`} value={`communication-consent-${formId}`} required />
+                                <label for={`communication-consent-${formId}${key != undefined ? `-${key}` : ''}`}><Fragment set:html={checkbox.label}></Fragment></label>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        }
+    
+        {consentData && 
+            <div class="legal-consent">
+                {consentData.consentToProcessText && <Fragment set:html={consentData.consentToProcessText} />}
+                {consentData.consentToProcessCheckboxLabel &&
+                    <div class="form-field">
+                        <div class="inputs-list">
+                            <div class="input-list-item">
+                                <input type="checkbox" id={`consent-to-process-${formId}${key != undefined ? `-${key}` : ''}`} name={`consent-to-process`} value={`consent-to-process-${formId}`} required />
+                                <label for={`consent-to-process-${formId}${key != undefined ? `-${key}` : ''}`}>{consentData.consentToProcessCheckboxLabel}</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    
+        {consentData && consentData.privacyText && 
+            <div class="legal-consent">
+                <Fragment set:html={consentData.privacyText} />
+            </div>
+        }
+        
+        <div class="confirmation-message h4" data-color-scheme="brand-02">
+            <Icon name="icon-email" class="confirmation-icon" />
+            Confirmed!
+        </div>
+    
+        <div class="form-field">
+            <input type="button" class="submit-button" value={formData.displayOptions?.submitButtonText || 'Submit'} />
+        </div>
+    
+    </form>
+</div>
 
 
 <script define:vars={{ portalId, formId, consentData, fields, key }}>
 
-    const contactForm = document.querySelector(`#form-${formId}${key != undefined ? `-${key}` : ''}`)
-    const submitButton = contactForm.querySelector('input[type="submit"]')
+    const contactForm = document.querySelector(`#form-${formId}${key != undefined ? `-${key}` : ''} form`)
+    const submitButton = contactForm.querySelector('input.submit-button')
     const confirmationMessage = contactForm.querySelector('.confirmation-message')
 
     const getCookie = (cname) => {
@@ -402,9 +404,25 @@ const fields = fieldGroups.flatMap((group) => {
         })
     }
 
+    const handleKeyUp = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(onSubmit)(e);
+        }
+    };
+
     contactForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        submitForm();  
+        submitForm();
+    })
+
+    contactForm.addEventListener("keyup", (e) => {
+        e.preventDefault();
+        handleKeyUp();
+    })
+
+    submitButton.addEventListener("click", e => {
+        e.preventDefault();
+        submitForm();
     })
 
 </script>
