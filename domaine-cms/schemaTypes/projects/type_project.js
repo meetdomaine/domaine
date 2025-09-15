@@ -309,6 +309,12 @@ export default defineType({
       group: 'content',
     }),
     defineField({
+      name: 'globalSections',
+      title: 'Global Sections',
+      type: 'section_globalSections',
+      group: 'content',
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_locale-SEO-fields',

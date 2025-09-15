@@ -43,6 +43,8 @@ export const getServiceTypes = async (brand) => {
     agencyBrands[]->{ _id, name, slug },
     pageSectionsDomaine[]{${globalSectionsFields}},
     pageSectionsStudio[]{${globalSectionsFields}},
+    globalSectionsDomaine{ sections[]{${globalSectionsFields}} },
+    globalSectionsStudio{ sections[]{${globalSectionsFields}} },
     "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
         _id,
         title,
@@ -90,7 +92,9 @@ export const getServiceGroups = async (brand) => {
     "services": *[_type == "type_service" && references(^._id)]{ _id, title, slug, description, excerpt, orderRank } | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
     pageSectionsDomaine[]{${globalSectionsFields}},
+    globalSectionsDomaine{ sections[]{${globalSectionsFields}} },
     pageSectionsStudio[]{${globalSectionsFields}},
+    globalSectionsStudio{ sections[]{${globalSectionsFields}} },
     "hasContent": {
       "${brand}": defined(*[_type == "type_project" && isHidden != true && agencyBrand->name == '${brand}' && ^._id in services[]->serviceGroup._ref ][0]),
     },
@@ -122,6 +126,8 @@ export const getServices = async (brand) => {
     },
     pageSectionsDomaine[]{${globalSectionsFields}},
     pageSectionsStudio[]{${globalSectionsFields}},
+    globalSectionsDomaine{ sections[]{${globalSectionsFields}} },
+    globalSectionsStudio{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
   } | order(orderRank)`)
 
