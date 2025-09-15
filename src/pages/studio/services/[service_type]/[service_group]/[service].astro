@@ -32,6 +32,7 @@ const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '$
         }
     },
     pageSectionsStudio[]{${globalSectionsFields}},
+    globalSectionsStudio{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 )

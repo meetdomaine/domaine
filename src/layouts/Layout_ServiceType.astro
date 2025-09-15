@@ -37,8 +37,16 @@ const relatedPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyB
     {brand === Brands.DOMAINE && content.pageSectionsDomaine?.map((section, i) => (
         <GlobalSections brand={brand} section={section} key={i} locale={locale} />
       ))}
+
+    {brand === Brands.DOMAINE && content.globalSectionsDomaine?.sections?.map((section, i) => (
+        <GlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
     
     {brand === Brands.STUDIO && content.pageSectionsStudio?.map((section, i) => (
+        <GlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+
+    {brand === Brands.STUDIO && content.globalSectionsStudio?.sections?.map((section, i) => (
         <GlobalSections brand={brand} section={section} key={i} locale={locale} />
     ))}
 

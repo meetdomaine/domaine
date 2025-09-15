@@ -16,6 +16,7 @@ const serviceTypeContent = await sanityClient.fetch(`*[_type == "type_serviceTyp
     slug,
     agencyBrands[]->{ _id, name, slug },
     pageSectionsStudio[]{${globalSectionsFields}},
+    globalSectionsStudio{ sections[]{${globalSectionsFields}} },
     "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
         _id,
         title,
