@@ -201,6 +201,7 @@ export default defineType({
             name: 'speakerLogo',
             title: 'Logo',
             type: 'snippet_image',
+            validation: Rule => Rule.required()
           }
         ],
         preview: {
