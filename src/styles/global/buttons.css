@@ -5,7 +5,8 @@
 }
   
 .button,
-input[type="submit"] {
+input[type="submit"]
+input.submit-button {
     cursor: pointer;
     padding: var(--button-padding-block) var(--button-padding-inline);
     color: var(--button-primary-foreground);
@@ -37,7 +38,8 @@ button {
 }
 
 .button:hover,
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+input.submit-button:hover {
     color: var(--button-primary-foreground-hover);
     background-color: var(--button-primary-background-hover);
 }
@@ -54,7 +56,8 @@ input[type="submit"]:hover {
 }
 
 .button[data-style="tertiary"],
-input[type="submit"] {
+input[type="submit"],
+input.submit-button {
     background-color: transparent;
     color: var(--color-foreground);
     border: none;
@@ -70,13 +73,16 @@ input[type="submit"] {
 }
 
 .button[data-style="tertiary"]:hover,
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+input.submit-button:hover {
     color: var(--button-tertiary-foreground-hover);
     background-color: var(--button-tertiary-background-hover);
 }
 
 .custom-field:has(input[type="submit"])::before,
-.hs-submit:has(input[type="submit"])::before {
+.hs-submit:has(input[type="submit"])::before,
+.custom-field:has(input.submit-button)::before,
+.hs-submit:has(input.submit-button)::before {
     content: "";
     background-color: transparent;
     position: absolute;
@@ -86,7 +92,9 @@ input[type="submit"]:hover {
 }
 
 .custom-field:has(input[type="submit"]:hover)::before,
-.hs-submit:has(input[type="submit"]:hover)::before {
+.hs-submit:has(input[type="submit"]:hover)::before,
+.custom-field:has(input.submit-button:hover)::before,
+.hs-submit:has(input.submit-button:hover)::before {
     background-color: var(--color-brand);
 }
 
@@ -125,6 +133,7 @@ button.button-reset {
 button:focus-visible,
 .button:focus-visible,
 input[type="submit"]:focus-visible,
+input.submit-button:focus-visible,
 .hs-button:focus-visible,
 a:focus-visible {
     outline-offset: 2px;

@@ -112,7 +112,8 @@ li,
 .caption,
 .utility,
 html,
-body {
+body,
+input.submit-button {
     --base-size-normalized: calc( (var(--base-size) / 1440) * 100vw );
     font-size: max( calc(var(--min-size) * 1px), var(--base-size-normalized) );
     font-weight: 400;
@@ -179,7 +180,8 @@ h4, .h4, .rich-content > h3 {
 }
 
 h5, .h5, .rich-content > h4,
-input[type="submit"] {
+input[type="submit"],
+input.submit-button {
     --min-size: 20;
     --base-size: 24;
     letter-spacing: -0.01em;
