@@ -6,9 +6,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   let shouldRedirect = false;
   let redirectUrl = new URL(url);
 
-  const isProduction = import.meta.env.PROD;
-  if (isProduction && !url.hostname.startsWith('www.')) {
-    redirectUrl.hostname = `www.${url.hostname}`;
+  if (url.hostname === 'meetdomaine.com') {
+    redirectUrl.hostname = 'www.meetdomaine.com';
     shouldRedirect = true;
   }
 
