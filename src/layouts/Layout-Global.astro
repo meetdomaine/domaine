@@ -48,10 +48,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600"
 
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
-const CANONICAL_ORIGIN = 'https://www.meetdomaine.com';
-const currentPath = Astro.url.pathname;
-const canonicalPath = currentPath === '/' ? '/' : currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
-const canonicalUrl = `${CANONICAL_ORIGIN}${canonicalPath}`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 // const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
 ---
 
