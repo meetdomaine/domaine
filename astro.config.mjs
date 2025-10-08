@@ -65,7 +65,7 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: 'cloudflare',
   }),
-  site: 'https://www.meetdomaine.com/',
+  site: 'https://meetdomaine.com/',
   vite: {
     define: {
       "import.meta.env.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(env.PUBLIC_SANITY_API_READ_TOKEN),
