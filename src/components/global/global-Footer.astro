@@ -45,9 +45,11 @@ const logos = agencyBrands.map( async (brand) => {
                         <p class="link-column___title">{locale && column.title.translations?.[locale] ? column.title.translations[locale] : column.title.text}</p>
                         <div class="link-column__links">
                             {column.links.links?.map((link) => (
-                                <a 
-                                    class="link-column__link" 
-                                    href={locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl} 
+                                <a
+                                    class="link-column__link"
+                                    href={link.linkUrl?.includes('://')
+                                        ? link.linkUrl
+                                        : (locale ? getRelativeLocaleUrl(locale, link.linkUrl) : link.linkUrl)}
                                     target={link.newTab ? "_blank" : "_self"}
                                 >
                                     {locale && link.linkText.translations?.[locale] ? link.linkText.translations[locale] : link.linkText.text}
