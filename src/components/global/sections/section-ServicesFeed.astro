@@ -22,7 +22,7 @@ const serviceTypes = await getServiceTypes(brand)
                         class="service-type__button h1" 
                         data-animate-viewport="true"
                         data-animation="fade"
-                        data-slug={serviceType.id}
+                        data-slug={serviceType.slug.current}
                         href={serviceType.isHidden ? null : `/services/${serviceType.slug.current}`}
                     >
                         {locale && serviceType.title?.translations?.[locale] ? serviceType.title?.translations?.[locale] : serviceType.title.text}
@@ -33,7 +33,7 @@ const serviceTypes = await getServiceTypes(brand)
                     <div class="services">
                         <div 
                             class="service-type__groups" 
-                            data-slug={serviceType.id}
+                            data-slug={serviceType.slug.current}
                             data-active="false"
                         >
                             {serviceType.serviceGroups.map((serviceGroup) => (
@@ -41,12 +41,12 @@ const serviceTypes = await getServiceTypes(brand)
                                     <div class="service-type__services">
                                         <a 
                                             class="service-type__group-title h6" 
-                                            href={serviceGroup.isHidden ? null : `${brand === "studio" ? "/studio": ""}/services/${serviceType.id}/${serviceGroup.slug.current}`}
+                                            href={serviceGroup.isHidden ? null : `${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${serviceGroup.slug.current}`}
                                         >{locale && serviceGroup.title?.translations?.[locale] ? serviceGroup.title.translations[locale] : serviceGroup.title.text}</a>
                                         {serviceGroup.services.map((service, i) => (
                                             <AtomTag 
                                                 text={locale && service.title?.translations?.[locale] ? service.title.translations[locale] : service.title.text}
-                                                url={service.isHidden ? null : `${locale ? `/${locale}` : ""}${brand === "studio" ? "/studio": ""}/services/${serviceType.id}/${service.slug.current}`}
+                                                url={service.isHidden ? null : `${locale ? `/${locale}` : ""}${brand === "studio" ? "/studio": ""}/services/${serviceType.slug.current}/${service.slug.current}`}
                                             />
                                         ))}
                                     </div>
