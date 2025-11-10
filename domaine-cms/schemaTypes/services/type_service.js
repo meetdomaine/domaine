@@ -111,6 +111,16 @@ export default defineType({
       ]
     }),
     defineField({
+      name: 'globalSectionsDomaine',
+      title: 'Global Sections: Domaine',
+      type: 'section_globalSections',
+    }),
+    defineField({
+      name: 'globalSectionsStudio',
+      title: 'Global Sections: Studio',
+      type: 'section_globalSections',
+    }),
+    defineField({
       name: 'formHeading',
       title: 'Form: Heading',
       type: 'snippet_locale-string',
