@@ -20,6 +20,12 @@ export default defineType({
         maxLength: 96,
       },
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
   ],
 
   preview: {

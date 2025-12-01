@@ -31,9 +31,11 @@ const projectContent = await sanityClient.fetch(`*[_type == "type_project" && is
       heroMedia{${videoFields}, ${imageFields}},
       sections[]{${globalSectionsFields}},
       metafields{ title, description, image{${imageBaseFields}} },
+      redirectPath,
       orderRank,
   }[0]`
 )
+if (projectContent?.redirectPath) return Astro.redirect(projectContent.redirectPath)
 if (projectContent === null) return Astro.redirect('/404')
 ---
 <LayoutProject

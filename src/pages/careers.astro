@@ -13,7 +13,10 @@ export const prerender = false
 const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
   ...,
   metafields{ title, description, image{${imageBaseFields}} },
+  redirectPath
 }[0]`)
+
+if (pageSettings?.redirectPath) return Astro.redirect(pageSettings.redirectPath)
 
 // Fetch careers from Rippling API
 const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');

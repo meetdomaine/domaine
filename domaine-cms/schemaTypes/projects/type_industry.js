@@ -30,6 +30,12 @@ export default defineType({
       title: 'Metafields',
       type: 'snippet_SEO-fields',
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
     // defineField({
     //   name: 'agencyBrands',
     //   title: 'Agency Brands',

@@ -15,8 +15,11 @@ const industryContent = await sanityClient.fetch(`*[_type == "type_industry" && 
     excerpt,
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
   }`
 )
+
+if (industryContent?.redirectPath) return Astro.redirect(industryContent.redirectPath)
 if (!industryContent || industryContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex

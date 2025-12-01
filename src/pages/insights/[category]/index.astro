@@ -14,8 +14,11 @@ const categoryContent = await sanityClient.fetch(`
     heading,
     slug,
     "posts": *[_type == "type_blog" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true && category->slug.current == '${category}' ]{ ${blogCardFields} }|order(postDate desc),
-    metafields{ title, description, image{${imageBaseFields}} }
+    metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
 }`)
+
+if (categoryContent?.redirectPath) return Astro.redirect(categoryContent.redirectPath)
 if (!categoryContent || categoryContent.posts.length === 0) return Astro.redirect('/404')
 ---
 <LayoutBlogIndex

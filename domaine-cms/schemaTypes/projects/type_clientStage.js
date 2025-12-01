@@ -25,6 +25,12 @@ export default defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
     orderRankField({ type: 'type_clientStage'}),
   ],
 

@@ -54,6 +54,12 @@ export default defineType({
       title: 'Metafields',
       type: 'snippet_locale-SEO-fields',
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
   ],
 
   preview: {

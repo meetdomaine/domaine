@@ -14,8 +14,10 @@ const { title, description, image, heading, subheading, blogPosts, brand, slug, 
 const blogIndexId = brand === Brands.STUDIO ? 'page_blog-index-studio' : 'page_blog-index-domaine'
 const { data: pageSettings } = await loadQuery({ 
   query: `*[_type == "page_blog-index" && _id == $blogIndexId][0]`,
-  params: { blogIndexId }
+  params: { blogIndexId },
 })
+
+if (pageSettings?.redirectPath) return Astro.redirect(pageSettings?.redirectPath)
 const allBrandBlogPosts = await getBlogPosts(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
 ---

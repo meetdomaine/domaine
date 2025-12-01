@@ -47,6 +47,12 @@ export default defineType({
       title: 'Create Landing Pages',
       type: 'boolean',
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
     orderRankField({ type: 'type_partner'}),
   ],
 

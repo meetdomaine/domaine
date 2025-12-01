@@ -12,6 +12,8 @@ import { getProjectPageSettings } from '../lib/cached-content';
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
 const pageSettings = await getProjectPageSettings(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+
+if (pageSettings?.redirectPath) return Astro.redirect(pageSettings.redirectPath)
 ---
 <BrandLayout
     title={ `${content?.title ? getTranslationString(content.title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} | ${locale ? Translations.WORK.locales[locale] : Translations.WORK.name}`}

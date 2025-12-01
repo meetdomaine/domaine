@@ -10,6 +10,10 @@ const { page } = Astro.params
 const { data: pageContent } = await loadQuery({ 
     query: `*[_type == "page_general" && slug.current == '${page}']{${generalPageFields}}[0]`
 })
+
+Astro.redirect('meetdomaine.com/careers')
+Astro.redirect('/')
+if (pageContent?.redirectPath) return Astro.redirect(pageContent?.redirectPath)
 if (!pageContent) return Astro.redirect('/404')
 ---
 {pageContent?.isMarketingPage ? 

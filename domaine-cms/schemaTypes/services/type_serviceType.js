@@ -159,6 +159,12 @@ export default defineType({
       description: 'Used in Services section.',
       type: 'snippet_locale-SEO-fields',
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
     orderRankField({ type: 'type_serviceType'}),
   ],
 

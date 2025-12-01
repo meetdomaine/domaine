@@ -28,9 +28,11 @@ const content = await sanityClient.fetch(
     heroImage{${imageFields}},
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
   }`
 );
 // console.log(content);
+if (content?.redirectPath) return Astro.redirect(content.redirectPath);
 if (!content || content.resourcesIndex.slug.current != resource_index) return Astro.redirect("/404");
 
 const LOCALE = Locales.EN

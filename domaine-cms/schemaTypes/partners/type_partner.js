@@ -173,6 +173,12 @@ export default defineType({
       type: 'snippet_locale-SEO-fields',
       group: 'seo',
     }),
+    defineField({
+      name: 'redirectPath',
+      title: 'Redirect Path',
+      type: 'string',
+      description: 'e.g /careers'
+    }),
     orderRankField({ type: 'type_partner'}),
   ],
 

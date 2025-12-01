@@ -35,9 +35,11 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
     serviceGroup->{ _id, title, slug, serviceType->{ _id, title, slug } },
     metafields{ title, description, image{${imageBaseFields}} }
   } | order(orderRank),
-  metafields{ title, description, image{${imageBaseFields}} }
+  metafields{ title, description, image{${imageBaseFields}} },
+  redirectPath,
 }`)
-console.log(serviceGroupContent)
+
+if (serviceGroupContent?.redirectPath) return Astro.redirect(serviceGroupContent.redirectPath)
 if (!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) return Astro.redirect('/404')
 ---
 <LayoutServiceGroup

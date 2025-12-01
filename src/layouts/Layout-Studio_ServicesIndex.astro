@@ -14,9 +14,11 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-s
     images[]{${imageFields}},
     sections[]{${globalSectionsFields}},
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath
   }`
 )
 const { locale } = Astro.props
+if (pageSettings?.redirectPath) Astro.redirect(pageSettings.redirectPath)
 ---
 <LayoutStudio
     title={pageSettings.metafields?.title ? pageSettings.metafields.title : getTranslationString(pageSettings.title, locale)}

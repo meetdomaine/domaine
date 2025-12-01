@@ -34,9 +34,11 @@ const serviceTypeContent = await sanityClient.fetch(`*[_type == "type_serviceTyp
     excerpt,
     images[]{${imageFields}},
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
     orderRank
 }`
 )
+if (serviceTypeContent?.redirectPath) return Astro.redirect(serviceTypeContent.redirectPath)
 if (!serviceTypeContent) return Astro.redirect('/404')
 ---
 <LayoutServiceType 

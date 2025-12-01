@@ -74,6 +74,7 @@ export const serviceQuery = `
       _id
   },
   metafields{ title, description, image{${imageBaseFields}} },
+  redirectPath,
 `
 
 export const serviceGroupQuery = `
@@ -145,7 +146,8 @@ export const generalPageFields = `
     ..., 
     media{${imageFields}, ${videoFields}},
     globalSections{ sections[]{${globalSectionsFields}} },
-    metafields{ title, description, image{${imageBaseFields}} }
+    metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath
 `;
 
 export const serviceTypePageQuery = `
@@ -189,6 +191,7 @@ export const projectPageFields = `
   sections[]{${globalSectionsFields}},
   metafields{ title, description, image{${imageBaseFields}} },
   orderRank,
+  redirectPath,
 `
 
 export const projectsGridQuery = (brand) => {

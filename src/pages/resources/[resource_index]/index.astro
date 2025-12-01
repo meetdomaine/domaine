@@ -39,8 +39,11 @@ const content = await sanityClient.fetch(
     } | order(orderRank),
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
   }`
 );
+
+if (content?.redirectPath) return Astro.redirect(content.redirectPath);
 if (!content) return Astro.redirect("/404");
 
 const LOCALE = Locales.EN

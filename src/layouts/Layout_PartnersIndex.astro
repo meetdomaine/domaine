@@ -31,8 +31,11 @@ const { data: pageSettings } = await loadQuery({
     formText, 
     hubspotFormId,
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath
   }`
 })
+
+if (pageSettings?.redirectPath) return Astro.redirect(pageSettings.redirectPath)
 const { locale } = Astro.props
 ---
 <LayoutDomaine

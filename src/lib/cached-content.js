@@ -208,6 +208,7 @@ export const getProjectFeatures = async (brand) => {
     },
     orderRank,
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath
   } | order(orderRank)`)
 
   _projectFeatures[brand] = data
@@ -224,6 +225,7 @@ export const getProjectIndustries = async (brand) => {
     },
     excerpt,
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
   } | order(title)`)
 
   _projectIndustries[brand] = data
@@ -238,7 +240,8 @@ export const getProjectPageSettings = async (brand) => {
     title,
     heading,
     subheading,
-    metafields{ title, description, image{${imageBaseFields}} }
+    metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath
   }`)
   _projectPageSettings[brand] = data
   return data
@@ -254,6 +257,7 @@ export const getPages = async (brand) => {
     media{${imageFields}, ${videoFields}},
     globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
   } | order(_createdAt desc)`, { pageType })
 
   _pages[brand] = data
@@ -286,6 +290,7 @@ export const getPartners = async (brand) => {
     },
     metafields{ title, description, image{${imageBaseFields}} },
     orderRank,
+    redirectPath,
   } | order(orderRank)`)
 
   _partners[brand] = data
@@ -303,6 +308,7 @@ export const getEvents = async () => {
       speakers[]{..., speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
       thumbnailImage{${imageFields}},
       globalSections{ sections[]{${globalSectionsFields}}},
+      redirectPath
     } | order(dateTime)`
   })
   _events = events

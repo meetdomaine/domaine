@@ -27,10 +27,13 @@ const { data: eventContent } = await loadQuery({
     speakers[]{ speakerName, speakerRole, speakerImage{${imageFields}}, speakerLogo{${imageFields}} },
     thumbnailImage{${imageFields}},
     globalSections{ sections[]{${globalSectionsFields}}},
-    metafields{ title, description, image }
+    metafields{ title, description, image },
+    redirectPath,
   }`
 })
 console.log(eventContent.timezone)
+
+if (eventContent?.redirectPath) return Astro.redirect(eventContent.redirectPath)
 if (!eventContent) return Astro.redirect('/404')
 ---
 <LayoutEvent 

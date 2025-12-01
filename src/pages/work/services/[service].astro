@@ -18,6 +18,8 @@ const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '$
     agencyBrands[]->{ _id, slug, name},
   }`
 )
+
+if (serviceContent?.redirectPath) return Astro.redirect(serviceContent.redirectPath)
 if (!serviceContent || serviceContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex

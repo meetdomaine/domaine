@@ -14,7 +14,9 @@ const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && sl
     description,
     tier->{slug, title, createLandingPages},
     "projects": *[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && isHidden != true  && references(^._id) ]{ ${projectGridFields} } | order(orderRank),
+    redirectPath
 }`)
+if (partnerContent?.redirectPath) return Astro.redirect(partnerContent.redirectPath)
 if (!partnerContent || partnerContent.projects.length === 0) return Astro.redirect('/404')
 ---
 <LayoutProjectsIndex

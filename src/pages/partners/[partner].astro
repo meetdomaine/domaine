@@ -35,8 +35,11 @@ const partnerContent = await sanityClient.fetch(`*[_type == "type_partner" && ti
     youTubeUrl,
     tikTokUrl,
     metafields{ title, description, image{${imageBaseFields}} },
+    redirectPath,
   }`
 )
+
+if (partnerContent?.redirectPath) return Astro.redirect(partnerContent.redirectPath)
 if (!partnerContent) return Astro.redirect('/404')
 ---
 <LayoutPartner
