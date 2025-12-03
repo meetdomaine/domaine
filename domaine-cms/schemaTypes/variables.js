@@ -146,6 +146,10 @@ export const iconFooter = EllipsisHorizontalIcon
 export const labelPreloader = "Preloader"
 export const iconPreloader = Progress75Icon
 
+// Redirects
+export const labelRedirect = "Redirects"
+export const iconRedirect = LinkIcon
+
 // SEO
 export const labelSEO = "SEO"
 export const iconSEO = ChartUpwardIcon
