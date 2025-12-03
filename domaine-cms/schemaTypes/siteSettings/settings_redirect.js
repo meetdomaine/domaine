@@ -45,6 +45,12 @@ export default defineType({
                   validation: Rule => Rule.required(),
                 }
             ],
+            preview: {
+              select: {
+                title: 'from',
+                subtitle: 'to'
+              }
+            }
         }],
     })
   ],

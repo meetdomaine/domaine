@@ -19,9 +19,29 @@ async function generateRedirectsFile() {
   }`;
   const data = await sanityClient.fetch(query);
   if (!data?.redirects) return
-  console.log('data', data)
+  // console.log('data', data)
   const redirectRules = data.redirects?.map(redirect => {
-    return `${redirect.from} ${redirect.to} ${redirect.statusCode}`;
+
+    const originalSourcePath = redirect.from;
+    const originalDestinationPath = redirect.to;
+
+    let cleanSourcePath, fullSourcePath, destinationPath;
+
+    if (originalSourcePath.endsWith("/")) {
+      cleanSourcePath = originalSourcePath.slice(0, -1)
+      fullSourcePath = originalSourcePath
+    } else {
+      cleanSourcePath = originalSourcePath
+      fullSourcePath = `${originalSourcePath}/`
+    }
+    
+    if (originalDestinationPath.endsWith("/")) {
+      destinationPath = originalDestinationPath
+    } else {
+      destinationPath = `${originalDestinationPath}/`
+    }
+
+    return `${cleanSourcePath} ${destinationPath} ${redirect.statusCode}\n${fullSourcePath} ${destinationPath} ${redirect.statusCode}`;
   }).join('\n');
 
   const outputPath = join(process.cwd(), 'public', '_redirects');
