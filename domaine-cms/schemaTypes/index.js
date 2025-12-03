@@ -57,6 +57,7 @@ import section_textMediaTabs from "./sections/section_textMediaTabs.js";
 import section_serviceFeature from "./sections/section_serviceFeature.js";
 import section_statsCarousel from "./sections/section_statsCarousel.js";
 import settings_header from "./siteSettings/settings_header.jsx";
+import settings_redirect from "./siteSettings/settings_redirect.js";
 import snippet_button from "./snippets/snippet_button.js";
 import snippet_image from "./snippets/snippet_image";
 import snippet_linkList from "./snippets/snippet_link-list";
@@ -122,6 +123,7 @@ export const schemaTypes = [
     settings_header,
     settings_footer,
     settings_preloader,
+    settings_redirect,
 
     snippet_SEOFields,
     snippet_linkList,
