@@ -80,6 +80,7 @@ declare interface MuxVideo {
         playbackId: string,
         assetId: string,
         filename: string,
+        thumbTime: number,
     }
 }
 
