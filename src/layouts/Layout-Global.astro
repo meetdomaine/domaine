@@ -55,6 +55,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 <!doctype html>
 <html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
 	<head>
+		<!-- TEST DEPLOYMENT -->
 
 		{environment !== "PRODUCTION" ? 
 			<meta name="robots" content="noindex" />
