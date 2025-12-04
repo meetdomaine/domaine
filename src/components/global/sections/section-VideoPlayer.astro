@@ -6,6 +6,7 @@ const { section, brand, locale } = Astro.props
 
 const playbackId = section.video.asset.playbackId
 const sectionKey = section._key
+console.log(section)
 ---
 <section 
     id={`video-player__${sectionKey}`} 
@@ -39,6 +40,7 @@ const sectionKey = section._key
         height="1080"
         style={{ aspectRatio: 16 / 9}}
         accent-color="var(--color-video-player-accent)"
+        thumbnail-time={section.video.asset.thumbTime}
         nohotkeys
     ></mux-player>
 </section>
