@@ -50,6 +50,11 @@ export default defineType({
     ]
     }),
     defineField({
+      name: 'globalSections',
+      title: 'Global Sections',
+      type: 'section_globalSections',
+    }),
+    defineField({
       name: 'metafields',
       title: 'Metafields',
       type: 'snippet_locale-SEO-fields',

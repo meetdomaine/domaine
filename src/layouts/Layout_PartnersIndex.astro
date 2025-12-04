@@ -1,9 +1,10 @@
 ---
 import LayoutDomaine from '../layouts/Layout-Domaine.astro';
-import { imageBaseFields, partnerTileFields, urlFor, videoFields } from '../lib/cms-queries';
+import { imageBaseFields, partnerTileFields, urlFor, videoFields, globalSectionsFields } from '../lib/cms-queries';
 import TextHeading from '../components/global/sections/section-TextHeading.astro';
 import PartnersIndexTier from '../components/global/partners/partnersIndex-tier.astro';
 import SectionForm from '../components/global/sections/section-Form.astro';
+import SectionGlobalSections from '../components/global/sections/section-GlobalSections.astro';
 import MediaFullbleed from '../components/global/sections/section-MediaFullbleed.astro';
 import { getTranslationString } from '../lib/translations';
 import { loadQuery } from '../lib/sanity-load-query';
@@ -31,6 +32,7 @@ const { data: pageSettings } = await loadQuery({
     formText, 
     hubspotFormId,
     metafields{ title, description, image{${imageBaseFields}} },
+    globalSections{ sections[]{${globalSectionsFields}} }
   }`
 })
 const { locale } = Astro.props
@@ -64,6 +66,10 @@ const { locale } = Astro.props
             />
         ))}
     </div>
+
+    {pageSettings?.globalSections?.section?.map((section, i) => (
+        <SectionGlobalSections brand={Brands.DOMAINE} section={section} key={i} locale={locale} />
+    ))}
 
     {pageSettings.hubspotFormId && 
         <SectionForm 

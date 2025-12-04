@@ -30,6 +30,7 @@ const projectContent = await sanityClient.fetch(`*[_type == "type_project" && is
       slug,
       heroMedia{${videoFields}, ${imageFields}},
       sections[]{${globalSectionsFields}},
+      globalSections{ sections[]{${globalSectionsFields}} },
       metafields{ title, description, image{${imageBaseFields}} },
       orderRank,
   }[0]`

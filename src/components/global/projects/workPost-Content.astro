@@ -41,6 +41,10 @@ const relatedProjects = await sanityClient.fetch(`*[_type == "type_project" && i
       <GlobalSections brand={brand} section={section} key={i} locale={locale} />
   ))}
 
+    {content?.globalSections?.sections && content.globalSections.sections.map((section, i) => (
+        <GlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+
   <WorkPostDetails
       url={content.url}
       client={content.client}
