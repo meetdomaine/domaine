@@ -35,6 +35,7 @@ import {
     iconServiceTypes, 
     iconServices, 
     iconSettings, 
+    iconRedirect,
     iconSiteSettings, 
     iconTeamDepartments, 
     iconTeamMembers, 
@@ -58,6 +59,7 @@ import {
     labelPartners, 
     labelPractices, 
     labelPreloader, 
+    labelRedirect,
     labelProjectFeatures, 
     labelProjects, 
     labelResource, 
@@ -616,6 +618,15 @@ export const structure = (S, context) =>
                                         .title(labelPreloader)
                                     ),
                             ])
+                        ),
+                    S.listItem()
+                        .title(labelRedirect)
+                        .icon(iconRedirect)
+                        .child(
+                            S.document()
+                                .schemaType('settings_redirect')
+                                .documentId('settings_preloader')
+                                .title(labelRedirect)
                         ),
                     orderableDocumentListDeskItem({
                         type: 'type_agencyBrand',
