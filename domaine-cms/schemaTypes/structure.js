@@ -417,15 +417,13 @@ export const structure = (S, context) =>
                 S.list()
                 .title(labelResource)
                 .items([
-                    S.listItem()
-                        .title(`${labelResourceIndex}`)
-                        .icon(iconResourceIndex)
-                        .child(
-                            S.document()
-                            .schemaType('type_resources-index')
-                            .documentId('type_resources-index')
-                            .title(`${labelResourceIndex}`)
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_resources-index',
+                        title: labelResourceIndex,
+                        icon: iconResourceIndex,
+                        S, 
+                        context
+                    }),
                     orderableDocumentListDeskItem({
                         type: 'type_resource',
                         title: labelResourcePage,
