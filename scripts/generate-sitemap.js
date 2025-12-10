@@ -121,10 +121,10 @@ async function generateSitemapFile() {
       slug{current},
       resourcesIndex->{slug{current}}
     }`),
-    await sanityClient.fetch(`*[_type == "page_general"]{
+    await sanityClient.fetch(`*[_type == "page_general" && !isMarketingPage]{
       slug{current},
     }`),
-    await sanityClient.fetch(`*[_type == "page_studio-general"]{
+    await sanityClient.fetch(`*[_type == "page_studio-general" && !isMarketingPage]{
       slug{current},
     }`),
   ]);
