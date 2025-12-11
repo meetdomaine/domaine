@@ -52,7 +52,8 @@ export default defineType({
       name: 'category',
       title: 'Category',
       type: 'reference',
-      to: [{ type: 'type_blogCategory' }]
+      to: [{ type: 'type_blogCategory' }],
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'excerpt',

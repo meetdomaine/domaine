@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import solid from "@astrojs/solid-js";
-import sitemap from '@astrojs/sitemap';
 import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
@@ -15,20 +14,20 @@ const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 export default defineConfig({
   integrations: [
-    sitemap(), 
     icon(), 
     sanity({
       projectId: 'cxeknc6v',
       // dataset: env.ENVIRONMENT === 'PRODUCTION' ? 'production' : 'staging',
       dataset: 'production',
-      useCdn: true,
+      useCdn: env.ENVIRONMENT === 'PRODUCTION' ? true : false,
       // useCdn: env.PUBLIC_SANITY_API_READ_TOKEN ? true : false,
       token: env.PUBLIC_SANITY_API_READ_TOKEN,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
       },
-      perspective: 'published',
+      // perspective: 'published',
+      perspective: env.ENVIRONMENT === 'PRODUCTION' ? 'published' : 'drafts',
       headers: {
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400', 
         'CDN-Cache-Control': 'public, s-maxage=3600',

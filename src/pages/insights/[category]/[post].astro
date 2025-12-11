@@ -39,7 +39,6 @@ const content = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand-
     metafields{ title, description, image{${imageBaseFields}} },
 }`
 )
-console.log(content)
 if (!content || !content.category || content.category.slug.current !== category) return Astro.redirect('/404')
 ---
 <LayoutBlogPost
