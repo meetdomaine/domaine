@@ -6,9 +6,12 @@ import { imageFields, videoFields } from '../../lib/cms-queries';
 import { imageBaseFields } from '../../lib/cms-queries';
 import { globalSectionsFields } from '../../lib/cms-queries';
 import { sanityClient } from 'sanity:client';
+import { loadEnv } from "vite";
+
+const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 const { project } = Astro.params
-const projectContent = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
+const projectContent = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
       title,
       isHidden,
       description,
