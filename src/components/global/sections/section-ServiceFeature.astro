@@ -71,7 +71,7 @@ const subheading = section.subheading ? section.subheading : section.featuredSer
                         {serviceGroup.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                             <AtomServiceLink 
                                 title={getTranslationString(service.title, locale)}
-                                url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${section.featuredService.slug.current}/${service.serviceGroup.slug.current}/${service.slug.current}`, locale)}
+                                url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${section.featuredService.slug.current}/${service.slug.current}`, locale)}
                                 excerpt={getTranslationString(service.excerpt, locale)}
                                 isHidden={service.isHidden}
                             />
@@ -81,7 +81,7 @@ const subheading = section.subheading ? section.subheading : section.featuredSer
                 section.featuredService.services.filter((service) => service.agencyBrands.some((brand) => brand.slug.current === currentSlug)).map((service) => (
                     <AtomServiceLink 
                         title={getTranslationString(service.title, locale)}
-                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${service.serviceGroup.serviceType.slug.current}/${service.serviceGroup.slug.current}/${service.slug.current}`)}
+                        url={getLocaleUrl(`${brand === Brands.STUDIO ? "/studio/" : "/"}services/${service.serviceGroup.serviceType.slug.current}/${service.slug.current}`)}
                         excerpt={getTranslationString(service.excerpt, locale)}
                         isHidden={service.isHidden}
                     />

@@ -1,6 +1,7 @@
 ---
 // SERVER RENDERED
 import LayoutServiceGroup from "../../../../layouts/Layout_ServiceGroup.astro";
+import LayoutService from '../../../../layouts/Layout_Service.astro';
 import { Brands } from "../../../../enums/brands";
 import { sanityClient } from "sanity:client";
 import { globalSectionsFields } from "../../../../lib/cms-queries";
@@ -37,11 +38,44 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
   } | order(orderRank),
   metafields{ title, description, image{${imageBaseFields}} }
 }`)
-console.log(serviceGroupContent)
-if (!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) return Astro.redirect('/404')
+
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.DOMAINE}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+    title,
+    slug,
+    excerpt,
+    description,
+    formHeading,
+    formText,
+    hubspotFormId,
+    agencyBrands[]->{ name },
+    serviceGroup->{
+        title,
+        slug,
+        formHeading,
+        formText,
+        hubspotFormId,
+        serviceType->{
+            title,
+            slug,
+            formHeading,
+            formText,
+            hubspotFormId
+        }
+    },
+    pageSectionsDomaine[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+)
+
+if ((!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) && (!serviceContent || serviceContent.serviceGroup.serviceType.slug.current !== service_type)) return Astro.redirect('/404')
 ---
-<LayoutServiceGroup
+{serviceGroupContent && <LayoutServiceGroup
   content={serviceGroupContent}
   activePath="/services"
   brand={Brands.DOMAINE}
-/>
+/>}
+{serviceContent && <LayoutService 
+  content={serviceContent}
+  brand={Brands.DOMAINE}
+  activePath="/services"
+/>}
