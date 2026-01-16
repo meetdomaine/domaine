@@ -318,7 +318,7 @@ const fields = fieldGroups.flatMap((group) => {
 
         // Upload file and return file data
         const uploadFile = async (file) => {
-            const res = await fetch(`/api/hubspot-file-upload`, {
+            const res = await fetch(`/api/hubspot-file-upload/`, {
                 method: 'POST',
                 body: file,
             });
