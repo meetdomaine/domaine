@@ -43,6 +43,7 @@ const consentData = formData.legalConsentOptions || {};
 
 const fields = fieldGroups.flatMap((group) => {
   if (group.fields) {
+    console.log(group.fields)
     return group.fields?.map((field) => {
         return field
     })
@@ -257,7 +258,7 @@ const fields = fieldGroups.flatMap((group) => {
         </div>
     
         <div class="form-field">
-            <input type="button" class="submit-button" value={formData.displayOptions?.submitButtonText || 'Submit'} />
+            <input type="submit" class="submit-button" value={formData.displayOptions?.submitButtonText || 'Submit'} />
         </div>
     
     </form>
@@ -407,23 +408,7 @@ const fields = fieldGroups.flatMap((group) => {
         })
     }
 
-    const handleKeyUp = (e) => {
-        if (e.key === 'Enter') {
-            handleSubmit(onSubmit)(e);
-        }
-    };
-
     contactForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        submitForm();
-    })
-
-    contactForm.addEventListener("keyup", (e) => {
-        e.preventDefault();
-        handleKeyUp();
-    })
-
-    submitButton.addEventListener("click", e => {
         e.preventDefault();
         submitForm();
     })
