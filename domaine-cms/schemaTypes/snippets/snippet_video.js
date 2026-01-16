@@ -12,13 +12,20 @@ export default defineType({
         name: 'video',
         title: 'Video',
         type: 'mux.video',
+        options: {
+            collapsed: false,
+        },
+        validation: (Rule) => Rule.custom((value, { document: { image } }) => {
+            return !image
+        }),
     }),
     defineField({
         name: 'image',
         title: 'Image',
         type: 'image',
         options: {
-            hotspot: true
+            hotspot: true,
+            collapsed: false,
         },
         validation: (Rule) => Rule.custom((value, { document: { video } }) => {
             return !video
