@@ -6,10 +6,11 @@ import { getTranslationString } from "../lib/translations";
 import { urlFor } from "../lib/cms-queries";
 
 const { content, locale } = Astro.props
+const description = content?.metafields?.description?.text || content?.metafields?.description
 ---
 <LayoutStudio
     title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
-    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    description={description ? getTranslationString(description, locale) : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     locale={locale}
     searchExposed={true}

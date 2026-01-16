@@ -34,10 +34,11 @@ const content = await sanityClient.fetch(
 if (!content || content.resourcesIndex.slug.current != resource_index) return Astro.redirect("/404");
 
 const LOCALE = Locales.EN
+const description = content?.metafields?.description?.text || content?.metafields?.description
 ---
 <LayoutDomaine
   title={`${content.metafields?.title ? getTranslationString(content.metafields.title, LOCALE) : getTranslationString(content.title, LOCALE)} | ${getTranslationString(content.resourcesIndex.title, LOCALE)} | ${Translations.RESOURCES.locales[LOCALE] ? Translations.RESOURCES.locales[LOCALE] : Translations.RESOURCES.name}`}
-  description={content.metafields?.description ? getTranslationString(content.metafields.description, LOCALE) : null}
+  description={description ? getTranslationString(description, LOCALE) : null}
   image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
   activePath={"/resources"}
   locale={LOCALE}

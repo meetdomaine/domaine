@@ -17,10 +17,11 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-d
   }`
 )
 const { brand, locale } = Astro.props
+const description = pageSettings?.metafields?.description?.text || pageSettings?.metafields?.description
 ---
 <LayoutDomaine
     title={`${pageSettings.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : pageSettings.title.text}`}
-    description={pageSettings.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
+    description={description ? getTranslationString(description, locale) : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     activePath="/services"
     showPreloader={false}

@@ -12,10 +12,11 @@ import { sanityClient } from 'sanity:client';
 const { content, locale, brand } = Astro.props;
 const projects = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{${projectGridFields}} | order(orderRank)`)
 const blogPosts = await sanityClient.fetch(`*[_type == "type_blog" && agencyBrand->name == '${brand}' && isHidden != true && '${content.slug.current}' in partners[]->slug.current ]{${blogCardFields}}|order(postDate desc)`)
+const description = content?.metafields?.description?.text || content?.metafields?.description
 ---
 <LayoutDomaine
     title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : content.title} | ${getLocaleString("PARTNER")}`}
-    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    description={description ? getTranslationString(description, locale) : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter="type:partner"
     activePath="/partners"
