@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import solid from "@astrojs/solid-js";
-import sitemap from '@astrojs/sitemap';
+// import sitemap from '@astrojs/sitemap';
 import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
@@ -15,7 +15,7 @@ const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 export default defineConfig({
   integrations: [
-    sitemap(), 
+    // sitemap(), 
     icon(), 
     sanity({
       projectId: 'cxeknc6v',
