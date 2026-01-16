@@ -35,6 +35,7 @@ import {
     iconServiceTypes, 
     iconServices, 
     iconSettings, 
+    iconRedirect,
     iconSiteSettings, 
     iconTeamDepartments, 
     iconTeamMembers, 
@@ -58,6 +59,7 @@ import {
     labelPartners, 
     labelPractices, 
     labelPreloader, 
+    labelRedirect,
     labelProjectFeatures, 
     labelProjects, 
     labelResource, 
@@ -415,15 +417,13 @@ export const structure = (S, context) =>
                 S.list()
                 .title(labelResource)
                 .items([
-                    S.listItem()
-                        .title(`${labelResourceIndex}`)
-                        .icon(iconResourceIndex)
-                        .child(
-                            S.document()
-                            .schemaType('type_resources-index')
-                            .documentId('type_resources-index')
-                            .title(`${labelResourceIndex}`)
-                        ),
+                    orderableDocumentListDeskItem({
+                        type: 'type_resources-index',
+                        title: labelResourceIndex,
+                        icon: iconResourceIndex,
+                        S, 
+                        context
+                    }),
                     orderableDocumentListDeskItem({
                         type: 'type_resource',
                         title: labelResourcePage,
@@ -616,6 +616,15 @@ export const structure = (S, context) =>
                                         .title(labelPreloader)
                                     ),
                             ])
+                        ),
+                    S.listItem()
+                        .title(labelRedirect)
+                        .icon(iconRedirect)
+                        .child(
+                            S.document()
+                                .schemaType('settings_redirect')
+                                .documentId('settings_preloader')
+                                .title(labelRedirect)
                         ),
                     orderableDocumentListDeskItem({
                         type: 'type_agencyBrand',

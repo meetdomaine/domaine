@@ -17,6 +17,8 @@ import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 import { ClientRouter } from 'astro:transitions';
 
+const { env } = Astro.locals.runtime;
+
 interface Props {
 	title: string;
 	description: string;
@@ -34,19 +36,31 @@ interface Props {
 	indexSearch?: boolean;
 }
 
+const environment = env.ENVIRONMENT;
+
+if (environment) {
+	console.log(`ENV is: ${environment}`);
+} else {
+	console.log("No environment set");
+}
+
 Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600");
 
 const { title, description, image, favicon, searchFilter, currentBrand, noIndex, cookieNoticeText, showPreloader, locale, brand, indexSearch } = Astro.props;
 
-const currentPath = Astro.url.pathname;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 // const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
 ---
 
 <!doctype html>
 <html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
 	<head>
+		<!-- TEST DEPLOYMENT -->
 
-		<meta name="robots" content={noIndex ? "noindex" : "all"}>
+		{environment !== "PRODUCTION" ? 
+			<meta name="robots" content="noindex" />
+		: <meta name="robots" content={noIndex ? "noindex" : "all"} />
+		}
 
 		<!-- Add back once live -->
 		<link rel="preconnect" href="https://www.googletagmanager.com">
@@ -88,13 +102,13 @@ const currentPath = Astro.url.pathname;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" href={favicon ? urlFor(favicon).url() : ""}>
 		<link rel="sitemap" href="/sitemap-index.xml" />
-		<link rel="canonical" href={`https://www.meetdomaine.com${currentPath}`} />
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description}>
 
 		<!-- Facebook Meta Tags -->
-		<meta property="og:url" content="https://meetdomaine.com/">
+		<meta property="og:url" content={canonicalUrl}>
 		<meta property="og:type" content="website">
 		<meta property="og:title" content={title}>
 		<meta property="og:description" content={description}>
@@ -103,7 +117,7 @@ const currentPath = Astro.url.pathname;
 		<!-- Twitter Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image">
 		<meta property="twitter:domain" content="meetdomaine.com">
-		<meta property="twitter:url" content="https://meetdomaine.com/">
+		<meta property="twitter:url" content={canonicalUrl}>
 		<meta name="twitter:title" content={title}>
 		<meta name="twitter:description" content={description}>
 		<meta name="twitter:image" content={image ? urlFor(image).url() : ""}>
@@ -125,6 +139,33 @@ const currentPath = Astro.url.pathname;
 			locale={locale}
     /> -->
     
+
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"@id": "https://domaineworldwide.com/#organization",
+			"name": "Domaine",
+			"url": "https://domaineworldwide.com/",
+			"logo": {
+				"@type": "ImageObject",
+				"url": "https://domaineworldwide.com/domaine-icon.svg"
+			},
+			"sameAs": [
+				"https://www.linkedin.com/company/meet-domaine/",
+				"https://twitter.com/domainewrldwide",
+				"https://www.instagram.com/domaineworldwide/"
+				"https://www.youtube.com/@domaineworldwide"
+			],
+			"contactPoint": [{
+				"@type": "ContactPoint",
+				"contactType": "sales",
+				"email": "hello@meetdomaine.com",
+				"availableLanguage": ["en"]
+			}]
+		}
+	</script>
+
 		<GlobalCookieNotice 
 			content={cookieNoticeText}
 			brand={brand}
@@ -146,11 +187,11 @@ const currentPath = Astro.url.pathname;
   })
 </script>
 
-<!-- Remove Lenis onscrollend event -->
 <script is:inline>
-	delete window.onscrollend;
+	delete window.onscrollend; // Hack to fix Lenis scrolling issues
 </script>
 
+<!-- TODO: Fix FOUC issues -->
 <style is:inline>
   body {
     visibility: hidden;

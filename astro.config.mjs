@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import solid from "@astrojs/solid-js";
-import sitemap from '@astrojs/sitemap';
+// import sitemap from '@astrojs/sitemap';
 import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
@@ -11,25 +11,19 @@ import vercel from '@astrojs/vercel';
 
 // Load environment variables
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
-
-// Try to get the variable from Cloudflare first, then fall back to local env
-// const SERVER_RENDERING_ENABLED = process.env.PUBLIC_SERVER_RENDERING_ENABLED || env.PUBLIC_SERVER_RENDERING_ENABLED;
-
-// Get SANITY token from environment
-const PUBLIC_SANITY_API_READ_TOKEN = process.env.PUBLIC_SANITY_API_READ_TOKEN || env.PUBLIC_SANITY_API_READ_TOKEN;
-const PUBLIC_SANITY_VISUAL_EDITING_ENABLED = process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED || env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED;
-// console.log(SANITY_API_READ_TOKEN)
+// const { env } = Astro.locals.runtime;
 
 export default defineConfig({
   integrations: [
-    sitemap(), 
+    // sitemap(), 
     icon(), 
     sanity({
       projectId: 'cxeknc6v',
+      // dataset: env.ENVIRONMENT === 'PRODUCTION' ? 'production' : 'staging',
       dataset: 'production',
       useCdn: true,
-      // useCdn: PUBLIC_SANITY_API_READ_TOKEN ? true : false,
-      token: PUBLIC_SANITY_API_READ_TOKEN,
+      // useCdn: env.PUBLIC_SANITY_API_READ_TOKEN ? true : false,
+      token: env.PUBLIC_SANITY_API_READ_TOKEN,
       studioBasePath: '/admin',
       stega: {
         studioUrl: '/admin',
@@ -71,11 +65,11 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: 'cloudflare',
   }),
-  site: 'https://meetdomaine.com/',
+  site: 'https://domaineworldwide.com/',
   vite: {
     define: {
-      "import.meta.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(PUBLIC_SANITY_API_READ_TOKEN),
-      "import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
+      "import.meta.env.env.PUBLIC_SANITY_API_READ_TOKEN": JSON.stringify(env.PUBLIC_SANITY_API_READ_TOKEN),
+      "import.meta.env.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED": JSON.stringify(env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED),
     },
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.

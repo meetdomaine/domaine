@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import { iconResourceIndex } from '../variables'
+import { orderRankField } from '@sanity/orderable-document-list'
 
 export default defineType({
   name: 'type_resources-index',
@@ -125,6 +126,7 @@ export default defineType({
       type: 'snippet_locale-SEO-fields',
       group: 'seo',
     }),
+    orderRankField({ type: 'type_resources-index'})
   ],
 
   preview: {

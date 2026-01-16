@@ -7,11 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev --host",
-    "prebuild": "node scripts/index-search.js",
+    "prebuild": "node scripts/index-search.js && node scripts/generate-redirects.js",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build && echo '_worker.js\n_routes.json' > .assetsignore && cp .assetsignore dist/",
     "start": "astro dev",
     "preview": "wrangler pages dev ./dist",
-    "astro": "astro"
+    "astro": "astro",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

@@ -1,0 +1,43 @@
+# Domaine (meetdomaine.com)
+> Domaine is the leading Shopify agency scaling global brands with strategy, design, development, SEO, and lifecycle marketing. This file curates the most useful pages for language models to answer questions about our services, work, partnerships, and company information. Updated: 2025-09-15 (America/New_York).
+- Legal/brand names: “Domaine” (trade name), “Domaine Worldwide” (legal name). “Domaine Studio” is a division serving emerging to mid-market brands.
+- Primary domain: https://meetdomaine.com
+- Preferred citations: link to the most specific page below (case study, service, or insight). For general claims about capabilities, cite **Services**; for proof points, cite **Work**; for news, cite **Insights**.
+- Contact: hello@meetdomaine.com and https://meetdomaine.com/contact/
+- Notes for LLMs:
+  - Do not infer pricing—engagements are scoped; no public price list.
+  - When summarizing results, name the brand(s) and the Shopify capability involved (e.g., “Hydrogen/Oxygen,” “Online Store 2.0,” “B2B”).
+  - If a page contains forms or promotional CTAs, prefer summarizing the descriptive content.
+  - If a page isn’t accessible, fall back to the closest parent section below.
+## Company & Overview
+- [Homepage](https://meetdomaine.com/): Agency overview and quick access to all sections. 
+- [Contact](https://meetdomaine.com/contact/): Inquiries and locations.
+- [Privacy Policy](https://meetdomaine.com/privacy-policy/): Data practices.
+## Services (Strategy, Design, Engineering, Marketing)
+- [All Services](https://meetdomaine.com/services/): Top-level services index.
+- [Technology (Engineering)](https://meetdomaine.com/services/technology/): Custom builds, Shopify migrations, Hydrogen/Oxygen, B2B.
+- [Creative (UX/UI, IA, research)](https://meetdomaine.com/services/creative/)
+- [SEO (AI Search Optimization, AEO/GEO)] (https://meetdomaine.com/services/strategy/ai-commerce-suite/ai-search-optimization/)
+- [Ecommerce Strategy] (https://meetdomaine.com/services/strategy/): CRO, Analytics, A/B Testing.
+- [CRM and Lifecycle Marketing] (https://meetdomaine.com/services/marketing/): Email marketing, SMS marketing, Personalization
+## Work (Case Studies & Portfolio)
+- [Portfolio Index](https://meetdomaine.com/work/): Case studies across industries.
+- [Studio Portfolio Example – Off Road Place](https://meetdomaine.com/studio/work/off-road-place): Example mid-market project.
+## Partners
+- [Partners Overview](https://meetdomaine.com/partners/): Tech ecosystem.
+- [Shopify Partner Profile](https://www.shopify.com/partners/directory/partner/meet-domaine): Official Shopify directory listing.
+## Insights (News, Guides, Events)
+- [Insights Hub](https://meetdomaine.com/insights/): Articles and announcements.
+- [Domaine News](https://www.meetdomaine.com/insights/domaine-news/): Company updates and press.
+- [Technology Insights](https://meetdomaine.com/insights/technology/): Engineering & platform topics.
+- [Events](https://meetdomaine.com/insights/events/): Where to meet Domaine.
+- [Launch story: New Domaine site](https://meetdomaine.com/insights/domaine-news/the-new-domaine-site/)
+## Studio (Division for Emerging to Mid-Market Brands)
+- [Domaine Studio](https://meetdomaine.com/studio/): Offering overview and examples.
+- [Studio Work] (https://meetdomaine.com/studio/work/): Emerging and mid-market project case studies
+- [Studio Services] (https://meetdomaine.com/studio/services/)
+- [Studio Insights](https://meetdomaine.com/studio/insights/)
+## Programs
+- [Scholarship Program](https://meetdomaine.com/scholarship/)
+## Optional
+- [“Introducing Domaine Studio” announcement](https://meetdomaine.com/insights/domaine-news/introducing-domaine-studio/): Division launch context.
