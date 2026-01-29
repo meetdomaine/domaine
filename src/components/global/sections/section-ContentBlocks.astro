@@ -23,7 +23,7 @@ const { section, brand, key, locale } = Astro.props
                         preserveAspect={contentBlock.insetMedia ? true : false}
                         cover={contentBlock.insetMedia ? false : true}
                         contain={contentBlock.insetMedia ? true : false}
-                        aspectRatio={section.contentBlocks.length > 1 ? 3/4 : null}
+                        aspectRatio={section.contentBlocks.length > 1 && !contentBlock.insetMedia ? 3/4 : null}
                         sizes="100vw"
                     />
                 </div>
@@ -74,7 +74,7 @@ const { section, brand, key, locale } = Astro.props
         display: flex;
         justify-content: center;
         align-items: center;
-        aspect-ratio: 16 / 9;
+        /* aspect-ratio: 3 / 4; */
         /* min-height: 80svh; */
     }
 
