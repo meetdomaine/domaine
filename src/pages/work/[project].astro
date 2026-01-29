@@ -8,7 +8,7 @@ import { globalSectionsFields } from '../../lib/cms-queries';
 import { sanityClient } from 'sanity:client';
 
 const { project } = Astro.params
-const projectContent = await sanityClient.fetch(`*[_type == "type_project" && isHidden != true && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
+const projectContent = await sanityClient.fetch(`*[_type == "type_project" && agencyBrand->name == '${Brands.DOMAINE}' && slug.current == '${project}']{
       title,
       isHidden,
       description,
