@@ -10,6 +10,7 @@ import { loadQuery } from '../lib/sanity-load-query';
 import { sanityClient } from 'sanity:client';
 import { getPartners } from '../lib/cached-content';
 import { Brands } from '../enums/brands';
+import SectionVideoPlayer from '../components/global/sections/section-VideoPlayer.astro';
 
 const partnerTiers = await sanityClient.fetch(`*[_type == "type_partnerTier"]{ 
   ...,
@@ -51,10 +52,19 @@ const { locale } = Astro.props
         locale={locale}
     />
 
-    <MediaFullbleed 
-        media={pageSettings.heroMedia}
+    <SectionVideoPlayer 
+        section={{
+            _type: 'section_videoPlayer',
+            video: pageSettings.heroMedia.video,
+            textColor: 'dark',
+        }}
         locale={locale}
     />
+
+    <!-- <MediaFullbleed 
+        media={pageSettings.heroMedia}
+        locale={locale}
+    /> -->
 
     <div class="partner-tiers">
         {partnerTiers.map((tier) => (

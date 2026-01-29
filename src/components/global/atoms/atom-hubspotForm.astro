@@ -43,7 +43,7 @@ const consentData = formData.legalConsentOptions || {};
 
 const fields = fieldGroups.flatMap((group) => {
   if (group.fields) {
-    console.log(group.fields)
+    // console.log(group.fields)
     return group.fields?.map((field) => {
         return field
     })
@@ -288,7 +288,7 @@ const fields = fieldGroups.flatMap((group) => {
     }
 
     const handleSuccess = (response) => {
-        console.log(response)
+        // console.log(response)
         if (response.inlineMessage) {
             confirmationMessage.innerHTML = response.inlineMessage
             confirmationMessage.style.display = "block"
@@ -339,7 +339,7 @@ const fields = fieldGroups.flatMap((group) => {
             // Use Hubspot Filemanager API to upload file to a folder in Hubspot and return its url
             if (field.fieldType === "file") {
                 const element = document.getElementById(`${field.name}`)
-                if (!element) console.log(`Element ${field.name} not found`)
+                // if (!element) console.log(`Element ${field.name} not found`)
                 if (element) {
                     const fieldData = new FormData()
                     fieldData.append("file", formObject[key])

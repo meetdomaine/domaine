@@ -39,6 +39,8 @@ const { video, image, sizes, eager, aspectRatio, preserveAspect, cover, contain,
         data-cover={cover ? "true" : "false"}
         data-autoplay={autoplay === false ? "false" : "true"}
         thumbnail-time={video.asset.thumbTime}
+        min-resolution="720p"
+        max-resolution="1440p"
         nohotkeys
     ></mux-player>
     : image ?
