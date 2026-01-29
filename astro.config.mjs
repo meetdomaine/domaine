@@ -1,13 +1,11 @@
 import { defineConfig } from 'astro/config';
 import solid from "@astrojs/solid-js";
-// import sitemap from '@astrojs/sitemap';
 import icon from "astro-icon";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
 import { Locales } from './src/enums/locales';
 import { loadEnv } from "vite";
-import vercel from '@astrojs/vercel';
 
 // Load environment variables
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
