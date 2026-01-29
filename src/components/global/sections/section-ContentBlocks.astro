@@ -74,10 +74,11 @@ const { section, brand, key, locale } = Astro.props
         display: flex;
         justify-content: center;
         align-items: center;
+        aspect-ratio: 16 / 9;
         /* aspect-ratio: 3 / 4; */
         /* min-height: 80svh; */
     }
-
+    
     .content-block[data-fullwidth="false"] {
         aspect-ratio: 3 / 4;
     }
@@ -94,6 +95,9 @@ const { section, brand, key, locale } = Astro.props
         padding: var(--space-3xl);
         border-radius: var(--radius-sm);
         overflow: hidden;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     @media screen and (max-width: 768px) {
