@@ -10,10 +10,11 @@ import { getTranslationString } from '../lib/translations';
 const { content, locale, brand } = Astro.props
 
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+const description = content?.metafields?.description?.text || content?.metafields?.description
 ---
 <BrandLayout
     title={`${content.metafields?.title ? getTranslationString(content.metafields.title, locale) : getTranslationString(content.title, locale)} | ${locale ? Translations.PROJECTS.locales[locale] : Translations.PROJECTS.name}`}
-    description={content.metafields?.description ? content.metafields.description : null}
+    description={description ? description : null}
     image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchFilter={content.isHidden ? "" : "type:case-study_domaine"}
     activePath="/work"

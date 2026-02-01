@@ -18,11 +18,12 @@ const pageSettings = await sanityClient.fetch(`*[_type == 'page_careers']{
 // Fetch careers from Rippling API
 const careersResponse = await fetch('https://api.rippling.com/platform/api/ats/v1/board/domaine-careers/jobs');
 const allCareers = await careersResponse.json();
+const description = pageSettings?.metafields?.description?.text || pageSettings?.metafields?.description
 ---
 <LayoutDomaine
     searchFilter="type:page"
     title={`${pageSettings.metafields?.title ? pageSettings.metafields.title : "Careers"}`}
-    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    description={description ? description : null}
     image={pageSettings.metafields?.image ? urlFor(pageSettings.metafields.image).url() : null}
     showPreloader={false}
 >

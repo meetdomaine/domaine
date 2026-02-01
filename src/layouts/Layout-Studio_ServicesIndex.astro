@@ -17,10 +17,11 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-s
   }`
 )
 const { locale } = Astro.props
+const description = pageSettings?.metafields?.description?.text || pageSettings?.metafields?.description
 ---
 <LayoutStudio
     title={pageSettings.metafields?.title ? pageSettings.metafields.title : getTranslationString(pageSettings.title, locale)}
-    description={pageSettings.metafields?.description ? pageSettings.metafields.description : null}
+    description={description ? description : null}
     image={pageSettings.metafields?.image ? pageSettings.metafields.image : null}
     showPreloader={false}
     activePath="/studio/services"

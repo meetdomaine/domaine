@@ -12,10 +12,12 @@ import { getProjectPageSettings } from '../lib/cached-content';
 const { content, currentPath, isTopLevel, locale, brand, projects, indexSearch } = Astro.props;
 const pageSettings = await getProjectPageSettings(brand)
 const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
+const description = content?.description?.text || content?.description
+const metafieldDescription = content?.metafields?.description?.text || content?.metafields?.description
 ---
 <BrandLayout
     title={ `${content?.title ? getTranslationString(content.title, locale) : pageSettings?.metafields?.title ? getTranslationString(pageSettings.metafields.title, locale) : ""} | ${locale ? Translations.WORK.locales[locale] : Translations.WORK.name}`}
-    description={content?.description ? getTranslationString(content.description, locale) : pageSettings?.metafields?.description ? getTranslationString(pageSettings.metafields.description, locale) : null}
+    description={metafieldDescription ? getTranslationString(metafieldDescription, locale) : description ? getTranslationString(description, locale) : null}
     image={content?.image ? content.image : pageSettings?.metafields?.image ? pageSettings.metafields.image : null}
     activePath={brand === Brands.STUDIO ? "/studio/work" : "/work"}
     searchFilter="type:page"
