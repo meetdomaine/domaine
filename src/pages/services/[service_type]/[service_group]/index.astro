@@ -22,6 +22,7 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
   images[]{${imageFields}},
   agencyBrands[]->{ _id, name, slug },
   pageSectionsDomaine{ sections[]{${globalSectionsFields}} },
+  globalSectionsDomaine{ sections[]{${globalSectionsFields}} },
   serviceType->{ _id, title, slug, formHeading, formText, hubspotFormId },
   "services": *[_type == "type_service" && references(^._id)]{
     _id,

@@ -13,6 +13,7 @@ const pageSettings = await sanityClient.fetch(`*[_type == "page_services-index-d
     heading,
     images[]{${imageFields}},
     sections[]{${globalSectionsFields}},
+    globalSections{ sections[]{${globalSectionsFields}} },
     metafields{ title, description, image{${imageBaseFields}} },
   }`
 )
@@ -34,6 +35,10 @@ const { brand, locale } = Astro.props
     />
 
     {pageSettings.sections && pageSettings.sections.map((section, i) => (
+        <GlobalSections brand={Brands.DOMAINE} section={section} key={i} locale={locale} />
+    ))}
+
+    {pageSettings.globalSections?.sections && pageSettings.globalSections?.sections.map((section, i) => (
         <GlobalSections brand={Brands.DOMAINE} section={section} key={i} locale={locale} />
     ))}
 

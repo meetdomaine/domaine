@@ -35,7 +35,8 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
     metafields{ title, description, image{${imageBaseFields}} }
   } | order(orderRank),
   metafields{ title, description, image{${imageBaseFields}} },
-  pageSectionsStudio[]{${globalSectionsFields}}
+  pageSectionsStudio[]{${globalSectionsFields}},
+  globalSectionsStudio{ sections[]{${globalSectionsFields}} }
 }`)
 if (!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) return Astro.redirect('/404')
 ---

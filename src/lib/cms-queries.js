@@ -154,6 +154,8 @@ export const serviceTypePageQuery = `
   agencyBrands[]->{ ..., name },
   pageSectionsDomaine[]{${globalSectionsFields}},
   pageSectionsStudio[]{${globalSectionsFields}},
+  globalSectionsDomaine{ sections[]{${globalSectionsFields}} },
+  globalSectionsStudio{ sections[]{${globalSectionsFields}} },
   images[]{${imageFields}},
   "serviceGroups": *[_type == "type_serviceGroup" && references(^._id) ]{
       ...,

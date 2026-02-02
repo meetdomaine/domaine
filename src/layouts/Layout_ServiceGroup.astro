@@ -47,7 +47,15 @@ const { relatedProjects, relatedPosts } = await sanityClient.fetch(`{"relatedPro
       <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
     ))}
   
+    {brand === Brands.DOMAINE && content.globalSectionsDomaine?.sections?.map((section, i) => (
+      <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+
     {brand === Brands.STUDIO && content.pageSectionsStudio?.sections?.map((section, i) => (
+      <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
+    ))}
+
+    {brand === Brands.STUDIO && content.globalSectionsStudio?.sections?.map((section, i) => (
       <SectionGlobalSections brand={brand} section={section} key={i} locale={locale} />
     ))}
 
