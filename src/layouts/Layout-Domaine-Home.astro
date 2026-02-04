@@ -8,26 +8,26 @@ import { Brands } from "../enums/brands";
 import { loadQuery } from "../lib/sanity-load-query";
 
 const { locale, content } = Astro.props;
-// console.log(content.heroTextColor)
 ---
 <LayoutDomaine
-    title={content.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
-    description={content.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
-    image={content.metafields?.image ? urlFor(content.metafields.image).url() : null}
+    noIndex={content?.metafields?.noIndex === true}
+    title={content?.metafields?.title ? getTranslationString(content.metafields.title, locale) : null}
+    description={content?.metafields?.description ? getTranslationString(content.metafields.description, locale) : null}
+    image={content?.metafields?.image ? urlFor(content.metafields.image).url() : null}
     searchExposed={true}
-    showPreloader={content.showPreloader}
+    showPreloader={content?.showPreloader}
     locale={locale}
 >
     <HomeHero
         locale={locale}
-        eyebrow={locale && content.eyebrow.translations[locale] ? content.eyebrow.translations[locale] : content.eyebrow.text}
-        heading={locale && content.heading.translations[locale] ? content.heading.translations[locale] : content.heading.text}
-        button={content.button}
-        media={content.media}
-        heroTextColor={content.heroTextColor}
+        eyebrow={getTranslationString(content?.eyebrow, locale)}
+        heading={getTranslationString(content?.heading, locale)}
+        button={content?.button}
+        media={content?.media}
+        heroTextColor={content?.heroTextColor}
         brand={Brands.DOMAINE}
     />
-    {content.globalSections && content.globalSections.sections.map((section, i) => (
+    {content?.globalSections && content?.globalSections.sections.map((section, i) => (
         <GlobalSections 
           brand={Brands.DOMAINE}
           locale={locale}

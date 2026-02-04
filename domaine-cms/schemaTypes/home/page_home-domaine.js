@@ -74,13 +74,13 @@ export default defineType({
       type: 'section_globalSections',
       group: 'content',
     }),
-    defineField({
-      name: 'showPreloader',
-      title: 'Show Preloader',
-      type: 'boolean',
-      initialValue: false,
-      group: 'content',
-    }),
+    // defineField({
+    //   name: 'showPreloader',
+    //   title: 'Show Preloader',
+    //   type: 'boolean',
+    //   initialValue: false,
+    //   group: 'content',
+    // }),
     defineField({
       name: 'metafields',
       title: 'Metafields',
