@@ -1,0 +1,33 @@
+---
+// RENDERED STATICALLY ON BUILD
+import { globalSectionsFields } from "../../lib/cms-queries";
+import LayoutDomaineHome from "../../layouts/Layout-Domaine-Home.astro";
+import { imageFields } from "../../lib/cms-queries";
+import { videoFields } from "../../lib/cms-queries";
+import { imageBaseFields } from "../../lib/cms-queries";
+import { projectGridFields } from "../../lib/cms-queries";
+import { loadQuery } from "../../lib/sanity-load-query";
+import { Locales } from "../../enums/locales";
+import { seoFields } from "../../lib/cms-queries";
+import { homePageFields } from "../../lib/cms-queries";
+
+export const prerender = true // Make Home content static so it doesn't refetch on each page load
+
+const { data: pageSettings } = await loadQuery({
+  query: `*[_type == "page_home-domaine" && _id == "page_home-domaine_nl"][0]{${homePageFields}}`
+})
+---
+<LayoutDomaineHome 
+  content={pageSettings} 
+  locale={Locales.NL}
+/>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://domaineworldwide.com/#website",
+    "url": "https://domaineworldwide.com/",
+    "name": "Domaine"
+  }
+</script>
