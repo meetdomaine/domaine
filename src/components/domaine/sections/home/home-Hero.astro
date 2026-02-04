@@ -4,6 +4,7 @@ import AtomButton from "../../../global/atoms/atom-button.astro"
 import AtomSanityMedia from "../../../global/atoms/atom-sanityMedia.astro"
 import AtomTag from "../../../global/atoms/atom-tag.astro"
 import { stegaClean } from '@sanity/client/stega'
+import { getTranslationString } from "../../../../lib/translations"
 
 const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
 ---
@@ -23,7 +24,7 @@ const { locale, heading, eyebrow, button, media, heroTextColor } = Astro.props
         </div>
         {button?.label && button?.url &&
             <AtomButton 
-                text={locale && button.label.translations[locale] ? button.label.translations[locale] : button.label.text}
+                text={getTranslationString(button.label, locale)}
                 url={locale ? getRelativeLocaleUrl(locale, button.url) : button.url}
                 newTab={button.newTab}
                 style="primary"

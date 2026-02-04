@@ -41,11 +41,19 @@ export default defineConfig({
     })
   ],
   i18n: {
-    locales: ["en", Locales.DE, Locales.NL],
-    defaultLocale: "en",
+    locales: [
+      Locales.US,
+      Locales.UK, 
+      Locales.DE, 
+      Locales.NL,
+      Locales.EU
+    ],
+    defaultLocale: Locales.US,
     fallback: {
-      de: "en",
-      nl: "en"
+      uk: Locales.EU,
+      de: Locales.EU,
+      nl: Locales.EU,
+      eu: Locales.US,
     },
     // TODO: Figure out why rewrite messes up HP routing
     // routing: {
