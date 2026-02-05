@@ -37,7 +37,8 @@ const serviceTypeContent = await sanityClient.fetch(`*[_type == "type_serviceTyp
     orderRank
 }`
 )
-if (!serviceTypeContent) return Astro.redirect('/404')
+console.log('serviceTypeContent', serviceTypeContent)
+// if (!serviceTypeContent) return Astro.redirect('/404')
 ---
 <LayoutServiceType 
     content={serviceTypeContent}

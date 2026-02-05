@@ -1,5 +1,6 @@
 ---
 import LayoutServiceGroup from "../../../../../layouts/Layout_ServiceGroup.astro"
+import LayoutService from "../../../../../layouts/Layout_Service.astro"
 import { Brands } from "../../../../../enums/brands"
 import { globalSectionsFields } from "../../../../../lib/cms-queries";
 import { imageBaseFields } from "../../../../../lib/cms-queries";
@@ -37,11 +38,48 @@ const serviceGroupContent = await sanityClient.fetch(`*[_type == "type_serviceGr
   metafields{ title, description, image{${imageBaseFields}} },
   pageSectionsStudio[]{${globalSectionsFields}}
 }`)
-if (!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) return Astro.redirect('/404')
+
+
+const serviceContent = await sanityClient.fetch(`*[_type == "type_service" && '${Brands.STUDIO}' in agencyBrands[]->name && slug.current == '${service_group}'][0]{
+    title,
+    slug,
+    excerpt,
+    description,
+    formHeading,
+    formText,
+    hubspotFormId,
+    agencyBrands[]->{ name },
+    serviceGroup->{
+        title,
+        slug,
+        formHeading,
+        formText,
+        hubspotFormId,
+        serviceType->{
+            title,
+            slug,
+            formHeading,
+            formText,
+            hubspotFormId
+        }
+    },
+    pageSectionsStudio[]{${globalSectionsFields}},
+    metafields{ title, description, image{${imageBaseFields}} },
+  }`
+)
+
+if ((!serviceGroupContent || serviceGroupContent.serviceType?.slug.current !== service_type) && (!serviceContent || serviceContent.serviceGroup.serviceType.slug.current !== service_type)) return Astro.redirect('/404')
 ---
-<LayoutServiceGroup 
+{serviceGroupContent && <LayoutServiceGroup 
     content={serviceGroupContent}
     brand={Brands.STUDIO}
     activePath="/studio/services"
     locale={Locales.EN}
-/>
+/>}
+
+{serviceContent && <LayoutService
+  content={serviceContent}
+  brand={Brands.STUDIO}
+  activePath="/studio/services"
+  locale={Locales.EN}
+/>}
