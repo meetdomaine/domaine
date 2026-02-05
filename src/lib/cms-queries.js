@@ -154,6 +154,14 @@ export const homePageFields = `
   }
 `
 
+export const workPageFields = ` 
+  _id,
+  title,
+  heading,
+  subheading,
+  metafields{ ${seoFields} }
+`
+
 export const generalPageFields = `
     ..., 
     media{${imageFields}, ${videoFields}},

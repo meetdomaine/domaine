@@ -16,6 +16,7 @@ import type { SanityAsset } from '@sanity/image-url/lib/types/types';
 import GlobalPreloader from '../components/global/global-Preloader.astro';
 import GlobalCookieNotice from '../components/global/global-CookieNotice.astro';
 import { ClientRouter } from 'astro:transitions';
+import { Locales } from '../enums/locales';
 
 const { env } = Astro.locals.runtime;
 
@@ -50,10 +51,30 @@ const { title, description, image, favicon, searchFilter, currentBrand, noIndex,
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 // const visualEditingEnabled = getEnv('PUBLIC_SANITY_VISUAL_EDITING_ENABLED', Astro.locals)
+
+// Get language based on locale
+let language: string;
+switch (locale) {
+	case Locales.UK:
+		language = "en-GB";
+		break;
+	case Locales.EU:
+		language = "en-GB";
+		break;
+	case Locales.DE:
+		language = "de-DE";
+		break;
+	case Locales.NL:
+		language = "nl-NL";
+		break;
+	default:
+		language = "en-US";
+		break;
+}
 ---
 
 <!doctype html>
-<html lang={locale ? locale : "en"} data-brand={brand ? brand : "Domaine"}>
+<html lang={language} data-brand={brand ? brand : "Domaine"}>
 	<head>
 		<!-- TEST DEPLOYMENT -->
 
