@@ -24,7 +24,7 @@ const BrandLayout = brand === Brands.STUDIO ? LayoutStudio : LayoutDomaine
     noIndex={pageSettings?.metafields?.noIndex === true}
 >
     <Hero
-        heading={content?.title ? content.title : getTranslationString(pageSettings?.heading, locale)}
+        heading={Translations.PROJECTS.locales[locale] ?? Translations.PROJECTS.name}
         subheading={content?.excerpt ? content.excerpt : getTranslationString(pageSettings?.subheading, locale)}
         projectCount={projects.length}
         isTopLevel={isTopLevel}

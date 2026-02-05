@@ -9,6 +9,8 @@ export default defineType({
       name: 'heading',
       title: 'Heading',
       type: 'snippet_locale-string',
+      deprecated: true,
+      description: "Deprecated. Now just uses local translation for 'Projects'.",
     }),
     defineField({
       name: 'subheading',
