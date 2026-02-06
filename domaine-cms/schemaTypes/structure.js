@@ -616,13 +616,49 @@ export const structure = (S, context) =>
                             .title(labelHeader)
                             .items([
                                 S.listItem()
-                                    .title(labelBrandPrimary)
+                                    .title(labelBrandPrimary + ' (US)')
                                     .icon(iconBrandPrimary)
                                     .child(
                                         S.document()
                                             .schemaType('settings_header')
                                             .documentId(`settings_header--${slugBrandPrimary}`)
-                                            .title(labelHeader)
+                                            .title(labelHeader + ' (US)')
+                                    ),
+                                S.listItem()
+                                    .title(labelBrandPrimary + ' (EU)')
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                            .schemaType('settings_header')
+                                            .documentId(`settings_header--${slugBrandPrimary}_eu`)
+                                            .title(labelHeader + ' (EU)')
+                                    ),
+                                S.listItem()
+                                    .title(labelBrandPrimary + ' (UK)')
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                            .schemaType('settings_header')
+                                            .documentId(`settings_header--${slugBrandPrimary}_uk`)
+                                            .title(labelHeader + ' (UK)')
+                                    ),
+                                S.listItem()
+                                    .title(labelBrandPrimary + ' (DE)')
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                            .schemaType('settings_header')
+                                            .documentId(`settings_header--${slugBrandPrimary}_de`)
+                                            .title(labelHeader + ' (DE)')
+                                    ),
+                                S.listItem()
+                                    .title(labelBrandPrimary + ' (NL)')
+                                    .icon(iconBrandPrimary)
+                                    .child(
+                                        S.document()
+                                            .schemaType('settings_header')
+                                            .documentId(`settings_header--${slugBrandPrimary}_nl`)
+                                            .title(labelHeader + ' (NL)')
                                     ),
                                 S.listItem()
                                     .title(labelBrandSecondary)
