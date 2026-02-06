@@ -6,6 +6,13 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'noIndex',
+      title: 'No Index',
+      type: 'boolean',
+      description: 'Prevent bots from indexing the page.',
+      initialValue: false,
+    }),
+    defineField({
         name: 'title',
         title: 'SEO Title',
         type: 'snippet_locale-string',

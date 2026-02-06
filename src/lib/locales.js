@@ -4,6 +4,7 @@ export const Translations = {
   "PROJECTS": {
     name: 'Projects',
     locales: {
+      [Locales.UK]: "Projects UK",
       [Locales.DE]: "Projekte",
       [Locales.NL]: "Projecten"
     }
@@ -11,6 +12,7 @@ export const Translations = {
   "WORK": {
     name: 'Work',
     locales: {
+      [Locales.UK]: "Work UK",
       [Locales.DE]: "Arbeiten",
       [Locales.NL]: "Werk"
     }
@@ -18,6 +20,7 @@ export const Translations = {
   "INSIGHTS": {
     name: 'Insights',
     locales: {
+      [Locales.UK]: "Insights UK",
       [Locales.DE]: "Einblicke",
       [Locales.NL]: "Inzichten"
     }
@@ -25,6 +28,7 @@ export const Translations = {
   "ALL-INSIGHTS": {
     name: 'All Insights',
     locales: {
+      [Locales.UK]: "All Insights UK",
       [Locales.DE]: "Alle Einblicke",
       [Locales.NL]: "Alle inzichten"
     }
@@ -32,6 +36,7 @@ export const Translations = {
   "LATEST-INSIGHTS": {
     name: 'Latest Insights',
     locales: {
+      [Locales.UK]: "Latest Insights UK",
       [Locales.DE]: "Neueste Erkenntnisse",
       [Locales.NL]: "Laatste inzichten"
     }
@@ -39,6 +44,7 @@ export const Translations = {
   "RELATED-POSTS": {
     name: 'Related Posts',
     locales: {
+      [Locales.UK]: "Related Posts UK",
       [Locales.DE]: "Verwandte Beiträge",
       [Locales.NL]: "Gerelateerde berichten"
     }
@@ -46,6 +52,7 @@ export const Translations = {
   "PARTNER": {
     name: 'Partner',
     locales: {
+      [Locales.UK]: "Partner UK",
       [Locales.DE]: "Partner",
       [Locales.NL]: "Partner"
     }
@@ -53,6 +60,7 @@ export const Translations = {
   "PARTNERS": {
     name: 'Partners',
     locales: {
+      [Locales.UK]: "Partners UK",
       [Locales.DE]: "Partner",
       [Locales.NL]: "Partners"
     }
@@ -60,6 +68,7 @@ export const Translations = {
   "FEATURES": {
     name: 'Features',
     locales: {
+      [Locales.UK]: "Features UK",
       [Locales.DE]: "Merkmale",
       [Locales.NL]: "Functies"
     }
@@ -67,6 +76,7 @@ export const Translations = {
   "INDUSTRY": {
     name: 'Industry',
     locales: {
+      [Locales.UK]: "Industry UK",
       [Locales.DE]: "Industrie",
       [Locales.NL]: "Industrie"
     }
@@ -74,6 +84,7 @@ export const Translations = {
   "INDUSTRIES": {
     name: 'Industries',
     locales: {
+      [Locales.UK]: "Industries UK",
       [Locales.DE]: "Branchen",
       [Locales.NL]: "Industrieën"
     }
@@ -81,6 +92,7 @@ export const Translations = {
   "SERVICES": {
     name: 'Services',
     locales: {
+      [Locales.UK]: "Services UK",
       [Locales.DE]: "Dienstleistungen",
       [Locales.NL]: "Diensten"
     }
@@ -88,6 +100,7 @@ export const Translations = {
   "FILTER-PROJECTS": {
     name: 'Filter Projects',
     locales: {
+      [Locales.UK]: "Filter Projects UK",
       [Locales.DE]: "Projekte filtern",
       [Locales.NL]: "Projecten filteren"
     }
@@ -95,6 +108,7 @@ export const Translations = {
   "ENTERPRISE": {
     name: 'Enterprise',
     locales: {
+      [Locales.UK]: "Enterprise UK",
       [Locales.DE]: "Unternehmen",
       [Locales.NL]: "Onderneming"
     }
@@ -102,6 +116,7 @@ export const Translations = {
   "ALL-PROJECTS": {
     name: 'All Projects',
     locales: {
+      [Locales.UK]: "All Projects UK",
       [Locales.DE]: "Alle Projekte",
       [Locales.NL]: "Alle projecten"
     }
@@ -109,6 +124,7 @@ export const Translations = {
   "VIEW-LIVE-SITE": {
     name: 'View Live Site',
     locales: {
+      [Locales.UK]: "View Live Site UK",
       [Locales.DE]: "Live-Site anzeigen",
       [Locales.NL]: "Bekijk livesite"
     }
@@ -116,6 +132,7 @@ export const Translations = {
   "RELATED-PROJECTS": {
     name: 'Related Projects',
     locales: {
+      [Locales.UK]: "Related Projects UK",
       [Locales.DE]: "Verwandte Projekte",
       [Locales.NL]: "Gerelateerde projecten"
     }
@@ -123,6 +140,7 @@ export const Translations = {
   "BY": { // Used in blog post attribution
     name: 'by',
     locales: {
+      [Locales.UK]: "by UK",
       [Locales.DE]: "von",
       [Locales.NL]: "door"
     }
@@ -130,6 +148,7 @@ export const Translations = {
   "AUTHORS": {
     name: 'Authors',
     locales: {
+      [Locales.UK]: "Authors UK",
       [Locales.DE]: "Autoren",
       [Locales.NL]: "Auteurs"
     }
@@ -137,6 +156,7 @@ export const Translations = {
   "EVENTS": {
     name: 'Events',
     locales: {
+      [Locales.UK]: "Events UK",
       [Locales.DE]: "Veranstaltungen",
       [Locales.NL]: "Evenementen"
     }
@@ -144,6 +164,7 @@ export const Translations = {
   "RESOURCES": {
     name: 'Resources',
     locales: {
+      [Locales.UK]: "Resources UK",
       [Locales.DE]: "Ressourcen",
       [Locales.NL]: "Bronnen"
     }

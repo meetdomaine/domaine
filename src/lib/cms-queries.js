@@ -13,6 +13,7 @@ export function urlFor(source) {
 export const imageBaseFields = `crop, asset->{_id, metadata}, hotspot`
 export const imageFields = `image{${imageBaseFields}, alt }`
 export const videoFields = 'video{ asset->{playbackId, assetId, filename, thumbTime} }'
+export const seoFields = `noIndex, title, description, image{${imageBaseFields}}`
 
 export const partnerTileFields = `
   _id,
@@ -141,6 +142,26 @@ export const globalSectionsFields = `
     _type == "section_textClients" => { eyebrow, heading, quote, quoteAuthor, clients[]->{ title, slug, "logo": logo.asset->url, logoScale }, quoteClient->{"logo": logo.asset->url, logoScale}, text, button },
     _type == "section_videoPlayer" => { ..., ${videoFields} },
 `
+
+export const homePageFields = `
+  ...,
+  globalSections{ sections[]{${globalSectionsFields}} }, 
+  media{ ..., ${imageFields}, ${videoFields} },
+  metafields{ ${seoFields} },
+  projects[]{
+    project->{${projectGridFields}},
+    image{${imageFields}}
+  }
+`
+
+export const workPageFields = ` 
+  _id,
+  title,
+  heading,
+  subheading,
+  metafields{ ${seoFields} }
+`
+
 export const generalPageFields = `
     ..., 
     media{${imageFields}, ${videoFields}},

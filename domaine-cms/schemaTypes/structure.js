@@ -89,13 +89,49 @@ export const structure = (S, context) =>
                 .title(labelHome)
                 .items([
                     S.listItem()
-                    .title(labelBrandPrimary)
+                    .title(labelBrandPrimary + ' (US)')
                     .icon(iconBrandPrimary)
                     .child(
                         S.document()
                         .schemaType('page_home-domaine')
                         .documentId(`page_home-${slugBrandPrimary}`)
-                        .title(labelHome)
+                        .title(labelHome + ' (US)')
+                    ),
+                    S.listItem()
+                    .title(labelBrandPrimary + ' (EU)')
+                    .icon(iconBrandPrimary)
+                    .child(
+                        S.document()
+                        .schemaType('page_home-domaine')
+                        .documentId(`page_home-${slugBrandPrimary}_eu`)
+                        .title(labelHome + ' (EU)')
+                    ),
+                    S.listItem()
+                    .title(labelBrandPrimary + ' (UK)')
+                    .icon(iconBrandPrimary)
+                    .child(
+                        S.document()
+                        .schemaType('page_home-domaine')
+                        .documentId(`page_home-${slugBrandPrimary}_uk`)
+                        .title(labelHome + ' (UK)')
+                    ),
+                    S.listItem()
+                    .title(labelBrandPrimary + ' (DE)')
+                    .icon(iconBrandPrimary)
+                    .child(
+                        S.document()
+                        .schemaType('page_home-domaine')
+                        .documentId(`page_home-${slugBrandPrimary}_de`)
+                        .title(labelHome + ' (DE)')
+                    ),
+                    S.listItem()
+                    .title(labelBrandPrimary + ' (NL)')
+                    .icon(iconBrandPrimary)
+                    .child(
+                        S.document()
+                        .schemaType('page_home-domaine')
+                        .documentId(`page_home-${slugBrandPrimary}_nl`)
+                        .title(labelHome + ' (NL)')
                     ),
                     S.listItem()
                     .title(labelBrandSecondary)
@@ -104,7 +140,7 @@ export const structure = (S, context) =>
                         S.document()
                         .schemaType('page_home-studio')
                         .documentId(`page_home-${slugBrandSecondary}`)
-                        .title(labelHome)
+                        .title(labelHome + ' (Studio)')
                     )
                 ])
             ),
@@ -199,13 +235,49 @@ export const structure = (S, context) =>
                             .title(`${labelProjects} ${labelIndex}`)
                             .items([
                                 S.listItem()
-                                .title(labelBrandPrimary)
+                                .title(labelBrandPrimary + ' (US)')
                                 .icon(iconBrandPrimary)
                                 .child(
                                     S.document()
                                     .schemaType('page_projects-index')
                                     .documentId(`page_projects-index-${slugBrandPrimary}`)
-                                    .title(labelBrandPrimary)
+                                    .title(labelBrandPrimary + ' (US)')
+                                ),
+                                S.listItem()
+                                .title(labelBrandPrimary + ' (EU)')
+                                .icon(iconBrandPrimary)
+                                .child(
+                                    S.document()
+                                    .schemaType('page_projects-index')
+                                    .documentId(`page_projects-index-${slugBrandPrimary}_eu`)
+                                    .title(labelBrandPrimary + ' (EU)')
+                                ),
+                                S.listItem()
+                                .title(labelBrandPrimary + ' (UK)')
+                                .icon(iconBrandPrimary)
+                                .child(
+                                    S.document()
+                                    .schemaType('page_projects-index')
+                                    .documentId(`page_projects-index-${slugBrandPrimary}_uk`)
+                                    .title(labelBrandPrimary + ' (UK)')
+                                ),
+                                S.listItem()
+                                .title(labelBrandPrimary + ' (DE)')
+                                .icon(iconBrandPrimary)
+                                .child(
+                                    S.document()
+                                    .schemaType('page_projects-index')
+                                    .documentId(`page_projects-index-${slugBrandPrimary}_de`)
+                                    .title(labelBrandPrimary + ' (DE)')
+                                ),
+                                S.listItem()
+                                .title(labelBrandPrimary + ' (NL)')
+                                .icon(iconBrandPrimary)
+                                .child(
+                                    S.document()
+                                    .schemaType('page_projects-index')
+                                    .documentId(`page_projects-index-${slugBrandPrimary}_nl`)
+                                    .title(labelBrandPrimary + ' (NL)')
                                 ),
                                 S.listItem()
                                 .title(labelBrandSecondary)

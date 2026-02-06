@@ -2,6 +2,7 @@ import { getRelativeLocaleUrl } from "astro:i18n"
 import { Translations } from "./locales"
 
 export const getTranslationString = (string, locale) => {
+  if (!string) return null
   // console.log(`Locale: ${locale}`)
   if (locale && string.translations?.[locale]) return string.translations[locale]
   // console.log("No translation found.")

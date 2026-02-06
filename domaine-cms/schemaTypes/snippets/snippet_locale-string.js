@@ -21,6 +21,11 @@ export default defineType({
         },
         fields: [
           {
+            name: 'uk',
+            title: 'British English',
+            type: 'string',
+          },
+          {
             name: 'de',
             title: 'German',
             type: 'string',

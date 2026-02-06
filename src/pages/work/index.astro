@@ -1,17 +1,23 @@
 ---
-// STATICALLY GENERATED AT BUILD TIME
 import { Brands } from '../../enums/brands';
 import LayoutProjectsIndex from '../../layouts/Layout_ProjectsIndex.astro';
 import { getCollection } from 'astro:content';
+import { loadQuery } from '../../lib/sanity-load-query';
+import { workPageFields } from '../../lib/cms-queries';
 
 export const prerender = true
 
 const domaineProjects = await getCollection('projectCards', ({ data }) => 
     data.agencyBrand.name === Brands.DOMAINE
 )
+
+const { data: pageSettings } = await loadQuery({
+  query: `*[_type == "page_projects-index" && _id == "page_projects-index-${Brands.DOMAINE.toLowerCase()}"][0]{${workPageFields}}`
+})
 ---
 <LayoutProjectsIndex
     brand={Brands.DOMAINE}
+    pageSettings={pageSettings}
     projects={domaineProjects.map(project => project.data)}
     isTopLevel
 />
